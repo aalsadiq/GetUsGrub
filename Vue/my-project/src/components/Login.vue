@@ -16,15 +16,7 @@
     </div>
 
     <div>
-      <h1> {{ name }} </h1>
-      <div>
-        <form name="signIn" action="http://localhost:8080/signIn" method="post">
-          <div>
-            <label for="email"> Username </label>
-            <input type="text" />
-          </div>
-        </form>
-      </div>
+      <h1>LOGIN</h1>
     </div>
     <div class="wrapper">
     </div>
@@ -39,11 +31,7 @@ export default {
         }
       },
     methods: {
-      signIn() {
-        if (this.$data.username !== 'test' || this.$data.password !== 'test') {
-          this.$data.hasErrored = true
-        }
-      }
+      
     },
     computed: {
 

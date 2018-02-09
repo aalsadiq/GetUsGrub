@@ -12,10 +12,8 @@
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js"
-//      "both" : " npm run server || npm start "
   },
   "dependencies": {
-    "pm2": "^2.9.3",
     "uiv": "^0.17.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

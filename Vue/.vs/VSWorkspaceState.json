@@ -2,10 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\my-project",
+    "\\my-project\\server",
     "\\my-project\\src",
     "\\my-project\\src\\assets",
-    "\\my-project\\src\\bootstrap-3.3.7\\dist",
-    "\\my-project\\src\\bootstrap-3.3.7\\dist\\css",
     "\\my-project\\src\\components",
     "\\my-project\\src\\router"
   ],

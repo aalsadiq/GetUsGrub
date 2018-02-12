@@ -1,0 +1,14 @@
+[
+  {
+    "username": "gitgrubber1",
+    "password": "23.56asda",
+    "salt": "asdfcv,dad",
+    "type": "restaurant",
+    "location": {
+      "latitude": 33.6846,
+      "longitude": -117.8265
+    }
+    "profile": {},
+    "securityAnswer": "string1"
+  }
+]

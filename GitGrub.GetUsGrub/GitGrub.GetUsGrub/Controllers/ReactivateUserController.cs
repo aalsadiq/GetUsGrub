@@ -12,7 +12,7 @@ namespace GitGrub.GetUsGrub.Controllers
     public class ReactivateUserController : ApiController
     {
         [Authorize(Roles = "Administrators")]
-        [Route("api/admin/reactivate/")]
+        [Route("api/ReactivateUser/")]
         public IHttpActionResult Post(Object user)
         {
             try

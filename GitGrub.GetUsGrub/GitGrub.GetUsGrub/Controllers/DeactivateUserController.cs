@@ -9,22 +9,42 @@ namespace GitGrub.GetUsGrub.Controllers
 {
     public class DeactivateUserController : ApiController
     {
+
+        [Authorize(Roles = "Administrators")]
+        [Route("api/DeactivateUser/")]
+        [HttpPost]
+        public IHttpActionResult deactivateUser(Object user)
+        {
+            return Ok();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         //[Authorize]
         //[Authorize(Roles ="Administrators")]
-        [Authorize(Roles = "Administrators")]
-        [Route("api/admin/deactivateuser/")]
-        public IHttpActionResult Post(Object user)
-        {
-            try
-            {
-                //logic for implementing delete the user on Database...
-                return Ok();
-            }
-            catch
-            {
-                return InternalServerError();
-            }
-        }
+        //[Authorize(Roles = "Administrators")]
+        //[Route("api/admin/deactivateuser/")]
+        //public IHttpActionResult Post(Object user)
+        //{
+        //    try
+        //    {
+        //        //logic for implementing delete the user on Database...
+        //        return Ok();
+        //    }
+        //    catch
+        //    {
+        //        return InternalServerError();
+        //    }
+        //}
 
     }
 }

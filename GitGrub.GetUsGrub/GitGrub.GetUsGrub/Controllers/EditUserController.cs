@@ -10,7 +10,7 @@ namespace GitGrub.GetUsGrub.Controllers
     public class EditUserController : ApiController
     {
         [Authorize(Roles = "Administrators")]
-        [Route("api/admin/edit/")]
+        [Route("api/EditUser/")]
         public IHttpActionResult Post(Object user)
         {
             try

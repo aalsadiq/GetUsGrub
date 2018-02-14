@@ -13,10 +13,10 @@
       </div>
       <div class="dictionaryInput">
         <p>Enter Food Item Name</p>
-        <input type="text" ref="foodItemName"/>
+        <input type="text" ref="foodItemName" />
         <br />
         <p>Enter Food Item Price</p>
-        <input type="number" ref="foodItemPrice"/>
+        <input type="number" ref="foodItemPrice" />
         <br />
         <br />
         <button v-on:click="addToDictionary(foodItemName, foodItemPrice)">Input</button>
@@ -27,16 +27,19 @@
         </draggable>
       </div>
     </div>
+    <app-footer></app-footer>
   </div>
 
 </template>
 
 <script>
   import Header from './Header.vue'
+  import Footer from './Footer.vue'
   export default {
     name: 'RestaurantBillSplitter',
     components: {
-      'app-header': Header
+      'app-header': Header,
+      'app-footer': Footer
     },
     data() {
       return {

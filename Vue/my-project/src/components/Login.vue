@@ -15,16 +15,19 @@
     </div>
     <div class="wrapper">
     </div>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
-import Header from './Header.vue'
+  import Header from './Header.vue'
+  import Footer from './Footer.vue'
 
 export default {
     name: 'Login',
     components: {
-      'app-header': Header
+      'app-header': Header,
+      'app-footer': Footer
     },
     data() {
       return {

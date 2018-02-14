@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Header from '@/components/Header'
+
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter'
+
 
 Vue.use(Router)
 

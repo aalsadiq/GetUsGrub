@@ -4,3 +4,6 @@ GitGrub.GetUsGrub/GitGrub.GetUsGrub.Models/obj/GitGrub.GetUsGrub.Models.csproj.n
 GitGrub.GetUsGrub/GitGrub.GetUsGrub.Models/obj/GitGrub.GetUsGrub.Models.csproj.nuget.g.props
 GitGrub.GetUsGrub/GitGrub.GetUsGrub.Models/obj/GitGrub.GetUsGrub.Models.csproj.nuget.g.targets
 GitGrub.GetUsGrub/GitGrub.GetUsGrub.Models/obj/GitGrub.GetUsGrub.Models.csproj.nuget.g.props
+GitGrub.GetUsGrub/.vs/config/applicationhost.config
+GitGrub.GetUsGrub/.vs/config/applicationhost.config
+*.config

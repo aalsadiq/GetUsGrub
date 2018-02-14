@@ -32,9 +32,11 @@
 </template>
 
 <script>
+  import Header from './Header.vue'
   export default {
     name: 'RestaurantBillSplitter',
     components: {
+      'app-header': Header
     },
     data() {
       return {

@@ -17,7 +17,6 @@
 
 <script>
   export default {
-    
     data() {
       return {
 
@@ -52,16 +51,16 @@
     font-weight: bold;
   }
 
-    li > a {
-      color: #FFFFFF;
-    }
+  li > a {
+    color: #FFFFFF;
+  }
 
-      li > a:link || a:visited {
-        color: #FFFFFF;
-      }
+  li > a:link || a:visited {
+    color: #FFFFFF;
+  }
 
-      li > a:hover {
-        color: #808080;
-        text-decoration: none;
-      }
+  li > a:hover {
+    color: #808080;
+    text-decoration: none;
+  }
 </style>

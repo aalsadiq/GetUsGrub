@@ -17,16 +17,7 @@ namespace GitGrub.GetUsGrub.Controllers
         [Route("api/DeleteUser/")]
         public IHttpActionResult Post(int id)
         {
-           // User user = db.Books.Find(id);
-            //if (user == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //db.User.Remove(user);
-           // db.SaveChanges();
-
-            return Ok();//return user...
+            return Ok();
         }
     }
 }

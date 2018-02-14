@@ -13,20 +13,8 @@ namespace GitGrub.GetUsGrub.Controllers
         [Route("api/EditUser/")]
         public IHttpActionResult Post(Object user)
         {
-            try
-            {
-                //logic for implementing update the user on Database...
-                return Ok();
-            }
-            catch
-            {
-                return InternalServerError();
-            }
+            return Ok();
 
-            //Http Server
-            //HttpRoutingDispatcher
-            //HttpControllerDispatcher
-            //https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/http-message-handlers
         }
     }
 }

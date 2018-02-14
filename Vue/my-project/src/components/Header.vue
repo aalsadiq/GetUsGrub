@@ -1,33 +1,32 @@
 <template>
-  <div>
-    <app-header></app-header>
-  </div>
+  <header>
+    <a href="/#/">
+      <img src="../assets/logo.png" />
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#/">Home</a></li>
+        <li><a>Registration</a></li>
+        <li><a href="#/Login">Login</a></li>
+        <li><a>Logout</a></li>
+        <li><a href="#/RestaurantBillSplitter">Restaurant Bill Splitter</a></li>
+      </ul>
+    </nav>
+  </header>
 </template>
 
 <script>
-  import Header from './Header.vue'
-
   export default {
-    name: 'Home',
-    components: {
-      'app-header': Header
-    },
+    
     data() {
       return {
-        msg: 'Welcome to GetUsGrub!'
-      }
-    },
-    methods: {
-      toLogin: function () {
-        this.$router.push('Login')
+
       }
     }
   }
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  #app {
+  header {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -36,10 +35,10 @@
     margin-top: 60px;
   }
 
-  div#top > a > img {
-    max-height: 150px;
-    margin-bottom: 20px;
-  }
+    header > a > img {
+      max-height: 150px;
+      margin-bottom: 20px;
+    }
 
   ul {
     padding: 0px;

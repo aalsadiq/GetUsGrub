@@ -8,6 +8,6 @@
     "\\my-project\\src\\router",
     "\\my-project\\static"
   ],
-  "SelectedNode": "\\my-project\\src\\assets\\logo.png",
+  "SelectedNode": "\\my-project\\src\\components\\Home.vue",
   "PreviewInSolutionExplorer": false
 }

@@ -1,17 +1,6 @@
 <template>
-  <div id="top">
-    <a href="/#/">
-      <img src="../assets/logo.png" />
-    </a>
-    <nav>
-      <ul>
-        <li><a href="#/">Home</a></li>
-        <li><a>Registration</a></li>
-        <li><a href="#/Login">Login</a></li>
-        <li><a>Logout</a></li>
-        <li><a href="#/RestaurantBillSplitter">Restaurant Bill Splitter</a></li>
-      </ul>
-    </nav>
+  <div>
+    <app-header></app-header>
     <div>
       <h1>RESTAURANT BILL SPLITTER</h1>
     </div>
@@ -24,10 +13,10 @@
       </div>
       <div class="dictionaryInput">
         <p>Enter Food Item Name</p>
-        <input type="text" />
+        <input type="text" ref="foodItemName"/>
         <br />
         <p>Enter Food Item Price</p>
-        <input type="number" />
+        <input type="number" ref="foodItemPrice"/>
         <br />
         <br />
         <button v-on:click="addToDictionary(foodItemName, foodItemPrice)">Input</button>
@@ -40,16 +29,12 @@
     </div>
   </div>
 
-
-
 </template>
 
 <script>
-  import draggable from 'vuedraggable'
   export default {
     name: 'RestaurantBillSplitter',
     components: {
-      draggable
     },
     data() {
       return {
@@ -76,8 +61,8 @@
       },
 
       addToDictionary: function (name, price) {
-        this.foodItems.foodItemName = name
-        this.foodItems.foodItemPrice = price
+        this.$ref.foodItems.foodItemName = name
+        this.$ref.foodItems.foodItemPrice = price
       },
 
       getDictionaryItem: function () {
@@ -89,16 +74,7 @@
     }
   }
 </script>
-<style>
-  #top {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
-
+<style scoped>
   .wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

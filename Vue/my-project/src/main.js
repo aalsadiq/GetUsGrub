@@ -6,12 +6,17 @@ import router from './router'
 import './bootstrap-3.3.7/dist/css/bootstrap.css'
 import draggable from 'vuedraggable'
 
+Vue.component('draggable', draggable) // Allows usage of Vue Draggable across the entire application
+
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App, draggable },
+  components: {
+    App, draggable
+  },
   template: '<App/>'
 })

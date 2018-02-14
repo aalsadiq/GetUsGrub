@@ -18,17 +18,6 @@ namespace GitGrub.GetUsGrub.Controllers
             return Ok();
         }
 
-
-
-
-
-
-
-
-
-
-
-
         //[Authorize]
         //[Authorize(Roles ="Administrators")]
         //[Authorize(Roles = "Administrators")]

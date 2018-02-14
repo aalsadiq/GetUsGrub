@@ -6,7 +6,7 @@ using GitGrub.GetUsGrub.Models.Interfaces;//must include for interfaces
 
 namespace GitGrub.GetUsGrub.Models.Models
 {
-    class Permission:IPermission
+    public class Permission:IPermission
     {
         //required fields should be added
         public string PermissionName { get; set; }

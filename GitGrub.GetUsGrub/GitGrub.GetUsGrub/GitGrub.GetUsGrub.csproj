@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Services\UserManager.cs" />
+    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Controllers\CreateUserController.cs" />
     <Compile Include="Controllers\DeactivateUserController.cs" />
     <Compile Include="Controllers\DeleteUserController.cs" />
@@ -115,6 +115,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.DataAccess\GitGrub.GetUsGrub.DataAccess.csproj">
+      <Project>{ac31b829-3ba4-4abe-b3cc-83caafc593c7}</Project>
+      <Name>GitGrub.GetUsGrub.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
       <Project>{c2d0900c-17e7-4829-b0df-d0ca96d63210}</Project>
       <Name>GitGrub.GetUsGrub.Models</Name>

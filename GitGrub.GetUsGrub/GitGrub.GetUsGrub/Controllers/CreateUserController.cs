@@ -21,12 +21,14 @@ namespace GitGrub.GetUsGrub.Controllers
             UserManager = userManager;
         }
 
-       //[Authorize(Roles = "Administrators")]//restricting by role
+        //[Authorize(Roles = "Administrators")]//restricting by role --claim = isadmin
         [Route("api/CreateUser/")]
         [HttpPost]
-        public HttpResponseMessage CreateUser([FromBody] Object user)
+        public HttpResponseMessage CreateUser([FromBody] User user)
         {//from body...
-            
+
+            var user2 = new User();
+
             if(user == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotAcceptable, user);

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GitGrub.GetUsGrub.Models.Interfaces
 {
-    interface IUser:IPermission
+    public interface IUser:IPermission
     {
         //required fields should be added
         string GetType { get; }

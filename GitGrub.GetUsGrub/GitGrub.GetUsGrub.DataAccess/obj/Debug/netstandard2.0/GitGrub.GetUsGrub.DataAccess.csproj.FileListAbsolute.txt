@@ -1,0 +1,11 @@
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\bin\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.deps.json
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\bin\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.dll
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\bin\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.pdb
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\bin\Debug\netstandard2.0\GitGrub.GetUsGrub.Models.dll
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\bin\Debug\netstandard2.0\GitGrub.GetUsGrub.Models.pdb
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.AssemblyInfoInputs.cache
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.AssemblyInfo.cs
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.dll
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.DataAccess.pdb

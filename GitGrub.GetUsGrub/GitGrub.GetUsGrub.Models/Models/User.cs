@@ -6,9 +6,8 @@ using GitGrub.GetUsGrub.Models.Interfaces;//must include for interfaces
 
 namespace GitGrub.GetUsGrub.Models.Models
 {
-    class User:IUser
+    public class User:IUser
     {
-        //required fields should be added
         public IEnumerable<Permission> GetPermission => throw new NotImplementedException();
 
         public object GetLocation => throw new NotImplementedException();

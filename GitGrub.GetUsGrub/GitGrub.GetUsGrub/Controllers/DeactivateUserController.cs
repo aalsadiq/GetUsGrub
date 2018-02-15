@@ -34,7 +34,7 @@ namespace GitGrub.GetUsGrub.Controllers
 
             try
             {
-                UserManager.createUser(user);//call manager/service/business logic
+                UserManager.deactivateUser(user);//call manager/service/business logic
 
                 //call gateway
             }

@@ -5,9 +5,15 @@ using GitGrub.GetUsGrub.Models.Models;
 
 namespace GitGrub.GetUsGrub.DataAccess
 {
-    class UserGateway
+    public class UserGateway
     {
-        private Object user;
+        private User _user;
+        public User User
+        {
+            get { return _user; }
+            set { _user = value; }
+        }
+
 
         public bool CreateUser(User user);
         public bool EditUserByUsername(User user);

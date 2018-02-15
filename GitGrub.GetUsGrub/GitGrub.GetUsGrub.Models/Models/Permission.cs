@@ -9,18 +9,30 @@ namespace GitGrub.GetUsGrub.Models.Models
     public class Permission:IPermission
     {
         //required fields should be added
-        public string PermissionName { get; set; }
-        public string PermissionType { get; set; }
-        public string ContextType { get; set; }
+        private String _permissionName { get; set; }
+        private String _actionType { get; set; }
+        private String _permissionType { get; set; }
+        private String _contextType { get; set; }
 
-        public string contexttype => throw new NotImplementedException();
-
-        public string PossessionType { get; set; }
-
-        public string possessiontype => throw new NotImplementedException();
-
-        public string name => throw new NotImplementedException();
-
-        public string actiontype => throw new NotImplementedException();
+        public String Name
+        {
+            get { return _permissionName; }
+            set { _permissionName = value; }
+        }
+        public String ActionType
+        {
+            get { return _actionType; }
+            set { _actionType = value; }
+        }
+        public String PossessionType
+        {
+            get { return _permissionType; }
+            set { _permissionName = value; }
+        }
+        public String ContextType
+        {
+            get { return _contextType; }
+            set { _contextType = value; }
+        }
     }
 }

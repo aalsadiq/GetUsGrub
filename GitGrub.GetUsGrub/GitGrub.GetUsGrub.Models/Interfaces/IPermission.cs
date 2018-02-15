@@ -7,9 +7,10 @@ namespace GitGrub.GetUsGrub.Models.Interfaces
     public interface IPermission
     {
         //required fields should be added
-        string name { get; }
-        string actiontype { get; }
-        string contexttype { get; }
-        string possessiontype { get; }
+        
+        String Name { get; set; }
+        String ActionType { get; set; }
+        String ContextType { get; set; }
+        String PossessionType { get; set; }
     }
 }

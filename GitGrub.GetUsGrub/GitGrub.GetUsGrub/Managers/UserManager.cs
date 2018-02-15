@@ -17,40 +17,23 @@ public class UserManager
         //convert object to string
        var objectToString = Convert.ToString(json);
 
-        //convert strin to user
+        //convert string to user
         var stringToUser = usertojson(objectToString);
 
         //Conver string to user
         var user = jsontouser(stringToUser);
 
-        //business rules
+        //business rules...
+        
+            //validate if user exists by calling gateway...
+       
+            //validate if password is satisfies the requirements > 8 characters if valid call salt inside... if so hashpassword
 
-        //validate user type
-        //using enum to declare these types...
-        if(user.Type == "regular")
-        {
-            //set regular user permissions
-            //call validate
-        }else if(user.Type == "restaurant")
-        {
-            //set restaurant permissions
-        }
-        else if(user.Type == "admin")
-        {
-            //set all permissions
-            //can do crud
-        }
-        //validate username
-        var holdUserName = user.name;
-
-       //validateUserType(user);
-
-        //validate userpassword
-        //validate that the type suggested is true
-        //validate security question
-        //talk to Jen, are we implementing this?
-        //then return this back to the controller.... which will give it to the gateway...
-
+            //validate security answer, must be > 1
+            
+            //validate if usertype is a valid type in our system... if so set the permission
+        //End of business rules...
+            
         return user;
     }
 
@@ -62,46 +45,10 @@ public class UserManager
         return false;
     }
 
-    public Boolean validatePassword(User user)
-    {
-
-        //if user satisfies the requirements then continue
-        //if gateway returns false then return false;
-        return false;
-
-    }
-
-    //will check if user has a null security answer
-    public Boolean validateSecurityAnswer(User user)
-    {
-        if(user.SecurityAnswer.Length > 1)//is it the same thing as not null
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public Boolean validateUserName(User user)
-    {
-
-        if(user.Username.Length > 8)//must be greater than 8 characters
-        {
-            //checking characters 
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-   
     public Boolean validateUserType(User user)
     {
         //validate
-        if(user.Type == "admin" || user.Type =="registered" || user.Type == "restaurant")
+        if(user.UserType == "admin" || user.UserType =="registered" || user.UserType == "restaurant")
         {
 
         }
@@ -144,7 +91,6 @@ public class UserManager
 
         //Conver string to user
         var user = jsontouser(stringToUser);
-
   
     }
 

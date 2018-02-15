@@ -14,6 +14,10 @@ namespace GitGrub.GetUsGrub.Controllers
     {
         //Creating the service that will handle the business logic (UserManager.cs)
         public UserManager UserManager { get; }
+        //parameterless constructor
+        public CreateUserController()
+        {
+        }
         //create a controller for the service...
         public CreateUserController(UserManager userManager)
         {
@@ -27,7 +31,7 @@ namespace GitGrub.GetUsGrub.Controllers
         {
             if(!ModelState.IsValid)//if the model is not valid return a bad request
             {
-                return BadRequest();    
+                return BadRequest("inside invalid model state");    
             }
 
             try
@@ -38,7 +42,7 @@ namespace GitGrub.GetUsGrub.Controllers
             }
             catch //not sure what i am catching..
             {
-                return BadRequest();
+                return BadRequest("Inside catch");
             }
 
             return Ok(user);

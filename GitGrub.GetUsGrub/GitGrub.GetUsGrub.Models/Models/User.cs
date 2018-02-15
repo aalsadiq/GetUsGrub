@@ -8,35 +8,31 @@ namespace GitGrub.GetUsGrub.Models.Models
 {
     public class User:IUser
     {
-        public IEnumerable<Permission> GetPermission => throw new NotImplementedException();
+        public string Username;
+        public Type UserType;
+        public string SecurityAnswer;
+        public IEnumerable<Permission> Permissions;
+        public Object Location;
+        public Object profile;
+        public Boolean Active;
 
-        public object GetLocation => throw new NotImplementedException();
+        public string Type { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IEnumerable<Permission> Permission { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public object Profile { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int UserId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public object GetProfile => throw new NotImplementedException();
+        public string name => throw new NotImplementedException();
 
-        public string GetSecurityAnswer => throw new NotImplementedException();
+        public string actiontype => throw new NotImplementedException();
 
-        public int GetUserId => throw new NotImplementedException();
+        public string contexttype => throw new NotImplementedException();
 
-        public string GetName => throw new NotImplementedException();
+        public string possessiontype => throw new NotImplementedException();
 
-        public string GetActionType => throw new NotImplementedException();
+        object IUser.Location { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        string IUser.SecurityAnswer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public string GetContextType => throw new NotImplementedException();
-
-        public string GetPossessionType => throw new NotImplementedException();
-
-        private string Username { get; set; }
-        private Type UserType { get; set; }
-        private string SecurityAnswer { get; set; }
-        private IEnumerable<Permission> Permissions { get; set; }
-        private Object Location { get; set; }
-        private Object profile { get; set; }
-        private Boolean Active { get; set; }
-
-        string IUser.GetType => throw new NotImplementedException();
-
-        public void AddPermission(Permission permission)
+        public void AddPermission(Permission Permission)
         {
             throw new NotImplementedException();
         }
@@ -46,12 +42,7 @@ namespace GitGrub.GetUsGrub.Models.Models
             throw new NotImplementedException();
         }
 
-        public void RemovePermission(Permission permission)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int UserId()
+        public void RemovePermission(Permission Permission)
         {
             throw new NotImplementedException();
         }

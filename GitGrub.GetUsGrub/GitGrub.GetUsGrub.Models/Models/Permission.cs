@@ -12,14 +12,15 @@ namespace GitGrub.GetUsGrub.Models.Models
         public string PermissionName { get; set; }
         public string PermissionType { get; set; }
         public string ContextType { get; set; }
+
+        public string contexttype => throw new NotImplementedException();
+
         public string PossessionType { get; set; }
 
-        public string GetName => throw new NotImplementedException();
+        public string possessiontype => throw new NotImplementedException();
 
-        public string GetActionType => throw new NotImplementedException();
+        public string name => throw new NotImplementedException();
 
-        public string GetContextType => throw new NotImplementedException();
-
-        public string GetPossessionType => throw new NotImplementedException();
+        public string actiontype => throw new NotImplementedException();
     }
 }

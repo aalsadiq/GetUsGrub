@@ -8,15 +8,14 @@ namespace GitGrub.GetUsGrub.Models.Interfaces
     public interface IUser:IPermission
     {
         //required fields should be added
-        string GetType { get; }
-        IEnumerable<Permission> GetPermission { get; }
-        void AddPermission(Permission permission);
-        void RemovePermission(Permission permission);
-        Object GetLocation { get; }
-        Object GetProfile { get; }
-        string GetSecurityAnswer { get; }
+        string Type { get; set; }//creates get type
+        IEnumerable<Permission> Permission { get; set; } //creates getpermission, sets permission
+        void AddPermission(Permission Permission);//?
+        void RemovePermission(Permission Permission);//remove permission
+        Object Location { get; set; }
+        Object Profile { get; set; }
+        string SecurityAnswer { get; set; }
         Boolean IsActive();
-        int UserId();//added by salas
-        int GetUserId { get; }//added by salas
+        int UserId { get; set; }
     }
 }

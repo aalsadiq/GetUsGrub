@@ -145,7 +145,7 @@ public class UserManager
         //Conver string to user
         var user = jsontouser(stringToUser);
 
-        return user;
+  
     }
 
     //controller calls this method..

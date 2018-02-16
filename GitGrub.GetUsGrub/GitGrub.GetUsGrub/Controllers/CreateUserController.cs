@@ -7,7 +7,6 @@ using System.Web.Http;
 using GitGrub.GetUsGrub.Models.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using GitGrub.GetUsGrub.Models.Models;
 namespace GitGrub.GetUsGrub.Controllers
 {
     public class CreateUserController : ApiController
@@ -27,7 +26,7 @@ namespace GitGrub.GetUsGrub.Controllers
         //[Authorize(Roles = "Administrators")]//restricting by role --claim = isadmin
         [Route("api/CreateUser/")]
         [HttpPost]
-        public IHttpActionResult CreateUser([FromBody] Object user)
+        public IHttpActionResult CreateUser([FromBody] User user)
         {
             if(!ModelState.IsValid)//if the model is not valid return a bad request
             {
@@ -48,30 +47,6 @@ namespace GitGrub.GetUsGrub.Controllers
             return Ok(user);
 
         }
-
-        [Route("api/CreateUser/")]
-        [HttpGet]
-        public IHttpActionResult returnuser(Object user)
-        {
-            return Ok();
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }

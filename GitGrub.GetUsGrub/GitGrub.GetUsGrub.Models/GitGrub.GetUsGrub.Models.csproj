@@ -14,4 +14,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Enumerations\" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

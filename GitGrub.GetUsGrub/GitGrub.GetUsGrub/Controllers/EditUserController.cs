@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using GitGrub.GetUsGrub.Models.Models;
 
 namespace GitGrub.GetUsGrub.Controllers
 {
@@ -21,9 +22,9 @@ namespace GitGrub.GetUsGrub.Controllers
             UserManager = userManager;
         }
         [Authorize(Roles = "Administrators")]
-        [Route("api/EditUser/")]
-        [HttpPost]
-        public IHttpActionResult deactivateUser(Object user)
+        [Route("api/deactivateUser/")]
+        [HttpPut]
+        public IHttpActionResult deactivateUser(User user)
         {
             if (!ModelState.IsValid)//if the model is not valid return a bad request
             {
@@ -39,7 +40,7 @@ namespace GitGrub.GetUsGrub.Controllers
             catch //not sure what i am catching..
             {
                 return BadRequest("Inside catch");
-            }
+            }e
 
             return Ok(user);
 

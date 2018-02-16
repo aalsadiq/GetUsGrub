@@ -13,13 +13,11 @@ namespace GitGrub.GetUsGrub.DataAccess
             get { return _user; }
             set { _user = value; }
         }
-
-
-        public bool CreateUser(User user);
-        public bool EditUserByUsername(User user);
-        public bool DeleteUserByUsername(User user);
-        public bool DeactivateUserByUsername(User user);
-        public bool ReactivateUserByUsername(User user);
+        public bool CreateUserGateway(User user) { return true; }
+        public bool EditUserByUsernameGateway(User user) { return true; }
+        public bool DeleteUserByUsernameGateway(User user) { return true; }
+        public bool DeactivateUserByUsernameGateway(User user) { return true; }
+        public bool ReactivateUserByUsernameGateway(User user) { return true; }
 
     }
 }

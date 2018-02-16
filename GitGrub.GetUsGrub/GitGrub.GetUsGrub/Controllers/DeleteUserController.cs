@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using GitGrub.GetUsGrub.Models;
+using GitGrub.GetUsGrub.Models.Models;
 //added
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -26,9 +26,9 @@ namespace GitGrub.GetUsGrub.Controllers
         }
 
         [Authorize(Roles = "Administrators")]
-        [Route("api/DeleteUser/")]
-        [HttpPost]
-        public IHttpActionResult deactivateUser(Object user)
+        [Route("api/deactivateUser/")]
+        [HttpPut]
+        public IHttpActionResult deactivateUser(User user)
         {
             if (!ModelState.IsValid)//if the model is not valid return a bad request
             {

@@ -9,7 +9,11 @@ function resolve (dir) {
 }
 
 const createLintingRule = () => ({
+<<<<<<< HEAD
 /* Disables ESLint's rules during compile
+=======
+  /* UNCOMMENT THIS IF YOU WANT ESLint TO TELL YOU FORMATTING ERRORS
+>>>>>>> refs/remotes/origin/master
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
   enforce: 'pre',
@@ -18,7 +22,11 @@ const createLintingRule = () => ({
     formatter: require('eslint-friendly-formatter'),
     emitWarning: !config.dev.showEslintErrorsInOverlay
   }
+<<<<<<< HEAD
 */
+=======
+  */
+>>>>>>> refs/remotes/origin/master
 })
 
 module.exports = {

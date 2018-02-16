@@ -1,9 +1,7 @@
 <template>
   <div>
     <app-header></app-header>
-    <div>
-      <h1>RESTAURANT BILL SPLITTER</h1>
-    </div>
+
 
     <div class="wrapper">
       <div class="one">
@@ -19,7 +17,7 @@
         <input type="number" ref="foodItemPrice" />
         <br />
         <br />
-        <button v-on:click="addToDictionary(foodItemName, foodItemPrice)">Input</button>
+        <button v-on:click="addToDictionary">Input</button>
       </div>
       <div class="dictionary">
         <draggable v-model="foodItems" :options="{foodItemName:'people'}" @start="drag=true" @end="drag=false">
@@ -33,8 +31,9 @@
 </template>
 
 <script>
-  import Header from './Header.vue'
-  import Footer from './Footer.vue'
+  import Header from '../Header.vue'
+  import Footer from '../Footer.vue'
+
   export default {
     name: 'RestaurantBillSplitter',
     components: {
@@ -65,9 +64,10 @@
         console.log(this)
       },
 
-      addToDictionary: function (name, price) {
-        this.$ref.foodItems.foodItemName = name
-        this.$ref.foodItems.foodItemPrice = price
+      addToDictionary: function () {
+        console.log(this.$refs)
+        this.foodItems.push(this.$refs.foodItemName.value);
+        this.foodItems.push(this.$refs.foodItemPrice.valueAsNumber);
       },
 
       getDictionaryItem: function () {
@@ -81,6 +81,7 @@
 </script>
 <style scoped>
   .wrapper {
+    margin: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;

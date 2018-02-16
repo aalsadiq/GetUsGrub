@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter'
@@ -24,8 +23,8 @@ export default new Router({
       name: 'Login',
       component: Login,
       beforeEnter: (to, from, next) =>{
-      document.title = 'Login'
-      next()
+        document.title = 'Login'
+        next()
       }/*,
       beforeRouteLeave: (to, from, next) => {
         if (to.path === 'SignIn') {

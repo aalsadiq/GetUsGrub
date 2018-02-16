@@ -2,12 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\my-project",
+    "\\my-project\\build",
     "\\my-project\\src",
     "\\my-project\\src\\assets",
     "\\my-project\\src\\components",
-    "\\my-project\\src\\router",
-    "\\my-project\\static"
+    "\\my-project\\src\\router"
   ],
-  "SelectedNode": "\\my-project\\src\\components\\Home.vue",
+  "SelectedNode": "\\my-project\\src\\router\\index.js",
   "PreviewInSolutionExplorer": false
 }

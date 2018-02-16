@@ -9,6 +9,7 @@ function resolve (dir) {
 }
 
 const createLintingRule = () => ({
+  /* UNCOMMENT THIS IF YOU WANT ESLint TO TELL YOU FORMATTING ERRORS
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
   enforce: 'pre',
@@ -17,6 +18,7 @@ const createLintingRule = () => ({
     formatter: require('eslint-friendly-formatter'),
     emitWarning: !config.dev.showEslintErrorsInOverlay
   }
+  */
 })
 
 module.exports = {

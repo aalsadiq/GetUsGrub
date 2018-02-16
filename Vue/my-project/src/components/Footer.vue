@@ -8,7 +8,7 @@
   export default {
     data() {
       return {
-        copyright: "Copyright \u00A9 All Rights Reserved. Team GitGrub."
+        copyright: "Copyright \u00A9 Team GitGrub. All Rights Reserved."
       }
     }
   }

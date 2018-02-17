@@ -15,7 +15,7 @@
   </header>
 </template>
 
-<script>
+<script lang="ts">
   export default {
     data() {
       return {
@@ -24,6 +24,7 @@
     }
   }
 </script>
+
 <style scoped>
   header {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;

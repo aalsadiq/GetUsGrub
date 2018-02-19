@@ -121,3 +121,5 @@ Ankh.NoLoad
 !/packages/*/lib/*/*.dll
 
 GitGrub\.GetUsGrub/\.vs/config/applicationhost\.config
+
+*.ide

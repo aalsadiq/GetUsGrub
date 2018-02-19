@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gateways\CreateUserGateway.cs" />
+    <Compile Include="Gateways\ValidateGateway.cs" />
     <Compile Include="Interfaces\ICreateUserGateway.cs" />
+    <Compile Include="Interfaces\IValidateGateway.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

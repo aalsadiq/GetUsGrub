@@ -2,13 +2,13 @@
 
 namespace GitGrub.GetUsGrub.Models.Models
 {
-    public class UserAccount
+    class UserAccount
     {
         [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Required username.")]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         // Stored as a hash
         [Required(ErrorMessage = "Required password.")]

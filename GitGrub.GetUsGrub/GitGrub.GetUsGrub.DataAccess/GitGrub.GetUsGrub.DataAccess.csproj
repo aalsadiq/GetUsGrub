@@ -47,9 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contexts\EntityContext.cs" />
     <Compile Include="Gateways\CreateUserGateway.cs" />
-    <Compile Include="Gateways\LoginGateway.cs" />
     <Compile Include="Gateways\ValidateGateway.cs" />
     <Compile Include="Interfaces\ICreateUserGateway.cs" />
     <Compile Include="Interfaces\IValidateGateway.cs" />
@@ -65,6 +63,8 @@
       <Name>GitGrub.GetUsGrub.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Contexts\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

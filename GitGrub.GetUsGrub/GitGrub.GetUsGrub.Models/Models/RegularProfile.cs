@@ -1,6 +1,8 @@
-﻿using GitGrub.GetUsGrub.Models.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace GitGrub.GetUsGrub.Models.Models
+namespace GitGrub.GetUsGrub.Models
 {
     public class RegularProfile : IProfile
     {

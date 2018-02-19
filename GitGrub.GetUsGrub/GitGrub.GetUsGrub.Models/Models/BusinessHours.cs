@@ -1,4 +1,8 @@
-﻿namespace GitGrub.GetUsGrub.Models.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace GitGrub.GetUsGrub.Models
 {
     public class BusinessHours
     {

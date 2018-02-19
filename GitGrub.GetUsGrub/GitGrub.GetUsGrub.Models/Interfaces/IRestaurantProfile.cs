@@ -1,7 +1,8 @@
-﻿using GitGrub.GetUsGrub.Models.Models;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace GitGrub.GetUsGrub.Models.Interfaces
+namespace GitGrub.GetUsGrub.Models
 {
     interface IRestaurantProfile
     {

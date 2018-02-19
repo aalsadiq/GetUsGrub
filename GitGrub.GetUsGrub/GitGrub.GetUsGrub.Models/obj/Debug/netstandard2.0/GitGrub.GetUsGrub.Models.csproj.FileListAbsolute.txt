@@ -2,7 +2,11 @@ C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models
 C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\bin\Debug\netstandard2.0\GitGrub.GetUsGrub.Models.dll
 C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\bin\Debug\netstandard2.0\GitGrub.GetUsGrub.Models.pdb
 C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\bin\Debug\netstandard2.0\System.ComponentModel.DataAnnotations.dll
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\bin\Debug\netstandard2.0\System.Configuration.dll
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\bin\Debug\netstandard2.0\System.Security.dll
 C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\bin\Debug\netstandard2.0\System.ComponentModel.DataAnnotations.xml
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\bin\Debug\netstandard2.0\System.Configuration.xml
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\bin\Debug\netstandard2.0\System.Security.xml
 C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.Models.csprojResolveAssemblyReference.cache
 C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.Models.csproj.CoreCompileInputs.cache
 C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.Models\obj\Debug\netstandard2.0\GitGrub.GetUsGrub.Models.AssemblyInfoInputs.cache

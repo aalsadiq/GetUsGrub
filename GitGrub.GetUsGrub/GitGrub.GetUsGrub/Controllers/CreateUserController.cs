@@ -5,45 +5,19 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using GitGrub.GetUsGrub.Models.Models;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using GitGrub.GetUsGrub.Models.DTOs;
-
-
-
 namespace GitGrub.GetUsGrub.Controllers
-
 {
     public class CreateUserController : ApiController
     {
+        //Creating the service that will handle the business logic (UserManager.cs)
         UserManager userManager = new UserManager();
 
         //[Authorize(Roles = "Administrators")]//restricting by role --claim = isadmin
-        [Route("Admin/CreateUser")]
+        [Route("api/CreateUser/")]
         [HttpPost]
-
-        public IHttpActionResult CreateUser([FromBody] UserManagerDTO userDTO)
+        public IHttpActionResult CreateUser([FromBody] Object user)
         {
-            if (!ModelState.IsValid)//if the model is not valid return a bad request
-            {
-                return BadRequest("invalid inputs.");
-            }
-            try
-            {
-                var createUserResult = userManager.createUser(userDTO);
-                if (createUserResult == true)
-                {
-                    return Ok("Success");//return a request?
-                }
-                else
-                {
-                    return BadRequest("User Creation failed.");
-                }
-            }
-            catch
-            {
-                return BadRequest("Something went wrong! Please contaact an Admin.");
-            }
+            return Ok();
         }
     }
 }

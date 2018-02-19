@@ -1,4 +1,5 @@
-﻿using GitGrub.GetUsGrub.Interfaces;
+﻿using GitGrub.GetUsGrub.Helpers;
+using GitGrub.GetUsGrub.Interfaces;
 using GitGrub.GetUsGrub.Models.DTOs;
 using GitGrub.GetUsGrub.Models.Interfaces;
 using GitGrub.GetUsGrub.Models.Models;
@@ -36,7 +37,5 @@ namespace GitGrub.GetUsGrub.Managers
             registerUserWithSecurityDto.Password = passwordHash;
             return true;
         }
-
-        // Add validation of username in a Gateway or a class?
     }
 }

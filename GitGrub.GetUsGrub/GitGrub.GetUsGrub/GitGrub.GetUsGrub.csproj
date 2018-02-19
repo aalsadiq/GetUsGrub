@@ -90,6 +90,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PayloadHasher.cs" />
     <Compile Include="Interfaces\ICreateUserManager.cs" />
     <Compile Include="Managers\CreateUserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,0 +1,108 @@
+<template>
+  <div>
+    <app-header></app-header>
+
+
+    <div class="wrapper">
+      <div class="one">
+        <draggable v-model="foodItems" :options="{foodItemName:'people'}" @start="drag=true" @end="drag=false">
+          <div v-for="element in foodItems" :key="element.id">{{element.foodItemName}}</div>
+        </draggable>
+      </div>
+      <div class="dictionaryInput">
+        <p>Enter Food Item Name</p>
+        <input type="text" ref="foodItemName" />
+        <br />
+        <p>Enter Food Item Price</p>
+        <input type="number" ref="foodItemPrice" />
+        <br />
+        <br />
+        <button v-on:click="addToDictionary">Input</button>
+      </div>
+      <div class="dictionary">
+        <draggable v-model="foodItems" :options="{foodItemName:'people'}" @start="drag=true" @end="drag=false">
+          <div v-for="element in foodItems" :key="element.id">{{element.foodItemName}}</div>
+        </draggable>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+
+</template>
+
+<script>
+  import Header from '../Header.vue'
+  import Footer from '../Footer.vue'
+
+  export default {
+    name: 'RestaurantBillSplitter',
+    components: {
+      'app-header': Header,
+      'app-footer': Footer
+    },
+    data() {
+      return {
+        testItem: 'hello',
+        foodItems: [
+          {
+            foodItemName: 'Burger',
+            foodItemPrice: '$1.00'
+          },
+          {
+            foodItemName: 'Milk Shake',
+            foodItemPrice: '$0.50'
+          },
+          {
+            foodItemName: 'Test',
+            foodItemPrice: '$3.00'
+          },
+        ]
+      }
+    },
+    methods: {
+      log: function () {
+        console.log(this)
+      },
+
+      addToDictionary: function () {
+        console.log(this.$refs)
+        this.foodItems.push(this.$refs.foodItemName.value);
+        this.foodItems.push(this.$refs.foodItemPrice.valueAsNumber);
+      },
+
+      getDictionaryItem: function () {
+
+      }
+    },
+    computed: {
+
+    }
+  }
+</script>
+<style scoped>
+  .wrapper {
+    margin: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+  }
+
+  .one {
+    grid-column: 1 / 3;
+    grid-row: 1 / 4;
+    outline: dashed;
+  }
+
+  .dictionaryInput {
+    grid-column: 3;
+    grid-row: 1;
+    outline: dashed;
+  }
+
+  .dictionary {
+    grid-column: 3;
+    grid-row: 2 / 4;
+    outline: dashed;
+  }
+</style>

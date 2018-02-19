@@ -2,9 +2,6 @@
 using System.Security.Cryptography;
 using System.Text;
 
-// Is there an elegant way to concatenate two byte arrays?
-// Should I turn all local variables to 'var' instead of defining the type?
-
 namespace GitGrub.GetUsGrub.Helpers
 {
     public class PayloadHasher
@@ -20,17 +17,6 @@ namespace GitGrub.GetUsGrub.Helpers
 
                 // Set byte array to all zeros
                 Array.Clear(hashedPayloadBytes, 0, hashedPayloadBytes.Length);
-
-                return hashedPayload;
-            }
-        }
-
-        public static string HashWithNoSalt(string payload)
-        {
-            using (var hashProvider = new SHA256Cng())
-            {
-                byte[] hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(payload));
-                string hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
 
                 return hashedPayload;
             }

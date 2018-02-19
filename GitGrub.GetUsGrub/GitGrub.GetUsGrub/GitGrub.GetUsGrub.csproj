@@ -119,7 +119,6 @@
     </Compile>
     <Compile Include="Managers\UserManagerExceptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTests\UserManagementTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\user.json" />

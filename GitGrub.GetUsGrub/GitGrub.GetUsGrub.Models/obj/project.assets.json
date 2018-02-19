@@ -30,7 +30,7 @@
   },
   "libraries": {
     "Microsoft.NETCore.Platforms/1.1.0": {
-      "sha512": "FGsF2naXn83LSFvlG6yWq/g/Ip8Aiczd9xE3HgSQYxE0igdEZ3BVPuF9X2FcjMzvCmR5mdDYi2Wf/KfZbAfu6A==",
+      "sha512": "kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
       "type": "package",
       "path": "microsoft.netcore.platforms/1.1.0",
       "files": [
@@ -177,7 +177,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jenn\\.nuget\\packages\\": {},
+    "C:\\Users\\Brian\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -186,17 +186,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jenn\\Desktop\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
+      "projectUniqueName": "C:\\Users\\Brian\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
       "projectName": "GitGrub.GetUsGrub.Models",
-      "projectPath": "C:\\Users\\Jenn\\Desktop\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
-      "packagesPath": "C:\\Users\\Jenn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jenn\\Desktop\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\obj\\",
+      "projectPath": "C:\\Users\\Brian\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
+      "packagesPath": "C:\\Users\\Brian\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Brian\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Jenn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Brian\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

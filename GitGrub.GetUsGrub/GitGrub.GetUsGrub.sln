@@ -5,9 +5,7 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitGrub.GetUsGrub", "GitGrub.GetUsGrub\GitGrub.GetUsGrub.csproj", "{E09292E7-13BF-44D4-8BAE-3E2E56346A8D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitGrub.GetUsGrub.Models", "GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj", "{C2D0900C-17E7-4829-B0DF-D0CA96D63210}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitGrub.GetUsGrub.DataAccess", "GitGrub.GetUsGrub.DataAccess\GitGrub.GetUsGrub.DataAccess.csproj", "{FE808812-F501-4B71-AF78-AEED5EC52960}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitGrub.GetUsGrub.Models", "GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj", "{C2D0900C-17E7-4829-B0DF-D0CA96D63210}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{C2D0900C-17E7-4829-B0DF-D0CA96D63210}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2D0900C-17E7-4829-B0DF-D0CA96D63210}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2D0900C-17E7-4829-B0DF-D0CA96D63210}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE808812-F501-4B71-AF78-AEED5EC52960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE808812-F501-4B71-AF78-AEED5EC52960}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE808812-F501-4B71-AF78-AEED5EC52960}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE808812-F501-4B71-AF78-AEED5EC52960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

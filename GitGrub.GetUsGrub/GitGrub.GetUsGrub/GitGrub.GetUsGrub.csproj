@@ -96,6 +96,11 @@
   <ItemGroup>
     <Compile Include="App_Start\IoCConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CreateUserController.cs" />
+    <Compile Include="Controllers\DeactivateUserController.cs" />
+    <Compile Include="Controllers\DeleteUserController.cs" />
+    <Compile Include="Controllers\EditUserController.cs" />
+    <Compile Include="Controllers\ReactivateUserController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Global.asax.cs">
@@ -118,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

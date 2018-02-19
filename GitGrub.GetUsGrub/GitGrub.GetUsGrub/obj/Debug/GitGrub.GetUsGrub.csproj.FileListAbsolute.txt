@@ -1,0 +1,2 @@
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub\obj\Debug\GitGrub.GetUsGrub.csprojResolveAssemblyReference.cache
+C:\Users\Angelica\Documents\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub\obj\Debug\GitGrub.GetUsGrub.csproj.CoreCompileInputs.cache

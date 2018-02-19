@@ -1,10 +1,9 @@
-﻿using System;
+﻿using GitGrub.GetUsGrub.Models.Interfaces;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GitGrub.GetUsGrub.Models.Models
 {
-    class RestaurantProfile : IProfile, IRestaurantProfile
+    public class RestaurantProfile : IProfile, IRestaurantProfile
     {
         public string ProfileName { get; set; }
         public string ProfilePicture { get; set; }

@@ -7,6 +7,9 @@ namespace GitGrub.GetUsGrub.Managers
 {
     public class UserManagerExceptionHandler:Exception
     {
+        //public string UserManagerexception (string message) : base(message)
+        //{
 
+        //}
     }
 }

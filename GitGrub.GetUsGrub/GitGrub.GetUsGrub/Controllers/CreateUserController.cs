@@ -7,47 +7,44 @@ using System.Web.Http;
 using GitGrub.GetUsGrub.Models.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using GitGrub.GetUsGrub.Models.DTOs;
+
+
+
 namespace GitGrub.GetUsGrub.Controllers
+
 {
     public class CreateUserController : ApiController
     {
-        //Creating the service that will handle the business logic (UserManager.cs)
-        public UserManager UserManager { get; }
-        //parameterless constructor
-        public CreateUserController()
-        {
-        }
-        //create a controller for the service...
-        public CreateUserController(UserManager userManager)
-        {
-            UserManager = userManager;
-        }
+        UserManager userManager = new UserManager();
 
         //[Authorize(Roles = "Administrators")]//restricting by role --claim = isadmin
-        [Route("api/CreateUser/")]
+        [Route("Admin/CreateUser")]
         [HttpPost]
-        public IHttpActionResult CreateUser([FromBody] User user)
-        {
-            if(!ModelState.IsValid)//if the model is not valid return a bad request
-            {
-                return BadRequest("inside invalid model state");    
-            }
 
+        public IHttpActionResult CreateUser([FromBody] UserManagerDTO userDTO)
+        {
+            if (!ModelState.IsValid)//if the model is not valid return a bad request
+            {
+                return BadRequest("invalid inputs.");
+            }
             try
             {
-                UserManager.createUser(user);//call manager/service/business logic
-
-                //call gateway
+                var createUserResult = userManager.createUser(userDTO);
+                if (createUserResult == true)
+                {
+                    return Ok("Success");//return a request?
+                }
+                else
+                {
+                    return BadRequest("User Creation failed.");
+                }
             }
-            catch //not sure what i am catching..
+            catch
             {
-                return BadRequest("Inside catch");
+                return BadRequest("Something went wrong! Please contaact an Admin.");
             }
-
-            return Ok(user);
-
         }
-
     }
 }
 

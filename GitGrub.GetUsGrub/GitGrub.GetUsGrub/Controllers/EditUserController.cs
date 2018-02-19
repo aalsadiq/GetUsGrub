@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using GitGrub.GetUsGrub.Models.Models;
+using GitGrub.GetUsGrub.Models.DTOs;
 
 namespace GitGrub.GetUsGrub.Controllers
 {
@@ -21,10 +22,12 @@ namespace GitGrub.GetUsGrub.Controllers
         {
             UserManager = userManager;
         }
-        [Authorize(Roles = "Administrators")]
-        [Route("api/deactivateUser/")]
+
+        //[Authorize(Roles = "Administrators")]//restricting by role --claim = isadmin
+        [Route("edituser/admin")]
         [HttpPut]
-        public IHttpActionResult deactivateUser(User user)
+
+        public IHttpActionResult EditUser([FromBody] UserManagerDTO userDTO)
         {
             if (!ModelState.IsValid)//if the model is not valid return a bad request
             {
@@ -33,17 +36,19 @@ namespace GitGrub.GetUsGrub.Controllers
 
             try
             {
-                UserManager.editUser(user);//call manager/service/business logic
+                
+                UserManager.editUser(userDTO);//call manager/service/business logic
 
                 //call gateway
             }
             catch //not sure what i am catching..
             {
                 return BadRequest("Inside catch");
-            }e
+            }
 
-            return Ok(user);
-
+            return Ok(userDTO);//return a request?
         }
+
+       
     }
 }

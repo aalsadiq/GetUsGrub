@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using GitGrub.GetUsGrub.Models.Models;
+using GitGrub.GetUsGrub.Models.DTOs;
 //added
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -25,10 +26,11 @@ namespace GitGrub.GetUsGrub.Controllers
             UserManager = userManager;
         }
 
-        [Authorize(Roles = "Administrators")]
-        [Route("api/deactivateUser/")]
-        [HttpPut]
-        public IHttpActionResult deactivateUser(User user)
+        //[Authorize(Roles = "Administrators")]//restricting by role --claim = isadmin
+        [Route("deleteuser/admin")]
+        [HttpDelete]
+
+        public IHttpActionResult DeleteUser([FromBody] UserManagerDTO userDTO)
         {
             if (!ModelState.IsValid)//if the model is not valid return a bad request
             {
@@ -37,7 +39,7 @@ namespace GitGrub.GetUsGrub.Controllers
 
             try
             {
-                UserManager.deleteUser(user);//call manager/service/business logic
+                UserManager.deleteUser(userDTO);//call manager/service/business logic
 
                 //call gateway
             }
@@ -46,8 +48,12 @@ namespace GitGrub.GetUsGrub.Controllers
                 return BadRequest("Inside catch");
             }
 
-            return Ok(user);
+            return Ok(userDTO);//return a request?
 
         }
+        //read, because you want to see the user you will delete before deleting
+        //[Route("userbeforedelete/admin")]
+        //[HttpGet]
+       
     }
 }

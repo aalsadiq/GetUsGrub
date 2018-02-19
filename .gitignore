@@ -7,3 +7,9 @@ GitGrub.GetUsGrub/GitGrub.GetUsGrub.Models/obj/GitGrub.GetUsGrub.Models.csproj.n
 GitGrub.GetUsGrub/.vs/config/applicationhost.config
 GitGrub.GetUsGrub/.vs/config/applicationhost.config
 *.config
+GitGrub.GetUsGrub/.vs/GitGrub.GetUsGrub/v15/.suo
+GitGrub.GetUsGrub/GitGrub.GetUsGrub.DataAccess/obj/Debug/netstandard2.0/GitGrub.GetUsGrub.DataAccess.csproj.CoreCompileInputs.cache
+GitGrub.GetUsGrub/GitGrub.GetUsGrub.Models/obj/Debug/netstandard2.0/GitGrub.GetUsGrub.Models.csproj.CoreCompileInputs.cache
+GitGrub.GetUsGrub/GitGrub.GetUsGrub/GitGrub.GetUsGrub.csproj.user
+GitGrub.GetUsGrub/GitGrub.GetUsGrub/obj/Debug/GitGrub.GetUsGrub.dll
+GitGrub.GetUsGrub/GitGrub.GetUsGrub/obj/Debug/GitGrub.GetUsGrub.pdb

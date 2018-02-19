@@ -94,6 +94,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\IoCConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Global.asax.cs">
@@ -118,6 +119,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.DataAccess\GitGrub.GetUsGrub.DataAccess.csproj">
+      <Project>{fe808812-f501-4b71-af78-aeed5ec52960}</Project>
+      <Name>GitGrub.GetUsGrub.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
       <Project>{C2D0900C-17E7-4829-B0DF-D0CA96D63210}</Project>
       <Name>GitGrub.GetUsGrub.Models</Name>

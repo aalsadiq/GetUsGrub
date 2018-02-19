@@ -4,3 +4,11 @@ GitGrub\.GetUsGrub/\.vs/config/applicationhost\.config
 GitGrub\.GetUsGrub/\.vs/GitGrub\.GetUsGrub/v15/\.suo
 
 GitGrub\.GetUsGrub/\.vs/GitGrub\.GetUsGrub/v15/Server/sqlite3/storage\.ide
+
+*.cache
+
+GitGrub\.GetUsGrub/GitGrub\.GetUsGrub\.Models/obj/GitGrub\.GetUsGrub\.Models\.csproj\.nuget\.g\.props
+
+GitGrub\.GetUsGrub/GitGrub\.GetUsGrub\.Models/obj/project\.assets\.json
+
+GitGrub\.GetUsGrub/GitGrub\.GetUsGrub\.sln

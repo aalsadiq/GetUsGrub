@@ -7,8 +7,12 @@ GitGrub\.GetUsGrub/\.vs/GitGrub\.GetUsGrub/v15/Server/sqlite3/storage\.ide
 
 GitGrub\.GetUsGrub/GitGrub\.GetUsGrub\.Models/obj/Debug/netstandard2\.0/GitGrub\.GetUsGrub\.Models\.csproj\.CoreCompileInputs\.cache
 
+<<<<<<< HEAD
 GitGrub\.GetUsGrub/GitGrub\.GetUsGrub/obj/Debug/DesignTimeResolveAssemblyReferencesInput\.cache
 
 GitGrub\.GetUsGrub/GitGrub\.GetUsGrub/obj/Debug/GitGrub\.GetUsGrub\.csproj\.CoreCompileInputs\.cache
 
 GitGrub\.GetUsGrub/GitGrub\.GetUsGrub/GitGrub\.GetUsGrub\.csproj
+=======
+*.cache
+>>>>>>> master

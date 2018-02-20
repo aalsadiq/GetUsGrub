@@ -4,6 +4,12 @@ using System.Text;
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// Interface representing restaurant information
+    /// 
+    /// Author: Andrew Kao
+    /// Last Updated: 2/20/18
+    /// </summary>
     interface IRestaurantProfile
     {
         string Category { get; set; }

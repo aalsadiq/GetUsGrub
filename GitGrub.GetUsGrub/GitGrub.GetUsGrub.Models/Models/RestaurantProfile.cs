@@ -5,6 +5,12 @@ using System.Linq;
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// Restaurant user profile class
+    /// 
+    /// Author: Andrew Kao
+    /// Last Updated: 2/20/18
+    /// </summary>
     public class RestaurantProfile : IProfile, IRestaurantProfile
     {
         public int Id { get; set; }

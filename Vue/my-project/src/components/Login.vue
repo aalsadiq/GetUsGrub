@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <app-header></app-header>
 
     <div>
@@ -9,17 +9,17 @@
           <div>
             <label for="email"> Username </label>
             <input type="text" />
+            <label for="password"> Password </label>
+            <input type="text" />
           </div>
         </form>
       </div>
-    </div>
-    <div class="wrapper">
     </div>
     <app-footer></app-footer>
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import Header from './Header.vue'
   import Footer from './Footer.vue'
 
@@ -35,9 +35,9 @@ export default {
       },
     methods: {
       signIn() {
-        if (this.$data.username !== 'test' || this.$data.password !== 'test') {
-          this.$data.hasErrored = true
-        }
+        //if (this.$data.username !== 'test' || this.$data.password !== 'test') {
+        //  this.$data.hasErrored = true;
+        //}
       }
     },
     computed: {

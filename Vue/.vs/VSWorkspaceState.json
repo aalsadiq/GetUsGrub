@@ -2,12 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\my-project",
-    "\\my-project\\build",
     "\\my-project\\src",
-    "\\my-project\\src\\assets",
     "\\my-project\\src\\components",
-    "\\my-project\\src\\router"
+    "\\my-project\\src\\components\\RestaurantBillSplitter",
+    "\\my-project\\static"
   ],
-  "SelectedNode": "\\my-project\\src\\router\\index.js",
+  "SelectedNode": "\\my-project\\index.html",
   "PreviewInSolutionExplorer": false
 }

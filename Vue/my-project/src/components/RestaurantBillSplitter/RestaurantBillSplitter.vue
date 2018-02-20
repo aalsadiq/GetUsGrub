@@ -1,28 +1,38 @@
 <template>
   <div>
     <app-header></app-header>
-
+    <btn type="success">Test</btn>
+    <template>
+      <section>
+        <div>
+          <btn type="primary" @click="show=!show">Click me!</btn>
+        </div>
+        <br />
+        <collapse v-model="show">
+          <div class="well" style="margin-bottom: 0">Hi there.</div>
+        </collapse>
+      </section>
+    </template>
 
     <div class="wrapper">
       <div class="one">
-        <draggable v-model="foodItems" :options="{foodItemName:'people'}" @start="drag=true" @end="drag=false">
-          <div v-for="element in foodItems" :key="element.id">{{element.foodItemName}}</div>
-        </draggable>
+        <!--        <draggable v-model="dictionaryFoodItems" :options="{dictionaryFoodItemName:'people'}" @start="drag=true" @end="drag=false"> -->
+        <div v-for="element in dictionaryFoodItems" :key="element.id">{{element.dictionaryFoodItemName}}: {{element.dictionaryFoodItemPrice}}</div>
+        <!--        </draggable> -->
       </div>
-      <div class="dictionaryInput">
-        <p>Enter Food Item Name</p>
-        <input type="text" ref="foodItemName" />
+      <form class="dictionaryInput">
+        <label>Enter Food Item Name</label>
+        <input type="text" ref="dictionaryFoodItemName" required />
         <br />
-        <p>Enter Food Item Price</p>
-        <input type="number" ref="foodItemPrice" />
-        <br />
+        <label>Enter Food Item Price</label>
+        <input type="number" min="0.00" max="1000.00" step="0.01" ref="dictionaryFoodItemPrice" required />
         <br />
         <button v-on:click="addToDictionary">Input</button>
-      </div>
+      </form>
       <div class="dictionary">
-        <draggable v-model="foodItems" :options="{foodItemName:'people'}" @start="drag=true" @end="drag=false">
-          <div v-for="element in foodItems" :key="element.id">{{element.foodItemName}}</div>
-        </draggable>
+        <!--<draggable v-model="dictionaryFoodItems" :options="{foodItemName:'people'}" @start="drag=true" @end="drag=false">-->
+          <div v-for="element in dictionaryFoodItems" :key="element.id">{{element.dictionaryFoodItemName}}: {{element.dictionaryFoodItemPrice}}</div>
+        <!--</draggable>-->
       </div>
     </div>
     <app-footer></app-footer>
@@ -30,33 +40,28 @@
 
 </template>
 
-<script>
+<script lang="ts">
   import Header from '../Header.vue'
   import Footer from '../Footer.vue'
+  import draggable from 'vuedraggable'
 
   export default {
     name: 'RestaurantBillSplitter',
     components: {
       'app-header': Header,
-      'app-footer': Footer
+      'app-footer': Footer,
+      draggable
     },
     data() {
       return {
-        testItem: 'hello',
-        foodItems: [
+        show: false,
+        dictionaryFoodItems: [
           {
-            foodItemName: 'Burger',
-            foodItemPrice: '$1.00'
-          },
-          {
-            foodItemName: 'Milk Shake',
-            foodItemPrice: '$0.50'
-          },
-          {
-            foodItemName: 'Test',
-            foodItemPrice: '$3.00'
-          },
-        ]
+            dictionaryFoodItemName: 'Test',
+            dictionaryFoodItemPrice: '3.50'
+          }
+        ],
+        billFoodItems: []
       }
     },
     methods: {
@@ -65,9 +70,11 @@
       },
 
       addToDictionary: function () {
-        console.log(this.$refs)
-        this.foodItems.push(this.$refs.foodItemName.value);
-        this.foodItems.push(this.$refs.foodItemPrice.valueAsNumber);
+        console.log(this.$refs);
+        this.dictionaryFoodItems.push(
+          dictionaryFoodItemName: this.$refs.dictionaryFoodItemName.value,
+          dictionaryFoodItemPrice: this.$refs.dictionaryFoodItemPrice.valueAsNumber
+        );
       },
 
       getDictionaryItem: function () {
@@ -86,6 +93,7 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
     grid-auto-rows: minmax(100px, auto);
+    text-align: center;
   }
 
   .one {

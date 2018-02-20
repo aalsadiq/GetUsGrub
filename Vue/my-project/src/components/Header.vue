@@ -1,15 +1,15 @@
 <template>
   <header>
-    <a href="/#/">
-      <img src="../assets/logo.png" />
-    </a>
+    <router-link to="/" exact>
+      <img src="src\assets\logo.png" />
+    </router-link>
     <nav>
       <ul>
-        <li><a href="#/">Home</a></li>
-        <li><a>Registration</a></li>
-        <li><a href="#/Login">Login</a></li>
-        <li><a>Logout</a></li>
-        <li><a href="#/RestaurantBillSplitter">Restaurant Bill Splitter</a></li>
+        <li><router-link to="/" exact>Home</router-link></li>
+        <li><router-link to="/Registration" exact>Registration</router-link></li>
+        <li><router-link to="/Login" exact>Login</router-link></li>
+        <li><router-link to="/Logout" exact>Logout</router-link></li>
+        <li><router-link to="/RestaurantBillSplitter" exact>Split Your Bill!</router-link></li>
       </ul>
     </nav>
   </header>
@@ -32,7 +32,6 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
   }
 
     header > a > img {
@@ -41,7 +40,6 @@
     }
 
   ul {
-    padding: 0px;
     list-style-type: none;
   }
 
@@ -63,5 +61,10 @@
   li > a:hover {
     color: #808080;
     text-decoration: none;
+  }
+
+  .router-link-active {
+    background: #ffffff;
+    color: #000000;
   }
 </style>

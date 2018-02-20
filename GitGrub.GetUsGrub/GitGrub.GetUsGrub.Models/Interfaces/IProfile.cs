@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GitGrub.GetUsGrub.Models
+﻿namespace GitGrub.GetUsGrub.Models
 {
     interface IProfile
     {
+        int Id { get; set; }
         string ProfileName { get; set; }
         string ProfilePicture { get; set; }
     }

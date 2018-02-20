@@ -1,0 +1,2 @@
+C:\Users\Andrew\Documents\GitHub\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\GitGrub.GetUsGrub.DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\Andrew\Documents\GitHub\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\GitGrub.GetUsGrub.DataAccess.csproj.CoreCompileInputs.cache

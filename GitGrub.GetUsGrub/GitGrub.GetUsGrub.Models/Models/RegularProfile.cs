@@ -6,14 +6,8 @@ namespace GitGrub.GetUsGrub.Models
 {
     public class RegularProfile : IProfile
     {
+        public int Id { get; set; }
         public string ProfileName { get; set; }
         public string ProfilePicture { get; set; }
-
-        // Constructor
-        public RegularProfile(string name, string picture)
-        {
-            ProfileName = name;
-            ProfilePicture = picture;
-        }
     }
 }

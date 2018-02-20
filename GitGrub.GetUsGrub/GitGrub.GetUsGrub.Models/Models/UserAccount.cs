@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
-namespace GitGrub.GetUsGrub.Models.Models
+namespace GitGrub.GetUsGrub.Models
 {
     public class UserAccount
     {

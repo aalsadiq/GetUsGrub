@@ -4,6 +4,12 @@ using System.Text;
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// Restaurant menu item class
+    /// 
+    /// Author: Andrew Kao
+    /// Last Updated: 2/20/18
+    /// </summary>
     public class RestaurantMenuItem
     {
         public string Id { get; set; }

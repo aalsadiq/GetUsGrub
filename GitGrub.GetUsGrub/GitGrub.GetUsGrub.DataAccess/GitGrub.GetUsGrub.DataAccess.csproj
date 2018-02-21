@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\AuthenticationContext.cs" />
+    <Compile Include="Gateways\AuthenticationGateway.cs" />
+    <Compile Include="Interfaces\IAuthenticationGateway.cs" />
     <Compile Include="Migrations\201802201034330_InitialMigration.cs" />
     <Compile Include="Migrations\201802201034330_InitialMigration.Designer.cs">
       <DependentUpon>201802201034330_InitialMigration.cs</DependentUpon>
@@ -74,10 +76,7 @@
       <Name>GitGrub.GetUsGrub.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gateways\" />
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201802201034330_InitialMigration.resx">
       <DependentUpon>201802201034330_InitialMigration.cs</DependentUpon>

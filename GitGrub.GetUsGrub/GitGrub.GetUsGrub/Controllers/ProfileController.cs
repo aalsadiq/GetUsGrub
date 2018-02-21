@@ -2,7 +2,7 @@
 using System.Web.Http;
 using System.Web.Http.Cors;
 using GitGrub.GetUsGrub.Managers;
-using GitGrub.GetUsGrub.Models.DTOs;
+using GitGrub.GetUsGrub.Models;
 
 namespace GitGrub.GetUsGrub.Controllers
 {
@@ -27,41 +27,53 @@ namespace GitGrub.GetUsGrub.Controllers
         // GET api/profile/getregularprofile
         [HttpGet]
         [Route("getregularprofile")]
-        public IHttpActionResult GetRegularProfile([FromBody] string username)
+        public IHttpActionResult GetRegularProfile([FromBody] RegularProfile getRegularProfileDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                RegularProfileDto regularProfile = _profileManager.GetRegularProfile(username);
-                return Ok(regularProfile);
+                _profileManager.GetRegularProfile(getRegularProfileDto);
             }
 
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
+
+            return Ok(getRegularProfileDto);
         }
 
         // GET api/profile/getrestaurantprofile
         [HttpGet]
         [Route("getregularprofile")]
-        public IHttpActionResult GetRestaurantProfile([FromBody] string username)
+        public IHttpActionResult GetRestaurantProfile([FromBody] RestaurantProfile getRestaurantProfileDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                RestaurantProfileDto restaurantProfile = _profileManager.GetRestaurantProfile(username);
-                return Ok(restaurantProfile);
+                _profileManager.GetRestaurantProfile(getRestaurantProfileDto);
             }
 
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
+
+            return Ok(getRestaurantProfileDto);
         }
 
         // PUT api/profile/editregularprofile
         [HttpPut]
         [Route("editregularprofile")]
-        public IHttpActionResult EditRegularProfile([FromBody] EditRegularProfileDto editRegularProfileDto)
+        public IHttpActionResult EditRegularProfile([FromBody] RegularProfile editRegularProfileDto)
         {
             if (!ModelState.IsValid)
             {
@@ -78,13 +90,13 @@ namespace GitGrub.GetUsGrub.Controllers
                 return BadRequest(exception.Message);
             }
 
-            return Ok("Profile has been successfully updated.");
+            return Ok(editRegularProfileDto);
         }
 
         // PUT api/profile/editrestaurantprofile
         [HttpPut]
         [Route("editrestaurantprofile")]
-        public IHttpActionResult EditRestaurantProfile([FromBody] EditRestaurantProfileDto editRestaurantProfileDto)
+        public IHttpActionResult EditRestaurantProfile([FromBody] RestaurantProfile editRestaurantProfileDto)
         {
             if (!ModelState.IsValid)
             {
@@ -101,7 +113,7 @@ namespace GitGrub.GetUsGrub.Controllers
                 return BadRequest(exception.Message);
             }
 
-            return Ok("Profile has been successfully updated.");
+            return Ok(editRestaurantProfileDto);
         }
     }
 }

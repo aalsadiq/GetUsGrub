@@ -13,6 +13,7 @@ namespace GitGrub.GetUsGrub.Models
     /// </summary>
     public class RestaurantProfile : IProfile, IRestaurantProfile
     {
+        public int Id { get; set; }
         public string ProfileName { get; set; }
         public string ProfilePicture { get; set; }
         public string Category { get; set; }

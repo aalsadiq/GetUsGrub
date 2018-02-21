@@ -13,7 +13,7 @@ namespace GitGrub.GetUsGrub.Controllers
     /// Last Updated: 2/20/18
     /// </summary>
     [EnableCorsAttribute("*", "*", "*")]
-
+    [Authorize]
     [RoutePrefix("api/profile")]
     public class ProfileController : ApiController
     {
@@ -22,6 +22,52 @@ namespace GitGrub.GetUsGrub.Controllers
         public ProfileController(ProfileManager profileManager)
         {
             _profileManager = profileManager;
+        }
+
+        // GET api/profile/getregularprofile
+        [HttpGet]
+        [Route("getregularprofile")]
+        public IHttpActionResult GetRegularProfile([FromBody] RegularProfile getRegularProfileDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                _profileManager.GetRegularProfile(getRegularProfileDto);
+            }
+
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+
+            return Ok(getRegularProfileDto);
+        }
+
+        // GET api/profile/getrestaurantprofile
+        [HttpGet]
+        [Route("getregularprofile")]
+        public IHttpActionResult GetRestaurantProfile([FromBody] RestaurantProfile getRestaurantProfileDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                _profileManager.GetRestaurantProfile(getRestaurantProfileDto);
+            }
+
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+
+            return Ok(getRestaurantProfileDto);
         }
 
         // PUT api/profile/editregularprofile

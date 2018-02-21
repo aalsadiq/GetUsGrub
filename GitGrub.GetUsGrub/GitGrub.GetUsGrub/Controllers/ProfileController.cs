@@ -6,21 +6,28 @@ using GitGrub.GetUsGrub.Models;
 
 namespace GitGrub.GetUsGrub.Controllers
 {
+    /// <summary>
+    /// Controller responsible for profile requests
+    /// 
+    /// Author: Andrew Kao
+    /// Last Updated: 2/20/18
+    /// </summary>
     [EnableCorsAttribute("*", "*", "*")]
 
+    [RoutePrefix("api/profile")]
     public class ProfileController : ApiController
     {
         private readonly ProfileManager _profileManager;
-
+       
         public ProfileController(ProfileManager profileManager)
         {
             _profileManager = profileManager;
         }
 
-        // PUT api/<controller>
-        [Route("api/profile/editregularprofile")]
+        // PUT api/profile/editregularprofile
         [HttpPut]
-        public IHttpActionResult EditRegularProfile([FromBody] RegularProfile editRegularProfileDTO)
+        [Route("editregularprofile")]
+        public IHttpActionResult EditRegularProfile([FromBody] RegularProfile editRegularProfileDto)
         {
             if (!ModelState.IsValid)
             {
@@ -29,7 +36,7 @@ namespace GitGrub.GetUsGrub.Controllers
 
             try
             {
-                _profileManager.EditRegularProfile(editRegularProfileDTO);
+                _profileManager.EditRegularProfile(editRegularProfileDto);
             }
 
             catch (Exception exception)
@@ -37,13 +44,13 @@ namespace GitGrub.GetUsGrub.Controllers
                 return BadRequest(exception.Message);
             }
 
-            return Ok(editRegularProfileDTO);
+            return Ok(editRegularProfileDto);
         }
 
-        // PUT api/<controller>
-        [Route("api/profile/editrestaurantprofile")]
+        // PUT api/profile/editrestaurantprofile
         [HttpPut]
-        public IHttpActionResult EditRestaurantProfile([FromBody] RestaurantProfile editRestaurantProfileDTO)
+        [Route("editrestaurantprofile")]
+        public IHttpActionResult EditRestaurantProfile([FromBody] RestaurantProfile editRestaurantProfileDto)
         {
             if (!ModelState.IsValid)
             {
@@ -52,7 +59,7 @@ namespace GitGrub.GetUsGrub.Controllers
 
             try
             {
-                _profileManager.EditRestaurantProfile(editRestaurantProfileDTO);
+                _profileManager.EditRestaurantProfile(editRestaurantProfileDto);
             }
 
             catch (Exception exception)
@@ -60,7 +67,7 @@ namespace GitGrub.GetUsGrub.Controllers
                 return BadRequest(exception.Message);
             }
 
-            return Ok(editRestaurantProfileDTO);
+            return Ok(editRestaurantProfileDto);
         }
     }
 }

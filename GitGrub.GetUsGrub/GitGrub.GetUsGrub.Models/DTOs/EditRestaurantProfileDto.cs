@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Linq;
 
-namespace GitGrub.GetUsGrub.Models
+namespace GitGrub.GetUsGrub.Models.DTOs
 {
-    /// <summary>
-    /// Restaurant user profile class
-    /// 
-    /// Author: Andrew Kao
-    /// Last Updated: 2/20/18
-    /// </summary>
-    public class RestaurantProfile : IProfile, IRestaurantProfile
+    public class EditRestaurantProfileDto : IProfile, IRestaurantProfile
     {
+        public string Username { get; set; }
         public string ProfileName { get; set; }
         public string ProfilePicture { get; set; }
         public string Category { get; set; }

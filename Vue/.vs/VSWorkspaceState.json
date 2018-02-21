@@ -2,11 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\my-project",
+    "\\my-project\\build",
+    "\\my-project\\server",
     "\\my-project\\src",
     "\\my-project\\src\\components",
     "\\my-project\\src\\components\\RestaurantBillSplitter",
+    "\\my-project\\src\\router",
     "\\my-project\\static"
   ],
-  "SelectedNode": "\\my-project\\index.html",
+  "SelectedNode": "\\my-project\\src\\components\\RestaurantBillSplitter\\RestaurantBillSplitter.vue",
   "PreviewInSolutionExplorer": false
 }

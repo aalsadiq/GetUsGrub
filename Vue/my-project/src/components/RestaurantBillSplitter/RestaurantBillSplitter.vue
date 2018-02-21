@@ -2,37 +2,37 @@
   <div>
     <app-header></app-header>
     <btn type="success">Test</btn>
-    <template>
-      <section>
-        <div>
-          <btn type="primary" @click="show=!show">Click me!</btn>
-        </div>
-        <br />
-        <collapse v-model="show">
-          <div class="well" style="margin-bottom: 0">Hi there.</div>
-        </collapse>
-      </section>
-    </template>
 
     <div class="wrapper">
       <div class="one">
-        <!--        <draggable v-model="dictionaryFoodItems" :options="{dictionaryFoodItemName:'people'}" @start="drag=true" @end="drag=false"> -->
-        <div v-for="element in dictionaryFoodItems" :key="element.id">{{element.dictionaryFoodItemName}}: {{element.dictionaryFoodItemPrice}}</div>
-        <!--        </draggable> -->
+        <draggable class="bill" v-model="BillItems" :options="{group:'people'}" @start="drag=true" @end="drag=false">
+          <div class="bill-item" v-for=" (element, index) in BillItems" :key="index">
+            {{index}} - {{element.menuItemName}} : ${{element.menuItemPrice}}
+            <btn type="primary" size="xs" v-on:click="EditDictionaryFoodItem">Edit</btn>
+            <btn type="danger" size="xs" v-on:click="removeFromBill">Delete</btn>
+          </div>
+        </draggable>
       </div>
       <form class="dictionaryInput">
         <label>Enter Food Item Name</label>
-        <input type="text" ref="dictionaryFoodItemName" required />
+        <input type="text" ref="menuItemName" required />
         <br />
         <label>Enter Food Item Price</label>
-        <input type="number" min="0.00" max="1000.00" step="0.01" ref="dictionaryFoodItemPrice" required />
+        <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
         <br />
-        <button v-on:click="addToDictionary">Input</button>
+        <button id="add_to_dictionary" v-on:click="addToDictionary">Add To Dictionary</button>
       </form>
       <div class="dictionary">
-        <!--<draggable v-model="dictionaryFoodItems" :options="{foodItemName:'people'}" @start="drag=true" @end="drag=false">-->
-          <div v-for="element in dictionaryFoodItems" :key="element.id">{{element.dictionaryFoodItemName}}: {{element.dictionaryFoodItemPrice}}</div>
-        <!--</draggable>-->
+        <h2>Dictionary</h2>
+        <draggable class="menu" :clone="clone" v-model="MenuItems" :options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
+
+          <div class="menu-item" v-for="(element, index) in MenuItems" :key="element.id">
+            {{element.menuItemName}} : ${{element.menuItemPrice}}
+            <btn type="primary" size="xs" v-on:click="EditDictionaryFoodItem">Edit</btn>
+            <btn type="danger" size="xs" v-on:click="removeFromDictionary">Delete</btn>
+          </div>
+
+        </draggable>
       </div>
     </div>
     <app-footer></app-footer>
@@ -55,26 +55,48 @@
     data() {
       return {
         show: false,
-        dictionaryFoodItems: [
+        MenuItems: [
           {
-            dictionaryFoodItemName: 'Test',
-            dictionaryFoodItemPrice: '3.50'
+            menuItemName: 'McDouble',
+            menuItemPrice: '1.50'
+          },
+          {
+            menuItemName: 'Big Mac',
+            menuItemPrice: '3.50'
           }
         ],
-        billFoodItems: []
+        BillItems: [
+          {
+            menuItemName: '',
+            menuItemPrice: ''
+            //billItemUsers:
+            //[
+            //  {
+            //    billItemUsername: ''
+            //  }
+            //]
+          }
+        ]
       }
     },
     methods: {
       log: function () {
-        console.log(this)
+        console.log(this.$refs);
       },
 
       addToDictionary: function () {
-        console.log(this.$refs);
-        this.dictionaryFoodItems.push(
-          dictionaryFoodItemName: this.$refs.dictionaryFoodItemName.value,
-          dictionaryFoodItemPrice: this.$refs.dictionaryFoodItemPrice.valueAsNumber
+        if (this.$refs.MenuItemName.value.length == 0 || this.$refs.MenuItemPrice.valueAsNumber.length == 0)
+          document.getElementById('add_to_dictionary').disabled = true;
+        this.MenuItems.push(
+          {
+            MenuItemName: this.$refs.MenuItemName.value,
+            MenuItemPrice: this.$refs.MenuItemPrice.valueAsNumber
+          }
         );
+      },
+
+      removeFromDictionary: function () {
+        this.MenuItems.pop();
       },
 
       getDictionaryItem: function () {
@@ -102,6 +124,19 @@
     outline: dashed;
   }
 
+  div.bill {
+    margin: 20px;
+    min-height: 20px;
+    outline: dashed; 
+  }
+
+    div.bill > div.bill-item {
+      margin: 10px;
+      padding: 10px;
+      background-color: aquamarine;
+      border-radius: 10px;
+    }
+
   .dictionaryInput {
     grid-column: 3;
     grid-row: 1;
@@ -113,4 +148,15 @@
     grid-row: 2 / 4;
     outline: dashed;
   }
+
+  div.menu-item {
+    margin: 10px;
+    padding: 10px;
+    background-color: aquamarine;
+    border-radius: 10px;
+  }
+
+    div.menu-item > btn {
+      text-align: right;
+    }
 </style>

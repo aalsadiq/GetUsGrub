@@ -1,5 +1,6 @@
 ﻿using System;
 using GitGrub.GetUsGrub.Models;
+using GitGrub.GetUsGrub.Models.DTOs;
 
 namespace GitGrub.GetUsGrub.Managers
 {
@@ -9,46 +10,48 @@ namespace GitGrub.GetUsGrub.Managers
     public class ProfileManager
     {
         /// <summary>
-        /// Gets regular profile information by userId
+        /// Queries the db for the profile information of the regular user given by username
         /// </summary>
-        /// <param name="regularProfileDto">Receives RegularProfile object containing userId</param>
-        /// <returns>Returns the regularProfile information</returns>
-        public RegularProfile GetRegularProfile(RegularProfile regularProfileDto)
+        /// <param name="username"></param>
+        /// <returns>regularProfileDto containing regular profile information</returns>
+        public RegularProfileDto GetRegularProfile(string username)
         {
-            // call getregularprofile gateway
+            // call GetRegularProfileByUsername(string username) in gateway
             return regularProfileDto;
         }
 
         /// <summary>
-        /// Gets restaurant profile information by userId
+        /// Queries the db for the profile information of the restaurant user given by the username
         /// </summary>
-        /// <param name="restaurantProfileDto">Receives RestaurantProfile object containing userId</param>
-        /// <returns>Returns the restaurantProfile information</returns>
-        public RestaurantProfile GetRestaurantProfile(RestaurantProfile restaurantProfileDto)
+        /// <param name="username"></param>
+        /// <returns>restaurantProfileDto containing restaurant profile information</returns>
+        public RestaurantProfileDto GetRestaurantProfile(string username)
         {
-            // call getrestaurantprofile gateway
+            // call GetRestaurantProfileByUsername(string username) in gateway
             return restaurantProfileDto;
         }
+        
         /// <summary>
-        /// Applies changes to a regular profile
+        /// Edits the profile information of the regular user given by the username inside the editRegularProfileDto
         /// </summary>
-        /// <param name="regularProfile">Sending a RegularProfile object acts like a DTO</param>
-        /// <returns>True if edit is successfully saved to the database</returns>
-        public bool EditRegularProfile(RegularProfile regularProfileDto)
+        /// <param name="editRegularProfileDto">Contains the username along with the profile information the user wishes to update</param>
+        /// <returns>Returns true if changes were successfully applied to the database</returns>
+        public bool EditRegularProfile(EditRegularProfileDto editRegularProfileDto)
         {
-            // call editregularprofile gateway
+            // call EditRegularProfileByUsername(EditRegularProfileDto editRegularProfileDto) in gateway
 
             return true;
         }
 
         /// <summary>
-        /// 
+        /// Edits the profile information of the restaurant user given by the username inside the editRestaurantProfileDto
         /// </summary>
-        /// <param name="restaurantProfile">Sending a RestaurantProfile object acts like a DTO</param>
-        /// <returns>True if edit is succedssfully saved to the database</returns>
-        public bool EditRestaurantProfile(RestaurantProfile restaurantProfileDto)
+        /// <param name="editRestaurantProfileDto">Contains the username along with the profile information the user wishes to update</param>
+        /// <returns>Returns true if changes were successfully applied to the database</returns>
+        public bool EditRestaurantProfile(EditRestaurantProfileDto editRestaurantProfileDto)
         {
-            // call editrestaurantprofile gateway
+            // call EditRestaurantProfileByUsername(EditRestaurantProfileDto editRestaurantProfileDto) in gateway
+
             return true;
         }
     }

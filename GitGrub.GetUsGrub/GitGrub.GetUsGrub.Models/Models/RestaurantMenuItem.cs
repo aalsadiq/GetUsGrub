@@ -12,7 +12,6 @@ namespace GitGrub.GetUsGrub.Models
     /// </summary>
     public class RestaurantMenuItem
     {
-        public string Id { get; set; }
         public string ItemName { get; set; }
         public double ItemPrice { get; set; }
         public string ItemPicture { get; set; }

@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GitGrub.GetUsGrub.Models.Models
+namespace GitGrub.GetUsGrub.Models
 {
+    [Table("GetUsGrub.UserAccount")]
     public class UserAccount
     {
         [Key]

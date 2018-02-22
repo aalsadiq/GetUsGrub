@@ -47,17 +47,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contexts\EntityContext.cs" />
-    <Compile Include="Gateways\CreateUserGateway.cs" />
-    <Compile Include="Gateways\LoginGateway.cs" />
-    <Compile Include="Gateways\ValidateGateway.cs" />
-    <Compile Include="Interfaces\ICreateUserGateway.cs" />
-    <Compile Include="Interfaces\IValidateGateway.cs" />
+    <Compile Include="Contexts\AuthenticationContext.cs" />
+    <Compile Include="Gateways\AuthenticationGateway.cs" />
+    <Compile Include="Interfaces\IAuthenticationGateway.cs" />
+    <Compile Include="Migrations\201802201034330_InitialMigration.cs" />
+    <Compile Include="Migrations\201802201034330_InitialMigration.Designer.cs">
+      <DependentUpon>201802201034330_InitialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
@@ -66,5 +77,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201802201034330_InitialMigration.resx">
+      <DependentUpon>201802201034330_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

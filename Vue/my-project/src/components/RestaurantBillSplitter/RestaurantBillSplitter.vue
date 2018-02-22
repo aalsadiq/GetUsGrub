@@ -6,7 +6,7 @@
     <div class="wrapper">
       <div class="one">
         <h1>Your Bill</h1>
-        <draggable class="bill" :options="{group:'people'}" @start="drag=true" @end="drag=false">
+        <draggable class="bill" v-model="BillItems" :list="BillItems" :options="{group:'people'}" @start="drag=true" @end="drag=false">
           <div class="bill-item" v-for=" (element, index) in BillItems" :key="index">
             {{index}} - {{element.menuItemName}} : ${{element.menuItemPrice}}
             <div style="display: inline-block">
@@ -21,7 +21,7 @@
 
       <div class="dictionary">
         <h2>Dictionary</h2>
-        <draggable :list="MenuItems" class="menu" :clone="clone" :options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
+        <draggable class="menu" v-model="MenuItems" :list="MenuItems" :clone="clone" :options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
           <div class="menu-item" v-for="(element, index) in MenuItems" :key="element.id">
             {{element.menuItemName}} : ${{element.menuItemPrice}}
             <btn type="primary" size="xs" ><!--v-on:click="EditDictionaryFoodItem"-->Edit</btn>
@@ -63,18 +63,18 @@
         //    menuItemPrice: '2.50'
         //  }
         //],
-        BillItems: [
-          {
-            menuItemName: '',
-            menuItemPrice: ''
-            billitemusers:
-            [
-              {
-                billitemusername: ''
-              }
-            ]
-          }
-        ]
+        //BillItems: [
+        //  {
+        //    menuItemName: '',
+        //    menuItemPrice: '',
+        //    billitemusers:
+        //    [
+        //      {
+        //        billitemusername: ''
+        //      }
+        //    ]
+        //  }
+        //]
       }
     },
     methods: {
@@ -114,7 +114,8 @@
           });
         }
       },
-      BillItems: {
+      BillItems() {
+        return this.$store.state.BillItems;
         
       }
     }

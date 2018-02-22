@@ -37,7 +37,7 @@ export const store = new Vuex.Store({
       });
     },
 
-    INPUT: (state, { MenuItems }) => {
+    INPUT (state, { MenuItems }) {
       state.MenuItems = [...MenuItems];
     }
   },

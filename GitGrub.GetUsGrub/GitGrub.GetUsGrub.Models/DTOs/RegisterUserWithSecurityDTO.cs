@@ -10,7 +10,7 @@ namespace GitGrub.GetUsGrub.Models.DTOs
     {
         public int Id { get; set; }
         [Required]
-        public string UserName { get; set; }
+        public string Username { get; set; }
         [Required]
         public string AccountType { get; set; }
         [Required]

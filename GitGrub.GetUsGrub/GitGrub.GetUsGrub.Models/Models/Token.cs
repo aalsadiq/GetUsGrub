@@ -2,16 +2,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GitGrub.GetUsGrub.Models.Models
+namespace GitGrub.GetUsGrub.Models
 {
-    [Table("Tokens")]
-    public class TokenModel
+    [Table("GetUsGrub.Tokens")]
+    public class Token
     {
         [Key]
         public int TokenId { get; set; }
-        public string TokenHeadder { get; set; }
+        public string TokenHeader { get; set; }
 
-        [ForeignKey("UserAccount")]
+        [ForeignKey("GetUsGrub.UserAccounts")]
+        public int UserId { get; set; }
+
         public string Username { get; set; }
         public string TokenSignature { get; set; }
         public DateTime IssuedOn { get; set; }

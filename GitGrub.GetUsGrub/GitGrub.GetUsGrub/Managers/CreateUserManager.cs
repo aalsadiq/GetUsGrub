@@ -6,26 +6,42 @@ using GitGrub.GetUsGrub.Models.Models;
 
 namespace GitGrub.GetUsGrub.Managers
 {
+    /// <summary>
+    /// Manager that deals with user creation and registration.
+    /// 
+    /// Author: Jenn Nguyen
+    /// Last Updated: 2/18/18
+    /// </summary>
     public class CreateUserManager : ICreateUserManager
     {
         private readonly ISalt _salt = new PasswordSalt();
         private readonly IValidateGateway _validateGateway;
 
+        /// <summary>
+        /// Basic constructor.
+        /// </summary>
+        /// <param name="validateGateway">Validation gateway to bind to the manager upon instantiation.</param>
         public CreateUserManager(IValidateGateway validateGateway)
         {
             _validateGateway = validateGateway;
         }
 
+        /// <summary>
+        /// Checks if the username of the registering user already exists in the data store.
+        /// </summary>
+        /// <param name="registerUserWithSecurityDto">DTO of user.</param>
+        /// <returns>True if user doesn't exist. Throws exception otherwise.</returns>
         public bool CheckIfUserExists(RegisterUserWithSecurityDto registerUserWithSecurityDto)
         {
-            var result = _validateGateway.CheckIfUserExists(registerUserWithSecurityDto);
-            if (result == false)
+            try
             {
-                throw new CustomException("Username already exists.");
+                var result = _validateGateway.CheckIfUserExists(registerUserWithSecurityDto);
+
+                return result;
             }
-            else
+            catch(Exception e)
             {
-                return true;
+                return false;
             }
         }
 

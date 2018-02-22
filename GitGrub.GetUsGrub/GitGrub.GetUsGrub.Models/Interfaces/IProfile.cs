@@ -1,4 +1,4 @@
-﻿namespace GitGrub.GetUsGrub.Models
+﻿namespace GitGrub.GetUsGrub.Models.Interfaces
 {
     /// <summary>
     /// Interface representing basic profile information

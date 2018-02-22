@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GitGrub.GetUsGrub.Models.Interfaces;
 
-namespace GitGrub.GetUsGrub.Models
+namespace GitGrub.GetUsGrub.Models.Models
 {
     /// <summary>
     /// Regular user profile class

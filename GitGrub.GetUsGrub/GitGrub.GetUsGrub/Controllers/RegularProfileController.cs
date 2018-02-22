@@ -7,19 +7,19 @@ using GitGrub.GetUsGrub.Models.DTOs;
 namespace GitGrub.GetUsGrub.Controllers
 {
     /// <summary>
-    /// Controller responsible for profile requests
+    /// Controller responsible for regualr profile requests
     /// 
     /// Author: Andrew Kao
-    /// Last Updated: 2/20/18
+    /// Last Updated: 2/21/18
     /// </summary>
     [EnableCorsAttribute("*", "*", "*")]
     [Authorize]
     [RoutePrefix("api/profile")]
-    public class ProfileController : ApiController
+    public class RegularProfileController : ApiController
     {
-        private readonly ProfileManager _profileManager;
+        private readonly RegularProfileManager _profileManager;
        
-        public ProfileController(ProfileManager profileManager)
+        public RegularProfileController(RegularProfileManager profileManager)
         {
             _profileManager = profileManager;
         }
@@ -41,23 +41,6 @@ namespace GitGrub.GetUsGrub.Controllers
             }
         }
 
-        // GET api/profile/getrestaurantprofile
-        [HttpGet]
-        [Route("getregularprofile")]
-        public IHttpActionResult GetRestaurantProfile([FromBody] string username)
-        {
-            try
-            {
-               ResponseDto<RestaurantProfileDto> response = _profileManager.GetRestaurantProfile(username);
-               return Ok(response);
-            }
-
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
-        }
-
         // PUT api/profile/editregularprofile
         [HttpPut]
         [Route("editregularprofile")]
@@ -71,28 +54,6 @@ namespace GitGrub.GetUsGrub.Controllers
             try
             {
                 ResponseDto<bool> response = _profileManager.EditRegularProfile(editRegularProfileDto);
-                return Ok("Profile has been successfully updated.");
-            }
-
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
-        }
-
-        // PUT api/profile/editrestaurantprofile
-        [HttpPut]
-        [Route("editrestaurantprofile")]
-        public IHttpActionResult EditRestaurantProfile([FromBody] EditRestaurantProfileDto editRestaurantProfileDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                _profileManager.EditRestaurantProfile(editRestaurantProfileDto);
                 return Ok("Profile has been successfully updated.");
             }
 

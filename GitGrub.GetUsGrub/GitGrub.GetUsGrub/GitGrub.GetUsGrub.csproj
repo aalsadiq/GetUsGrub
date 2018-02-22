@@ -100,8 +100,9 @@
     <Compile Include="App_Start\IoCConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\RegularProfileController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
+    <Compile Include="Controllers\RestaurantProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -109,7 +110,8 @@
     <Compile Include="Helpers\PayloadHasher.cs" />
     <Compile Include="Interfaces\ICreateUserManager.cs" />
     <Compile Include="Managers\CreateUserManager.cs" />
-    <Compile Include="Managers\ProfileManager.cs" />
+    <Compile Include="Managers\RegularProfileManager.cs" />
+    <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -68,7 +68,7 @@ namespace GitGrub.GetUsGrub.Managers
         public ResponseDto<bool> EditRegularProfile(EditRegularProfileDto editRegularProfileDto)
         {
             // call EditRegularProfileByUsername(EditRegularProfileDto editRegularProfileDto) in gateway
-            bool isEditSuccessful = _gateway.EditRegularProfileByUsername(editRegularProfileDto);
+            bool isEditSuccessful = _profileGateway.EditRegularProfileByUsername(editRegularProfileDto);
 
             try
             {
@@ -76,14 +76,16 @@ namespace GitGrub.GetUsGrub.Managers
                 {
                     Data = isEditSuccessful
                 };
+                return response;
             }
 
             catch (Exception e)
             {
                 ResponseDto<bool> response = new ResponseDto<bool>
                 {
-                    Error = Successful
+                    Error = e
                 };
+                return response;
             }
         }
 
@@ -91,7 +93,7 @@ namespace GitGrub.GetUsGrub.Managers
         public ResponseDto<bool> EditRestaurantProfile(EditRestaurantProfileDto editRestaurantProfileDto)
         {
             // call EditRestaurantProfileByUsername(EditRestaurantProfileDto editRestaurantProfileDto) in gateway
-            bool isEditSuccessful = _gateway.EditRestaurantProfileByUsername(editRestaurantProfileDto);
+            bool isEditSuccessful = _profileGateway.EditRestaurantProfileByUsername(editRestaurantProfileDto);
 
             try
             {
@@ -99,14 +101,16 @@ namespace GitGrub.GetUsGrub.Managers
                 {
                     Data = isEditSuccessful
                 };
+                return response;
             }
 
             catch (Exception e)
             {
                 ResponseDto<bool> response = new ResponseDto<bool>
                 {
-                    Error = Successful
+                    Error = e
                 };
+                return response;
             }
         }
     }

@@ -31,8 +31,8 @@ namespace GitGrub.GetUsGrub.Controllers
         {
             try
             {
-                RegularProfileDto regularProfile = _profileManager.GetRegularProfile(username);
-                return Ok(regularProfile);
+                ResponseDto<RegularProfileDto> response = _profileManager.GetRegularProfile(username);
+                return Ok(response);
             }
 
             catch (Exception exception)
@@ -48,8 +48,8 @@ namespace GitGrub.GetUsGrub.Controllers
         {
             try
             {
-                RestaurantProfileDto restaurantProfile = _profileManager.GetRestaurantProfile(username);
-                return Ok(restaurantProfile);
+               ResponseDto<RestaurantProfileDto> response = _profileManager.GetRestaurantProfile(username);
+               return Ok(response);
             }
 
             catch (Exception exception)
@@ -70,15 +70,14 @@ namespace GitGrub.GetUsGrub.Controllers
 
             try
             {
-                _profileManager.EditRegularProfile(editRegularProfileDto);
+                ResponseDto<bool> response = _profileManager.EditRegularProfile(editRegularProfileDto);
+                return Ok("Profile has been successfully updated.");
             }
 
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
-
-            return Ok("Profile has been successfully updated.");
         }
 
         // PUT api/profile/editrestaurantprofile
@@ -94,14 +93,13 @@ namespace GitGrub.GetUsGrub.Controllers
             try
             {
                 _profileManager.EditRestaurantProfile(editRestaurantProfileDto);
+                return Ok("Profile has been successfully updated.");
             }
 
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
-
-            return Ok("Profile has been successfully updated.");
         }
     }
 }

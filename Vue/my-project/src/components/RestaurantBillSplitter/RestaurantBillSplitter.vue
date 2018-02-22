@@ -5,11 +5,14 @@
 
     <div class="wrapper">
       <div class="one">
+        <h1>Your Bill</h1>
         <draggable class="bill" v-model="BillItems" :options="{group:'people'}" @start="drag=true" @end="drag=false">
           <div class="bill-item" v-for=" (element, index) in BillItems" :key="index">
             {{index}} - {{element.menuItemName}} : ${{element.menuItemPrice}}
-            <btn type="primary" size="xs" v-on:click="EditDictionaryFoodItem">Edit</btn>
-            <btn type="danger" size="xs" v-on:click="removeFromBill">Delete</btn>
+            <div style="display: inline-block">
+              <btn type="primary" size="xs" v-on:click="EditDictionaryFoodItem">Edit</btn>
+              <btn type="danger" size="xs" v-on:click="RemoveFromBill">Delete</btn>
+            </div>           
           </div>
         </draggable>
       </div>
@@ -20,16 +23,15 @@
         <label>Enter Food Item Price</label>
         <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
         <br />
-        <button id="add_to_dictionary" v-on:click="addToDictionary">Add To Dictionary</button>
+        <button id="add_to_dictionary" v-on:click="AddToDictionary">Add To Dictionary</button>
       </form>
       <div class="dictionary">
         <h2>Dictionary</h2>
         <draggable class="menu" :clone="clone" v-model="MenuItems" :options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
-
           <div class="menu-item" v-for="(element, index) in MenuItems" :key="element.id">
             {{element.menuItemName}} : ${{element.menuItemPrice}}
             <btn type="primary" size="xs" v-on:click="EditDictionaryFoodItem">Edit</btn>
-            <btn type="danger" size="xs" v-on:click="removeFromDictionary">Delete</btn>
+            <btn type="danger" id="index" size="xs" v-on:click="RemoveFromDictionary">Delete</btn>
           </div>
 
         </draggable>
@@ -57,12 +59,12 @@
         show: false,
         MenuItems: [
           {
-            menuItemName: 'McDouble',
-            menuItemPrice: '1.50'
+            menuItemName: 'Big Mac',
+            menuItemPrice: '4.00'
           },
           {
-            menuItemName: 'Big Mac',
-            menuItemPrice: '3.50'
+            menuItemName: 'Large Fries',
+            menuItemPrice: '2.50'
           }
         ],
         BillItems: [
@@ -84,19 +86,19 @@
         console.log(this.$refs);
       },
 
-      addToDictionary: function () {
-        if (this.$refs.MenuItemName.value.length == 0 || this.$refs.MenuItemPrice.valueAsNumber.length == 0)
-          document.getElementById('add_to_dictionary').disabled = true;
+      AddToDictionary: function () {
+        console.log(this.$refs);
         this.MenuItems.push(
           {
-            MenuItemName: this.$refs.MenuItemName.value,
-            MenuItemPrice: this.$refs.MenuItemPrice.valueAsNumber
+            menuItemName: this.$refs.menuItemName.value,
+            menuItemPrice: this.$refs.menuItemPrice.valueAsNumber
           }
         );
       },
 
-      removeFromDictionary: function () {
-        this.MenuItems.pop();
+      RemoveFromDictionary: function () {
+        console.log(this.$refs);
+        this.MenuItems.pop(this.$refs.MenuIt);
       },
 
       getDictionaryItem: function () {

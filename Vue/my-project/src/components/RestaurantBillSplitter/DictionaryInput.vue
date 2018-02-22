@@ -14,7 +14,7 @@
   export default {
     name: 'DictionaryInput',
     components: {
-
+      
     },
     data() {
       return {
@@ -22,20 +22,9 @@
       }
     },
     methods: {
-      log: function () {
-        console.log(this.$refs);
-      },
-
       AddToDictionary: function (menuItemName, menuItemPrice) {
+        // Parameters have to be placed into an array because dispatch can only take two. The name and the payload.
         this.$store.dispatch('AddToDictionary', [menuItemName, menuItemPrice]);
-      },
-
-      RemoveFromDictionary: function () {
-        console.log(this.$refs);
-      },
-
-      getDictionaryItem: function () {
-
       }
     },
     computed: {
@@ -51,5 +40,6 @@
     grid-column: 3;
     grid-row: 1;
     outline: dashed;
+    padding: 20px;
   }
 </style>

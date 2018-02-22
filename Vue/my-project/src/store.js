@@ -13,16 +13,28 @@ export const store = new Vuex.Store({
       {
         menuItemName: 'Large Fries',
         menuItemPrice: 2.50
+      },
+      {
+        menuItemName: 'McFlurry',
+        menuItemPrice: 1.00
+      },
+      {
+        menuItemName: 'Large Soft Drink',
+        menuItemPrice: 2.00
+      },
+      {
+        menuItemName: 'McChicken',
+        menuItemPrice: 1.50
+      },
+      {
+        menuItemName: 'Water Bottle',
+        menuItemPrice: 10.50
       }
     ],
     BillItems: [
-      {
-        menuItemName: 'Big Mac',
-        menuItemPrice: 4.00
-      },
-      {
-        menuItemName: 'Large Fries',
-        menuItemPrice: 2.50
+      MenuItems: {
+        menuItemName: '',
+        menuItemPrice 0
       }
     ]
   },
@@ -35,15 +47,34 @@ export const store = new Vuex.Store({
         menuItemName: payload[0],
         menuItemPrice: payload[1]
       });
+    },
+
+    RemoveFromDictionary: (state, payload) => {
+      console.log("Store Mutation: " +payload)
+      state.MenuItems.splice(payload, 1)
+    },
+    RemoveFromBill: (state, payload) => {
+      console.log("Store Mutation: " +payload)
+      state.BillItems.splice(payload, 1)
     }
   },
   // Actions are necessary when performing asynchronous methods.
   actions: {
     AddToDictionary: (context, payload) => {
       setTimeout(function () {
-        console.log(payload[0]);
-        console.log(payload[1]);
+        console.log("Added Food Item Name: " +payload[0]);
+        console.log("Added Food Item Price: " +payload[1]);
         context.commit('AddToDictionary', payload)
+      }, 1000)
+    },
+    RemoveFromDictionary: (context, payload) => {
+      setTimeout(function () {
+        context.commit('RemoveFromDictionary', payload)
+      }, 1000)
+    },
+    RemoveFromBill: (context, payload) => {
+      setTimeout(function () {
+        context.commit('RemoveFromBill', payload)
       }, 1000)
     }
   }

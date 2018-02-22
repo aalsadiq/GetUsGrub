@@ -4,7 +4,7 @@ using GitGrub.GetUsGrub.Models;
 namespace GitGrub.GetUsGrub.DataAccess
 {
     /// <summary>
-    /// Context for athorizaton module features
+    /// Context that allows connections to specific entities for authorizaton module features.
     /// 
     /// Brian Fann
     /// 2/21/18

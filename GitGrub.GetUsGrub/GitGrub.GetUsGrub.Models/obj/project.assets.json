@@ -177,7 +177,8 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\brianfann\\.nuget\\packages\\": {},
+    "C:\\Users\\Angelica\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -186,18 +187,20 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
+      "projectUniqueName": "C:\\Users\\Angelica\\Documents\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
       "projectName": "GitGrub.GetUsGrub.Models",
-      "projectPath": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
-      "packagesPath": "C:\\Users\\brianfann\\.nuget\\packages\\",
-      "outputPath": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\obj\\",
+      "projectPath": "C:\\Users\\Angelica\\Documents\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
+      "packagesPath": "C:\\Users\\Angelica\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Angelica\\Documents\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\brianfann\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Angelica\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.0"

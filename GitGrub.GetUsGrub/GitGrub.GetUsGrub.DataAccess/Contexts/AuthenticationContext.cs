@@ -4,7 +4,7 @@ using System.Data.Entity;
 namespace GitGrub.GetUsGrub.DataAccess
 {
     /// <summary>
-    /// Context for authentication module related features.
+    /// Context that allows connections to specific entities for authentication module features.
     /// 
     /// Brian Fann
     /// 2/21/18
@@ -17,7 +17,7 @@ namespace GitGrub.GetUsGrub.DataAccess
         public DbSet<PasswordSalt> PasswordSalts { get; set; }
         public DbSet<Token> TokenSalts { get; set; }
 
-        public AuthenticationContext():base("GetUsGrub") {}
+        public AuthenticationContext() : base("GetUsGrub") { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

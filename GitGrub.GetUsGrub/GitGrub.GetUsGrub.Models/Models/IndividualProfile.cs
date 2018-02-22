@@ -10,7 +10,7 @@ namespace GitGrub.GetUsGrub.Models
     /// Last Updated: 2/20/18
     /// </summary>
     [Table("GetUsGrub.RegularProfile")]
-    public class RegularProfile : IProfile
+    public class IndividualProfile : IProfile
     {
         [Key]
         public int Id { get; set; }

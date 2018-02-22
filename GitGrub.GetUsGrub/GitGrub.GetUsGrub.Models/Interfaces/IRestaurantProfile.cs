@@ -12,6 +12,13 @@ namespace GitGrub.GetUsGrub.Models
     /// </summary>
     interface IRestaurantProfile
     {
+        string Street { get; set; }
+        string City { get; set; }
+        string State { get; set; }
+        int ZipCode { get; set; }
+        double Longitude { get; set; }
+        double Latitude { get; set; }
+        double PhoneNumber { get; set; }
         string Category { get; set; }
         IEnumerable<BusinessHours> BusinessSchedule { get; set; }
         bool HasReservations { get; set; }

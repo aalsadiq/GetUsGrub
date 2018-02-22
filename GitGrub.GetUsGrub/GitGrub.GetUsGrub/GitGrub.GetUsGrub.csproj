@@ -109,8 +109,7 @@
     <Compile Include="Helpers\PayloadHasher.cs" />
     <Compile Include="Interfaces\ICreateUserManager.cs" />
     <Compile Include="Managers\CreateUserManager.cs" />
-    <Compile Include="Managers\EditProfileManager.cs" />
-    <Compile Include="Managers\GetProfileManager.cs" />
+    <Compile Include="Managers\ProfileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

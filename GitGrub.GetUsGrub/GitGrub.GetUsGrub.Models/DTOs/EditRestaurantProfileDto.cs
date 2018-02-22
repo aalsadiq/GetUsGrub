@@ -9,6 +9,13 @@ namespace GitGrub.GetUsGrub.Models.DTOs
         public string Username { get; set; }
         public string ProfileName { get; set; }
         public string ProfilePicture { get; set; }
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int ZipCode { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double PhoneNumber { get; set; }
         public string Category { get; set; }
         public IEnumerable<BusinessHours> BusinessSchedule { get; set; }
         public bool HasReservations { get; set; }

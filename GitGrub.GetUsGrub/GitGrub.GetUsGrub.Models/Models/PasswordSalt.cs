@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GitGrub.GetUsGrub.Models
 {
+    [Table("GetUsGrub.PasswordSalt")]
     public class PasswordSalt : ISalt
     {
         [Key]
@@ -11,6 +12,7 @@ namespace GitGrub.GetUsGrub.Models
 
         [ForeignKey("UserAccount")]
         public int UserId { get; set; }
+
         public string Salt { get; set; }
     }
 }

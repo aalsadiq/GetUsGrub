@@ -1,5 +1,4 @@
-﻿
-namespace GitGrub.GetUsGrub.Models.Interfaces
+﻿namespace GitGrub.GetUsGrub.Models
 {
     public interface ISalt
     {

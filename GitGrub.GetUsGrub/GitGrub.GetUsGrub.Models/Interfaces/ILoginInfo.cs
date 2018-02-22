@@ -1,15 +1,10 @@
-﻿namespace GitGrub.GetUsGrub.Models.Interfaces
-
+﻿namespace GitGrub.GetUsGrub.Models
 {
-
-    interface ILoginInfo
-
+    public interface ILoginInfo
     {
-
         string Username { get; set; }
 
         string Password { get; set; }
-
     }
 
 }

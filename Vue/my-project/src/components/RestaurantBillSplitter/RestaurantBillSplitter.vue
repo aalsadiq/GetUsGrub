@@ -87,33 +87,10 @@
       }
     },
     computed: {
-      value: (state) => state.$store.getters.value,
-      MenuItems: {
-        get() {
-          const self = this;
-          const arrayChangeHandler = {
-            get(target, property) {
-              return target[property];
-            },
-            set(target, property, value) {
-              target[property] = value;
-              self.$store.commit({
-                type: 'INPUT',
-                MenuItems: target
-              });
-
-              return true;
-            }
-          };
-          return new Proxy([...this.value], arrayChangeHandler);
-        },
-        set(newValue) {
-          this.$store.commit({
-            type: 'INPUT',
-            MenuItems: target
-          });
-        }
-      },
+      MenuItems() {
+        return this.$store.state.MenuItems;
+      }
+       
       BillItems() {
         return this.$store.state.BillItems;
         

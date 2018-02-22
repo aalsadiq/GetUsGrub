@@ -27,7 +27,7 @@ export const store = new Vuex.Store({
     ]
   },
   getters: {
-    value: (state) => state.MenuItems
+
   },
   mutations: {
     AddToDictionary: (state, payload) => {
@@ -35,10 +35,6 @@ export const store = new Vuex.Store({
         menuItemName: payload[0],
         menuItemPrice: payload[1]
       });
-    },
-
-    INPUT (state, { MenuItems }) {
-      state.MenuItems = [...MenuItems];
     }
   },
   // Actions are necessary when performing asynchronous methods.

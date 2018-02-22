@@ -1,10 +1,7 @@
 <template>
   <div>
     <app-header></app-header>
-
-    <div>
-      <h1> {{ name }} </h1>
-    </div>
+    <h1> {{ name }} </h1>
     <app-footer></app-footer>
   </div>
 </template>

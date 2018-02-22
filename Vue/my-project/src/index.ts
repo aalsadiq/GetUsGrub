@@ -5,6 +5,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import App from './App.vue';
 import Routes from "./router/routes.js";
+import { store } from "./store.js";
 //import BootstrapVue from 'bootstrap-vue'
 import * as uiv from 'uiv';
 
@@ -23,6 +24,7 @@ const router = new VueRouter({
 const app = new Vue({
   el: '#app',
   router: router,
+  store: store,
   components: {
     App
   },

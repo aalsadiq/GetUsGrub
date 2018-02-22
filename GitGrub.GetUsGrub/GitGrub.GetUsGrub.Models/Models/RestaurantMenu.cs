@@ -7,3 +7,5 @@ namespace GitGrub.GetUsGrub.Models
         public IEnumerable<IMenuItem> Items { get; set; }
     }
 }
+
+        public string MenuName;

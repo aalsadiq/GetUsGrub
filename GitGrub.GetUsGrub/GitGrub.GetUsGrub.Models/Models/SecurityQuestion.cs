@@ -3,19 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GitGrub.GetUsGrub.Models
 {
-    [Table("GetUsGrub.SecurityQuestion")]
+    [Table("SecurityQuestion")]
     public class SecurityQuestion
     {
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("GetUsGrub.UserAccounts")]
+        [ForeignKey("UserAccount")]
         public int UserId { get; set; }
 
-        [Required(ErrorMessage = "Required security question")]
+        [Required]
         public string QuestionType { get; set; }
 
-        [Required(ErrorMessage = "Required security question answer")]
+        [Required]
         public string QuestionAnswer { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace GitGrub.GetUsGrub.Models.Interfaces
+namespace GitGrub.GetUsGrub.Models
 {
     public interface ISecurityQuestionsList
     {
-        IEnumerable<ISecurityQuestion> SecurityQuestionsList { get; set; }
+        IEnumerable<SecurityQuestion> SecurityQuestionsList { get; set; }
     }
 }

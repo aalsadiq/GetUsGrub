@@ -3,15 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GitGrub.GetUsGrub.Models
 {
-    [Table("GetUsGrub.Tokens")]
+    [Table("TokenSalt")]
     public class TokenSalt : ISalt
     { 
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("GetUsGrub.Tokens")]
+        [ForeignKey("TokenModel")]
         public int TokenId { get; set; }
         public string Salt { get; set; }
     }
 }
-

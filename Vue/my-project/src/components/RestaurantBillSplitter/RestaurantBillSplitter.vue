@@ -1,43 +1,41 @@
 <template>
   <div>
-    <app-header></app-header>
-    <btn type="success">Test</btn>
-
+    <app-header/>
     <div class="wrapper">
       <div class="one">
         <h1>Your Bill</h1>
-        <draggable class="bill" v-model="BillItems" :options="{group:'people'}" @start="drag=true" @end="drag=false">
-          <div class="bill-item" v-for=" (element, index) in BillItems" :key="index">
-            {{index}} - {{element.menuItemName}} : ${{element.menuItemPrice}}
+        <draggable class="bill" v-bind:list="BillItems" v-bind:options="{group:'people'}" @start="drag=true" @end="drag=false">
+          <div class="bill-item" v-for="(element, index) in BillItems" :key="index">
+            {{index}} - {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}
             <div style="display: inline-block">
-              <btn type="primary" size="xs" v-on:click="EditDictionaryFoodItem">Edit</btn>
-              <btn type="danger" size="xs" v-on:click="RemoveFromBill">Delete</btn>
-            </div>           
-          </div>
+              <btn type="primary" size="xs"><!--v-on:click="EditDictionaryFoodItem"-->Edit</btn>
+              <btn type="danger" size="xs" v-on:click="RemoveFromBill(index)">Delete</btn>
+            </div>
+          </div>          
         </draggable>
+        <h2 class="total">Total:</h2>
       </div>
-      <form class="dictionaryInput">
-        <label>Enter Food Item Name</label>
-        <input type="text" ref="menuItemName" required />
-        <br />
-        <label>Enter Food Item Price</label>
-        <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
-        <br />
-        <button id="add_to_dictionary" v-on:click="AddToDictionary">Add To Dictionary</button>
-      </form>
-      <div class="dictionary">
-        <h2>Dictionary</h2>
-        <draggable class="menu" :clone="clone" v-model="MenuItems" :options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
-          <div class="menu-item" v-for="(element, index) in MenuItems" :key="element.id">
-            {{element.menuItemName}} : ${{element.menuItemPrice}}
-            <btn type="primary" size="xs" v-on:click="EditDictionaryFoodItem">Edit</btn>
-            <btn type="danger" id="index" size="xs" v-on:click="RemoveFromDictionary">Delete</btn>
-          </div>
 
-        </draggable>
-      </div>
+      <restaurantBillSplitter-dictionaryInput/>
+      <restaurantBillSplitter-dictionary/>
+      
     </div>
-    <app-footer></app-footer>
+    <app-footer />
+    <div>
+      <h1> Debug </h1>
+      <h2> Menu Items</h2>
+      <ul>
+        <li v-for="element in MenuItems">
+          {{element}}
+        </li>
+      </ul>
+      <h2> Bill Items</h2>
+      <ul>
+        <li v-for="element in BillItems">
+          {{element}}
+        </li>
+      </ul>
+    </div>
   </div>
 
 </template>
@@ -45,6 +43,10 @@
 <script lang="ts">
   import Header from '../Header.vue'
   import Footer from '../Footer.vue'
+  import Dictionary from './Dictionary.vue'
+  import DictionaryInput from './DictionaryInput.vue'
+  import { mapGetters } from 'vuex'
+  import { mapActions } from 'vuex'
   import draggable from 'vuedraggable'
 
   export default {
@@ -52,63 +54,34 @@
     components: {
       'app-header': Header,
       'app-footer': Footer,
+      'restaurantBillSplitter-dictionaryInput': DictionaryInput,
+      'restaurantBillSplitter-dictionary': Dictionary,
       draggable
     },
     data() {
       return {
-        show: false,
-        MenuItems: [
-          {
-            menuItemName: 'Big Mac',
-            menuItemPrice: '4.00'
-          },
-          {
-            menuItemName: 'Large Fries',
-            menuItemPrice: '2.50'
-          }
-        ],
-        BillItems: [
-          {
-            menuItemName: '',
-            menuItemPrice: ''
-            //billItemUsers:
-            //[
-            //  {
-            //    billItemUsername: ''
-            //  }
-            //]
-          }
-        ]
+        
       }
     },
     methods: {
-      log: function () {
-        console.log(this.$refs);
-      },
-
-      AddToDictionary: function () {
-        console.log(this.$refs);
-        this.MenuItems.push(
-          {
-            menuItemName: this.$refs.menuItemName.value,
-            menuItemPrice: this.$refs.menuItemPrice.valueAsNumber
-          }
-        );
-      },
-
-      RemoveFromDictionary: function () {
-        console.log(this.$refs);
-        this.MenuItems.pop(this.$refs.MenuIt);
-      },
-
-      getDictionaryItem: function () {
-
+      RemoveFromBill: function (index) {
+        // Parameters have to be placed into an array because dispatch can only take two. The name and the payload.
+        console.log(index);
+        this.$store.dispatch('RemoveFromBill', index);
       }
     },
-    computed: {
-
+    computed: {     
+      MenuItems() {
+        return this.$store.state.MenuItems;
+      },       
+      BillItems() {
+        return this.$store.state.BillItems;        
+      }
+      totalPrice() {
+        return this.$store.getters.totalPrice;
     }
   }
+
 </script>
 <style scoped>
   .wrapper {
@@ -117,7 +90,6 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
     grid-auto-rows: minmax(100px, auto);
-    text-align: center;
   }
 
   .one {
@@ -126,10 +98,15 @@
     outline: dashed;
   }
 
+  .one > h1 {
+    text-align: center;
+  }
+
   div.bill {
     margin: 20px;
     min-height: 20px;
-    outline: dashed; 
+    outline: dashed;
+    background-color: grey;
   }
 
     div.bill > div.bill-item {
@@ -137,28 +114,11 @@
       padding: 10px;
       background-color: aquamarine;
       border-radius: 10px;
+      text-align: center;
     }
 
-  .dictionaryInput {
-    grid-column: 3;
-    grid-row: 1;
-    outline: dashed;
+  h2.total {
+    padding: 10px 1.2em 0px 0px;
+    text-align: right;
   }
-
-  .dictionary {
-    grid-column: 3;
-    grid-row: 2 / 4;
-    outline: dashed;
-  }
-
-  div.menu-item {
-    margin: 10px;
-    padding: 10px;
-    background-color: aquamarine;
-    border-radius: 10px;
-  }
-
-    div.menu-item > btn {
-      text-align: right;
-    }
 </style>

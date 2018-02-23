@@ -9,9 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GitGrub.GetUsGrub.DataAccess</RootNamespace>
     <AssemblyName>GitGrub.GetUsGrub.DataAccess</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,28 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contexts\AuthenticationContext.cs" />
-    <Compile Include="Gateways\AuthenticationGateway.cs" />
-    <Compile Include="Interfaces\IAuthenticationGateway.cs" />
-    <Compile Include="Migrations\201802201034330_InitialMigration.cs" />
-    <Compile Include="Migrations\201802201034330_InitialMigration.Designer.cs">
-      <DependentUpon>201802201034330_InitialMigration.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Gateways\RestaurantUserGateway.cs" />
+    <Compile Include="Gateways\UserGateway.cs" />
+    <Compile Include="Interfaces\IRestaurantUserGateway.cs" />
+    <Compile Include="Interfaces\IUserGateway.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
@@ -77,11 +64,11 @@
       <Name>GitGrub.GetUsGrub.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201802201034330_InitialMigration.resx">
-      <DependentUpon>201802201034330_InitialMigration.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Contexts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

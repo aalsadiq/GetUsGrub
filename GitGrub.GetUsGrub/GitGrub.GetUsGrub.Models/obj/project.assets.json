@@ -2,6 +2,24 @@
   "version": 3,
   "targets": {
     ".NETStandard,Version=v2.0": {
+      "FluentValidation/7.4.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
+        }
+      },
+      "FluentValidation.WebApi/7.4.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/FluentValidation.WebApi.dll": {}
+        },
+        "runtime": {
+          "lib/net45/FluentValidation.WebApi.dll": {}
+        }
+      },
       "Microsoft.NETCore.Platforms/1.1.0": {
         "type": "package",
         "compile": {
@@ -25,10 +43,45 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "Newtonsoft.Json/6.0.4": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "FluentValidation/7.4.0": {
+      "sha512": "0lvGuTepyt4dniOEuQkoRqzvOtRIpu723k32peSMQutk/09VcBzNUCbmTs/2fKnwrPVx6M/SGKZYN32jH4Fw4A==",
+      "type": "package",
+      "path": "fluentvalidation/7.4.0",
+      "files": [
+        "fluentvalidation.7.4.0.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net45/FluentValidation.dll",
+        "lib/net45/FluentValidation.xml",
+        "lib/netstandard1.0/FluentValidation.dll",
+        "lib/netstandard1.0/FluentValidation.xml",
+        "lib/netstandard2.0/FluentValidation.dll",
+        "lib/netstandard2.0/FluentValidation.xml"
+      ]
+    },
+    "FluentValidation.WebApi/7.4.0": {
+      "sha512": "2ziqD3D5uWYHJWRB6b564dC2pzmUB4WxXLKRlAyThG+wOyGG+akSJBckUyJBJATkWOo06r2SDLA+lhq/fLvB4w==",
+      "type": "package",
+      "path": "fluentvalidation.webapi/7.4.0",
+      "files": [
+        "fluentvalidation.webapi.7.4.0.nupkg.sha512",
+        "fluentvalidation.webapi.nuspec",
+        "lib/net45/FluentValidation.WebApi.dll",
+        "lib/net45/FluentValidation.WebApi.xml"
+      ]
+    },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "sha512": "kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
       "type": "package",
@@ -48,6 +101,8 @@
       "path": "netstandard.library/2.0.1",
       "files": [
         "LICENSE.TXT",
+        "NETStandard.Library.2.0.1.nupkg.sha512",
+        "NETStandard.Library.nuspec",
         "THIRD-PARTY-NOTICES.TXT",
         "build/NETStandard.Library.targets",
         "build/netstandard2.0/NETStandard.Library.targets",
@@ -165,19 +220,45 @@
         "build/netstandard2.0/ref/mscorlib.dll",
         "build/netstandard2.0/ref/netstandard.dll",
         "build/netstandard2.0/ref/netstandard.xml",
-        "lib/netstandard1.0/_._",
-        "netstandard.library.2.0.1.nupkg.sha512",
-        "netstandard.library.nuspec"
+        "lib/netstandard1.0/_._"
+      ]
+    },
+    "Newtonsoft.Json/6.0.4": {
+      "sha512": "FyQLmEpjsCrEP+znauLDGAi+h6i9YnaMkITlfIoiM4RYyX3nki306bTHsr/0okiIvIc7BJhQTbOAIZVocccFUw==",
+      "type": "package",
+      "path": "newtonsoft.json/6.0.4",
+      "files": [
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netcore45/Newtonsoft.Json.dll",
+        "lib/netcore45/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.6.0.4.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "tools/install.ps1"
       ]
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
-      "NETStandard.Library >= 2.0.1"
+      "FluentValidation >= 7.4.0",
+      "FluentValidation.WebApi >= 7.4.0",
+      "NETStandard.Library >= 2.0.1",
+      "Newtonsoft.Json >= 6.0.4"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\brianfann\\.nuget\\packages\\": {},
+    "C:\\Users\\Angelica\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -186,18 +267,20 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
+      "projectUniqueName": "C:\\Users\\Angelica\\Downloads\\Jenn_2_GitGrub.GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
       "projectName": "GitGrub.GetUsGrub.Models",
-      "projectPath": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
-      "packagesPath": "C:\\Users\\brianfann\\.nuget\\packages\\",
-      "outputPath": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\obj\\",
+      "projectPath": "C:\\Users\\Angelica\\Downloads\\Jenn_2_GitGrub.GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
+      "packagesPath": "C:\\Users\\Angelica\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Angelica\\Downloads\\Jenn_2_GitGrub.GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\brianfann\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Angelica\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.0"
@@ -220,11 +303,23 @@
     "frameworks": {
       "netstandard2.0": {
         "dependencies": {
+          "FluentValidation": {
+            "target": "Package",
+            "version": "[7.4.0, )"
+          },
+          "FluentValidation.WebApi": {
+            "target": "Package",
+            "version": "[7.4.0, )"
+          },
           "NETStandard.Library": {
             "suppressParent": "All",
             "target": "Package",
             "version": "[2.0.1, )",
             "autoReferenced": true
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[6.0.4, )"
           }
         },
         "imports": [
@@ -234,5 +329,27 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FluentValidation.WebApi 7.4.0' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETStandard,Version=v2.0'. This package may not be fully compatible with your project.",
+      "libraryId": "FluentValidation.WebApi",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Newtonsoft.Json 6.0.4' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETStandard,Version=v2.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Newtonsoft.Json",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.0"
+      ]
+    }
+  ]
 }

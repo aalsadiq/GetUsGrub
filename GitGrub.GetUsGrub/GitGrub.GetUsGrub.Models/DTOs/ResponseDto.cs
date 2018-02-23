@@ -1,17 +1,22 @@
 ﻿using System;
 
-namespace GitGrub.GetUsGrub.Models.DTOs
+namespace GitGrub.GetUsGrub
 {
-    /// <summary>
-    /// DTO representing any response
-    /// 
-    /// Author: Andrew Kao
-    /// Last Updated: 2/21/18
-    /// </summary>
-    /// <typeparam name="T">Any input type or DTO</typeparam>
     public class ResponseDto<T>
     {
+        // A type of data you would like to store in the ResponseDto
         public T Data { get; set; }
+        
         public Exception Error { get; set; }
+
+        public string ValidationErrors { get; set; }
+
+        // Constructor of ResponseDto
+        public ResponseDto(T data)
+        {
+            Data = data;
+            Error = null;
+            ValidationErrors = null;
+        }
     }
 }

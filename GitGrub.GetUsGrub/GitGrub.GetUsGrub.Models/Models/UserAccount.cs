@@ -1,14 +1,11 @@
-﻿using FluentValidation.Attributes;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GitGrub.GetUsGrub.Models
 {
-    [Validator(typeof(UserAccountValidator))]
-    [Table("UserAccount")]
-    public class UserAccount : IUserAccount
+    [Table("GetUsGrub.UserAccount")]
+    public class UserAccount
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -22,7 +19,12 @@ namespace GitGrub.GetUsGrub.Models
         [Required]
         public string Password { get; set; }
 
-        [Required]
+        public string AccountType { get; set; }
+
         public bool IsActive { get; set; }
     }
 }
+
+﻿using System.ComponentModel.DataAnnotations;
+
+    public class UserAccount : IUserAccount

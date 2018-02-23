@@ -47,15 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gateways\RestaurantUserGateway.cs" />
-    <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Interfaces\IRestaurantUserGateway.cs" />
-    <Compile Include="Interfaces\IUserGateway.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\201802230256456_InitialAuthN.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,7 @@ namespace GitGrub.GetUsGrub
             }
         }
 
+
         public static string CreateRandomSalt(int length)
         {
             using (var randomNumberProvider = new RNGCryptoServiceProvider())

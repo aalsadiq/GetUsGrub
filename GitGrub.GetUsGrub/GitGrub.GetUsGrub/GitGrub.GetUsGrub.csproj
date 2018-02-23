@@ -123,6 +123,8 @@
     <Compile Include="Managers\DeleteUserManager.cs" />
     <Compile Include="Managers\ReactivateUserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validations\Strategies\RegisterUserPreLogicStrategy.cs" />
+    <Compile Include="Validations\UserAccountValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

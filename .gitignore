@@ -18,3 +18,13 @@ GitGrub\.GetUsGrub/\.vs/GitGrub\.GetUsGrub/v15/Server/sqlite3/storage\.ide
 *.user
 
 GitGrub\.GetUsGrub/GitGrub\.GetUsGrub/obj/Debug/
+GitGrub.GetUsGrub/packages/MSTest.TestFramework.1.2.0/lib/net45/cs/Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+*.xml
+*.xml
+*.nupkg
+.DS_Store
+*.xdt
+*.xdt
+*.ide-shm
+*.ide-shm
+GitGrub.GetUsGrub/.vs/GitGrub.GetUsGrub/v15/Server/sqlite3/storage.ide-shm

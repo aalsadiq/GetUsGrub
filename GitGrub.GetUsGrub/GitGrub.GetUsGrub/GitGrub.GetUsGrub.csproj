@@ -104,7 +104,7 @@
     <Compile Include="App_Start\IoCConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\RegularProfileController.cs" />
+    <Compile Include="Controllers\IndividualProfileController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\RestaurantProfileController.cs" />
     <Compile Include="Global.asax.cs">
@@ -114,7 +114,7 @@
     <Compile Include="Helpers\PayloadHasher.cs" />
     <Compile Include="Interfaces\ICreateUserManager.cs" />
     <Compile Include="Managers\CreateUserManager.cs" />
-    <Compile Include="Managers\RegularProfileManager.cs" />
+    <Compile Include="Managers\IndividualProfileManager.cs" />
     <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -129,6 +129,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.DataAccess\GitGrub.GetUsGrub.DataAccess.csproj">
+      <Project>{fe808812-f501-4b71-af78-aeed5ec52960}</Project>
+      <Name>GitGrub.GetUsGrub.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
+      <Project>{c2d0900c-17e7-4829-b0df-d0ca96d63210}</Project>
+      <Name>GitGrub.GetUsGrub.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

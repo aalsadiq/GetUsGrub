@@ -1,13 +1,34 @@
-
-﻿using System.Collections.Generic;
+using GitGrub.GetUsGrub.Models;
+using GitGrub.GetUsGrub.Models.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+/// <summary>
+/// Restaurant profile class
+/// 
+/// Author: Andrew Kao
+/// Last Updated: 2/22/18
+/// </summary>
     [Table("GetUsGrub.RestaurantProfiles")]
     public class RestaurantProfile : IProfile, IRestaurantProfile, IRestaurantDetail
+    {
+        [Key]
+        public int Id { get; set; }
 
+        [ForeignKey("GetUsGrub.Users")]
+        public int ProfileId { get; set; }
+
+        public string ProfileName { get; set; }
+        
         public string ProfilePicture { get; set; }
 
         public string Category { get; set; }
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+        public double PhoneNumber { get; set; }
 
         [Column(TypeName = "text")]
         public IEnumerable<BusinessHours> BusinessSchedule { get; set; }
@@ -34,6 +55,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
         public bool? AllowsPets { get; set; }
 
+        public IList<IRestaurantMenu> Menus { get; set; }
+}
 
-
-        public IList<IRestaurantMenu> Menu { get; set; }
+        

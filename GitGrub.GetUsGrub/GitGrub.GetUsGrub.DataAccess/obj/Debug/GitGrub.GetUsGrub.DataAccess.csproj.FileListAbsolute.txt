@@ -111,3 +111,5 @@ C:\Users\Andrew\Documents\GitHub\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.D
 \\Mac\Home\Documents\GitHub\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\GitGrub.GetUsGrub.DataAccess.pdb
 \\Mac\Home\Documents\GitHub\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\GitGrub.GetUsGrub.DataAccess.Migrations.InitialMigration.resources
 \\Mac\Home\Documents\GitHub\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\GitGrub.GetUsGrub.DataAccess.csproj.GenerateResource.Cache
+C:\Users\Andrew\Documents\GitHub\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\GitGrub.GetUsGrub.DataAccess.dll
+C:\Users\Andrew\Documents\GitHub\GetUsGrub\GitGrub.GetUsGrub\GitGrub.GetUsGrub.DataAccess\obj\Debug\GitGrub.GetUsGrub.DataAccess.pdb

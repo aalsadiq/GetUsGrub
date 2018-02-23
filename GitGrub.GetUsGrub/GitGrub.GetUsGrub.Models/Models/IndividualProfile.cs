@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GitGrub.GetUsGrub.Models
 {
     /// <summary>
-    /// Regular user profile class
+    /// Individual user profile class
     /// 
     /// Author: Andrew Kao
-    /// Last Updated: 2/20/18
+    /// Last Updated: 2/21/18
     /// </summary>
     [Table("GetUsGrub.RegularProfile")]
-    public class RegularProfile : IProfile
+    public class IndividualProfile : IProfile
     {
         [Key]
         public int Id { get; set; }

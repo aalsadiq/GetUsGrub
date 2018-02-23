@@ -1,5 +1,5 @@
-﻿using System;
-using GitGrub.GetUsGrub.Models.DTOs;
+﻿using GitGrub.GetUsGrub.Helpers;
+using GitGrub.GetUsGrub.Models;
 
 namespace GitGrub.GetUsGrub.Managers
 {
@@ -7,71 +7,78 @@ namespace GitGrub.GetUsGrub.Managers
     /// Manager responsible for retrieving and editing restaurant profile information
     /// 
     /// Author: Andrew Kao
-    /// Last Updated: 2/21/18
+    /// Last Updated: 2/22/18
     /// </summary>
     public class RestaurantProfileManager
     {
-        private readonly RestaurantGateway _restaurantGateway;
-
-        // need to update with brian gateway
-        public RestaurantProfileManager(RestaurantGateway restaurantGateway)
-        {
-            _restaurantGateway = restaurantGateway;
-        }
-
         /// <summary>
-        /// Get restaurant profile by username
+        /// Retrieves restaurant profile information at username
         /// </summary>
         /// <param name="username"></param>
-        /// <returns>ResponseDto containing RestaurantDto containing user's restaurant profile information</returns>
+        /// <returns>Restaurant profile information encapsulatedin ResponseDto<RestaurantProfileDto></returns>
         public ResponseDto<RestaurantProfileDto> GetRestaurantProfile(string username)
         {
-            // call GetRestaurantProfileByUsername(string username) in gateway
-            RestaurantProfileDto profile = _restaurantGateway.GetRestaurantProfileByUsername(username);
-
             try
             {
-                ResponseDto<RestaurantProfileDto> response = new ResponseDto<RestaurantProfileDto>
+                using (var gateway = new RestaurantProfileGateway())
                 {
-                    Data = profile
-                };
-                return response;
+                    RestaurantProfileDto profile = gateway.GetRestaurantProfileByUsername(username);
+                    ResponseDto<RestaurantProfileDto> response = new ResponseDto<RestaurantProfileDto>
+                    {
+                        Data = profile
+                    };
+                    return response;
+                }
             }
 
-            catch (Exception e)
+            catch
             {
                 ResponseDto<RestaurantProfileDto> response = new ResponseDto<RestaurantProfileDto>
                 {
-                    Error = e
+                    Error = new CustomException("GetRestaurantProfile - Something went wrong.")
                 };
                 return response;
             }
         }
 
         /// <summary>
-        /// Edit restaurant profile by username
+        /// Edits restaurant profile information at username
         /// </summary>
-        /// <param name="editRestaurantProfileDto">Contains username and new restaurant profile information</param>
-        /// <returns>ResponseDto containing RestaurantProfileDto containing user's restaurant profile information</returns>
+        /// <param name="editRestaurantProfileDto">Contains username and restaurant profile information</param>
+        /// <returns>Returns true if edit is successful</returns>
         public ResponseDto<bool> EditRestaurantProfile(EditRestaurantProfileDto editRestaurantProfileDto)
         {
-            // call EditRestaurantProfileByUsername(EditRestaurantProfileDto editRestaurantProfileDto) in gateway
-            bool isEditSuccessful = _restaurantGateway.EditRestaurantProfileByUsername(editRestaurantProfileDto);
-
             try
             {
-                ResponseDto<bool> response = new ResponseDto<bool>
+                using (var gateway = new RestaurantProfileGateway())
                 {
-                    Data = isEditSuccessful
-                };
-                return response;
+                    bool isEditSuccessful = gateway.EditRestaurantProfileByUsername(editRestaurantProfileDto);
+
+                    if (isEditSuccessful == true)
+                    {
+                        ResponseDto<bool> response = new ResponseDto<bool>
+                        {
+                            Data = isEditSuccessful
+                        };
+                        return response;
+                    }
+
+                    else
+                    {
+                        ResponseDto<bool> response = new ResponseDto<bool>
+                        {
+                            Error = new CustomException("Restaurant profile failed to update.")
+                        };
+                        return response;
+                    }
+                }
             }
 
-            catch (Exception e)
+            catch
             {
                 ResponseDto<bool> response = new ResponseDto<bool>
                 {
-                    Error = e
+                    Error = new CustomException("EditRestaurantProfile - Something went wrong.")
                 };
                 return response;
             }

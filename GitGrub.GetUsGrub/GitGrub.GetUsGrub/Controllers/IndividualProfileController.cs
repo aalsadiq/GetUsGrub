@@ -2,7 +2,7 @@
 using System.Web.Http;
 using System.Web.Http.Cors;
 using GitGrub.GetUsGrub.Managers;
-using GitGrub.GetUsGrub.Models.DTOs;
+using GitGrub.GetUsGrub.Models;
 
 namespace GitGrub.GetUsGrub.Controllers
 {
@@ -15,23 +15,23 @@ namespace GitGrub.GetUsGrub.Controllers
     [EnableCorsAttribute("*", "*", "*")]
     [Authorize]
     [RoutePrefix("api/profile")]
-    public class RegularProfileController : ApiController
+    public class IndividualProfileController : ApiController
     {
-        private readonly RegularProfileManager _profileManager;
+        private readonly IndividualProfileManager _profileManager;
        
-        public RegularProfileController(RegularProfileManager profileManager)
+        public IndividualProfileController(IndividualProfileManager profileManager)
         {
             _profileManager = profileManager;
         }
 
-        // GET api/profile/getregularprofile
+        // GET api/profile/getindividualprofile
         [HttpGet]
-        [Route("getregularprofile")]
-        public IHttpActionResult GetRegularProfile([FromBody] string username)
+        [Route("getindividualprofile")]
+        public IHttpActionResult GetIndividualProfile([FromBody] string username)
         {
             try
             {
-                ResponseDto<RegularProfileDto> response = _profileManager.GetRegularProfile(username);
+                ResponseDto<IndividualProfileDto> response = _profileManager.GetIndividualProfile(username);
                 return Ok(response);
             }
 
@@ -41,10 +41,10 @@ namespace GitGrub.GetUsGrub.Controllers
             }
         }
 
-        // PUT api/profile/editregularprofile
+        // PUT api/profile/editindividualprofile
         [HttpPut]
-        [Route("editregularprofile")]
-        public IHttpActionResult EditRegularProfile([FromBody] EditRegularProfileDto editRegularProfileDto)
+        [Route("editindividualprofile")]
+        public IHttpActionResult EditIndividualProfile([FromBody] EditIndividualProfileDto editIndividualProfileDto)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +53,7 @@ namespace GitGrub.GetUsGrub.Controllers
 
             try
             {
-                ResponseDto<bool> response = _profileManager.EditRegularProfile(editRegularProfileDto);
+                ResponseDto<bool> response = _profileManager.EditIndividualProfile(editIndividualProfileDto);
                 return Ok("Profile has been successfully updated.");
             }
 

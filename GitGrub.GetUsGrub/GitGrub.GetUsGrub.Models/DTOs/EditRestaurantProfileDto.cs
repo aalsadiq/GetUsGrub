@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
-using GitGrub.GetUsGrub.Models.Interfaces;
-using GitGrub.GetUsGrub.Models.Models;
 
-namespace GitGrub.GetUsGrub.Models.DTOs
+namespace GitGrub.GetUsGrub.Models
 {
     /// <summary>
-    /// DTO representing the restaurant profile information that can be edited
+    /// DTO encapsulating username and editable restaurant profile information
+    /// 
+    /// Author: Andrew Kao
+    /// Last Updated: 2/22/18
     /// </summary>
-    public class EditRestaurantProfileDto : IProfile, IRestaurantProfile, IRestaurantDetails
+    public class EditRestaurantProfileDto : IProfile, IRestaurantProfile, IRestaurantDetail
     {
-        public string Username { get; set; }
+        public string Username { get; }
         public string ProfileName { get; set; }
         public string ProfilePicture { get; set; }
         public string Street { get; set; }
@@ -32,6 +33,6 @@ namespace GitGrub.GetUsGrub.Models.DTOs
         public bool? HasDriveThru { get; set; }
         public bool? Caters { get; set; }
         public bool? AllowsPets { get; set; }
-        public List<RestaurantMenu> Menus { get; set; }
+        public IList<IRestaurantMenu> Menus { get; set; }
     }
 }

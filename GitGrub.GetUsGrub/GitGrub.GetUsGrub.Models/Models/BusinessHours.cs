@@ -1,4 +1,4 @@
-﻿namespace GitGrub.GetUsGrub.Models.Models
+﻿namespace GitGrub.GetUsGrub.Models
 {
     /// <summary>
     /// Business hours class
@@ -8,8 +8,10 @@
     /// </summary>
     public class BusinessHours
     {
-        private string Day { get; set; }
-        private int OpenTime { get; set; }
-        private int CloseTime { get; set; }
+        public string Day { get; set; }
+
+        public int OpenTime { get; set; }
+
+        public int CloseTime { get; set; }
     }
 }

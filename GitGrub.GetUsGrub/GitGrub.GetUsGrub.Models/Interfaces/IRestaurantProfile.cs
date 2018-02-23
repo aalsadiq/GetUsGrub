@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using GitGrub.GetUsGrub.Models.Models;
 
-namespace GitGrub.GetUsGrub.Models.Interfaces
+namespace GitGrub.GetUsGrub.Models
 {
     /// <summary>
     /// Interface representing restaurant information
@@ -11,13 +10,16 @@ namespace GitGrub.GetUsGrub.Models.Interfaces
     /// </summary>
     public interface IRestaurantProfile
     {
-        IList<IRestaurantMenu> Menu { get; set; }
+        IList<IRestaurantMenu> Menus { get; set; }
 
         double Latitude { get; set; }
 
         double Longitude { get; set; }
+
         IEnumerable<BusinessHours> BusinessSchedule { get; set; }
+
         string Category { get; set; }
+
         double PhoneNumber { get; set; }
     }
 }

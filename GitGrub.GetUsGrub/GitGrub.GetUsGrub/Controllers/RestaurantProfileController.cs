@@ -2,7 +2,7 @@
 using System.Web.Http;
 using System.Web.Http.Cors;
 using GitGrub.GetUsGrub.Managers;
-using GitGrub.GetUsGrub.Models.DTOs;
+using GitGrub.GetUsGrub.Models;
 
 namespace GitGrub.GetUsGrub.Controllers
 {

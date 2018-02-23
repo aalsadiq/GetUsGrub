@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.Models
     /// Restaurant menu item class
     /// 
     /// Author: Andrew Kao
-    /// Last Updated: 2/20/18
+    /// Last Updated: 2/21/18
     /// </summary>
     [Table("GetUsGrub.RestaurantMenuItems")]
     public class RestaurantMenuItem : IMenuItem

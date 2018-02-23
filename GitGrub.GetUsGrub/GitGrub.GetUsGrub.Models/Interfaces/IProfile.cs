@@ -1,4 +1,4 @@
-﻿namespace GitGrub.GetUsGrub.Models.Interfaces
+﻿namespace GitGrub.GetUsGrub.Models
 {
     /// <summary>
     /// Interface representing basic profile information
@@ -8,8 +8,8 @@
     /// </summary>
     interface IProfile
     {
-        int Id { get; set; }
         string ProfileName { get; set; }
+
         string ProfilePicture { get; set; }
     }
 }

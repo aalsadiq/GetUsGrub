@@ -8,7 +8,7 @@ namespace GitGrub.GetUsGrub.UserAccessControl
     /// Create a new ClaimsPrincipal with the user's claims
     /// 
     /// Author: Rachel Dang
-    /// Last Updated: 2/21/18
+    /// Last Updated: 2/22/18
     /// </summary>
     public class ClaimsTransformer : ClaimsAuthenticationManager
     {
@@ -33,31 +33,20 @@ namespace GitGrub.GetUsGrub.UserAccessControl
         }
 
         /// <summary>
-        /// Get list of claims from database given the Username
-        /// </summary>
-        /// <param name="Username"></param>
-        /// <returns>User's list of claims</returns>
-        public IEnumerable<Claim> GetClaims(string username)
-        {
-            // Placeholder
-            var claims = new List<Claim>
-            {
-                new Claim(ResourceConstant.RESOURCETYPE_PROFILE, ActionConstant.ACTIONTYPE_READ)
-            };
-
-            // Return the user's list of claims
-            return claims;
-        }
-
-        /// <summary>
         /// Generate ClaimsIdentity and ClaimsPrincipal given the Username
         /// </summary>
         /// <param name="username"></param>
         /// <returns>The new ClaimsPrincipal</returns>
         public ClaimsPrincipal CreatePrincipal(string username)
         {
-            // Get user's list of claims
-            var claims = GetClaims(username);
+            // [PLACEHOLDER]
+            var claims = new List<Claim> { };
+
+            // Using DataAccess
+            // using (var gateway = new AuthorizationContext())
+            // {
+            //     claims = gateway.GetClaimsByUsername(username);
+            // }
 
             // Create ClaimsIdentity with the list of claims
             var id = new ClaimsIdentity(claims, "custom");

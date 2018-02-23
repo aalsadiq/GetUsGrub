@@ -14,29 +14,25 @@
   export default {
     name: 'DictionaryInput',
     components: {
-
+      
     },
     data() {
       return {
-        show: false
       }
     },
     methods: {
-      log: function () {
-        console.log(this.$refs);
-      },
-
       AddToDictionary: function (menuItemName, menuItemPrice) {
-        this.$store.dispatch('AddToDictionary', [menuItemName, menuItemPrice]);
+        if (this.ValidateDictionaryForm(menuItemName, menuItemPrice)) 
+          this.$store.dispatch('AddToDictionary', [menuItemName, menuItemPrice]);
       },
-
-      RemoveFromDictionary: function () {
-        console.log(this.$refs);
-      },
-
-      getDictionaryItem: function () {
-
-      }
+      ValidateDictionaryForm: function (menuItemName, menuItemPrice) {
+        if (!menuItemName || !menuItemPrice)
+          return false;
+        else if (menuItemPrice <= this.$store.state.MINIMUM_MENU_ITEM_PRICE || menuItemPrice > this.$store.state.MAX_MENU_ITEM_PRICE)
+          return false;
+        else
+          return true;  
+      }      
     },
     computed: {
       MenuItems() {
@@ -51,5 +47,6 @@
     grid-column: 3;
     grid-row: 1;
     outline: dashed;
+    padding: 20px;
   }
 </style>

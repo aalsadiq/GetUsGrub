@@ -20,7 +20,6 @@ const router = new VueRouter({
   routes: Routes
 });
 
-
 const app = new Vue({
   el: '#app',
   router: router,

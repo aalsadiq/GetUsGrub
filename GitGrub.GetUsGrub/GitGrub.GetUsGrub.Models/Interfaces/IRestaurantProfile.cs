@@ -4,20 +4,16 @@ namespace GitGrub.GetUsGrub.Models
 {
     interface IRestaurantProfile
     {
-        string Category { get; set; }
+        IList<IRestaurantMenu> Menus { get; set; }
+
+        double Latitude { get; set; }
+
+        double Longitude { get; set; }
+
         IEnumerable<BusinessHours> BusinessSchedule { get; set; }
-        bool Reservations { get; set; }
-        bool Delivery { get; set; }
-        bool TakeOut { get; set; }
-        bool AcceptCreditCards { get; set; }
-        string Attire { get; set; }
-        bool ServesAlcohol { get; set; }
-        bool OutdoorSeating { get; set; }
-        bool HasTV { get; set; }
-        bool DriveThru { get; set; }
-        bool Caters { get; set; }
-        bool Pet { get; set; }
-        string PhoneNumber { get; set; }
-        IList<RestaurantMenuItem> Menu { get; set; }
+
+        string Category { get; set; }
+
+        double PhoneNumber { get; set; }
     }
 }

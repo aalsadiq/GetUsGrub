@@ -6,6 +6,12 @@ using GitGrub.GetUsGrub.Models.Models;
 
 namespace GitGrub.GetUsGrub
 {
+    /// <summary>
+    /// Manager that deals with user creation and registration.
+    /// 
+    /// Author: Jenn Nguyen
+    /// Last Updated: 2/18/18
+    /// </summary>
     public class CreateUserManager : ICreateUserManager
     {
         private readonly ISalt _salt = new PasswordSalt();

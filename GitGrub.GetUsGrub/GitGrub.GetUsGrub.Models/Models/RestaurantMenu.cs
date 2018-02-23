@@ -4,10 +4,13 @@ namespace GitGrub.GetUsGrub.Models
 {
     public class RestaurantMenu : IRestaurantMenu
     {
-        public int Id { get; set; }
-
+        /// <summary>
+        /// Restaurant menu class
+        /// 
+        /// Author: Andrew Kao
+        /// Last Updated: 2/22/18
+        /// </summary>
         public string MenuName { get; set; }
-
         public IEnumerable<IMenuItem> Items { get; set; }
     }
 }

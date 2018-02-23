@@ -2,6 +2,12 @@
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// Interface representing additional restaurant information
+    /// 
+    /// Author: Andrew Kao
+    /// Last Updated: 2/22/18
+    /// </summary>
     public interface IRestaurantDetail
     {
         string Category { get; set; }

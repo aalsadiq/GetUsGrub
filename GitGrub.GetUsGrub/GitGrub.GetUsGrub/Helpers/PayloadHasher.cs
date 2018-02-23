@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GitGrub.GetUsGrub.Helpers
+namespace GitGrub.GetUsGrub
 {
     public class PayloadHasher
     {
@@ -15,12 +15,21 @@ namespace GitGrub.GetUsGrub.Helpers
                 byte[] hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(saltAndPayload));
                 string hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
 
-                // Set byte array to all zeros
-                Array.Clear(hashedPayloadBytes, 0, hashedPayloadBytes.Length);
+                return hashedPayload;
+            }
+        }
+
+        public static string HashWithNoSalt(string payload)
+        {
+            using (var hashProvider = new SHA256Cng())
+            {
+                byte[] hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(payload));
+                string hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
 
                 return hashedPayload;
             }
         }
+
 
         public static string CreateRandomSalt(int length)
         {
@@ -29,9 +38,6 @@ namespace GitGrub.GetUsGrub.Helpers
                 byte[] randomBytes = new byte[length];
                 randomNumberProvider.GetBytes(randomBytes);
                 string randomString = Convert.ToBase64String(randomBytes);
-
-                // Set byte array to all zeros
-                Array.Clear(randomBytes, 0, randomBytes.Length);
 
                 return randomString;
             }

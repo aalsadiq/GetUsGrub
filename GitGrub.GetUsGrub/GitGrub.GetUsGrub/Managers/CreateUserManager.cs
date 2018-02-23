@@ -1,57 +1,106 @@
-﻿using GitGrub.GetUsGrub.Helpers;
-using GitGrub.GetUsGrub.Interfaces;
-using GitGrub.GetUsGrub.Models.DTOs;
-using GitGrub.GetUsGrub.Models.Interfaces;
-using GitGrub.GetUsGrub.Models.Models;
+﻿using GitGrub.GetUsGrub.DataAccess;
+using GitGrub.GetUsGrub.Models;
 
-namespace GitGrub.GetUsGrub.Managers
+namespace GitGrub.GetUsGrub
 {
-    /// <summary>
-    /// Manager that deals with user creation and registration.
-    /// 
-    /// Author: Jenn Nguyen
-    /// Last Updated: 2/18/18
-    /// </summary>
     public class CreateUserManager : ICreateUserManager
     {
-        private readonly ISalt _salt = new PasswordSalt();
-        private readonly IValidateGateway _validateGateway;
-
-        /// <summary>
-        /// Basic constructor.
-        /// </summary>
-        /// <param name="validateGateway">Validation gateway to bind to the manager upon instantiation.</param>
-        public CreateUserManager(IValidateGateway validateGateway)
-        {
-            _validateGateway = validateGateway;
-        }
-
-        /// <summary>
-        /// Checks if the username of the registering user already exists in the data store.
-        /// </summary>
-        /// <param name="registerUserWithSecurityDto">DTO of user.</param>
-        /// <returns>True if user doesn't exist. Throws exception otherwise.</returns>
-        public bool CheckIfUserExists(RegisterUserWithSecurityDto registerUserWithSecurityDto)
+        public ResponseDto<RegisterUserDto> CheckIfUserExists(ResponseDto<RegisterUserDto> registerUserResponseDto)
         {
             try
             {
-                var result = _validateGateway.CheckIfUserExists(registerUserWithSecurityDto);
-
-                return result;
+                using (var gateway = new UserGateway())
+                {
+                    var getUserResult = gateway.GetUserByUsername(registerUserResponseDto.Data.Username);
+                    // getUserResult.Username
+                    if (registerUserResponseDto.Data.Username != getUserResult.Username)
+                    {
+                        return registerUserResponseDto;
+                    }
+                    else
+                    {
+                        //var responseDtoError = ErrorHandler<RegisterUserDto>.SetUserExistsError(registerUserResponseDto);
+                        var responseDtoError = ErrorHandler<RegisterUserDto>.SetCustomError(registerUserResponseDto, "CreateUserManager - CheckIfUserExists");
+                        return responseDtoError;
+                    }
+                }
             }
-            catch(Exception e)
+            catch
             {
-                return false;
+                //var responseDtoError = ErrorHandler<RegisterUserDto>.SetGeneralError(registerUserResponseDto);
+                var responseDtoError = ErrorHandler<RegisterUserDto>.SetCustomError(registerUserResponseDto, "CreateUserManager - CheckIfUserExists - Catch");
+                return responseDtoError;
             }
         }
 
-        public bool HashPassword(RegisterUserWithSecurityDto registerUserWithSecurityDto)
+        public ResponseDto<RegisterUserDto> HashPassword(ResponseDto<RegisterUserDto> registerUserResponseDto, ISalt salt)
         {
-            var randomSalt = PayloadHasher.CreateRandomSalt(128);
-            _salt.Salt = randomSalt;
-            var passwordHash = PayloadHasher.HashPayload(_salt.Salt, registerUserWithSecurityDto.Password);
-            registerUserWithSecurityDto.Password = passwordHash;
-            return true;
+            try
+            {
+                var randomSalt = PayloadHasher.CreateRandomSalt(128);
+                salt.Salt = randomSalt;
+                var passwordHash = PayloadHasher.HashPayload(salt.Salt, registerUserResponseDto.Data.Password);
+                if (registerUserResponseDto.Data.Password != null &&
+                    registerUserResponseDto.Data.Password != passwordHash)
+                {
+                    registerUserResponseDto.Data.Password = passwordHash;
+                    return registerUserResponseDto;
+                }
+                else
+                {
+                    //var responseDtoError = ErrorHandler<RegisterUserDto>.SetGeneralError(registerUserResponseDto);
+                    var responseDtoError = ErrorHandler<RegisterUserDto>.SetCustomError(registerUserResponseDto, "CreateUserManager - HashPassword");
+                    return responseDtoError;
+                }
+            }
+            catch
+            {
+                //var responseDtoError = ErrorHandler<RegisterUserDto>.SetGeneralError(registerUserResponseDto);
+                var responseDtoError = ErrorHandler<RegisterUserDto>.SetCustomError(registerUserResponseDto, "CreateUserManager - HashPassword - Catch");
+                return responseDtoError;
+            }
+        }
+
+        public ResponseDto<RegisterUserDto> CreateNewUser(ResponseDto<RegisterUserDto> registerUserResponseDto)
+        {
+            try
+            {
+                using (var gateway = new UserGateway())
+                {
+                    var storeUserResult = gateway.StoreUser(registerUserResponseDto.Data);
+                    if (storeUserResult)
+                    {
+                        return registerUserResponseDto;
+                    }
+                    else
+                    {
+                        //var responseDtoError = ErrorHandler<RegisterUserDto>.SetGeneralError(registerUserResponseDto);
+                        var responseDtoError = ErrorHandler<RegisterUserDto>.SetCustomError(registerUserResponseDto, "CreateUserManager - CreateNewUser");
+                        return responseDtoError;
+                    }
+                }
+            }
+            catch
+            {
+                //var responseDtoError = ErrorHandler<RegisterUserDto>.SetGeneralError(registerUserResponseDto);
+                var responseDtoError = ErrorHandler<RegisterUserDto>.SetCustomError(registerUserResponseDto, "CreateUserManager - CreateNewUser - Catch");
+                return responseDtoError;
+            }
+        }
+
+        public ResponseDto<RegisterUserDto> CreateClaims(ResponseDto<RegisterUserDto> registerUserResponseDto)
+        {
+            // Based on Account Type
+            try
+            {
+                return registerUserResponseDto;
+            }
+            catch
+            {
+                //var responseDtoError = ErrorHandler<RegisterUserDto>.SetGeneralError(registerUserResponseDto);
+                var responseDtoError = ErrorHandler<RegisterUserDto>.SetCustomError(registerUserResponseDto, "CreateUserManager - CreateClaims - Catch");
+                return responseDtoError;
+            }
         }
     }
 }

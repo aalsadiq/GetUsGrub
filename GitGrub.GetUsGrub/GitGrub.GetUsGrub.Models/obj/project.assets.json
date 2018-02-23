@@ -186,11 +186,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
+      "projectUniqueName": "\\\\Mac\\Home\\Downloads\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
       "projectName": "GitGrub.GetUsGrub.Models",
-      "projectPath": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
+      "projectPath": "\\\\Mac\\Home\\Downloads\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\GitGrub.GetUsGrub.Models.csproj",
       "packagesPath": "C:\\Users\\brianfann\\.nuget\\packages\\",
-      "outputPath": "\\\\Mac\\Home\\Documents\\GitHub\\GetUsGrub\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\obj\\",
+      "outputPath": "\\\\Mac\\Home\\Downloads\\GitGrub.GetUsGrub\\GitGrub.GetUsGrub.Models\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

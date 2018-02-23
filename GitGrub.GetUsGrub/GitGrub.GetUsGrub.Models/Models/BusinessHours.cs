@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GitGrub.GetUsGrub.Models
+﻿namespace GitGrub.GetUsGrub.Models
 {
     /// <summary>
     /// Business hours class
@@ -10,6 +6,7 @@ namespace GitGrub.GetUsGrub.Models
     /// Author: Andrew Kao
     /// Last Updated: 2/20/18
     /// </summary>
+    [System.Serializable]
     public class BusinessHours
     {
         private string Day { get; set; }

@@ -2,8 +2,6 @@
 {
     public interface IMenuItem
     {
-        int Id { get; set; }
-
         string ItemName { get; set; }
 
         double ItemPrice { get; set; }

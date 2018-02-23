@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GitGrub.GetUsGrub.Models": {
+      "commandName": "Project",
+      "workingDirectory": "\\\\Mac\\Home\\Downloads\\GitGrub.GetUsGrub"
+    }
+  }
+}

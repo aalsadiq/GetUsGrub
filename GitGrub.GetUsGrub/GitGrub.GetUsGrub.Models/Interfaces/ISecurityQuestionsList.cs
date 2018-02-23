@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GitGrub.GetUsGrub.Models.Interfaces
+namespace GitGrub.GetUsGrub.Models
 {
     public interface ISecurityQuestionsList
     {

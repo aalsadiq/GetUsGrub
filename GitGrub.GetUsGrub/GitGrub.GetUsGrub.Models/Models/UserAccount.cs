@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GitGrub.GetUsGrub.Models
 {
-    [Table("GetUsGrub.UserAccount")]
-    public class UserAccount
+    public class UserAccount : IUserAccount
     {
-        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Required username.")]
@@ -15,8 +12,6 @@ namespace GitGrub.GetUsGrub.Models
         // Stored as a hash
         [Required(ErrorMessage = "Required password.")]
         public string Password { get; set; }
-
-        public string AccountType { get; set; }
 
         public bool IsActive { get; set; }
     }

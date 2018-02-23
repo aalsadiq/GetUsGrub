@@ -1,10 +1,11 @@
-﻿using GitGrub.GetUsGrub.Models.DTOs;
+﻿using GitGrub.GetUsGrub.Models;
 
-namespace GitGrub.GetUsGrub.Interfaces
+namespace GitGrub.GetUsGrub
 {
     public interface ICreateUserManager
     {
-        bool CheckIfUserExists(RegisterUserWithSecurityDto registerUserWithSecurityDto);
-        bool HashPassword(RegisterUserWithSecurityDto registerUserWithSecurityDto);
+        ResponseDto<RegisterUserDto> CheckIfUserExists(ResponseDto<RegisterUserDto> responseDto);
+        ResponseDto<RegisterUserDto> HashPassword(ResponseDto<RegisterUserDto> responseDto, ISalt salt);
+        ResponseDto<RegisterUserDto> CreateNewUser(ResponseDto<RegisterUserDto> responseDto);
     }
 }

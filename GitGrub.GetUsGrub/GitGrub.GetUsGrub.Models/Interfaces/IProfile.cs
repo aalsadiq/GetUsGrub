@@ -6,9 +6,8 @@
     /// Author: Andrew Kao
     /// Last Updated: 2/20/18
     /// </summary>
-    interface IProfile
+    public interface IProfile
     {
-        int Id { get; set; }
         string ProfileName { get; set; }
         string ProfilePicture { get; set; }
     }

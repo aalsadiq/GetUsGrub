@@ -1,17 +1,22 @@
 <template>
   <div class="dictionary">
     <h2>Dictionary</h2>
-    <draggable class="menu" :list="MenuItems" :options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
+    <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(element, index) in MenuItems" :key="element.id">
         {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}
-        <btn type="primary" size="xs">
-          <!--v-on:click="EditDictionaryFoodItem"-->
+        <btn type="primary" size="xs" v-on:click="edit">
           Edit
         </btn>
         <btn type="danger" size="xs" v-on:click="RemoveFromDictionary(index)">
           Delete
         </btn>
-        .
+        <form v-if="edit">
+          <label>Enter Food Item Name</label>
+          <input type="text" ref="menuItemName" required />
+          <br />
+          <label>Enter Food Item Price</label>
+          <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
+        </form>
       </div>
 
     </draggable>
@@ -26,6 +31,11 @@
     components: {
       draggable
     },
+    data() {
+      return {
+
+      }
+    }
     methods: {
       RemoveFromDictionary: function (index) {
         console.log(index);

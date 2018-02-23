@@ -5,41 +5,43 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    MINIMUM_MENU_ITEM_PRICE: 0.01,
+    MAX_MENU_ITEM_PRICE: 1000,
     MenuItems: [
-      {
-        menuItemName: 'Big Mac',
-        menuItemPrice: 4.00
-      },
-      {
-        menuItemName: 'Large Fries',
-        menuItemPrice: 2.50
-      },
-      {
-        menuItemName: 'McFlurry',
-        menuItemPrice: 1.00
-      },
-      {
-        menuItemName: 'Large Soft Drink',
-        menuItemPrice: 2.00
-      },
-      {
-        menuItemName: 'McChicken',
-        menuItemPrice: 1.50
-      },
-      {
-        menuItemName: 'Water Bottle',
-        menuItemPrice: 10.50
-      }
+      //{
+      //  menuItemName: 'Big Mac',
+      //  menuItemPrice: 4.00
+      //},
+      //{
+      //  menuItemName: 'Large Fries',
+      //  menuItemPrice: 2.50
+      //},
+      //{
+      //  menuItemName: 'McFlurry',
+      //  menuItemPrice: 1.00
+      //},
+      //{
+      //  menuItemName: 'Large Soft Drink',
+      //  menuItemPrice: 2.00
+      //},
+      //{
+      //  menuItemName: 'McChicken',
+      //  menuItemPrice: 1.50
+      //},
+      //{
+      //  menuItemName: 'Water Bottle',
+      //  menuItemPrice: 10.50
+      //}
     ],
     BillItems: [
-      MenuItems: {
-        menuItemName: '',
-        menuItemPrice 0
-      }
     ]
   },
   getters: {
-
+    totalPrice: state => {
+      var totalPrice = this.$store.state.BillItems.map(BillItems => {
+        return state.BillItems.menuItemPrice;        
+      })
+    }
   },
   mutations: {
     AddToDictionary: (state, payload) => {
@@ -65,17 +67,17 @@ export const store = new Vuex.Store({
         console.log("Added Food Item Name: " +payload[0]);
         console.log("Added Food Item Price: " +payload[1]);
         context.commit('AddToDictionary', payload)
-      }, 1000)
+      }, 500)
     },
     RemoveFromDictionary: (context, payload) => {
       setTimeout(function () {
         context.commit('RemoveFromDictionary', payload)
-      }, 1000)
+      }, 500)
     },
     RemoveFromBill: (context, payload) => {
       setTimeout(function () {
         context.commit('RemoveFromBill', payload)
-      }, 1000)
+      }, 500)
     }
   }
 })

@@ -18,14 +18,21 @@
     },
     data() {
       return {
-        show: false
       }
     },
     methods: {
       AddToDictionary: function (menuItemName, menuItemPrice) {
-        // Parameters have to be placed into an array because dispatch can only take two. The name and the payload.
-        this.$store.dispatch('AddToDictionary', [menuItemName, menuItemPrice]);
-      }
+        if (this.ValidateDictionaryForm(menuItemName, menuItemPrice)) 
+          this.$store.dispatch('AddToDictionary', [menuItemName, menuItemPrice]);
+      },
+      ValidateDictionaryForm: function (menuItemName, menuItemPrice) {
+        if (!menuItemName || !menuItemPrice)
+          return false;
+        else if (menuItemPrice <= this.$store.state.MINIMUM_MENU_ITEM_PRICE || menuItemPrice > this.$store.state.MAX_MENU_ITEM_PRICE)
+          return false;
+        else
+          return true;  
+      }      
     },
     computed: {
       MenuItems() {

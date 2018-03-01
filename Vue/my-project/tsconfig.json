@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./built/",
+    "sourceMap": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
+    "experimentalDecorators": true, // Enables use of Decorators to Define a Component
+    "allowJs": true
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

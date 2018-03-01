@@ -135,7 +135,6 @@
             </summary>
             <param name="predicate">The asynchronous condition that should apply to multiple rules</param>
             <param name="action">Action that encapsulates the rules.</param>
-            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
         <member name="M:FluentValidation.AbstractValidator`1.WhenAsync(System.Func{`0,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Boolean}},System.Action)">
@@ -1521,6 +1520,16 @@
             If set to 'Continue' then all validators in the chain will execute regardless of failures.
             </summary>
         </member>
+        <member name="M:FluentValidation.DefaultValidatorOptions.Transform``2(FluentValidation.IRuleBuilderInitial{``0,``1},System.Func{``1,``1})">
+            <summary>
+            Transforms the property value before validation occurs. The transformed value must be of the same type as the input value. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TProperty"></typeparam>
+            <param name="ruleBuilder"></param>
+            <param name="transformactionFunc"></param>
+            <returns></returns>
+        </member>
         <member name="M:FluentValidation.DefaultValidatorOptions.OnAnyFailure``2(FluentValidation.IRuleBuilderOptions{``0,``1},System.Action{``0})">
             <summary>
             Specifies a custom action to be invoked when the validator fails. 
@@ -1632,7 +1641,7 @@
             <param name="applyConditionTo">Whether the condition should be applied to the current rule or all rules in the chain</param>
             <returns></returns>
         </member>
-        <member name="M:FluentValidation.DefaultValidatorOptions.DependentRules``2(FluentValidation.IRuleBuilderOptions{``0,``1},System.Action{FluentValidation.IValidator{``0}})">
+        <member name="M:FluentValidation.DefaultValidatorOptions.DependentRules``2(FluentValidation.IRuleBuilderOptions{``0,``1},System.Action{FluentValidation.InlineValidator{``0}})">
             <summary>
             Triggers an action when the rule passes. Typically used to configure dependent rules. This applies to all preceding rules in the chain. 
             </summary>
@@ -1788,6 +1797,21 @@
             <summary>
             Allows configuration of the validator.
             </summary>
+        </member>
+        <member name="T:FluentValidation.Internal.AccessorCache`1">
+            <summary>
+            Member accessor cache.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:FluentValidation.Internal.AccessorCache`1.GetCachedAccessor``1(System.Reflection.MemberInfo,System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Gets an accessor func based on an expression
+            </summary>
+            <typeparam name="TProperty"></typeparam>
+            <param name="member">The member represented by the expression</param>
+            <param name="expression"></param>
+            <returns>Accessor func</returns>
         </member>
         <member name="T:FluentValidation.Internal.CollectionPropertyRule`1">
             <summary>
@@ -1958,6 +1982,11 @@
             <param name="predicate"></param>
             <param name="applyConditionTo"></param>
         </member>
+        <member name="T:FluentValidation.Internal.DisplayNameCache">
+            <summary>
+            Display name cache.
+            </summary>
+        </member>
         <member name="T:FluentValidation.Internal.Extensions">
             <summary>
             Useful extensions
@@ -2007,41 +2036,6 @@
             </summary>
             <param name="configurator">Action to configure the object.</param>
             <returns></returns>
-        </member>
-        <member name="T:FluentValidation.Internal.InstanceCache">
-            <summary>
-            Instancace cache.
-            </summary>
-        </member>
-        <member name="M:FluentValidation.Internal.InstanceCache.GetOrCreateInstance(System.Type)">
-            <summary>
-            Gets or creates an instance using Activator.CreateInstance
-            </summary>
-            <param name="type">The type to instantiate</param>
-            <returns>The instantiated object</returns>
-        </member>
-        <member name="M:FluentValidation.Internal.InstanceCache.GetOrCreateInstance(System.Type,System.Func{System.Type,System.Object})">
-            <summary>
-            Gets or creates an instance using a custom factory
-            </summary>
-            <param name="type">The type to instantiate</param>
-            <param name="factory">The custom factory</param>
-            <returns>The instantiated object</returns>
-        </member>
-        <member name="T:FluentValidation.Internal.AccessorCache`1">
-            <summary>
-            Member accessor cache.
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:FluentValidation.Internal.AccessorCache`1.GetCachedAccessor``1(System.Reflection.MemberInfo,System.Linq.Expressions.Expression{System.Func{`0,``0}})">
-            <summary>
-            Gets an accessor func based on an expression
-            </summary>
-            <typeparam name="TProperty"></typeparam>
-            <param name="member">The member represented by the expression</param>
-            <param name="expression"></param>
-            <returns>Accessor func</returns>
         </member>
         <member name="T:FluentValidation.Internal.IValidatorSelector">
             <summary>

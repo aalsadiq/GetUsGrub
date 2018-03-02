@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6641B92B-4249-4CEF-A208-16F9A7E968E4}</ProjectGuid>
+    <ProjectGuid>{FAD1AE0D-7CDB-4EA3-9A58-92138265D738}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GitGrub.GetUsGrub.UserAccessControl</RootNamespace>
     <AssemblyName>GitGrub.GetUsGrub.UserAccessControl</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -42,13 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Factories\ClaimsFactory.cs" />
-    <Compile Include="Managers\AuthorizationManager.cs" />
-    <Compile Include="Managers\ClaimsTransformer.cs" />
-    <Compile Include="Models\ActionConstant.cs" />
-    <Compile Include="Models\ResourceConstant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Factories\" />
+    <Folder Include="Managers\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

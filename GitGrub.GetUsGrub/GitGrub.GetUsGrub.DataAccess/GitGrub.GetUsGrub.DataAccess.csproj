@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FE808812-F501-4B71-AF78-AEED5EC52960}</ProjectGuid>
+    <ProjectGuid>{7FEBC305-7AE1-41AF-944F-3B3DE977A082}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GitGrub.GetUsGrub.DataAccess</RootNamespace>
     <AssemblyName>GitGrub.GetUsGrub.DataAccess</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -47,26 +47,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201802230256456_InitialAuthN.cs" />
+    <Compile Include="Contexts\RestaurantContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
+    <Folder Include="EntityModels\" />
+    <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
-      <Project>{c2d0900c-17e7-4829-b0df-d0ca96d63210}</Project>
+      <Project>{59ed06dc-9548-483f-a6d5-928431c7ab06}</Project>
       <Name>GitGrub.GetUsGrub.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Contexts\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

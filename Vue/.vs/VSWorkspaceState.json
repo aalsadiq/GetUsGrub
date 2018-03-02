@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\my-project",
+    "\\my-project\\build",
+    "\\my-project\\server",
+    "\\my-project\\src",
+    "\\my-project\\src\\components",
+    "\\my-project\\src\\components\\RestaurantBillSplitter",
+    "\\my-project\\src\\router",
+    "\\my-project\\static"
+  ],
+  "SelectedNode": "\\my-project\\src\\store.js",
+  "PreviewInSolutionExplorer": false
+}

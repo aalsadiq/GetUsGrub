@@ -8,30 +8,30 @@ export const store = new Vuex.Store({
     MINIMUM_MENU_ITEM_PRICE: 0.01,
     MAX_MENU_ITEM_PRICE: 1000,
     MenuItems: [
-      //{
-      //  menuItemName: 'Big Mac',
-      //  menuItemPrice: 4.00
-      //},
-      //{
-      //  menuItemName: 'Large Fries',
-      //  menuItemPrice: 2.50
-      //},
-      //{
-      //  menuItemName: 'McFlurry',
-      //  menuItemPrice: 1.00
-      //},
-      //{
-      //  menuItemName: 'Large Soft Drink',
-      //  menuItemPrice: 2.00
-      //},
-      //{
-      //  menuItemName: 'McChicken',
-      //  menuItemPrice: 1.50
-      //},
-      //{
-      //  menuItemName: 'Water Bottle',
-      //  menuItemPrice: 10.50
-      //}
+      {
+        menuItemName: 'Big Mac',
+        menuItemPrice: 4.00
+      },
+      {
+        menuItemName: 'Large Fries',
+        menuItemPrice: 2.50
+      },
+      {
+        menuItemName: 'McFlurry',
+        menuItemPrice: 1.00
+      },
+      {
+        menuItemName: 'Large Soft Drink',
+        menuItemPrice: 2.00
+      },
+      {
+        menuItemName: 'McChicken',
+        menuItemPrice: 1.50
+      },
+      {
+        menuItemName: 'Water Bottle',
+        menuItemPrice: 10.50
+      }
     ],
     BillItems: [
     ]
@@ -40,7 +40,7 @@ export const store = new Vuex.Store({
     totalPrice: state => {
       var totalPrice = this.$store.state.BillItems.map(BillItems => {
         return state.BillItems.menuItemPrice;        
-      })
+      }) 
     }
   },
   mutations: {

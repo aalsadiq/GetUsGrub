@@ -7,6 +7,7 @@
     <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
     <br />
     <button id="add_to_dictionary" v-on:click="AddToDictionary($refs.menuItemName.value, $refs.menuItemPrice.valueAsNumber)">Add To Dictionary</button>
+    <button v-on:click="log">Log</button>
   </form>
 </template>
 
@@ -32,7 +33,10 @@
           return false;
         else
           return true;  
-      }      
+      }
+      log: function () {
+        console.log(this.$refs);
+      }
     },
     computed: {
       MenuItems() {

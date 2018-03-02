@@ -1,6 +1,6 @@
 ﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,13 +8,13 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E09292E7-13BF-44D4-8BAE-3E2E56346A8D}</ProjectGuid>
+    <ProjectGuid>{7EFB9A08-7B06-4782-AE67-C8AD51012E05}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GitGrub.GetUsGrub</RootNamespace>
     <AssemblyName>GitGrub.GetUsGrub</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
@@ -51,15 +51,22 @@
       <HintPath>..\packages\Autofac.WebApi2.4.1.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.7.4.0\lib\net45\FluentValidation.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.7.5.0\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation.WebApi, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.WebApi.7.4.0\lib\net45\FluentValidation.WebApi.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.WebApi.7.5.0\lib\net45\FluentValidation.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Primitives">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -97,38 +104,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\IoCConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\CreateUserController.cs" />
-    <Compile Include="Controllers\DeactivateUserController.cs" />
     <Compile Include="Controllers\DeleteUserController.cs" />
-    <Compile Include="Controllers\ReactivateUserController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\IndividualProfileController.cs" />
-    <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\ControllerErrorHandler.cs" />
-    <Compile Include="Helpers\ErrorHandler.cs" />
-    <Compile Include="Helpers\PayloadHasher.cs" />
-    <Compile Include="Interfaces\ICreateRestaurantUserManager.cs" />
-    <Compile Include="Interfaces\ICreateUserManager.cs" />
-    <Compile Include="Managers\CreateRestaurantUserManager.cs" />
-    <Compile Include="Managers\CreateUserManager.cs" />
-    <Compile Include="Managers\DeactivateUserManager.cs" />
-    <Compile Include="Managers\DeleteUserManager.cs" />
-    <Compile Include="Managers\ReactivateUserManager.cs" />
-    <Compile Include="Managers\IndividualProfileManager.cs" />
-    <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validations\Strategies\RegisterUserPreLogicStrategy.cs" />
-    <Compile Include="Validations\UserAccountValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -143,27 +127,21 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.BusinessLogic\GitGrub.GetUsGrub.BusinessLogic.csproj">
+      <Project>{ede4c24a-e6c6-4fdf-800a-ca314f503a9b}</Project>
+      <Name>GitGrub.GetUsGrub.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GitGrub.GetUsGrub.DataAccess\GitGrub.GetUsGrub.DataAccess.csproj">
-      <Project>{fe808812-f501-4b71-af78-aeed5ec52960}</Project>
+      <Project>{7febc305-7ae1-41af-944f-3b3de977a082}</Project>
       <Name>GitGrub.GetUsGrub.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
-      <Project>{c2d0900c-17e7-4829-b0df-d0ca96d63210}</Project>
+      <Project>{59ed06dc-9548-483f-a6d5-928431c7ab06}</Project>
       <Name>GitGrub.GetUsGrub.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\GitGrub.GetUsGrub.UserAccessControl\GitGrub.GetUsGrub.UserAccessControl.csproj">
-      <Project>{6641b92b-4249-4cef-a208-16f9a7e968e4}</Project>
+      <Project>{fad1ae0d-7cdb-4ea3-9a58-92138265d738}</Project>
       <Name>GitGrub.GetUsGrub.UserAccessControl</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GitGrub.GetUsGrub.DataAccess\GitGrub.GetUsGrub.DataAccess.csproj">
-      <Project>{fe808812-f501-4b71-af78-aeed5ec52960}</Project>
-      <Name>GitGrub.GetUsGrub.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
-      <Project>{c2d0900c-17e7-4829-b0df-d0ca96d63210}</Project>
-      <Name>GitGrub.GetUsGrub.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -179,9 +157,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>50016</DevelopmentServerPort>
+          <DevelopmentServerPort>64064</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50016/</IISUrl>
+          <IISUrl>http://localhost:64064/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -195,8 +173,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

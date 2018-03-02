@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GitGrub.GetUsGrub.DataAccess")]
+[assembly: AssemblyTitle("GitGrub.GetUsGrub.Models")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GitGrub.GetUsGrub.DataAccess")]
+[assembly: AssemblyProduct("GitGrub.GetUsGrub.Models")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7febc305-7ae1-41af-944f-3b3de977a082")]
+[assembly: Guid("59ed06dc-9548-483f-a6d5-928431c7ab06")]
 
 // Version information for an assembly consists of the following four values:
 //

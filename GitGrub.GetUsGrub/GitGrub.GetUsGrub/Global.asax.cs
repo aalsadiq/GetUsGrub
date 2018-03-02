@@ -1,4 +1,9 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Http;
+using System.Web.Routing;
 
 namespace GitGrub.GetUsGrub
 {
@@ -6,7 +11,6 @@ namespace GitGrub.GetUsGrub
     {
         protected void Application_Start()
         {
-            //IoCConfig.Configure();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

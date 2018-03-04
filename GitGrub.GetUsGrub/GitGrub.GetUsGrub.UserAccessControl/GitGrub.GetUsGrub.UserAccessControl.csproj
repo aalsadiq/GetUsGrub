@@ -42,12 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\ClaimsFactory.cs" />
+    <Compile Include="Managers\AuthorizationManager.cs" />
+    <Compile Include="Managers\ClaimsTransformer.cs" />
+    <Compile Include="Models\ActionConstant.cs" />
+    <Compile Include="Models\ResourceConstant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Factories\" />
-    <Folder Include="Managers\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

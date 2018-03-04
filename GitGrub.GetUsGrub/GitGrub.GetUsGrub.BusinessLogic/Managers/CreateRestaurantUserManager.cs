@@ -1,7 +1,6 @@
 ﻿using GitGrub.GetUsGrub.BusinessLogic.Managers.Interfaces;
 using GitGrub.GetUsGrub.DataAccess;
 using GitGrub.GetUsGrub.Models;
-using GitGrub.GetUsGrub.Models.DTOs.Interfaces;
 
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
@@ -21,7 +20,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 }
                 else
                 {
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
+                    // TODO: Should this be the general error? Can I extend it so everyone can use it? 
                     responseDto.Error = "Something went wrong. Please try again later.";
                     return responseDto;
                 }

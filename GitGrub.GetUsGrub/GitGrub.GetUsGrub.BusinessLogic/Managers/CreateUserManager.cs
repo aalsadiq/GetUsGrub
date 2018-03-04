@@ -11,7 +11,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         {
             var responseDto = new ResponseDto<IRegisterUserDto>();
 
-            // TODO: Confirm with Brian his UserGateway with what is being returned and error handling 
+            // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
             using (var gateway = new UserGateway())
             {
                 var getUserResult = gateway.GetUserByUsername(username);
@@ -21,7 +21,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 }
                 else
                 {
-                    // TODO: Is this the correct error message? 
+                    // TODO: Is this the correct error message?
                     responseDto.Error = "Username is already used.";
                     return responseDto;
                 }
@@ -43,7 +43,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
             else
             {
-                // TODO: Should this be the general error? Can I extend it so everyone can use it? 
+                // TODO: Should this be the general error? Can I extend it so everyone can use it?
                 responseDto.Error = "Something went wrong. Please try again later.";
                 return responseDto;
             }
@@ -63,7 +63,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
             else
             {
-                // TODO: Should this be the general error? Can I extend it so everyone can use it? 
+                // TODO: Should this be the general error? Can I extend it so everyone can use it?
                 responseDto.Error = "Something went wrong. Please try again later.";
                 return responseDto;
             }
@@ -71,25 +71,12 @@ namespace GitGrub.GetUsGrub.BusinessLogic
 
         public ResponseDto<IRegisterUserDto> SetAccountIsActive()
         {
-            var responseDto = new ResponseDto<IRegisterUserDto>();
-
-            registerUserDto.IsActive = true;
-            if (registerUserDto.IsActive)
-            {
-                responseDto.Data = registerUserDto;
-                return responseDto;
-            }
-            else
-            {
-                // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                responseDto.Error = "Something went wrong. Please try again later.";
-                return responseDto;
-            }
-
+            var responseDto = new ResponseDto<IRegisterUserDto> {Data = {IsActive = true}};
+            return responseDto;
         }
 
         // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
-        public ResponseDto<IRegisterUserDto> CreateNewUser(IRegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> CreateNewUser(IUserAccount userAccount)
         {
             var responseDto = new ResponseDto<IRegisterUserDto>();
 
@@ -102,7 +89,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 }
                 else
                 {
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it? 
+                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
                     responseDto.Error = "Something went wrong. Please try again later.";
                     return responseDto;
                 }

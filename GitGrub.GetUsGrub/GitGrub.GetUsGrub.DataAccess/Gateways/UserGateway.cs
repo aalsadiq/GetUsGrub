@@ -19,13 +19,14 @@ namespace GitGrub.GetUsGrub.DataAccess
             return user;
         }
 
+        public bool StoreUserAccount(IUserAccount userAccount)
         {
             return true;
         }
 
         public void Dispose()
         {
-            //throw new NotImplementedException();
+            //throw new NotImplementedException(); 
         }
     }
 }

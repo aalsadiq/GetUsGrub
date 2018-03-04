@@ -5,12 +5,13 @@ using GitGrub.GetUsGrub.UserAccessControl;
 
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
+    public class CreateUserManager : ICreateUserManager, ICreateNewUser<IRegisterUserDto>
     {
         public ResponseDto<IRegisterUserDto> CheckUserDoesNotExist(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto>();
 
-            // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
+            // TODO: Confirm with Brian his UserGateway with what is being returned and error handling 
             using (var gateway = new UserGateway())
             {
                 var getUserResult = gateway.GetUserByUsername(registerUserDto.Username);
@@ -21,7 +22,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 }
                 else
                 {
-                    // TODO: Is this the correct error message?
+                    // TODO: Is this the correct error message? 
                     responseDto.Error = "Username is already used.";
                     return responseDto;
                 }
@@ -32,7 +33,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         {
             var responseDto = new ResponseDto<IRegisterUserDto>();
 
-            // TODO: Why did I pick 128 as my Salt size?
+            // TODO: Why did I pick 128 as my Salt size? 
             registerUserDto.Salt = PayloadHasher.CreateRandomSalt(128);
             var passwordHash = PayloadHasher.HashWithSalt(registerUserDto.Salt, registerUserDto.Password);
             if (registerUserDto.Password != null && registerUserDto.Password != passwordHash)
@@ -43,7 +44,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
             else
             {
-                // TODO: Should this be the general error? Can I extend it so everyone can use it?
+                // TODO: Should this be the general error? Can I extend it so everyone can use it? 
                 responseDto.Error = "Something went wrong. Please try again later.";
                 return responseDto;
             }
@@ -63,7 +64,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
             else
             {
-                // TODO: Should this be the general error? Can I extend it so everyone can use it?
+                // TODO: Should this be the general error? Can I extend it so everyone can use it? 
                 responseDto.Error = "Something went wrong. Please try again later.";
                 return responseDto;
             }
@@ -81,14 +82,15 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
             else
             {
-                // TODO: Should this be the general error? Can I extend it so everyone can use it?
+                // TODO: Should this be the general error? Can I extend it so everyone can use it? 
                 responseDto.Error = "Something went wrong. Please try again later.";
                 return responseDto;
             }
 
         }
 
-        // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
+        // TODO: Confirm with Brian his UserGateway with what is being returned and error handling 
+        public ResponseDto<IRegisterUserDto> CreateNewUser(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto>();
 
@@ -102,7 +104,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 }
                 else
                 {
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
+                    // TODO: Should this be the general error? Can I extend it so everyone can use it? 
                     responseDto.Error = "Something went wrong. Please try again later.";
                     return responseDto;
                 }

@@ -42,26 +42,28 @@ namespace GitGrub.GetUsGrub
                 {
                     return BadRequest(responseDto.Error);
                 }
-                responseDto = createUserManager.CheckUserDoesNotExist(registerUserDto);
+                responseDto = createUserManager.CheckUserDoesNotExist(registerUserDto.Username);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                responseDto = createUserManager.HashPassword(registerUserDto);
+                responseDto = createUserManager.HashPassword(registerUserDto.Password);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                responseDto = createUserManager.CreateClaims(registerUserDto);
+                // TODO: Hash Security Answers
+                responseDto = createUserManager.CreateClaims();
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                responseDto = createUserManager.SetAccountIsActive(registerUserDto);
+                responseDto = createUserManager.SetAccountIsActive();
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                // TODO: PostLogic Validation
                 responseDto = createUserManager.CreateNewUser(registerUserDto);
                 if (responseDto.Error != null)
                 {
@@ -104,7 +106,7 @@ namespace GitGrub.GetUsGrub
                 {
                     return BadRequest(responseDto.Error);
                 }
-                responseDto = createUserManager.CheckUserDoesNotExist(registerRestaurantUserDto);
+                responseDto = createUserManager.CheckUserDoesNotExist(registerRestaurantUserDto.Username);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
@@ -114,6 +116,7 @@ namespace GitGrub.GetUsGrub
                 {
                     return BadRequest(responseDto.Error);
                 }
+                // TODO: Hash Security Answers
                 responseDto = createUserManager.CreateClaims(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {

@@ -19,7 +19,6 @@ namespace GitGrub.GetUsGrub.DataAccess
             return user;
         }
 
-        public bool StoreUserAccount(IUserAccount userAccount)
         {
             return true;
         }

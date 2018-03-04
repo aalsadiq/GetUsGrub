@@ -5,7 +5,6 @@ using GitGrub.GetUsGrub.UserAccessControl;
 
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
-    public class CreateUserManager : ICreateUserManager, ICreateNewUser<IRegisterUserDto>
     {
         public ResponseDto<IRegisterUserDto> CheckUserDoesNotExist(IRegisterUserDto registerUserDto)
         {
@@ -90,7 +89,6 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         }
 
         // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
-        public ResponseDto<IRegisterUserDto> CreateNewUser(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto>();
 

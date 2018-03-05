@@ -4,6 +4,6 @@ namespace GitGrub.GetUsGrub.Models
 {
     public interface ISecurityQuestions
     {
-        IEnumerable<SecurityQuestion> SecurityQuestions { get; set; }
+        IList<SecurityQuestion> SecurityQuestions { get; set; }
     }
 }

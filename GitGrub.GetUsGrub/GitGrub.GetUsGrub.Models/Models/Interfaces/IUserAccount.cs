@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-
-namespace GitGrub.GetUsGrub.Models
+﻿namespace GitGrub.GetUsGrub.Models
 {
     public interface IUserAccount
     {
@@ -12,7 +9,5 @@ namespace GitGrub.GetUsGrub.Models
         string Password { get; set; }
 
         bool IsActive { get; set; }
-
-        IEnumerable<Claim> Claims { get; set; }
     }
 }

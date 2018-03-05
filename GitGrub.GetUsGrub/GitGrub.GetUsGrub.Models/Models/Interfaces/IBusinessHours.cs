@@ -4,6 +4,6 @@ namespace GitGrub.GetUsGrub.Models
 {
     public interface IBusinessHours
     {
-        IEnumerable<BusinessHour> BusinessHours { get; set; }
+        IList<BusinessHour> BusinessHours { get; set; }
     }
 }

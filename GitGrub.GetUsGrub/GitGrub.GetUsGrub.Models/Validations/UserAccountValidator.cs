@@ -18,7 +18,7 @@ namespace GitGrub.GetUsGrub.Models
                     .NotEmpty().WithMessage("Password is required.")
                     .NotNull().WithMessage("Password is required.")
                     .Length(8, 64).WithMessage("Password must be at least 8 characters and less than or equal to 64.")
-                    .Matches(@"[^\s]*").WithMessage("Password must not contain spaces.");
+                    .Matches(@"^[^\s]+$").WithMessage("Password must not contain spaces.");
 
                 RuleFor(x => x.DisplayName)
                     .NotEmpty().WithMessage("Display name is required")
@@ -42,10 +42,6 @@ namespace GitGrub.GetUsGrub.Models
                     .NotNull();
 
                 RuleFor(x => x.IsActive)
-                    .NotEmpty()
-                    .NotNull();
-
-                RuleFor(x => x.Claims)
                     .NotEmpty()
                     .NotNull();
             });

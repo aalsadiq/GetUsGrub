@@ -62,10 +62,13 @@
     <Compile Include="DTOs\RegisterUserDto.cs" />
     <Compile Include="DTOs\ResponseDto.cs" />
     <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\ClaimsModel.cs" />
     <Compile Include="Models\Interfaces\IBusinessHours.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
+    <Compile Include="Models\Interfaces\IClaims.cs" />
     <Compile Include="Models\Interfaces\IRestaurantAccount.cs" />
     <Compile Include="Models\Interfaces\ISalt.cs" />
+    <Compile Include="Models\Interfaces\ISecurityAnswerSalts.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestions.cs" />
     <Compile Include="Models\Interfaces\IUserAccount.cs" />

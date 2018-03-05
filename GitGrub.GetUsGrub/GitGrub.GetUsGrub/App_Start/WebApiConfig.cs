@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using Newtonsoft.Json.Serialization;
+using System;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
 namespace GitGrub.GetUsGrub
@@ -20,9 +22,12 @@ namespace GitGrub.GetUsGrub
 
             // https://www.youtube.com/watch?v=nsnuIZX1C9A&index=15&list=PL6n9fhu94yhW7yoUOGNOfHurUE6bpOO2b
             //EnableCorsAttribute cors = new EnableCorsAttribute("http://localhost:50016");
+            //EnableCorsAttribute cors = new EnableCorsAttribute("http://localhost:50016");
 
-            // IoC Container
-            var builder = new ContainerBuilder();
+            // Json Serializer Settings
+            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.MediaTypeMappings.Add(new RequestHeaderMapping("Accept", "text/html", StringComparison.InvariantCultureIgnoreCase, true, "application/json"));
         }
     }
 }

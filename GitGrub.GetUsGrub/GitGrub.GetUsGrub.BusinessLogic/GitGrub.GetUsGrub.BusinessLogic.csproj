@@ -40,11 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\PayloadHasher.cs" />
-    <Compile Include="Managers\CreateRestaurantUserManager.cs" />
-    <Compile Include="Managers\CreateUserManager.cs" />
-    <Compile Include="Managers\Interfaces\ICreateNewUser.cs" />
-    <Compile Include="Managers\Interfaces\ICreateUserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +56,9 @@
       <Name>GitGrub.GetUsGrub.UserAccessControl</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+    <Folder Include="Managers\Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

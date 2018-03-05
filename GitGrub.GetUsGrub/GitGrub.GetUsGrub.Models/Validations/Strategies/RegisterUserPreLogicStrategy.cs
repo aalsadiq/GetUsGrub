@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace GitGrub.GetUsGrub.Models
 {
-    public class RegisterUserPreLogicStrategy : IValidationStrategy<RegisterUserDto>
+    public class RegisterUserPreLogicStrategy : IValidationStrategy<IRegisterUserDto>
     {
         // TODO: Strategy Pattern
-        public ResponseDto<RegisterUserDto> RunValidators(RegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> RunValidators(IRegisterUserDto registerUserDto)
         {
-            var responseDto = new ResponseDto<RegisterUserDto>() {Data = registerUserDto};
+            var responseDto = new ResponseDto<IRegisterUserDto>() {Data = registerUserDto};
 
             var userAccountValidator = new UserAccountValidator();
 

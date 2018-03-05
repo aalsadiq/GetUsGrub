@@ -2,12 +2,12 @@
 
 namespace GitGrub.GetUsGrub.Models
 {
-    public class RegisterUserPostLogicStrategy : IValidationStrategy<RegisterUserDto>
+    public class RegisterUserPostLogicStrategy : IValidationStrategy<IRegisterUserDto>
     {
         // TODO: Strategy Pattern
-        public ResponseDto<RegisterUserDto> RunValidators(RegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> RunValidators(IRegisterUserDto registerUserDto)
         {
-            var responseDto = new ResponseDto<RegisterUserDto>() {Data = registerUserDto};
+            var responseDto = new ResponseDto<IRegisterUserDto>() {Data = registerUserDto};
 
             var userAccountValidator = new UserAccountValidator();
 

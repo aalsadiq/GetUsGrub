@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace GitGrub.GetUsGrub.Models
 {
     public class RegisterUserDto : IRegisterUserDto
     {
+        [Required]
         public UserAccount UserAccount { get; set; }
 
         public PasswordSalt PasswordSalt { get; set; }
 
+        [Required]
         public IList<SecurityQuestion> SecurityQuestions { get; set; }
 
         public IList<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }

@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
-    public class CreateUserManager : ICreateUserManager<RegisterUserDto>
+    public class CreateUserManager : ICreateUserManager<IRegisterUserDto>, ICreateNewUser<IRegisterUserDto>
     {
-        public ResponseDto<RegisterUserDto> CheckUserDoesNotExist(RegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> CheckUserDoesNotExist(IRegisterUserDto registerUserDto)
         {
-            var responseDto = new ResponseDto<RegisterUserDto> {Data = registerUserDto};
+            var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
 
             // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
             using (var gateway = new UserGateway())
@@ -28,9 +28,9 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
         }
 
-        public ResponseDto<RegisterUserDto> HashPassword(RegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> HashPassword(IRegisterUserDto registerUserDto)
         {
-            using (var responseDto = new ResponseDto<RegisterUserDto> {Data = registerUserDto})
+            using (var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto})
             {
                 responseDto.Data.PasswordSalt = new PasswordSalt();
 
@@ -54,20 +54,20 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
         }
 
-        public ResponseDto<RegisterUserDto> HashSecurityAnswers(RegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> HashSecurityAnswers(IRegisterUserDto registerUserDto)
         {
-            var responseDto = new ResponseDto<RegisterUserDto> {Data = registerUserDto};
+            var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
             responseDto.Data.SecurityAnswerSalts = new List<SecurityAnswerSalt>();
 
-            for(var i=0; i<responseDto.Data.SecurityQuestions.Count; i++)
+            foreach (var securityQuestion in responseDto.Data.SecurityQuestions)
             {
                 // TODO: Why did I pick 128 as my Salt size?
                 var salt = PayloadHasher.CreateRandomSalt(128);
-                var securityAnswerHash = PayloadHasher.HashWithSalt(salt, responseDto.Data.SecurityQuestions[i].QuestionAnswer);
+                var securityAnswerHash = PayloadHasher.HashWithSalt(salt, securityQuestion.QuestionAnswer);
                 if (responseDto.Data.UserAccount.Password != null &&
                     responseDto.Data.UserAccount.Password != securityAnswerHash)
                 {
-                    responseDto.Data.SecurityQuestions[i].QuestionAnswer = securityAnswerHash;
+                    securityQuestion.QuestionAnswer = securityAnswerHash;
                     responseDto.Data.SecurityAnswerSalts.Add(new SecurityAnswerSalt {Salt = salt});
                 }
                 else
@@ -81,9 +81,9 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             return responseDto;
         }
 
-        public ResponseDto<RegisterUserDto> CreateClaims(RegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> CreateClaims(IRegisterUserDto registerUserDto)
         {
-            var responseDto = new ResponseDto<RegisterUserDto> {Data = registerUserDto};
+            var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
 
             var claimsFactory = new ClaimsFactory();
 
@@ -101,17 +101,17 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
         }
 
-        public ResponseDto<RegisterUserDto> SetAccountIsActive(RegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> SetAccountIsActive(IRegisterUserDto registerUserDto)
         {
-            var responseDto = new ResponseDto<RegisterUserDto> {Data = registerUserDto};
+            var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
             responseDto.Data.UserAccount.IsActive = true;
             return responseDto;
         }
 
         // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
-        public ResponseDto<RegisterUserDto> CreateNewUser(RegisterUserDto registerUserDto)
+        public ResponseDto<IRegisterUserDto> CreateNewUser(IRegisterUserDto registerUserDto)
         {
-            var responseDto = new ResponseDto<RegisterUserDto> {Data = registerUserDto};
+            var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
 
             using (var gateway = new UserGateway())
             {
@@ -130,7 +130,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                     responseDto.Error = "Something went wrong. Please try again later.";
                     return responseDto;
                 }
-                foreach (SecurityQuestion securityQuestion in registerUserDto.SecurityQuestions)
+                foreach (var securityQuestion in registerUserDto.SecurityQuestions)
                 {
                     result = gateway.StoreSecurityQuestion(responseDto.Data.UserAccount.Username, securityQuestion);
                     if (!result)

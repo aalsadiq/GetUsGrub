@@ -9,6 +9,5 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         ResponseDto<T> HashSecurityAnswers(T userDto);
         ResponseDto<T> CreateClaims(T userDto);
         ResponseDto<T> SetAccountIsActive(T userDto);
-        ResponseDto<T> CreateNewUser(T userDto);
     }
 }

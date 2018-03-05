@@ -9,9 +9,9 @@ namespace GitGrub.GetUsGrub.Models
         public string Day { get; set; }
 
         [Required]
-        public int OpenTime { get; set; }
+        public string OpenTime { get; set; }
 
         [Required]
-        public int CloseTime { get; set; }
+        public string CloseTime { get; set; }
     }
 }

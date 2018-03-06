@@ -4,6 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// The <c>RestaurantAccount</c> class.
+    /// Defines properties pertaining to a restaurant account.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     public class RestaurantAccount : IRestaurantAccount
     {
         [Required]

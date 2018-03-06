@@ -5,8 +5,26 @@ using System.Collections.Generic;
 
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>CreateUserManager</c> class.
+    /// Contains all methods for performing the creation of an individual base user.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     public class CreateUserManager : ICreateUserManager<IRegisterUserDto>, ICreateNewUser<IRegisterUserDto>
     {
+        /// <summary>
+        /// A CheckUserDoesNotExist method. 
+        /// Calls corresponding gateway to check if a user exists in the user data store.
+        /// If user exists, return a ResponseDto.
+        /// Else, return a ResponseDto with an error message.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2017
+        /// </para>
+        /// </summary>
         public ResponseDto<IRegisterUserDto> CheckUserDoesNotExist(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
@@ -28,32 +46,51 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             }
         }
 
+        /// <summary>
+        /// A HashPassword method.
+        /// Calls the PayloadHasher class to create salt and hash of password with salt.
+        /// If hash is not equal to the password and is not null, then return ResponseDto.
+        /// Else, return ResponseDto with error.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2017
+        /// </para>
+        /// </summary>
         public ResponseDto<IRegisterUserDto> HashPassword(IRegisterUserDto registerUserDto)
         {
-            using (var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto})
-            {
-                responseDto.Data.PasswordSalt = new PasswordSalt();
+            var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
+            responseDto.Data.PasswordSalt = new PasswordSalt();
 
-                // TODO: Why did I pick 128 as my Salt size?
-                var salt = PayloadHasher.CreateRandomSalt(128);
-                System.Diagnostics.Debug.WriteLine(responseDto.Data.UserAccount.Password);
-                var passwordHash = PayloadHasher.HashWithSalt(salt, responseDto.Data.UserAccount.Password);
-                if (registerUserDto.UserAccount.Password != null &&
-                    registerUserDto.UserAccount.Password != passwordHash)
-                {
-                    responseDto.Data.UserAccount.Password = passwordHash;
-                    responseDto.Data.PasswordSalt.Salt = salt;
-                    return responseDto;
-                }
-                else
-                {
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
-                    return responseDto;
-                }
+            // TODO: Why did I pick 128 as my Salt size?
+            var salt = PayloadHasher.CreateRandomSalt(128);
+            System.Diagnostics.Debug.WriteLine(responseDto.Data.UserAccount.Password);
+            var passwordHash = PayloadHasher.HashWithSalt(salt, responseDto.Data.UserAccount.Password);
+            if (registerUserDto.UserAccount.Password != null &&
+                registerUserDto.UserAccount.Password != passwordHash)
+            {
+                responseDto.Data.UserAccount.Password = passwordHash;
+                responseDto.Data.PasswordSalt.Salt = salt;
+                return responseDto;
+            }
+            else
+            {
+                // TODO: Should this be the general error? Can I extend it so everyone can use it?
+                responseDto.Error = ErrorHandler.GetGeneralError();
+                return responseDto;
             }
         }
 
+        /// <summary>
+        /// A HashSecurityAnswers method.
+        /// Iterates through a list of security question answers.
+        /// Calls the PayloadHasher class to create salt and hash of security answer with salt.
+        /// If hash is not equal to the security answer and is not null, then return ResponseDto.
+        /// Else, return ResponseDto with error.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2017
+        /// </para>
+        /// </summary>
         public ResponseDto<IRegisterUserDto> HashSecurityAnswers(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
@@ -73,7 +110,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 else
                 {
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
+                    responseDto.Error = ErrorHandler.GetGeneralError();
                     return responseDto;
                 }
             }
@@ -81,6 +118,16 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             return responseDto;
         }
 
+        /// <summary>
+        /// A CreateClaims method.
+        /// Gets a list of claims from ClaimsFactory class and sets the Claims model.
+        /// If claims is not null, then return ResponseDto.
+        /// Else, return ResponseDto with error.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2017
+        /// </para>
+        /// </summary>
         public ResponseDto<IRegisterUserDto> CreateClaims(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
@@ -90,17 +137,25 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             var claims = claimsFactory.CreateIndividualClaims();
             if (claims != null)
             {
-                responseDto.Data.Claims = claims;
+                responseDto.Data.Claims.ClaimsList = claims;
                 return responseDto;
             }
             else
             {
                 // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                responseDto.Error = ErrorHandler.SetGeneralError();
+                responseDto.Error = ErrorHandler.GetGeneralError();
                 return responseDto;
             }
         }
 
+        /// <summary>
+        /// A SetAccountIsActive method.
+        /// Sets user account to active.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2017
+        /// </para>
+        /// </summary>
         public ResponseDto<IRegisterUserDto> SetAccountIsActive(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
@@ -108,68 +163,73 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             return responseDto;
         }
 
-        // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
+        /// <summary>
+        /// A CreateNewUser method.
+        /// Creates a new user in user data store.
+        /// Sequentially stores the following models to the user store: 
+        /// UserAccount, PasswordSalt, Security Questions, Security Answer Salts, Claims, and UserProfile.
+        /// If failures occur, then any previously added user data will be deleted and an error will return in the ResponseDto.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2017
+        /// </para>
+        /// </summary>
+        // TODO: Confirm with Brian his Gateways and methods. Also how to perform User Delete if failure?
         public ResponseDto<IRegisterUserDto> CreateNewUser(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
 
             using (var gateway = new UserGateway())
             {
+                // Store UserAccount model
                 var result = gateway.StoreUserAccount(responseDto.Data.UserAccount);
                 if (!result)
                 {
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
+                    responseDto.Error = ErrorHandler.GetGeneralError();
                     return responseDto;
                 }
+
+                // Store PasswordSalt model
                 result = gateway.StorePasswordSalt(responseDto.Data.UserAccount.Username, responseDto.Data.PasswordSalt.Salt);
                 if (!result)
                 {
-                    // TODO: Ask Brian to delete previous UserAccount
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
+                    responseDto.Error = ErrorHandler.GetGeneralError();
                     return responseDto;
                 }
+
+                // Store each security question with its answer from security questions list
                 foreach (var securityQuestion in registerUserDto.SecurityQuestions)
                 {
                     result = gateway.StoreSecurityQuestion(responseDto.Data.UserAccount.Username, securityQuestion);
-                    if (!result)
-                    {
-                        // TODO: Ask Brian to delete previous UserAccount
-                        // TODO: Ask Brian to delete previous PasswordSalt
-                        // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                        responseDto.Error = ErrorHandler.SetGeneralError();
-                        return responseDto;
-                    }
-                }
-                for (var i=0; i<registerUserDto.SecurityAnswerSalts.Count; i++)
-                {
-                    result = gateway.StoreSecurityAnswerSalt(responseDto.Data.UserAccount.Username, responseDto.Data.SecurityQuestions[i].QuestionType, responseDto.Data.SecurityAnswerSalts[i].Salt);
-                    if (!result)
-                    {
-                        // TODO: Ask Brian to delete previous UserAccount
-                        // TODO: Ask Brian to delete previous PasswordSalt
-                        // TODO: Ask Brian to delete previous SecurityQuestions
-                        // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                        responseDto.Error = ErrorHandler.SetGeneralError();
-                        return responseDto;
-                    }
-                }
-
-                result = gateway.StoreClaims(responseDto.Data.UserAccount.Username, responseDto.Data.Claims);
-                if (!result)
-                {
-                    // TODO: Ask Brian to delete previous UserAccount
-                    // TODO: Ask Brian to delete previous UserAccount
-                    // TODO: Ask Brian to delete previous PasswordSalt
-                    // TODO: Ask Brian to delete previous SecurityQuestions
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
+                    if (result) continue;
+                    responseDto.Error = ErrorHandler.GetGeneralError();
                     return responseDto;
                 }
 
-                // TODO: CreateUserProfile
-                // TODO: CreateRestaurantProfile
+                // Store each security answer salt from security answer salts list
+                for (var i=0; i<registerUserDto.SecurityAnswerSalts.Count; i++)
+                {
+                    result = gateway.StoreSecurityAnswerSalt(responseDto.Data.UserAccount.Username, responseDto.Data.SecurityQuestions[i].QuestionType, responseDto.Data.SecurityAnswerSalts[i].Salt);
+                    if (result) continue;
+                    responseDto.Error = ErrorHandler.GetGeneralError();
+                    return responseDto;
+                }
+
+                // Store Claims model
+                result = gateway.StoreClaims(responseDto.Data.UserAccount.Username, responseDto.Data.Claims.ClaimsList);
+                if (!result)
+                {
+                    responseDto.Error = ErrorHandler.GetGeneralError();
+                    return responseDto;
+                }
+
+                // Store UserProfile model
+                result = gateway.StoreUserProfile(responseDto.Data.UserAccount.DisplayName);
+                if (!result)
+                {
+                    responseDto.Error = ErrorHandler.GetGeneralError();
+                    return responseDto;
+                }
 
                 return responseDto;
             }

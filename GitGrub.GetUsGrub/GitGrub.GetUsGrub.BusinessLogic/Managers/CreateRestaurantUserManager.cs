@@ -1,83 +1,50 @@
 ﻿using GitGrub.GetUsGrub.DataAccess;
 using GitGrub.GetUsGrub.Models;
 
+// TODO: !!!!!!!!!!!!!!!!!!!!!! Can reduce the number of methods used if Brian can delete user by just giving a username
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>CreateRestaurantUserManager</c> class.
+    /// Contains CreateNewUser method which creates a new restaurant user.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     public class CreateRestaurantUserManager : ICreateNewUser<IRegisterRestaurantUserDto>
     {
-        // TODO: Confirm with Brian his UserGateway with what is being returned and error handling
+        /// <summary>
+        /// A CreateNewUser method.
+        /// Creates a new Restaurant user in user data store.
+        /// Sequentially stores the following models to the user store: 
+        /// RestaurantAccount and RestaurantProfile.
+        /// If failures occur, then any previously added user data will be deleted and an error will return in the ResponseDto.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2017
+        /// </para>
+        /// </summary>
+        // TODO: Confirm with Brian his Gateways and methods. Also how to perform User Delete if failure?
         public ResponseDto<IRegisterRestaurantUserDto> CreateNewUser(IRegisterRestaurantUserDto registerRestaurantUserDto)
         {
-            var responseDto = new ResponseDto<IRegisterRestaurantUserDto> {Data = registerRestaurantUserDto};
-
             using (var gateway = new UserGateway())
-            {
-                var result = gateway.StoreUserAccount(responseDto.Data.UserAccount);
+            { 
+                ResponseDto<IRegisterRestaurantUserDto> responseDto = new ResponseDto<IRegisterRestaurantUserDto>();
+
+                // Store RestaurantAccount model
+                var result = gateway.StoreRestaurantAccount(responseDto.Data.UserAccount.Username, responseDto.Data.RestaurantAccount);
                 if (!result)
                 {
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
+                    responseDto.Error = ErrorHandler.GetGeneralError();
                     return responseDto;
                 }
 
-                result = gateway.StorePasswordSalt(responseDto.Data.UserAccount.Username, responseDto.Data.PasswordSalt.Salt);
+                // Store RestaurantProfile model
+                result = gateway.StoreRestaurantProfile(responseDto.Data.UserAccount.Username);
                 if (!result)
                 {
-                    // TODO: Ask Brian to delete previous UserAccount
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
-                    return responseDto;
-                }
-
-                foreach (SecurityQuestion securityQuestion in responseDto.Data.SecurityQuestions)
-                {
-                    result = gateway.StoreSecurityQuestion(responseDto.Data.UserAccount.Username, securityQuestion);
-                    if (!result)
-                    {
-                        // TODO: Ask Brian to delete previous UserAccount
-                        // TODO: Ask Brian to delete previous PasswordSalt
-                        // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                        responseDto.Error = ErrorHandler.SetGeneralError();
-                        return responseDto;
-                    }
-                }
-
-                for (var i = 0; i < responseDto.Data.SecurityAnswerSalts.Count; i++)
-                {
-                    result = gateway.StoreSecurityAnswerSalt(responseDto.Data.UserAccount.Username, responseDto.Data.SecurityQuestions[i].QuestionType, registerRestaurantUserDto.SecurityAnswerSalts[i].Salt);
-                    if (!result)
-                    {
-                        // TODO: Ask Brian to delete previous UserAccount
-                        // TODO: Ask Brian to delete previous PasswordSalt
-                        // TODO: Ask Brian to delete previous SecurityQuestions
-                        // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                        responseDto.Error = ErrorHandler.SetGeneralError();
-                        return responseDto;
-                    }
-                }
-
-                result = gateway.StoreClaims(responseDto.Data.UserAccount.Username, responseDto.Data.Claims);
-                if (!result)
-                {
-                    // TODO: Ask Brian to delete previous UserAccount
-                    // TODO: Ask Brian to delete previous UserAccount
-                    // TODO: Ask Brian to delete previous PasswordSalt
-                    // TODO: Ask Brian to delete previous SecurityQuestions
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
-                    return responseDto;
-                }
-
-                result = gateway.StoreRestaurantAccount(responseDto.Data.UserAccount.Username, responseDto.Data.RestaurantAccount);
-                if (!result)
-                {
-                    // TODO: Ask Brian to delete previous UserAccount
-                    // TODO: Ask Brian to delete previous UserAccount
-                    // TODO: Ask Brian to delete previous PasswordSalt
-                    // TODO: Ask Brian to delete previous SecurityQuestions
-                    // TODO: Ask Brian to delete previous Claims
-                    // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = ErrorHandler.SetGeneralError();
+                    responseDto.Error = ErrorHandler.GetGeneralError();
                     return responseDto;
                 }
 

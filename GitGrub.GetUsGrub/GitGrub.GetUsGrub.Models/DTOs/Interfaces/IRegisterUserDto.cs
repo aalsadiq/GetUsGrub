@@ -1,8 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// The IRegisterUserDto interface.
+    /// A contract with defined properties for the RegisterUserDto class.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     public interface IRegisterUserDto
     {
         UserAccount UserAccount { get; set; }
@@ -13,6 +20,6 @@ namespace GitGrub.GetUsGrub.Models
 
         IList<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
 
-        ICollection<Claim> Claims { get; set; }
+        Claims Claims { get; set; }
     }
 }

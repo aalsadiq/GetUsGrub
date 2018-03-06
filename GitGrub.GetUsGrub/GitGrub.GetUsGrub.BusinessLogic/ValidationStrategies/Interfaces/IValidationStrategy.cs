@@ -3,15 +3,15 @@
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
     /// <summary>
-    /// The ICreateNewUser interface.
-    /// Contains the CreateNewUser generic method.
+    /// The IValidationStrategy.
+    /// Defines a method to run validations in a validation strategy.
     /// <para>
     /// @author: Jennifer Nguyen
     /// @updated: 03/05/2017
     /// </para>
     /// </summary>
-    public interface ICreateNewUser<T>
+    public interface IValidationStrategy<T>
     {
-        ResponseDto<T> CreateNewUser(T user);
+        ResponseDto<T> RunValidators(T modelToValidate);
     }
 }

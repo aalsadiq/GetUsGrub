@@ -2,6 +2,14 @@
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// The <c>BusinessHour</c> class.
+    /// Defines properties pertaining to business hours in a day.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     public class BusinessHour
     {
         // TODO: Validate that it is in military time

@@ -1,5 +1,13 @@
 ﻿namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// The <c>Address</c> class.
+    /// Defines properties pertaining to an address.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     // Serializes into a Json
     [System.Serializable]
     public class Address

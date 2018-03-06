@@ -5,6 +5,14 @@ using System.Security.Claims;
 
 namespace GitGrub.GetUsGrub.DataAccess
 {
+    /// <summary>
+    /// A mockup <c>UserGateway</c> class to test business layer logic.
+    /// Will be deleted when integrating with Data Access Store. 
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     public class UserGateway : IDisposable
     {
 
@@ -47,6 +55,16 @@ namespace GitGrub.GetUsGrub.DataAccess
         }
 
         public bool StoreRestaurantAccount(string username, IRestaurantAccount restaurantAccount)
+        {
+            return true;
+        }
+
+        public bool StoreUserProfile(string displayName)
+        {
+            return true;
+        }
+
+        public bool StoreRestaurantProfile(string username)
         {
             return true;
         }

@@ -2,6 +2,14 @@
 
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The ICreateUserManager interface.
+    /// A contract with methods for the CreateUserManager class.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     public interface ICreateUserManager<T>
     {
         ResponseDto<T> CheckUserDoesNotExist(T userDto);

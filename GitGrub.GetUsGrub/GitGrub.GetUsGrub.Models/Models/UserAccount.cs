@@ -3,6 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// The <c>UserAccount</c> class.
+    /// Defines properties pertaining to a user account.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     [Validator(typeof(UserAccountValidator))]
     public class UserAccount : IUserAccount
     {

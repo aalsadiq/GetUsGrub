@@ -1,9 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 
 namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// The <c>RegisterUserDto</c> class.
+    /// Defines properties pertaining to user registration.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2017
+    /// </para>
+    /// </summary>
     public class RegisterUserDto : IRegisterUserDto
     {
         [Required]
@@ -16,6 +23,6 @@ namespace GitGrub.GetUsGrub.Models
 
         public IList<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
 
-        public ICollection<Claim> Claims { get; set; }
+        public Claims Claims { get; set; }
     }
 }

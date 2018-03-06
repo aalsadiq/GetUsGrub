@@ -63,8 +63,8 @@
     <Compile Include="Managers\Interfaces\ICreateUserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationStrategies\Interfaces\IValidationStrategy.cs" />
-    <Compile Include="ValidationStrategies\RegisterUserPostLogicValidationStrategy.cs" />
-    <Compile Include="ValidationStrategies\RegisterUserPreLogicValidationStrategy.cs" />
+    <Compile Include="ValidationStrategies\CreateUserPostLogicValidationStrategy.cs" />
+    <Compile Include="ValidationStrategies\CreateUserPreLogicValidationStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GitGrub.GetUsGrub.DataAccess\GitGrub.GetUsGrub.DataAccess.csproj">

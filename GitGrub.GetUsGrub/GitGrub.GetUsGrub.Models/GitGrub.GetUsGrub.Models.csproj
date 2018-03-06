@@ -80,6 +80,7 @@
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\PasswordSaltValidator.cs" />
+    <Compile Include="Validators\SecurityQuestionValidator.cs" />
     <Compile Include="Validators\UserAccountValidator.cs" />
   </ItemGroup>
   <ItemGroup />

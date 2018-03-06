@@ -51,15 +51,16 @@ namespace GitGrub.GetUsGrub
             }
             try
             {
-                var registerUserPreLogicStrategy = new RegisterUserPreLogicValidationStrategy();
-                var createUserManager = new CreateUserManager();
+                var createUserPreLogicStrategy = new CreateUserPreLogicValidationStrategy();
                 //System.Diagnostics.Debug.WriteLine("here0");
-                var responseDto = registerUserPreLogicStrategy.RunValidators(registerUserDto);
+                var responseDto = createUserPreLogicStrategy.RunValidators(registerUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
                 //System.Diagnostics.Debug.WriteLine("here1");
+
+                var createUserManager = new CreateUserManager();
                 responseDto = createUserManager.CheckUserDoesNotExist(responseDto.Data);
                 if (responseDto.Error != null)
                 {
@@ -90,7 +91,9 @@ namespace GitGrub.GetUsGrub
                     return BadRequest(responseDto.Error);
                 }
                 //System.Diagnostics.Debug.WriteLine("here6");
-                // TODO: PostLogic Validation
+
+                // TODO: CreateUserPostLogicValidation
+
                 responseDto = createUserManager.CreateNewUser(responseDto.Data);
                 if (responseDto.Error != null)
                 {
@@ -132,15 +135,16 @@ namespace GitGrub.GetUsGrub
             }
             try
             {
-                var registerUserPreLogicStrategy = new RegisterUserPreLogicValidationStrategy();
-                var createRestaurantUserManager = new CreateRestaurantUserManager();
-                var createUserManager = new CreateUserManager();
-
-                var responseDto = registerUserPreLogicStrategy.RunValidators(registerRestaurantUserDto);
+                var createUserPreLogicStrategy = new CreateUserPreLogicValidationStrategy();
+                var responseDto = createUserPreLogicStrategy.RunValidators(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+
+                // TODO: CreateRestaurantUserPreLogicValidation
+
+                var createUserManager = new CreateUserManager();
                 responseDto = createUserManager.CheckUserDoesNotExist(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
@@ -171,6 +175,10 @@ namespace GitGrub.GetUsGrub
                 {
                     return BadRequest(responseDto.Error);
                 }
+
+                // TODO: CreateRestaurantUserPostLogicValidation
+
+                var createRestaurantUserManager = new CreateRestaurantUserManager();
                 var createRestaurantUserResponseDto = createRestaurantUserManager.CreateNewUser(registerRestaurantUserDto);
                 if (createRestaurantUserResponseDto.Error != null)
                 {

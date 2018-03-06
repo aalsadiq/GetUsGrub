@@ -13,7 +13,7 @@ namespace GitGrub.GetUsGrub.Models
     public class SecurityQuestion : ISecurityQuestion
     {
         [Required]
-        public string QuestionType { get; set; }
+        public int QuestionType { get; set; }
 
         // QuestionAnswer is stored as hash
         [Required]

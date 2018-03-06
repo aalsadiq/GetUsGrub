@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using GitGrub.GetUsGrub.Models;
+using GitGrub.GetUsGrub.Models.Validators;
 
 namespace GitGrub.GetUsGrub.BusinessLogic
 {
@@ -12,7 +13,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
     /// @updated: 03/05/2017
     /// </para>
     /// </summary>
-    public class RegisterUserPostLogicValidationStrategy : IValidationStrategy<IRegisterUserDto>
+    public class CreateUserPostLogicValidationStrategy : IValidationStrategy<IRegisterUserDto>
     {
         // TODO: Strategy Pattern
         public ResponseDto<IRegisterUserDto> RunValidators(IRegisterUserDto registerUserDto)
@@ -29,9 +30,18 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 responseDto.Error = ErrorHandler.GetGeneralError();
             }
 
-            // TODO: Password Salt
-            // TODO: Security Questions
+            var securityQuestionValidator = new SecurityQuestionValidator();
+            // Validate SecurityQuestions
+            foreach (var securityQuestion in responseDto.Data.SecurityQuestions)
+            {
+                validationResult = securityQuestionValidator.Validate(securityQuestion, ruleSet: "RegistrationPostLogic");
+                if (validationResult.IsValid) continue;
+                responseDto.Error = ErrorHandler.GetGeneralError();
+                return responseDto;
+            }
+
             // TODO: Security Answers
+            // TODO: PasswordSalt
             // TODO: Claims
 
             return responseDto;

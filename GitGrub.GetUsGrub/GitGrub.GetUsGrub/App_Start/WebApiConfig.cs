@@ -11,6 +11,10 @@ namespace GitGrub.GetUsGrub
         {
             // Web API configuration and services
 
+            // Configure Web API to use only bearer token authentication
+            //config.SupressDefaultHostAuthentication();
+            //config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 

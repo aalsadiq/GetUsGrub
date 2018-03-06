@@ -52,13 +52,13 @@ namespace GitGrub.GetUsGrub
             try
             {
                 var createUserPreLogicStrategy = new CreateUserPreLogicValidationStrategy();
-                //System.Diagnostics.Debug.WriteLine("here0");
+                System.Diagnostics.Debug.WriteLine("here0");
                 var responseDto = createUserPreLogicStrategy.RunValidators(registerUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                //System.Diagnostics.Debug.WriteLine("here1");
+                System.Diagnostics.Debug.WriteLine("here1");
 
                 var createUserManager = new CreateUserManager();
                 responseDto = createUserManager.CheckUserDoesNotExist(responseDto.Data);
@@ -66,31 +66,31 @@ namespace GitGrub.GetUsGrub
                 {
                     return BadRequest(responseDto.Error);
                 }
-                //System.Diagnostics.Debug.WriteLine("here2");
+                System.Diagnostics.Debug.WriteLine("here2");
                 responseDto = createUserManager.HashPassword(responseDto.Data);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                //System.Diagnostics.Debug.WriteLine("here3");
+                System.Diagnostics.Debug.WriteLine("here3");
                 responseDto = createUserManager.HashSecurityAnswers(responseDto.Data);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                //System.Diagnostics.Debug.WriteLine("here4");
+                System.Diagnostics.Debug.WriteLine("here4");
                 responseDto = createUserManager.CreateClaims(responseDto.Data);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                //System.Diagnostics.Debug.WriteLine("here5");
+                System.Diagnostics.Debug.WriteLine("here5");
                 responseDto = createUserManager.SetAccountIsActive(responseDto.Data);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                //System.Diagnostics.Debug.WriteLine("here6");
+                System.Diagnostics.Debug.WriteLine("here6");
 
                 // TODO: CreateUserPostLogicValidation
 
@@ -101,13 +101,14 @@ namespace GitGrub.GetUsGrub
                 }
                 // TODO: Change this to show a message with the username
                 //return Ok(registerUserDto.UserAccount.Username);
-                return Ok(responseDto.Data);
+                //return Ok(responseDto.Data);
+                return Created(Request.RequestUri + "/" + registerUserDto.UserAccount.Username, registerUserDto.UserAccount.Username);
             }
             // Catch exceptions
-            catch (Exception ex)
+            catch (Exception)
             {
-                //return BadRequest(ErrorHandler.GetGeneralError());
-                return BadRequest(ex.Message);
+                return BadRequest(ErrorHandler.GetGeneralError());
+                //return InternalServerError(ex);
             }
         }
 
@@ -141,6 +142,7 @@ namespace GitGrub.GetUsGrub
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there0");
 
                 // TODO: CreateRestaurantUserPreLogicValidation
 
@@ -150,48 +152,58 @@ namespace GitGrub.GetUsGrub
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there1");
                 responseDto = createUserManager.HashPassword(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there2");
                 responseDto = createUserManager.HashSecurityAnswers(responseDto.Data);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there3");
                 responseDto = createUserManager.CreateClaims(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there4");
                 responseDto = createUserManager.SetAccountIsActive(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there5");
                 responseDto = createUserManager.CreateNewUser(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there6");
 
                 // TODO: CreateRestaurantUserPostLogicValidation
 
                 var createRestaurantUserManager = new CreateRestaurantUserManager();
+                System.Diagnostics.Debug.WriteLine("there8");
                 var createRestaurantUserResponseDto = createRestaurantUserManager.CreateNewUser(registerRestaurantUserDto);
                 if (createRestaurantUserResponseDto.Error != null)
                 {
                     return BadRequest(createRestaurantUserResponseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there7");
                 // TODO: Change this to show a message with the username
                 //return Ok(registerRestaurantUser.UserAccount.Username);
-                return Ok(responseDto.Data);
+                return Created(Request.RequestUri + "/" + registerRestaurantUserDto.UserAccount.Username, registerRestaurantUserDto.UserAccount.Username);
+                //return Ok(responseDto.Data);
             }
             // Catch exceptions
             catch (Exception)
             {
                 return BadRequest(ErrorHandler.GetGeneralError());
+                //return InternalServerError(ex);
             }
         }
     }

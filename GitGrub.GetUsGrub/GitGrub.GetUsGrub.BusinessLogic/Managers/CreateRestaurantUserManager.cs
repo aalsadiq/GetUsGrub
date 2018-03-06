@@ -30,7 +30,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         {
             using (var gateway = new UserGateway())
             { 
-                ResponseDto<IRegisterRestaurantUserDto> responseDto = new ResponseDto<IRegisterRestaurantUserDto>();
+                ResponseDto<IRegisterRestaurantUserDto> responseDto = new ResponseDto<IRegisterRestaurantUserDto> {Data = registerRestaurantUserDto};
 
                 // Store RestaurantAccount model
                 var result = gateway.StoreRestaurantAccount(responseDto.Data.UserAccount.Username, responseDto.Data.RestaurantAccount);

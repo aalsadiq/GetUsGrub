@@ -26,7 +26,12 @@ namespace GitGrub.GetUsGrub.DataAccess
                 IsActive = false
             };
 
-            return user;
+            if (username == "userExists")
+            {
+                return user;
+            }
+
+            return null;
         }
 
         public bool StoreUserAccount(IUserAccount userAccount)
@@ -44,7 +49,7 @@ namespace GitGrub.GetUsGrub.DataAccess
             return true;
         }
 
-        public bool StoreSecurityAnswerSalt(string username, string questionType, string salt)
+        public bool StoreSecurityAnswerSalt(string username, int questionType, string salt)
         {
             return true;
         }

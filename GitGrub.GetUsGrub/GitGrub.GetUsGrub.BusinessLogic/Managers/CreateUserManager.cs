@@ -63,7 +63,6 @@ namespace GitGrub.GetUsGrub.BusinessLogic
 
             // TODO: Why did I pick 128 as my Salt size?
             var salt = PayloadHasher.CreateRandomSalt(128);
-            System.Diagnostics.Debug.WriteLine(responseDto.Data.UserAccount.Password);
             var passwordHash = PayloadHasher.HashWithSalt(salt, responseDto.Data.UserAccount.Password);
             if (registerUserDto.UserAccount.Password != null &&
                 registerUserDto.UserAccount.Password != passwordHash)
@@ -131,6 +130,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         public ResponseDto<IRegisterUserDto> CreateClaims(IRegisterUserDto registerUserDto)
         {
             var responseDto = new ResponseDto<IRegisterUserDto> {Data = registerUserDto};
+            responseDto.Data.Claims = new Claims();
 
             var claimsFactory = new ClaimsFactory();
 

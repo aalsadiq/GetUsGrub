@@ -18,7 +18,8 @@ namespace GitGrub.GetUsGrub.Models.Validators
             {
                 RuleFor(x => x.QuestionType)
                     .NotEmpty().WithMessage("Must answer 3 security questions.")
-                    .NotNull().WithMessage("Must answer 3 security questions.");
+                    .NotNull().WithMessage("Must answer 3 security questions.")
+                    .GreaterThan(0).WithMessage("Something went wrong. Please try again later.");
 
                 RuleFor(x => x.QuestionAnswer)
                     .NotEmpty().WithMessage("Must answer 3 security questions.")
@@ -29,7 +30,8 @@ namespace GitGrub.GetUsGrub.Models.Validators
             {
                 RuleFor(x => x.QuestionType)
                     .NotEmpty()
-                    .NotNull();
+                    .NotNull()
+                    .GreaterThan(0);
 
                 RuleFor(x => x.QuestionAnswer)
                     .NotEmpty()

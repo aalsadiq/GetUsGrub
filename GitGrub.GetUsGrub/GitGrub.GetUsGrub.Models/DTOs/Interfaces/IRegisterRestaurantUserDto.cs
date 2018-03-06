@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.Models
     /// A contract with defined properties for the RegisterRestaurantUserDto class.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public interface IRegisterRestaurantUserDto : IRegisterUserDto

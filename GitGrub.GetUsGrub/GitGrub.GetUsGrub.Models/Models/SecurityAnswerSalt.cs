@@ -5,7 +5,7 @@
     /// Defines a property pertaining to a salt for a security answer.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class SecurityAnswerSalt : ISalt

@@ -5,7 +5,7 @@
     /// Contains methods for performing error handling functions.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class ErrorHandler
@@ -15,7 +15,7 @@
         /// Returns a string for general errors that occur.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         public static string GetGeneralError()

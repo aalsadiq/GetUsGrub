@@ -8,7 +8,7 @@ namespace GitGrub.GetUsGrub.Models
     /// A contract with defined property as list of BusinessHours.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public interface IBusinessHours

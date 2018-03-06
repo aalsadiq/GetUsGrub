@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
     /// Defines a method to run validations in a validation strategy.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public interface IValidationStrategy<T>

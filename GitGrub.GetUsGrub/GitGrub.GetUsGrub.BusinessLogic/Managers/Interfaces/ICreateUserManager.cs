@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
     /// A contract with methods for the CreateUserManager class.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public interface ICreateUserManager<T>

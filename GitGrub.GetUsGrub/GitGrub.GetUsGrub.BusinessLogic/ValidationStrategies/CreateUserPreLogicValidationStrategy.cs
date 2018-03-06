@@ -13,7 +13,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
     /// Returns a list of errors if errors occur.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class CreateUserPreLogicValidationStrategy : IValidationStrategy<IRegisterUserDto>

@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.Models
     /// Defines a property of a salt for a password.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     [Validator(typeof(PasswordSaltValidator))]

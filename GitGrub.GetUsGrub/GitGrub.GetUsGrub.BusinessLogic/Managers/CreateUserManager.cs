@@ -10,7 +10,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
     /// Contains all methods for performing the creation of an individual base user.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class CreateUserManager : ICreateUserManager<IRegisterUserDto>, ICreateNewUser<IRegisterUserDto>
@@ -22,7 +22,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         /// Else, return a ResponseDto with an error message.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         public ResponseDto<IRegisterUserDto> CheckUserDoesNotExist(IRegisterUserDto registerUserDto)
@@ -53,7 +53,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         /// Else, return ResponseDto with error.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         public ResponseDto<IRegisterUserDto> HashPassword(IRegisterUserDto registerUserDto)
@@ -88,7 +88,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         /// Else, return ResponseDto with error.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         public ResponseDto<IRegisterUserDto> HashSecurityAnswers(IRegisterUserDto registerUserDto)
@@ -125,7 +125,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         /// Else, return ResponseDto with error.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         public ResponseDto<IRegisterUserDto> CreateClaims(IRegisterUserDto registerUserDto)
@@ -153,7 +153,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         /// Sets user account to active.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         public ResponseDto<IRegisterUserDto> SetAccountIsActive(IRegisterUserDto registerUserDto)
@@ -171,7 +171,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         /// If failures occur, then any previously added user data will be deleted and an error will return in the ResponseDto.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         // TODO: Confirm with Brian his Gateways and methods. Also how to perform User Delete if failure?

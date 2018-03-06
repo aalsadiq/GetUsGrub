@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.Models
     /// Defines properties pertaining to business hours in a day.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class BusinessHour

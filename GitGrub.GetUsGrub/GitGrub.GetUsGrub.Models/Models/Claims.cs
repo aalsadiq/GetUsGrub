@@ -9,7 +9,7 @@ namespace GitGrub.GetUsGrub.Models
     /// Defines properties pertaining to a user's claims.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class Claims : IClaims

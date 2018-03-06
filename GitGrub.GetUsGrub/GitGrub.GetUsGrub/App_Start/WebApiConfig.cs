@@ -28,6 +28,11 @@ namespace GitGrub.GetUsGrub
             config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.MediaTypeMappings.Add(new RequestHeaderMapping("Accept", "text/html", StringComparison.InvariantCultureIgnoreCase, true, "application/json"));
+
+        #if !DEBUG
+        // Require HTTPS on entire API
+                    config.Filters.Add(new RequireHttpsAttribute());
+        #endif
         }
     }
 }

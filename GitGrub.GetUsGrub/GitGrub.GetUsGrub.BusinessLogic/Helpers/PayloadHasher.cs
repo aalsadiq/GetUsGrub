@@ -11,7 +11,7 @@ namespace GitGrub.GetUsGrub
     /// Creates randomly generated salt and hashes the payload with salt.
     /// <para>
     /// @author: Jennifer Nguyen, Ahmed Alsadiq
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class PayloadHasher
@@ -23,7 +23,7 @@ namespace GitGrub.GetUsGrub
         /// Returns a string base64 hash.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         public static string HashWithSalt(string salt, string payload)
@@ -46,7 +46,7 @@ namespace GitGrub.GetUsGrub
         /// Returns a string base64 hash.
         /// <para>
         /// @author: Ahmed Alsadiq
-        /// @updated: 02/18/2017
+        /// @updated: 02/18/2018
         /// </para>
         /// </summary>
         public static string HashWithNoSalt(string payload)
@@ -67,7 +67,7 @@ namespace GitGrub.GetUsGrub
         /// Returns a random string.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         public static string CreateRandomSalt(int size)

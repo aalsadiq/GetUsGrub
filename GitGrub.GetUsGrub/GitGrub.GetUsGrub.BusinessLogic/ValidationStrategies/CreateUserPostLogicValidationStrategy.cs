@@ -10,7 +10,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
     /// Returns a general error if failure occurs.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class CreateUserPostLogicValidationStrategy : IValidationStrategy<IRegisterUserDto>

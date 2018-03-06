@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
     /// Contains the CreateNewUser generic method.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public interface ICreateNewUser<T>

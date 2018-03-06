@@ -5,7 +5,7 @@
     /// A contract with defined properties for the RegisterRestaurantUserDto class.
     /// <para>
     /// @author: Andrew Kao, Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class ResponseDto<T>

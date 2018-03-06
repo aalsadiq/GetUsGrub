@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.Models.Validators
     /// Defines rules to validate a UserAccount.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class SecurityQuestionValidator : AbstractValidator<ISecurityQuestion>

@@ -10,7 +10,7 @@ namespace GitGrub.GetUsGrub
     /// Contains Post action methods for registering a user.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     [RoutePrefix("Registration")]
@@ -34,7 +34,7 @@ namespace GitGrub.GetUsGrub
         /// Returns "BadRequest" result if any error occurred.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         // POST Registration/User
@@ -119,7 +119,7 @@ namespace GitGrub.GetUsGrub
         /// Returns "BadRequest" result if any error occurred.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         // POST Registration/Restaurant

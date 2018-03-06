@@ -114,6 +114,7 @@
     <Compile Include="Controllers\DeactivateUserController.cs" />
     <Compile Include="Controllers\DeleteUserController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
+    <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

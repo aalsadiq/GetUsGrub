@@ -9,7 +9,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
     /// Contains CreateNewUser method which creates a new restaurant user.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/05/2017
+    /// @updated: 03/05/2018
     /// </para>
     /// </summary>
     public class CreateRestaurantUserManager : ICreateNewUser<IRegisterRestaurantUserDto>
@@ -22,7 +22,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
         /// If failures occur, then any previously added user data will be deleted and an error will return in the ResponseDto.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/05/2017
+        /// @updated: 03/05/2018
         /// </para>
         /// </summary>
         // TODO: Confirm with Brian his Gateways and methods. Also how to perform User Delete if failure?

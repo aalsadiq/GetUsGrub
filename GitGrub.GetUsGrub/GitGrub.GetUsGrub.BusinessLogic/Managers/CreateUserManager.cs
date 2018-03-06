@@ -15,7 +15,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             using (var gateway = new UserGateway())
             {
                 var getUserResult = gateway.GetUserByUsername(responseDto.Data.UserAccount.Username);
-                if (responseDto.Data.UserAccount.Username != getUserResult.Username)
+                if (getUserResult == null)
                 {
                     return responseDto;
                 }
@@ -48,7 +48,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 else
                 {
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
             }
@@ -73,7 +73,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 else
                 {
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
             }
@@ -96,7 +96,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
             else
             {
                 // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                responseDto.Error = "Something went wrong. Please try again later.";
+                responseDto.Error = ErrorHandler.SetGeneralError();
                 return responseDto;
             }
         }
@@ -119,7 +119,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 if (!result)
                 {
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
                 result = gateway.StorePasswordSalt(responseDto.Data.UserAccount.Username, responseDto.Data.PasswordSalt.Salt);
@@ -127,7 +127,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 {
                     // TODO: Ask Brian to delete previous UserAccount
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
                 foreach (var securityQuestion in registerUserDto.SecurityQuestions)
@@ -138,7 +138,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                         // TODO: Ask Brian to delete previous UserAccount
                         // TODO: Ask Brian to delete previous PasswordSalt
                         // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                        responseDto.Error = "Something went wrong. Please try again later.";
+                        responseDto.Error = ErrorHandler.SetGeneralError();
                         return responseDto;
                     }
                 }
@@ -151,7 +151,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                         // TODO: Ask Brian to delete previous PasswordSalt
                         // TODO: Ask Brian to delete previous SecurityQuestions
                         // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                        responseDto.Error = "Something went wrong. Please try again later.";
+                        responseDto.Error = ErrorHandler.SetGeneralError();
                         return responseDto;
                     }
                 }
@@ -164,9 +164,12 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                     // TODO: Ask Brian to delete previous PasswordSalt
                     // TODO: Ask Brian to delete previous SecurityQuestions
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
+
+                // TODO: CreateUserProfile
+                // TODO: CreateRestaurantProfile
 
                 return responseDto;
             }

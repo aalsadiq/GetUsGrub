@@ -16,7 +16,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 if (!result)
                 {
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
 
@@ -25,7 +25,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 {
                     // TODO: Ask Brian to delete previous UserAccount
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
 
@@ -37,7 +37,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                         // TODO: Ask Brian to delete previous UserAccount
                         // TODO: Ask Brian to delete previous PasswordSalt
                         // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                        responseDto.Error = "Something went wrong. Please try again later.";
+                        responseDto.Error = ErrorHandler.SetGeneralError();
                         return responseDto;
                     }
                 }
@@ -51,7 +51,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                         // TODO: Ask Brian to delete previous PasswordSalt
                         // TODO: Ask Brian to delete previous SecurityQuestions
                         // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                        responseDto.Error = "Something went wrong. Please try again later.";
+                        responseDto.Error = ErrorHandler.SetGeneralError();
                         return responseDto;
                     }
                 }
@@ -64,11 +64,11 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                     // TODO: Ask Brian to delete previous PasswordSalt
                     // TODO: Ask Brian to delete previous SecurityQuestions
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
 
-                result = gateway.StoreRestaurantAccount(responseDto.Data.RestaurantAccount);
+                result = gateway.StoreRestaurantAccount(responseDto.Data.UserAccount.Username, responseDto.Data.RestaurantAccount);
                 if (!result)
                 {
                     // TODO: Ask Brian to delete previous UserAccount
@@ -77,7 +77,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                     // TODO: Ask Brian to delete previous SecurityQuestions
                     // TODO: Ask Brian to delete previous Claims
                     // TODO: Should this be the general error? Can I extend it so everyone can use it?
-                    responseDto.Error = "Something went wrong. Please try again later.";
+                    responseDto.Error = ErrorHandler.SetGeneralError();
                     return responseDto;
                 }
 

@@ -46,7 +46,7 @@ namespace GitGrub.GetUsGrub.DataAccess
             return true;
         }
 
-        public bool StoreRestaurantAccount(IRestaurantAccount restaurantAccount)
+        public bool StoreRestaurantAccount(string username, IRestaurantAccount restaurantAccount)
         {
             return true;
         }

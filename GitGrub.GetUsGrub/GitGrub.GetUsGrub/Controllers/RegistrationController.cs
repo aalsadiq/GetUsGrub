@@ -21,7 +21,6 @@ namespace GitGrub.GetUsGrub
         [HttpPost]
         // AllowAnonymous opts out authentication for the user
         [AllowAnonymous]
-
         [Route("User")]
         public IHttpActionResult RegisterUserAccount([FromBody] RegisterUserDto registerUserDto)
         {
@@ -87,7 +86,7 @@ namespace GitGrub.GetUsGrub
             catch (Exception ex)
             {
                 // TODO: Should this be the string?
-                //return BadRequest("Something went wrong. Please try again later.");
+                //return BadRequest(ErrorHandler.SetGeneralError());
                 return BadRequest(ex.Message);
             }
         }
@@ -153,7 +152,7 @@ namespace GitGrub.GetUsGrub
             catch (Exception)
             {
                 // TODO: Should this be the string?
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(ErrorHandler.SetGeneralError());
             }
         }
     }

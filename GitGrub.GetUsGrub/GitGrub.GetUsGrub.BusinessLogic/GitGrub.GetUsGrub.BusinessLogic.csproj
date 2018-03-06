@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\EntityModelConverter.cs" />
+    <Compile Include="Helpers\ErrorHandler.cs" />
     <Compile Include="Helpers\PayloadHasher.cs" />
     <Compile Include="Managers\CreateRestaurantUserManager.cs" />
     <Compile Include="Managers\CreateUserManager.cs" />

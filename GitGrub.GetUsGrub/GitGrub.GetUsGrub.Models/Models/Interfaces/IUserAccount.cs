@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-
-namespace GitGrub.GetUsGrub.Models
+﻿namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// The IUserAccount interface.
+    /// A contract with defined properties for the YserAccount class.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2018
+    /// </para>
+    /// </summary>
     public interface IUserAccount
     {
         string Username { get; set; }
@@ -12,7 +17,5 @@ namespace GitGrub.GetUsGrub.Models
         string Password { get; set; }
 
         bool IsActive { get; set; }
-
-        IEnumerable<Claim> Claims { get; set; }
     }
 }

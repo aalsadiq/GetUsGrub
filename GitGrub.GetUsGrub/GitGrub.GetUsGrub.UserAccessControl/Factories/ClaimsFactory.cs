@@ -15,7 +15,7 @@ namespace GitGrub.GetUsGrub.UserAccessControl
         /// Creates the claims for an Individual User
         /// </summary>
         /// <returns>Set of claims associated with an Individual Account</returns>
-        public IEnumerable<Claim> CreateIndividualClaims()
+        public ICollection<Claim> CreateIndividualClaims()
         {
             return new List<Claim>
             {
@@ -38,7 +38,7 @@ namespace GitGrub.GetUsGrub.UserAccessControl
         /// Creates the claims for a Restaurant User
         /// </summary>
         /// <returns>Set of claims associated with a Restaurant Account</returns>
-        public IEnumerable<Claim> CreateRestaurantClaims()
+        public ICollection<Claim> CreateRestaurantClaims()
         {
             return new List<Claim>
             {
@@ -55,7 +55,7 @@ namespace GitGrub.GetUsGrub.UserAccessControl
         /// Creates the claims for an Administrative User
         /// </summary>
         /// <returns>Set of claims associated with an Administrative Account</returns>
-        public IEnumerable<Claim> CreateAdminClaims()
+        public ICollection<Claim> CreateAdminClaims()
         {
             return new List<Claim>
             {

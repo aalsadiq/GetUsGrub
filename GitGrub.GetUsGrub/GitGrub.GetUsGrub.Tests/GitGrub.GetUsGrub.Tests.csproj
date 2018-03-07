@@ -81,12 +81,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistrationUnitTests\CreateUserManagerUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.BusinessLogic\GitGrub.GetUsGrub.BusinessLogic.csproj">
+      <Project>{ede4c24a-e6c6-4fdf-800a-ca314f503a9b}</Project>
+      <Name>GitGrub.GetUsGrub.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.DataAccess\GitGrub.GetUsGrub.DataAccess.csproj">
+      <Project>{7febc305-7ae1-41af-944f-3b3de977a082}</Project>
+      <Name>GitGrub.GetUsGrub.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.Models\GitGrub.GetUsGrub.Models.csproj">
+      <Project>{59ed06dc-9548-483f-a6d5-928431c7ab06}</Project>
+      <Name>GitGrub.GetUsGrub.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GitGrub.GetUsGrub.UserAccessControl\GitGrub.GetUsGrub.UserAccessControl.csproj">
+      <Project>{fad1ae0d-7cdb-4ea3-9a58-92138265d738}</Project>
+      <Name>GitGrub.GetUsGrub.UserAccessControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GitGrub.GetUsGrub\GitGrub.GetUsGrub.csproj">
       <Project>{7EFB9A08-7B06-4782-AE67-C8AD51012E05}</Project>
       <Name>GitGrub.GetUsGrub</Name>

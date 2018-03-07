@@ -1,6 +1,6 @@
-# getusgrub-vue
+# get-us-grub
 
-> GetUsGrub vue
+> get-us-grub vue project
 
 ## Build Setup
 

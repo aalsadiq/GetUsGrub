@@ -5,6 +5,14 @@ using System.Web.Http;
 
 namespace GitGrub.GetUsGrub
 {
+    /// <summary>
+    /// The <c>RegistrationController</c> class.
+    /// Contains Post action methods for registering a user.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2018
+    /// </para>
+    /// </summary>
     [RoutePrefix("Registration")]
     public class RegistrationController : ApiController
     {
@@ -17,70 +25,105 @@ namespace GitGrub.GetUsGrub
          * CSRF attacks specifically target state-changing requests, not theft of data,
          * since the attacker has no way to see the response to the forged request.
          */
-        // POST Registration/user
-        [HttpPost]
-        // AllowAnonymous opts out authentication for the user
-        [AllowAnonymous]
 
+        /// <summary>
+        /// The RegisterUserAccount method.
+        /// Binds data and validates data transfer object containing models
+        /// and calls the CreateUserManager class to perform business logic.
+        /// Returns "Ok" result if request if fully processed successfully.
+        /// Returns "BadRequest" result if any error occurred.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2018
+        /// </para>
+        /// </summary>
+        // POST Registration/User
+        [HttpPost]
+        // Opts authentication
+        [AllowAnonymous]
         [Route("User")]
         public IHttpActionResult RegisterUserAccount([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
-                // TODO: Implement maybe a handler to parse message to something cleaner
                 return BadRequest(ModelState);
             }
             try
             {
-                // TODO: System.Diagnostics.Debug.WriteLine("here");
-                var registerUserPreLogicStrategy = new RegisterUserPreLogicStrategy();
+                var createUserPreLogicStrategy = new CreateUserPreLogicValidationStrategy();
+                System.Diagnostics.Debug.WriteLine("here0");
+                var responseDto = createUserPreLogicStrategy.RunValidators(registerUserDto);
+                if (responseDto.Error != null)
+                {
+                    return BadRequest(responseDto.Error);
+                }
+                System.Diagnostics.Debug.WriteLine("here1");
+
                 var createUserManager = new CreateUserManager();
+                responseDto = createUserManager.CheckUserDoesNotExist(responseDto.Data);
+                if (responseDto.Error != null)
+                {
+                    return BadRequest(responseDto.Error);
+                }
+                System.Diagnostics.Debug.WriteLine("here2");
+                responseDto = createUserManager.HashPassword(responseDto.Data);
+                if (responseDto.Error != null)
+                {
+                    return BadRequest(responseDto.Error);
+                }
+                System.Diagnostics.Debug.WriteLine("here3");
+                responseDto = createUserManager.HashSecurityAnswers(responseDto.Data);
+                if (responseDto.Error != null)
+                {
+                    return BadRequest(responseDto.Error);
+                }
+                System.Diagnostics.Debug.WriteLine("here4");
+                responseDto = createUserManager.CreateClaims(responseDto.Data);
+                if (responseDto.Error != null)
+                {
+                    return BadRequest(responseDto.Error);
+                }
+                System.Diagnostics.Debug.WriteLine("here5");
+                responseDto = createUserManager.SetAccountIsActive(responseDto.Data);
+                if (responseDto.Error != null)
+                {
+                    return BadRequest(responseDto.Error);
+                }
+                System.Diagnostics.Debug.WriteLine("here6");
 
-                var responseDto = registerUserPreLogicStrategy.RunValidators(registerUserDto);
-                if (responseDto.Error != null)
-                {
-                    return BadRequest(responseDto.Error);
-                }
-                responseDto = createUserManager.CheckUserDoesNotExist(registerUserDto);
-                if (responseDto.Error != null)
-                {
-                    return BadRequest(responseDto.Error);
-                }
-                responseDto = createUserManager.HashPassword(registerUserDto);
-                if (responseDto.Error != null)
-                {
-                    return BadRequest(responseDto.Error);
-                }
-                responseDto = createUserManager.CreateClaims(registerUserDto);
-                if (responseDto.Error != null)
-                {
-                    return BadRequest(responseDto.Error);
-                }
-                responseDto = createUserManager.SetAccountIsActive(registerUserDto);
-                if (responseDto.Error != null)
-                {
-                    return BadRequest(responseDto.Error);
-                }
-                responseDto = createUserManager.CreateNewUser(registerUserDto);
-                if (responseDto.Error != null)
-                {
-                    return BadRequest(responseDto.Error);
-                }
+                // TODO: CreateUserPostLogicValidation
 
+                responseDto = createUserManager.CreateNewUser(responseDto.Data);
+                if (responseDto.Error != null)
+                {
+                    return BadRequest(responseDto.Error);
+                }
                 // TODO: Change this to show a message with the username
-                return Ok(responseDto.Data);
-
+                //return Ok(registerUserDto.UserAccount.Username);
+                //return Ok(responseDto.Data);
+                return Created(Request.RequestUri + "/" + registerUserDto.UserAccount.Username, registerUserDto.UserAccount.Username);
             }
             // Catch exceptions
             catch (Exception)
             {
-                // TODO: Should this be the string?
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(ErrorHandler.GetGeneralError());
+                //return InternalServerError(ex);
             }
         }
 
-        // POST Registration/restaurant
+        /// <summary>
+        /// The RegisterRestaurantUserAccount method.
+        /// Binds data and validates data transfer object containing models
+        /// and calls the CreateUserManager class and CreateRestaurantUserManager to perform business logic.
+        /// Returns "Ok" result if request if fully processed successfully.
+        /// Returns "BadRequest" result if any error occurred.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/05/2018
+        /// </para>
+        /// </summary>
+        // POST Registration/Restaurant
         [HttpPost]
         [AllowAnonymous]
         [Route("Restaurant")]
@@ -89,54 +132,78 @@ namespace GitGrub.GetUsGrub
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
-                // ***Implement maybe a handler to parse message to something cleaner
                 return BadRequest(ModelState);
             }
             try
             {
-                var registerUserPreLogicStrategy = new RegisterUserPreLogicStrategy();
-                var createRestaurantUserManager = new CreateRestaurantUserManager();
-                var createUserManager = new CreateUserManager();
-
-                // Make the validations extensible for registerRestaurantUser
-                var responseDto = registerUserPreLogicStrategy.RunValidators(registerRestaurantUserDto);
+                var createUserPreLogicStrategy = new CreateUserPreLogicValidationStrategy();
+                var responseDto = createUserPreLogicStrategy.RunValidators(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there0");
+
+                // TODO: CreateRestaurantUserPreLogicValidation
+
+                var createUserManager = new CreateUserManager();
                 responseDto = createUserManager.CheckUserDoesNotExist(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there1");
                 responseDto = createUserManager.HashPassword(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there2");
+                responseDto = createUserManager.HashSecurityAnswers(responseDto.Data);
+                if (responseDto.Error != null)
+                {
+                    return BadRequest(responseDto.Error);
+                }
+                System.Diagnostics.Debug.WriteLine("there3");
                 responseDto = createUserManager.CreateClaims(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
+                System.Diagnostics.Debug.WriteLine("there4");
                 responseDto = createUserManager.SetAccountIsActive(registerRestaurantUserDto);
                 if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                var restaurantResponseDto = createRestaurantUserManager.CreateNewUser(registerRestaurantUserDto);
-                if (restaurantResponseDto.Error != null)
+                System.Diagnostics.Debug.WriteLine("there5");
+                responseDto = createUserManager.CreateNewUser(registerRestaurantUserDto);
+                if (responseDto.Error != null)
                 {
                     return BadRequest(responseDto.Error);
                 }
-                // Change this to show a message with the username
-                return Ok(restaurantResponseDto.Data);
+                System.Diagnostics.Debug.WriteLine("there6");
+
+                // TODO: CreateRestaurantUserPostLogicValidation
+
+                var createRestaurantUserManager = new CreateRestaurantUserManager();
+                System.Diagnostics.Debug.WriteLine("there8");
+                var createRestaurantUserResponseDto = createRestaurantUserManager.CreateNewUser(registerRestaurantUserDto);
+                if (createRestaurantUserResponseDto.Error != null)
+                {
+                    return BadRequest(createRestaurantUserResponseDto.Error);
+                }
+                System.Diagnostics.Debug.WriteLine("there7");
+                // TODO: Change this to show a message with the username
+                //return Ok(registerRestaurantUser.UserAccount.Username);
+                return Created(Request.RequestUri + "/" + registerRestaurantUserDto.UserAccount.Username, registerRestaurantUserDto.UserAccount.Username);
+                //return Ok(responseDto.Data);
             }
             // Catch exceptions
             catch (Exception)
             {
-                // TODO: Should this be the string?
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(ErrorHandler.GetGeneralError());
+                //return InternalServerError(ex);
             }
         }
     }

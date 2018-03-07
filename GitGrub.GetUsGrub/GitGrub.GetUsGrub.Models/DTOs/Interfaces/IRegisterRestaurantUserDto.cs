@@ -1,5 +1,18 @@
-﻿namespace GitGrub.GetUsGrub.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GitGrub.GetUsGrub.Models
 {
-    public interface IRegisterRestaurantUserDto : IRegisterUserDto, IRestaurantAccount
-    {}
+    /// <summary>
+    /// The IRegisterRestaurantUserDto interface.
+    /// A contract with defined properties for the RegisterRestaurantUserDto class.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2018
+    /// </para>
+    /// </summary>
+    public interface IRegisterRestaurantUserDto : IRegisterUserDto
+    {
+        [Required]
+        RestaurantAccount RestaurantAccount { get; set; }
+    }
 }

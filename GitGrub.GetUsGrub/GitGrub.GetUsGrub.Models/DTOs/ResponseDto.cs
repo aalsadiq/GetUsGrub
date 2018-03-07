@@ -1,8 +1,15 @@
 ﻿namespace GitGrub.GetUsGrub.Models
 {
+    /// <summary>
+    /// The IRegisterRestaurantUserDto interface.
+    /// A contract with defined properties for the RegisterRestaurantUserDto class.
+    /// <para>
+    /// @author: Andrew Kao, Jennifer Nguyen
+    /// @updated: 03/05/2018
+    /// </para>
+    /// </summary>
     public class ResponseDto<T>
     {
-        // A type of data you would like to store in the ResponseDto
         public T Data { get; set; }
 
         public string Error { get; set; }

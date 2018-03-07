@@ -1,25 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GitGrub.GetUsGrub.Models.Models
+namespace GitGrub.GetUsGrub.Models
 {
-    // TODO: Do we need this table annotation?
-    [Table("RestaurantAccount")]
+    /// <summary>
+    /// The <c>RestaurantAccount</c> class.
+    /// Defines properties pertaining to a restaurant account.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2018
+    /// </para>
+    /// </summary>
     public class RestaurantAccount : IRestaurantAccount
     {
-        // TODO: Do we need this Key?
-        [Key]
-        public int Id { get; set; }
+        [Required]
+        [JsonProperty(PropertyName = "BusinessHours")]
+        public IList<BusinessHour> BusinessHours { get; set; }
 
-        // TODO: Do we still need to declare the FK?
-        [ForeignKey("UserAccount")]
-        public int UserId { get; set; }
-
-        public IEnumerable<BusinessHour> BusinessHours { get; set; }
-
+        [Required]
         public string PhoneNumber { get; set; }
 
+        [Required]
         public Address Address { get; set; }
     }
 }

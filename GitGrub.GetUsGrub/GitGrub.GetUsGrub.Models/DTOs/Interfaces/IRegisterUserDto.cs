@@ -1,5 +1,25 @@
-﻿namespace GitGrub.GetUsGrub.Models
+﻿using System.Collections.Generic;
+
+namespace GitGrub.GetUsGrub.Models
 {
-    public interface IRegisterUserDto : IUserAccount, ISecurityQuestions, ISalt
-    {}
+    /// <summary>
+    /// The IRegisterUserDto interface.
+    /// A contract with defined properties for the RegisterUserDto class.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/05/2018
+    /// </para>
+    /// </summary>
+    public interface IRegisterUserDto
+    {
+        UserAccount UserAccount { get; set; }
+
+        PasswordSalt PasswordSalt { get; set; }
+
+        IList<SecurityQuestion> SecurityQuestions { get; set; }
+
+        IList<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
+
+        Claims Claims { get; set; }
+    }
 }

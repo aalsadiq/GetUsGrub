@@ -62,10 +62,13 @@
     <Compile Include="DTOs\RegisterUserDto.cs" />
     <Compile Include="DTOs\ResponseDto.cs" />
     <Compile Include="Models\BusinessHour.cs" />
-    <Compile Include="Models\Interfaces\IBusinessHours.cs" />
+    <Compile Include="Models\Claims.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
+    <Compile Include="Models\Interfaces\IBusinessHours.cs" />
+    <Compile Include="Models\Interfaces\IClaims.cs" />
     <Compile Include="Models\Interfaces\IRestaurantAccount.cs" />
     <Compile Include="Models\Interfaces\ISalt.cs" />
+    <Compile Include="Models\Interfaces\ISecurityAnswerSalts.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestions.cs" />
     <Compile Include="Models\Interfaces\IUserAccount.cs" />
@@ -76,15 +79,13 @@
     <Compile Include="Models\SecurityQuestion.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validations\PasswordSaltValidator.cs" />
-    <Compile Include="Validations\Strategies\Interfaces\IValidationStrategy.cs" />
-    <Compile Include="Validations\Strategies\RegisterUserPostLogicStrategy.cs" />
-    <Compile Include="Validations\Strategies\RegisterUserPreLogicStrategy.cs" />
-    <Compile Include="Validations\UserAccountValidator.cs" />
+    <Compile Include="Validators\ClaimsValidator.cs" />
+    <Compile Include="Validators\PasswordSaltValidator.cs" />
+    <Compile Include="Validators\SecurityAnswerSaltValidator.cs" />
+    <Compile Include="Validators\SecurityQuestionValidator.cs" />
+    <Compile Include="Validators\UserAccountValidator.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

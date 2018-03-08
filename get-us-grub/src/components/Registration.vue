@@ -285,66 +285,68 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      tabs: null,
-      userStep: 0,
-      restaurantStep: 0,
-      validIdentificationInput: false,
-      validSecurityInput: false,
-      visibile: false,
-      username: '',
-      usernameRules: [
-        v => !!v || 'Username is required',
-        v => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
-      ],
-      displayName: '',
-      displayNameRules: [
-        v => !!v || 'Display name is required'
-      ],
-      password: '',
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v => v.length > 8 && v.length < 64 || 'Username must be 8 and 64 characters'
-      ],
-      firstSecurityQuestion: null,
-      firstSecurityQuestionsSet: [
-        'Who was the company you first worked for?',
-        'Where did you go to highschool or college?',
-        'What was the name of the teacher who gave you your first failing grade?'
-      ],
-      secondSecurityQuestion: null,
-      secondSecurityQuestionsSet: [
-        'What is your favorite song?',
-        'What is your mother\'s maiden name?',
-        'What is your favorite sports team?'
-      ],
-      thirdSecurityQuestion: null,
-      thirdSecurityQuestionsSet: [
-        'What was the name of your first crush?',
-        'What is the name of your hometown?',
-        'What was the name of your first pet?'
-      ],
-      firstSecurityAnswer: '',
-      secondSecurityAnswer: '',
-      thirdSecurityAnswer: '',
-      securityAnswerRules: [
-        v => !!v || 'Security answer is required'
-      ]
-    }),
+import axios from 'axios'
+export default {
+  data: () => ({
+    tabs: null,
+    userStep: 0,
+    restaurantStep: 0,
+    validIdentificationInput: false,
+    validSecurityInput: false,
+    visibile: false,
+    username: '',
+    usernameRules: [
+      v => !!v || 'Username is required',
+      v => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
+    ],
+    displayName: '',
+    displayNameRules: [
+      v => !!v || 'Display name is required'
+    ],
+    password: '',
+    passwordRules: [
+      v => !!v || 'Password is required',
+      v => v.length > 8 || 'Username must be at least 8 characters',
+      v => v.length < 64 || 'Username must be at most 64 characters'
+    ],
+    firstSecurityQuestion: null,
+    firstSecurityQuestionsSet: [
+      'Who was the company you first worked for?',
+      'Where did you go to highschool or college?',
+      'What was the name of the teacher who gave you your first failing grade?'
+    ],
+    secondSecurityQuestion: null,
+    secondSecurityQuestionsSet: [
+      'What is your favorite song?',
+      'What is your mother\'s maiden name?',
+      'What is your favorite sports team?'
+    ],
+    thirdSecurityQuestion: null,
+    thirdSecurityQuestionsSet: [
+      'What was the name of your first crush?',
+      'What is the name of your hometown?',
+      'What was the name of your first pet?'
+    ],
+    firstSecurityAnswer: '',
+    secondSecurityAnswer: '',
+    thirdSecurityAnswer: '',
+    securityAnswerRules: [
+      v => !!v || 'Security answer is required'
+    ]
+  }),
 
   methods: {
-      userSubmit () {
-        if (this.$refs.form.validate()) {
-          // Native form submission is not yet supported
-          axios.post('localhost:8081/Registration/User', {
-            name: this.username,
-            password: this.password,
-            select: this.select,
-            checkbox: this.checkbox
-          })
-        }
+    userSubmit () {
+      if (this.$refs.form.validate()) {
+        // Native form submission is not yet supported
+        axios.post('localhost:8081/Registration/User', {
+          name: this.username,
+          password: this.password,
+          select: this.select,
+          checkbox: this.checkbox
+        })
       }
     }
   }
+}
 </script>

@@ -26,7 +26,6 @@ namespace GitGrub.GetUsGrub
 
             // https://www.youtube.com/watch?v=nsnuIZX1C9A&index=15&list=PL6n9fhu94yhW7yoUOGNOfHurUE6bpOO2b
             //EnableCorsAttribute cors = new EnableCorsAttribute("http://localhost:50016");
-            //EnableCorsAttribute cors = new EnableCorsAttribute("http://localhost:50016");
 
             // Json Serializer Settings
             config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;

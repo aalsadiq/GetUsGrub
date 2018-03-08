@@ -11,7 +11,7 @@ namespace GitGrub.GetUsGrub.Models
     /// @updated: 03/05/2018
     /// </para>
     /// </summary>
-    public class RegisterUserDto : IRegisterUserDto
+    public class RegisterUserDto
     {
         [Required]
         public UserAccount UserAccount { get; set; }
@@ -19,7 +19,7 @@ namespace GitGrub.GetUsGrub.Models
         public PasswordSalt PasswordSalt { get; set; }
 
         [Required]
-        public IList<SecurityQuestion> SecurityQuestions { get; set; }
+        public IList<SecurityQuestionDto> SecurityQuestions { get; set; }
 
         public IList<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
 

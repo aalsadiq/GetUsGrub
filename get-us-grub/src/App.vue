@@ -1,10 +1,23 @@
 <template>
-  <router-view></router-view>
+  <div id="app">
+    <v-app>
+
+      <app-header/>
+      <v-container id="router-container">
+        <div>
+            <!-- <img src="./assets/logo.png"> -->
+            <router-view/>
+        </div>
+      </v-container>
+      <app-footer/>
+    </v-app>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  components: {AppHeader, AppFooter}
 }
 </script>
 
@@ -16,5 +29,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   /* margin-top: 60px; */
+}
+#router-container {
+  margin-top: 4.5em;
 }
 </style>

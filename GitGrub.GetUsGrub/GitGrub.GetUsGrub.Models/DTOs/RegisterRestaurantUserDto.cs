@@ -11,7 +11,7 @@ namespace GitGrub.GetUsGrub.Models
     /// @updated: 03/05/2018
     /// </para>
     /// </summary>
-    public class RegisterRestaurantUserDto : IRegisterRestaurantUserDto
+    public class RegisterRestaurantUserDto
     {
         [Required]
         public UserAccount UserAccount { get; set; }

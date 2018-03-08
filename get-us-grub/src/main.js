@@ -6,7 +6,10 @@ import router from './router'
 import Vuetify from 'vuetify'
 // Ensure you are using css-loader
 
-Vue.use(router)
+// window.axios.defaults.headers.common = {
+//   'X-Requested-With' : 'XMLHttpRequest'
+// };
+
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false

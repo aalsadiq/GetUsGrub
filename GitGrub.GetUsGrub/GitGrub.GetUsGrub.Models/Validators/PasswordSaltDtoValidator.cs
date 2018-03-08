@@ -10,7 +10,7 @@ namespace GitGrub.GetUsGrub.Models
     /// @updated: 03/05/2018
     /// </para>
     /// </summary>
-    public class PasswordSaltValidator : AbstractValidator<ISalt>
+    public class PasswordSaltValidator : AbstractValidator<PasswordSalt>
     {
         public PasswordSaltValidator()
         {

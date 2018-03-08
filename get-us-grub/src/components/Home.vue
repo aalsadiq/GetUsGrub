@@ -1,7 +1,6 @@
 <template>
-    <div>
-        <app-header></app-header>
-        <app-footer></app-footer>
+    <div id="home">
+      <img src="@/assets/GetUsGrub.png">
     </div>
 </template>
 

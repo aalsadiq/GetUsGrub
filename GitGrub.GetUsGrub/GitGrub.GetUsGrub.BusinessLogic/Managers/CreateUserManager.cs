@@ -40,7 +40,7 @@ namespace GitGrub.GetUsGrub.BusinessLogic
                 else
                 {
                     // TODO: Is this the correct error message?
-                    responseDto.Error = "Username is already used.";
+                    responseDto.Error = ErrorHandler.SetCustomError("Username is already used.");
                     return responseDto;
                 }
             }

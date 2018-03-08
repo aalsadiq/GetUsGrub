@@ -7,7 +7,7 @@ namespace GitGrub.GetUsGrub.UserAccessControl
     /// Factory that creates a set of claims for new users
     /// 
     /// Author: Rachel Dang
-    /// Last Updated: 2/21/18
+    /// Last Updated: 3/08/18
     /// </summary>
     public class ClaimsFactory
     {
@@ -19,18 +19,19 @@ namespace GitGrub.GetUsGrub.UserAccessControl
         {
             return new List<Claim>
             {
-                // For Profie Management
-                new Claim(ResourceConstant.RESOURCETYPE_PROFILE, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_PROFILE, ActionConstant.ACTIONTYPE_UPDATE),
+                // For Individual Profie Management
+                new Claim("ReadIndividualProfile", "True"),
+                new Claim("UpdateIndividualProfile", "True"),
 
                 // For Food Preferences
-                new Claim(ResourceConstant.RESOURCETYPE_PROFILE, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_PREFERENCES, ActionConstant.ACTIONTYPE_UPDATE),
+                new Claim("ReadPreferences", "True"),
+                new Claim("UpdatePreferences", "True"),
 
                 // For Bill Splitter
-                new Claim(ResourceConstant.RESOURCETYPE_MENU, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_DICTIONARY, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_DICTIONARY, ActionConstant.ACTIONTYPE_UPDATE)
+                new Claim("ReadBillSplitter", "True"),
+                new Claim("ReadMenu", "True"),
+                new Claim("ReadDictionary", "True"),
+                new Claim("UpdateDictionary", "True")
             };
         }
 
@@ -42,12 +43,13 @@ namespace GitGrub.GetUsGrub.UserAccessControl
         {
             return new List<Claim>
             {
-                // For Profile Mangement
-                new Claim(ResourceConstant.RESOURCETYPE_RESTAURANTPROFILE, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_RESTAURANTPROFILE, ActionConstant.ACTIONTYPE_UPDATE),
+                // For Restaurant Profie Management
+                new Claim("ReadRestsaurantProfile", "True"),
+                new Claim("UpdateRestaurantProfile", "True"),
 
                 // For Bill Splitter
-                new Claim(ResourceConstant.RESOURCETYPE_MENU, ActionConstant.ACTIONTYPE_READ)
+                new Claim("ReadBillSplitter", "True"),
+                new Claim("ReadMenu", "True")
             };
         }
 
@@ -60,27 +62,29 @@ namespace GitGrub.GetUsGrub.UserAccessControl
             return new List<Claim>
             {
                 // For User Management
-                new Claim(ResourceConstant.RESOURCETYPE_USER, ActionConstant.ACTIONTYPE_CREATE),
-                new Claim(ResourceConstant.RESOURCETYPE_USER, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_USER, ActionConstant.ACTIONTYPE_UPDATE),
-                new Claim(ResourceConstant.RESOURCETYPE_USER, ActionConstant.ACTIONTYPE_DELETE),
-                new Claim(ResourceConstant.RESOURCETYPE_USER, ActionConstant.ACTIONTYPE_DEACTIVATE),
-                new Claim(ResourceConstant.RESOURCETYPE_USER, ActionConstant.ACTIONTYPE_REACTIVATE),
+                new Claim("CreateUser", "True"),
+                new Claim("ReadUser", "True"),
+                new Claim("UpdateUser", "True"),
+                new Claim("DeleteUser", "True"),
+                new Claim("DeactivateUser", "True"),
+                new Claim("ReactivateUser", "True"),
+
 
                 // For Indvidiual and Restaurant Profile Management
-                new Claim(ResourceConstant.RESOURCETYPE_PROFILE, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_PROFILE, ActionConstant.ACTIONTYPE_UPDATE),
-                new Claim(ResourceConstant.RESOURCETYPE_RESTAURANTPROFILE, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_RESTAURANTPROFILE, ActionConstant.ACTIONTYPE_UPDATE),
+                new Claim("ReadIndividualProfile", "True"),
+                new Claim("UpdateIndividualProfile", "True"),
+                new Claim("ReadRestsaurantProfile", "True"),
+                new Claim("UpdateRestaurantProfile", "True"),
 
                 // For Food Preferences
-                new Claim(ResourceConstant.RESOURCETYPE_PREFERENCES, ActionConstant.ACTIONTYPE_CREATE),
-                new Claim(ResourceConstant.RESOURCETYPE_PREFERENCES, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_PREFERENCES, ActionConstant.ACTIONTYPE_DELETE),
+                new Claim("CreatePreferences", "True"),
+                new Claim("ReadPreferences", "True"),
+                new Claim("DeletePreferences", "True"),
 
                 // For Bill Splitter
-                new Claim(ResourceConstant.RESOURCETYPE_MENU, ActionConstant.ACTIONTYPE_READ),
-                new Claim(ResourceConstant.RESOURCETYPE_DICTIONARY, ActionConstant.ACTIONTYPE_READ)
+                new Claim("ReadBillSplitter", "True"),
+                new Claim("ReadMenu", "True"),
+                new Claim("ReadDictionary", "True")
             };
         }
     }

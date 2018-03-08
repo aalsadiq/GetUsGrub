@@ -1,13 +1,25 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <v-app>
+      <app-header/>
+      <v-container id="router-container">
+        <div>
+            <!-- <img src="./assets/logo.png"> -->
+            <router-view/>
+        </div>
+      </v-container>
+      <app-footer/>
+    </v-app>
   </div>
 </template>
 
 <script>
+import AppHeader from './components/AppHeader'
+import AppFooter from './components/AppFooter'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {AppHeader, AppFooter}
 }
 </script>
 
@@ -18,6 +30,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
+}
+#router-container {
+  margin-top: 4.5em;
 }
 </style>

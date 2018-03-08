@@ -10,13 +10,13 @@ namespace GitGrub.GetUsGrub.Models
     /// @updated: 03/05/2018
     /// </para>
     /// </summary>
-    public class SecurityQuestion
+    public class SecurityQuestionDto : ISecurityQuestion
     {
         [Required]
-        public int Question { get; set; }
+        public int QuestionType { get; set; }
 
         // QuestionAnswer is stored as hash
         [Required]
-        public string Answer { get; set; }
+        public string QuestionAnswer { get; set; }
     }
 }

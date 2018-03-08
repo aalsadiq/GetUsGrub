@@ -59,8 +59,12 @@
     <Compile Include="Helpers\PayloadHasher.cs" />
     <Compile Include="Managers\CreateRestaurantUserManager.cs" />
     <Compile Include="Managers\CreateUserManager.cs" />
+    <Compile Include="Managers\DeactivateUserManager.cs" />
+    <Compile Include="Managers\DeleteUserManager.cs" />
+    <Compile Include="Managers\EditUserManager.cs" />
     <Compile Include="Managers\Interfaces\ICreateNewUser.cs" />
     <Compile Include="Managers\Interfaces\ICreateUserManager.cs" />
+    <Compile Include="Managers\ReactivateUserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationStrategies\Interfaces\IValidationStrategy.cs" />
     <Compile Include="ValidationStrategies\CreateUserPostLogicValidationStrategy.cs" />

@@ -2,6 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+//added
+using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Transactions;//references?
 
 namespace GitGrub.GetUsGrub.DataAccess
 {
@@ -77,6 +82,48 @@ namespace GitGrub.GetUsGrub.DataAccess
         public void Dispose()
         {
             //throw new NotImplementedException();
+        }
+        /// <summary>
+        /// Will deactivate user by username by changing IsActive to false.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public bool DeactivateUser(string username)
+        {
+            using(var dbContextTransaction = context.Database.BegingTransaction())
+            {
+                try
+                {8o
+                    context.Database.ExecuteSqlCommand(
+
+                        //TODO: edit isactive to false
+                    );
+                    return true;
+
+                }catch(Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                }
+            }
+            return true;
+        }
+        //added by me...
+        public bool Reactivate(string username)
+        {
+            //TODO: IsActive
+            return true;
+        }
+        public bool DeleteUser(string username)
+        {
+            return true;
+        }
+        public RegisterUserDto EditUser(RegisterUserDto user)
+        {
+            return user;
+        }
+        public RegisterRestaurantUserDto EditRestaurant(RegisterRestaurantUserDto user)
+        {
+            return user;
         }
     }
 }

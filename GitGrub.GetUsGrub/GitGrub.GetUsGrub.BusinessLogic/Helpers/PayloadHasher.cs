@@ -26,17 +26,9 @@ namespace GitGrub.GetUsGrub
         /// @updated: 03/05/2018
         /// </para>
         /// </summary>
-        public static string HashWithSalt(string salt, string payload)
+        public static string HashWithSalt(string salt, IHashStrategy algorithm, string payload)
         {
-            using (var hashProvider = new SHA256Cng())
-            {
-                // Concats salt as the prefix and payload as the suffix
-                string saltAndPayload = string.Concat(salt, payload);
-                byte[] hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(saltAndPayload));
-                string hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
-
-                return hashedPayload;
-            }
+            return algorithm.Execute(salt, payload);
         }
 
         /// <summary>
@@ -80,6 +72,27 @@ namespace GitGrub.GetUsGrub
 
                 return randomString;
             }
+        }
+    }
+}
+
+public interface IHashStrategy
+{
+    string Execute(string salt, string payload);
+}
+
+public class Sha256Strategy : IHashStrategy
+{
+    public string Execute(string salt, string payload)
+    {
+        using (var hashProvider = new SHA256Cng())
+        {
+            // Concats salt as the prefix and payload as the suffix
+            string saltAndPayload = string.Concat(salt, payload);
+            byte[] hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(saltAndPayload));
+            string hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
+
+            return hashedPayload;
         }
     }
 }

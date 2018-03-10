@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
+// Ensure you are using css-loader
 
 // window.axios.defaults.headers.common = {
 //   'X-Requested-With' : 'XMLHttpRequest'
@@ -18,6 +18,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

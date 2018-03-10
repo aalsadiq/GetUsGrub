@@ -93,7 +93,7 @@ namespace GitGrub.GetUsGrub.DataAccess
             using(var dbContextTransaction = context.Database.BegingTransaction())
             {
                 try
-                {8o
+                {
                     context.Database.ExecuteSqlCommand(
 
                         //TODO: edit isactive to false

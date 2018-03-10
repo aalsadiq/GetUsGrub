@@ -23,6 +23,11 @@ export default new Router({
       path: '/AdminHome',
       name: 'AdminHome',
       component: AdminHome
+    },
+    {
+      path: '/AdminHome/CreateUser',
+      name: 'CreateUser',
+      component: AdminHome
     }
   ]
 })

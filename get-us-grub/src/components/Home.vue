@@ -1,5 +1,5 @@
 <template>
-  <div>
-    Home Components
-  </div>
+    <div id="home">
+      <img src="@/assets/GetUsGrub.png">
+    </div>
 </template>

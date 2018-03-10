@@ -4,7 +4,7 @@
       <v-toolbar dark tabs flat>
         <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-3">
           <v-spacer/>
-          <v-tab href="#user">User
+          <v-tab href="#individual">Individual
             <v-icon>face</v-icon>
           </v-tab>
           <v-spacer/>
@@ -16,14 +16,14 @@
         </v-tabs>
       </v-toolbar>
       <v-tabs-items v-model="tabs">
-        <v-tab-item v-for="content in ['user', 'restaurant']" :key="content" :id="content">
-          <div v-if="content === 'user'">
-            <v-stepper v-model="userStep" vertical>
+        <v-tab-item v-for="content in ['individual', 'restaurant']" :key="content" :id="content">
+          <div v-if="content === 'individual'">
+            <v-stepper v-model="individualStep" vertical>
               <v-stepper-header>
                 <v-divider></v-divider>
-                <v-stepper-step step="1" :complete="userStep > 1" editable>Identification</v-stepper-step>
+                <v-stepper-step step="1" :complete="individualStep > 1" editable>Identification</v-stepper-step>
                 <v-divider></v-divider>
-                <v-stepper-step step="2" :complete="userStep > 2">Security Questions</v-stepper-step>
+                <v-stepper-step step="2" :complete="individualStep > 2">Security Questions</v-stepper-step>
                 <v-divider></v-divider>
               </v-stepper-header>
               <v-stepper-items>
@@ -53,7 +53,7 @@
                         required
                       ></v-text-field>
                     </v-form>
-                  <v-btn color="primary" @click="userStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
+                  <v-btn color="primary" @click="individualStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="2">
                   <v-form v-model="validSecurityInput">
@@ -110,8 +110,8 @@
                     </v-flex>
                   </v-layout>
                   </v-form>
-                  <v-btn color="grey lighten-5" @click="userStep = 1">Previous</v-btn>
-                  <v-btn color="primary" @submit.prevent="userSubmit" :disabled="!validSecurityInput">Submit</v-btn>
+                  <v-btn color="grey lighten-5" @click="individuaStep = 1">Previous</v-btn>
+                  <v-btn color="primary" @submit.prevent="individualSubmit" :disabled="!validSecurityInput">Submit</v-btn>
                 </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
@@ -294,7 +294,7 @@ export default {
   components: {AppHeader, AppFooter},
   data: () => ({
     tabs: null,
-    userStep: 0,
+    individualStep: 0,
     restaurantStep: 0,
     validIdentificationInput: false,
     validSecurityInput: false,
@@ -342,7 +342,7 @@ export default {
   }),
 
   methods: {
-    userSubmit () {
+    individualSubmit () {
       if (this.$refs.form.validate()) {
         // Native form submission is not yet supported
         axios.post('localhost:8081/Registration/User', {

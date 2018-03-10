@@ -54,5 +54,6 @@ export default {
     x: function () {
       console.log(this.$refs)
     }
+  }
 }
 </script>

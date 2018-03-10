@@ -13,7 +13,10 @@
             <v-btn color="teal">Register</v-btn>
           </router-link>
           <v-btn color="teal">Login</v-btn>
-          <v-btn color="teal">Split Bill</v-btn>
+          <router-link to="/RestaurantBillSplitter">
+            <v-btn color="teal">Split Bill</v-btn>
+          </router-link>
+
           <v-btn icon><v-icon>email</v-icon></v-btn>
     </v-toolbar>
 </template>

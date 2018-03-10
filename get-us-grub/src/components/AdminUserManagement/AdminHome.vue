@@ -13,15 +13,6 @@ export default {
   components: {
     'app-admin-header': AppAdminHeader,
     'app-footer': AppFooter
-  },
-  data () {
-    return {
-      drawer: true,
-      items: [
-        { title: 'AdminHome', icon: 'dashboard' },
-        { title: 'CreateUser', icon: 'question_answer' }
-      ]
-    }
   }
 }
 </script>

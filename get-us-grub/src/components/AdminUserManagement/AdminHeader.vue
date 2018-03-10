@@ -17,7 +17,7 @@
           </v-list-tile>
         </v-list>
       </v-toolbar>
-      <v-list class="pt-0" dense>
+      <v-list class="header-admin" dense>
         <v-list-tile v-for="item in items" :key="item.title" v-on:click="items">
           <router-link :to="item">
             <v-list-tile-action>
@@ -30,11 +30,11 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-  <!-- </v-card> -->
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -43,7 +43,7 @@ export default {
         { title: 'Home', icon: 'home', path: '/AdminHome' },
         { title: 'Create User', icon: 'face', path: '/Registration' },
         { title: 'Edit User', icon: 'edit' },
-        { title: 'Deactivate User', icon: 'clear' },
+        { title: 'Deactivate User', icon: 'clear', path: '/DeactivateUser', method: 'testDeactivateUser' },
         { title: 'Reactivate User', icon: 'add' },
         { title: 'Delete User', icon: 'delete_forever' }
       ],
@@ -53,7 +53,27 @@ export default {
   methods: {
     x: function () {
       console.log(this.$refs)
+    },
+    deactivateUser: function () {
+      axios.put(
+        '/User/DeactivateUser', {
+          username: 'name1'
+        }
+      ).catch(function (thrown) {
+      })
+    },
+    testDeactivateUser: function () {
+      axios.post('/User/DeactivateUser', this.form)
+        .then(response => {
+          console.log('DONE!!!!')
+        })
     }
   }
 }
 </script>
+
+<style>
+.header-admin{
+  position: relative;;
+}
+</style>

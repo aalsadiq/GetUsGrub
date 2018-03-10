@@ -9,5 +9,39 @@ namespace CSULB.GetUsGrub.Controllers
 {
     public class UserController : ApiController
     {
+        /// <summary>
+        /// Controller that will be called when admin must deactivate a user. 
+        /// To access this controller, admin user must have valid claims.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/08/2018
+        /// </summary>
+        [RoutePrefix("User")]
+        public class DeactivateUserController : ApiController
+        {
+            //PUT AdminHome/DeactivateUser
+            [Route("DeactivateUser")]
+            [HttpPut]
+            //TODO: Add claims here
+            public IHttpActionResult DeactivateUser([FromBody] string username)
+            {
+                //if the model is not valid return a bad request
+                if (!ModelState.IsValid)//was binding successful?
+                {
+                    return BadRequest(ModelState);
+                }
+                try
+                {
+                    //var manager = new DeactivateUserManager();//calling appropriate manager.
+                    //var response = manager.DeactivateUser(username);
+
+                    //return Ok(response);//Returns a deactivated user response.
+                    return Ok("Hi Ryan and Jen");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message); //Returns a message that describes the current exception.
+                }
+            }
+        }
     }
 }

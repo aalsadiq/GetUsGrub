@@ -10,6 +10,6 @@ export default {
   name: 'AdminCreate',
   components: {
     'app-create-user': AppCreateUser
-  },
+  }
 }
 </script>

@@ -31,10 +31,11 @@ namespace GitGrub.GetUsGrub.Controllers
             }
             try
             {
-                var manager = new DeactivateUserManager();//calling appropriate manager.
-                var response = manager.DeactivateUser(username);
+                //var manager = new DeactivateUserManager();//calling appropriate manager.
+                //var response = manager.DeactivateUser(username);
 
-                return Ok(response);//Returns a deactivated user response.
+                //return Ok(response);//Returns a deactivated user response.
+                return Ok("Hi Ryan");
             }
             catch (Exception ex)
             {

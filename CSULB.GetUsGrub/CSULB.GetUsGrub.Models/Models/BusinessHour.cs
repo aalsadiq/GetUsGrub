@@ -1,5 +1,16 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
+    public enum DayOfWeek
+    {
+        Sunday,
+        Monday,
+        Tuesday,
+        Wedneday,
+        Thursday,
+        Friday,
+        Saturday
+    }
+
     // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>BusinessHour</c> class.

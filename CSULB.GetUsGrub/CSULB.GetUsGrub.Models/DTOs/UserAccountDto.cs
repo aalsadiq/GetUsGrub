@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CSULB.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// The <c>UserAccountDto</c> class.
@@ -12,9 +10,7 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class UserAccountDto : IUserAccount
     {
-        [Required]
         public string Username { get; set; }
-        [Required]
         public string Password { get; set; }
     }
 }

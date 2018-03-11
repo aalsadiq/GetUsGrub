@@ -75,7 +75,7 @@
   <ItemGroup>
     <Folder Include="Managers\Interfaces\" />
     <Folder Include="Services\" />
-    <Folder Include="ValidationStrategies\" />
+    <Folder Include="Strategies\ValidationStrategies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

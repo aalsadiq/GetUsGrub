@@ -4,6 +4,8 @@ import 'vuetify/dist/vuetify.min.css'
 import Home from '@/components/Home'
 import Registration from '@/components/Registration'
 import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
+import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
+import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 
 Vue.use(Router)
 
@@ -28,6 +30,23 @@ export default new Router({
       path: '/AdminHome/CreateUser',
       name: 'CreateUser',
       component: AdminHome
+    },
+    {
+      path: '/AdminHome',
+      name: 'AdminHome',
+      component: AdminHome
+    },
+    {
+      path: '/RestaurantBillSplitter',
+      name: 'RestaurantBillSplitter',
+      component: RestaurantBillSplitter,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Split Your Bill!'
+        next()
+      }
+    },
+    {
+      path: '*'
     }
   ]
 })

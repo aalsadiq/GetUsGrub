@@ -64,6 +64,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\RegisterRestaurantDto.cs" />
+    <Compile Include="DTOs\RegisterUserDto.cs" />
+    <Compile Include="DTOs\RestaurantProfileDto.cs" />
+    <Compile Include="DTOs\UserProfileDto.cs" />
+    <Compile Include="DTOs\SecurityQuestionDto.cs" />
+    <Compile Include="DTOs\UserAccountDto.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\RestaurantProfile.cs" />
+    <Compile Include="Models\UserClaims.cs" />
+    <Compile Include="Models\IndividualProfile.cs" />
+    <Compile Include="Models\PasswordSalt.cs" />
+    <Compile Include="Models\SecurityAnswerSalt.cs" />
+    <Compile Include="Models\SecurityQuestion.cs" />
+    <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,7 +87,8 @@
   <ItemGroup>
     <Folder Include="DTOs\Interfaces\" />
     <Folder Include="Models\Interfaces\" />
-    <Folder Include="Validators\" />
+    <Folder Include="Validators\DtoValidators\" />
+    <Folder Include="Validators\ModelValidators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

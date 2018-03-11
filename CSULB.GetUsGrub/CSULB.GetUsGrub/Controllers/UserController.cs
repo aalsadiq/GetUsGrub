@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CSULB.GetUsGrub.BusinessLogic.Managers;
+using CSULB.GetUsGrub.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -26,7 +28,7 @@ namespace CSULB.GetUsGrub.Controllers
         [Route("DeleteUser")]
         [HttpDelete]
         //TODO: Add claims
-        public IHttpActionResult DeactivateUser([FromBody] string username)
+        public IHttpActionResult Delete([FromBody] string username)
         {
             if (!ModelState.IsValid)//if the model is not valid return a bad request
             {
@@ -34,14 +36,11 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
+                var manager = new UserManager();
+                var response = manager.DeleteUser(username);
 
-                //TODO: @Angelica fix manager call
+                return Ok(response);
 
-                //var manager = new DeleteUserManager();
-                //var response = manager.DeleteUser(username);
-
-                //return Ok(response);
-                return Ok("Good");
             }
             catch (Exception ex)
             {
@@ -55,10 +54,9 @@ namespace CSULB.GetUsGrub.Controllers
         /// @author: Angelica Salas Tovar
         /// @updated: 03/08/2018
         /// </summary>
-        public class DeactivateUserController : ApiController
-        {
-            //PUT AdminHome/DeactivateUser
-            [Route("DeactivateUser")]
+        //PUT AdminHome/DeactivateUser
+            //TODO: CORS?
+            [Route("DeactivateUser")]   
             [HttpPut]
             //TODO: Add claims here
             public IHttpActionResult DeactivateUser([FromBody] string username)
@@ -70,18 +68,17 @@ namespace CSULB.GetUsGrub.Controllers
                 }
                 try
                 {
-                    //var manager = new DeactivateUserManager();//calling appropriate manager.
-                    //var response = manager.DeactivateUser(username);
+                    var manager = new UserManager();//calling appropriate manager.
+                    var response = manager.DeactivateUser(username);
 
-                    //return Ok(response);//Returns a deactivated user response.
-                    return Ok("Hi Ryan and Jen");
+                    return Ok(response);//Returns a deactivated user response.
                 }
                 catch (Exception ex)
                 {
                     return BadRequest(ex.Message); //Returns a message that describes the current exception.
                 }
             }
-        }
+   
 
         /// <summary>
         /// Controller that will be called when admin must reactivate a user. 
@@ -89,9 +86,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// @author: Angelica Salas Tovar
         /// @updated: 03/08/2018
         /// </summary>
-        [RoutePrefix("/AdminHome")]
-        public class ReactivateUserController : ApiController
-        {
+
             //PUT AdminHome/ReactivateUser
             [Route("ReactivateUser")]
             [HttpPut]
@@ -103,7 +98,7 @@ namespace CSULB.GetUsGrub.Controllers
                 }
                 try
                 {
-                    var manager = new ReactivateUserController();
+                    var manager = new UserManager();
                     var response = manager.ReactivateUser(username);
 
                     return Ok(response);
@@ -113,7 +108,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(ex.Message);
                 }
             }
-        }
+
 
         /// <summary>
         /// Controller that will be called when admin must edit a user. 
@@ -121,56 +116,54 @@ namespace CSULB.GetUsGrub.Controllers
         /// @author: Angelica Salas Tovar
         /// @updated: 03/08/2018
         /// </summary>
-        [RoutePrefix("/AdminHome")]
-        public class EditUserController : ApiController
-        {
-            //PUT AdminHome/EditUser
-            //[Route("EditUser")]
-            //[HttpPut]
-            //public IHttpActionResult EditUser([FromBody] RegisterUserDto user)
-            //{
-            //    if (!ModelState.IsValid)
-            //    {
-            //        return BadRequest(ModelState);
-            //    }
-            //    try
-            //    {
-            //        var manager = new EditUserController();
-            //        var response = manager.EditUser(user);
 
-            //        return Ok(response);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        return BadRequest(ex.Message);
-            //    }
-            //}
+        //PUT AdminHome/EditUser
+        [Route("EditUser")]
+        [HttpPut]
+        public IHttpActionResult EditUser([FromBody] RegisterUserDto user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var manager = new UserManager();
+                var response = manager.EditUser(user);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
             /// <summary>
             /// Controller that will be called when admin must edit restaurant a user. 
             /// To access this controller, admin user must have valid claims.
             /// @author: Angelica Salas Tovar
             /// @updated: 03/08/2018
             /// </summary>
-            //[Route("EditRestaurant")]
-            //[HttpPut]
-            //public IHttpActionResult EditRestaurant([FromBody] RegisterRestaurantUserDto user)
-            //{
-            //    if (!ModelState.IsValid)
-            //    {
-            //        return BadRequest(ModelState);
-            //    }
-            //    try
-            //    {
-            //        var manager = new EditUserController();
-            //        var response = manager.EditRestaurant(user);
+            [Route("EditRestaurant")]
+            [HttpPut]
+            public IHttpActionResult EditRestaurant([FromBody] RegisterRestaurantDto user)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                try
+                {
+                    var manager = new UserManager();
+                    var response = manager.EditRestaurant(user);
 
-            //        return Ok(response);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        return BadRequest(ex.Message);
-            //    }
-            //}
-        }
+                    return Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
     }
 }

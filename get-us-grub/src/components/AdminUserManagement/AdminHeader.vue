@@ -43,8 +43,8 @@ export default {
         { title: 'Home', icon: 'home', path: '/AdminHome' },
         { title: 'Create User', icon: 'face', path: '/AdminHome/CreateUser' },
         { title: 'Edit User', icon: 'edit', path: '/AdminHome/EditUser' },
-        { title: 'Deactivate User', icon: 'clear', path: '/DeactivateUser', method: 'testDeactivateUser' },
-        { title: 'Reactivate User', icon: 'add' },
+        { title: 'Deactivate User', icon: 'clear', path: '/User/DeactivateUser' },
+        { title: 'Reactivate User', icon: 'add', method: 'reactivateUser' },
         { title: 'Delete User', icon: 'delete_forever' }
       ],
       right: null
@@ -54,18 +54,18 @@ export default {
     x: function () {
       console.log(this.$refs)
     },
-    deactivateUser: function () {
+    x2: function () {
       axios.put(
-        '/User/DeactivateUser', {
+        '/User', {
           username: 'name1'
         }
       ).catch(function (thrown) {
       })
     },
-    testDeactivateUser: function () {
-      axios.post('/User/DeactivateUser', this.form)
-        .then(response => {
-          console.log('DONE!!!!')
+    reactivateUser: function () {
+      axios.put('http://localhost:54426/User/ReactivateUser')
+        .then(function (respose) {
+          console.log(this.data)
         })
     }
   }

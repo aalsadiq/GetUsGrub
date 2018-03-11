@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import { store } from './store/store.js'
 import Vuetify from 'vuetify'
+import 'es6-promise/auto'
 // Ensure you are using css-loader
 
 // window.axios.defaults.headers.common = {

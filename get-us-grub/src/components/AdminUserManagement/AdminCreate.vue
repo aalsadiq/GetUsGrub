@@ -8,14 +8,14 @@
 
 <script>
 import AppCreateUser from '@/components/CreateUser'
-import AdminHeader from '@/components/AdminHeader'
+import AdminHeader from '@/components/AdminUserManagement/AdminHeader'
 import AppFooter from '@/components/AppFooter'
 export default {
   name: 'CreateUser',
   components: {
     'app-create-user': AppCreateUser,
-    'app-admin-header':AdminHeader,
-    'app-footer' : AppFooter
+    'app-admin-header': AdminHeader,
+    'app-footer': AppFooter
   }
 }
 </script>

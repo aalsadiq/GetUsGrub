@@ -8,6 +8,7 @@
 <script>
 import AppAdminHeader from '@/components/AdminUserManagement/AdminHeader'
 import AppFooter from '@/components/AppFooter'
+
 export default {
   name: 'AdminHome',
   components: {

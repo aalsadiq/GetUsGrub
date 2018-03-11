@@ -4,7 +4,8 @@ import 'vuetify/dist/vuetify.min.css'
 import Home from '@/components/Home'
 import Registration from '@/components/Registration'
 import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
-import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
+import CreateUser from '@/components/AdminUserManagement/AdminCreate.vue'
+import DeactivateUser from '@/components/AdminUserManagement/DeactivateUser.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 
 Vue.use(Router)
@@ -29,12 +30,12 @@ export default new Router({
     {
       path: '/AdminHome/CreateUser',
       name: 'CreateUser',
-      component: AdminHome
+      component: CreateUser
     },
     {
-      path: '/AdminHome',
-      name: 'AdminHome',
-      component: AdminHome
+      path: '/User/DeactivateUser',
+      name: 'DeactivateUser',
+      component: DeactivateUser
     },
     {
       path: '/RestaurantBillSplitter',

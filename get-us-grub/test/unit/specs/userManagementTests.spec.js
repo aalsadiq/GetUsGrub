@@ -1,19 +1,54 @@
 import moxios from 'moxios'
+import axios from 'axios'
 
-it('testing deactivate user', () => {
-  moxios.stubRequest('/User/DeactivateUser', {
-    status: 200,
-    response: {
-      username: 'Billy'
-    }
-  })
-})
+describe('Mocking axios requests', function () {
+  describe('test', function () {
+    beforeEach(function () {
+      moxios.install()
+    })
 
-it('testing deactivate user - post', () => {
-  moxios.stubRequest('/User/DeactivateUser', {
-    status: 200,
-    response: {
-      username: 'NotBilly'
-    }
+    afterEach(function () {
+      moxios.uninstall()
+    })
+
+    it('deactivateUser-Put', function (done) {
+      moxios.withMock(function () {
+        let onFulfilled = sinon.spy()
+        axios.put('/Users/Deactivate').then(onFulfilled)
+
+        moxios.wait(function () {
+          let request = moxios.requests.mostRecent()
+          request.respondWith({
+            status: 200,
+            response: {
+              username: 'NotBilly'
+            }
+          }).then(function () {
+            console.log(request)
+            done()
+          })
+        })
+      })
+    })
+
+    it('Registration-Post', function (done) {
+      moxios.withMock(function () {
+        let onFulfilled = sinon.spy()
+        axios.put('/Users/Registration').then(onFulfilled)
+
+        moxios.wait(function () {
+          let request = moxios.requests.mostRecent()
+          request.respondWith({
+            status: 200,
+            response: {
+              username: 'NotBilly'
+            }
+          }).then(function () {
+            console.log('Registration - Done!')
+            done()
+          })
+        })
+      })
+    })
   })
 })

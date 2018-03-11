@@ -42,7 +42,7 @@ export default {
       items: [
         { title: 'Home', icon: 'home', path: '/AdminHome' },
         { title: 'Create User', icon: 'face', path: '/AdminHome/CreateUser' },
-        { title: 'Edit User', icon: 'edit', path: '/AdminHome/EditUser'  },
+        { title: 'Edit User', icon: 'edit', path: '/AdminHome/EditUser' },
         { title: 'Deactivate User', icon: 'clear', path: '/DeactivateUser', method: 'testDeactivateUser' },
         { title: 'Reactivate User', icon: 'add' },
         { title: 'Delete User', icon: 'delete_forever' }

@@ -9,7 +9,7 @@
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
-    public class UserAccount
+    public class UserAccount : IUserAccount
     {
         public int Id { get; set; }
         public string Username { get; set; }

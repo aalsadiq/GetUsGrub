@@ -1,6 +1,6 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Add data annotations?
+    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>SecurityQuestion</c> class.
     /// Defines properties pertaining to security question with corresponding answer.

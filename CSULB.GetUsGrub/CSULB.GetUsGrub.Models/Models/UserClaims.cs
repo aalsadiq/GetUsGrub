@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Add data annotations?
+    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>Claims</c> class.
     /// Defines properties pertaining to a user's claims.

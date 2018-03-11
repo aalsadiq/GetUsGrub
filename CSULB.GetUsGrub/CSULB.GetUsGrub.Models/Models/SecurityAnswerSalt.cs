@@ -1,6 +1,6 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Add data annotations?
+    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>SecurityAnswerSalt</c> class.
     /// Defines properties pertaining to a salt for a security answer.

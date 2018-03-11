@@ -10,7 +10,7 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
-    public class UserAccountDto
+    public class UserAccountDto : IUserAccount
     {
         [Required]
         public string Username { get; set; }

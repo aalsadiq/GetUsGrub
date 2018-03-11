@@ -10,7 +10,7 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
-    public class UserProfileDto
+    public class UserProfileDto : IUserProfile
     {
         public string DisplayPictureUrl { get; set; }
         [Required]

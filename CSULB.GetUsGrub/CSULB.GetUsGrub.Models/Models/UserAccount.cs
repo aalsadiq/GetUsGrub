@@ -13,18 +13,14 @@ namespace CSULB.GetUsGrub.Models
 
         // Stored as a hash
         public string Password { get; set; }
-
         public bool IsActive { get; set; }
-
         public bool IsFirstTimeUser { get; set; }
 
         // Navigation Properties
-        public virtual UserProfile UserProfile { get; set;   }
-
+        public virtual UserProfile UserProfile { get; set; }
         public virtual PasswordSalt PasswordSalt { get; set; }
-
         public virtual Token Token { get; set; }
-
         public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
+        public virtual UserClaims Claims { get; set; }
     }
 }

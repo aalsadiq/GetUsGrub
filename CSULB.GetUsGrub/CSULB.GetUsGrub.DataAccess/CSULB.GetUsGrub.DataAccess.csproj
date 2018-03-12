@@ -52,6 +52,7 @@
     <Compile Include="Contexts\IndividualProfileContext.cs" />
     <Compile Include="Contexts\RestaurantContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
+    <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Migrations\201803110501538_Initial.cs" />
     <Compile Include="Migrations\201803110501538_Initial.Designer.cs">
       <DependentUpon>201803110501538_Initial.cs</DependentUpon>

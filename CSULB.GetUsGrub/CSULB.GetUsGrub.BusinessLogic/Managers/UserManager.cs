@@ -1,10 +1,5 @@
 ﻿using CSULB.GetUsGrub.DataAccess.Gateways;
 using CSULB.GetUsGrub.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic.Managers
 {
@@ -15,15 +10,15 @@ namespace CSULB.GetUsGrub.BusinessLogic.Managers
     /// </summary>
     public class UserManager
     {
-        //TODO: @Jen Add Create User here.
-
+        //TODO: @Jenn Add Create User here. [-Angelica]
         /// <summary>
-        /// Will deactivate user when given username.
-        /// @author Angelica
-        /// @Last Update: 03/10/2018
-        /// </summary>C:\Users\Angelica\Documents\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.BusinessLogic\Managers\UserManager.cs
-        /// <param name="username"></param>
-        /// <returns></returns>
+        /// The <c>CreateUserManager</c> class.
+        /// Contains all methods for performing the creation of an individual base user.
+        /// <para>
+        /// @author: Angelica, Jennifer Nguyen
+        /// @updated: 03/10/2018
+        /// </para>
+        /// </summary>
         public bool DeactivateUser(string username)
         {
             //Validate DTO - in this case validate if it follows business rule names

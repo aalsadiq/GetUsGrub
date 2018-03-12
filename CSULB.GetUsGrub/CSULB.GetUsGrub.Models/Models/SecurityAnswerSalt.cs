@@ -1,4 +1,7 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CSULB.GetUsGrub.Models
 {
     // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
@@ -11,8 +14,12 @@
     /// </summary>
     public class SecurityAnswerSalt
     {
-        public int? Int { get; set; }
-        public int? SecurityQuestionId { get; set; }
+        [Key]
+        [ForeignKey("SecurityQuestion")]
+        public int? Id { get; set; }
         public string Salt { get; set; }
+
+        // Navigation Properties
+        public virtual SecurityQuestion SecurityQuestion { get; set; }
     }
 }

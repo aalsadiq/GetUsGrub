@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -16,7 +15,7 @@ namespace CSULB.GetUsGrub.Models
     {
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
-        public string DisplayPictureUrl { get; set; }
+        public string DisplayPicture { get; set; }
         public string DisplayName { get; set; }
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }

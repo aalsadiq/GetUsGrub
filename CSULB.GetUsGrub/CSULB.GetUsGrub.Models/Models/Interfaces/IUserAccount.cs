@@ -13,6 +13,6 @@
         string Username { get; }
         string Password { get; }
         bool IsActive { get; }
-        bool FirstTimeUser { get; }
+        bool IsFirstTimeUser { get; }
     }
 }

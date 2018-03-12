@@ -1,4 +1,6 @@
-﻿namespace CSULB.GetUsGrub.BusinessLogic
+﻿using CSULB.GetUsGrub.DataAccess.Gateways;
+
+namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
     /// The <c>UserValidator</c> class.
@@ -10,10 +12,19 @@
     /// </summary>
     public class UserValidator
     {
-        // TODO: @Jenn Finish the UserValidator [-Jenn]
-        public bool checkIfUserExists(string username)
+        // TODO: @Jenn Unit Test for User Validator [-Jenn]
+        public bool CheckIfUserExists(string username)
         {
-            return result
+            using (var userGateway = new UserGateway())
+            {
+                var user = userGateway.GetUserByUsername(username);
+                return user != null;
+            }
+        }
+
+        public bool CheckIfUsernameEqualsDisplayName(string username, string displayName)
+        {
+            return username == displayName;
         }
     }
 }

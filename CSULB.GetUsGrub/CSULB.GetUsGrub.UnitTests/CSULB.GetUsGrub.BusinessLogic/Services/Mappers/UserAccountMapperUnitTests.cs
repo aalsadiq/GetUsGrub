@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.UnitTests
                 Username = "username",
                 Password = "!Q2w#E4r",
                 IsActive = true,
-                FirstTimeUser = true
+                IsFirstTimeUser = true
             };
             var userAccountMapper = new UserAccountMapper();
 
@@ -36,7 +36,7 @@ namespace CSULB.GetUsGrub.UnitTests
             userAccountDto.Username.Should().Be("username");
             userAccountDto.Password.Should().Be("!Q2w#E4r");
             userAccountDto.IsActive.Should().Be(true);
-            userAccountDto.FirstTimeUser.Should().Be(true);
+            userAccountDto.IsFirstTimeUser.Should().Be(true);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace CSULB.GetUsGrub.UnitTests
                 Username = "username",
                 Password = "!Q2w#E4r",
                 IsActive = true,
-                FirstTimeUser = true
+                IsFirstTimeUser = true
             };
             var userAccountMapper = new UserAccountMapper();
 
@@ -60,7 +60,7 @@ namespace CSULB.GetUsGrub.UnitTests
             userAccount.Username.Should().Be("username");
             userAccount.Password.Should().Be("!Q2w#E4r");
             userAccount.IsActive.Should().Be(true);
-            userAccount.FirstTimeUser.Should().Be(true);
+            userAccount.IsFirstTimeUser.Should().Be(true);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.Models
     public class RestaurantMenu : IRestaurantMenu, IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [ForeignKey("RestaurantProfile")]
         public int RestaurantId { get; set; }

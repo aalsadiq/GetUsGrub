@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 
 namespace CSULB.GetUsGrub.Models
@@ -14,8 +16,12 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class UserClaims
     {
+        [Key]
+        [ForeignKey("UserAccount")]
         public int? Id { get; set; }
-        public int? UserId { get; set; }
         public IList<Claim> Claims { get; set; }
+
+        // Navigation Property
+        public virtual UserAccount UserAccount { get; set; }
     }
 }

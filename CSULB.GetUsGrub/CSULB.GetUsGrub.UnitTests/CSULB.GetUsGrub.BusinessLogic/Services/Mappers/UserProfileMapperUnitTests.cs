@@ -22,8 +22,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var userProfile = new UserProfile()
             {
                 Id = 0,
-                UserId = 0,
-                DisplayPictureUrl = "www.img.com",
+                DisplayPicture = "www.img.com",
                 DisplayName = "displayname"
             };
             var userProfileMapper = new UserProfileMapper();
@@ -32,7 +31,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var userProfileDto = userProfileMapper.MapModelToDto(userProfile);
 
             // Assert
-            userProfileDto.DisplayPictureUrl.Should().Be("www.img.com");
+            userProfileDto.DisplayPicture.Should().Be("www.img.com");
             userProfileDto.DisplayName.Should().Be("displayname");
         }
 
@@ -42,7 +41,7 @@ namespace CSULB.GetUsGrub.UnitTests
             // Arrange
             var userProfileDto = new UserProfileDto()
             {
-                DisplayPictureUrl = "www.img.com",
+                DisplayPicture = "www.img.com",
                 DisplayName = "displayname"
             };
             var userProfileMapper = new UserProfileMapper();
@@ -52,8 +51,7 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Assert
             userProfile.Id.Should().Be(null);
-            userProfile.UserId.Should().Be(null);
-            userProfile.DisplayPictureUrl.Should().Be("www.img.com");
+            userProfile.DisplayPicture.Should().Be("www.img.com");
             userProfile.DisplayName.Should().Be("displayname");
         }
     }

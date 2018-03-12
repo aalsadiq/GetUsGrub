@@ -1,10 +1,6 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic.Managers;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace CSULB.GetUsGrub.Controllers
@@ -16,7 +12,7 @@ namespace CSULB.GetUsGrub.Controllers
     [RoutePrefix("User")] //default route
     public class UserController : ApiController
     {
-        //TODO: @Jen add create user.
+        //TODO: @Jenn Add create user controller. [-Angelica]
 
         /// <summary>
         /// Controller that will be called when admin must deactivate a user. 

@@ -10,7 +10,7 @@
     /// </summary>
     public class UserProfileDto : IUserProfile
     {
-        public string DisplayPictureUrl { get; set; }
+        public string DisplayPicture { get; set; }
         public string DisplayName { get; set; }
     }
 }

@@ -11,7 +11,6 @@
         Saturday
     }
 
-    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>BusinessHour</c> class.
     /// Defines properties pertaining to a business hour.

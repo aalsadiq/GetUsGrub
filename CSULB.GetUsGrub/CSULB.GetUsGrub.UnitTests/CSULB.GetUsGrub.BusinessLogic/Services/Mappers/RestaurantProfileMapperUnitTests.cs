@@ -42,7 +42,6 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfile = new RestaurantProfile()
             {
                 Id = 0,
-                UserId = 0,
                 BusinessHours = new List<BusinessHour>
                 {
                     business1,
@@ -108,7 +107,6 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Assert
             restaurantProfile.Id.Should().Be(null);
-            restaurantProfile.UserId.Should().Be(null);
             restaurantProfile.BusinessHours[0].Should().Be(business1);
             restaurantProfile.BusinessHours[1].Should().Be(business2);
             restaurantProfile.PhoneNumber.Should().Be("(562)985-4111");

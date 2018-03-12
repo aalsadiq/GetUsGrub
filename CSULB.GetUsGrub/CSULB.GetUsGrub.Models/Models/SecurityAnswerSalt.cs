@@ -11,8 +11,8 @@
     /// </summary>
     public class SecurityAnswerSalt
     {
-        public int Int { get; set; }
-        public int SecurityQuestionId { get; set; }
+        public int? Int { get; set; }
+        public int? SecurityQuestionId { get; set; }
         public string Salt { get; set; }
     }
 }

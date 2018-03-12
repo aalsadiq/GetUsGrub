@@ -99,6 +99,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\RestaurantProfileMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\SecurityQuestionMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\UserAccountMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\UserProfileMapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.Models\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.Models\Validators\DtoValidators\SecurityQuestionDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.Models\Validators\DtoValidators\UserAccountDtoValidatorUnitTests.cs" />

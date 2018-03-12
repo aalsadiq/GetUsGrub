@@ -1,0 +1,60 @@
+﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
+using FluentAssertions;
+using Xunit;
+
+namespace CSULB.GetUsGrub.UnitTests
+{
+    /// <summary>
+    /// The <c>UserProfileMapperUnitTests</c> class.
+    /// Contains unit tests for UserProfileMapper.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/11/2018
+    /// </para>
+    /// </summary>
+    public class UserProfileMapperUnitTests
+    {
+        [Fact]
+        public void Should_MapModelToDto_When_AllFieldsFromModelAreMappedToDto()
+        {
+            // Arrange
+            var userProfile = new UserProfile()
+            {
+                Id = 0,
+                UserId = 0,
+                DisplayPictureUrl = "www.img.com",
+                DisplayName = "displayname"
+            };
+            var userProfileMapper = new UserProfileMapper();
+
+            // Act
+            var userProfileDto = userProfileMapper.MapModelToDto(userProfile);
+
+            // Assert
+            userProfileDto.DisplayPictureUrl.Should().Be("www.img.com");
+            userProfileDto.DisplayName.Should().Be("displayname");
+        }
+
+        [Fact]
+        public void Should_MapDtoToModel_When_AllFieldsFromDtoAreMappedToModel()
+        {
+            // Arrange
+            var userProfileDto = new UserProfileDto()
+            {
+                DisplayPictureUrl = "www.img.com",
+                DisplayName = "displayname"
+            };
+            var userProfileMapper = new UserProfileMapper();
+
+            // Act
+            var userProfile = userProfileMapper.MapDtoToModel(userProfileDto);
+
+            // Assert
+            userProfile.Id.Should().Be(null);
+            userProfile.UserId.Should().Be(null);
+            userProfile.DisplayPictureUrl.Should().Be("www.img.com");
+            userProfile.DisplayName.Should().Be("displayname");
+        }
+    }
+}

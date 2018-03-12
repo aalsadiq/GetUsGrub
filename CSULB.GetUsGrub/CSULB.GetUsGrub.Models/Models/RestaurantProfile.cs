@@ -13,8 +13,8 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class RestaurantProfile : IRestaurantProfile
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
+        public int? Id { get; set; }
+        public int? UserId { get; set; }
         // TODO: @Jenn Why did you pick a list? [-Jenn]
         public IList<BusinessHour> BusinessHours { get; set; }
         public string PhoneNumber { get; set; }

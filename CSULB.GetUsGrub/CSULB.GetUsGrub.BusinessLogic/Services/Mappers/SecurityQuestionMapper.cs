@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.BusinessLogic.Services.Mappers
     /// </summary>
     public class SecurityQuestionMapper
     {
-        public SecurityQuestionDto ModelToDto(SecurityQuestion securityQuestion)
+        public SecurityQuestionDto MapModelToDto(SecurityQuestion securityQuestion)
         {
             var securityQuestionDto = new SecurityQuestionDto
             {
@@ -22,7 +22,7 @@ namespace CSULB.GetUsGrub.BusinessLogic.Services.Mappers
             return securityQuestionDto;
         }
 
-        public SecurityQuestion DtoToModel(SecurityQuestionDto securityQuestionDto)
+        public SecurityQuestion MapDtoToModel(SecurityQuestionDto securityQuestionDto)
         {
             var securityQuestion = new SecurityQuestion
             {

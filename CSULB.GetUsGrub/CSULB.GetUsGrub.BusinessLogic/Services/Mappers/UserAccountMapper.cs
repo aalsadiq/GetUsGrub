@@ -12,22 +12,26 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserAccountMapper
     {
-        public UserAccountDto ModelToDto(UserAccount userAccount)
+        public UserAccountDto MapModelToDto(UserAccount userAccount)
         {
             var userAccountDto = new UserAccountDto
             {
                 Username = userAccount.Username,
-                Password = userAccount.Password
+                Password = userAccount.Password,
+                IsActive = userAccount.IsActive,
+                FirstTimeUser = userAccount.FirstTimeUser
             };
             return userAccountDto;
         }
 
-        public UserAccount DtoToModel(UserAccountDto userAccountDto)
+        public UserAccount MapDtoToModel(UserAccountDto userAccountDto)
         {
             var userAccount = new UserAccount
             {
                 Username = userAccountDto.Username,
-                Password = userAccountDto.Password
+                Password = userAccountDto.Password,
+                IsActive = userAccountDto.IsActive,
+                FirstTimeUser = userAccountDto.FirstTimeUser
             };
             return userAccount;
         }

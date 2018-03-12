@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserProfileMapper
     {
-        public UserProfileDto ModelToDto(UserProfile userProfile)
+        public UserProfileDto MapModelToDto(UserProfile userProfile)
         {
             var userProfileDto = new UserProfileDto
             {
@@ -22,7 +22,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return userProfileDto;
         }
 
-        public UserProfile DtoToModel(UserProfileDto userProfileDto)
+        public UserProfile MapDtoToModel(UserProfileDto userProfileDto)
         {
             var userProfile = new UserProfile
             {

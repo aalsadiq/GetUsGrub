@@ -14,8 +14,8 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class UserClaims
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
+        public int? Id { get; set; }
+        public int? UserId { get; set; }
         public IList<Claim> Claims { get; set; }
     }
 }

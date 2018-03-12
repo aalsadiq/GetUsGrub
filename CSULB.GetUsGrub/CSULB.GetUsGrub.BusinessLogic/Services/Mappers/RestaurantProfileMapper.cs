@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class RestaurantProfileMapper
     {
-        public RestaurantProfileDto ModelToDto(RestaurantProfile restaurantProfile)
+        public RestaurantProfileDto MapModelToDto(RestaurantProfile restaurantProfile)
         {
             var restaurantProfileDto = new RestaurantProfileDto
             {
@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return restaurantProfileDto;
         }
 
-        public RestaurantProfile DtoToModel(RestaurantProfileDto restaurantProfileDto)
+        public RestaurantProfile MapDtoToModel(RestaurantProfileDto restaurantProfileDto)
         {
             var restaurantProfile = new RestaurantProfile()
             {

@@ -11,8 +11,8 @@
     /// </summary>
     public class UserProfile : IUserProfile
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
+        public int? Id { get; set; }
+        public int? UserId { get; set; }
         public string DisplayPictureUrl { get; set; }
         public string DisplayName { get; set; }
     }

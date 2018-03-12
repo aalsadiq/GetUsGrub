@@ -38,12 +38,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             });
         }
 
-        public bool ValidateDayIsDayOfWeek(string day)
+        public bool CheckIfDayIsDayOfWeek(string day)
         {
+            // True if day is in DayOfWeek enum
             return Enum.IsDefined(typeof(DayOfWeek), day);
         }
 
-        public bool CheckOpenTimeIsBeforeCloseTime(string openTime, string closeTime)
+        public bool CheckIfOpenTimeIsBeforeCloseTime(string openTime, string closeTime)
         {
             var openingTime = DateTime.ParseExact(openTime, "HH:mm", CultureInfo.InvariantCulture);
             var closingTime = DateTime.ParseExact(closeTime, "HH:mm", CultureInfo.InvariantCulture);

@@ -1,16 +1,5 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    public enum DayOfWeek
-    {
-        Sunday,
-        Monday,
-        Tuesday,
-        Wedneday,
-        Thursday,
-        Friday,
-        Saturday
-    }
-
     /// <summary>
     /// The <c>BusinessHour</c> class.
     /// Defines properties pertaining to a business hour.

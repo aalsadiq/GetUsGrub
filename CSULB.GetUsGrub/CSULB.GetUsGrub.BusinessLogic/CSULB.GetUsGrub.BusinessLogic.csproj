@@ -81,6 +81,7 @@
     <Compile Include="Mappers\UserProfileMapper.cs" />
     <Compile Include="Services\PayloadHasher.cs" />
     <Compile Include="Services\SaltGenerator.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateUserPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateUserPreLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Validators\DtoValidators\UserProfileDtoValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
+    <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />
     <Compile Include="Validators\ModelValidators\PasswordSaltValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantProfileValidator.cs" />
     <Compile Include="Validators\ModelValidators\SecurityAnswerSaltValidator.cs" />

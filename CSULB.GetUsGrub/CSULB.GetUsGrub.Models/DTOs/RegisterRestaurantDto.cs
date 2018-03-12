@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -11,14 +10,8 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
-    public class RegisterRestaurantDto
+    public class RegisterRestaurantDto : RegisterUserDto
     {
-        [Required]
-        public UserAccountDto UserAccountDto { get; set; }
-        [Required]
-        public IList<SecurityQuestionDto> SecurityQuestionDtos { get; set; }
-        [Required]
-        public UserProfileDto UserProfileDto { get; set; }
         [Required]
         public RestaurantProfileDto RestaurantProfileDto { get; set; }
     }

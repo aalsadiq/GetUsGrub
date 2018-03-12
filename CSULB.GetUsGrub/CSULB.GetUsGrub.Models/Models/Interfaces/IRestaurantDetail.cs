@@ -6,7 +6,7 @@ namespace CSULB.GetUsGrub.Models
     {
         string Category { get; set; }
 
-        IEnumerable<BusinessHours> BusinessSchedule { get; set; }
+        IEnumerable<BusinessHour> BusinessSchedule { get; set; }
 
         bool? HasReservations { get; set; }
 

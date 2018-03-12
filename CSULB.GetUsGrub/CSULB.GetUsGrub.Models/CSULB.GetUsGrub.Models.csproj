@@ -64,7 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\BusinessHours.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\BusinessHour.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Interfaces\IBusinessHoursList.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />

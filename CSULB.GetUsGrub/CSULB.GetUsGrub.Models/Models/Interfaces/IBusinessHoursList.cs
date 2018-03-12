@@ -4,6 +4,6 @@ namespace CSULB.GetUsGrub.Models
 {
     public interface IBusinessHoursList
     {
-        IEnumerable<BusinessHours> BusinessHoursList { get; set; }
+        IEnumerable<BusinessHour> BusinessHoursList { get; set; }
     }
 }

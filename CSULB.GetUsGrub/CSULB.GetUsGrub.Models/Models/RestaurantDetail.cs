@@ -29,6 +29,6 @@ namespace CSULB.GetUsGrub.Models.Models
 
         public string Category { get; set; }
 
-        public IEnumerable<BusinessHours> BusinessSchedule { get; set; }
+        public IEnumerable<BusinessHour> BusinessSchedule { get; set; }
     }
 }

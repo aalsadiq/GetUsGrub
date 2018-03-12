@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
@@ -7,8 +6,8 @@ namespace CSULB.GetUsGrub.Models
     /// <summary>
     /// Restaurant user profile class
     /// 
-    /// Author: Andrew Kao
-    /// Last Updated: 2/20/18
+    /// Author: Jennifer Nguyen
+    /// Last Updated: 3/10/18
     /// </summary>
     [Table("GetUsGrub.RestaurantProfile")]
     public class RestaurantProfile : IProfile, IRestaurantProfile, IEntity
@@ -19,6 +18,10 @@ namespace CSULB.GetUsGrub.Models
         public string ProfileName { get; set; }
 
         public string ProfilePicture { get; set; }
+
+        public string PhoneNumber { get; set; }
+        
+        public Address Address { get; set; }
 
         public IRestaurantDetail Details { get; set; }
 
@@ -32,5 +35,6 @@ namespace CSULB.GetUsGrub.Models
         public virtual UserProfile UserProfile { get; set; }
 
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
+        public IList<BusinessHour> BusinessHoursList { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     }
 }

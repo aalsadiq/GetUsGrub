@@ -64,6 +64,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\RestaurantProfileDto.cs" />
+    <Compile Include="DTOs\UserProfileDto.cs" />
+    <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />
+    <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\RestaurantDetail.cs" />
+    <Compile Include="Models\RestaurantMenu.cs" />
+    <Compile Include="Models\RestaurantProfile.cs" />
+    <Compile Include="Models\Interfaces\IBusinessHour.cs" />
+    <Compile Include="Models\Interfaces\IMenuItem.cs" />
+    <Compile Include="Models\Interfaces\IRestaurantMenu.cs" />
+    <Compile Include="Models\Interfaces\IRestaurantProfile.cs" />
+    <Compile Include="Models\Interfaces\IUserProfile.cs" />
+    <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,7 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\Interfaces\" />
-    <Folder Include="Models\Interfaces\" />
     <Folder Include="Validators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

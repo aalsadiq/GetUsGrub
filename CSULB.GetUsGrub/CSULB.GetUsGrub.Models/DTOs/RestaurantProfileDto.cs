@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -11,13 +10,12 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
-    public class RestaurantProfileDto
+    public class RestaurantProfileDto : IRestaurantProfile
     {
-        [Required]
         public IList<BusinessHour> BusinessHours { get; set; }
-        [Required]
         public string PhoneNumber { get; set; }
-        [Required]
         public Address Address { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
     }
 }

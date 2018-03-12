@@ -10,7 +10,7 @@
     /// </summary>
     public interface ISecurityQuestion
     {
-        int Question { get; set; }
-        string Answer { get; set; }
+        int Question { get; }
+        string Answer { get; }
     }
 }

@@ -84,14 +84,24 @@
     <Compile Include="Models\SecurityQuestion.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
+    <Compile Include="Validators\DtoValidators\SecurityQuestionDtoValidator.cs" />
+    <Compile Include="Validators\DtoValidators\UserAccountDtoValidator.cs" />
+    <Compile Include="Validators\DtoValidators\UserProfileDtoValidator.cs" />
+    <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
+    <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
+    <Compile Include="Validators\ModelValidators\PasswordSaltValidator.cs" />
+    <Compile Include="Validators\ModelValidators\RestaurantProfileValidator.cs" />
+    <Compile Include="Validators\ModelValidators\SecurityAnswerSaltValidator.cs" />
+    <Compile Include="Validators\ModelValidators\SecurityQuestionValidator.cs" />
+    <Compile Include="Validators\ModelValidators\UserAccountValidator.cs" />
+    <Compile Include="Validators\ModelValidators\UserProfileValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\Interfaces\" />
-    <Folder Include="Validators\DtoValidators\" />
-    <Folder Include="Validators\ModelValidators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

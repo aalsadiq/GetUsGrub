@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CSULB.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// The <c>IndividualProfileDto</c> class.
@@ -13,7 +11,6 @@ namespace CSULB.GetUsGrub.Models
     public class UserProfileDto : IUserProfile
     {
         public string DisplayPictureUrl { get; set; }
-        [Required]
         public string DisplayName { get; set; }
     }
 }

@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Mappers\RestaurantProfileMapper.cs" />
     <Compile Include="Services\Mappers\SecurityQuestionMapper.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Services\Mappers\UserProfileMapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

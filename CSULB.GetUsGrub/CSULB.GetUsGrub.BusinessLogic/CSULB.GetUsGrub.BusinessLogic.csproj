@@ -54,6 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Mappers\RestaurantProfileMapper.cs" />
+    <Compile Include="Services\Mappers\SecurityQuestionMapper.cs" />
+    <Compile Include="Services\Mappers\UserAccountMapper.cs" />
+    <Compile Include="Services\Mappers\UserProfileMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -74,7 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Managers\Interfaces\" />
-    <Folder Include="Services\Mappers\" />
     <Folder Include="Strategies\ValidationStrategies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

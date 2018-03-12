@@ -14,9 +14,12 @@ namespace CSULB.GetUsGrub.Models
     {
         public UserProfileValidator()
         {
-            RuleFor(x => x.DisplayName)
-                .NotEmpty()
-                .NotNull();
+            RuleSet("CreateUser", () =>
+            {
+                RuleFor(x => x.DisplayName)
+                    .NotEmpty()
+                    .NotNull();
+            });
         }
     }
 }

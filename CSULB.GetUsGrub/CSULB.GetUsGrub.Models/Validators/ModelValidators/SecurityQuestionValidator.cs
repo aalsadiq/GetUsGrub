@@ -7,21 +7,24 @@ namespace CSULB.GetUsGrub.Models
     /// Defines rules to validate a SecurityQuestion.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/10/2018
+    /// @updated: 03/11/2018
     /// </para>
     /// </summary>
     public class SecurityQuestionValidator : AbstractValidator<SecurityQuestion>
     {
         public SecurityQuestionValidator()
         {
-            RuleFor(x => x.Question)
-                .NotEmpty()
-                .NotNull()
-                .GreaterThan(0);
+            RuleSet("CreateUser", () =>
+            {
+                RuleFor(x => x.Question)
+                    .NotEmpty()
+                    .NotNull()
+                    .GreaterThan(0);
 
-            RuleFor(x => x.Answer)
-                .NotEmpty()
-                .NotNull();
+                RuleFor(x => x.Answer)
+                    .NotEmpty()
+                    .NotNull();
+            });
         }
     }
 }

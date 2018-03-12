@@ -7,16 +7,19 @@ namespace CSULB.GetUsGrub.Models
     /// Defines rules to validate a UserProfileDto.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/10/2018
+    /// @updated: 03/11/2018
     /// </para>
     /// </summary>
     public class UserProfileDtoValidator : AbstractValidator<UserProfileDto>
     {
         public UserProfileDtoValidator()
         {
-            RuleFor(x => x.DisplayName)
-                .NotEmpty().WithMessage("Display name is required")
-                .NotNull().WithMessage("Display name is required");
+            RuleSet("CreateUser", () =>
+            {
+                RuleFor(x => x.DisplayName)
+                    .NotEmpty().WithMessage("Display name is required.")
+                    .NotNull().WithMessage("Display name is required.");
+            });
         }
     }
 }

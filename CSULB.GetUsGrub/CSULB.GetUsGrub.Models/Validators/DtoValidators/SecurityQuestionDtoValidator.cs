@@ -7,21 +7,23 @@ namespace CSULB.GetUsGrub.Models
     /// Defines rules to validate a SecurityQuestionDto.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/10/2018
+    /// @updated: 03/11/2018
     /// </para>
     /// </summary>
     public class SecurityQuestionDtoValidator : AbstractValidator<SecurityQuestionDto>
     {
         public SecurityQuestionDtoValidator()
         {
-            RuleFor(x => x.Question)
-                .NotEmpty().WithMessage("Must answer 3 security questions.")
-                .NotNull().WithMessage("Must answer 3 security questions.")
-                .GreaterThan(0).WithMessage("Something went wrong. Please try again later.");
+            RuleSet("CreateUser", () =>
+            {
+                RuleFor(x => x.Question)
+                    .NotEmpty().WithMessage("Must answer 3 security questions.")
+                    .GreaterThan(0).WithMessage("Something went wrong. Please try again later.");
 
-            RuleFor(x => x.Answer)
-                .NotEmpty().WithMessage("Must answer 3 security questions.")
-                .NotNull().WithMessage("Must answer 3 security questions.");
+                RuleFor(x => x.Answer)
+                    .NotEmpty().WithMessage("Must answer 3 security questions.")
+                    .NotNull().WithMessage("Must answer 3 security questions.");
+            });
         }
     }
 }

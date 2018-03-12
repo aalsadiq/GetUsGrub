@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Managers\Interfaces\" />
-    <Folder Include="Services\" />
+    <Folder Include="Services\Mappers\" />
     <Folder Include="Strategies\ValidationStrategies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

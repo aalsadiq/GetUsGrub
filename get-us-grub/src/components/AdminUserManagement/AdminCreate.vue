@@ -1,15 +1,21 @@
 <template>
   <div>
+    <app-admin-header/>
     <app-create-user/>
+    <app-footer/>
   </div>
 </template>
 
 <script>
 import AppCreateUser from '@/components/CreateUser'
+import AdminHeader from '@/components/AdminUserManagement/AdminHeader'
+import AppFooter from '@/components/AppFooter'
 export default {
-  name: 'AdminCreate',
+  name: 'CreateUser',
   components: {
-    'app-create-user': AppCreateUser
-  },
+    'app-create-user': AppCreateUser,
+    'app-admin-header': AdminHeader,
+    'app-footer': AppFooter
+  }
 }
 </script>

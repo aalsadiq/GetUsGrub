@@ -1,7 +1,9 @@
 <template>
   <div>
     <app-admin-header/>
+    <v-flex xs3 sm10 offset-sm2>
     <app-create-user/>
+    </v-flex>
     <app-footer/>
   </div>
 </template>

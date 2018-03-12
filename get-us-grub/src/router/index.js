@@ -5,7 +5,11 @@ import Home from '@/components/Home'
 import Registration from '@/components/Registration'
 import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
 import CreateUser from '@/components/AdminUserManagement/AdminCreate.vue'
-import DeactivateUser from '@/components/AdminUserManagement/DeactivateUser.vue'
+import DeactivateUser from '@/components/AdminUserManagement/AdminDeactivateUser.vue'
+import ReactivateUser from '@/components/AdminUserManagement/AdminReactivateUser.vue'
+import DeleteUser from '@/components/AdminUserManagement/AdminDeleteUser.vue'
+import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 
 Vue.use(Router)
@@ -23,12 +27,12 @@ export default new Router({
       component: Registration
     },
     {
-      path: '/AdminHome',
-      name: 'AdminHome',
+      path: '/User/Admin',
+      name: 'User',
       component: AdminHome
     },
     {
-      path: '/AdminHome/CreateUser',
+      path: '/User/CreateUser',
       name: 'CreateUser',
       component: CreateUser
     },
@@ -36,6 +40,26 @@ export default new Router({
       path: '/User/DeactivateUser',
       name: 'DeactivateUser',
       component: DeactivateUser
+    },
+    {
+      path: '/User/ReactivateUser',
+      name: 'ReactivateUser',
+      component: ReactivateUser
+    },
+    {
+      path: '/User/DeleteUser',
+      name: 'DeleteUser',
+      component: DeleteUser
+    },
+    {
+      path: '/User/EditUser',
+      name: 'EditUser',
+      component: EditUser
+    },
+    {
+      path: '/User/ImageUpload',
+      name: 'ImageUpload',
+      component: ImageUpload
     },
     {
       path: '/RestaurantBillSplitter',

@@ -345,7 +345,7 @@ export default {
           username: this.username,
           password: this.password,
           headers: {
-            'Content-type' : 'application/json'
+            'Content-type': 'application/json'
           }
           // select: this.select,
           // checkbox: this.checkbox

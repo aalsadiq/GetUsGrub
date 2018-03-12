@@ -1,81 +1,120 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.DataAccess.Gateways
 {
     /// <summary>
-    /// @author: Jennifer Nguyen, Angelica Salas
-    /// @updated: 03/10/2018
+    /// A <c>UserGateway</c> class.
+    /// Defines methods that communicates with the UserContext.
+    /// <para>
+    /// @author: Jennifer Nguyen, Angelica Salas Tovar
+    /// @updated: 03/11/2018
     /// </para>
     /// </summary>
-    public class UserGateway:IDisposable
+    public class UserGateway : IDisposable
     {
-        //    public IUserAccount GetUserByUsername(string username)
-        //    {
-        //        var user = new UserAccount()
-        //        {
-        //            Username = "null",
-        //            DisplayName = "null",
-        //            Password = "null",
-        //            IsActive = false
-        //        };
+        //public UserAccount GetUserByUsername(string username)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        //        if (username == "userExists")
-        //        {
-        //            return user;
-        //        }
+        public void StoreUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile)
+        {
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Add UserAccount
+                        userContext.UserAccounts.Add(userAccount);
+                        // Get Id from UserAccount
+                        int userId = (from account in userContext.UserAccounts 
+                                      where account.Username == userAccount.Username
+                                      select account.Id).SingleOrDefault();
+                        // Set UserId to dependencies
+                        passwordSalt.UserId = userId;
+                        claims.UserId = userId;
+                        userProfile.UserId = userId;
+                        // Add SecurityQuestions
+                        foreach (var securityQuestion in securityQuestions)
+                        {
+                            securityQuestion.UserId = userId;
+                            userContext.SecurityQuestions.Add(securityQuestion);
+                        }
+                        // Add SecurityAnswerSalts
+                        for (var i=0; i<=securityQuestions.Count; i++)
+                        {
+                            // Get SecurityQuestionId for each securityAnswerSalt
+                            int securityQuestionId = (from question in userContext.SecurityQuestions
+                                                      where question.UserId = securityQuestions[i].UserId
+                                                      select question.Id);
+                            // Set SecurityQuestionId for SecurityAnswerSalt
+                            securityAnswerSalts[i].SecurityQuestionId = securityQuestionId;
+                            // Add SecurityAnswerSalt
+                            userContext.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
+                        }
+                        // Add PasswordSalt
+                        userContext.PasswordSalts.Add(passwordSalt);
+                        // Add UserClaims
+                        userContext.Claims.Add(claims);
+                        // Add UserProfile
+                        userContext.UserProfiles.Add(userProfile);
+                        // Save changes
+                        userContext.SaveChanges();
+                        // Commit transaction to database
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
 
-        //        return null;
-        //    }
+        //public bool StorePasswordSalt(string username, string salt)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        //    public bool StoreUserAccount(IUserAccount userAccount)
-        //    {
-        //        return true;
-        //    }
+        //public bool StoreSecurityQuestion(string username, ISecurityQuestion securityQuestion)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        //    public bool StorePasswordSalt(string username, string salt)
-        //    {
-        //        return true;
-        //    }
+        //public bool StoreSecurityAnswerSalt(string username, int questionType, string salt)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        //    public bool StoreSecurityQuestion(string username, ISecurityQuestion securityQuestion)
-        //    {
-        //        return true;
-        //    }
+        //public bool StoreClaims(string username, ICollection<Claim> claims)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        //    public bool StoreSecurityAnswerSalt(string username, int questionType, string salt)
-        //    {
-        //        return true;
-        //    }
+        //public bool StoreRestaurantAccount(string username, IRestaurantAccount restaurantAccount)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        //    public bool StoreClaims(string username, ICollection<Claim> claims)
-        //    {
-        //        return true;
-        //    }
+        //public bool StoreUserProfile(string displayName)
+        //{
+        //    return true;
+        //}
 
-        //    public bool StoreRestaurantAccount(string username, IRestaurantAccount restaurantAccount)
-        //    {
-        //        return true;
-        //    }
-
-        //    public bool StoreUserProfile(string displayName)
-        //    {
-        //        return true;
-        //    }
-
-        //    public bool StoreRestaurantProfile(string username)
-        //    {
-        //        return true;
-        //    }
+        //public bool StoreRestaurantProfile(string username)
+        //{
+        //    return true;
+        //}
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
+
         /// <summary>
         /// Will deactivate user by username by changing IsActive to false.
         /// </summary>
@@ -91,7 +130,7 @@ namespace CSULB.GetUsGrub.DataAccess.Gateways
             //    {
             //        context.Database.ExecuteSqlCommand(
 
-            //        //TODO: edit isactive to false
+            //        //TODO: @Angelica edit isactive to false
             //        );
             //        return true;
 

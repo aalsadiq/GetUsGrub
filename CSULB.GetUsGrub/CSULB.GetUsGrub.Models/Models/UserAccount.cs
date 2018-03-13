@@ -1,20 +1,34 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>UserAccount</c> class.
-    /// Defines properties pertaining to a user account.
+    /// Defines properties pertaining to a user's account.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/10/2018
+    /// @updated: 03/12/2018
     /// </para>
     /// </summary>
-    public class UserAccount : IUserAccount
+    [Table("GetUsGrub.UserAccount")]
+    public class UserAccount : IUserAccount, IEntity
     {
-        public int Id { get; set; }
+        [Key]
+        public int? Id { get; set; }
         public string Username { get; set; }
+
+        // Stored as a hash
         public string Password { get; set; }
         public bool IsActive { get; set; }
-        public bool FirstTimeUser { get; set; }
+        public bool IsFirstTimeUser { get; set; }
+
+        // Navigation Properties
+        public virtual UserProfile UserProfile { get; set; }
+        public virtual PasswordSalt PasswordSalt { get; set; }
+        public virtual Token Token { get; set; }
+        public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
+        public virtual UserClaims Claims { get; set; }
     }
 }

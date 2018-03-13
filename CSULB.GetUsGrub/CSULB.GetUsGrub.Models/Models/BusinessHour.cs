@@ -1,6 +1,7 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>BusinessHour</c> class.
     /// Defines properties pertaining to a business hour.
@@ -11,8 +12,11 @@
     /// </summary>
     public class BusinessHour
     {
+        [Required]
         public string Day { get; set; }
+        [Required]
         public string OpenTime { get; set; }
+        [Required]
         public string CloseTime { get; set; }
     }
 }

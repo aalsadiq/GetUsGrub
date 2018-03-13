@@ -1,8 +1,8 @@
 <template>
     <div>
-      <app-admin-header></app-admin-header>
-        <app-footer></app-footer>
-  </div>
+      <app-admin-header/>
+      <app-footer/>
+    </div>
 </template>
 
 <script>

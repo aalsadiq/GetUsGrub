@@ -1,7 +1,7 @@
 <template>
     <div>
       <app-admin-header/>
-        <div id = 'user-text-box'>
+        <div id = "user-text-box">
           <h1> Deactivate User Page </h1>
           <app-user-text-box/>
         </div>
@@ -27,13 +27,18 @@ export default {
         .then(response => {
           console.log('DONE!!!!')
         })
+    },
+    userSubmit () {
+      if (this.$refs.form.validate()) {
+        // Native form submission is not yet supported
+        axios.put('/User/DeactivateUser', {
+          username: this.username,
+          headers: {
+            'Content-type': 'application/json'
+          }
+        })
+      }
     }
   }
 }
 </script>
-
-<style>
-  #app-deactivate-user{
-    margin-left:200%;
-  }
-</style>

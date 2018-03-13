@@ -12,16 +12,14 @@
                      <v-text-field label="username" v-model="username" :rules="usernameRules" required >
                      </v-text-field>
                    </v-form>
-                    <v-btn color="primary" @submit.prevent="userSubmit" :disabled="!validSecurityInput">Submit</v-btn>
                 </v-flex>
+                <v-btn id ="submit-button" color="warning">Submit</v-btn>
           </v-container>
         </v-app>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'UserTextBox',
   data: () => ({
@@ -32,19 +30,6 @@ export default {
       v => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers',
       v => /^[8,]+$/ || 'Username must be greater than 8 characters'
     ]
-  }),
-  methods: {
-    userSubmit () {
-      if (this.$refs.form.validate()) {
-        // Native form submission is not yet supported
-        axios.post('/User/DeactivateUser', {
-          username: this.username,
-          headers: {
-            'Content-type': 'application/json'
-          }
-        })
-      }
-    }
-  }
+  })
 }
 </script>

@@ -95,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -112,16 +111,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.BusinessLogic\CSULB.GetUsGrub.BusinessLogic.csproj">
       <Project>{82085ead-6aae-4e25-ad90-84b414f2b491}</Project>
       <Name>CSULB.GetUsGrub.BusinessLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CSULB.GetUsGrub.DataAccess\CSULB.GetUsGrub.DataAccess.csproj">
-      <Project>{F19C4DF1-91C3-46DE-9B27-BD3B91D2294A}</Project>
-      <Name>CSULB.GetUsGrub.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">
       <Project>{c93e53a0-06b5-484e-abeb-1cbcdeb40de5}</Project>

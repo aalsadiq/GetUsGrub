@@ -25,8 +25,10 @@ namespace CSULB.GetUsGrub.UserAccessControl
             string claim = string.Concat(action, resource);
 
             // This is here for testing purposes
-            // var p = CreateTestPrincipal();
+            var p = CreateTestPrincipal();
 
+            // Pass principal with just the username claim into the ClaimsTransformer
+            // to grab appropriate permission claims for the rest of the application
             ClaimsTransformer transformer = new ClaimsTransformer();
             ClaimsPrincipal principal = transformer.Authenticate("permissions", context.Principal);
 
@@ -50,7 +52,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             // Placeholder claim from my own independent controller.
             var testClaims = new List<Claim>
             {
-                new Claim("CreateUser", "True")
+                new Claim(ClaimTypes.Name, "Admin")
             };
 
             // Create Test ClaimsIdentity

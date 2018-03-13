@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// Create a new ClaimsPrincipal with the user's permission claims
     /// 
     /// Author: Rachel Dang
-    /// Last Updated: 3/08/18
+    /// Last Updated: 3/13/18
     /// </summary>
     public class ClaimsTransformer : ClaimsAuthenticationManager
     {
@@ -28,6 +28,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 throw new SecurityException("Username not found.");
             }
 
+            // Create a new principal
             ClaimsPrincipal principal = new ClaimsPrincipal();
 
             // If trying to get all permissions, create ClaimsPrincipal
@@ -60,7 +61,8 @@ namespace CSULB.GetUsGrub.UserAccessControl
             // Placeholder; waiting for Data Access
             // var gateway = new UserAccessGateway; ???
             // claims = gateway.GetClaimsByUsername(username); ???
-            var claims = new List<Claim>();
+            ClaimsFactory factory = new ClaimsFactory();
+            ICollection<Claim> claims = factory.CreateAdminClaims();
 
             // Create ClaimsIdentity with the list of claims
             var id = new ClaimsIdentity(claims, "permission");

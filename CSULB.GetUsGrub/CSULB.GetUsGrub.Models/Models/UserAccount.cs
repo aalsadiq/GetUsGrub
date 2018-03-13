@@ -4,6 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
+    /// <summary>
+    /// The <c>UserAccount</c> class.
+    /// Defines properties pertaining to a user's account.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/12/2018
+    /// </para>
+    /// </summary>
     [Table("GetUsGrub.UserAccount")]
     public class UserAccount : IUserAccount, IEntity
     {

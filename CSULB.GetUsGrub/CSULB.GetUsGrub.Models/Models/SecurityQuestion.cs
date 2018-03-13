@@ -20,6 +20,7 @@ namespace CSULB.GetUsGrub.Models
         public int? UserId { get; set; }
         public int Question { get; set; }
         public string Answer { get; set; }
+
         // Navigation Properties
         public virtual UserAccount UserAccount { get; set; }
         public virtual SecurityAnswerSalt SecurityAnswerSalt { get; set; }

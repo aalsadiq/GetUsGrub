@@ -1,6 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 
-namespace CSULB.GetUsGrub.BusinessLogic.Services.Mappers
+namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
     /// The <c>SecurityQuestionMapper</c> class.

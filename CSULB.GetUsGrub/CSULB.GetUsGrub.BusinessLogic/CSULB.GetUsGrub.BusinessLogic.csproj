@@ -42,8 +42,8 @@
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.2.1\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -81,9 +81,10 @@
     <Compile Include="Mappers\UserProfileMapper.cs" />
     <Compile Include="Services\PayloadHasher.cs" />
     <Compile Include="Services\SaltGenerator.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPreLogicValidationStrategy.cs" />
-    <Compile Include="Strategies\ValidationStrategies\CreateUserPostLogicValidationStrategy.cs" />
-    <Compile Include="Strategies\ValidationStrategies\CreateUserPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateIndividualPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateIndividualPreLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\SecurityQuestionDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserAccountDtoValidator.cs" />

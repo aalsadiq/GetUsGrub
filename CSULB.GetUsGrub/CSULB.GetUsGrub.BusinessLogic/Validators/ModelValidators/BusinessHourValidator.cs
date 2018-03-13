@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using FluentValidation;
 using System;
-using System.Globalization;
 using DayOfWeek = System.DayOfWeek;
 
 // TODO: @Jenn Comment BusinessHourValidator [-Jenn]
@@ -46,10 +45,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public bool CheckIfOpenTimeIsBeforeCloseTime(string openTime, string closeTime)
         {
-            var openingTime = DateTime.ParseExact(openTime, "HH:mm", CultureInfo.InvariantCulture);
-            var closingTime = DateTime.ParseExact(closeTime, "HH:mm", CultureInfo.InvariantCulture);
+            var openingTime = TimeSpan.Parse(openTime);
+            var closingTime = TimeSpan.Parse(closeTime);
             // -1 means openingTime < closingTime, 0 means openingTime == closingTime, and 1 means openingTime > closingTime
-            var compare = TimeSpan.Compare(openingTime.TimeOfDay, closingTime.TimeOfDay);
+            var compare = TimeSpan.Compare(openingTime, closingTime);
             return compare == -1;
         }
     }

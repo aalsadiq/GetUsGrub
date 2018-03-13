@@ -1,8 +1,11 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 // TODO: @Jenn Comment the UserGateway methods [-Jenn]
-namespace CSULB.GetUsGrub.DataAccess.Gateways
+// TODO: @Jenn Unit test the gateway
+namespace CSULB.GetUsGrub.DataAccess
 {
     /// <summary>
     /// A <c>UserGateway</c> class.
@@ -16,137 +19,173 @@ namespace CSULB.GetUsGrub.DataAccess.Gateways
     {
         public UserAccount GetUserByUsername(string username)
         {
-            throw new NotImplementedException();
-            //using (var userContext = new UserContext())
-            //{
-            //    var userAccount = (from account in userContext.UserAccounts
-            //                       where account.Username == username
-            //                       select account).SingleOrDefault();
-            //    return userAccount;
-            //}
+            using (var userContext = new UserContext())
+            {
+                var userAccount = (from account in userContext.UserAccounts
+                    where account.Username == username
+                    select account).SingleOrDefault();
+                return userAccount;
+            }
         }
 
-        public void StoreUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile)
+        public void StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile)
         {
-            throw new NotImplementedException();
-            //using (var userContext = new UserContext())
-            //{
-            //    using (var dbContextTransaction = userContext.Database.BeginTransaction())
-            //    {
-            //        try
-            //        {
-            //            // Add UserAccount
-            //            userContext.UserAccounts.Add(userAccount);
-            //            // Get Id from UserAccount
-            //            var userId = (from account in userContext.UserAccounts
-            //                          where account.Username == userAccount.Username
-            //                          select account.Id).SingleOrDefault();
-            //            // Set UserId to dependencies
-            //            passwordSalt.Id = userId;
-            //            claims.Id = userId;
-            //            userProfile.Id = userId;
-            //            // Add SecurityQuestions
-            //            foreach (var securityQuestion in securityQuestions)
-            //            {
-            //                securityQuestion.UserId = userId;
-            //                userContext.SecurityQuestions.Add(securityQuestion);
-            //            }
-            //            // Add SecurityAnswerSalts
-            //            for (var i = 0; i <= securityQuestions.Count; i++)
-            //            {
-            //                // Get SecurityQuestionId for each securityAnswerSalt
-            //                var securityQuestionId = (from question in userContext.SecurityQuestions
-            //                                          where question.UserId == userId
-            //                                          select question.Id).SingleOrDefault();
-            //                // Set SecurityQuestionId for SecurityAnswerSalt
-            //                securityAnswerSalts[i].Id = securityQuestionId;
-            //                // Add SecurityAnswerSalt
-            //                userContext.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
-            //            }
-            //            // Add PasswordSalt
-            //            userContext.PasswordSalts.Add(passwordSalt);
-            //            // Add UserClaims
-            //            userContext.Claims.Add(claims);
-            //            // Add UserProfile
-            //            userContext.UserProfiles.Add(userProfile);
-            //            // Save changes
-            //            userContext.SaveChanges();
-            //            // Commit transaction to database
-            //            dbContextTransaction.Commit();
-            //        }
-            //        catch (Exception)
-            //        {
-            //            dbContextTransaction.Rollback();
-            //            throw;
-            //        }
-            //    }
-            //}
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Add UserAccount
+                        userContext.UserAccounts.Add(userAccount);
+                        // Save changes
+                        userContext.SaveChanges();
+                        // Get Id from UserAccount
+                        var userId = (from account in userContext.UserAccounts
+                                      where account.Username == userAccount.Username
+                                      select account.Id).SingleOrDefault();
+                        // Set UserId to dependencies
+                        passwordSalt.Id = userId;
+                        claims.Id = userId;
+                        userProfile.Id = userId;
+                        // Add SecurityQuestions
+                        foreach (var securityQuestion in securityQuestions)
+                        {
+                            securityQuestion.UserId = userId;
+                            userContext.SecurityQuestions.Add(securityQuestion);
+                            // Save changes
+                            userContext.SaveChanges();
+                        }
+                        // Get SecurityQuestions in database
+                        var queryable = (from question in userContext.SecurityQuestions
+                                        where question.UserId == userId
+                                        select question).ToList();
+                        // Add SecurityAnswerSalts
+                        for (var i = 0; i < securityQuestions.Count; i++)
+                        {
+                            // Get SecurityQuestionId for each securityAnswerSalt
+                            var securityQuestionId = (from query in queryable
+                                                      where query.Question == securityQuestions[i].Question
+                                                      select query.Id).SingleOrDefault();
+
+                            // Set SecurityQuestionId for SecurityAnswerSalt
+                            securityAnswerSalts[i].Id = securityQuestionId;
+                            // Add SecurityAnswerSalt
+                            userContext.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
+                            // Save changes
+                            userContext.SaveChanges();
+                        }
+                        // Add PasswordSalt
+                        userContext.PasswordSalts.Add(passwordSalt);
+                        // Save changes
+                        userContext.SaveChanges();
+                        // Add UserClaims
+                        userContext.Claims.Add(claims);
+                        // Save changes
+                        userContext.SaveChanges();
+                        // Add UserProfile
+                        userContext.UserProfiles.Add(userProfile);
+                        // Save changes
+                        userContext.SaveChanges();
+                        // Commit transaction to database
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
-
-        public void StoreRestaurant(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile)
+        public void StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile)
         {
-            throw new NotImplementedException();
-            //using (var userContext = new UserContext())
-            //{
-            //    using (var dbContextTransaction = userContext.Database.BeginTransaction())
-            //    {
-            //        try
-            //        {
-            //            // Add UserAccount
-            //            userContext.UserAccounts.Add(userAccount);
-            //            // Get Id from UserAccount
-            //            var userId = (from account in userContext.UserAccounts
-            //                          where account.Username == userAccount.Username
-            //                          select account.Id).SingleOrDefault();
-            //            // Set UserId to dependencies
-            //            passwordSalt.Id = userId;
-            //            claims.Id = userId;
-            //            userProfile.Id = userId;
-            //            restaurantProfile.Id = userId;
-            //            // Add SecurityQuestions
-            //            foreach (var securityQuestion in securityQuestions)
-            //            {
-            //                securityQuestion.UserId = userId;
-            //                userContext.SecurityQuestions.Add(securityQuestion);
-            //            }
-            //            // Add SecurityAnswerSalts
-            //            for (var i = 0; i <= securityQuestions.Count; i++)
-            //            {
-            //                // Get SecurityQuestionId for each securityAnswerSalt
-            //                var securityQuestionId = (from question in userContext.SecurityQuestions
-            //                                          where question.UserId == userId
-            //                                          select question.Id).SingleOrDefault();
-            //                // Set SecurityQuestionId for SecurityAnswerSalt
-            //                securityAnswerSalts[i].Id = securityQuestionId;
-            //                // Add SecurityAnswerSalt
-            //                userContext.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
-            //            }
-            //            // Add PasswordSalt
-            //            userContext.PasswordSalts.Add(passwordSalt);
-            //            // Add UserClaims
-            //            userContext.Claims.Add(claims);
-            //            // Add UserProfile
-            //            userContext.UserProfiles.Add(userProfile);
-            //            // Add RestaurantProfile
-            //            userContext.RestaurantProfiles.Add(restaurantProfile);
-            //            // Save changes
-            //            userContext.SaveChanges();
-            //            // Commit transaction to database
-            //            dbContextTransaction.Commit();
-            //        }
-            //        catch (Exception)
-            //        {
-            //            dbContextTransaction.Rollback();
-            //            throw;
-            //        }
-            //    }
-            //}
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Add UserAccount
+                        userContext.UserAccounts.Add(userAccount);
+                        // Save changes
+                        userContext.SaveChanges();
+                        // Get Id from UserAccount
+                        var userId = (from account in userContext.UserAccounts
+                                      where account.Username == userAccount.Username
+                                      select account.Id).SingleOrDefault();
+                        // Set UserId to dependencies
+                        passwordSalt.Id = userId;
+                        claims.Id = userId;
+                        userProfile.Id = userId;
+                        restaurantProfile.Id = userId;
+                        System.Diagnostics.Debug.WriteLine("here1232");
+                        // Add SecurityQuestions
+                        foreach (var securityQuestion in securityQuestions)
+                        {
+                            securityQuestion.UserId = userId;
+                            userContext.SecurityQuestions.Add(securityQuestion);
+                            // Save changes
+                            userContext.SaveChanges();
+                        }
+                        // Get SecurityQuestions in database
+                        var queryable = (from question in userContext.SecurityQuestions
+                                         where question.UserId == userId
+                                         select question).ToList();
+                        System.Diagnostics.Debug.WriteLine("here1131232131232132132312312");
+                        // Add SecurityAnswerSalts
+                        for (var i = 0; i < securityQuestions.Count; i++)
+                        {
+                            System.Diagnostics.Debug.WriteLine("loop");
+                            // Get SecurityQuestionId for each securityAnswerSalt
+                            var securityQuestionId = (from query in queryable
+                                                      where query.Question == securityQuestions[i].Question
+                                                      select query.Id).SingleOrDefault();
+
+                            System.Diagnostics.Debug.WriteLine("Here: " + securityQuestionId);
+                            // Set SecurityQuestionId for SecurityAnswerSalt
+                            securityAnswerSalts[i].Id = securityQuestionId;
+                            // Add SecurityAnswerSalt
+                            userContext.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
+                            // Save changes
+                            userContext.SaveChanges();
+                        }
+                        System.Diagnostics.Debug.WriteLine("h??????????ere1");
+                        // Add PasswordSalt
+                        userContext.PasswordSalts.Add(passwordSalt);
+                        // Save changes
+                        userContext.SaveChanges();
+                        // Add UserClaims
+                        userContext.Claims.Add(claims);
+                        // Save changes
+                        userContext.SaveChanges();
+                        // Add UserProfile
+                        userContext.UserProfiles.Add(userProfile);
+                        // Save changes
+                        userContext.SaveChanges();
+                        System.Diagnostics.Debug.WriteLine(">>>>>?????????");
+                        // Add RestaurantProfile
+                        userContext.RestaurantProfiles.Add(restaurantProfile);
+                        System.Diagnostics.Debug.WriteLine("hi!");
+                        // Save changes
+                        userContext.SaveChanges();
+                        System.Diagnostics.Debug.WriteLine("goodbye");
+                        // Commit transaction to database
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>

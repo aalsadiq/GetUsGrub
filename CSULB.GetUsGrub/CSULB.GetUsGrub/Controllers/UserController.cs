@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.BusinessLogic.Managers;
+﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
 using System.Web.Http;
@@ -12,7 +12,69 @@ namespace CSULB.GetUsGrub.Controllers
     [RoutePrefix("User")] //default route
     public class UserController : ApiController
     {
-        //TODO: @Jenn Add create user controller. [-Angelica]
+        //TODO: @Jenn Add create individual user controller. [-Angelica]
+        // POST Registration/User
+        [HttpPost]
+        // Opts authentication
+        [AllowAnonymous]
+        [Route("Registration/Individual")]
+        public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
+        {
+            // Model Binding Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var userManager = new UserManager();
+                var response = userManager.CreateIndividualUser(registerUserDto);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                //return Ok(registerUserDto.UserAccount.Username);
+                return Ok(registerUserDto.UserAccountDto.Username);
+            }
+            // Catch exceptions
+            catch (Exception ex)
+            {
+                //return BadRequest(ErrorHandler.GetGeneralError());
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //TODO: @Jenn Add create individual user controller. [-Angelica]
+        // POST Registration/User
+        [HttpPost]
+        // Opts authentication
+        [AllowAnonymous]
+        [Route("Registration/Restaurant")]
+        public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
+        {
+            // Model Binding Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var userManager = new UserManager();
+                var response = userManager.CreateRestaurantUser(registerRestaurantDto);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                //return Ok(registerUserDto.UserAccount.Username);
+                return Ok(registerRestaurantDto.UserAccountDto.Username);
+            }
+            // Catch exceptions
+            catch (Exception ex)
+            {
+                //return BadRequest(ErrorHandler.GetGeneralError());
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Controller that will be called when admin must deactivate a user. 

@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.BusinessLogic.Services.Mappers;
+﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using FluentAssertions;
 using Xunit;

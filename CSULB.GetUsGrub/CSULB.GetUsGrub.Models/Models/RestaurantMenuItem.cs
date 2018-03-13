@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.Models
         public int? Id { get; set; }
 
         [ForeignKey("RestaurantMenu")]
-        public int MenuId { get; set; }
+        public int? MenuId { get; set; }
 
         public string ItemName { get; set; }
 

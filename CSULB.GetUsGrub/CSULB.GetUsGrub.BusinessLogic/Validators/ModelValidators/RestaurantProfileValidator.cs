@@ -30,13 +30,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty()
                     .NotNull();
 
+                // TODO: @Brian Need Google Map integration for the following [-Jenn]
                 // TODO: @Jenn Add regex rule to match Google Map's output type [-Jenn]
-                RuleFor(x => x.Longitude)
-                    .NotEmpty();
+                //RuleFor(x => x.Longitude)
+                //    .NotEmpty();
 
+                // TODO: @Brian Need Google Map integration for the following [-Jenn]
                 // TODO: @Jenn Add regex rule to match Google Map's output type [-Jenn]
-                RuleFor(x => x.Latitude)
-                    .NotEmpty();
+                //RuleFor(x => x.Latitude)
+                //    .NotEmpty();
             });
         }
     }

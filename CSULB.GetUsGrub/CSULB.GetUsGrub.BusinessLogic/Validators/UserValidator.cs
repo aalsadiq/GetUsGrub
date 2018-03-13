@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.DataAccess.Gateways;
+﻿using CSULB.GetUsGrub.DataAccess;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -12,12 +12,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserValidator
     {
-        // TODO: @Jenn Unit Test for User Validator [-Jenn]
+        // TODO: @Jenn Unit Test for User Validator and comment [-Jenn]
         public bool CheckIfUserExists(string username)
         {
             using (var userGateway = new UserGateway())
             {
+                System.Diagnostics.Debug.WriteLine("UserValidator1");
                 var user = userGateway.GetUserByUsername(username);
+                System.Diagnostics.Debug.WriteLine("UserValidator2");
                 return user != null;
             }
         }

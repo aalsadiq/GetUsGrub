@@ -1,4 +1,4 @@
-﻿namespace GitGrub.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// The <c>ResponseDto</c> class.

@@ -6,14 +6,14 @@ using System.Collections.Generic;
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
-    /// The <c>CreateUserPostLogicValidationStrategy</c> class.
+    /// The <c>CreateIndividualPostLogicValidationStrategy</c> class.
     /// Defines a strategy for validating models after processing business logic for creating an individual user.
     /// <para>
     /// @author: Jennifer Nguyen
     /// @updated: 03/12/2018
     /// </para>
     /// </summary>
-    public class CreateUserPostLogicValidationStrategy
+    public class CreateIndividualPostLogicValidationStrategy
     {
         private readonly UserAccount _userAccount;
         private readonly IList<SecurityQuestion> _securityQuestions;
@@ -30,9 +30,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly UserValidator _userValidator;
 
     
-        public CreateUserPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
-                                                    IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
-                                                    UserClaims claims, UserProfile userProfile)
+        public CreateIndividualPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
+                                                           IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
+                                                           UserClaims claims, UserProfile userProfile)
         {
             _userAccount = userAccount;
             _securityQuestions = securityQuestions;
@@ -49,7 +49,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _userValidator = new UserValidator();
         }
 
-        public bool ExecuteIndividualStrategy()
+        public bool ExecuteStrategy()
         {
             // Validate UserAccount
             var validationResult = _userAccountValidator.Validate(_userAccount, ruleSet: "CreateUser");
@@ -111,58 +111,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             if (result)
             {
                 return false;
-            }
-
-            return true;
-        }
-
-        public bool ExecuteRestaurantStrategy(RestaurantProfile restaurantProfile)
-        {
-            var restaurantProfileValidator = new RestaurantProfileValidator();
-            var addressValidator = new AddressValidator();
-            var businessHourValidator = new BusinessHourValidator();
-
-            // Validate base user
-            var response = ExecuteIndividualStrategy();
-            if (!response)
-            {
-                return false;
-            }
-
-            // Validate RestaurantProfileDto
-            var validationResult = restaurantProfileValidator.Validate(restaurantProfile, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
-            {
-                return false;
-            }
-
-            // Validate Address
-            validationResult = addressValidator.Validate(restaurantProfile.Address, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
-            {
-                return false;
-            }
-
-            // Validate BusinessHour
-            foreach (var businessHour in restaurantProfile.BusinessHours)
-            {
-                validationResult = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
-                if (!validationResult.IsValid)
-                {
-                    return false;
-                }
-
-                var result = businessHourValidator.CheckIfDayIsDayOfWeek(businessHour.Day);
-                if (!result)
-                {
-                    return false;
-                }
-
-                result = businessHourValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHour.OpenTime, businessHour.CloseTime);
-                if (!result)
-                {
-                    return false;
-                }
             }
 
             return true;

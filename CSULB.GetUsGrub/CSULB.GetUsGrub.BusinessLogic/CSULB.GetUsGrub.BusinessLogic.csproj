@@ -53,9 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -74,8 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Managers\Interfaces\" />
-    <Folder Include="Services\" />
-    <Folder Include="ValidationStrategies\" />
+    <Folder Include="Services\Mappers\" />
+    <Folder Include="Strategies\ValidationStrategies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

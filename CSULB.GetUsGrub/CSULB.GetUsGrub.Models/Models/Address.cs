@@ -1,6 +1,7 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>Address</c> class.
     /// Defines properties pertaining to an address.
@@ -9,12 +10,17 @@
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
+    //[System.Serializable]
     public class Address
     {
+        [Required]
         public string Street1 { get; set; }
         public string Street2 { get; set; }
+        [Required]
         public string City { get; set; }
+        [Required]
         public string State { get; set; }
+        [Required]
         public int Zip { get; set; }
     }
 }

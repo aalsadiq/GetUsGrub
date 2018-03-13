@@ -2,6 +2,7 @@
 using CSULB.GetUsGrub.Models;
 using System;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -18,6 +19,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Individual")]
+        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
         public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
@@ -34,6 +36,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
                 //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
                 return Ok(registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
@@ -50,6 +53,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Restaurant")]
+        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
         public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
         {
             // Model Binding Validation
@@ -66,6 +70,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
                 //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
                 return Ok(registerRestaurantDto.UserAccountDto.Username);
             }
             // Catch exceptions

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CSULB.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// The <c>SecurityQuestionDto</c> class.
@@ -12,9 +10,7 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class SecurityQuestionDto
     {
-        [Required]
         public int Question { get; set; }
-        [Required]
         public string Answer { get; set; }
     }
 }

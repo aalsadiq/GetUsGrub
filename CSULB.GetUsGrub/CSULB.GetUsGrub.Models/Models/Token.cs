@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
@@ -8,19 +7,14 @@ namespace CSULB.GetUsGrub.Models
     public class Token : IToken, IEntity
     {
         [ForeignKey("UserAccount")]
-        public int Id { get; set; }
-
+        public int? Id { get; set; }
         public string TokenHeader { get; set; }
-        
         public string TokenSignature { get; set; }
-
         public string Salt { get; set; }
-
         public DateTime IssuedOn { get; set; }
-
         public DateTime ExpiresOn { get; set; }
 
-        // Navigation Properties
+        // Navigation Properties 
         public virtual UserAccount UserAccount { get; set; }
     }
 }

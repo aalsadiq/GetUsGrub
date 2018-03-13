@@ -342,10 +342,10 @@ export default {
       if (this.$refs.form.validate()) {
         // Native form submission is not yet supported
         axios.post('localhost:8081/Registration/User', {
-          name: this.username,
-          password: this.password,
-          select: this.select,
-          checkbox: this.checkbox
+          username: this.username,
+          password: this.password
+          // select: this.select,
+          // checkbox: this.checkbox
         })
       }
     }

@@ -1,15 +1,12 @@
 namespace CSULB.GetUsGrub.DataAccess.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class UserConfiguration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.UserContext>
     {
         public UserConfiguration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(CSULB.GetUsGrub.DataAccess.UserContext context)

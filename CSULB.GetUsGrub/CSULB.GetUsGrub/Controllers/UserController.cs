@@ -1,11 +1,8 @@
-﻿using CSULB.GetUsGrub.BusinessLogic.Managers;
+﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -16,7 +13,73 @@ namespace CSULB.GetUsGrub.Controllers
     [RoutePrefix("User")] //default route
     public class UserController : ApiController
     {
-        //TODO: @Jen add create user.
+        //TODO: @Jenn Add create individual user controller. [-Angelica]
+        // POST Registration/User
+        [HttpPost]
+        // Opts authentication
+        [AllowAnonymous]
+        [Route("Registration/Individual")]
+        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
+        public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
+        {
+            // Model Binding Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var userManager = new UserManager();
+                var response = userManager.CreateIndividualUser(registerUserDto);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
+                return Ok(registerUserDto.UserAccountDto.Username);
+            }
+            // Catch exceptions
+            catch (Exception ex)
+            {
+                //return BadRequest(ErrorHandler.GetGeneralError());
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //TODO: @Jenn Add create individual user controller. [-Angelica]
+        // POST Registration/User
+        [HttpPost]
+        // Opts authentication
+        [AllowAnonymous]
+        [Route("Registration/Restaurant")]
+        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
+        public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
+        {
+            // Model Binding Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var userManager = new UserManager();
+                var response = userManager.CreateRestaurantUser(registerRestaurantDto);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
+                return Ok(registerRestaurantDto.UserAccountDto.Username);
+            }
+            // Catch exceptions
+            catch (Exception ex)
+            {
+                //return BadRequest(ErrorHandler.GetGeneralError());
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Controller that will be called when admin must deactivate a user. 

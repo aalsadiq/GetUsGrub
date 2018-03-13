@@ -13,10 +13,10 @@ namespace CSULB.GetUsGrub.Models
     public class RestaurantMenuItem : IMenuItem, IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [ForeignKey("RestaurantMenu")]
-        public int MenuId { get; set; }
+        public int? MenuId { get; set; }
 
         public string ItemName { get; set; }
 

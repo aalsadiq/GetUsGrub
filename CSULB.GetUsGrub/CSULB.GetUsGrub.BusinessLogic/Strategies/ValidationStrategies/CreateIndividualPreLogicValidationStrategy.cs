@@ -34,6 +34,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public ResponseDto<RegisterUserDto> ExecuteStrategy()
         {
+            System.Diagnostics.Debug.WriteLine("PreValidate1");
             // Validate UserAccountDto
             var validationResult = _userAccountDtoValidator.Validate(_registerUserDto.UserAccountDto, ruleSet: "CreateUser");
             if (!validationResult.IsValid)
@@ -47,6 +48,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = JsonConvert.SerializeObject(errors)
                 };
             }
+            System.Diagnostics.Debug.WriteLine("PreValidate2");
 
             // Validate SecurityQuestionDtos
             foreach (var securityQuestion in _registerUserDto.SecurityQuestionDtos)
@@ -64,7 +66,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
             }
-
+            System.Diagnostics.Debug.WriteLine("PreValidate3");
             // Validate UserProfileDto
             validationResult = _userProfileDtoValidator.Validate(_registerUserDto.UserProfileDto, ruleSet: "CreateUser");
             if (!validationResult.IsValid)
@@ -78,7 +80,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = JsonConvert.SerializeObject(errors)
                 };
             }
-
+            System.Diagnostics.Debug.WriteLine("PreValidate4");
             // Validate username and display name are not equal
             var result = _userValidator.CheckIfUsernameEqualsDisplayName(_registerUserDto.UserAccountDto.Username, _registerUserDto.UserProfileDto.DisplayName);
             if (result)
@@ -89,7 +91,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Username must not be the same as display name."
                 };
             }
-
+            System.Diagnostics.Debug.WriteLine("PreValidate5");
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_registerUserDto.UserAccountDto.Username);
             System.Diagnostics.Debug.WriteLine("UserManager1231");

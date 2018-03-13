@@ -36,5 +36,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .LessThanOrEqualTo(99999).WithMessage("Zip code must contain 5 numbers.");
             });
         }
+
+        // TODO: @Brian Need to integrate with Google Maps API for the following [-Jenn]
+        // Call Google Maps API to check if the address is a valid address in Los Angeles, CA and Orange County, CA
     }
 }

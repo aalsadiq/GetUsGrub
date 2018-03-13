@@ -90,7 +90,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         // Commit transaction to database
                         dbContextTransaction.Commit();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         dbContextTransaction.Rollback();
                         throw;

@@ -19,7 +19,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Individual")]
-        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
@@ -29,6 +29,11 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
+                System.Diagnostics.Debug.WriteLine("herehere");
+                System.Diagnostics.Debug.WriteLine("Username: " + registerUserDto.UserAccountDto.Username);
+                System.Diagnostics.Debug.WriteLine("Password: " + registerUserDto.UserAccountDto.Password);
+                System.Diagnostics.Debug.WriteLine("Dsiplay: " + registerUserDto.UserProfileDto.DisplayName);
+                System.Diagnostics.Debug.WriteLine(registerUserDto);
                 var userManager = new UserManager();
                 var response = userManager.CreateIndividualUser(registerUserDto);
                 if (response.Error != null)
@@ -37,7 +42,7 @@ namespace CSULB.GetUsGrub.Controllers
                 }
                 //return Ok(registerUserDto.UserAccount.Username);
                 // TODO: @Jenn Change to Created [-Jenn]
-                return Ok(registerUserDto.UserAccountDto.Username);
+                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
             catch (Exception ex)
@@ -53,7 +58,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Restaurant")]
-        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
         {
             // Model Binding Validation
@@ -71,7 +76,7 @@ namespace CSULB.GetUsGrub.Controllers
                 }
                 //return Ok(registerUserDto.UserAccount.Username);
                 // TODO: @Jenn Change to Created [-Jenn]
-                return Ok(registerRestaurantDto.UserAccountDto.Username);
+                return Created("Restaurant user has been created: ", registerRestaurantDto.UserAccountDto.Username);
             }
             // Catch exceptions
             catch (Exception ex)

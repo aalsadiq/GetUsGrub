@@ -151,7 +151,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Set claims
             var claims = new UserClaims
             {
-                Claims = claimsFactory.CreateIndividualClaims()
+                Claims = claimsFactory.CreateRestaurantClaims()
             };
 
             // Set UserAccount to active

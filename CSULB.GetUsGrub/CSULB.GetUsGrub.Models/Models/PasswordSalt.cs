@@ -1,4 +1,6 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CSULB.GetUsGrub.Models
 {
     // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
@@ -11,8 +13,12 @@
     /// </summary>
     public class PasswordSalt
     {
+        [ForeignKey("UserAccount")]
         public int Id { get; set; }
         public int UserId { get; set; }
         public string Salt { get; set; }
+
+        // Navigation Property (For reference)
+        public virtual UserAccount UserAccount { get; set; }
     }
 }

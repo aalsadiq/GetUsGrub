@@ -12,15 +12,15 @@ namespace CSULB.GetUsGrub.DataAccess
 
     public class RestaurantContext : DbContext
     {
-        public DbSet<UserProfile> UserProfiles { get; set; }
+        //public DbSet<UserProfile> UserProfiles { get; set; }
 
-        public DbSet<RestaurantProfile> RestaurantProfiles { get; set; }
+        //public DbSet<RestaurantProfile> RestaurantProfiles { get; set; }
 
-        public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
+        //public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
 
-        public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+        //public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
 
-        public RestaurantContext() : base("GetUsGrub") { }
+        //public RestaurantContext() : base("GetUsGrub") { }
     }
 
 }

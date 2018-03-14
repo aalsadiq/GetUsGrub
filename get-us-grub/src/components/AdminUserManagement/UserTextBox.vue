@@ -27,8 +27,7 @@ export default {
     username: '',
     usernameRules: [
       v => !!v || 'Username is required',
-      v => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers',
-      v => /^[8,]+$/ || 'Username must be greater than 8 characters'
+      v => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
     ]
   })
 }

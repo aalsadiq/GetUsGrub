@@ -1,4 +1,6 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CSULB.GetUsGrub.Models
 {
     // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
@@ -11,10 +13,15 @@
     /// </summary>
     public class UserAccount : IUserAccount
     {
-        public int Id { get; set; }
+        [Key]
+        public int? Id { get; set; }
         public string Username { get; set; }
+
+        // Stored as a hash
         public string Password { get; set; }
         public bool IsActive { get; set; }
         public bool FirstTimeUser { get; set; }
+
+        public virtual PasswordSalt PasswordSalt { get; set; }
     }
 }

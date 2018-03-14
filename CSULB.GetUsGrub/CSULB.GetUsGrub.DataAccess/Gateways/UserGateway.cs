@@ -98,6 +98,7 @@ namespace CSULB.GetUsGrub.DataAccess.Gateways
             //    }
             //    catch (Exception ex)
             //    {
+            //        return false;
             //        dbContextTransaction.Rollback();
             //    }
             //}
@@ -141,6 +142,25 @@ namespace CSULB.GetUsGrub.DataAccess.Gateways
             //TODO: @Angelica EditUsser
             return user;
         }
+
+//User Related!
+        public bool EditDisplayName()
+        {
+            return true;
+        }
+        public bool ResetPassword()//EditPassword
+        {
+            return true;
+        }
+//Restaurant Related! 
+        public bool EditBusinessHours()
+        {
+            return true;
+        }
+        //public bool EditDisplayPicture()
+        //{
+        //    return true;
+        //}
 
         /// <summary>
         /// 

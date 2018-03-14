@@ -2,10 +2,13 @@
 using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Services;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Permissions;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -13,6 +16,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// User controller will handle routes that deal with CRUD.
     /// @author Angelica
     /// </summary>
+    
     [RoutePrefix("User")] //default route
     public class UserController : ApiController
     {
@@ -25,7 +29,13 @@ namespace CSULB.GetUsGrub.Controllers
         /// @updated: 03/08/2018
         /// </summary>
         //DELETE AdminHome/DeactivateUser
+
+        //TODO: Add Claims
+     
+        //[ResponseType(typeof(UserAccount))]
+        //TODO: @Rachel resposne type is a user? What does response type claim do return claims?
         [Route("DeleteUser")]
+       // [ClaimsPrincipalPermission(SecurityAction.Demand = "User", Operation = "Delete")]
         [HttpDelete]
         //TODO: Add claims
         public IHttpActionResult Delete([FromBody] string username)
@@ -55,7 +65,6 @@ namespace CSULB.GetUsGrub.Controllers
         /// @updated: 03/08/2018
         /// </summary>
         //PUT AdminHome/DeactivateUser
-            //TODO: CORS?
             [Route("DeactivateUser")]   
             [HttpPut]
             //TODO: Add claims here
@@ -108,7 +117,6 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(ex.Message);
                 }
             }
-
 
         /// <summary>
         /// Controller that will be called when admin must edit a user. 

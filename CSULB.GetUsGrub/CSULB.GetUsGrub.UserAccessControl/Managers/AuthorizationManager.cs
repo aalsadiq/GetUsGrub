@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// Checks if a user has access whenever a request hits the Authorization Filters
     /// 
     /// Author: Rachel Dang
-    /// Last Updated: 03/11/18
+    /// Last Updated: 03/14/18
     /// </summary>
     public class AuthorizationManager : ClaimsAuthorizationManager
     {
@@ -24,8 +24,8 @@ namespace CSULB.GetUsGrub.UserAccessControl
             var action = context.Action.First().Value;
             string claim = string.Concat(action, resource);
 
-            // This is here for testing purposes
-            // Supposed to be var p = context.Principal;
+            // This is here to create a tester ClaimsPrincipal for testing purposes
+            // Supposed to be var p = context.Principal; which is taken from the token
             var p = CreateTestPrincipal();
 
             // Pass principal with just the username claim into the ClaimsTransformer
@@ -41,16 +41,14 @@ namespace CSULB.GetUsGrub.UserAccessControl
         }
 
         /// <summary>
-        /// This is for me to run testing.
-        /// Create a tester ClaimsPrincipal holding a tester ClaimsIdentity which holds
-        /// a list of tester Claims to test out controllers.
+        /// Create a test ClaimsPrincipal to test the User Controller. Contains only the name claim.
+        /// To be passed into the ClaimsTransformer to grab all admin claims based on the name.
         /// 
-        /// Have tested on my own independent program, but not controllers on GetUsGrub.
         /// </summary>
         /// <returns>ClaimsPrincipal for testing</returns>
         private ClaimsPrincipal CreateTestPrincipal()
         {
-            // Placeholder claim from my own independent controller.
+            // Test Principal with "Admin" username to test the User Controller
             var testClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "Admin")

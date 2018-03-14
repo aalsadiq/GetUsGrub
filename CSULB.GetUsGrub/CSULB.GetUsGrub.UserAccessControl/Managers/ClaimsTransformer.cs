@@ -57,12 +57,19 @@ namespace CSULB.GetUsGrub.UserAccessControl
         /// <returns>New ClaimsPrincipal with</returns>
         private ClaimsPrincipal CreatePrincipal(string username)
         {
-            // Get user's list of claims from database
-            // Placeholder; waiting for Data Access
-            // var gateway = new UserAccessGateway; ???
+            // Get user's list of claims from databases
+            // var gateway = new UserAccessGateway(); ???
             // claims = gateway.GetClaimsByUsername(username); ???
+
+            // For testing the User Controller, generate the wrong claims (for Individual Users)
             ClaimsFactory factory = new ClaimsFactory();
-            ICollection<Claim> claims = factory.CreateAdminClaims();
+            ICollection<Claim> claims = factory.CreateIndividualClaims();
+
+            // Claims are overwritten with the right claims (for Admin) if username is "Admin"
+            if (username == "Admin")
+            {
+                claims = factory.CreateAdminClaims();
+            }
 
             // Create ClaimsIdentity with the list of claims
             var id = new ClaimsIdentity(claims, "permission");
@@ -83,7 +90,6 @@ namespace CSULB.GetUsGrub.UserAccessControl
         private ClaimsPrincipal CreateReadPrincipal(string username)
         {
             // Get user's list of claims from database
-            // Placeholder; waiting for Data Access
             // var gateway = new UserAccessGateway; ???
             // claims = gateway.GetReadClaimsByUsername(username); ???
             var claims = new List<Claim>();

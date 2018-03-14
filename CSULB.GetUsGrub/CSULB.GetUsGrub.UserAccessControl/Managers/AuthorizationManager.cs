@@ -25,12 +25,13 @@ namespace CSULB.GetUsGrub.UserAccessControl
             string claim = string.Concat(action, resource);
 
             // This is here for testing purposes
+            // Supposed to be var p = context.Principal;
             var p = CreateTestPrincipal();
 
             // Pass principal with just the username claim into the ClaimsTransformer
             // to grab appropriate permission claims for the rest of the application
             ClaimsTransformer transformer = new ClaimsTransformer();
-            ClaimsPrincipal principal = transformer.Authenticate("permissions", context.Principal);
+            ClaimsPrincipal principal = transformer.Authenticate("permissions", p);
 
             // Check if the ClaimsPrincipal contains the claim
             bool hasAccess = principal.HasClaim(claim, "True");

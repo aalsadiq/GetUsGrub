@@ -1,43 +1,51 @@
 <template>
 <div>
   <!-- <v-card height="350px"> -->
-    <v-navigation-drawer permanent absolute v-model="drawer">
+    <v-navigation-drawer permanent absolute v-model="drawer"><!-- used to navigate through application to work with or without vue-router outside the box-->
+      <!--permanent: remains visible regardless of screensize absolute: Position the element absolutely is false v-model= drawer-->
+      <!--v-toolbar:flat: removes the toolbar box-shadow-->
       <v-toolbar flat class="transparent"> <!-- the square to the left -->
+      <!--v-list: where our items are held..-->
         <v-list class="pa-0">
-          <v-list-tile avatar>
+          <v-list-tile avatar> <!--avatar: used to set minimum tile height on a single-line list item -->
             <v-list-tile-avatar>
               <img src="https://randomuser.me/api/portraits/men/85.jpg" >
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>John Leider</v-list-tile-title>
+              <v-list-tile-title>John Leider</v-list-tile-title><!-- Grab username when logged in?-->
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-toolbar>
-      <v-list class="pt-0" dense>
-        <v-divider></v-divider>
-        <v-list-tile v-for="item in items" :key="item.title" @click="x">
-          <v-list-tile-action>
+      <v-list class="header-admin" dense>
+        <v-list-tile v-for="item in items" :key="item.title" v-on:click="items">
+          <router-link :to="item">
+            <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content ref="items">
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile-content>
+          </router-link>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-  <!-- </v-card> -->
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
       drawer: true,
       items: [
-        { title: 'Home', icon: 'dashboard' },
-        { title: 'About', icon: 'question_answer' }
+        { title: 'Home', icon: 'home', path: '/AdminHome' },
+        { title: 'Create User', icon: 'face', path: '/AdminHome/CreateUser' },
+        { title: 'Edit User', icon: 'edit', path: '/AdminHome/EditUser' },
+        { title: 'Deactivate User', icon: 'clear', path: '/User/DeactivateUser' },
+        { title: 'Reactivate User', icon: 'add', method: 'reactivateUser' },
+        { title: 'Delete User', icon: 'delete_forever' }
       ],
       right: null
     }
@@ -45,13 +53,27 @@ export default {
   methods: {
     x: function () {
       console.log(this.$refs)
+    },
+    x2: function () {
+      axios.put(
+        '/User', {
+          username: 'name1'
+        }
+      ).catch(function (thrown) {
+      })
+    },
+    reactivateUser: function () {
+      axios.put('http://localhost:54426/User/ReactivateUser')
+        .then(function (respose) {
+          console.log(this.data)
+        })
     }
   }
 }
 </script>
 
 <style>
-body{
-  background-color:black;
+.header-admin{
+  position: relative;;
 }
 </style>

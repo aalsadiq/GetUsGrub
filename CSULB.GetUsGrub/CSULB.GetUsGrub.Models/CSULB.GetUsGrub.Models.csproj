@@ -36,9 +36,8 @@
     <Reference Include="FluentValidation.WebApi, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.WebApi.7.5.0\lib\net45\FluentValidation.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -64,15 +63,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\RegisterRestaurantDto.cs" />
+    <Compile Include="DTOs\RegisterUserDto.cs" />
+    <Compile Include="DTOs\ResponseDto.cs" />
+    <Compile Include="DTOs\RestaurantProfileDto.cs" />
+    <Compile Include="DTOs\SecurityQuestionDto.cs" />
+    <Compile Include="DTOs\UserAccountDto.cs" />
+    <Compile Include="DTOs\UserProfileDto.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\Interfaces\IUserProfile.cs" />
+    <Compile Include="Models\SecurityAnswerSalt.cs" />
+    <Compile Include="Models\Token.cs" />
+    <Compile Include="Models\UserClaims.cs" />
+    <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\Interfaces\IEntity.cs" />
+    <Compile Include="Models\Interfaces\IException.cs" />
+    <Compile Include="Models\Interfaces\IMenuItem.cs" />
+    <Compile Include="Models\Interfaces\IProfile.cs" />
+    <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />
+    <Compile Include="Models\Interfaces\IRestaurantMenu.cs" />
+    <Compile Include="Models\Interfaces\IRestaurantProfile.cs" />
+    <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />
+    <Compile Include="Models\Interfaces\ISecurityQuestionsList.cs" />
+    <Compile Include="Models\Interfaces\IToken.cs" />
+    <Compile Include="Models\Interfaces\IUserAccount.cs" />
+    <Compile Include="Models\PasswordSalt.cs" />
+    <Compile Include="Models\RestaurantDetail.cs" />
+    <Compile Include="Models\RestaurantMenu.cs" />
+    <Compile Include="Models\RestaurantMenuItem.cs" />
+    <Compile Include="Models\RestaurantProfile.cs" />
+    <Compile Include="Models\SecurityQuestion.cs" />
+    <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\Interfaces\" />
-    <Folder Include="Models\Interfaces\" />
-    <Folder Include="Validators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

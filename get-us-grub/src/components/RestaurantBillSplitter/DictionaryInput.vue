@@ -1,20 +1,22 @@
 <template>
-  <form class="dictionaryInput">
+  <v-form :rules=ValidatePrice class="dictionaryInput">
     <label>Enter Food Item Name</label>
-    <input type="text" ref="menuItemName" required />
+    <v-text-field type="text" ref="menuItemName" required />
     <br />
     <label>Enter Food Item Price</label>
-    <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
+    <v-text-field prefix="$" type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
     <br />
-    <button id="add_to_dictionary" v-on:click="AddToDictionary($refs.menuItemName.value, $refs.menuItemPrice.valueAsNumber)">Add To Dictionary</button>
-    <button v-on:click="log">Log</button>
-  </form>
+    <v-btn v-on:click="AddToDictionary($refs.menuItemName.value, $refs.menuItemPrice.valueAsNumber)">Add To Dictionary</v-btn>
+    <v-btn v-on:click="log">Log</v-btn>
+  </v-form>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'DictionaryInput',
   components: {
+    axios
   },
   data () {
     return {
@@ -35,7 +37,17 @@ export default {
         return true
       }
     },
+    ValidatePrice: function () {
+      return true
+    },
     log: function () {
+      axios.get('https://jsonplaceholder.typicode.com/posts/1')
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
       console.log(this.$refs)
     }
   },
@@ -52,6 +64,6 @@ export default {
     grid-column: 3;
     grid-row: 1;
     outline: dashed;
-    padding: 20px;
+    padding: 5px;
   }
 </style>

@@ -16,7 +16,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserManager
     {
-        //TODO: @Jenn Unit test and comment CreateIndividualUser [-Angelica]
+        /// <summary>
+        /// The CreateIndividualUser method.
+        /// Contains business logic to create an individual user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <param name="registerUserDto"></param>
+        /// <returns>ResponseDto</returns>
         public ResponseDto<RegisterUserDto> CreateIndividualUser(RegisterUserDto registerUserDto)
         {
             var createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerUserDto);
@@ -27,10 +36,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
-            System.Diagnostics.Debug.WriteLine("UserManager1");
+
             // Validate data transfer object
             var result = createIndividualPreLogicValidationStrategy.ExecuteStrategy();
-            System.Diagnostics.Debug.WriteLine("UserManager2");
             if (result.Error != null)
             {
                 return new ResponseDto<RegisterUserDto>
@@ -40,14 +48,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            System.Diagnostics.Debug.WriteLine("UserManager3");
             // Map data transfer object to domain models
             var userAccount = userAccountMapper.MapDtoToModel(registerUserDto.UserAccountDto);
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                                         .Select(securityQuestionDto => securityQuestionMapper.MapDtoToModel(securityQuestionDto))
                                         .ToList();
             var userProfile = userProfileMapper.MapDtoToModel(registerUserDto.UserProfileDto);
-            System.Diagnostics.Debug.WriteLine("UserManager4");
+
             // Hash password
             var passwordSalt = new PasswordSalt
             {
@@ -98,7 +105,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        // TODO: @Jenn Comment and unit test the CreateRestaurantUser [-Jenn]
+        /// <summary>
+        /// The CreateRestaurantUser method.
+        /// Contains business logic for creating a restaurant user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <param name="registerRestaurantDto"></param>
+        /// <returns>ResponseDto</returns>
         public ResponseDto<RegisterRestaurantDto> CreateRestaurantUser(RegisterRestaurantDto registerRestaurantDto)
         {
             var createRestaurantPreLogicValidationStrategy = new CreateRestaurantPreLogicValidationStrategy(registerRestaurantDto);

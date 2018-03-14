@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
-// TODO: @Jenn Unit test ValidationStrategy [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -23,6 +22,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly UserProfileDtoValidator _userProfileDtoValidator;
         private readonly UserValidator _userValidator;
 
+        /// <summary>
+        /// Constructor for CreateIndividualPreLogicValidationStrategy.
+        /// <para>
+        /// @author: Jennifer
+        /// @update: 03/18/2018
+        /// </para>
+        /// </summary>
+        /// <param name="registerUserDto"></param>
         public CreateIndividualPreLogicValidationStrategy(RegisterUserDto registerUserDto)
         {
             _registerUserDto = registerUserDto;
@@ -32,9 +39,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _userValidator = new UserValidator();
         }
 
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate a data transfer object for creating an individual user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <returns>ResponseDto</returns>
         public ResponseDto<RegisterUserDto> ExecuteStrategy()
         {
-            System.Diagnostics.Debug.WriteLine("PreValidate1");
             // Validate UserAccountDto
             var validationResult = _userAccountDtoValidator.Validate(_registerUserDto.UserAccountDto, ruleSet: "CreateUser");
             if (!validationResult.IsValid)
@@ -48,7 +63,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = JsonConvert.SerializeObject(errors)
                 };
             }
-            System.Diagnostics.Debug.WriteLine("PreValidate2");
 
             // Validate SecurityQuestionDtos
             foreach (var securityQuestion in _registerUserDto.SecurityQuestionDtos)
@@ -66,7 +80,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
             }
-            System.Diagnostics.Debug.WriteLine("PreValidate3");
+
             // Validate UserProfileDto
             validationResult = _userProfileDtoValidator.Validate(_registerUserDto.UserProfileDto, ruleSet: "CreateUser");
             if (!validationResult.IsValid)
@@ -80,7 +94,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = JsonConvert.SerializeObject(errors)
                 };
             }
-            System.Diagnostics.Debug.WriteLine("PreValidate4");
+
             // Validate username and display name are not equal
             var result = _userValidator.CheckIfUsernameEqualsDisplayName(_registerUserDto.UserAccountDto.Username, _registerUserDto.UserProfileDto.DisplayName);
             if (result)
@@ -91,10 +105,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Username must not be the same as display name."
                 };
             }
-            System.Diagnostics.Debug.WriteLine("PreValidate5");
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_registerUserDto.UserAccountDto.Username);
-            System.Diagnostics.Debug.WriteLine("UserManager1231");
             if (result)
             {
                 return new ResponseDto<RegisterUserDto>
@@ -103,7 +115,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Username is already used."
                 };
             }
-            System.Diagnostics.Debug.WriteLine("CreateIndividual1");
+
             return new ResponseDto<RegisterUserDto>
             {
                 Data = _registerUserDto

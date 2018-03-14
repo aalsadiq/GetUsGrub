@@ -8,8 +8,8 @@
           <div class="bill-item" v-for="(element, index) in BillItems" :key="index">
             {{index}} - {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}
             <div style="display: inline-block">
-              <btn type="primary" size="xs"><!--v-on:click="EditDictionaryFoodItem"-->Edit</btn>
-              <btn type="danger" size="xs" v-on:click="RemoveFromBill(index)">Delete</btn>
+              <v-btn small=true><!--v-on:click="EditDictionaryFoodItem"-->Edit</v-btn>
+              <v-btn small=true v-on:click="RemoveFromBill(index)">Delete</v-btn>
             </div>
           </div>
         </draggable>

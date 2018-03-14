@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Security;
 using System.Web.Http.Filters;
 
-namespace CSULB.GetUsGrub.UserAccessControl.Filters
+namespace CSULB.GetUsGrub.UserAccessControl
 {
     /// <summary>
     /// If user fails authorization for the ClaimsPrincipalPermission, this will be displayed.

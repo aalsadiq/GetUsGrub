@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// Create a new ClaimsPrincipal with the user's permission claims
     /// 
     /// Author: Rachel Dang
-    /// Last Updated: 3/08/18
+    /// Last Updated: 3/13/18
     /// </summary>
     public class ClaimsTransformer : ClaimsAuthenticationManager
     {
@@ -28,23 +28,41 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 throw new SecurityException("Username not found.");
             }
 
-            // If username is valid, call method to create the ClaimsPrincipal
-            return CreatePrincipal(username);
+            // Create a new principal
+            ClaimsPrincipal principal = new ClaimsPrincipal();
+
+            // If trying to get all permissions, create ClaimsPrincipal
+            // with all permissions
+            if (resourceName == "permissions")
+            {
+                principal = CreatePrincipal(username);
+            }
+
+            // If trying to get only read permissions, create ClaimsPrincipal
+            // with only read permissions
+            if (resourceName == "read")
+            {
+                principal = CreateReadPrincipal(username);
+            }
+
+            // Return proper ClaimsPrincipal
+            return principal;
         }
 
         // TODO: @Ahmed How would you like to get claims?
         /// <summary>
-        /// Generate ClaimsIdentity and ClaimsPrincipal given the Username
+        /// Generate a new ClaimsPrincipal with all of the user's permission claims
         /// </summary>
         /// <param name="username"></param>
-        /// <returns>The new ClaimsPrincipal</returns>
-        public ClaimsPrincipal CreatePrincipal(string username)
+        /// <returns>New ClaimsPrincipal with</returns>
+        private ClaimsPrincipal CreatePrincipal(string username)
         {
             // Get user's list of claims from database
             // Placeholder; waiting for Data Access
             // var gateway = new UserAccessGateway; ???
             // claims = gateway.GetClaimsByUsername(username); ???
-            var claims = new List<Claim>();
+            ClaimsFactory factory = new ClaimsFactory();
+            ICollection<Claim> claims = factory.CreateAdminClaims();
 
             // Create ClaimsIdentity with the list of claims
             var id = new ClaimsIdentity(claims, "permission");
@@ -57,12 +75,12 @@ namespace CSULB.GetUsGrub.UserAccessControl
         }
 
         /// <summary>
-        /// Generate a new ClaimsPrincipal containing just the user's read claims.
+        /// Generate a new ClaimsPrincipal containing only the user's read permission claims.
         /// Purpose is for authentication to handle access control between pages in the front-end.
         /// </summary>
         /// <param name="username"></param>
         /// <returns>New ClaimsPrincipal with user's read claims</returns>
-        public ClaimsPrincipal GetReadClaims(string username)
+        private ClaimsPrincipal CreateReadPrincipal(string username)
         {
             // Get user's list of claims from database
             // Placeholder; waiting for Data Access

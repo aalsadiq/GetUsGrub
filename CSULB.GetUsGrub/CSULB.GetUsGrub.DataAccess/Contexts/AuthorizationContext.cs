@@ -12,9 +12,9 @@ namespace CSULB.GetUsGrub.DataAccess
 
     public class AuthorizationContext : DbContext
     {
-        //// TODO Add DbSets once claims are implemented.
+        // TODO Add DbSets once claims are implemented.
 
-        //public AuthorizationContext() : base("GetUsGrub") { }
+        public AuthorizationContext() : base("GetUsGrub") { }
     }
 
 }

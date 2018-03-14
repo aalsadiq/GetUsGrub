@@ -12,9 +12,9 @@ namespace CSULB.GetUsGrub.DataAccess
 
     public class IndividualProfileContext : DbContext
     {
-        //public DbSet<UserProfile> RestaurantProfiles { get; set; }
+        public DbSet<UserProfile> RestaurantProfiles { get; set; }
 
-        //public IndividualProfileContext() : base("GetUsGrub") { }
+        public IndividualProfileContext() : base("GetUsGrub") { }
     }
 
 }

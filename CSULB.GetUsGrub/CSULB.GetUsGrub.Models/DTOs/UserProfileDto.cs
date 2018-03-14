@@ -10,8 +10,7 @@
     /// </summary>
     public class UserProfileDto : IUserProfile
     {
-        //TODO: @Angelica - tell group that with research you found out that it can be stored in a byte... 
-        public string DisplayPictureUrl { get; set; }
+        public string DisplayPicture { get; set; }
         public string DisplayName { get; set; }
     }
 }

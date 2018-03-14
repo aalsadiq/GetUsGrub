@@ -42,6 +42,12 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions, Version=5.1.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.5.1.2\lib\net47\FluentAssertions.dll</HintPath>
     </Reference>
@@ -99,18 +105,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\DtoValidators\SecurityQuestionDtoValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\DtoValidators\UserAccountDtoValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\DtoValidators\UserProfileDtoValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\ModelValidators\AddressValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\ModelValidators\BusinessHourValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\ModelValidators\PasswordSaltValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\ModelValidators\RestaurantProfileValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\ModelValidators\SecurityAnswerSaltValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\ModelValidators\SecurityQuestionValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\ModelValidators\UserAccountValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.Models\Validators\ModelValidators\UserProfileValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\RestaurantProfileMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\SecurityQuestionMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\UserAccountMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\UserProfileMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\SecurityQuestionDtoValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\UserAccountDtoValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\UserProfileDtoValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\AddressValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\BusinessHourValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\PasswordSaltValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\RestaurantProfileValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SecurityAnswerSaltValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SecurityQuestionValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserAccountValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserProfileValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\UserGatewayUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

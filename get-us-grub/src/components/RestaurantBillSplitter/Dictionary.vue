@@ -3,13 +3,13 @@
     <h2>Dictionary</h2>
     <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(element, index) in MenuItems" :key="element">
-        {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}
-        <btn type="primary" size="xs" v-on:click="edit">
+        {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}<br />
+        <v-btn small=true v-on:click="edit">
           Edit
-        </btn>
-        <v-button v-on:click="RemoveFromDictionary(index)">
+        </v-btn>
+        <v-btn small=true v-on:click="RemoveFromDictionary(index)">
           Delete
-        </v-button>
+        </v-btn>
         <form v-if="edit">
           <label>Enter Food Item Name</label>
           <input type="text" ref="menuItemName" required />
@@ -68,4 +68,5 @@ export default {
     border-radius: 10px;
     text-align: center;
   }
+
 </style>

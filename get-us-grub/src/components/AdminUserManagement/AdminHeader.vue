@@ -10,6 +10,7 @@
           <v-list-tile avatar> <!--avatar: used to set minimum tile height on a single-line list item -->
             <v-list-tile-avatar>
               <img src="@/assets/empty-user.png"><!--Grab image from the store... -->
+              <!-- <v-btn absolute dark fab top right color="pink"> -->
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title>Admin admin</v-list-tile-title><!-- Grab username when logged in?-->

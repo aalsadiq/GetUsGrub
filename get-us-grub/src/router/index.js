@@ -9,7 +9,7 @@ import DeactivateUser from '@/components/AdminUserManagement/AdminDeactivateUser
 import ReactivateUser from '@/components/AdminUserManagement/AdminReactivateUser.vue'
 import DeleteUser from '@/components/AdminUserManagement/AdminDeleteUser.vue'
 import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
-import ImageUpload from '@/components/ImageUpload.vue'
+import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 
 Vue.use(Router)

@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Cors;
+//using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -27,7 +27,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Individual")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
@@ -66,7 +66,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Restaurant")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
         {
             // Model Binding Validation
@@ -94,6 +94,46 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
+        //TOOD:@Angelica add createuser controller [Angelica]
+        // POST Registration/User
+        [HttpPost]
+        // Opts authentication
+        [AllowAnonymous]
+        [Route("User/Admin/Create")]
+        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
+        {
+            // Model Binding Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("herehere");
+                System.Diagnostics.Debug.WriteLine("Username: " + registerUserDto.UserAccountDto.Username);
+                System.Diagnostics.Debug.WriteLine("Password: " + registerUserDto.UserAccountDto.Password);
+                System.Diagnostics.Debug.WriteLine("Dsiplay: " + registerUserDto.UserProfileDto.DisplayName);
+                System.Diagnostics.Debug.WriteLine(registerUserDto);
+                var userManager = new UserManager();
+                var response = userManager.CreateAdmin(registerUserDto);//changed this line...-----
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
+                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
+            }
+            // Catch exceptions
+            catch (Exception ex)
+            {
+                //return BadRequest(ErrorHandler.GetGeneralError());
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         /// <summary>
         /// Controller that will be called when admin must deactivate a user. 
         /// To access this controller, admin user must have valid claims.
@@ -103,7 +143,7 @@ namespace CSULB.GetUsGrub.Controllers
         //DELETE AdminHome/DeactivateUser
 
         //TODO: Add Claims
-     
+
         //[ResponseType(typeof(UserAccount))]
         //TODO: @Rachel resposne type is a user? What does response type claim do return claims?
         [Route("DeleteUser")]
@@ -120,6 +160,11 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 var manager = new UserManager();
                 var response = manager.DeleteUser(username);
+
+                //if (response.Error != null)
+                //{
+                //    return BadRequest(response.Error);
+                //}
 
                 return Ok(response);
 

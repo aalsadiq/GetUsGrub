@@ -2,18 +2,14 @@
     <div>
       <v-app id="inputUser">
           <v-container fluid>
-                <v-flex xs6 sm3 offset-sm3>
-                  <v-subheader>Input User Name</v-subheader>
-                </v-flex>
-                <v-divider></v-divider>
-                <v-spacer/>
-                <v-flex xs6 sm3 offset-sm3>
-                   <v-form v-model="validIdentificationInput">
-                     <v-text-field label="username" v-model="username" :rules="usernameRules" required >
-                     </v-text-field>
-                   </v-form>
-                </v-flex>
-                <v-btn id ="submit-button" color="warning">Submit</v-btn>
+            <v-spacer/>
+              <v-flex  xs5 sm2 offset-sm5>
+                <h2>Input User Name </h2>
+                <v-form v-model="validIdentificationInput">
+                  <v-text-field label="username" v-model="username" :rules="usernameRules" required />
+                </v-form>
+              </v-flex>
+              <v-btn id ="submit-button" color="warning" v-onclick="userSubmit">Submit</v-btn>
           </v-container>
         </v-app>
     </div>

@@ -522,7 +522,7 @@ export default {
       })
     },
     restaurantSubmit () {
-      axios.post('http://localhost:8081/User/Registration/Restaurant', {
+      axios.put('http://localhost:8081/User/Registration/Restaurant', {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,

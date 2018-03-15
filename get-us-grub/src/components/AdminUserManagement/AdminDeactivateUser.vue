@@ -3,7 +3,7 @@
       <app-admin-header/>
         <div id = "user-text-box">
           <h1> Deactivate User Page </h1>
-          <app-user-text-box/>
+          <app-user-text-box v-model="username"/>
         </div>
     <app-footer/>
   </div>
@@ -21,6 +21,9 @@ export default {
     'app-footer': AppFooter,
     'app-user-text-box': AppUserTextBox
   },
+  data: () => ({
+    username: ''
+  }),
   methods: {
     DeactivateUser () {
       axios.put('/User/DeactivateUser')
@@ -29,15 +32,17 @@ export default {
         })
     },
     userSubmit () {
-      if (this.$refs.form.validate()) {
-        // Native form submission is not yet supported
-        axios.put('/User/DeactivateUser', {
-          username: this.username,
-          headers: {
-            'Content-type': 'application/json'
-          }
-        })
-      }
+      axios.put('http://localhost:8081/User/Admin/DeactivateUser', {
+        username: this.username
+      }).then(response => {
+        this.responseDataStatus = 'Success! User has been created: '
+        this.responseData = response.data
+        console.log(response)
+      }).catch(error => {
+        this.responseDataStatus = 'An error has occurred: '
+        this.responseData = error.response.data
+        console.log(error.response.data)
+      })
     }
   }
 }

@@ -214,7 +214,41 @@ namespace CSULB.GetUsGrub.DataAccess
             //        dbContextTransaction.Rollback();
             //    }
             //}
-            return true;
+            //return true;
+
+            //https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/basic-linq-query-operations
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                       // var user = GetUserByUsername(username);
+
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == username
+                                           select username).FirstOrDefault();
+
+                        userContext.Entry(userAccount).State = System.Data.Entity.EntityState.Deleted;
+                        //TODO:@go through all tables
+                        //userContext.UserAccounts.DeleteObject(userAccount);
+                        
+                        
+                       // return userAccount;
+                        // Add UserAccount
+                        // userContext.UserAccounts.Remove(username);
+                        // Save changes
+                        userContext.SaveChanges();
+                        dbContextTransaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
         /// <summary>

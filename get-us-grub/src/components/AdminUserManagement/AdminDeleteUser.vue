@@ -22,11 +22,18 @@ export default {
     'app-user-text-box': AppUserTextBox
   },
   methods: {
-    DeleteUser () {
-      axios.put('/User/DeleteUser')
-        .then(response => {
-          console.log('Deleted!!!!')
-        })
+    userSubmit () {
+      axios.delete('http://localhost:8081/User/Admin/DeleteUser', {
+        username: this.username
+      }).then(response => {
+        this.responseDataStatus = 'Success! User has been created: '
+        this.responseData = response.data
+        console.log(response)
+      }).catch(error => {
+        this.responseDataStatus = 'An error has occurred: '
+        this.responseData = error.response.data
+        console.log(error.response.data)
+      })
     }
   }
 }

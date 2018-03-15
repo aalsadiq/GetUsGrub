@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
-// TODO: @Jenn Unit test for SaltGenerator [-Jenn]
+
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>

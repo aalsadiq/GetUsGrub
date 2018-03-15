@@ -11,17 +11,34 @@ using System.Web.Http;
 using System.Web.Http.Description;
 //using System.Web.Http.Cors;
 
+using CSULB.GetUsGrub.UserAccessControl;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
+
 namespace CSULB.GetUsGrub.Controllers
 {
     /// <summary>
-    /// User controller will handle routes that deal with CRUD.
-    /// @author Angelica
+    /// The <c>UserController</c> class.
+    /// User controller will handle routes that deal with creating, updating, reading and deleting a user.
+    /// <para>
+    /// @author: Angelica Salas Tovar, Jennifer Nguyen
+    /// @updated: 03/13/2018
+    /// </para>
     /// </summary>
     
     [RoutePrefix("User")] //default route
     public class UserController : ApiController
     {
-        //TODO: @Jenn Add create individual user controller. [-Angelica]
+        /// <summary>
+        /// The RegisterIndividualUser method.
+        /// Validates model state and routes the data transfer object.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <param name="registerUserDto"></param>
+        /// <returns>Created HTTP response or Bad Request HTTP response</returns>
         // POST Registration/User
         [HttpPost]
         // Opts authentication
@@ -37,30 +54,33 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
-                System.Diagnostics.Debug.WriteLine("herehere");
-                System.Diagnostics.Debug.WriteLine("Username: " + registerUserDto.UserAccountDto.Username);
-                System.Diagnostics.Debug.WriteLine("Password: " + registerUserDto.UserAccountDto.Password);
-                System.Diagnostics.Debug.WriteLine("Dsiplay: " + registerUserDto.UserProfileDto.DisplayName);
-                System.Diagnostics.Debug.WriteLine(registerUserDto);
                 var userManager = new UserManager();
                 var response = userManager.CreateIndividualUser(registerUserDto);
                 if (response.Error != null)
                 {
                     return BadRequest(response.Error);
                 }
-                //return Ok(registerUserDto.UserAccount.Username);
-                // TODO: @Jenn Change to Created [-Jenn]
+                // HTTP 201 Status
                 return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
-            catch (Exception ex)
+            catch (Exception)
             {
-                //return BadRequest(ErrorHandler.GetGeneralError());
-                return BadRequest(ex.Message);
+                // HTTP 400 Status
+                return BadRequest("Something went wrong. Pleast try again later.");
             }
         }
 
-        //TODO: @Jenn Add create individual user controller. [-Angelica]
+        /// <summary>
+        /// The RegisterRestaurantUser method.
+        /// Validates the model state and routes the data transfer object.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <param name="registerRestaurantDto"></param>
+        /// <returns>Created HTTP response or Bad Request HTTP response</returns>
         // POST Registration/User
         [HttpPost]
         // Opts authentication
@@ -82,15 +102,14 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                //return Ok(registerUserDto.UserAccount.Username);
-                // TODO: @Jenn Change to Created [-Jenn]
+                // HTTP 201 Status
                 return Created("Restaurant user has been created: ", registerRestaurantDto.UserAccountDto.Username);
             }
             // Catch exceptions
-            catch (Exception ex)
+            catch (Exception)
             {
-                //return BadRequest(ErrorHandler.GetGeneralError());
-                return BadRequest(ex.Message);
+                // HTTP 400 Status
+                return BadRequest("Something went wrong. Please try again later.");
             }
         }
 
@@ -215,6 +234,7 @@ namespace CSULB.GetUsGrub.Controllers
 
             //PUT AdminHome/ReactivateUser
             [Route("ReactivateUser")]
+            [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
             [HttpPut]
             public IHttpActionResult ReactivateUser([FromBody] string username)
             {
@@ -244,6 +264,7 @@ namespace CSULB.GetUsGrub.Controllers
 
         //PUT AdminHome/EditUser
         [Route("EditUser")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] RegisterUserDto user)
         {
@@ -271,6 +292,7 @@ namespace CSULB.GetUsGrub.Controllers
             /// @updated: 03/08/2018
             /// </summary>
             [Route("EditRestaurant")]
+            [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
             [HttpPut]
             public IHttpActionResult EditRestaurant([FromBody] RegisterRestaurantDto user)
             {

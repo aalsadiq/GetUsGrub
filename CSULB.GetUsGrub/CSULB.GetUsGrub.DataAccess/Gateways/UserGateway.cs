@@ -1,4 +1,5 @@
 ﻿using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -232,49 +233,21 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public bool DeactivateUser(string username)
         {
-            //using (var dbContextTransaction = context.Database.BegingTransaction())
-            //{
-            //    try
-            //    {
-            //        context.Database.ExecuteSqlCommand(
-
-            //        //TODO: @Angelica edit isactive to false
-            //        );
-            //        return true;
-
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        return false;
-            //        dbContextTransaction.Rollback();
-            //    }
-            //}
-            //return true;
-
-            //https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/basic-linq-query-operations
             using (var userContext = new UserContext())
             {
                 using (var dbContextTransaction = userContext.Database.BeginTransaction())
                 {
                     try
                     {
-                       // var user = GetUserByUsername(username);
-
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == username
-                                           select username).FirstOrDefault();
-
-                        userContext.Entry(userAccount).State = System.Data.Entity.EntityState.Deleted;
-                        //TODO:@go through all tables
-                        //userContext.UserAccounts.DeleteObject(userAccount);
-                        
-                        
-                       // return userAccount;
-                        // Add UserAccount
-                        // userContext.UserAccounts.Remove(username);
-                        // Save changes
-                        userContext.SaveChanges();
-                        dbContextTransaction.Commit();
+                        var activeStatus = (from account in userContext.UserAccounts
+                                            where account.Username == username
+                                            select account).SingleOrDefault();
+                        if (activeStatus.IsActive == true)
+                        {
+                            activeStatus.IsActive = false;
+                            userContext.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
                         return true;
                     }
                     catch (Exception)
@@ -295,8 +268,30 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public bool ReactivateUser(string username)
         {
-            //TODO: @Angelica Reactivate
-            return true;
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var activeStatus = (from account in userContext.UserAccounts
+                                            where account.Username == username
+                                            select account).SingleOrDefault();
+                        if(activeStatus.IsActive == false)
+                        {
+                            activeStatus.IsActive = true;
+                            userContext.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
         /// <summary>
         /// 
@@ -307,8 +302,39 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public bool DeleteUser(string username)
         {
-            //TODO: @Angelica Delete
-            return true;
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // var user = GetUserByUsername(username);
+
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == username
+                                           select account).FirstOrDefault();
+
+                        userContext.Entry(userAccount).State = System.Data.Entity.EntityState.Deleted;
+
+                        //TODO:@go through all tables
+                        //userContext.UserAccounts.DeleteObject(userAccount);
+
+
+                        // return userAccount;
+                        // Add UserAccount
+                        //userContext.UserAccounts.Remove(userAccount);//TODO:Try this too
+                        // Save changes
+                        userContext.SaveChanges();
+                        dbContextTransaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -318,42 +344,89 @@ namespace CSULB.GetUsGrub.DataAccess
         /// Last Updated: 03-10-2018
         /// <param name="user">The user that will be edited.</param>
         /// <returns></returns>
-        public RegisterUserDto EditUser(RegisterUserDto user)
+        public EditUserDto EditUser(EditUserDto user)
         {
-            //TODO: @Angelica EditUsser
-            return user;
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var userAccount = (from account in userContext.UserAccounts
+                                            where account.Username == user.Username
+                                            select account).SingleOrDefault();
+                        if(user.NewUsername != null)
+                        {
+                            //call edit username
+                            EditDisplayName(user.Username, user.NewUsername);
+                        }
+
+                        if (user.NewDisplayName != null)
+                        {
+                            //call editdisplayname
+                           // EditDisplayName;
+                        }
+
+                        if (user.NewPassword != null )
+                        {
+                            //call reset password
+                        }
+                        userContext.SaveChanges();
+                        dbContextTransaction.Commit();
+                        return user;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
-//User Related!
-        public bool EditDisplayName()
-        {
-            return true;
-        }
-        public bool ResetPassword()//EditPassword
-        {
-            return true;
-        }
-//Restaurant Related! 
-        public bool EditBusinessHours()
-        {
-            return true;
-        }
-        //public bool EditDisplayPicture()
-        //{
-        //    return true;
-        //}
+        //User Related!
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// @author Angelica Salas Tovar
-        /// Last Updated: 03-10-2018
-        /// <param name="user">The restaurant user that will be edited.</param>
-        /// <returns></returns>
-        public RegisterRestaurantDto EditRestaurant(RegisterRestaurantDto user)
+        public bool EditUserName(string username, string newUsername)//EditPassword
         {
-            //TOTOD: @Angelica EditRestaurant
-            return user;
+            return true;
         }
+
+
+        public bool EditDisplayName(string username, string newDisplayName)
+        {
+                //using (var userContext = new UserContext())
+                //{
+                //    using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                //    {
+                //        try
+                //        {
+                //            var displayname = (from account in userContext.UserAccounts
+                //                                where account.Username == user.DisplayName
+                //                                select account).SingleOrDefault();
+                //            if (displayname == )
+                //            {
+                //                displayname.IsActive = true;
+                //                userContext.SaveChanges();
+                //                dbContextTransaction.Commit();
+                //            }
+                //            return true;
+                //        }
+                //        catch (Exception)
+                //        {
+                //            dbContextTransaction.Rollback();
+                //            throw;
+                //        }
+                //    }
+                //}
+                return true;
+        }
+        public bool ResetPassword(string username, string newPassword)//EditPassword
+        {
+            return true;
+        }
+
+
+        //Editing Profile is below..
+        //Editi Restaurant...
     }
 }

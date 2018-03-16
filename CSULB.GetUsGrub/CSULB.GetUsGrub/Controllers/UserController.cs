@@ -9,11 +9,12 @@ using System.Net.Http;
 using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Description;
-//using System.Web.Http.Cors;
+using System.Web.Http.Cors;
 
 using CSULB.GetUsGrub.UserAccessControl;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
+using CSULB.GetUsGrub.Models.DTOs;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -44,7 +45,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Individual")]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
@@ -86,7 +87,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Restaurant")]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
         {
             // Model Binding Validation
@@ -119,7 +120,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("User/Admin/Create")]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
@@ -166,25 +167,20 @@ namespace CSULB.GetUsGrub.Controllers
         //[ResponseType(typeof(UserAccount))]
         //TODO: @Rachel resposne type is a user? What does response type claim do return claims?
         [Route("DeleteUser")]
-       // [ClaimsPrincipalPermission(SecurityAction.Demand = "User", Operation = "Delete")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpDelete]
         //TODO: Add claims
         public IHttpActionResult Delete([FromBody] string username)
         {
             if (!ModelState.IsValid)//if the model is not valid return a bad request
             {
-                return BadRequest(ModelState);
+                return BadRequest(ModelState);//TODO: @Angelica Extract error [Angelica, Jen]
             }
             try
             {
                 var manager = new UserManager();
                 var response = manager.DeleteUser(username);
-
-                //if (response.Error != null)
-                //{
-                //    return BadRequest(response.Error);
-                //}
-
                 return Ok(response);
 
             }
@@ -201,16 +197,20 @@ namespace CSULB.GetUsGrub.Controllers
         /// @updated: 03/08/2018
         /// </summary>
         //PUT AdminHome/DeactivateUser
-            [Route("DeactivateUser")]   
-            [HttpPut]
+        [Route("DeactivateUser")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
+        [HttpPut]
             //TODO: Add claims here
             public IHttpActionResult DeactivateUser([FromBody] string username)
             {
                 //if the model is not valid return a bad request
                 if (!ModelState.IsValid)//was binding successful?
                 {
-                    return BadRequest(ModelState);
-                }
+                    //var modelState = ActionContext.ModelState;
+                    //ActionContext.Response = ActionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, modelState);//Returns the action context
+                return BadRequest(ModelState);
+            }
                 try
                 {
                     var manager = new UserManager();//calling appropriate manager.
@@ -232,28 +232,29 @@ namespace CSULB.GetUsGrub.Controllers
         /// @updated: 03/08/2018
         /// </summary>
 
-            //PUT AdminHome/ReactivateUser
-            [Route("ReactivateUser")]
-            [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
-            [HttpPut]
-            public IHttpActionResult ReactivateUser([FromBody] string username)
+        //PUT AdminHome/ReactivateUser
+        [Route("ReactivateUser")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
+        [HttpPut]
+        public IHttpActionResult ReactivateUser([FromBody] string username)
+        {
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                try
-                {
-                    var manager = new UserManager();
-                    var response = manager.ReactivateUser(username);
-
-                    return Ok(response);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
+                return BadRequest(ModelState);
             }
+            try
+            {
+                var manager = new UserManager();
+                var response = manager.ReactivateUser(username);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Controller that will be called when admin must edit a user. 
@@ -266,7 +267,7 @@ namespace CSULB.GetUsGrub.Controllers
         [Route("EditUser")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
-        public IHttpActionResult EditUser([FromBody] RegisterUserDto user)
+        public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
             if (!ModelState.IsValid)
             {
@@ -284,33 +285,5 @@ namespace CSULB.GetUsGrub.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-            /// <summary>
-            /// Controller that will be called when admin must edit restaurant a user. 
-            /// To access this controller, admin user must have valid claims.
-            /// @author: Angelica Salas Tovar
-            /// @updated: 03/08/2018
-            /// </summary>
-            [Route("EditRestaurant")]
-            [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
-            [HttpPut]
-            public IHttpActionResult EditRestaurant([FromBody] RegisterRestaurantDto user)
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                try
-                {
-                    var manager = new UserManager();
-                    var response = manager.EditRestaurant(user);
-
-                    return Ok(response);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-            }
     }
 }

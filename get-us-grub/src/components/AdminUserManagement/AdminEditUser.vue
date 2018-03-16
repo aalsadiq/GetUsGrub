@@ -31,7 +31,7 @@
           </v-card-text>
         </v-flex>
         <v-flex d-flex xs12 sm6 md4>
-          <v-layout row wrap>
+          <!-- <v-layout row wrap>
             <v-flex d-flex>
               <v-card-text>
                 <v-checkbox :label="'Username'" v-model="checkboxUsername"></v-checkbox>
@@ -47,7 +47,7 @@
                 </div>
               </v-card-text>
              </v-flex>
-          </v-layout>
+          </v-layout> -->
         </v-flex>
       </v-layout>
     </v-container>

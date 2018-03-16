@@ -9,7 +9,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar> <!--avatar: used to set minimum tile height on a single-line list item -->
             <v-list-tile-avatar>
-              <img src="@/assets/empty-user.png"><!--Grab image from the store... -->
+              <img src="@/assets/ProfileImages/EmptyProfile.png"><!--Grab image from the store... -->
               <!-- <v-btn absolute dark fab top right color="pink"> -->
             </v-list-tile-avatar>
             <v-list-tile-content>

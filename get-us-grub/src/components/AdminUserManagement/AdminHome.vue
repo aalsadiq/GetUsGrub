@@ -21,6 +21,8 @@ export default {
   components: {
     'app-admin-header': AppAdminHeader,
     'app-footer': AppFooter
+  },
+  mounted () {
   }
 }
 </script>

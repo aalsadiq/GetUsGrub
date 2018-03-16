@@ -53,29 +53,34 @@
     <Compile Include="Contexts\RestaurantContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Migrations\testingWithOtherTables\201803131834355_AuthenticationTest.cs" />
-    <Compile Include="Migrations\testingWithOtherTables\201803131834355_AuthenticationTest.Designer.cs">
-      <DependentUpon>201803131834355_AuthenticationTest.cs</DependentUpon>
+    <Compile Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.Designer.cs">
+      <DependentUpon>201803151716224_UserContext.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\testingWithOtherTables\201803131906236_UpdatingFks.cs" />
-    <Compile Include="Migrations\testingWithOtherTables\201803131906236_UpdatingFks.Designer.cs">
-      <DependentUpon>201803131906236_UpdatingFks.cs</DependentUpon>
+    <Compile Include="Migrations\UserManagement\UserContext\201803161646091_DBSeedV1.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803161646091_DBSeedV1.Designer.cs">
+      <DependentUpon>201803161646091_DBSeedV1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\testingWithOtherTables\Configuration.cs" />
-    <Compile Include="Migrations\testUsermanagement\201803131722270_Initial.cs" />
-    <Compile Include="Migrations\testUsermanagement\201803131722270_Initial.Designer.cs">
-      <DependentUpon>201803131722270_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\UserManagement\UserContext\201803161655189_UpdateSeedv2.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803161655189_UpdateSeedv2.Designer.cs">
+      <DependentUpon>201803161655189_UpdateSeedv2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\testUsermanagement\201803131857329_UpdatedWithKeys.cs" />
-    <Compile Include="Migrations\testUsermanagement\201803131857329_UpdatedWithKeys.Designer.cs">
-      <DependentUpon>201803131857329_UpdatedWithKeys.cs</DependentUpon>
+    <Compile Include="Migrations\UserManagement\UserContext\201803161820020_DBSeed3.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803161820020_DBSeed3.Designer.cs">
+      <DependentUpon>201803161820020_DBSeed3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\testUsermanagement\Configuration.cs" />
-    <Compile Include="Migrations\UserConfiguration.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\User\201803161834272_UserSeed1.cs" />
+    <Compile Include="Migrations\UserManagement\User\201803161834272_UserSeed1.Designer.cs">
+      <DependentUpon>201803161834272_UserSeed1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\UserManagement\User\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -88,17 +93,20 @@
     <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\testingWithOtherTables\201803131834355_AuthenticationTest.resx">
-      <DependentUpon>201803131834355_AuthenticationTest.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.resx">
+      <DependentUpon>201803151716224_UserContext.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\testingWithOtherTables\201803131906236_UpdatingFks.resx">
-      <DependentUpon>201803131906236_UpdatingFks.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803161646091_DBSeedV1.resx">
+      <DependentUpon>201803161646091_DBSeedV1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\testUsermanagement\201803131722270_Initial.resx">
-      <DependentUpon>201803131722270_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803161655189_UpdateSeedv2.resx">
+      <DependentUpon>201803161655189_UpdateSeedv2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\testUsermanagement\201803131857329_UpdatedWithKeys.resx">
-      <DependentUpon>201803131857329_UpdatedWithKeys.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803161820020_DBSeed3.resx">
+      <DependentUpon>201803161820020_DBSeed3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\UserManagement\User\201803161834272_UserSeed1.resx">
+      <DependentUpon>201803161834272_UserSeed1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

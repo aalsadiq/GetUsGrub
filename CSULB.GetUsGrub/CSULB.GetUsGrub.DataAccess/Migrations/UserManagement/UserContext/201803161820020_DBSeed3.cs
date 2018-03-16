@@ -1,9 +1,9 @@
-namespace CSULB.GetUsGrub.DataAccess.Migrations.testUsermanagement
+namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.UserContext
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class UpdatedWithKeys : DbMigration
+    public partial class DBSeed3 : DbMigration
     {
         public override void Up()
         {

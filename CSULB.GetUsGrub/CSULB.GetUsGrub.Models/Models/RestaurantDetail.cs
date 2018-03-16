@@ -3,7 +3,7 @@
 namespace CSULB.GetUsGrub.Models.Models
 {
     [System.Serializable]
-    public class RestaurantDetail : IRestaurantDetail
+    public class RestaurantDetail //: IRestaurantDetail
     {
         public bool? HasReservations { get; set; }
 
@@ -29,6 +29,6 @@ namespace CSULB.GetUsGrub.Models.Models
 
         public string Category { get; set; }
 
-        public IEnumerable<BusinessHour> BusinessSchedule { get; set; }
+        //public IEnumerable<BusinessHour> BusinessSchedule { get; set; } Ask Brian if we need this?
     }
 }

@@ -9,8 +9,8 @@ export const store = new Vuex.Store({
     MAX_MENU_ITEM_PRICE: 1000,
     MenuItems: [
       {
-        menuItemName: 'Big Mac',
-        menuItemPrice: 4.00
+        menuItemName: '',
+        menuItemPrice: 0
       },
       {
         menuItemName: 'Large Fries',

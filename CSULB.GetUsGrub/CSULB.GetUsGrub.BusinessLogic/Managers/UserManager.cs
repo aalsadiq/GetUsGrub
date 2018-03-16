@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.Models.DTOs;
 using CSULB.GetUsGrub.UserAccessControl;
 using System.Collections.Generic;
 using System.Linq;
@@ -287,7 +288,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         }//end of admin
 
 
-        public bool DeactivateUser(string username)
+        public bool DeactivateUser(string username)////////////////////////////////////////////////////////////////////////////////////////////Currently here!! TODO:@Reactivate
         {
             //Validate DTO - in this case validate if it follows business rule names
             //Map to Domain Models - In this case I don't believe I need to model bind
@@ -335,26 +336,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public RegisterUserDto EditUser(RegisterUserDto user)//RegisterRestaurantUserDto
+        public EditUserDto EditUser(EditUserDto user)//RegisterRestaurantUserDto
         {
             using (var gateway = new UserGateway())
             {
                 return gateway.EditUser(user);//will return edited user
-            }
-        }
-
-        /// <summary>
-        /// Will take in a Registered restaurant user to modify.
-        /// @author Angelica
-        /// @Last Update: 03/10/2018
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public RegisterRestaurantDto EditRestaurant(RegisterRestaurantDto user)//RegisterRestaurantUserDto
-        {
-            using (var gateway = new UserGateway())
-            {
-                return gateway.EditRestaurant(user);//will return edited user...
             }
         }
     }

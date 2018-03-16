@@ -8,16 +8,16 @@ namespace CSULB.GetUsGrub.Models
     /// Menu item class
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/11/18
+    /// @updated: 3/15/18
     /// </summary>
 
-    [Table("GetUsGrub.MenuItem")]
-    public class MenuItem : IMenuItem
+    [Table("GetUsGrub.RestaurantMenuItems")]
+    public class RestaurantMenuItem : IMenuItem
     {
         [Key]
         public int? Id { get; set; }
 
-        [ForeignKey("GetUsGrub.RestaurantMenu")]
+        [ForeignKey("GetUsGrub.RestaurantMenus")]
         public int? MenuId { get; set; }
 
         public string ItemName { get; set; }
@@ -31,5 +31,15 @@ namespace CSULB.GetUsGrub.Models
         public string Description { get; set; }
 
         public bool IsActive { get; set; }
+
+        public RestaurantMenuItem(string name, double price, string picture, string type, string description, bool isActive)
+        {
+            ItemName = name;
+            ItemPrice = price;
+            ItemPicture = picture;
+            ItemType = type;
+            Description = description;
+            IsActive = isActive;
+        }
     }
 }

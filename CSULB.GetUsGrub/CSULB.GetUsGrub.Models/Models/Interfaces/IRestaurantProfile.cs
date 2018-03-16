@@ -9,6 +9,7 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public interface IRestaurantProfile
     {
+        //TODO: add food preferences, price range, food type
         string RestaurantName { get; set; }
 
         string City { get; set; }
@@ -27,6 +28,6 @@ namespace CSULB.GetUsGrub.Models
 
         IEnumerable<IBusinessHour> BusinessHours { get; set; }
 
-        string RestaurantType { get; set; }
+        string RestaurantType { get; set; } //Restaurant type renamed to food type
     }
 }

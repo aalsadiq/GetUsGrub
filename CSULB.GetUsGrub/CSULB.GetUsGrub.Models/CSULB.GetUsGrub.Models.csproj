@@ -64,11 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\ResponseDto.cs" />
     <Compile Include="DTOs\RestaurantProfileDto.cs" />
     <Compile Include="DTOs\UserProfileDto.cs" />
     <Compile Include="Models\BusinessHour.cs" />
     <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />
-    <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\RestaurantMenuItem.cs" />
     <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\RestaurantMenu.cs" />
     <Compile Include="Models\RestaurantProfile.cs" />

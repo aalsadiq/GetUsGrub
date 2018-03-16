@@ -6,14 +6,11 @@ namespace CSULB.GetUsGrub.Models
     /// Additional restraurant information interface
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/11/18
+    /// @updated: 3/15/18
+    /// @lastchange: Removed Category
     /// </summary>
     interface IRestaurantDetail
     {
-        string Category { get; set; }
-
-        IEnumerable<IBusinessHour> BusinessSchedule { get; set; }
-
         bool? HasReservations { get; set; }
 
         bool? HasDelivery { get; set; }

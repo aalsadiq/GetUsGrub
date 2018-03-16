@@ -15,7 +15,7 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.RestaurantProfile")]
-    public class RestaurantProfile : IRestaurantProfile, IEntity
+    public class RestaurantProfile : IRestaurantProfile, IEntity//Maybe Remove Profile...
     {
         [Key]
         [ForeignKey("UserProfile")]

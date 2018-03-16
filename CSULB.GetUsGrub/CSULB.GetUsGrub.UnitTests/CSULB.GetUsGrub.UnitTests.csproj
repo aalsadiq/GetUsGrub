@@ -125,6 +125,8 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserAccountValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserProfileValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\UserValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.UserManagement\CRUD\CreateUserUnitTest.cs" />
+    <Compile Include="CSULB.GetUsGrub.UserManagement\CRUD\EditUserUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

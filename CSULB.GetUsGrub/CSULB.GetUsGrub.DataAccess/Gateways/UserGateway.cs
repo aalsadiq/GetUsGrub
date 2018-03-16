@@ -358,11 +358,12 @@ namespace CSULB.GetUsGrub.DataAccess
                         if(user.NewUsername != null)
                         {
                             //call edit username
-                            EditDisplayName(user.Username, user.NewUsername);
+                           // userAccount.Username = user.NewUsername;
                         }
 
                         if (user.NewDisplayName != null)
                         {
+                           // userAccount.Di
                             //call editdisplayname
                            // EditDisplayName;
                         }
@@ -384,42 +385,63 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        //User Related!
+        ////User Related!
 
         public bool EditUserName(string username, string newUsername)//EditPassword
         {
-            return true;
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == username
+                                           select account).SingleOrDefault();
+                            //call edit username
+                            userAccount.Username = newUsername;
+                            userContext.SaveChanges();
+                            dbContextTransaction.Commit();
+                            return true;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
 
-        public bool EditDisplayName(string username, string newDisplayName)
-        {
-                //using (var userContext = new UserContext())
-                //{
-                //    using (var dbContextTransaction = userContext.Database.BeginTransaction())
-                //    {
-                //        try
-                //        {
-                //            var displayname = (from account in userContext.UserAccounts
-                //                                where account.Username == user.DisplayName
-                //                                select account).SingleOrDefault();
-                //            if (displayname == )
-                //            {
-                //                displayname.IsActive = true;
-                //                userContext.SaveChanges();
-                //                dbContextTransaction.Commit();
-                //            }
-                //            return true;
-                //        }
-                //        catch (Exception)
-                //        {
-                //            dbContextTransaction.Rollback();
-                //            throw;
-                //        }
-                //    }
-                //}
-                return true;
-        }
+        //public bool EditDisplayName(string username, string newDisplayName)
+        //{
+        //        //using (var userContext = new UserContext())
+        //        //{
+        //        //    using (var dbContextTransaction = userContext.Database.BeginTransaction())
+        //        //    {
+        //        //        try
+        //        //        {
+        //        //            var displayname = (from account in userContext.UserAccounts
+        //        //                                where account.Username == user.DisplayName
+        //        //                                select account).SingleOrDefault();
+        //        //            if (displayname == )
+        //        //            {
+        //        //                displayname.IsActive = true;
+        //        //                userContext.SaveChanges();
+        //        //                dbContextTransaction.Commit();
+        //        //            }
+        //        //            return true;
+        //        //        }
+        //        //        catch (Exception)
+        //        //        {
+        //        //            dbContextTransaction.Rollback();
+        //        //            throw;
+        //        //        }
+        //        //    }
+        //        //}
+        //        return true;
+        //}
         public bool ResetPassword(string username, string newPassword)//EditPassword
         {
             return true;

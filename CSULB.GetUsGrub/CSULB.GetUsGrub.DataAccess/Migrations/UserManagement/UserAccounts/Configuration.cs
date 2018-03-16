@@ -1,6 +1,7 @@
-namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.User
+namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.UserAccounts
 {
     using CSULB.GetUsGrub.Models;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -8,29 +9,22 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.User
     using System.Data.Entity.Migrations;
     using System.Linq;
     using System.Security.Claims;
-    using Newtonsoft.Json;
 
     internal sealed class Configuration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.UserContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            MigrationsDirectory = @"Migrations\UserManagement\User";
+            MigrationsDirectory = @"Migrations\UserManagement\UserAccounts";
         }
 
         protected override void Seed(CSULB.GetUsGrub.DataAccess.UserContext context)
         {
             //  This method will be called after migrating to the latest version.
-
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
-
             //UserAccounts seed
-//Worked
+            //Worked
             var users = new List<UserAccount>()
             {
                new UserAccount() { Username = "User1", Password = "password123!@", IsActive = true, IsFirstTimeUser = true},
@@ -54,7 +48,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.User
             //enable - migrations - ContextTypeName CSULB.GetUsGrub.DataAccess.UserContext - MigrationsDirectory:Migrations\testUsermanagement
             //add - migration - configuration CSULB.GetUsGrub.DataAccess.Migrations.testUsermanagement.Configuration
             //update - database - configuration CSULB.GetUsGrub.DataAccess.Migrations.testUsermanagement.Configuration - verbose
-//Worked
+            //Worked
             //UserProfiles seed
             var userProfiles = new List<UserProfile>()
             {
@@ -71,8 +65,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.User
             };
             context.UserProfiles.AddOrUpdate(x => x.Id, (userProfiles.ToArray()));
             context.SaveChanges();//Save the changes
-//Works
-            //PasswordSalts seed
+                                  //Works
+                                  //PasswordSalts seed
             var userPasswordSalts = new List<PasswordSalt>()
             {
                new PasswordSalt() { Id = 1, Salt = "salt1"},
@@ -89,8 +83,25 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.User
             context.PasswordSalts.AddOrUpdate(x => x.Id, (userPasswordSalts.ToArray()));
             context.SaveChanges();//Save the changes
                                   //SecurityAnswerSalts
+            ////SecurityQuestions seed
 
-//Works
+            var userSecurityQuestions = new List<SecurityQuestion>()
+            {
+                new SecurityQuestion() { Id = 1, UserId = 1, Question = 1, Answer = "A1"},
+                new SecurityQuestion() { Id = 2, UserId = 2, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { Id = 3, UserId = 3, Question = 3, Answer = "A3"},
+                new SecurityQuestion() { Id = 4, UserId = 4, Question = 1, Answer = "A4"},
+                new SecurityQuestion() { Id = 5, UserId = 5, Question = 2, Answer = "A5"},
+                new SecurityQuestion() { Id = 6, UserId = 6, Question = 3, Answer = "A6"},
+                new SecurityQuestion() { Id = 7, UserId = 7, Question = 1, Answer = "A7"},
+                new SecurityQuestion() { Id = 8, UserId = 8, Question = 2, Answer = "A8"},
+                new SecurityQuestion() { Id = 9, UserId = 9, Question = 3, Answer = "A9"},
+                new SecurityQuestion() { Id = 10, UserId = 10, Question = 1, Answer = "A10"}
+            };
+            context.SecurityQuestions.AddOrUpdate(x => x.Id, (userSecurityQuestions.ToArray()));
+            context.SaveChanges();//Save the changes
+
+            //Works
             var userSecurityAnswerSalts = new List<SecurityAnswerSalt>()
             {
                new SecurityAnswerSalt() { Id = 1, Salt = "Salt1" },
@@ -106,6 +117,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.User
             };
             context.SecurityAnswerSalts.AddOrUpdate(x => x.Id, (userSecurityAnswerSalts.ToArray()));
             context.SaveChanges();//Save the changes
+
+
 
             //RestaurantProfiles seed
             //Id PhoneNumber Address Details
@@ -249,24 +262,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.User
             //context.RestaurantMenuItems.AddOrUpdate(x => x.Id, (userRestaurantMenuItems.ToArray()));
             //context.SaveChanges();//Save the changes
             //Works
-            ////SecurityQuestions seed
-            var userSecurityQuestions = new List<SecurityQuestion>()
-            {
-                new SecurityQuestion() { Id = 1, UserId = 1, Question = 1, Answer = "A1"},
-                new SecurityQuestion() { Id = 2, UserId = 2, Question = 2, Answer = "A2"},
-                new SecurityQuestion() { Id = 3, UserId = 3, Question = 3, Answer = "A3"},
-                new SecurityQuestion() { Id = 4, UserId = 4, Question = 1, Answer = "A4"},
-                new SecurityQuestion() { Id = 5, UserId = 5, Question = 2, Answer = "A5"},
-                new SecurityQuestion() { Id = 6, UserId = 6, Question = 3, Answer = "A6"},
-                new SecurityQuestion() { Id = 7, UserId = 7, Question = 1, Answer = "A7"},
-                new SecurityQuestion() { Id = 8, UserId = 8, Question = 2, Answer = "A8"},
-                new SecurityQuestion() { Id = 9, UserId = 9, Question = 3, Answer = "A9"},
-                new SecurityQuestion() { Id = 10, UserId = 10, Question = 1, Answer = "A10"}
-            };
-            context.SecurityQuestions.AddOrUpdate(x => x.Id, (userSecurityQuestions.ToArray()));
-            context.SaveChanges();//Save the changes
-//Works
-            //Tokens seed
+                                  //Works
+                                  //Tokens seed
             var userTokens = new List<Token>()
             {
                new Token() { Id = 1, TokenHeader = "TokenHeader1", TokenSignature = "TokenSignature1", Salt = "Salt1", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
@@ -282,7 +279,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.User
             };
             context.Tokens.AddOrUpdate(x => x.Id, (userTokens.ToArray()));
             context.SaveChanges();//Save the changes
-            
+
             //Claims
             var claims = new Collection<Claim>()
             {

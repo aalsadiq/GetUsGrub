@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -53,6 +56,11 @@
     <Compile Include="Contexts\RestaurantContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
+    <Compile Include="Migrations\UserManagement\UserAccounts\201803162248521_UserAccountsDBSeed.cs" />
+    <Compile Include="Migrations\UserManagement\UserAccounts\201803162248521_UserAccountsDBSeed.Designer.cs">
+      <DependentUpon>201803162248521_UserAccountsDBSeed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\UserManagement\UserAccounts\Configuration.cs" />
     <Compile Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.cs" />
     <Compile Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.Designer.cs">
       <DependentUpon>201803151716224_UserContext.cs</DependentUpon>
@@ -93,6 +101,9 @@
     <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\UserManagement\UserAccounts\201803162248521_UserAccountsDBSeed.resx">
+      <DependentUpon>201803162248521_UserAccountsDBSeed.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.resx">
       <DependentUpon>201803151716224_UserContext.cs</DependentUpon>
     </EmbeddedResource>

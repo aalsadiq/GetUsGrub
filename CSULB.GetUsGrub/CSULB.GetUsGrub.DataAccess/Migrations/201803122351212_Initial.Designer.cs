@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201803110501538_Initial"; }
+            get { return "201803122351212_Initial"; }
         }
         
         string IMigrationMetadata.Source

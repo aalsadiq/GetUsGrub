@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CSULB.GetUsGrub.Models.Models
+namespace CSULB.GetUsGrub.Models
 {
     [System.Serializable]
     public class RestaurantDetail : IRestaurantDetail

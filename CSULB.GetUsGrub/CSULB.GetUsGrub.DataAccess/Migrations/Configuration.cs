@@ -5,9 +5,9 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class UserConfiguration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.UserContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.UserContext>
     {
-        public UserConfiguration()
+        public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }

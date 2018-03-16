@@ -66,6 +66,8 @@
   <ItemGroup>
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\BusinessHoursCollection.cs" />
+    <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Interfaces\IBusinessHoursList.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />

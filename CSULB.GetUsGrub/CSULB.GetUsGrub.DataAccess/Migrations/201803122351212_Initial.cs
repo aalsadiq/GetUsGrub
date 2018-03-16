@@ -59,6 +59,17 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations
                 .Index(t => t.Id);
             
             CreateTable(
+                "GetUsGrub.UserClaims",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        ClaimsJson = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.UserAccount", t => t.Id)
+                .Index(t => t.Id);
+            
+            CreateTable(
                 "GetUsGrub.UserProfile",
                 c => new
                     {
@@ -77,8 +88,15 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations
                         Id = c.Int(nullable: false),
                         ProfileName = c.String(),
                         ProfilePicture = c.String(),
+                        PhoneNumber = c.String(),
+                        Address_Street1 = c.String(),
+                        Address_Street2 = c.String(),
+                        Address_City = c.String(),
+                        Address_State = c.String(),
+                        Address_Zip = c.Int(nullable: false),
                         Latitude = c.Double(nullable: false),
                         Longitude = c.Double(nullable: false),
+                        BusinessHoursJson = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("GetUsGrub.UserProfile", t => t.Id)
@@ -122,12 +140,14 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations
             DropForeignKey("GetUsGrub.RestaurantProfile", "Id", "GetUsGrub.UserProfile");
             DropForeignKey("GetUsGrub.RestaurantMenu", "RestaurantId", "GetUsGrub.RestaurantProfile");
             DropForeignKey("GetUsGrub.RestaurantMenuItem", "MenuId", "GetUsGrub.RestaurantMenu");
+            DropForeignKey("GetUsGrub.UserClaims", "Id", "GetUsGrub.UserAccount");
             DropForeignKey("GetUsGrub.Token", "Id", "GetUsGrub.UserAccount");
             DropForeignKey("GetUsGrub.SecurityQuestion", "UserId", "GetUsGrub.UserAccount");
             DropIndex("GetUsGrub.RestaurantMenuItem", new[] { "MenuId" });
             DropIndex("GetUsGrub.RestaurantMenu", new[] { "RestaurantId" });
             DropIndex("GetUsGrub.RestaurantProfile", new[] { "Id" });
             DropIndex("GetUsGrub.UserProfile", new[] { "Id" });
+            DropIndex("GetUsGrub.UserClaims", new[] { "Id" });
             DropIndex("GetUsGrub.Token", new[] { "Id" });
             DropIndex("GetUsGrub.SecurityQuestion", new[] { "UserId" });
             DropIndex("GetUsGrub.PasswordSalt", new[] { "Id" });
@@ -135,6 +155,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations
             DropTable("GetUsGrub.RestaurantMenu");
             DropTable("GetUsGrub.RestaurantProfile");
             DropTable("GetUsGrub.UserProfile");
+            DropTable("GetUsGrub.UserClaims");
             DropTable("GetUsGrub.Token");
             DropTable("GetUsGrub.SecurityQuestion");
             DropTable("GetUsGrub.UserAccount");

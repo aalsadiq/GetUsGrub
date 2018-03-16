@@ -16,6 +16,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
         public DbSet<UserProfile> UserProfiles { get; set; }
 
+        public DbSet<UserClaims> UserClaims { get; set; }
+
         public DbSet<PasswordSalt> PasswordSalts { get; set; }
 
         public DbSet<RestaurantProfile> RestaurantProfiles { get; set; }

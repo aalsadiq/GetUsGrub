@@ -23,11 +23,13 @@ namespace CSULB.GetUsGrub.Models
         
         public Address Address { get; set; }
 
-        public IRestaurantDetail Details { get; set; }
+        public RestaurantDetail Details { get; set; }
 
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
+
+        public string BusinessHoursJson { get; set; }
 
         public IList<IRestaurantMenu> Menus { get; set; }
 
@@ -35,6 +37,5 @@ namespace CSULB.GetUsGrub.Models
         public virtual UserProfile UserProfile { get; set; }
 
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
-        public IList<BusinessHour> BusinessHoursList { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     }
 }

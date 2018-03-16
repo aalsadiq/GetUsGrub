@@ -23,7 +23,9 @@ namespace CSULB.GetUsGrub.Models
         public int Id { get; set; }
 
         // Navigation Properties
-        public virtual UserProfile UserProfile { get; set;   }
+        public virtual UserProfile UserProfile { get; set; }
+
+        public virtual UserClaims UserClaims { get; set; }
 
         public virtual PasswordSalt PasswordSalt { get; set; }
 

@@ -1,26 +1,19 @@
 <template>
   <div id="app">
     <v-app>
-
-      <app-header/>
       <v-container id="router-container">
         <div>
             <!-- <img src="./assets/logo.png"> -->
             <router-view/>
         </div>
       </v-container>
-      <app-footer/>
     </v-app>
   </div>
 </template>
 
 <script>
-import AppHeader from './components/AppHeader'
-import AppFooter from './components/AppFooter'
-
 export default {
-  name: 'App',
-  components: {AppHeader, AppFooter}
+  name: 'App'
 }
 </script>
 

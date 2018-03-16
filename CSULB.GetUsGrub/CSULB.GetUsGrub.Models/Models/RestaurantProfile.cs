@@ -1,3 +1,13 @@
+        [NotMapped]
+        public IList<BusinessHour> BusinessHours { get; set; }
+        public string BusinessHoursJson
+        {
+            get => JsonConvert.SerializeObject(BusinessHours);
+            set => BusinessHours = JsonConvert.DeserializeObject<List<BusinessHour>>(value);
+        }
+        // Navigation Properties
+        public virtual UserProfile UserProfile { get; set; }
+        public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -114,3 +124,5 @@ namespace CSULB.GetUsGrub.Models
         }
     }
 }
+
+        public double Longitude { get; set; }

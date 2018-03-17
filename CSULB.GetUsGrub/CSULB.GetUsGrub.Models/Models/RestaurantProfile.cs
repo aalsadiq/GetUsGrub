@@ -25,18 +25,11 @@ namespace CSULB.GetUsGrub.Models
         public RestaurantDetail Details { get; set; }//ASK Andrew & Brian
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-   
-        [NotMapped]//anything with not mapped is not in database 
-        public IList<BusinessHour> BusinessHours { get; set; }
-
-        public string BusinessHoursJson//inside database
-        {
-            get => JsonConvert.SerializeObject(BusinessHours);
-            set => BusinessHours = JsonConvert.DeserializeObject<List<BusinessHour>>(value);
-        }
-
+        public IList<IRestaurantMenu> Menus { get; set; }
+        // TODO: @Andrew Why is display name here when it is already in UserProfile? [-Jenn]
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
+        public virtual ICollection<BusinessHour> BusinessHours { get; set; }
     }
 }

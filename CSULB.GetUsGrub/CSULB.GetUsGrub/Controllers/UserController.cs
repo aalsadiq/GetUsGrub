@@ -4,6 +4,10 @@ using System;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
+using CSULB.GetUsGrub.UserAccessControl;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
+
 namespace CSULB.GetUsGrub.Controllers
 {
     /// <summary>
@@ -89,6 +93,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         //DELETE AdminHome/DeactivateUser
         [Route("DeleteUser")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Delete")]
         [HttpDelete]
         //TODO: Add claims
         public IHttpActionResult Delete([FromBody] string username)
@@ -118,8 +123,9 @@ namespace CSULB.GetUsGrub.Controllers
         /// @updated: 03/08/2018
         /// </summary>
         //PUT AdminHome/DeactivateUser
-            //TODO: CORS?
-            [Route("DeactivateUser")]   
+        //TODO: CORS?
+            [Route("DeactivateUser")]  
+            [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
             [HttpPut]
             //TODO: Add claims here
             public IHttpActionResult DeactivateUser([FromBody] string username)
@@ -152,6 +158,7 @@ namespace CSULB.GetUsGrub.Controllers
 
             //PUT AdminHome/ReactivateUser
             [Route("ReactivateUser")]
+            [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
             [HttpPut]
             public IHttpActionResult ReactivateUser([FromBody] string username)
             {
@@ -182,6 +189,7 @@ namespace CSULB.GetUsGrub.Controllers
 
         //PUT AdminHome/EditUser
         [Route("EditUser")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] RegisterUserDto user)
         {
@@ -209,6 +217,7 @@ namespace CSULB.GetUsGrub.Controllers
             /// @updated: 03/08/2018
             /// </summary>
             [Route("EditRestaurant")]
+            [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
             [HttpPut]
             public IHttpActionResult EditRestaurant([FromBody] RegisterRestaurantDto user)
             {

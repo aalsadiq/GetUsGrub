@@ -119,6 +119,44 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.UserAccounts
             context.SaveChanges();//Save the changes
 
 
+            var userTokens = new List<Token>()
+            {
+               new Token() { Id = 1, TokenHeader = "TokenHeader1", TokenSignature = "TokenSignature1", Salt = "Salt1", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 2, TokenHeader = "TokenHeader2", TokenSignature = "TokenSignature2", Salt = "Salt2", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 3, TokenHeader = "TokenHeader3", TokenSignature = "TokenSignature3", Salt = "Salt3", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 4, TokenHeader = "TokenHeader4", TokenSignature = "TokenSignature4", Salt = "Salt4", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 5, TokenHeader = "TokenHeader5", TokenSignature = "TokenSignature5", Salt = "Salt5", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 6, TokenHeader = "TokenHeader6", TokenSignature = "TokenSignature6", Salt = "Salt6", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 7, TokenHeader = "TokenHeader7", TokenSignature = "TokenSignature7", Salt = "Salt7", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 8, TokenHeader = "TokenHeader8", TokenSignature = "TokenSignature8", Salt = "Salt8", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 9, TokenHeader = "TokenHeader9", TokenSignature = "TokenSignature9", Salt = "Salt9", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
+               new Token() { Id = 10, TokenHeader = "TokenHeader10", TokenSignature = "TokenSignature10", Salt = "Salt10", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now }
+            };
+            context.Tokens.AddOrUpdate(x => x.Id, (userTokens.ToArray()));
+            context.SaveChanges();//Save the changes
+
+            //Claims
+            var claims = new Collection<Claim>()
+            {
+                new Claim("ReadIndividualProfile", "True"),
+                new Claim("WriteIndividualProfile", "True")
+            };
+            var claimsJson = JsonConvert.SerializeObject(claims);
+            var userClaims = new List<UserClaims>()
+            {
+               new UserClaims() { Id = 1, Claims = claims },
+               new UserClaims() { Id = 2, Claims = claims },
+               new UserClaims() { Id = 3, Claims = claims },
+               new UserClaims() { Id = 4, Claims = claims },
+               new UserClaims() { Id = 5, Claims = claims },
+               new UserClaims() { Id = 6, Claims = claims },
+               new UserClaims() { Id = 7, Claims = claims },
+               new UserClaims() { Id = 8, Claims = claims },
+               new UserClaims() { Id = 9, Claims = claims },
+               new UserClaims() { Id = 10, Claims = claims }
+            };
+            context.Claims.AddOrUpdate(x => x.Id, (userClaims.ToArray()));
+            context.SaveChanges();//Save the changes
 
             //RestaurantProfiles seed
             //Id PhoneNumber Address Details
@@ -262,46 +300,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.UserAccounts
             //context.RestaurantMenuItems.AddOrUpdate(x => x.Id, (userRestaurantMenuItems.ToArray()));
             //context.SaveChanges();//Save the changes
             //Works
-                                  //Works
-                                  //Tokens seed
-            var userTokens = new List<Token>()
-            {
-               new Token() { Id = 1, TokenHeader = "TokenHeader1", TokenSignature = "TokenSignature1", Salt = "Salt1", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 2, TokenHeader = "TokenHeader2", TokenSignature = "TokenSignature2", Salt = "Salt2", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 3, TokenHeader = "TokenHeader3", TokenSignature = "TokenSignature3", Salt = "Salt3", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 4, TokenHeader = "TokenHeader4", TokenSignature = "TokenSignature4", Salt = "Salt4", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 5, TokenHeader = "TokenHeader5", TokenSignature = "TokenSignature5", Salt = "Salt5", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 6, TokenHeader = "TokenHeader6", TokenSignature = "TokenSignature6", Salt = "Salt6", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 7, TokenHeader = "TokenHeader7", TokenSignature = "TokenSignature7", Salt = "Salt7", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 8, TokenHeader = "TokenHeader8", TokenSignature = "TokenSignature8", Salt = "Salt8", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 9, TokenHeader = "TokenHeader9", TokenSignature = "TokenSignature9", Salt = "Salt9", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 10, TokenHeader = "TokenHeader10", TokenSignature = "TokenSignature10", Salt = "Salt10", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now }
-            };
-            context.Tokens.AddOrUpdate(x => x.Id, (userTokens.ToArray()));
-            context.SaveChanges();//Save the changes
-
-            //Claims
-            var claims = new Collection<Claim>()
-            {
-                new Claim("ReadIndividualProfile", "True"),
-                new Claim("WriteIndividualProfile", "True")
-            };
-            var claimsJson = JsonConvert.SerializeObject(claims);
-            var userClaims = new List<UserClaims>()
-            {
-               new UserClaims() { Id = 1, Claims = claims },
-               new UserClaims() { Id = 2, Claims = claims },
-               new UserClaims() { Id = 3, Claims = claims },
-               new UserClaims() { Id = 4, Claims = claims },
-               new UserClaims() { Id = 5, Claims = claims },
-               new UserClaims() { Id = 6, Claims = claims },
-               new UserClaims() { Id = 7, Claims = claims },
-               new UserClaims() { Id = 8, Claims = claims },
-               new UserClaims() { Id = 9, Claims = claims },
-               new UserClaims() { Id = 10, Claims = claims }
-            };
-            context.Claims.AddOrUpdate(x => x.Id, (userClaims.ToArray()));
-            context.SaveChanges();//Save the changes
         }
     }
 }

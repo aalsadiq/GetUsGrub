@@ -308,22 +308,54 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                        // var user = GetUserByUsername(username);
-
+                        //UserAccount
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).FirstOrDefault();
 
-                        userContext.Entry(userAccount).State = System.Data.Entity.EntityState.Deleted;
+                        //UserProfile
+                        var userProfile = (from account in userContext.UserProfiles
+                                           where account.Id == userAccount.Id
+                                           select account).FirstOrDefault();
+                        //PasswordSalt
+                        var userPasswordSalt = (from account in userContext.PasswordSalts
+                                                where account.Id == userAccount.Id
+                                                select account).FirstOrDefault();
+                        //SecurityQuestion
+                        var userSecurityQuestion = (from account in userContext.SecurityQuestions
+                                                    where account.UserId == userAccount.Id
+                                                    select account).FirstOrDefault();
+                        //SecurityQuestionAnswer
+                        //var user = (from account in userContext.SecurityAnswerSalts
+                        //            where userSecurityQuestion.Id = se 
+                        //            select account).FirstOrDefault();
+                        //var test1 = userSecurityQuestion.
+                        //Deletion Process
 
-                        //TODO:@go through all tables
-                        //userContext.UserAccounts.DeleteObject(userAccount);
+                        //RestaurantStuff
+
+                        //Claim
+
+                        //Token
+
+                        //SecurityAnswerSalt
+
+                        //SecurityQuestionSalt
+
+                        //PasswordSalt
+
+                        ////UserProfile
+                        //userContext.Entry(userProfile).State = System.Data.Entity.EntityState.Deleted;
+                        ////UserAccount
+                        //userContext.Entry(userAccount).State = System.Data.Entity.EntityState.Deleted;
+
+                        ////
+                        //var test1 = (from account in userContext.UserAccounts
+                        //             where account.Username == username
+                        //             select account).FirstOrDefault();
+                        //foreach (UserAccount account in )
 
 
-                        // return userAccount;
-                        // Add UserAccount
-                        //userContext.UserAccounts.Remove(userAccount);//TODO:Try this too
-                        // Save changes
                         userContext.SaveChanges();
                         dbContextTransaction.Commit();
                         return true;
@@ -335,6 +367,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     }
                 }
             }
+            
         }
 
         /// <summary>
@@ -344,7 +377,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// Last Updated: 03-10-2018
         /// <param name="user">The user that will be edited.</param>
         /// <returns></returns>
-        public EditUserDto EditUser(EditUserDto user)
+        public bool EditUser(EditUserDto user)
         {
             using (var userContext = new UserContext())
             {
@@ -355,26 +388,41 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userAccount = (from account in userContext.UserAccounts
                                             where account.Username == user.Username
                                             select account).SingleOrDefault();
-                        if(user.NewUsername != null)
-                        {
-                            //call edit username
-                           // userAccount.Username = user.NewUsername;
-                        }
-
-                        if (user.NewDisplayName != null)
-                        {
-                           // userAccount.Di
-                            //call editdisplayname
-                           // EditDisplayName;
-                        }
-
-                        if (user.NewPassword != null )
+                        var resetPasswordResult = false;
+                        if (user.NewPassword != null && user.NewPassword != userAccount.Password)
                         {
                             //call reset password
+                            resetPasswordResult = ResetPassword(user.Username,user.NewPassword);
+                            //userContext.SaveChanges();
+                            //dbContextTransaction.Commit();
                         }
-                        userContext.SaveChanges();
-                        dbContextTransaction.Commit();
-                        return user;
+                        var editDisplayNameResult = false;
+                        if (user.NewDisplayName != null && user.NewDisplayName != userAccount.UserProfile.DisplayName)
+                        {
+                            // userAccount.Di
+                            //call editdisplayname
+                            // EditDisplayName;
+                            editDisplayNameResult = EditDisplayName(user.Username, user.NewDisplayName);
+                            //userContext.SaveChanges();
+                            //dbContextTransaction.Commit();
+                        }
+
+                        var editUserNameResult = false;
+                        if (user.NewUsername != null && user.NewUsername != userAccount.Username)
+                        {
+                            //call edit username
+                            // userAccount.Username = user.NewUsername;
+                            editUserNameResult = EditUserName(user.Username, user.NewUsername);
+                            //userContext.SaveChanges();
+                            //dbContextTransaction.Commit();
+                        }
+
+                       if(resetPasswordResult == true && editDisplayNameResult == true && editUserNameResult == true)
+                        {
+                            return true;
+                        }
+                        return false;
+                        
                     }
                     catch (Exception)
                     {
@@ -398,7 +446,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).SingleOrDefault();
-                            //call edit username
+                          
                             userAccount.Username = newUsername;
                             userContext.SaveChanges();
                             dbContextTransaction.Commit();
@@ -414,37 +462,63 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
 
-        //public bool EditDisplayName(string username, string newDisplayName)
-        //{
-        //        //using (var userContext = new UserContext())
-        //        //{
-        //        //    using (var dbContextTransaction = userContext.Database.BeginTransaction())
-        //        //    {
-        //        //        try
-        //        //        {
-        //        //            var displayname = (from account in userContext.UserAccounts
-        //        //                                where account.Username == user.DisplayName
-        //        //                                select account).SingleOrDefault();
-        //        //            if (displayname == )
-        //        //            {
-        //        //                displayname.IsActive = true;
-        //        //                userContext.SaveChanges();
-        //        //                dbContextTransaction.Commit();
-        //        //            }
-        //        //            return true;
-        //        //        }
-        //        //        catch (Exception)
-        //        //        {
-        //        //            dbContextTransaction.Rollback();
-        //        //            throw;
-        //        //        }
-        //        //    }
-        //        //}
-        //        return true;
-        //}
+        public bool EditDisplayName(string username, string newDisplayName)
+        {
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == username
+                                           select account).SingleOrDefault();
+              
+                            userAccount.UserProfile.DisplayName = newDisplayName;
+                            userContext.SaveChanges();
+                            dbContextTransaction.Commit();
+
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// @authors Angelica No validations done
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
         public bool ResetPassword(string username, string newPassword)//EditPassword
         {
-            return true;
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == username
+                                           select account).SingleOrDefault();
+
+                        userAccount.Password = newPassword;
+                        userContext.SaveChanges();
+                        dbContextTransaction.Commit();
+
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
 
@@ -452,3 +526,12 @@ namespace CSULB.GetUsGrub.DataAccess
         //Editi Restaurant...
     }
 }
+
+//TODO:@go through all tables
+//userContext.UserAccounts.DeleteObject(userAccount);
+
+
+// return userAccount;
+// Add UserAccount
+//userContext.UserAccounts.Remove(userAccount);//TODO:Try this too
+// Save changes

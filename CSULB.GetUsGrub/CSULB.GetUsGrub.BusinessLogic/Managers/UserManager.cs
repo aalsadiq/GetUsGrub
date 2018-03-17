@@ -336,7 +336,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public EditUserDto EditUser(EditUserDto user)//RegisterRestaurantUserDto
+        public bool EditUser(EditUserDto user)//RegisterRestaurantUserDto
         {
             using (var gateway = new UserGateway())
             {

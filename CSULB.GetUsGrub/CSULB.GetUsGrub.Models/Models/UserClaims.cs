@@ -18,6 +18,13 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.UserClaims")]
     public class UserClaims
     {
+        [System.Serializable]
+        internal class ClaimsEntry
+        {
+            public string Type { get; set; }
+            public string Value { get; set; }
+        }
+
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
@@ -25,10 +32,38 @@ namespace CSULB.GetUsGrub.Models
         [NotMapped]
         public ICollection<Claim> Claims { get; set; }
 
+        [NotMapped]//Currently a work around to make storing in DB cleaner- Brian
+        ICollection<ClaimsEntry> Entries {
+            get
+            {
+                var entries = new Collection<ClaimsEntry>();
+
+                foreach(var claim in Claims)
+                {
+                    entries.Add(new ClaimsEntry()
+                    {
+                        Type = claim.Type,
+                        Value = claim.Value
+                    });
+                }
+
+                return entries;
+            }
+
+            set {
+                var claims = new Collection<Claim>();
+
+                foreach(var entry in value)
+                {
+                    claims.Add(new Claim(entry.Type, entry.Value));
+                }
+            }
+        }
+
         public string ClaimsJson
         {
-            get => JsonConvert.SerializeObject(Claims);
-            set => Claims = JsonConvert.DeserializeObject<Collection<Claim>>(value);
+            get => JsonConvert.SerializeObject(Entries);
+            set => Entries = JsonConvert.DeserializeObject<Collection<ClaimsEntry>>(value);
         }
 
         // Navigation Property

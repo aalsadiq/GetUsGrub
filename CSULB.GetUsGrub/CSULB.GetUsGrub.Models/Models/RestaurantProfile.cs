@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.Models.Models;
+﻿using CSULB.GetUsGrub.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,8 +25,7 @@ namespace CSULB.GetUsGrub.Models
         public RestaurantDetail Details { get; set; }//ASK Andrew & Brian
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public IList<IRestaurantMenu> Menus { get; set; }
-        // TODO: @Andrew Why is display name here when it is already in UserProfile? [-Jenn]
+
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }

@@ -21,6 +21,7 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<Token> Tokens { get; set; }
         public DbSet<UserClaims> Claims { get; set; }
         public DbSet<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
+        public DbSet<BusinessHour> BussinessHours { get; set; }
         public UserContext() : base("GetUsGrub") { }
     }
 

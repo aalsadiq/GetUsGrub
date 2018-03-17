@@ -3,7 +3,6 @@ using FluentValidation;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-// TODO: @Jenn Unit Test for Restaurant Validation [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -22,6 +21,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly AddressValidator _addressValidator;
         private readonly BusinessHourValidator _businessHourValidator;
 
+        /// <summary>
+        /// Constructor for CreateRestaurantPostLogicValidationStrategy.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @update: 03/18/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccount"></param>
+        /// <param name="securityQuestions"></param>
+        /// <param name="securityAnswerSalts"></param>
+        /// <param name="passwordSalt"></param>
+        /// <param name="claims"></param>
+        /// <param name="userProfile"></param>
+        /// <param name="restaurantProfile"></param>
         public CreateRestaurantPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
             IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
             UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile)
@@ -32,6 +45,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _addressValidator = new AddressValidator();
             _businessHourValidator = new BusinessHourValidator();
         }
+
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate a domain models for creating a restaurant user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <returns>A boolean</returns>
         public bool ExecuteStrategy()
         {
             // Validate base user

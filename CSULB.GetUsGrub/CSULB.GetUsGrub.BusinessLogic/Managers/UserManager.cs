@@ -164,7 +164,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
-            // Set claims
+            // Set claims to be stored in UserClaims table
             var claims = new UserClaims
             {
                 Claims = claimsFactory.CreateRestaurantClaims()

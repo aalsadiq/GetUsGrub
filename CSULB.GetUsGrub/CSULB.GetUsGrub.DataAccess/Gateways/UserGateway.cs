@@ -31,7 +31,7 @@ namespace CSULB.GetUsGrub.DataAccess
             {
                 var userAccount = (from account in userContext.UserAccounts
                     where account.Username == username
-                    select account).SingleOrDefault();
+                    select account).FirstOrDefault();
                 return userAccount;
             }
         }
@@ -82,14 +82,15 @@ namespace CSULB.GetUsGrub.DataAccess
                         }
 
                         // Get SecurityQuestions in database
-                        var queryable = (from question in userContext.SecurityQuestions
+                        var updatedSecurityQuestions = (from question in userContext.SecurityQuestions
                                         where question.UserId == userId
                                         select question).ToList();
+
                         // Add SecurityAnswerSalts
                         for (var i = 0; i < securityQuestions.Count; i++)
                         {
                             // Get SecurityQuestionId for each securityAnswerSalt
-                            var securityQuestionId = (from query in queryable
+                            var securityQuestionId = (from query in updatedSecurityQuestions
                                                       where query.Question == securityQuestions[i].Question
                                                       select query.Id).SingleOrDefault();
 
@@ -118,6 +119,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         // Rolls back the changes saved in the transaction
                         dbContextTransaction.Rollback();
+                        // TODO: @Jenn Comment why you are rethrowing it [-Jenn]
                         throw;
                     }
                 }
@@ -212,6 +214,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         // Rolls back the changes saved in the transaction
                         dbContextTransaction.Rollback();
+                        // TODO: @Jenn Comment why you are rethrowing it [-Jenn]
                         throw;
                     }
                 }

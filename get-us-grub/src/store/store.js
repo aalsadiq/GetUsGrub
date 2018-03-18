@@ -14,23 +14,23 @@ export const store = new Vuex.Store({
         menuItemEdit: false
       }
     ],
-    Tokens: [ //Added token info [-Angelica]
+    Tokens: [ // Added token info [-Angelica]
       {
-        username: '',
-        iat:'',
-        exp:'',
-        claims:''
+        // username: '',
+        // iat:'',
+        // exp:'',
+        // claims:''
       }
     ],
-    Claims: [//Added claims [-Angelica]
+    Claims: [ // Added claims [-Angelica]
       {
-        ReadUser: 'ReadUser',
-        ReadIndividualProfile: 'ReadIndividualProfile',
-        ReadPreferences: 'ReadPreferences',
-        ReadBillSplitter: 'ReadBillSplitter',
-        ReadMenu: 'ReadMenu',
-        ReadDictionary: 'ReadDictionary',
-        ReadRestaurantProfile: 'ReadRestaurantProfile'
+        // ReadUser: 'ReadUser',
+        // ReadIndividualProfile: 'ReadIndividualProfile',
+        // ReadPreferences: 'ReadPreferences',
+        // ReadBillSplitter: 'ReadBillSplitter',
+        // ReadMenu: 'ReadMenu',
+        // ReadDictionary: 'ReadDictionary',
+        // ReadRestaurantProfile: 'ReadRestaurantProfile'
       }
     ]
   },
@@ -68,29 +68,28 @@ export const store = new Vuex.Store({
       console.log('Store Mutation: ' + payload)
       state.BillItems.splice(payload, 1)
     },
-    checkClaims: () => { //check claims here..
-      ReadUser: 'ReadUser'
-      ReadIndividualProfile: 'ReadIndividualProfile'
-      ReadPreferences: 'ReadPreferences'
-      ReadBillSplitter: 'ReadBillSplitter'
-      ReadMenu: 'ReadMenu'
-      ReadDictionary: 'ReadDictionary'
-      ReadRestaurantProfile: 'ReadRestaurantProfile'
+    checkClaims: () => { // check claims here..
+      // ReadUser: 'ReadUser'
+      // ReadIndividualProfile: 'ReadIndividualProfile'
+      // ReadPreferences: 'ReadPreferences'
+      // ReadBillSplitter: 'ReadBillSplitter'
+      // ReadMenu: 'ReadMenu'
+      // ReadDictionary: 'ReadDictionary'
+      // ReadRestaurantProfile: 'ReadRestaurantProfile'
     },
-    StoreToken: () => {//Added [-Angelica]
+    StoreToken: () => { // Added [-Angelica]
     },
-    RemoveToken: () => {//Added [-Angelica]
-      
+    RemoveToken: () => { // Added [-Angelica]
     },
-    StoreImage: () => {//Added [-Angelica]
-      imagePath: ''//The path that the image is found on
-      username: ''//the usersimage
-      imageName: username + 'profile'
+    StoreImage: () => { // Added [-Angelica]
+      // imagePath: '' // The path that the image is found on
+      // username: '' // the usersimage
+      // imageName: username + 'profile'
     },
-    RemoveImage: () => {//Added [-Angelica]
-      imagePath: ''
-      username: ''
-      imageName: ''
+    RemoveImage: () => { // Added [-Angelica]
+      // imagePath: ''
+      // username: ''
+      // imageName: username
     }
   },
   // Actions are necessary when performing asynchronous methods.

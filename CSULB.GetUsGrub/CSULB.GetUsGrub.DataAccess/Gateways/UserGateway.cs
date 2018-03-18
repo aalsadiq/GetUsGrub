@@ -308,64 +308,113 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                        var test = from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select new {account.UserProfile, account.SecurityQuestions, account.Password };
-                        
+                        //    var test = from account in userContext.UserAccounts
+                        //               where account.Username == username
+                        //               select new {account.UserProfile, account.SecurityQuestions, account.Password };
+
                         // userContext.UserAccounts.Remove();
-                        //var userAccount = from account in userContext.UserAccounts select new {
-                        //    account.UserProfile
-                        //};
+                        //var userAccount = from account in userContext.UserAccounts
+                        //                  select new
+                        //                  {
+                        //                      account.UserProfile
+                        //                  };
+                        
+                        //Another section...
+                        //UserAccount
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == username
+                                           select account).FirstOrDefault();
 
-                        ////UserAccount
-                        //var userAccount = (from account in userContext.UserAccounts
-                        //                   where account.Username == username
-                        //                   select account).FirstOrDefault();
-
-                        //userContext.UserAccounts.Remove(userAccount);
-                        ////UserProfile
-                        //var userProfile = (from account in userContext.UserProfiles
-                        //                   where account.Id == userAccount.Id
-                        //                   select account).FirstOrDefault();
-                        ////PasswordSalt
-                        //var userPasswordSalt = (from account in userContext.PasswordSalts
-                        //                        where account.Id == userAccount.Id
-                        //                        select account).FirstOrDefault();
-                        ////SecurityQuestion
-                        //var userSecurityQuestion = (from account in userContext.SecurityQuestions
-                        //                            where account.UserId == userAccount.Id
-                        //                            select account).FirstOrDefault();
-                        //SecurityQuestionAnswer
-                        //var user = (from account in userContext.SecurityAnswerSalts
-                        //            where userSecurityQuestion.Id = se 
-                        //            select account).FirstOrDefault();
-                        //var test1 = userSecurityQuestion.
-                        //Deletion Process
-
-                        //RestaurantStuff
-
-                        //Claim
-
-                        //Token
-
-                        //SecurityAnswerSalt
-
-                        //SecurityQuestionSalt
-
+                        userContext.UserAccounts.Remove(userAccount);
+                        //UserProfile
+                        var userProfile = (from account in userContext.UserProfiles
+                                           where account.Id == userAccount.Id
+                                           select account).FirstOrDefault();
                         //PasswordSalt
+                        var userPasswordSalt = (from account in userContext.PasswordSalts
+                                                where account.Id == userAccount.Id
+                                                select account).FirstOrDefault();
+                        //SecurityQuestion
+                        var userSecurityQuestion = (from account in userContext.SecurityQuestions
+                                                    where account.UserId == userAccount.Id
+                                                    select account).FirstOrDefault();
+                        //SecurityAnswerSalt
+                        var userSecurityAnswerQuestions = (from account in userContext.SecurityAnswerSalts
+                                                           where account.Id == userSecurityQuestion.SecurityAnswerSalt.Id
+                                                           select account).FirstOrDefault();
+                        //Token
+                        var userToken = (from account in userContext.Tokens
+                                                where account.Id == userAccount.Id
+                                                select account).FirstOrDefault();
+                        //Claim
+                        var userClaim = (from account in userContext.Claims
+                                                where account.Id == userAccount.Id
+                                                select account).FirstOrDefault();
+                        //RestaurantProfile
+                        var userRestaurantProfile = (from account in userContext.RestaurantProfiles
+                                           where account.Id == userAccount.Id
+                                           select account).FirstOrDefault();
+                        //BusinessHour
+                        var userBusinessHour = (from account in userContext.BussinessHours
+                                                where account.RestaurantId == userRestaurantProfile.Id
+                                                select account).FirstOrDefault();
+                        //RestaurantMenu
+                        var userRestaurantMenu = (from account in userContext.RestaurantMenus
+                                                  where account.RestaurantId == userAccount.Id
+                                                  select account).FirstOrDefault();
+                        //RestaurantMenuItem
+                        var userRestaurantMenuItems = (from account in userContext.RestaurantMenuItems
+                                                       where account.MenuId == userRestaurantMenu.Id//Menu Items has menuID and Restaurant Menu has Id
+                                                       select account).FirstOrDefault();
+                        //Deletion Process---------------------
+                        //RestaurantMenuItem
+                        //userContext.Entry(userRestaurantMenuItems).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.RestaurantMenuItems.Remove(userRestaurantMenuItems);
+
+                        ////RestaurantMenu
+                        //userContext.Entry(userRestaurantMenu).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.RestaurantMenus.Remove(userRestaurantMenu);
+
+                        ////BusinessHour
+                        //userContext.Entry(userBusinessHour).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.BussinessHours.Remove(userBusinessHour);
+
+                        ////RestaurantProfile
+                        //userContext.Entry(userRestaurantProfile).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.RestaurantProfiles.Remove(userRestaurantProfile);
+
+                        ////Claim
+                        //userContext.Entry(userClaim).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.Claims.Remove(userClaim);
+
+                        ////Token
+                        //userContext.Entry(userToken).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.Tokens.Remove(userToken);
+
+                        ////SecurityAnswerSalt
+                        //userContext.Entry(userSecurityAnswerQuestions).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.SecurityAnswerSalts.Remove(userSecurityAnswerQuestions);
+
+                        ////SecurityQuestionSalt
+                        //userContext.Entry(userSecurityQuestion).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.SecurityQuestions.Remove(userSecurityQuestion);
+
+                        ////PasswordSalt
+                        //userContext.Entry(userPasswordSalt).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.PasswordSalts.Remove(userPasswordSalt);
 
                         ////UserProfile
                         //userContext.Entry(userProfile).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.UserProfiles.Remove(userProfile);
                         ////UserAccount
                         //userContext.Entry(userAccount).State = System.Data.Entity.EntityState.Deleted;
+                        userContext.UserAccounts.Remove(userAccount);
 
-                        ////
+
                         //var test1 = (from account in userContext.UserAccounts
                         //             where account.Username == username
                         //             select account).FirstOrDefault();
                         //foreach (UserAccount account in )
-
-
                         userContext.SaveChanges();
                         dbContextTransaction.Commit();
                         return true;

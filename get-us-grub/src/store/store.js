@@ -9,9 +9,28 @@ export const store = new Vuex.Store({
     ],
     BillItems: [
       {
-      menuItemName: 'Test',
-      menuItemPrice: 2.00,
-      menuItemEdit: false
+        menuItemName: 'Test',
+        menuItemPrice: 2.00,
+        menuItemEdit: false
+      }
+    ],
+    Tokens: [ //Added token info [-Angelica]
+      {
+        username: '',
+        iat:'',
+        exp:'',
+        claims:''
+      }
+    ],
+    Claims: [//Added claims [-Angelica]
+      {
+        ReadUser: 'ReadUser',
+        ReadIndividualProfile: 'ReadIndividualProfile',
+        ReadPreferences: 'ReadPreferences',
+        ReadBillSplitter: 'ReadBillSplitter',
+        ReadMenu: 'ReadMenu',
+        ReadDictionary: 'ReadDictionary',
+        ReadRestaurantProfile: 'ReadRestaurantProfile'
       }
     ]
   },
@@ -22,7 +41,7 @@ export const store = new Vuex.Store({
         temp += element.menuItemPrice
       })
       return temp
-     }
+    }
   },
   mutations: {
     AddToDictionary: (state, payload) => {
@@ -37,7 +56,7 @@ export const store = new Vuex.Store({
       state.MenuItems.forEach(function (element) {
         element.menuItemEdit = false
       })
-      if (temp == false) {
+      if (temp === false) {
         state.MenuItems[payload].menuItemEdit = true
       }
     },
@@ -48,6 +67,30 @@ export const store = new Vuex.Store({
     RemoveFromBill: (state, payload) => {
       console.log('Store Mutation: ' + payload)
       state.BillItems.splice(payload, 1)
+    },
+    checkClaims: () => { //check claims here..
+      ReadUser: 'ReadUser'
+      ReadIndividualProfile: 'ReadIndividualProfile'
+      ReadPreferences: 'ReadPreferences'
+      ReadBillSplitter: 'ReadBillSplitter'
+      ReadMenu: 'ReadMenu'
+      ReadDictionary: 'ReadDictionary'
+      ReadRestaurantProfile: 'ReadRestaurantProfile'
+    },
+    StoreToken: () => {//Added [-Angelica]
+    },
+    RemoveToken: () => {//Added [-Angelica]
+      
+    },
+    StoreImage: () => {//Added [-Angelica]
+      imagePath: ''//The path that the image is found on
+      username: ''//the usersimage
+      imageName: username + 'profile'
+    },
+    RemoveImage: () => {//Added [-Angelica]
+      imagePath: ''
+      username: ''
+      imageName: ''
     }
   },
   // Actions are necessary when performing asynchronous methods.

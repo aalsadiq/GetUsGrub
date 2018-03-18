@@ -1,13 +1,13 @@
 <template>
-  <div>
-      <h1> Image Upload </h1>
+  <div id="image-upload">
       <v-flex xs5 sm5 offset-sm3>
+        <h1> Image Upload </h1>
           <v-card dark>
               <br/>
             <img id ="uploadPreview" style="width: 300px; height: 300px;"/>
             <br/>
-            <input multiple id = "uploadImage" type = "file" name ="uploadNewImage" onchange ="PreviewImage();"/>
-            <input id = "subtmitImage" type="submit" name="upload_btn" value ="upload" SubmitImageUpload>
+            <input multiple id= "uploadImage" type = "file" name ="uploadNewImage" onchange ="PreviewImage();" accept =".png"/>
+            <v-btn id = "subtmitImage" color ="pink" type="submit" name="upload_btn" value ="upload" v-onclick ="SubmitImageUpload">Upload Image </v-btn>
           </v-card>
       </v-flex>
   </div>
@@ -20,15 +20,11 @@ export default {
   components: {
   },
   data: () => ({
+    image: '',
+    username: ''
   }),
   methods: {
-    PreviewImage : function () {
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
-
-        oFReader.onload = function (oFREvent) {
-            document.getElementById("uploadPreview").src = oFREvent.target.result;
-        };
+    PreviewImage: function () {
     },
     SubmitImageUpload () {
       axios.put('http://localhost:8081/User/Admin/EditUser', {
@@ -46,3 +42,10 @@ export default {
   }
 }
 </script>
+
+<style>
+#image-upload{
+  height: 30em;
+  width: 80em;
+}
+</style>

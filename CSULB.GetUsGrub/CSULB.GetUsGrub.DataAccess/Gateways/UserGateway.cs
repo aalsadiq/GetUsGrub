@@ -308,23 +308,27 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                        //UserAccount
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == username
-                                           select account).FirstOrDefault();
+                        var sample = from account in userContext.UserAccounts select new {
+                            account.UserProfile
+                        };
+                        
+                        ////UserAccount
+                        //var userAccount = (from account in userContext.UserAccounts
+                        //                   where account.Username == username
+                        //                   select account).FirstOrDefault();
 
-                        //UserProfile
-                        var userProfile = (from account in userContext.UserProfiles
-                                           where account.Id == userAccount.Id
-                                           select account).FirstOrDefault();
-                        //PasswordSalt
-                        var userPasswordSalt = (from account in userContext.PasswordSalts
-                                                where account.Id == userAccount.Id
-                                                select account).FirstOrDefault();
-                        //SecurityQuestion
-                        var userSecurityQuestion = (from account in userContext.SecurityQuestions
-                                                    where account.UserId == userAccount.Id
-                                                    select account).FirstOrDefault();
+                        ////UserProfile
+                        //var userProfile = (from account in userContext.UserProfiles
+                        //                   where account.Id == userAccount.Id
+                        //                   select account).FirstOrDefault();
+                        ////PasswordSalt
+                        //var userPasswordSalt = (from account in userContext.PasswordSalts
+                        //                        where account.Id == userAccount.Id
+                        //                        select account).FirstOrDefault();
+                        ////SecurityQuestion
+                        //var userSecurityQuestion = (from account in userContext.SecurityQuestions
+                        //                            where account.UserId == userAccount.Id
+                        //                            select account).FirstOrDefault();
                         //SecurityQuestionAnswer
                         //var user = (from account in userContext.SecurityAnswerSalts
                         //            where userSecurityQuestion.Id = se 
@@ -427,7 +431,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;
+                        throw;//Fails here
                     }
                 }
             }

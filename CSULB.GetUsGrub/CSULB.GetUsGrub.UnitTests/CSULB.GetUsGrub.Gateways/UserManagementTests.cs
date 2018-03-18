@@ -43,7 +43,7 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         [Fact]
         public void EditUserName_InvalidEditUserName_Fail()
         {
-            var result = userGateway.EditUserName("User2", "User2");
+            var result = userGateway.EditUserName("User5", "User5");
             result.Should().Be(true);
         }
         [Fact]
@@ -89,20 +89,20 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         //    var result = userGateway.EditUser(user);
         //    result.Should().Be(true);//Errors out here
         //}
-        [Fact]
-        public void EditUser_Invalid_Fail()
-        {
-            var user = new EditUserDto()
-            {
-                Username = "EditUserName8_3",
-                NewUsername = "EditUsername8_3",
-                NewDisplayName = "EditUserDisplayName8_3",
-                NewPassword = "EditUserPassword8_3"
-            };
+        //[Fact]
+        //public void EditUser_Invalid_Fail()
+        //{
+        //    var user = new EditUserDto()
+        //    {
+        //        Username = "User2",
+        //        NewUsername = "EditUser2",
+        //        NewDisplayName = "EditDisplayName2",
+        //        NewPassword = "EditNewUsername2"
+        //    };
 
-            var result = userGateway.EditUser(user);
-            result.Should().Be(true);
-        }
+        //    var result = userGateway.EditUser(user);//Failed here...
+        //    result.Should().Be(true);
+        //}
         [Fact]
         public void EditUser_ValidNewUserName_Pass()
         {

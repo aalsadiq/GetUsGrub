@@ -32,7 +32,7 @@ namespace CSULB.GetUsGrub.Models
         [NotMapped]
         public ICollection<Claim> Claims { get; set; }
 
-        [NotMapped]//Currently a work around to make storing in DB cleaner- Brian
+        [NotMapped]//Currently a work around to make storing in DB cleaner - Brian
         ICollection<ClaimsEntry> Entries {
             get
             {

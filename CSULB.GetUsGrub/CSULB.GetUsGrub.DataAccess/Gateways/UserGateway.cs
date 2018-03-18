@@ -228,8 +228,8 @@ namespace CSULB.GetUsGrub.DataAccess
         /// Will deactivate user by username by changing IsActive to false.
         /// </summary>
         /// @author Angelica Salas Tovar
-        /// Last Updated: 03-10-2018
-        /// <param name="username"></param>
+        /// @updated 03-17-2018
+        /// <param name="username">The user you want to deactivate</param>
         /// <returns></returns>
         public bool DeactivateUser(string username)
         {
@@ -260,11 +260,11 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         /// <summary>
-        /// 
+        /// Will reactivate user by username by changing IsActive to true.
         /// </summary>
         /// @author Angelica Salas Tovar
-        /// Last Updated: 03-10-2018
-        /// <param name="username"></param>
+        /// @updated 03-17-2018
+        /// <param name="username">The user you want to reactivate.</param>
         /// <returns></returns>
         public bool ReactivateUser(string username)
         {
@@ -294,11 +294,11 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
         /// <summary>
-        /// 
+        /// Will delete user by username.
         /// </summary>
         /// @author Angelica Salas Tovar
-        /// Last Updated: 03-10-2018
-        /// <param name="username"></param>
+        /// @updated 03-17-2018
+        /// <param name="username">The user you want to delete.</param>
         /// <returns></returns>
         public bool DeleteUser(string username)
         {
@@ -308,15 +308,21 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                        var sample = from account in userContext.UserAccounts select new {
-                            account.UserProfile
-                        };
+                        var test = from account in userContext.UserAccounts
+                                   where account.Username == username
+                                   select new {account.UserProfile, account.SecurityQuestions, account.Password };
                         
+                        // userContext.UserAccounts.Remove();
+                        //var userAccount = from account in userContext.UserAccounts select new {
+                        //    account.UserProfile
+                        //};
+
                         ////UserAccount
                         //var userAccount = (from account in userContext.UserAccounts
                         //                   where account.Username == username
                         //                   select account).FirstOrDefault();
 
+                        //userContext.UserAccounts.Remove(userAccount);
                         ////UserProfile
                         //var userProfile = (from account in userContext.UserProfiles
                         //                   where account.Id == userAccount.Id
@@ -375,10 +381,10 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         /// <summary>
-        /// 
+        /// Main method that will go through edit user metehods: editUsername, editDisplayName, and reset Password.
         /// </summary>
         /// @author Angelica Salas Tovar
-        /// Last Updated: 03-10-2018
+        /// @updated 03-17-2018
         /// <param name="user">The user that will be edited.</param>
         /// <returns></returns>
         public bool EditUser(EditUserDto user)
@@ -395,30 +401,21 @@ namespace CSULB.GetUsGrub.DataAccess
                         var resetPasswordResult = false;
                         if (user.NewPassword != null && user.NewPassword != userAccount.Password)
                         {
-                            //call reset password
                             resetPasswordResult = ResetPassword(user.Username,user.NewPassword);
-                            //userContext.SaveChanges();
-                            //dbContextTransaction.Commit();
                         }
                         var editDisplayNameResult = false;
                         if (user.NewDisplayName != null && user.NewDisplayName != userAccount.UserProfile.DisplayName)
                         {
-                            // userAccount.Di
-                            //call editdisplayname
-                            // EditDisplayName;
                             editDisplayNameResult = EditDisplayName(user.Username, user.NewDisplayName);
-                            //userContext.SaveChanges();
-                            //dbContextTransaction.Commit();
+
                         }
 
                         var editUserNameResult = false;
                         if (user.NewUsername != null && user.NewUsername != userAccount.Username)
                         {
-                            //call edit username
-                            // userAccount.Username = user.NewUsername;
+
                             editUserNameResult = EditUserName(user.Username, user.NewUsername);
-                            //userContext.SaveChanges();
-                            //dbContextTransaction.Commit();
+
                         }
 
                        if(resetPasswordResult == true && editDisplayNameResult == true && editUserNameResult == true)
@@ -431,15 +428,18 @@ namespace CSULB.GetUsGrub.DataAccess
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;//Fails here
+                        throw;
                     }
                 }
             }
         }
-
-        ////User Related!
-
-        public bool EditUserName(string username, string newUsername)//EditPassword
+        /// <summary>
+        /// Will edit user name when given a the username to edit and the new username.
+        /// </summary>
+        /// <param name="username">The user you want to edit.</param>
+        /// <param name="newUsername">The new username you want.</param>
+        /// <returns></returns>
+        public bool EditUserName(string username, string newUsername)
         {
             using (var userContext = new UserContext())
             {
@@ -465,7 +465,12 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-
+        /// <summary>
+        /// Will edit display name when give the user to edit along with the new display name.
+        /// </summary>
+        /// <param name="username">The user you want to edit.</param>
+        /// <param name="newDisplayName">The new display name you want to give the user.</param>
+        /// <returns></returns>
         public bool EditDisplayName(string username, string newDisplayName)
         {
             using (var userContext = new UserContext())
@@ -531,11 +536,6 @@ namespace CSULB.GetUsGrub.DataAccess
     }
 }
 
-//TODO:@go through all tables
+
 //userContext.UserAccounts.DeleteObject(userAccount);
-
-
-// return userAccount;
-// Add UserAccount
 //userContext.UserAccounts.Remove(userAccount);//TODO:Try this too
-// Save changes

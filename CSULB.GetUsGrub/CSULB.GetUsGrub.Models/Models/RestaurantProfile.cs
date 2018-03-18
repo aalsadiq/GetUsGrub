@@ -27,7 +27,7 @@ namespace CSULB.GetUsGrub.Models
         public double Longitude { get; set; }
 
         // Navigation Properties
-        public virtual UserProfile UserProfile { get; set; }
+        public virtual UserProfile UserProfileNav { get; set; }
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
         public virtual ICollection<BusinessHour> BusinessHours { get; set; }
     }

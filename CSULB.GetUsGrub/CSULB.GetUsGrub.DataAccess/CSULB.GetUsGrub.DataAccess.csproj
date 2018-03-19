@@ -53,9 +53,9 @@
     <Compile Include="Contexts\RestaurantContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Migrations\201803122339016_Initial.cs" />
-    <Compile Include="Migrations\201803122339016_Initial.Designer.cs">
-      <DependentUpon>201803122339016_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201803191918125_InitialDbMigration.cs" />
+    <Compile Include="Migrations\201803191918125_InitialDbMigration.Designer.cs">
+      <DependentUpon>201803191918125_InitialDbMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,8 +74,8 @@
     <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803122339016_Initial.resx">
-      <DependentUpon>201803122339016_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803191918125_InitialDbMigration.resx">
+      <DependentUpon>201803191918125_InitialDbMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

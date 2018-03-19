@@ -69,5 +69,10 @@
   <ItemGroup>
     <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201803122339016_Initial.resx">
+      <DependentUpon>201803122339016_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

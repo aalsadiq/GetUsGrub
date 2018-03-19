@@ -64,18 +64,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\AuthenticationTokenDto.cs" />
+    <Compile Include="DTOs\LoginDto.cs" />
     <Compile Include="DTOs\RegisterRestaurantDto.cs" />
     <Compile Include="DTOs\RegisterUserDto.cs" />
+    <Compile Include="DTOs\ResponseDto.cs" />
     <Compile Include="DTOs\RestaurantProfileDto.cs" />
     <Compile Include="DTOs\UserProfileDto.cs" />
     <Compile Include="DTOs\SecurityQuestionDto.cs" />
     <Compile Include="DTOs\UserAccountDto.cs" />
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\AuthenticationToken.cs" />
     <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\Interfaces\IEntity.cs" />
     <Compile Include="Models\Interfaces\IRestaurantProfile.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />
     <Compile Include="Models\Interfaces\IUserAccount.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
+    <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\RestaurantProfile.cs" />
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />
@@ -90,8 +96,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\Interfaces\" />
-    <Folder Include="Validators\DtoValidators\" />
-    <Folder Include="Validators\ModelValidators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

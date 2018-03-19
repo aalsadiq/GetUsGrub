@@ -24,7 +24,7 @@ namespace CSULB.GetUsGrub.Models
 
         public double Longitude { get; set; }
 
-        public double PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         public IList<IRestaurantMenu> Menus { get; set; }
 
@@ -56,7 +56,7 @@ namespace CSULB.GetUsGrub.Models
 
         // Constructor
         public RestaurantProfileDto(string username, string restaurantName, Address address,
-            double latitude, double longitude, double phoneNumber, IList<IRestaurantMenu> menus, 
+            double latitude, double longitude, string phoneNumber, IList<IRestaurantMenu> menus, 
             IList<IBusinessHour> businessHours, string foodType, bool reservations, bool delivery,
             bool takeOut, bool creditCards, string attire, bool alcohol, bool outdoorSeating, bool tv, 
             bool driveThru, bool caters, bool pets)

@@ -18,7 +18,7 @@ namespace CSULB.GetUsGrub.Models
 
         double Longitude { get; set; }
 
-        double PhoneNumber { get; set; }
+        string PhoneNumber { get; set; }
 
         IList<IRestaurantMenu> Menus { get; set; }
 

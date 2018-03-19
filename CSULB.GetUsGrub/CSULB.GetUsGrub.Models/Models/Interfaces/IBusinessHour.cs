@@ -4,15 +4,15 @@
     /// Business hour interface
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/11/18
+    /// @updated: 3/18/18
     /// </summary>
     public interface IBusinessHour
     {
         string Day { get; set; }
 
-        int OpenTime { get; set; }
+        string OpenTime { get; set; }
 
-        int CloseTime { get; set; }
+        string CloseTime { get; set; }
 
         string TimeZone { get; set; }
     }

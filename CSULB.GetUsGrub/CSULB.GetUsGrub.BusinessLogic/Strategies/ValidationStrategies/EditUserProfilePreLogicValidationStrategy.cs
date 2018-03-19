@@ -1,11 +1,16 @@
 ﻿using CSULB.GetUsGrub.Models;
-using FluentValidation;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation;
 
-namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
+namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// Validates contents of user profile DTO
+    /// @author: Andrew
+    /// @updated: 3/18/18
+    /// </summary>
     public class EditUserProfilePreLogicValidationStrategy
     {
         private readonly UserProfileDto _userProfileDto;
@@ -17,7 +22,7 @@ namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
             _userProfileDtoValidator = new UserProfileDtoValidator();
         }
 
-        public ResponseDto<UserProfileDto> Execute()
+        public ResponseDto<UserProfileDto> ExecuteStrategy()
         {
             var validationResult = _userProfileDtoValidator.Validate(_userProfileDto, ruleSet: "EditProfile");
             if (!validationResult.IsValid)
@@ -31,6 +36,12 @@ namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
                     Error = JsonConvert.SerializeObject(errors)
                 };
             }
+
+            return new ResponseDto<UserProfileDto>
+            {
+                Data = _userProfileDto,
+                Error = null
+            };
         }
     }
 }

@@ -13,8 +13,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public ResponseDto<RestaurantProfileDto> GetProfile(string username)
         {
-            // TODO: Prelogic validation strategy
-
             // Retrieve profile from database
             var profileGateway = new RestaurantProfileGateway();
 
@@ -25,12 +23,47 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto)
         {
-            // TODO: Prelogic validation strategy
+            // Prelogic validation strategy
+            var editRestaurantProfilePreLogicValidationStrategy = new EditRestaurantUserProfilePreLogicValidationStrategy(restaurantProfileDto);
+
+            var result = editRestaurantProfilePreLogicValidationStrategy.ExecuteStrategy();
+
+            if (result.Error != null)
+            {
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error = "Something went wrong. Please try again later."
+                };
+            }
+
+            // Extract DTO contents and map DTO to domain model
+            string username = restaurantProfileDto.Username;
+            var restaurantProfileDomain = new RestaurantProfile(
+                restaurantProfileDto.RestaurantName,
+                restaurantProfileDto.Address,
+                restaurantProfileDto.Latitude,
+                restaurantProfileDto.Longitude,
+                restaurantProfileDto.PhoneNumber,
+                restaurantProfileDto.Menus,
+                restaurantProfileDto.BusinessHours,
+                restaurantProfileDto.FoodType,
+                restaurantProfileDto.HasReservations,
+                restaurantProfileDto.HasDelivery,
+                restaurantProfileDto.HasTakeOut,
+                restaurantProfileDto.AcceptCreditCards,
+                restaurantProfileDto.Attire,
+                restaurantProfileDto.ServesAlcohol,
+                restaurantProfileDto.HasOutdoorSeating,
+                restaurantProfileDto.HasTv,
+                restaurantProfileDto.HasDriveThru,
+                restaurantProfileDto.Caters,
+                restaurantProfileDto.AllowsPets);
 
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfileWithDto(restaurantProfileDto);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfileByRestaurantProfileDomain(username, restaurantProfileDomain);
 
             return responseDtoFromGateway;
         }

@@ -64,12 +64,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\RegisterRestaurantDto.cs" />
+    <Compile Include="DTOs\RegisterUserDto.cs" />
     <Compile Include="DTOs\ResponseDto.cs" />
     <Compile Include="DTOs\RestaurantProfileDto.cs" />
+    <Compile Include="DTOs\SecurityQuestionDto.cs" />
+    <Compile Include="DTOs\UserAccountDto.cs" />
     <Compile Include="DTOs\UserProfileDto.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\Interfaces\IEntity.cs" />
+    <Compile Include="Models\Interfaces\IException.cs" />
     <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />
+    <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />
+    <Compile Include="Models\Interfaces\ISecurityQuestionsList.cs" />
+    <Compile Include="Models\Interfaces\IToken.cs" />
+    <Compile Include="Models\Interfaces\IUserAccount.cs" />
+    <Compile Include="Models\PasswordSalt.cs" />
     <Compile Include="Models\RestaurantMenuItem.cs" />
     <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\RestaurantMenu.cs" />
@@ -79,7 +90,11 @@
     <Compile Include="Models\Interfaces\IRestaurantMenu.cs" />
     <Compile Include="Models\Interfaces\IRestaurantProfile.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
+    <Compile Include="Models\SecurityAnswerSalt.cs" />
+    <Compile Include="Models\SecurityQuestion.cs" />
+    <Compile Include="Models\Token.cs" />
     <Compile Include="Models\UserAccount.cs" />
+    <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

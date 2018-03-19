@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.Models
     /// Menu item class
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/15/18
+    /// @updated: 3/18/18
     /// </summary>
 
     [Table("GetUsGrub.RestaurantMenuItems")]
@@ -24,7 +24,8 @@ namespace CSULB.GetUsGrub.Models
         public string ItemName { get; set; }
 
         [Required]
-        public double ItemPrice { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal ItemPrice { get; set; }
 
         public string ItemPicture { get; set; }
 
@@ -37,7 +38,7 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public bool IsActive { get; set; }
 
-        public RestaurantMenuItem(string name, double price, string picture, string type, string description, bool isActive)
+        public RestaurantMenuItem(string name, decimal price, string picture, string type, string description, bool isActive)
         {
             ItemName = name;
             ItemPrice = price;

@@ -2,14 +2,14 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations
 {
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<GitGrub.GetUsGrub.DataAccess.RestaurantContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.RestaurantContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(GitGrub.GetUsGrub.DataAccess.RestaurantContext context)
+        protected override void Seed(CSULB.GetUsGrub.DataAccess.RestaurantContext context)
         {
             //  This method will be called after migrating to the latest version.
 

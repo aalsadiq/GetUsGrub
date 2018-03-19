@@ -58,13 +58,13 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="restaurantProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditRestaurantProfileWithDto(RestaurantProfileDto restaurantProfileDto)
+        public ResponseDto<bool> EditRestaurantProfileByRestaurantProfileDomain(string username, RestaurantProfile restaurantProfileDomain)
         {
             using (var userContext = new UserContext())
             {
                 // Find account associated with username
                 var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == restaurantProfileDto.Username
+                                   where account.Username == username
                                    select account).SingleOrDefault();
 
                 using (var profileContext = new IndividualProfileContext())
@@ -86,27 +86,25 @@ namespace CSULB.GetUsGrub.DataAccess
                             try
                             {
                                 // Apply and save changes
-                                restaurantProfile.RestaurantName = restaurantProfileDto.RestaurantName;
-                                restaurantProfile.City = restaurantProfileDto.City;
-                                restaurantProfile.State = restaurantProfileDto.State;
-                                restaurantProfile.ZipCode = restaurantProfileDto.ZipCode;
-                                restaurantProfile.Latitude = restaurantProfileDto.Latitude;
-                                restaurantProfile.Longitude = restaurantProfileDto.Longitude;
-                                restaurantProfile.PhoneNumber = restaurantProfileDto.PhoneNumber;
-                                restaurantProfile.Menus = restaurantProfileDto.Menus;
-                                restaurantProfile.BusinessHours = restaurantProfileDto.BusinessHours;
-                                restaurantProfile.RestaurantType = restaurantProfileDto.RestaurantType;
-                                restaurantProfile.HasReservations = restaurantProfileDto.HasReservations;
-                                restaurantProfile.HasDelivery = restaurantProfileDto.HasDelivery;
-                                restaurantProfile.HasTakeOut = restaurantProfileDto.HasTakeOut;
-                                restaurantProfile.AcceptCreditCards = restaurantProfileDto.AcceptCreditCards;
-                                restaurantProfile.Attire = restaurantProfileDto.Attire;
-                                restaurantProfile.ServesAlcohol = restaurantProfileDto.ServesAlcohol;
-                                restaurantProfile.HasOutdoorSeating = restaurantProfileDto.HasOutdoorSeating;
-                                restaurantProfile.HasTv = restaurantProfileDto.HasTv;
-                                restaurantProfile.HasDriveThru = restaurantProfileDto.HasDriveThru;
-                                restaurantProfile.Caters = restaurantProfileDto.Caters;
-                                restaurantProfile.AllowsPets = restaurantProfileDto.AllowsPets;
+                                restaurantProfile.RestaurantName = restaurantProfileDomain.RestaurantName;
+                                restaurantProfile.Address = restaurantProfileDomain.Address;
+                                restaurantProfile.Latitude = restaurantProfileDomain.Latitude;
+                                restaurantProfile.Longitude = restaurantProfileDomain.Longitude;
+                                restaurantProfile.PhoneNumber = restaurantProfileDomain.PhoneNumber;
+                                restaurantProfile.Menus = restaurantProfileDomain.Menus;
+                                restaurantProfile.BusinessHours = restaurantProfileDomain.BusinessHours;
+                                restaurantProfile.FoodType = restaurantProfileDomain.FoodType;
+                                restaurantProfile.HasReservations = restaurantProfileDomain.HasReservations;
+                                restaurantProfile.HasDelivery = restaurantProfileDomain.HasDelivery;
+                                restaurantProfile.HasTakeOut = restaurantProfileDomain.HasTakeOut;
+                                restaurantProfile.AcceptCreditCards = restaurantProfileDomain.AcceptCreditCards;
+                                restaurantProfile.Attire = restaurantProfileDomain.Attire;
+                                restaurantProfile.ServesAlcohol = restaurantProfileDomain.ServesAlcohol;
+                                restaurantProfile.HasOutdoorSeating = restaurantProfileDomain.HasOutdoorSeating;
+                                restaurantProfile.HasTv = restaurantProfileDomain.HasTv;
+                                restaurantProfile.HasDriveThru = restaurantProfileDomain.HasDriveThru;
+                                restaurantProfile.Caters = restaurantProfileDomain.Caters;
+                                restaurantProfile.AllowsPets = restaurantProfileDomain.AllowsPets;
                                 restaurantContext.SaveChanges();
 
                                 ResponseDto<bool> responseDto = new ResponseDto<bool>

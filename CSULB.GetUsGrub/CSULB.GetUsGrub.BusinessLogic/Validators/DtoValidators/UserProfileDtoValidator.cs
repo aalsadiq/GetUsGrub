@@ -7,8 +7,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// The <c>UserProfileDtoValidator</c> class.
     /// Defines rules to validate a UserProfileDto.
     /// <para>
-    /// @author: Jennifer Nguyen
-    /// @updated: 03/11/2018
+    /// @author: Jennifer Nguyen, Andrew Kao
+    /// @updated: 03/18/2018
     /// </para>
     /// </summary>
     public class UserProfileDtoValidator : AbstractValidator<UserProfileDto>

@@ -18,6 +18,7 @@ namespace CSULB.GetUsGrub.Models
         [ForeignKey("GetUsGrub.UserAccounts")]
         public int? UserId { get; set; }
 
+        [Required]
         public string DisplayName { get; set; }
 
         public string DisplayPicture { get; set; }

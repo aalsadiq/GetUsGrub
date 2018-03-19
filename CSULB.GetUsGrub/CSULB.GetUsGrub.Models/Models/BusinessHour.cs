@@ -15,10 +15,12 @@ namespace CSULB.GetUsGrub.Models
         public string Day { get; set; }
 
         [Required]
-        public int OpenTime { get; set; }
+        [DataType(DataType.Time)]
+        public string OpenTime { get; set; }
 
         [Required]
-        public int CloseTime { get; set; }
+        [DataType(DataType.Time)]
+        public string CloseTime { get; set; }
 
         [Required]
         public string TimeZone { get; set; }

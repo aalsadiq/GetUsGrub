@@ -49,12 +49,12 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="userProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditUserProfileWithDto(UserProfileDto userProfileDto)
+        public ResponseDto<bool> EditUserProfileByUserProfileDomain(string username, UserProfile userProfileDomain)
         {
             using (var userContext = new UserContext())
             {
                 var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == userProfileDto.Username
+                                   where account.Username == username
                                    select account).SingleOrDefault();
 
                 using (var profileContext = new IndividualProfileContext())
@@ -68,8 +68,8 @@ namespace CSULB.GetUsGrub.DataAccess
                         try
                         {
                             // Apply and save changes
-                            userProfile.DisplayName = userProfileDto.DisplayName;
-                            userProfile.DisplayPicture = userProfileDto.DisplayPicture;
+                            userProfile.DisplayName = userProfileDomain.DisplayName;
+                            userProfile.DisplayPicture = userProfileDomain.DisplayPicture;
                             userContext.SaveChanges();
 
                             ResponseDto<bool> responseDto = new ResponseDto<bool>

@@ -4,13 +4,13 @@
     /// Menu item interface
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/11/18
+    /// @updated: 3/18/18
     /// </summary>
     public interface IMenuItem
     {
         string ItemName { get; set; }
 
-        double ItemPrice { get; set; }
+        decimal ItemPrice { get; set; }
 
         string ItemPicture { get; set; }
 

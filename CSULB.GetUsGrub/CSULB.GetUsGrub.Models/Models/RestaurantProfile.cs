@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,7 +23,6 @@ namespace CSULB.GetUsGrub.Models
         public RestaurantDetail Details { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-
         
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }

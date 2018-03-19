@@ -107,8 +107,12 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Assert
             restaurantProfile.Id.Should().Be(null);
-            restaurantProfile.BusinessHours[0].Should().Be(business1);
-            restaurantProfile.BusinessHours[1].Should().Be(business2);
+            
+            // TODO Ask Jenn if we should still test this in the restaurant profile
+            // if the business hours is a separate domain model.
+
+            //restaurantProfile.BusinessHours[0].Should().Be(business1);
+            //restaurantProfile.BusinessHours[1].Should().Be(business2);
             restaurantProfile.PhoneNumber.Should().Be("(562)985-4111");
             restaurantProfile.Longitude.Should().Be(33.7838);
             restaurantProfile.Latitude.Should().Be(-118.1141);

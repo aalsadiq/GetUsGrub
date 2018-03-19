@@ -121,14 +121,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Validate username and display name are not equal
             var result = _userValidator.CheckIfUsernameEqualsDisplayName(_userAccount.Username, _userProfile.DisplayName);
-            if (result)
+            if (!result.Data)
             {
                 return false;
             }
 
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_userAccount.Username);
-            if (result)
+            if (!result.Data)
             {
                 return false;
             }

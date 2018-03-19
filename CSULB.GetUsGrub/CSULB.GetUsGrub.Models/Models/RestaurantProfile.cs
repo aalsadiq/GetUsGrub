@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,7 @@ namespace CSULB.GetUsGrub.Models
     /// Restaurant profile class
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/15/18
+    /// @updated: 3/18/18
     /// </summary>
 
     [Table("GetUsGrub.RestaurantProfiles")]
@@ -20,25 +21,25 @@ namespace CSULB.GetUsGrub.Models
         [ForeignKey("GetUsGrub.UserProfiles")]
         public int? UserId { get; set; }
 
+        [Required]
         public string RestaurantName { get; set; }
 
-        public string City { get; set; }
-
-        public string State { get; set; }
-
-        public int ZipCode { get; set; }
+        [Required]
+        public Address Address { get; set; }
 
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
 
+        [Required]
         public double PhoneNumber { get; set; }
 
         public IList<IRestaurantMenu> Menus { get; set; }
 
-        public IEnumerable<IBusinessHour> BusinessHours { get; set; }
+        [NotMapped]
+        public IList<IBusinessHour> BusinessHours { get; set; }
 
-        public string RestaurantType { get; set; }
+        public string FoodType { get; set; }
 
         public bool? HasReservations { get; set; }
 
@@ -62,19 +63,30 @@ namespace CSULB.GetUsGrub.Models
 
         public bool? AllowsPets { get; set; }
 
+        public string BusinessHoursJson
+        {
+            get => JsonConvert.SerializeObject(BusinessHours);
+            set => BusinessHours = JsonConvert.DeserializeObject<IList<IBusinessHour>>(value);
+        }
+        // Navigation Properties
+        public virtual UserProfile UserProfile { get; set; }
+        public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
+
         // Constructor
-        public RestaurantProfile(string restaurantName, string city, string state, int zipCode, double latitude, double longitude, double phoneNumber, IList<IRestaurantMenu> menus, IEnumerable<IBusinessHour> businessHours, string restaurantType, bool reservations, bool delivery, bool takeOut, bool creditCards, string attire, bool alcohol, bool outdoorSeating, bool tv, bool driveThru, bool caters, bool pets)
+        public RestaurantProfile(string restaurantName, Address address, 
+            double latitude, double longitude, double phoneNumber, IList<IRestaurantMenu> menus, 
+            IList<IBusinessHour> businessHours, string foodType, bool reservations, 
+            bool delivery, bool takeOut, bool creditCards, string attire, bool alcohol, 
+            bool outdoorSeating, bool tv, bool driveThru, bool caters, bool pets)
         {
             RestaurantName = restaurantName;
-            City = city;
-            State = state;
-            ZipCode = zipCode;
+            Address = address;
             Latitude = latitude;
             Longitude = longitude;
             PhoneNumber = phoneNumber;
             Menus = menus;
             BusinessHours = businessHours;
-            RestaurantType = restaurantType;
+            FoodType = foodType;
             HasReservations = reservations;
             HasDelivery = delivery;
             HasTakeOut = takeOut;
@@ -86,31 +98,6 @@ namespace CSULB.GetUsGrub.Models
             HasDriveThru = driveThru;
             Caters = caters;
             AllowsPets = pets;
-        }
-
-        public RestaurantProfile()
-        {
-            RestaurantName = null;
-            City = null;
-            State = null;
-            ZipCode = 0;
-            Latitude = 0;
-            Longitude = 0;
-            PhoneNumber = 0;
-            Menus = null;
-            BusinessHours = null;
-            RestaurantType = null;
-            HasReservations = false;
-            HasDelivery = false;
-            HasTakeOut = false;
-            AcceptCreditCards = false;
-            Attire = null;
-            ServesAlcohol = false;
-            HasOutdoorSeating = false;
-            HasTv = false;
-            HasDriveThru = false;
-            Caters = false;
-            AllowsPets = false;
         }
     }
 }

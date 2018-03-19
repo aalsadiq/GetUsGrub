@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -10,16 +7,20 @@ namespace CSULB.GetUsGrub.Models
     /// Business hour class
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/11/18
+    /// @updated: 3/18/18
     /// </summary>
     public class BusinessHour : IBusinessHour
     {
+        [Required]
         public string Day { get; set; }
 
+        [Required]
         public int OpenTime { get; set; }
 
+        [Required]
         public int CloseTime { get; set; }
 
+        [Required]
         public string TimeZone { get; set; }
     }
 }

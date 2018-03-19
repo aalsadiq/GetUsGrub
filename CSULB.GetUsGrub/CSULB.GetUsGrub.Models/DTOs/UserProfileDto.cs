@@ -14,12 +14,17 @@
         public string DisplayPicture { get; set; }
 
 
-        // Constructor
-        public UserProfileDto(string username, string displayName, string displayPicture)
+        // Constructors
+        public UserProfileDto(string displayName, string displayPicture)
         {
-            Username = username;
             DisplayName = displayName;
             DisplayPicture = displayPicture;
+        }
+
+        public UserProfileDto(UserProfile userProfile)
+        {
+            DisplayName = userProfile.DisplayName;
+            DisplayPicture = userProfile.DisplayPicture;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly TB _validator;
         private readonly string _ruleSet;
 
-        public ValidationWrapper(TA data, string ruleSet, TB validator)
+        public ValidationWrapper(TA data, TB validator, string ruleSet)
         {
             _data = data;
             _validator = validator;

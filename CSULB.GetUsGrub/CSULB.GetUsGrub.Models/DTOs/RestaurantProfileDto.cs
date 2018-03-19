@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.Models
 {
+    /// <summary>
+    /// Restaurant profile DTO
+    /// 
+    /// @author: Andrew Kao
+    /// @updated: 3/18/18
+    /// </summary>
     public class RestaurantProfileDto : IRestaurantProfile, IRestaurantDetail
     {
         public string Username { get; set; }
 
         public string RestaurantName { get; set; }
 
-        public string City { get; set; }
-
-        public string State { get; set; }
-
-        public int ZipCode { get; set; }
+        public Address Address { get; set; }
 
         public double Latitude { get; set; }
 
@@ -26,9 +28,9 @@ namespace CSULB.GetUsGrub.Models
 
         public IList<IRestaurantMenu> Menus { get; set; }
 
-        public IEnumerable<IBusinessHour> BusinessHours { get; set; }
+        public IList<IBusinessHour> BusinessHours { get; set; }
 
-        public string RestaurantType { get; set; }
+        public string FoodType { get; set; }
 
         public bool? HasReservations { get; set; }
 
@@ -53,19 +55,21 @@ namespace CSULB.GetUsGrub.Models
         public bool? AllowsPets { get; set; }
 
         // Constructor
-        public RestaurantProfileDto(string username, string restaurantName, string city, string state, int zipCode, double latitude, double longitude, double phoneNumber, IList<IRestaurantMenu> menus, IEnumerable<IBusinessHour> businessHours, string restaurantType, bool reservations, bool delivery, bool takeOut, bool creditCards, string attire, bool alcohol, bool outdoorSeating, bool tv, bool driveThru, bool caters, bool pets)
+        public RestaurantProfileDto(string username, string restaurantName, Address address,
+            double latitude, double longitude, double phoneNumber, IList<IRestaurantMenu> menus, 
+            IList<IBusinessHour> businessHours, string foodType, bool reservations, bool delivery,
+            bool takeOut, bool creditCards, string attire, bool alcohol, bool outdoorSeating, bool tv, 
+            bool driveThru, bool caters, bool pets)
         {
             Username = username;
             RestaurantName = restaurantName;
-            City = city;
-            State = state;
-            ZipCode = zipCode;
+            Address = address;
             Latitude = latitude;
             Longitude = longitude;
             PhoneNumber = phoneNumber;
             Menus = menus;
             BusinessHours = businessHours;
-            RestaurantType = restaurantType;
+            FoodType = foodType;
             HasReservations = reservations;
             HasDelivery = delivery;
             HasTakeOut = takeOut;
@@ -77,6 +81,29 @@ namespace CSULB.GetUsGrub.Models
             HasDriveThru = driveThru;
             Caters = caters;
             AllowsPets = pets;
+        }
+
+        public RestaurantProfileDto(RestaurantProfile restaurantProfile)
+        {
+            RestaurantName = restaurantProfile.RestaurantName;
+            Address = restaurantProfile.Address;
+            Latitude = restaurantProfile.Latitude;
+            Longitude = restaurantProfile.Longitude;
+            PhoneNumber = restaurantProfile.PhoneNumber;
+            Menus = restaurantProfile.Menus;
+            BusinessHours = restaurantProfile.BusinessHours;
+            FoodType = restaurantProfile.FoodType;
+            HasReservations = restaurantProfile.HasReservations;
+            HasDelivery = restaurantProfile.HasDelivery;
+            HasTakeOut = restaurantProfile.HasTakeOut;
+            AcceptCreditCards = restaurantProfile.AcceptCreditCards;
+            Attire = restaurantProfile.Attire;
+            ServesAlcohol = restaurantProfile.ServesAlcohol;
+            HasOutdoorSeating = restaurantProfile.HasOutdoorSeating;
+            HasTv = restaurantProfile.HasTv;
+            HasDriveThru = restaurantProfile.HasDriveThru;
+            Caters = restaurantProfile.Caters;
+            AllowsPets = restaurantProfile.AllowsPets;
         }
     }
 }

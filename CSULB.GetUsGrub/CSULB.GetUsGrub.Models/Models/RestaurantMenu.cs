@@ -20,6 +20,7 @@ namespace CSULB.GetUsGrub.Models
         [ForeignKey("GetUsGrub.RestaurantProfiles")]
         public int? RestaurantId { get; set; }
 
+        [Required]
         public string MenuName { get; set; }
 
         public IEnumerable<IMenuItem> Items { get; set; }

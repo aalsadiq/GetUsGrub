@@ -6,7 +6,7 @@ namespace CSULB.GetUsGrub.Models
     /// <summary>
     /// User profile domain model
     /// @author: Andrew Kao
-    /// @updated: 3/15/18
+    /// @updated: 3/18/18
     /// </summary>
     
     [Table("GetUsGrub.UserProfiles")]
@@ -33,5 +33,9 @@ namespace CSULB.GetUsGrub.Models
             DisplayName = null;
             DisplayPicture = null;
         }
+
+        // Navigation Property
+        public virtual UserAccount UserAccount { get; set; }
+        public virtual RestaurantProfile RestaurantProfile { get; set; }
     }
 }

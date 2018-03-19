@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using CSULB.GetUsGrub.UserAccessControl;
+using System.Web.Http;
 
 namespace CSULB.GetUsGrub
 {
@@ -17,6 +18,10 @@ namespace CSULB.GetUsGrub
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            // Add GlobalSecurityExceptionFilter for User Access Control
+            // Last Updated: 03/14/18 by Rachel Dang
+            config.Filters.Add(new GlobalSecurityExceptionFilter());
         }
     }
 }

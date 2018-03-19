@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
-// TODO: @Jenn Unit test ValidationStrategy [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -23,6 +22,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly UserProfileDtoValidator _userProfileDtoValidator;
         private readonly UserValidator _userValidator;
 
+        /// <summary>
+        /// Constructor for CreateIndividualPreLogicValidationStrategy.
+        /// <para>
+        /// @author: Jennifer
+        /// @update: 03/18/2018
+        /// </para>
+        /// </summary>
+        /// <param name="registerUserDto"></param>
         public CreateIndividualPreLogicValidationStrategy(RegisterUserDto registerUserDto)
         {
             _registerUserDto = registerUserDto;
@@ -32,6 +39,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _userValidator = new UserValidator();
         }
 
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate a data transfer object for creating an individual user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <returns>ResponseDto</returns>
         public ResponseDto<RegisterUserDto> ExecuteStrategy()
         {
             // Validate UserAccountDto
@@ -81,7 +97,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Validate username and display name are not equal
             var result = _userValidator.CheckIfUsernameEqualsDisplayName(_registerUserDto.UserAccountDto.Username, _registerUserDto.UserProfileDto.DisplayName);
-            if (result)
+            if (result.Error != null)
+            {
+                return new ResponseDto<RegisterUserDto>()
+                {
+                    Data = _registerUserDto,
+                    Error = result.Error
+                };
+            }
+            else if (result.Data)
             {
                 return new ResponseDto<RegisterUserDto>
                 {
@@ -89,11 +113,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Username must not be the same as display name."
                 };
             }
-
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_registerUserDto.UserAccountDto.Username);
-            System.Diagnostics.Debug.WriteLine("UserManager1231");
-            if (result)
+            if (result.Data)
             {
                 return new ResponseDto<RegisterUserDto>
                 {
@@ -101,7 +123,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Username is already used."
                 };
             }
-            System.Diagnostics.Debug.WriteLine("CreateIndividual1");
+
             return new ResponseDto<RegisterUserDto>
             {
                 Data = _registerUserDto

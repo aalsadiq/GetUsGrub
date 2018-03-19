@@ -3,8 +3,6 @@ using FluentValidation;
 using System;
 using DayOfWeek = System.DayOfWeek;
 
-// TODO: @Jenn Comment BusinessHourValidator [-Jenn]
-// TODO: @Jenn Unit Test the two methods below [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -41,12 +39,29 @@ namespace CSULB.GetUsGrub.BusinessLogic
             });
         }
 
+        /// <summary>
+        /// The CheckIfDayIsDayOfWeek method.
+        /// Checks to see if day is in the enum DayOfWeek.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @update: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <param name="day"></param>
+        /// <returns>A boolean</returns>
         public bool CheckIfDayIsDayOfWeek(string day)
         {
             // True if day is in DayOfWeek enum
             return Enum.IsDefined(typeof(DayOfWeek), day);
         }
 
+        /// <summary>
+        /// The CheckIfOpenTimeIsBeforeCloseTime method.
+        /// Checks that the opening time is before the closing time.
+        /// </summary>
+        /// <param name="openTime"></param>
+        /// <param name="closeTime"></param>
+        /// <returns>A boolean</returns>
         public bool CheckIfOpenTimeIsBeforeCloseTime(string openTime, string closeTime)
         {
             var openingTime = TimeSpan.Parse(openTime);

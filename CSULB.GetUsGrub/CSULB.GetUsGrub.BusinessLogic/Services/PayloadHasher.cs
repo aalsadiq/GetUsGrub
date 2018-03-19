@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-// TODO: @Jenn Perform unit test for PayloadHasher [-Jenn]
+
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -30,7 +30,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             using (var hashProvider = new SHA256Cng())
             {
                 // Concats salt as the prefix and payload as the suffix
+                // TODO: @Jenn outside using statement
                 var saltAndPayload = string.Concat(salt, payload);
+                // TODO: @Jenn outside using statement
                 var hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(saltAndPayload));
                 var hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
                 return hashedPayload;

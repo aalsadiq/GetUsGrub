@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 import { store } from './store/store.js'
 import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import axios from 'axios'
 import 'es6-promise/auto'
 // Ensure you are using css-loader
 
@@ -12,6 +14,7 @@ import 'es6-promise/auto'
 //   'X-Requested-With' : 'XMLHttpRequest'
 // };
 
+Vue.use(axios)
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false

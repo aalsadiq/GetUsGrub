@@ -99,8 +99,6 @@
     <Compile Include="Validators\DtoValidators\UserProfileDtoValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
-    <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
-    <Compile Include="Validators\DtoValidators\UserProfileDtoValidator.cs" />
     <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />
     <Compile Include="Validators\ModelValidators\PasswordSaltValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />

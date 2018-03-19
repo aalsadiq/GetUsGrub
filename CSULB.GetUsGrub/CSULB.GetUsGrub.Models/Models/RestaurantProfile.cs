@@ -72,7 +72,7 @@ namespace CSULB.GetUsGrub.Models
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
-        public virtual ICollection<BusinessHour> BusinessHours { get; set; }
+        public virtual ICollection<BusinessHour> RestaurantHours { get; set; }
 
         // Constructor
         public RestaurantProfile(string restaurantName, Address address, 

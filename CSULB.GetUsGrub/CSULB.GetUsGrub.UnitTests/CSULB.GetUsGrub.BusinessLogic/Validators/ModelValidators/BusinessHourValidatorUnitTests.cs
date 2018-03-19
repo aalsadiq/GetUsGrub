@@ -233,7 +233,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var businessHour = new BusinessHour()
             {
                 Day = "Monday",
-                OpenTime = "22:12",
+                OpenTime = "23:12",
                 CloseTime = "23:00"
             };
 

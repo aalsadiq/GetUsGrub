@@ -1,7 +1,4 @@
-        // Navigation Property
-        public virtual UserAccount UserAccount { get; set; }
-        public virtual RestaurantProfile RestaurantProfile { get; set; }
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models

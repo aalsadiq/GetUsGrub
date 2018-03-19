@@ -102,5 +102,3 @@ namespace CSULB.GetUsGrub.Models
         }
     }
 }
-
-        public double Longitude { get; set; }

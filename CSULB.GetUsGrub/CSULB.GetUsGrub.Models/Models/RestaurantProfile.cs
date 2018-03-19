@@ -14,20 +14,16 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.RestaurantProfile")]
-    public class RestaurantProfile : IProfile, IRestaurantProfile, IEntity
+    public class RestaurantProfile : IRestaurantProfile, IEntity
     {
         [Key]
         [ForeignKey("UserProfile")]
         public int? Id { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
-        public IRestaurantDetail Details { get; set; }
+        public RestaurantDetail Details { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public IList<IRestaurantMenu> Menus { get; set; }
-        // TODO: @Andrew Why is display name here when it is already in UserProfile? [-Jenn]
-        public string DisplayName { get; set; }
-        public string DisplayPicture { get; set; }
 
         
         // Navigation Properties

@@ -1,10 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.Models
 {
-    [System.Serializable]
     public class RestaurantDetail : IRestaurantDetail
     {
+        public string Category { get; set; }
+
+        public IEnumerable<IBusinessHour> BusinessSchedule { get; set; }
+
         public bool? HasReservations { get; set; }
 
         public bool? HasDelivery { get; set; }
@@ -26,9 +33,5 @@ namespace CSULB.GetUsGrub.Models
         public bool? Caters { get; set; }
 
         public bool? AllowsPets { get; set; }
-
-        public string Category { get; set; }
-
-        public IEnumerable<BusinessHour> BusinessSchedule { get; set; }
     }
 }

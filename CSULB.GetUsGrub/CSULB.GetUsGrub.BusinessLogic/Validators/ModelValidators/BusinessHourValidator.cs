@@ -9,11 +9,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// The <c>BusinessHourValidator</c> class.
     /// Defines rules to validate a BusinessHour.
     /// <para>
-    /// @author: Jennifer Nguyen
-    /// @updated: 03/11/2018
+    /// @author: Jennifer Nguyen, Andrew Kao
+    /// @updated: 03/18/2018
     /// </para>
     /// </summary>
-    public class BusinessHourValidator : AbstractValidator<BusinessHour>
+    public class BusinessHourValidator : AbstractValidator<IBusinessHour>
     {
         public BusinessHourValidator()
         {
@@ -32,6 +32,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty().WithMessage("Close time is required.")
                     .NotNull().WithMessage("Close time is required.")
                     .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");
+
+                RuleFor(x => x.TimeZone)
+                    .NotEmpty().WithMessage("Time zone is required.")
+                    .NotNull().WithMessage("Time zone is required.");
             });
         }
 

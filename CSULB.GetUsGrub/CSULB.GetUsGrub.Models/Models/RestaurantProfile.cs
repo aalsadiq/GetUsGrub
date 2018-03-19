@@ -6,29 +6,100 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
-    /// The <c>RestaurantProfile</c> class.
-    /// Defines properties pertaining to user account.
-    /// <para>
-    /// @author: Andrew Kao, Jennifer Nguyen
-    /// @updated: 03/11/2018
-    /// </para>
+    /// Restaurant profile class
+    /// 
+    /// @author: Andrew Kao
+    /// @updated: 3/18/18
     /// </summary>
-    [Table("GetUsGrub.RestaurantProfile")]
-    public class RestaurantProfile : IRestaurantProfile, IEntity
+
+    [Table("GetUsGrub.RestaurantProfiles")]
+    public class RestaurantProfile : IRestaurantProfile, IRestaurantDetail
     {
         [Key]
-        [ForeignKey("UserProfile")]
         public int? Id { get; set; }
-        public string PhoneNumber { get; set; }
+
+        [ForeignKey("GetUsGrub.UserProfiles")]
+        public int? UserId { get; set; }
+
+        [Required]
+        public string RestaurantName { get; set; }
+
+        [Required]
         public Address Address { get; set; }
-        public RestaurantDetail Details { get; set; }
+
         public double Latitude { get; set; }
+
         public double Longitude { get; set; }
 
-        
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
+
+        public IList<IRestaurantMenu> Menus { get; set; }
+
+        [NotMapped]
+        public IList<IBusinessHour> BusinessHours { get; set; }
+
+        public string FoodType { get; set; }
+
+        public bool? HasReservations { get; set; }
+
+        public bool? HasDelivery { get; set; }
+
+        public bool? HasTakeOut { get; set; }
+
+        public bool? AcceptCreditCards { get; set; }
+
+        public string Attire { get; set; }
+
+        public bool? ServesAlcohol { get; set; }
+
+        public bool? HasOutdoorSeating { get; set; }
+
+        public bool? HasTv { get; set; }
+
+        public bool? HasDriveThru { get; set; }
+
+        public bool? Caters { get; set; }
+
+        public bool? AllowsPets { get; set; }
+
+        public string BusinessHoursJson
+        {
+            get => JsonConvert.SerializeObject(BusinessHours);
+            set => BusinessHours = JsonConvert.DeserializeObject<IList<IBusinessHour>>(value);
+        }
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
-        public virtual ICollection<BusinessHour> BusinessHours { get; set; }
+        public virtual ICollection<BusinessHour> RestaurantHours { get; set; }
+
+        // Constructor
+        public RestaurantProfile(string restaurantName, Address address, 
+            double latitude, double longitude, string phoneNumber, IList<IRestaurantMenu> menus, 
+            IList<IBusinessHour> businessHours, string foodType, bool? reservations, 
+            bool? delivery, bool? takeOut, bool? creditCards, string attire, bool? alcohol, 
+            bool? outdoorSeating, bool? tv, bool? driveThru, bool? caters, bool? pets)
+        {
+            RestaurantName = restaurantName;
+            Address = address;
+            Latitude = latitude;
+            Longitude = longitude;
+            PhoneNumber = phoneNumber;
+            Menus = menus;
+            BusinessHours = businessHours;
+            FoodType = foodType;
+            HasReservations = reservations;
+            HasDelivery = delivery;
+            HasTakeOut = takeOut;
+            AcceptCreditCards = creditCards;
+            Attire = attire;
+            ServesAlcohol = alcohol;
+            HasOutdoorSeating = outdoorSeating;
+            HasTv = tv;
+            HasDriveThru = driveThru;
+            Caters = caters;
+            AllowsPets = pets;
+        }
     }
 }

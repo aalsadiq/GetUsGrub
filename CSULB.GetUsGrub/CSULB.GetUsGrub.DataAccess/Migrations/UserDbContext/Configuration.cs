@@ -1,12 +1,16 @@
-namespace CSULB.GetUsGrub.DataAccess.Migrations
+namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
 {
+    using System;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
-    internal sealed class UserConfiguration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.UserContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.UserContext>
     {
-        public UserConfiguration()
+        public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
+            MigrationsDirectory = @"Migrations\UserDbContext";
         }
 
         protected override void Seed(CSULB.GetUsGrub.DataAccess.UserContext context)

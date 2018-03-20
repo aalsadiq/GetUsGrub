@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
@@ -9,7 +8,6 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @Created by: Brian Fann
     /// @Last Updated: 3/9/18
     /// </summary>
-
     public class AuthorizationContext : DbContext
     {
         // TODO Add DbSets once claims are implemented.

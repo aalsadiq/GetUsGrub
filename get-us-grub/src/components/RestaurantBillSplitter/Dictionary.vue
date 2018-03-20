@@ -1,45 +1,56 @@
 <template>
   <div class="dictionary">
     <h2>Dictionary</h2>
-    <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
-      <div class="menu-item" v-for="(element, index) in MenuItems" :key="element">
-        {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}<br />
-        <v-btn small=true v-on:click="edit">
-          Edit
-        </v-btn>
-        <v-btn small=true v-on:click="RemoveFromDictionary(index)">
+    <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people', pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
+      <div class="menu-item" v-for="(menuItem, menuItemIndex) in MenuItems" :key="menuItemIndex">
+        {{menuItem.name}} : ${{menuItem.price}}<br />
+        <edit-item :editType="editType" :itemIndex="menuItemIndex" :Item="menuItem"></edit-item>
+        <v-btn small dark color="red" v-on:click="RemoveFromDictionary(menuItemIndex)">
           Delete
         </v-btn>
-        <form v-if="edit">
-          <label>Enter Food Item Name</label>
-          <input type="text" ref="menuItemName" required />
-          <br />
-          <label>Enter Food Item Price</label>
-          <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
-        </form>
       </div>
-
     </draggable>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
+import { VMoney } from 'v-money'
+import EditItem from './EditItem.vue'
 
 export default {
   name: 'Dictionary',
   components: {
+    'edit-item': EditItem,
     draggable
   },
   data () {
     return {
-
+      editType: 'dictionary',
+      money: {
+        decimal: '.',
+        thousands: '',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
+      }
     }
   },
+  directives: { money: VMoney },
   methods: {
-    RemoveFromDictionary: function (index) {
-      console.log(index)
-      this.$store.dispatch('RemoveFromDictionary', index)
+    clone: function (el) {
+      return {
+        name: el.name,
+        price: el.price
+      }
+    },
+    RemoveFromDictionary: function (menuItemIndex) {
+      console.log(menuItemIndex)
+      this.$store.dispatch('RemoveFromDictionary', menuItemIndex)
+    },
+    Log: function () {
+      console.log(this.$refs.editForm)
     }
   },
   computed: {
@@ -54,7 +65,7 @@ export default {
   .dictionary {
     grid-column: 3;
     grid-row: 2 / 4;
-    outline: dashed;
+    outline: solid;
   }
 
   .dictionary > h2{

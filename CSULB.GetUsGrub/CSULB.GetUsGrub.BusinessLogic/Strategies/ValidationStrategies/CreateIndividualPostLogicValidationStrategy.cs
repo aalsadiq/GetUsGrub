@@ -2,7 +2,6 @@
 using FluentValidation;
 using System.Collections.Generic;
 
-// TODO: @Jenn Unit test for Validation strategy [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -29,7 +28,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly ClaimsValidator _claimsValidator;
         private readonly UserValidator _userValidator;
 
-    
+        /// <summary>
+        /// Constructor for CreateIndividualPostLogicValidationStrategy
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccount"></param>
+        /// <param name="securityQuestions"></param>
+        /// <param name="securityAnswerSalts"></param>
+        /// <param name="passwordSalt"></param>
+        /// <param name="claims"></param>
+        /// <param name="userProfile"></param>
         public CreateIndividualPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
                                                            IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
                                                            UserClaims claims, UserProfile userProfile)
@@ -49,6 +60,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _userValidator = new UserValidator();
         }
 
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate domain models for creating an individual user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <returns>A boolean</returns>
         public bool ExecuteStrategy()
         {
             // Validate UserAccount
@@ -101,14 +121,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Validate username and display name are not equal
             var result = _userValidator.CheckIfUsernameEqualsDisplayName(_userAccount.Username, _userProfile.DisplayName);
-            if (result)
+            if (!result.Data)
             {
                 return false;
             }
 
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_userAccount.Username);
-            if (result)
+            if (!result.Data)
             {
                 return false;
             }

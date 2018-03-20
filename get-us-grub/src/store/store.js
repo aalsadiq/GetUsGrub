@@ -5,52 +5,51 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    MINIMUM_MENU_ITEM_PRICE: 0.01,
-    MAX_MENU_ITEM_PRICE: 1000,
     MenuItems: [
-      {
-        menuItemName: 'Big Mac',
-        menuItemPrice: 4.00
-      },
-      {
-        menuItemName: 'Large Fries',
-        menuItemPrice: 2.50
-      },
-      {
-        menuItemName: 'McFlurry',
-        menuItemPrice: 1.00
-      },
-      {
-        menuItemName: 'Large Soft Drink',
-        menuItemPrice: 2.00
-      },
-      {
-        menuItemName: 'McChicken',
-        menuItemPrice: 1.50
-      },
-      {
-        menuItemName: 'Water Bottle',
-        menuItemPrice: 10.50
-      }
     ],
     BillItems: [
+    ],
+    BillUsers: [
+      {
+        name: 'George'
+      },
+      {
+        name: 'Ahmed'
+      },
+      {
+        name: 'Brian'
+      }
     ]
   },
   getters: {
-    // totalPrice: state => {
-    //  var totalPrice = this.$store.state.BillItems.map(BillItems => {
-    //    return state.BillItems.menuItemPrice
-    //  })
-    // }
+    totalPrice: state => {
+      var temp = 0
+      state.BillItems.forEach(function (element) {
+        temp = temp + element.price
+      })
+      return temp
+    }
   },
   mutations: {
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
-        menuItemName: payload[0],
-        menuItemPrice: payload[1]
+        name: payload[0],
+        price: payload[1]
       })
     },
-
+    AddBillUser: (state, payload) => {
+      state.BillUsers.push({
+        name: payload
+      })
+    },
+    EditDictionaryItem: (state, payload) => {
+      state.MenuItems[payload[0]].name = payload[1]
+      state.MenuItems[payload[0]].price = payload[2]
+    },
+    EditBillItem: (state, payload) => {
+      state.BillItems[payload[0]].name = payload[1]
+      state.BillItems[payload[0]].price = payload[2]
+    },
     RemoveFromDictionary: (state, payload) => {
       console.log('Store Mutation: ' + payload)
       state.MenuItems.splice(payload, 1)
@@ -68,6 +67,22 @@ export const store = new Vuex.Store({
         console.log('Added Food Item Price: ' + payload[1])
         context.commit('AddToDictionary', payload)
       }, 500)
+    },
+    AddBillUser: (context, payload) => {
+      setTimeout(function () {
+        console.log('Added New Bill User: ' + payload)
+        context.commit('AddBillUser', payload)
+      }, 250)
+    },
+    EditDictionaryItem: (context, payload) => {
+      setTimeout(function () {
+        context.commit('EditDictionaryItem', payload)
+      }, 250)
+    },
+    EditBillItem: (context, payload) => {
+      setTimeout(function () {
+        context.commit('EditBillItem', payload)
+      }, 250)
     },
     RemoveFromDictionary: (context, payload) => {
       setTimeout(function () {

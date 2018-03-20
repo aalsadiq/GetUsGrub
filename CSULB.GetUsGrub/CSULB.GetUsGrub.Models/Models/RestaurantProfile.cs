@@ -29,17 +29,10 @@ namespace CSULB.GetUsGrub.Models
         public string DisplayName { get; set; }
         public string DisplayPicture { get; set; }
 
-        [NotMapped]
-        public IList<BusinessHour> BusinessHours { get; set; }
-
-        public string BusinessHoursJson
-        {
-            get => JsonConvert.SerializeObject(BusinessHours);
-            set => BusinessHours = JsonConvert.DeserializeObject<List<BusinessHour>>(value);
-        }
-
+        
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
+        public virtual ICollection<BusinessHour> BusinessHours { get; set; }
     }
 }

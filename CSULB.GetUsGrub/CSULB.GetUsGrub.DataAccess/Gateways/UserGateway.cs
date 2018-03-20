@@ -314,8 +314,6 @@ namespace CSULB.GetUsGrub.DataAccess
                         //var query = records.Where(record =>//DELETE
                         //record.Claims.All(recordClaim => user.Claims.Contains(recordClaim));//DELETE
 
-
-
                         //userContext.SecurityAnswerSalts.Remove(userContext.SecurityAnswerSalts.FirstOrDefault(securityAnswerSalt => securityAnswerSalt.Id == account.Id));//works
                         //userContext.SecurityQuestions.Remove(userContext.SecurityQuestions.FirstOrDefault(securityQuestion => securityQuestion.Id == account.Id));//works
                         //userContext.PasswordSalts.Remove(userContext.PasswordSalts.FirstOrDefault(passwordSalt => passwordSalt.Id == account.Id));//works
@@ -327,16 +325,15 @@ namespace CSULB.GetUsGrub.DataAccess
                         //userContext.UserProfiles.Remove(userContext.UserProfiles.FirstOrDefault(userProfile => userProfile.Id == account.Id));//works
                         //System.Diagnostics.Debug.WriteLine("herenere");
                         // var claims = userContext.Claims.All(userClaim => userClaim.Id == account.Id);
-                        var claims = userContext.Claims.Select(userClaim => userClaim.Id == account.Id);
-                        if (claims == null)
-                        {
-                            //System.Diagnostics.Debug.WriteLine("here");
-                        }
-                        //userContext.Claims.Remove(userContext.Claims.FirstOrDefault(userClaim => userClaim.Id == account.Id));//Doesn't work
-                        //userContext.Claims.Remove(userContext.Claims.FirstOrDefault(userClaim => userClaim.Id == account.Id));//Doesn't work
-                        //userContext.UserAccounts.Remove(userContext.UserAccounts.FirstOrDefault(userAccount => userAccount.Id == account.Id));//Fail
-
-                            userContext.SaveChanges();
+                        //var claims = userContext.Claims.Select(userClaim => userClaim.Id == account.Id);
+                        //if (claims == null)
+                        //{
+                        //    //System.Diagnostics.Debug.WriteLine("here");
+                        //}
+                        userContext.Claims.Remove(userContext.Claims.(userClaim => userClaim.Id == account.Id));//Doesn't work
+                                                                                                                              //userContext.Claims.Remove(userContext.Claims.FirstOrDefault(userClaim => userClaim.Id == account.Id));//Doesn't work
+                                                                                                                              //userContext.UserAccounts.Remove(userContext.UserAccounts.FirstOrDefault(userAccount => userAccount.Id == account.Id));//Fail
+                        userContext.SaveChanges();
                             dbContextTransaction.Commit();
                         return true;
                     }

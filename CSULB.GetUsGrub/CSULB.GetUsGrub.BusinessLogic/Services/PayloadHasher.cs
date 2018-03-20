@@ -48,9 +48,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // Concats salt as the prefix and payload as the suffix
                 // TODO: @Jenn outside using statement
                 var payloadAndSalt = string.Concat(payload, salt);
-                // TODO: @Jenn outside using statementSS
+                // TODO: @Jenn outside using statement
                 var hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(payloadAndSalt));
-                var hashedPayload = Convert.ToString(hashedPayloadBytes);
+                var hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
                 return hashedPayload;
             }
         }

@@ -139,22 +139,6 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        public ResponseDto<AuthenticationToken> GetExperationTime(AuthenticationToken incomingAuthenticationToken)
-        {
-            AuthenticationToken tokenWithNewExpirationDate;
-            using (var userContext = new AuthenticationContext())
-            {
-                 tokenWithNewExpirationDate = (from token in userContext.AuthenticationTokens
-                    where token.TokenString == incomingAuthenticationToken.TokenString
-                    select token).SingleOrDefault();
-            }
-
-            return new ResponseDto<AuthenticationToken>
-            {
-                Data = tokenWithNewExpirationDate
-            };
-        }
-
         // Dispose release unmangaed resources 
         public void Dispose()
         {

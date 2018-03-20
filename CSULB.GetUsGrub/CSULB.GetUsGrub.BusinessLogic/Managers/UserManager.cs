@@ -1,10 +1,5 @@
-﻿using CSULB.GetUsGrub.DataAccess.Gateways;
+﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic.Managers
 {

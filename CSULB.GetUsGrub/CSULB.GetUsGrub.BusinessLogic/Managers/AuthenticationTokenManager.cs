@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -13,8 +14,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// AuthenticationTokenManager
     /// holds all the functions that pretains to the Authentication tokens in our system
     /// </summary>
-    public class AuthenticationTokenManager
+    public class AuthenticationTokenManager : TokenService
     {
+        private readonly TokenService _tokenService;
+        public AuthenticationTokenManager()
+        {
+            _tokenService = new TokenService();
+        }
+
         /// <summary>
         /// 
         /// CreateToken
@@ -78,6 +85,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Assigning the Token to a Dto to return it back to the User 
             var authenticationTokenDto = new AuthenticationTokenDto(authenticationToken.Username,
                 authenticationToken.ExpiresOn, authenticationToken.TokenString);
+
             
             // Returning the Token to the Controler
             return new ResponseDto<AuthenticationTokenDto>
@@ -149,13 +157,5 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        public ResponseDto<AuthenticationTokenDto> ValidateToken(AuthenticationTokenDto authenticationTokenDto)
-        {
-
-            return new ResponseDto<AuthenticationTokenDto>
-            {
-                Data = authenticationTokenDto
-            };
-        }
     }
 }

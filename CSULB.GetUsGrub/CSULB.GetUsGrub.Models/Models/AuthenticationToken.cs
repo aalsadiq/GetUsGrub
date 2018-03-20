@@ -12,6 +12,8 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/12/2018
     /// </para>
     /// </summary>
+    [Table("GetUsGrub.AuthenticationToken")]
+
     public class AuthenticationToken : IEntity
     {
         [Key]

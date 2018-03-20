@@ -28,7 +28,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             using (var randomNumberProvider = new RNGCryptoServiceProvider())
             {
                 var randomBytes = new byte[size];
-                randomNumberProvider.GetBytes(randomBytes);
+                randomNumberProvider.GetNonZeroBytes(randomBytes);
                 return Convert.ToBase64String(randomBytes);
             }
         }

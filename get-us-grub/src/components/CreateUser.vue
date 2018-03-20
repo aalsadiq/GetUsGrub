@@ -418,30 +418,30 @@ export default {
       closeTime: null
     },
     usernameRules: [
-      v => !!v || 'Username is required',
-      v => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
+      username => !!username || 'Username is required',
+      username => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
     ],
     displayNameRules: [
-      v => !!v || 'Display name is required'
+      displayName => !!displayName || 'Display name is required'
     ],
     passwordRules: [
-      v => !!v || 'Password is required',
-      v => v.length >= 8 || 'Password must be at least 8 characters',
-      v => v.length < 64 || 'Password must be at most 64 characters'
+      password => !!password || 'Password is required',
+      password => password.length >= 8 || 'Password must be at least 8 characters',
+      password => password.length < 64 || 'Password must be at most 64 characters'
     ],
     securityAnswerRules: [
-      v => !!v || 'Security answer is required'
+      securityAnswer => !!securityAnswer || 'Security answer is required'
     ],
     addressStreet1Rules: [
-      v => !!v || 'Street 1 is required'
+      street1 => !!street1 || 'Street 1 is required'
     ],
     addressZipRules: [
-      v => !!v || 'Zip code is required',
-      v => /^\d{5}$/.test(v) || 'Zip code must contain 5 numbers'
+      zip => !!zip || 'Zip code is required',
+      zip => /^\d{5}$/.test(v) || 'Zip code must contain 5 numbers'
     ],
     phoneNumberRules: [
-      v => !!v || 'Phone number is required',
-      v => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(v) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
+      phone => !!phone || 'Phone number is required',
+      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(v) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
     ],
     securityQuestionsSet1: [{
       id: 1,
@@ -514,11 +514,9 @@ export default {
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
-        console.log(response)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
-        console.log(error.response.data)
       })
     },
     restaurantSubmit () {
@@ -530,11 +528,9 @@ export default {
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
-        console.log(response)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
-        console.log(error.response.data)
       })
     }
   }

@@ -37,12 +37,14 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Individual")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        // TODO: @Jenn Test out the methods with POST [-Jenn]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
+                // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
                 return BadRequest(ModelState);
             }
             try
@@ -53,13 +55,13 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                // HTTP 201 Status
+                // Sending HTTP response 201 Status
                 return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
             catch (Exception)
             {
-                // HTTP 400 Status
+                // Sending HTTP response 400 Status
                 return BadRequest("Something went wrong. Pleast try again later.");
             }
         }

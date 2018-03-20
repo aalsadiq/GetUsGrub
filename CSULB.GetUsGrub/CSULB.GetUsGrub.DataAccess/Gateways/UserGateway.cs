@@ -15,6 +15,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class UserGateway : IDisposable
     {
+        // TODO: @Jenn How to best handle this error [-Jenn]
         /// <summary>
         /// The GetUserByUsername method.
         /// Gets a user by username.
@@ -24,15 +25,30 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </para>
         /// </summary>
         /// <param name="username"></param>
-        /// <returns>UserAccount model</returns>
-        public UserAccount GetUserByUsername(string username)
+        /// <returns>ResponseDto with UserAccount model</returns>
+        public ResponseDto<UserAccount> GetUserByUsername(string username)
         {
             using (var userContext = new UserContext())
             {
-                var userAccount = (from account in userContext.UserAccounts
-                    where account.Username == username
-                    select account).SingleOrDefault();
-                return userAccount;
+                try
+                {
+                    var userAccount = (from account in userContext.UserAccounts
+                        where account.Username == username
+                        select account).FirstOrDefault();
+                    // Return a ResponseDto with a UserAccount model
+                    return new ResponseDto<UserAccount>()
+                    {
+                        Data = userAccount
+                    };
+                }
+                catch (Exception)
+                {
+                    return new ResponseDto<UserAccount>()
+                    {
+                        Data = new UserAccount(username),
+                        Error = "Something went wrong. Please try again later."
+                    };
+                }
             }
         }
 
@@ -50,7 +66,8 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="securityAnswerSalts"></param>
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
-        public void StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, 
+        /// <returns>ResponseDto with bool data</returns>
+        public ResponseDto<bool> StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, 
             IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile)
         {
             using (var userContext = new UserContext())
@@ -82,14 +99,15 @@ namespace CSULB.GetUsGrub.DataAccess
                         }
 
                         // Get SecurityQuestions in database
-                        var queryable = (from question in userContext.SecurityQuestions
+                        var updatedSecurityQuestions = (from question in userContext.SecurityQuestions
                                         where question.UserId == userId
                                         select question).ToList();
+
                         // Add SecurityAnswerSalts
                         for (var i = 0; i < securityQuestions.Count; i++)
                         {
                             // Get SecurityQuestionId for each securityAnswerSalt
-                            var securityQuestionId = (from query in queryable
+                            var securityQuestionId = (from query in updatedSecurityQuestions
                                                       where query.Question == securityQuestions[i].Question
                                                       select query.Id).SingleOrDefault();
 
@@ -101,11 +119,9 @@ namespace CSULB.GetUsGrub.DataAccess
                         }
                         // Add PasswordSalt
                         userContext.PasswordSalts.Add(passwordSalt);
-                        userContext.SaveChanges();
 
                         // Add UserClaims
                         userContext.Claims.Add(claims);
-                        userContext.SaveChanges();
 
                         // Add UserProfile
                         userContext.UserProfiles.Add(userProfile);
@@ -113,12 +129,23 @@ namespace CSULB.GetUsGrub.DataAccess
 
                         // Commit transaction to database
                         dbContextTransaction.Commit();
+
+                        // Return a true ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
                     }
                     catch (Exception)
                     {
                         // Rolls back the changes saved in the transaction
                         dbContextTransaction.Rollback();
-                        throw;
+                        // Returns a false ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
             }
@@ -139,7 +166,9 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
         /// <param name="restaurantProfile"></param>
-        public void StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile)
+        /// <returns>ResponseDto with bool data</returns>
+        public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, 
+            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile)
         {
             using (var userContext = new UserContext())
             {
@@ -191,15 +220,12 @@ namespace CSULB.GetUsGrub.DataAccess
 
                         // Add PasswordSalt
                         userContext.PasswordSalts.Add(passwordSalt);
-                        userContext.SaveChanges();
 
                         // Add UserClaims
                         userContext.Claims.Add(claims);
-                        userContext.SaveChanges();
 
                         // Add UserProfile
                         userContext.UserProfiles.Add(userProfile);
-                        userContext.SaveChanges();
 
                         // Add RestaurantProfile
                         userContext.RestaurantProfiles.Add(restaurantProfile);
@@ -207,14 +233,60 @@ namespace CSULB.GetUsGrub.DataAccess
 
                         // Commit transaction to database
                         dbContextTransaction.Commit();
+
+                        // Return a true ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
                     }
                     catch (Exception)
                     {
                         // Rolls back the changes saved in the transaction
                         dbContextTransaction.Rollback();
-                        throw;
+                        // Return a false ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// The StoreUserAccount method.
+        /// Contains logic to store a user account to the database.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/17/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccount"></param>
+        /// <returns>ResponseDto with bool data</returns>
+        public ResponseDto<bool> StoreUserAccount(UserAccount userAccount)
+        {
+            using (var userContext = new UserContext())
+            {
+                try
+                {
+                    userContext.UserAccounts.Add(userAccount);
+                    userContext.SaveChanges();
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = "Something went wrong. Please try again later."
+                    };
+                }
+                
             }
         }
 

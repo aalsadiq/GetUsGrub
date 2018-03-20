@@ -26,7 +26,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var result = userValidator.CheckIfUsernameEqualsDisplayName(username, displayName);
 
             // Assert
-            result.Should().Be(false);
+            result.Data.Should().Be(false);
         }
     }
 }

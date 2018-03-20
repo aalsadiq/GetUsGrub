@@ -97,7 +97,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Validate username and display name are not equal
             var result = _userValidator.CheckIfUsernameEqualsDisplayName(_registerUserDto.UserAccountDto.Username, _registerUserDto.UserProfileDto.DisplayName);
-            if (result)
+            if (result.Error != null)
+            {
+                return new ResponseDto<RegisterUserDto>()
+                {
+                    Data = _registerUserDto,
+                    Error = result.Error
+                };
+            }
+            else if (result.Data)
             {
                 return new ResponseDto<RegisterUserDto>
                 {
@@ -107,7 +115,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_registerUserDto.UserAccountDto.Username);
-            if (result)
+            if (result.Data)
             {
                 return new ResponseDto<RegisterUserDto>
                 {

@@ -54,6 +54,7 @@
       <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.2.1\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -77,6 +78,9 @@
     <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GoogleGeocodeService.cs" />
+    <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
+    <Compile Include="Services\Interfaces\IGeocodeService.cs" />
     <Compile Include="Strategies\ValidationStrategies\EditRestaurantUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\EditUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Mappers\RestaurantProfileMapper.cs" />
@@ -111,6 +115,7 @@
     <Compile Include="Validators\ModelValidators\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Api.config" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -128,8 +133,6 @@
       <Name>CSULB.GetUsGrub.UserAccessControl</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

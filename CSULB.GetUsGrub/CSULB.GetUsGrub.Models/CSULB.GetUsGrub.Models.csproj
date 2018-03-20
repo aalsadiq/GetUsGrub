@@ -69,6 +69,9 @@
     <Compile Include="DTOs\SecurityQuestionDto.cs" />
     <Compile Include="DTOs\UserAccountDto.cs" />
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\GeoCoordinates.cs" />
+    <Compile Include="Models\Interfaces\IAddress.cs" />
+    <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
     <Compile Include="Models\Token.cs" />

@@ -29,8 +29,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<RegisterUserDto> CreateIndividualUser(RegisterUserDto registerUserDto)
         {
             var createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerUserDto);
-            var securityQuestionMapper = new SecurityQuestionMapper();
-            var userProfileMapper = new UserProfileMapper();
             var securityAnswerSalts = new List<SecurityAnswerSalt>();
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
@@ -50,9 +48,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map data transfer object to domain models
             var userAccount = new UserAccount(userAccountDto: registerUserDto.UserAccountDto, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
-                                        .Select(securityQuestionDto => securityQuestionMapper.MapDtoToModel(securityQuestionDto))
+                                        .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto))
                                         .ToList();
-            var userProfile = userProfileMapper.MapDtoToModel(registerUserDto.UserProfileDto);
+            var userProfile = new UserProfile(registerUserDto.UserProfileDto);
+
+
+            // Set user claims to be stored in UserClaims table
+            var userClaims = new UserClaims(claimsFactory.CreateIndividualClaims());
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
@@ -65,16 +67,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSaltBase64(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
-            // Set claims
-            var claims = new UserClaims
-            {
-                Claims = claimsFactory.CreateIndividualClaims()
-            };
-
             // Validate domain models
-            var createIndividualPostLogicValdiationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, claims, userProfile);
+            var createIndividualPostLogicValdiationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile);
             var validateResult = createIndividualPostLogicValdiationStrategy.ExecuteStrategy();
-            if (!validateResult)
+            if (!validateResult.Data)
             {
                 return new ResponseDto<RegisterUserDto>
                 {
@@ -86,7 +82,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Store user in database
             using (var userGateway = new UserGateway())
             {
-                var gatewayResult = userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile);
+                var gatewayResult = userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, userClaims, userProfile);
                 if (gatewayResult.Data == false)
                 {
                     return new ResponseDto<RegisterUserDto>()
@@ -116,9 +112,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<RegisterRestaurantDto> CreateRestaurantUser(RegisterRestaurantDto registerRestaurantDto)
         {
             var createRestaurantPreLogicValidationStrategy = new CreateRestaurantPreLogicValidationStrategy(registerRestaurantDto);
-            var securityQuestionMapper = new SecurityQuestionMapper();
-            var userProfileMapper = new UserProfileMapper();
-            var restaurantProfileMapper = new RestaurantProfileMapper();
             var securityAnswerSalts = new List<SecurityAnswerSalt>();
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
@@ -138,14 +131,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map data transfer object to domain models
             var userAccount = new UserAccount(userAccountDto: registerRestaurantDto.UserAccountDto, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
-                                        .Select(securityQuestionDto => securityQuestionMapper.MapDtoToModel(securityQuestionDto))
-                                        .ToList();
-            var userProfile = userProfileMapper.MapDtoToModel(registerRestaurantDto.UserProfileDto);
-            var restaurantProfile = restaurantProfileMapper.MapDtoToModel(registerRestaurantDto.RestaurantProfileDto);
+                .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto))
+                .ToList();
+            var userProfile = new UserProfile(registerRestaurantDto.UserProfileDto);
+            var restaurantProfile = new RestaurantProfile(registerRestaurantDto.RestaurantProfileDto);
+            var businessHours = registerRestaurantDto.BusinessHourDtos
+                                    .Select(businessHourDto => new BusinessHour(businessHourDto))
+                                    .ToList();
 
             // TODO: @Brian Need Google Map integration for following [-Jenn]
             // Get longitude and latitude given Address model to Google Map service
             // Set longitude and latitude
+
+            // Set user claims to be stored in UserClaims table
+            var userClaims = new UserClaims(claimsFactory.CreateIndividualClaims());
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
@@ -158,16 +157,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSaltBase64(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
-            // Set claims to be stored in UserClaims table
-            var claims = new UserClaims
-            {
-                Claims = claimsFactory.CreateRestaurantClaims()
-            };
-
             // Validate domain models
-            var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, claims, userProfile, restaurantProfile);
+            var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);
             var validateResult = createRestaurantPostLogicValdiationStrategy.ExecuteStrategy();
-            if (!validateResult)
+            if (!validateResult.Data)
             {
                 return new ResponseDto<RegisterRestaurantDto>
                 {
@@ -179,7 +172,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Store user in database
             using (var userGateway = new UserGateway())
             {
-                var gatewayResult = userGateway.StoreRestaurantUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile, restaurantProfile);
+                var gatewayResult = userGateway.StoreRestaurantUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, userClaims, userProfile, restaurantProfile, businessHours);
                 if (gatewayResult.Data == false)
                 {
                     return new ResponseDto<RegisterRestaurantDto>()

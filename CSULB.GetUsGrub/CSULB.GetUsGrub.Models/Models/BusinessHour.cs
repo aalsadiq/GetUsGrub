@@ -9,17 +9,26 @@ namespace CSULB.GetUsGrub.Models
     /// Defines properties pertaining to a business hour.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/16/2018
+    /// @updated: 03/20/2018
     /// </para>
     /// </summary>
     [Table("GetUsGrub.BusinessHour")]
-    public class BusinessHour : IBusinessHour
+    public class BusinessHour : IBusinessHour, IEntity
     {
+        public BusinessHour() { }
+
+        public BusinessHour(BusinessHourDto businessHourDto)
+        {
+            Day = businessHourDto.Day;
+            OpenTime = businessHourDto.OpenTime;
+            CloseTime = businessHourDto.CloseTime;
+        }
+
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [ForeignKey("RestaurantProfile")]
-        public int RestaurantId { get; set; }
+        public int? RestaurantId { get; set; }
 
         [Required]
         public string Day { get; set; }

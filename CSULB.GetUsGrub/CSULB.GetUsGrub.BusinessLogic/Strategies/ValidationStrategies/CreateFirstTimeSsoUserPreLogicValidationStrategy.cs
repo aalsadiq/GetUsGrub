@@ -19,12 +19,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             var validationWrapper = new ValidationWrapper<UserAccountDto>(data: _userAccountDto, ruleSet: "SsoRegistration", validator: _userAccountDtoValidator);
             var result = validationWrapper.ExecuteValidator();
-            if (result.Data == false)
+            if (!result.Data)
             {
                 return result;
             }
 
             result = _userValidator.CheckIfUserExists(_userAccountDto.Username);
+            if (!result.Data)
+            {
+                result.Error = "Username is already used.";
+            }
+
             return result;
         }
     }

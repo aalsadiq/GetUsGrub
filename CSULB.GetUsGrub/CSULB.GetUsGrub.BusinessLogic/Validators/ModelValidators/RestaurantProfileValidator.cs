@@ -17,10 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.BusinessHours)
-                    .NotEmpty()
-                    .NotNull();
-
                 RuleFor(x => x.PhoneNumber)
                     .NotEmpty()
                     .NotNull()

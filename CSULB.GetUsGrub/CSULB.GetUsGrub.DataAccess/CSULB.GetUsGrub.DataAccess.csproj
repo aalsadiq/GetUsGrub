@@ -49,11 +49,20 @@
   <ItemGroup>
     <Compile Include="Contexts\IndividualProfileContext.cs" />
     <Compile Include="Contexts\RestaurantContext.cs" />
+    <Compile Include="Contexts\SsoContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
-    <Compile Include="Gateways\RestaurantProfileGateway.cs" />
+    <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Gateways\UserProfileGateway.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.cs" />
+    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.Designer.cs">
+      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
+    <Compile Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.cs" />
+    <Compile Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.Designer.cs">
+      <DependentUpon>201803201649052_InitialDbCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,8 +79,11 @@
     <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803122339016_Initial.resx">
-      <DependentUpon>201803122339016_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.resx">
+      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.resx">
+      <DependentUpon>201803201649052_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

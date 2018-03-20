@@ -14,7 +14,7 @@
         </div>
       </draggable>
     </div>
-    <h2 class="total">Total: <span v-money="money" v-model="TotalPrice" /></h2>
+    <h2 class="total">Total: <span v-money="money" /></h2>
   </div>
 </template>
 
@@ -46,7 +46,7 @@ export default {
     BillItems () {
       return this.$store.state.BillItems
     },
-    TotalPrice() {
+    TotalPrice () {
       return this.$store.getters.totalPrice
     }
   }

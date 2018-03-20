@@ -1,29 +1,19 @@
-﻿using System.Collections.Generic;
-
-namespace CSULB.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
-    /// Restaurant profile interface
-    /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// The IRestaurantProfile interface.
+    /// A contract with defined properties for the RestaurantProfile class.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/20/2018
+    /// </para>
     /// </summary>
     public interface IRestaurantProfile
     {
-        //TODO: add food preferences and price range
-        string RestaurantName { get; set; }
-
-        Address Address { get; set; }
-
-        double Latitude { get; set; }
-
-        double Longitude { get; set; }
-
-        string PhoneNumber { get; set; }
-
-        IList<IRestaurantMenu> Menus { get; set; }
-
-        IList<IBusinessHour> BusinessHours { get; set; }
-
-        string FoodType { get; set; }
+        string PhoneNumber { get; }
+        Address Address { get; }
+        double Longitude { get; }
+        double Latitude { get; }
+        RestaurantDetail Details { get; }
     }
 }

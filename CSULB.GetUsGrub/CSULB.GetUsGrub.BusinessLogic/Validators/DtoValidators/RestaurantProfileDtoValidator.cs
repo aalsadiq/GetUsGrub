@@ -17,11 +17,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.BusinessHours)
-                    .NotEmpty().WithMessage("At least one business hour must be filled.")
-                    .NotNull().WithMessage("At least one business hour must be filled.");
-
-                RuleFor(x => x.PhoneNumber.ToString())
+                RuleFor(x => x.PhoneNumber)
                     .NotEmpty().WithMessage("Phone number is required.")
                     .NotNull().WithMessage("Phone number is required.")
                     .Matches(@"^\([2-9]\d{2}\)\d{3}\-\d{4}$").WithMessage("Phone number must be in (XXX)XXX-XXXX format.");

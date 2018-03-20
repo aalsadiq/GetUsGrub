@@ -10,8 +10,7 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
-    //[System.Serializable]
-    public class Address : IAddress
+    public class Address
     {
         [Required]
         public string Street1 { get; set; }

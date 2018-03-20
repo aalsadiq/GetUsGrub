@@ -12,7 +12,15 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.UserProfiles")]
     public class UserProfile : IUserProfile
     {
-        [Key]
+        public UserProfile() { }
+
+        public UserProfile(UserProfileDto userProfileDto)
+        {
+            DisplayPicture = userProfileDto.DisplayPicture;
+            DisplayName = userProfileDto.DisplayName;
+        }
+
+        [ForeignKey("UserAccount")]
         public int? Id { get; set; }
 
         [ForeignKey("GetUsGrub.UserAccounts")]
@@ -22,18 +30,7 @@ namespace CSULB.GetUsGrub.Models
         public string DisplayName { get; set; }
 
         public string DisplayPicture { get; set; }
-
-        public UserProfile(string name, string picture)
-        {
-            DisplayName = name;
-            DisplayPicture = picture;
-        }
-
-        public UserProfile()
-        {
-            DisplayName = null;
-            DisplayPicture = null;
-        }
+        public string DisplayName { get; set; }
 
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }

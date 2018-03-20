@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CSULB.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// Additional restraurant information interface
@@ -11,6 +9,10 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     interface IRestaurantDetail
     {
+        string Category { get; set; }
+
+        int AvgFoodPrice { get; set; }
+
         bool? HasReservations { get; set; }
 
         bool? HasDelivery { get; set; }

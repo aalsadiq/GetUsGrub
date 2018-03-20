@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_PassValidation_When_GivenValidUserAccountAndPasswordSalt()
         {
             // Arrange
-            var userAccount = new UserAccount(username:"username", password:"!@#@$123asd!", isFirstTimeUser:true, roleType:"public");
+            var userAccount = new UserAccount(username:"username", password:"!@#@$123asd!", isActive: false, isFirstTimeUser:true, roleType:"public");
             var passwordSalt = new PasswordSalt(salt:"@$!@#a2131asda@#!");
             var createFirstTimeSsoUserPostLogicValidationStrategy = new CreateFirstTimeSsoUserPostLogicValidationStrategy(userAccount, passwordSalt);
 
@@ -27,7 +27,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_GivenEmptyUsername()
         {
             // Arrange
-            var userAccount = new UserAccount(username: "", password: "!Q2w#E4r", isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: "", password: "!Q2w#E4r", isActive: false, isFirstTimeUser: false, roleType: "public");
             var passwordSalt = new PasswordSalt(salt: "@$!@#a2131asda@#!");
             var createFirstTimeSsoUserPostLogicValidationStrategy = new CreateFirstTimeSsoUserPostLogicValidationStrategy(userAccount, passwordSalt);
 

@@ -393,34 +393,111 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                        var account = (from UserAccount in userContext.UserAccounts
-                                           where UserAccount.Username == username
-                                           select UserAccount).FirstOrDefault();
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == username
+                                           select account).FirstOrDefault();
 
-                        //var query = records.Where(record =>//DELETE
-                        //record.Claims.All(recordClaim => user.Claims.Contains(recordClaim));//DELETE
+                        if(userAccount == null)
+                        {
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,
+                                Error = "Something went wrong. Please try again later."
+                            };
+                        }
+                        var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
+                                                    where securityAnswerSalt.Id == userAccount.Id
+                                                    select securityAnswerSalt).FirstOrDefault();
 
-                        //userContext.SecurityAnswerSalts.Remove(userContext.SecurityAnswerSalts.FirstOrDefault(securityAnswerSalt => securityAnswerSalt.Id == account.Id));//works
-                        //userContext.SecurityQuestions.Remove(userContext.SecurityQuestions.FirstOrDefault(securityQuestion => securityQuestion.Id == account.Id));//works
-                        //userContext.PasswordSalts.Remove(userContext.PasswordSalts.FirstOrDefault(passwordSalt => passwordSalt.Id == account.Id));//works
-                        //userContext.Tokens.Remove(userContext.Tokens.FirstOrDefault(token => token.Id == account.Id));//works
-                        //userContext.RestaurantMenuItems.Remove(userContext.RestaurantMenuItems.FirstOrDefault(restaurantMenuItem => restaurantMenuItem.Id == account.Id));//works
-                        //userContext.RestaurantMenus.Remove(userContext.RestaurantMenus.FirstOrDefault(restaurantMenu => restaurantMenu.Id == account.Id));//works
-                        //userContext.BussinessHours.Remove(userContext.BussinessHours.FirstOrDefault(businessHour => businessHour.Id == account.Id));//works
-                        //userContext.RestaurantProfiles.Remove(userContext.RestaurantProfiles.FirstOrDefault(restaurantProfile => restaurantProfile.Id == account.Id));//works
-                        //userContext.UserProfiles.Remove(userContext.UserProfiles.FirstOrDefault(userProfile => userProfile.Id == account.Id));//works
-                        //System.Diagnostics.Debug.WriteLine("herenere");
-                        // var claims = userContext.Claims.All(userClaim => userClaim.Id == account.Id);
-                        //var claims = userContext.Claims.Select(userClaim => userClaim.Id == account.Id);
-                        //if (claims == null)
+                        var userSecurityQuestion = (from securityQuestion in userContext.SecurityQuestions
+                                 where securityQuestion.Id == userAccount.Id
+                                 select securityQuestion).FirstOrDefault();
+
+
+                        var userPasswordSalts = (from passwordSalt in userContext.PasswordSalts
+                                                 where passwordSalt.Id == userAccount.Id
+                                                 select passwordSalt).FirstOrDefault();
+
+                        var userTokens = (from tokens in userContext.Tokens
+                                          where tokens.Id == userAccount.Id
+                                          select tokens).FirstOrDefault();
+
+                        var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
+                                                       where restaurantMenuItems.Id == userAccount.Id
+                                                       select restaurantMenuItems).FirstOrDefault();
+
+                        var userRestaurantMenus = (from restaurantMenus in userContext.RestaurantMenus
+                                                   where restaurantMenus.Id == userAccount.Id
+                                                   select restaurantMenus).FirstOrDefault();
+
+                        var userBusinessHours = (from businessHours in userContext.BussinessHours
+                                                 where businessHours.Id == userAccount.Id
+                                                 select businessHours).FirstOrDefault();
+
+                        var userRestaurantProfiles = (from restaurantProfiles in userContext.RestaurantProfiles
+                                                      where restaurantProfiles.Id == userAccount.Id
+                                                      select restaurantProfiles).FirstOrDefault();
+                        var userProfiles = (from profiles in userContext.UserProfiles
+                                            where profiles.Id == userAccount.Id
+                                            select profiles).FirstOrDefault();
+
+                        var userClaims = (from claims in userContext.Claims
+                                          where claims.Id == userAccount.Id
+                                          select claims).ToList();//Fails with claims...
+
+                        //UserClaims claim = new UserClaims//x
                         //{
-                        //    //System.Diagnostics.Debug.WriteLine("here");
-                        //}
-                        //userContext.Claims.Remove(userContext.Claims.(userClaim => userClaim.Id == account.Id));//Doesn't work
-                                                                                                                              //userContext.Claims.Remove(userContext.Claims.FirstOrDefault(userClaim => userClaim.Id == account.Id));//Doesn't work
-                                                                                                                              //userContext.UserAccounts.Remove(userContext.UserAccounts.FirstOrDefault(userAccount => userAccount.Id == account.Id));//Fail
+                        //    Id = userAccount.Id
+                        //};
+                        //userContext.Claims.Attach(claim);//x
+                       
+                        
+                        if (userSecurityAnswerSalt != null)
+                        {
+                            userContext.SecurityAnswerSalts.Remove(userSecurityAnswerSalt);
+                        }
+                        if (userSecurityQuestion != null)
+                        {
+                            userContext.SecurityQuestions.Remove(userSecurityQuestion);
+                        }
+                        if (userPasswordSalts != null)
+                        {
+                            userContext.PasswordSalts.Remove(userPasswordSalts);
+                        }
+                        if (userTokens != null)
+                        {
+                            userContext.Tokens.Remove(userTokens);
+                        }
+                        if (userRestaurantMenuItems != null)
+                        {
+                            userContext.RestaurantMenuItems.Remove(userRestaurantMenuItems);
+                        }
+                        if (userRestaurantMenus != null)
+                        {
+                            userContext.RestaurantMenus.Remove(userRestaurantMenus);
+                        }
+                        if (userBusinessHours != null)
+                        {
+                            userContext.BussinessHours.Remove(userBusinessHours);
+                        }
+                        if (userRestaurantProfiles != null)
+                        {
+                            userContext.RestaurantProfiles.Remove(userRestaurantProfiles);
+                        }
+                        if (userProfiles != null)
+                        {
+                            userContext.UserProfiles.Remove(userProfiles);
+                        }
+                        if (userClaims != null)
+                        {
+                           // userContext.Claims.Remove(userClaims);
+                        }
+                        if (userAccount != null)
+                        {
+                            userContext.UserAccounts.Remove(userAccount);
+                        }
                         userContext.SaveChanges();
-                            dbContextTransaction.Commit();
+                        dbContextTransaction.Commit();
                         return new ResponseDto<bool>()
                         {
                             Data = true

@@ -38,6 +38,9 @@ namespace CSULB.GetUsGrub.Models
             {
                 var entries = new Collection<ClaimsEntry>();
 
+                // Exit early
+                if (Claims == null) return entries; //Used for linq since claim is initially null
+
                 foreach(var claim in Claims)
                 {
                     entries.Add(new ClaimsEntry()
@@ -46,10 +49,8 @@ namespace CSULB.GetUsGrub.Models
                         Value = claim.Value
                     });
                 }
-
                 return entries;
             }
-
             set {
                 var claims = new Collection<Claim>();
 
@@ -59,7 +60,6 @@ namespace CSULB.GetUsGrub.Models
                 }
             }
         }
-
         public string ClaimsJson
         {
             get => JsonConvert.SerializeObject(Entries);

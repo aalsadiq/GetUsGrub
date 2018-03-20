@@ -1,22 +1,21 @@
 <template>
-  <v-form :rules=ValidatePrice
-          v-model="valid"
+  <v-form v-model="valid"
           ref="dictionaryInputForm"
           class="dictionaryInput"
           lazy-validation>
     <v-text-field label="Item Name"
                   :rules="[rules.required]"
-                  v-model="menuItemName"
+                  v-model="name"
                   required />
     <v-text-field label="Item Price"
                   :rules="[rules.required, rules.nonzero, rules.max]"
                   prefix="$"
-                  v-model.lazy="menuItemPrice"
+                  v-model.lazy="price"
                   v-money="money"
                   required />
     <v-btn color="teal"
            dark
-           v-on:click="AddToDictionary(menuItemName, menuItemPrice)">
+           v-on:click="AddToDictionary(name, price)" >
       Add To Dictionary
     </v-btn>
     <v-btn color="teal"
@@ -37,13 +36,12 @@ export default {
   components: {
     axios
   },
-  directives: { money: VMoney },
   data () {
     return {
       valid: true,
       maxValue: 1000,
-      menuItemName: '',
-      menuItemPrice: null,
+      name: '',
+      price: null,
       rules: {
         required: (value) => (!!value) || 'Required.',
         nonzero: (value) => value !== 0 || 'Price must not be 0.',
@@ -60,24 +58,19 @@ export default {
       }
     }
   },
+  directives: { money: VMoney },
   methods: {
-    AddToDictionary: function (menuItemName, menuItemPrice) {
+    AddToDictionary: function (name, price) {
       if (this.$refs.dictionaryInputForm.validate()) {
-        this.$store.dispatch('AddToDictionary', [menuItemName, menuItemPrice])
+        console.log('Add Form Validated')
+        this.$store.dispatch('AddToDictionary', [name, price])
       }
     },
     ValidatePrice: function () {
       return true
     },
     log: function () {
-      axios.get('https://jsonplaceholder.typicode.com/posts/1')
-        .then(function (response) {
-          console.log(response)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-      console.log(this.menuItemPrice)
+      console.log(this.$refs.dictionaryInputForm)
     }
   },
   computed: {

@@ -1,0 +1,13 @@
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\CSULB.GetUsGrub.DataAccess.dll
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\CSULB.GetUsGrub.DataAccess.pdb
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\obj\Debug\CSULB.GetUsGrub.DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\obj\Debug\CSULB.GetUsGrub.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\obj\Debug\CSULB.GetUsGrub.DataAccess.dll
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\obj\Debug\CSULB.GetUsGrub.DataAccess.pdb
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\CSULB.GetUsGrub.DataAccess.dll.config
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\CSULB.GetUsGrub.Models.dll
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\EntityFramework.dll
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\CSULB.GetUsGrub.Models.pdb
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\EntityFramework.xml
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.DataAccess\bin\Debug\EntityFramework.SqlServer.xml

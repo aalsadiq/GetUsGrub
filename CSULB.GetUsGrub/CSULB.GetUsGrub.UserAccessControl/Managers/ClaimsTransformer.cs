@@ -58,7 +58,10 @@ namespace CSULB.GetUsGrub.UserAccessControl
             // Get user's list of claims from databases
             // var gateway = new UserAccessGateway(); ???
             // claims = gateway.GetClaimsByUsername(username); ???
-
+            using(var gateway = new AuthorizationGateway())
+            {
+                var claims = gateway.GetClaimsByUsername(username);
+            }
             // For testing
             ClaimsFactory factory = new ClaimsFactory();
             List<Claim> claims = factory.CreateAdminClaims().ToList();

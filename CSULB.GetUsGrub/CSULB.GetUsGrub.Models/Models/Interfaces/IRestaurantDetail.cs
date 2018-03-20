@@ -1,13 +1,6 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    /// <summary>
-    /// Additional restraurant information interface
-    /// 
-    /// @author: Andrew Kao
-    /// @updated: 3/15/18
-    /// @lastchange: Removed Category
-    /// </summary>
-    interface IRestaurantDetail
+    public interface IRestaurantDetail
     {
         string Category { get; set; }
 

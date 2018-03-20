@@ -9,11 +9,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// The <c>BusinessHourValidator</c> class.
     /// Defines rules to validate a BusinessHour.
     /// <para>
-    /// @author: Jennifer Nguyen, Andrew Kao
-    /// @updated: 03/18/2018
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/11/2018
     /// </para>
     /// </summary>
-    public class BusinessHourValidator : AbstractValidator<IBusinessHour>
+    public class BusinessHourValidator : AbstractValidator<BusinessHour>
     {
         public BusinessHourValidator()
         {

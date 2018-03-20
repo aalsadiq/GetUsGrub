@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contexts\AuthenticationContext.cs" />
+    <Compile Include="Contexts\AuthorizationContext.cs" />
     <Compile Include="Contexts\IndividualProfileContext.cs" />
     <Compile Include="Contexts\RestaurantContext.cs" />
     <Compile Include="Contexts\SsoContext.cs" />

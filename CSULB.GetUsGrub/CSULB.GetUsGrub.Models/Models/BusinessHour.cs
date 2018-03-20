@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
@@ -34,11 +33,9 @@ namespace CSULB.GetUsGrub.Models
         public string Day { get; set; }
 
         [Required]
-        [DataType(DataType.Time)]
         public string OpenTime { get; set; }
 
         [Required]
-        [DataType(DataType.Time)]
         public string CloseTime { get; set; }
 
         // Navigation Properties

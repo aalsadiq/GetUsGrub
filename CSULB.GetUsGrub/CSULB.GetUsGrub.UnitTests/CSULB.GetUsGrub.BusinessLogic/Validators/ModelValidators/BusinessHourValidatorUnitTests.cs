@@ -25,8 +25,7 @@ namespace CSULB.GetUsGrub.UnitTests
             {
                 Day = "Monday",
                 OpenTime = "8:00",
-                CloseTime = "23:00",
-                TimeZone = "PST"
+                CloseTime = "23:00"
             };
 
             // Act

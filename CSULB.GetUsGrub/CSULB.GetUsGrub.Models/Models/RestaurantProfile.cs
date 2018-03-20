@@ -5,14 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
-    /// Restaurant profile class
-    /// 
-    /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// The <c>RestaurantProfile</c> class.
+    /// Defines properties pertaining to user account.
+    /// <para>
+    /// @author: Andrew Kao, Jennifer Nguyen
+    /// @updated: 03/11/2018
+    /// </para>
     /// </summary>
-
-    [Table("GetUsGrub.RestaurantProfiles")]
-    public class RestaurantProfile : IRestaurantProfile, IRestaurantDetail
+    [Table("GetUsGrub.RestaurantProfile")]
+    public class RestaurantProfile : IRestaurantProfile, IEntity
     {
         public RestaurantProfile() { }
 
@@ -26,19 +27,12 @@ namespace CSULB.GetUsGrub.Models
         }
 
         [Key]
+        [ForeignKey("UserProfile")]
         public int? Id { get; set; }
-
-        [ForeignKey("GetUsGrub.UserProfiles")]
-        public int? UserId { get; set; }
-
-        [Required]
-        public string RestaurantName { get; set; }
-
-        [Required]
+        public string PhoneNumber { get; set; }
         public Address Address { get; set; }
-
+        public RestaurantDetail Details { get; set; }
         public double Latitude { get; set; }
-
         public double Longitude { get; set; }
         // TODO: @Rachel Need to include Food Preference List in RestaurantProfile [-Jenn]
         

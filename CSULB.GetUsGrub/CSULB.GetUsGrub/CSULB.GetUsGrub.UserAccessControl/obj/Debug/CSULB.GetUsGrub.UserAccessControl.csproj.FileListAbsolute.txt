@@ -1,0 +1,6 @@
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.UserAccessControl\bin\Debug\CSULB.GetUsGrub.UserAccessControl.dll
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.UserAccessControl\bin\Debug\CSULB.GetUsGrub.UserAccessControl.pdb
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.UserAccessControl\obj\Debug\CSULB.GetUsGrub.UserAccessControl.csproj.CoreCompileInputs.cache
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.UserAccessControl\obj\Debug\CSULB.GetUsGrub.UserAccessControl.dll
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.UserAccessControl\obj\Debug\CSULB.GetUsGrub.UserAccessControl.pdb
+C:\Users\Jenn\Desktop\New-Github\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.UserAccessControl\obj\Debug\CSULB.GetUsGrub.UserAccessControl.csprojResolveAssemblyReference.cache

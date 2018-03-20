@@ -25,7 +25,8 @@ namespace CSULB.GetUsGrub.UnitTests
             {
                 Day = "Monday",
                 OpenTime = "8:00",
-                CloseTime = "23:00"
+                CloseTime = "23:00",
+                TimeZone = "PST"
             };
 
             // Act
@@ -223,6 +224,25 @@ namespace CSULB.GetUsGrub.UnitTests
             isValid.Should().Be(false);
             errors.Count.Should().Be(1);
             errors[0].ToString().Should().Be("Time must be from 0:00 to 23:59.");
+        }
+
+        [Fact]
+        public void Should_FailValidtion_When_OpenTimeIsAfterCloseTime()
+        {
+            // Arrange
+            var businessHourValidator = new BusinessHourValidator();
+            var businessHour = new BusinessHour()
+            {
+                Day = "Monday",
+                OpenTime = "23:12",
+                CloseTime = "23:00"
+            };
+
+            // Act
+            var result = businessHourValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHour.OpenTime, businessHour.CloseTime);
+
+            // Assert
+            result.Should().Be(false);
         }
     }
 }

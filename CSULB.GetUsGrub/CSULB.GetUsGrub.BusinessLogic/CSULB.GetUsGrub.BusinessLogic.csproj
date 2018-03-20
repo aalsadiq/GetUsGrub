@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.7.5.1\lib\net45\FluentValidation.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.7.5.2\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation.WebApi, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.WebApi.7.5.1\lib\net45\FluentValidation.WebApi.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.WebApi.7.5.2\lib\net45\FluentValidation.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Logging, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Logging.5.2.1\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
@@ -73,14 +73,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Managers\UserManager.cs" />
+    <Compile Include="Managers\Interfaces\IProfileManager.cs" />
+    <Compile Include="Managers\RestaurantProfileManager.cs" />
+    <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditRestaurantUserProfilePreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Mappers\RestaurantProfileMapper.cs" />
     <Compile Include="Mappers\SecurityQuestionMapper.cs" />
     <Compile Include="Mappers\UserAccountMapper.cs" />
     <Compile Include="Mappers\UserProfileMapper.cs" />
+    <Compile Include="Services\Interfaces\IValidationWrapper.cs" />
     <Compile Include="Services\PayloadHasher.cs" />
     <Compile Include="Services\SaltGenerator.cs" />
+    <Compile Include="Services\ValidationWrapper.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeSsoUserPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPostLogicValidationStrategy.cs" />
@@ -93,12 +101,14 @@
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
     <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />
     <Compile Include="Validators\ModelValidators\PasswordSaltValidator.cs" />
+    <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
+    <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantProfileValidator.cs" />
     <Compile Include="Validators\ModelValidators\SecurityAnswerSaltValidator.cs" />
     <Compile Include="Validators\ModelValidators\SecurityQuestionValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAccountValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserProfileValidator.cs" />
-    <Compile Include="Validators\UserValidator.cs" />
+    <Compile Include="Validators\ModelValidators\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -119,7 +129,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Managers\Interfaces\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

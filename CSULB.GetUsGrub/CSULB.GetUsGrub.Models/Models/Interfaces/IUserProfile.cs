@@ -1,16 +1,14 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
-    /// The IUserProfile interface.
-    /// A contract with defined properties for the UserProfile class.
-    /// <para>
-    /// @author: Jennifer Nguyen
-    /// @updated: 03/10/2018
-    /// </para>
+    /// Basic profile interface
+    /// @author: Andrew Kao
+    /// @updated: 3/11/18
     /// </summary>
     public interface IUserProfile
     {
-        string DisplayPicture { get; }
-        string DisplayName { get; }
+        string DisplayName { get; set; }
+
+        string DisplayPicture { get; set; }
     }
 }

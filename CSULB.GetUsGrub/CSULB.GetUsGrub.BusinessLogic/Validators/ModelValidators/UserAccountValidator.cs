@@ -27,9 +27,31 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull();
 
                 RuleFor(x => x.IsActive)
+                    .NotEmpty()
                     .NotNull();
 
                 RuleFor(x => x.IsFirstTimeUser)
+                    .NotEmpty()
+                    .NotNull();
+            });
+
+            RuleSet("SsoRegistration", () =>
+            {
+                RuleFor(x => x.Username)
+                    .NotEmpty()
+                    .NotNull()
+                    .Matches(@"^[A-Za-z\d]+$");
+
+                RuleFor(x => x.Password)
+                    .NotEmpty()
+                    .NotNull();
+
+                RuleFor(x => x.IsFirstTimeUser)
+                    .NotEmpty()
+                    .NotNull();
+
+                RuleFor(x => x.RoleType)
+                    .NotEmpty()
                     .NotNull();
             });
         }

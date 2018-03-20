@@ -63,5 +63,23 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.BusinessLogic.Services
             // Assert
             firstHash.Should().NotMatch(secondHash);
         }
+
+        [Fact]
+        public void Should_ReturnTrue_When_RawSignatureIsSameAsSignature()
+        {
+            // Arrange
+            var payloadHasher = new PayloadHasher();
+            var secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+            var rawSignature = "kNOwv3BKRkVXoJz4NSuOo_qxsPC9ltQw1oX_RBPrqgU";
+            var headerAndPayload = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lMDEiLCJwYXNzd29yZCI6InBhc3N3b3JkMDEiLCJhcHBsaWNhdGlvbiI6IkdldFVzR3J1YiIsInJvbGVUeXBlIjoicHVibGljIiwiaWF0IjoxNTE2MjM5MDIyfQ";
+
+            // Act
+            var signature = payloadHasher.Sha256HashWithSalt(salt: secret, payload: headerAndPayload);
+            var result = (signature == rawSignature);
+
+            // Assert
+            signature.Should().Be("asdasdas");
+            result.Should().BeTrue();
+        }
     }
 }

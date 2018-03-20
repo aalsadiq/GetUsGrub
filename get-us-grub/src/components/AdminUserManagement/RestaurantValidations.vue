@@ -73,16 +73,21 @@ export default {
       phoneNumber: '',
       businessHours: []
     },
+      businessHour: {
+        day: '',
+        openTime: null,
+        closeTime: null
+      },
     addressStreet1Rules: [
-      v => !!v || 'Street 1 is required'
+      street1 => !!street1 || 'Street 1 is required'
     ],
     addressZipRules: [
-      v => !!v || 'Zip code is required',
-      v => /^\d{5}$/.test(v) || 'Zip code must contain 5 numbers'
+      zip => !!zip || 'Zip code is required',
+      zip => /^\d{5}$/.test(v) || 'Zip code must contain 5 numbers'
     ],
     phoneNumberRules: [
-      v => !!v || 'Phone number is required',
-      v => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(v) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
+      phone => !!phone || 'Phone number is required',
+      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(v) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
     ],
     dayOfWeek: [
       'Sunday',

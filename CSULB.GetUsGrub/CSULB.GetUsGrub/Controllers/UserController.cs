@@ -112,7 +112,6 @@ namespace CSULB.GetUsGrub.Controllers
         // POST Registration/User
         [HttpPost]
         // Opts authentication
-        [AllowAnonymous]
         [Route("User/Admin/Create")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
@@ -175,8 +174,11 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 var manager = new UserManager();
                 var response = manager.DeleteUser(username);
-                return Ok(response);
-
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                return Created("User has been deleted: ", username);
             }
             catch (Exception ex)
             {
@@ -204,13 +206,17 @@ namespace CSULB.GetUsGrub.Controllers
                     //var modelState = ActionContext.ModelState;
                     //ActionContext.Response = ActionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, modelState);//Returns the action context
                 return BadRequest(ModelState);
-            }
+                }
                 try
                 {
                     var manager = new UserManager();//calling appropriate manager.
                     var response = manager.DeactivateUser(username);
-
-                    return Ok(response);//Returns a deactivated user response.
+                    if (response.Error != null)
+                    {
+                        return BadRequest(response.Error);
+                    }
+                return Created("User has been deactivated: ", username);//@Jenn What does this do?
+                //return Ok(response);//Returns a deactivated user response.
                 }
                 catch (Exception ex)
                 {
@@ -242,7 +248,11 @@ namespace CSULB.GetUsGrub.Controllers
                 var manager = new UserManager();
                 var response = manager.ReactivateUser(username);
 
-                return Ok(response);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                return Created("User has been reactivated: ", username);//@Jenn What does this do?
             }
             catch (Exception ex)
             {
@@ -258,9 +268,9 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
 
         //PUT AdminHome/EditUser
-        [Route("EditUser")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
-        [HttpPut]
+        //[Route("EditUser")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        //[HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
             if (!ModelState.IsValid)
@@ -270,9 +280,13 @@ namespace CSULB.GetUsGrub.Controllers
             try
             {
                 var manager = new UserManager();
-                var response = manager.EditUser(user);
+                var response = manager.edituser(user);
 
-                return Ok(response);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                return Created("User has been edited: ", user);//@Jenn What does this do?
             }
             catch (Exception ex)
             {

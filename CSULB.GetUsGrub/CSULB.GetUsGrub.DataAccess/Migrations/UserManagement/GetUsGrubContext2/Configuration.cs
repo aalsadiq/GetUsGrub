@@ -1,7 +1,6 @@
-namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
+namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubContext2
 {
     using CSULB.GetUsGrub.Models;
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -15,7 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            MigrationsDirectory = @"Migrations\UserManagement\GetUsGrubUsers";
+            MigrationsDirectory = @"Migrations\UserManagement\GetUsGrubContext2";
         }
 
         protected override void Seed(CSULB.GetUsGrub.DataAccess.UserContext context)
@@ -23,7 +22,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            //  to avoid creating duplicate seed data
             var users = new List<UserAccount>()
             {
                new UserAccount ("User1", "password123!@", true, true),
@@ -38,10 +37,12 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
                new UserAccount ("User10", "password123!@", true, true),
             };
 
-
+            //var users = new UserAccount("User1", "password123!@", true, true);
+            //var username = users.Username;
             //users.ForEach(newUser => context.UserAccounts.AddOrUpdate(newUser)); //Adding users to database
             //context.UserAccounts.AddOrUpdate(x => x.Username, users);
-            context.UserAccounts.AddOrUpdate(x => x.Username, (users.ToArray()));
+            context.UserAccounts.AddOrUpdate(userAccount => userAccount.Username, (users.ToArray()));
+            //context.UserAccounts.AddOrUpdate(userAccount => userAccount.Username, (users));
             context.SaveChanges();//Save the changes
 
             //enable - migrations - ContextTypeName CSULB.GetUsGrub.DataAccess.UserContext - MigrationsDirectory:Migrations\testUsermanagement
@@ -63,22 +64,21 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
                new UserProfile() { Id = 10, DisplayPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\ProfileImages\\EmptyProfile.png", DisplayName = "DisplayName10"}
             };
             context.UserProfiles.AddOrUpdate(x => x.Id, (userProfiles.ToArray()));
-            context.SaveChanges();//Save the changes
-                                  //Works
-                                  //PasswordSalts seed
+            //context.SaveChanges();//Save the changes
+            //Works
+            //PasswordSalts seed
             var userPasswordSalts = new List<PasswordSalt>()
             {
-               new PasswordSalt("salt1"),
-               new PasswordSalt("salt2"),
-               new PasswordSalt("salt3"),
-               new PasswordSalt("salt4"),
-               new PasswordSalt("salt5"),
-               new PasswordSalt("salt6"),
-               new PasswordSalt("salt7"),
-               new PasswordSalt("salt8"),
-               new PasswordSalt("salt9"),
-               new PasswordSalt("salt10"),
-
+               new PasswordSalt("salt1"){ Id = 1},
+               new PasswordSalt("salt2"){ Id = 2},
+               new PasswordSalt("salt3"){ Id = 3},
+               new PasswordSalt("salt4"){ Id = 4},
+               new PasswordSalt("salt5"){ Id = 5},
+               new PasswordSalt("salt6"){ Id = 6},
+               new PasswordSalt("salt7"){Id = 7},
+               new PasswordSalt("salt8"){Id = 8 },
+               new PasswordSalt("salt9"){Id = 9 },
+               new PasswordSalt("salt10"){Id = 10 },
             };
             context.PasswordSalts.AddOrUpdate(x => x.Id, (userPasswordSalts.ToArray()));
             context.SaveChanges();//Save the changes

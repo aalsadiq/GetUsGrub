@@ -1,7 +1,6 @@
-namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
+namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserContex
 {
     using CSULB.GetUsGrub.Models;
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -15,7 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            MigrationsDirectory = @"Migrations\UserManagement\GetUsGrubUsers";
+            MigrationsDirectory = @"Migrations\UserManagement\GetUsGrubUserContex";
         }
 
         protected override void Seed(CSULB.GetUsGrub.DataAccess.UserContext context)
@@ -38,10 +37,12 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
                new UserAccount ("User10", "password123!@", true, true),
             };
 
-
+            //var users = new UserAccount("User1", "password123!@", true, true);
+            //var username = users.Username;
             //users.ForEach(newUser => context.UserAccounts.AddOrUpdate(newUser)); //Adding users to database
             //context.UserAccounts.AddOrUpdate(x => x.Username, users);
-            context.UserAccounts.AddOrUpdate(x => x.Username, (users.ToArray()));
+            context.UserAccounts.AddOrUpdate(userAccount => userAccount.Username, (users.ToArray()));
+            //context.UserAccounts.AddOrUpdate(userAccount => userAccount.Username, (users));
             context.SaveChanges();//Save the changes
 
             //enable - migrations - ContextTypeName CSULB.GetUsGrub.DataAccess.UserContext - MigrationsDirectory:Migrations\testUsermanagement
@@ -63,9 +64,9 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
                new UserProfile() { Id = 10, DisplayPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\ProfileImages\\EmptyProfile.png", DisplayName = "DisplayName10"}
             };
             context.UserProfiles.AddOrUpdate(x => x.Id, (userProfiles.ToArray()));
-            context.SaveChanges();//Save the changes
-                                  //Works
-                                  //PasswordSalts seed
+            //context.SaveChanges();//Save the changes
+            //Works
+            //PasswordSalts seed
             var userPasswordSalts = new List<PasswordSalt>()
             {
                new PasswordSalt("salt1"),
@@ -80,7 +81,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUsers
                new PasswordSalt("salt10"),
 
             };
-            context.PasswordSalts.AddOrUpdate(x => x.Id, (userPasswordSalts.ToArray()));
+            //context.PasswordSalts.AddOrUpdate(x => x.Id, (userPasswordSalts.ToArray()));
+            userPasswordSalts.ForEach(x => context.PasswordSalts.AddOrUpdate(x));
             context.SaveChanges();//Save the changes
                                   //SecurityAnswerSalts
                                   ////SecurityQuestions seed

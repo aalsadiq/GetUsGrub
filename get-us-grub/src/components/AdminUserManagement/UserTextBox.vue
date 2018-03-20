@@ -22,8 +22,8 @@ export default {
     validIdentificationInput: false,
     username: '',
     usernameRules: [
-      v => !!v || 'Username is required',
-      v => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
+      username => !!username || 'Username is required',
+      username => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
     ]
   })
 }

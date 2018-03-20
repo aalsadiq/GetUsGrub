@@ -15,6 +15,14 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.UserAccount")]
     public class UserAccount : IUserAccount, IEntity
     {
+        public UserAccount()
+        {
+            Username = "";
+            Password = "";
+            IsActive = false;
+            IsFirstTimeUser = false;
+            RoleType = "";
+        }
         public UserAccount(string username)
         {
             Username = username;

@@ -72,23 +72,23 @@ export default {
     'app-restaurant-validations': AppRestaurantValidations
   },
   data: () => ({
-    checkboxUsername: false,
-    checkboxDisplayName: false,
-    checkboxPassword: false,
-    checkBoxStreet1: false,
-    checkBoxStreet2: false,
-    checkboxCity: false,
-    checkBoxState: false,
-    checkboxPhoneNumber: false,
-    checkBoxBusinessHours: false,
+    // checkboxUsername: false,
+    // checkboxDisplayName: false,
+    // checkboxPassword: false,
+    // checkBoxStreet1: false,
+    // checkBoxStreet2: false,
+    // checkboxCity: false,
+    // checkBoxState: false,
+    // checkboxPhoneNumber: false,
+    // checkBoxBusinessHours: false,
     check: false,
     validIdentificationInput: false,
+    // userAccount: {
+    //   username: '',
+    //   displayname: '',
+    //   password: ''
+    // },
     userAccount: {
-      username: '',
-      displayname: '',
-      password: ''
-    },
-    restaurantAccount: {
       username: '',
       displayname: '',
       password: '',
@@ -100,8 +100,8 @@ export default {
       businesshours: ''
     },
     usernameRules: [
-      v => !!v || 'Username is required',
-      v => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
+      username => !!username || 'Username is required',
+      username => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
     ]
   }),
   methods: {
@@ -119,7 +119,7 @@ export default {
     },
     userAndAdminSubmit () {
       axios.put('http://localhost:8081/User/Admin/EditUser', {
-        username: this.username
+        editUser: this.userAccount
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
@@ -129,20 +129,20 @@ export default {
         this.responseData = error.response.data
         console.log(error.response.data)
       })
-    },
-    restaurantSubmit () {
-      axios.put('http://localhost:8081/User/Admin/EditRestaurant', {
-        username: this.username// test
-      }).then(response => {
-        this.responseDataStatus = 'Success! User has been created: '
-        this.responseData = response.data
-        console.log(response)
-      }).catch(error => {
-        this.responseDataStatus = 'An error has occurred: '
-        this.responseData = error.response.data
-        console.log(error.response.data)
-      })
-    }
+    }//,
+    // restaurantSubmit () {
+    //   axios.put('http://localhost:8081/User/Admin/EditRestaurant', {
+    //     username: this.username// test
+    //   }).then(response => {
+    //     this.responseDataStatus = 'Success! User has been created: '
+    //     this.responseData = response.data
+    //     console.log(response)
+    //   }).catch(error => {
+    //     this.responseDataStatus = 'An error has occurred: '
+    //     this.responseData = error.response.data
+    //     console.log(error.response.data)
+    //   })
+    // }
   }
 }
 </script>

@@ -207,26 +207,29 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 Data = registerRestaurantDto
             };
         }
-        
+
         /// <summary>
-        /// @author Jennifer, Angelica
+        /// The CreateIndividualUser method.
+        /// Contains business logic to create an individual user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
         /// </summary>
         /// <param name="registerUserDto"></param>
-        /// <returns></returns>
+        /// <returns>ResponseDto</returns>
         public ResponseDto<RegisterUserDto> CreateAdmin(RegisterUserDto registerUserDto)
         {
             var createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerUserDto);
-            var userAccountMapper = new UserAccountMapper();
             var securityQuestionMapper = new SecurityQuestionMapper();
             var userProfileMapper = new UserProfileMapper();
             var securityAnswerSalts = new List<SecurityAnswerSalt>();
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
-            System.Diagnostics.Debug.WriteLine("UserManager1");
+
             // Validate data transfer object
             var result = createIndividualPreLogicValidationStrategy.ExecuteStrategy();
-            System.Diagnostics.Debug.WriteLine("UserManager2");
             if (result.Error != null)
             {
                 return new ResponseDto<RegisterUserDto>
@@ -236,86 +239,143 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-        // TODO: @Jenn
-        public ResponseDto<bool> CreateFirstTimeSsoUser(UserAccountDto userAccountDto)
-        {
-            var createFirstTimeSsoUserPreLogicStrategy = new CreateFirstTimeSsoUserPreLogicValidationStrategy(userAccountDto);
-            var saltGenerator = new SaltGenerator();
-            var payloadHasher = new PayloadHasher();
-
-            // Validate data transfer object
-            var result = createFirstTimeSsoUserPreLogicStrategy.ExecuteStrategy();
-            if (result.Error != null)
-            {
-                return new ResponseDto<bool>
-                {
-                    Data = false,
-                    Error = result.Error
-                };
-            }
+            // Map data transfer object to domain models
+            var userAccount = new UserAccount(registerUserDto.UserAccountDto);
+            var securityQuestions = registerUserDto.SecurityQuestionDtos
+                                        .Select(securityQuestionDto => securityQuestionMapper.MapDtoToModel(securityQuestionDto))
+                                        .ToList();
+            var userProfile = userProfileMapper.MapDtoToModel(registerUserDto.UserProfileDto);
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
-            var userAccount = new UserAccount(userAccountDto);
             userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
-            var createFirstTimeSsoUserPostLogicStrategy = new CreateFirstTimeSsoUserPostLogicValidationStrategy(userAccount, passwordSalt);
-            result = createFirstTimeSsoUserPostLogicStrategy.ExecuteStrategy();
-            if (result.Error != null)
+            // Hash security answers
+            for (var i = 0; i < securityQuestions.Count; i++)
             {
-                return new ResponseDto<bool>
+                securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
+                securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
+            }
+
+            // Set claims
+            var claims = new UserClaims
+            {
+                Claims = claimsFactory.CreateAdminClaims()//Gives admin claims
+            };
+
+            // Set UserAccount to active
+            userAccount.IsActive = true;
+
+            // Set UserAccount is not first time user
+            userAccount.IsFirstTimeUser = false;
+
+            // Validate domain models
+            var createIndividualPostLogicValdiationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, claims, userProfile);
+            var validateResult = createIndividualPostLogicValdiationStrategy.ExecuteStrategy();
+            if (!validateResult)
+            {
+                return new ResponseDto<RegisterUserDto>
                 {
-                    Data = false,
-                    Error = result.Error
+                    Data = registerUserDto,
+                    Error = "Something went wrong. Please try again later."
                 };
             }
 
-            return new ResponseDto<bool>()
+            // Store user in database
+            using (var userGateway = new UserGateway())
             {
-                Data = true
+                var gatewayResult = userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile);
+                if (gatewayResult.Data == false)
+                {
+                    return new ResponseDto<RegisterUserDto>()
+                    {
+                        Data = registerUserDto,
+                        Error = gatewayResult.Error
+                    };
+                }
+            }
+            return new ResponseDto<RegisterUserDto>
+            {
+                Data = registerUserDto
             };
         }
-
-        public bool DeactivateUser(string username)
-        {
-            //Validate DTO - in this case validate if it follows business rule names
-            //Map to Domain Models - In this case I don't believe I need to model bind
-            //Apply Business Logic - validating username rules?
-            //Validate Domain Model - Domain model has not changed.
-
-            using (var gateway = new UserGateway())
-            {
-                return gateway.DeactivateUser(username);
-            }
-        }
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public bool ReactivateUser(string username)
+        public ResponseDto<bool> DeactivateUser(string username)
         {
             using (var gateway = new UserGateway())
             {
-                return gateway.ReactivateUser(username);
+                var gatewayResult = gateway.DeactivateUser(username);
+
+                if (gatewayResult.Data == false)//If gateway has failed return false
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = gatewayResult.Error
+                    };
+                }
+                return new ResponseDto<bool>//If gateway was successful return true
+                {
+                    Data = true
+                };
             }
         }
 
-        /// <summary>
-        /// Manager that will handle business logic for delete user along with calling UserGateway.
-        /// </summary>
-        /// @author Angelica
-        /// @Last Update: 03/10/2018
-        /// <param name="username"></param>
-        /// <returns></returns>
-        public bool DeleteUser(string username)//RegisterRestaurantUserDto
-        {
-            using (var gateway = new UserGateway())
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="username"></param>
+            /// <returns></returns>
+            public ResponseDto<string> ReactivateUser(string username)
             {
-                return gateway.DeleteUser(username);
+                using (var gateway = new UserGateway())
+                {
+                    var gatewayResult = gateway.ReactivateUser(username);
+                if (gatewayResult.Data == false)
+                {
+                    return new ResponseDto<string>()
+                    {
+                        Data = username,
+                        Error = gatewayResult.Error
+                    };
+                }
+                return new ResponseDto<string>
+                {
+                    Data = "Success!"
+                };
             }
-        }
+            }
+
+            /// <summary>
+            /// Manager that will handle business logic for delete user along with calling UserGateway.
+            /// </summary>
+            /// @author Angelica
+            /// @Last Update: 03/10/2018
+            /// <param name="username"></param>
+            /// <returns></returns>
+            public ResponseDto<string> DeleteUser(string username)
+            {
+                using (var gateway = new UserGateway())
+                {
+                    var gatewayResult = gateway.DeleteUser(username);
+                if (gatewayResult.Data == false)
+                {
+                    return new ResponseDto<string>()
+                    {
+                        Data = username,
+                        Error = gatewayResult.Error
+                    };
+                }
+                return new ResponseDto<string>
+                {
+                    Data = "Success!"
+                };
+            }
+            }
 
         /// <summary>
         /// Will take in a Registered User to modify
@@ -324,11 +384,23 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool EditUser(EditUserDto user)//RegisterRestaurantUserDto
+        public ResponseDto<EditUserDto> edituser(EditUserDto user)
         {
             using (var gateway = new UserGateway())
             {
-                return gateway.EditUser(user);//will return edited user
+                var gatewayresult = gateway.EditUser(user);
+                if (gatewayresult.Data == false)
+                {
+                    return new ResponseDto<EditUserDto>()
+                    {
+                        Data = user,
+                        Error = gatewayresult.Error
+                    };
+                }
+                return new ResponseDto<EditUserDto>
+                {
+                    Data = user
+                };
             }
         }
     }

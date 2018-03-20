@@ -302,29 +302,36 @@ namespace CSULB.GetUsGrub.DataAccess
         /// @updated 03-17-2018
         /// <param name="username">The user you want to deactivate</param>
         /// <returns></returns>
-        public bool DeactivateUser(string username)
+        public ResponseDto<bool> DeactivateUser(string username)
         {
             using (var userContext = new UserContext())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())//Transaction...
                 {
                     try
                     {
-                        var activeStatus = (from account in userContext.UserAccounts
-                                            where account.Username == username
-                                            select account).SingleOrDefault();
-                        if (activeStatus.IsActive == true)
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == username
+                                           select account).FirstOrDefault();
+                        if (userAccount.IsActive == true)
                         {
-                            activeStatus.IsActive = false;
+                            userAccount.IsActive = false;
                             userContext.SaveChanges();
                             dbContextTransaction.Commit();
                         }
-                        return true;
+                        return new ResponseDto<bool>()//Will return true if dbContextTransaction does not fail.
+                        {
+                            Data = true
+                        };
                     }
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;
+                        return new ResponseDto<bool>()//Will return a false ResponseDto<bool> if dbContextTransaction fails
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
             }
@@ -337,7 +344,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// @updated 03-17-2018
         /// <param name="username">The user you want to reactivate.</param>
         /// <returns></returns>
-        public bool ReactivateUser(string username)
+        public ResponseDto<bool> ReactivateUser(string username)
         {
             using (var userContext = new UserContext())
             {
@@ -354,12 +361,19 @@ namespace CSULB.GetUsGrub.DataAccess
                             userContext.SaveChanges();
                             dbContextTransaction.Commit();
                         }
-                        return true;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
                     }
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
             }
@@ -371,7 +385,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// @updated 03-17-2018
         /// <param name="username">The user you want to delete.</param>
         /// <returns></returns>
-        public bool DeleteUser(string username)
+        public ResponseDto<bool> DeleteUser(string username)
         {
             using (var userContext = new UserContext())
             {
@@ -402,17 +416,24 @@ namespace CSULB.GetUsGrub.DataAccess
                         //{
                         //    //System.Diagnostics.Debug.WriteLine("here");
                         //}
-                        userContext.Claims.Remove(userContext.Claims.(userClaim => userClaim.Id == account.Id));//Doesn't work
+                        //userContext.Claims.Remove(userContext.Claims.(userClaim => userClaim.Id == account.Id));//Doesn't work
                                                                                                                               //userContext.Claims.Remove(userContext.Claims.FirstOrDefault(userClaim => userClaim.Id == account.Id));//Doesn't work
                                                                                                                               //userContext.UserAccounts.Remove(userContext.UserAccounts.FirstOrDefault(userAccount => userAccount.Id == account.Id));//Fail
                         userContext.SaveChanges();
                             dbContextTransaction.Commit();
-                        return true;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
                     }
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
             }
@@ -426,7 +447,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// @updated 03-17-2018
         /// <param name="user">The user that will be edited.</param>
         /// <returns></returns>
-        public bool EditUser(EditUserDto user)
+        public ResponseDto<bool> EditUser(EditUserDto user)
         {
             using (var userContext = new UserContext())
             {
@@ -435,39 +456,48 @@ namespace CSULB.GetUsGrub.DataAccess
                     try
                     {
                         var userAccount = (from account in userContext.UserAccounts
-                                            where account.Username == user.Username
-                                            select account).SingleOrDefault();
-                        var resetPasswordResult = false;
+                                           where account.Username == user.Username
+                                           select account).SingleOrDefault();
+                        var resetPasswordResult = new ResponseDto<bool>();
                         if (user.NewPassword != null && user.NewPassword != userAccount.Password)
                         {
-                            resetPasswordResult = ResetPassword(user.Username,user.NewPassword);
+                            resetPasswordResult = ResetPassword(user.Username, user.NewPassword);
                         }
-                        var editDisplayNameResult = false;
+                        var editDisplayNameResult = new ResponseDto<bool>();
                         if (user.NewDisplayName != null && user.NewDisplayName != userAccount.UserProfile.DisplayName)
                         {
-                            editDisplayNameResult = EditDisplayName(user.Username, user.NewDisplayName);
+                           editDisplayNameResult = EditDisplayName(user.Username, user.NewDisplayName);
 
                         }
 
-                        var editUserNameResult = false;
+                        var editUserNameResult = new ResponseDto<bool>();
                         if (user.NewUsername != null && user.NewUsername != userAccount.Username)
                         {
 
-                            editUserNameResult = EditUserName(user.Username, user.NewUsername);
-
+                           editUserNameResult = EditUserName(user.Username, user.NewUsername);
                         }
 
-                       if(resetPasswordResult == true && editDisplayNameResult == true && editUserNameResult == true)
+                        if (resetPasswordResult.Data == true || editDisplayNameResult.Data == true || editUserNameResult.Data == true)
                         {
-                            return true;
+                            return new ResponseDto<bool>()
+                            {
+                                Data = true
+                            };
                         }
-                        return false;
-                        
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
             }
@@ -478,7 +508,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="username">The user you want to edit.</param>
         /// <param name="newUsername">The new username you want.</param>
         /// <returns></returns>
-        public bool EditUserName(string username, string newUsername)
+        public ResponseDto<bool> EditUserName(string username, string newUsername)
         {
             using (var userContext = new UserContext())
             {
@@ -493,12 +523,19 @@ namespace CSULB.GetUsGrub.DataAccess
                             userAccount.Username = newUsername;
                             userContext.SaveChanges();
                             dbContextTransaction.Commit();
-                            return true;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
                     }
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
             }
@@ -510,7 +547,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="username">The user you want to edit.</param>
         /// <param name="newDisplayName">The new display name you want to give the user.</param>
         /// <returns></returns>
-        public bool EditDisplayName(string username, string newDisplayName)
+        public ResponseDto<bool> EditDisplayName(string username, string newDisplayName)
         {
             using (var userContext = new UserContext())
             {
@@ -526,12 +563,19 @@ namespace CSULB.GetUsGrub.DataAccess
                             userContext.SaveChanges();
                             dbContextTransaction.Commit();
 
-                        return true;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
                     }
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
             }
@@ -542,7 +586,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="username"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        public bool ResetPassword(string username, string newPassword)//EditPassword
+        public ResponseDto<bool> ResetPassword(string username, string newPassword)//EditPassword
         {
             using (var userContext = new UserContext())
             {
@@ -558,12 +602,19 @@ namespace CSULB.GetUsGrub.DataAccess
                         userContext.SaveChanges();
                         dbContextTransaction.Commit();
 
-                        return true;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
                     }
                     catch (Exception)
                     {
                         dbContextTransaction.Rollback();
-                        throw;
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
                     }
                 }
             }

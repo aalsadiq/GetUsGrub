@@ -1,4 +1,5 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
+using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,169 +16,140 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         //Arrange
         public UserGateway userGateway = new UserGateway();//Creating user gateway so all tests can use the gateway
 
-        //[Fact]
-        //public void DeactivateUser_When_GivenUserNameUser1()
-        //{
-        //    //Act
-        //    var result = userGateway.DeactivateUser("User10");
+        [Fact]
+        public void DeactivateUser_When_GivenUserName()
+        {
+            //Act
+            var response = userGateway.DeactivateUser("User1");
+            //Assert
+            response.Data.Should().BeTrue();
+            response.Error.Should().BeNull();
+        }
 
-        //    //Assert
-        //    Assert.True(result);
-        //}
-
-        //[Fact]
-        //public void Should_DeactivateUser_When_Given_UserName_User2()
-        //{
-        //    //Act
-        //    var result = userGateway.DeactivateUser("User9");
-        //    //Assert
-        //    Assert.True(result);
-        //}
-
-        //[Fact]
-        //public void Should_ReactivateUser_When_Given_UserName_User1()
-        //{
-        //    //Act
-        //    var result = userGateway.ReactivateUser("User10");
-        //    //Assert
-        //    Assert.True(result);
-        //}
-
-        ////[Fact]
-        ////public void EditUserName_ValidEditUserName_Pass()//Fail...-It's okay thought! (should only have one fail)
-        ////{
-        ////    var result = userGateway.EditUserName("User1", "NewUser1");//because there is no user1 anymore... it's NewUser1
-        ////    Assert.True(result);
-        ////}
+        [Fact]
+        public void Should_ReactivateUser_When_Given_UserName_User1()
+        {
+            //Act
+            var response = userGateway.ReactivateUser("User4");
+            //Assert
+            response.Data.Should().BeTrue();
+            response.Error.Should().BeNull();
+        }
 
         //[Fact]
-        //public void EditUserName_InvalidEditUserName_Fail()
+        //public void EditUserName_ValidEditUserName_Pass()//Fail...-It's okay thought! (should only have one fail)
         //{
-        //    //Act
-        //    var result = userGateway.EditUserName("User5", "User5");
-        //    //Assert
-        //    result.Should().Be(true);
-        //}
-        //[Fact]
-        //public void EditDisplayName_ValidEditDisplayName_Pass()
-        //{
-        //    //Act
-        //    var result = userGateway.EditDisplayName("User3", "NewDisplayName3");
-        //    //Assert
-        //    result.Should().Be(true);
-        //}
-        //[Fact]
-        //public void EditDisplayName_InvalidEditDisplayName_Fail()
-        //{
-        //    //Act
-        //    var result = userGateway.EditDisplayName("User4", "DisplayName4");
-        //    //Assert
-        //    result.Should().Be(true);
+        //    var response = userGateway.EditUserName("User2", "NewUser2");//because there is no user1 anymore... it's NewUser1
+        //    response.Data.Should().BeTrue();
+        //    response.Error.Should().BeNull();
         //}
 
-        //[Fact]
-        //public void ResetPassword_ValidResetPassword_Pass()
-        //{
-        //    //Act
-        //    var result = userGateway.ResetPassword("User4", "NewPassword4!");
-        //    //Assert
-        //    result.Should().Be(true);
-        //}
+        [Fact]
+        public void EditUserName_InvalidEditUserName_Fail()
+        {
+            //Act
+            var response = userGateway.EditUserName("User11", "User5");
+            //Assert
+            response.Data.Should().BeFalse();
+            //response.Error.Should().Be();//Not null
+        }
+        [Fact]
+        public void EditDisplayName_ValidEditDisplayName_Pass()
+        {
+            //Act
+            var response = userGateway.EditDisplayName("User3", "NewDisplayName3");
+            //Assert
+            response.Data.Should().BeTrue();
+            response.Error.Should().BeNull();
+        }
+        [Fact]
+        public void EditDisplayName_InvalidEditDisplayName_Fail()
+        {
+            //Act
+            var response = userGateway.EditDisplayName("User11", "DisplayName4");
+            //Assert
+            response.Data.Should().BeFalse();
+            response.Error.Should().Be("Something went wrong. Please try again later.");
+        }
 
-        //[Fact]
-        //public void ResetPassword_InvalidResetPassword_Fail()
-        //{
-        //    //Act
-        //    var result = userGateway.ResetPassword("User6", "Password123!@");
-        //    //Assert
-        //    result.Should().Be(true);
-        //}
+        [Fact]
+        public void ResetPassword_ValidResetPassword_Pass()
+        {
+            //Act
+            var response = userGateway.ResetPassword("User1", "NewPassword1!");
+            //Assert
+            response.Data.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ResetPassword_InvalidResetPassword_Fail()
+        {
+            //Act
+            var response = userGateway.ResetPassword("User11", "Password123!@");
+            //Assert
+            response.Data.Should().BeFalse();
+            response.Error.Should().Be("Something went wrong. Please try again later.");
+        }
 
         ////It will fail since it will not find EditUserName8Twice, because it has already changed...
 
-        ////[Fact]
-        ////public void EditUser_ValidEditUser_Pass()//does not like this...
-        ////{
-        ////    var user = new EditUserDto()
-        ////    {
-        ////        Username = "EditUserName8TWICE",
-        ////        NewUsername = "EditUsername8_3",
-        ////        NewDisplayName = "EditUserDisplayName8_3",
-        ////        NewPassword = "EditUserPassword8_3"
-        ////    };
-
-        ////    var result = userGateway.EditUser(user);
-        ////    result.Should().Be(true);//Errors out here
-        ////}
-        ////[Fact]
-        ////public void EditUser_Invalid_Fail()
-        ////{
-        ////    var user = new EditUserDto()
-        ////    {
-        ////        Username = "User2",
-        ////        NewUsername = "EditUser2",
-        ////        NewDisplayName = "EditDisplayName2",
-        ////        NewPassword = "EditNewUsername2"
-        ////    };
-
-        ////    var result = userGateway.EditUser(user);//Failed here...
-        ////    result.Should().Be(true);
-        ////}
-        //[Fact]
-        //public void EditUser_ValidNewDisplayName_Pass()
-        //{
-        //    //Act
-        //    var user = new EditUserDto()
-        //    {
-        //        Username = "EditUserName8TWICE",
-        //        NewUsername = "EditUsername8_3",
-        //        NewDisplayName = "New_88_Display",
-        //        NewPassword = "EditUserPassword8_3"
-        //    };
-        //    //Assert
-        //    var result = userGateway.EditUser(user);
-        //    result.Should().Be(true);
-        //}
-        //[Fact]
-        //public void EditUser_ValidNewPassword_Pass()
-        //{
-        //    //Act
-        //    var user = new EditUserDto()
-        //    {
-        //        Username = "EditUserName8TWICE",
-        //        NewUsername = "EditUsername8_3",
-        //        NewDisplayName = "EditUserDisplayName8_3",
-        //        NewPassword = "New_88_Pass"
-        //    };
-        //    //Assert
-        //    var result = userGateway.EditUser(user);
-        //    result.Should().Be(true);
-        //}
-        //[Fact]
-        //public void EditUser_ValidNewUsername_Pass()
-        //{
-        //    //Act
-        //    var user = new EditUserDto()
-        //    {
-        //        Username = "New_88_Username",
-        //        NewUsername = "EditUsername8_3",
-        //        NewDisplayName = "EditUserDisplayName8_3",
-        //        NewPassword = "EditUserPassword8_3"
-        //    };
-        //    //Assert
-        //    var result = userGateway.EditUser(user);
-        //    result.Should().Be(true);
-        //}
-        //@TODO @Angelica Delete regular user
         [Fact]
-        public void DeleteUser_ValidDelete_Pass()
+        public void EditUser_ValidEditUserPassword_Pass()//does not like this...
         {
+            var user = new EditUserDto()
+            {
+                Username = "User10",
+                NewUsername = "User10",
+                NewDisplayName = "DisplayName10",
+                NewPassword = "EditUserPassword10"
+            };
             //Act
-
+            var response = userGateway.EditUser(user);
             //Assert
-            var result = userGateway.DeleteUser("User10");
-            result.Should().Be(true);
+            response.Data.Should().BeTrue();
         }
+
+        [Fact]
+        public void EditUser_ValidEditUserName_Pass()
+        {
+            var user = new EditUserDto()
+            {
+                Username = "User7",//No change
+                NewUsername = "NewUserName7",//Change
+                NewDisplayName = "DisplayName7",//No change
+                NewPassword = "password123!@"//No change
+            };
+            //Act
+            var response = userGateway.EditUser(user);
+            //Assert
+            response.Data.Should().BeTrue();
+        }
+
+        [Fact]
+        public void EditUser_validEditDisplayName_Pass()
+        {
+            var user = new EditUserDto()
+            {
+                Username = "User6",//No change
+                NewUsername = "Username6",//Change
+                NewDisplayName = "NewDisplayName6",//No change
+                NewPassword = "password123!@"//No change
+            };
+            //Act
+            var response = userGateway.EditUser(user);
+            //Assert
+            response.Data.Should().BeTrue();
+        }
+        //@TODO @Angelica Delete regular user
+        //[Fact]
+        //public void DeleteUser_ValidDelete_Pass()
+        //{
+        //    //Act
+
+        //    //Assert
+        //    var result = userGateway.DeleteUser("User10");
+        //    result.Should().Be(true);
+        //}
         //@TODO @Angelica Delete restaurant user
     }
 }

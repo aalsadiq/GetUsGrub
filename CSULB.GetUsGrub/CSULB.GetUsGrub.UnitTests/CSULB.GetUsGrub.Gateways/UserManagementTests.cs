@@ -1,13 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
-using CSULB.GetUsGrub.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
-using Newtonsoft.Json;
 
 namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
 {
@@ -140,14 +133,22 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         //    //Assert
         //    response.Data.Should().BeTrue();
         //}
-        ////@TODO @Angelica Delete regular user
+   
         [Fact]
         public void DeleteUser_ValidDelete_Pass()
         {
             //Assert
-            var response = userGateway.DeleteUser("User5");
+            var response = userGateway.DeleteUser("User1");
             response.Data.Should().BeTrue();
         }
-        //@TODO @Angelica Delete restaurant user
+
+        [Fact]
+        public void DeleteUser_ValidDelete_Fail()
+        {
+            //Assert
+            var response = userGateway.DeleteUser("User1");
+            response.Data.Should().BeTrue();
+        }
+
     }
 }

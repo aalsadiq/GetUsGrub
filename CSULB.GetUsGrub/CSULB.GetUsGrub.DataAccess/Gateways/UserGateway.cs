@@ -35,6 +35,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var userAccount = (from account in userContext.UserAccounts
                                        where account.Username == username
                                        select account).FirstOrDefault();
+
                     // Return a ResponseDto with a UserAccount model
                     return new ResponseDto<UserAccount>()
                     {
@@ -122,7 +123,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         userContext.PasswordSalts.Add(passwordSalt);
 
                         // Add UserClaims
-                        userContext.Claims.Add(claims);
+                        userContext.UserClaims.Add(claims);
 
                         // Add UserProfile
                         userContext.UserProfiles.Add(userProfile);
@@ -167,9 +168,10 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
         /// <param name="restaurantProfile"></param>
+        /// <param name="businessHours"></param>
         /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, 
-            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile)
+            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours)
         {
             using (var userContext = new UserContext())
             {
@@ -212,6 +214,7 @@ namespace CSULB.GetUsGrub.DataAccess
                             var securityQuestionId = (from query in queryable
                                                       where query.Question == securityQuestions[i].Question
                                                       select query.Id).SingleOrDefault();
+
                             // Set SecurityQuestionId for SecurityAnswerSalt
                             securityAnswerSalts[i].Id = securityQuestionId;
                             // Add SecurityAnswerSalt
@@ -223,7 +226,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         userContext.PasswordSalts.Add(passwordSalt);
 
                         // Add UserClaims
-                        userContext.Claims.Add(claims);
+                        userContext.UserClaims.Add(claims);
 
                         // Add UserProfile
                         userContext.UserProfiles.Add(userProfile);
@@ -231,6 +234,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         // Add RestaurantProfile
                         userContext.RestaurantProfiles.Add(restaurantProfile);
                         userContext.SaveChanges();
+
+                        // Add BusinessHours
+                        foreach (var businessHour in businessHours)
+                        {
+                            businessHour.RestaurantId = userId;
+                            userContext.BusinessHours.Add(businessHour);
+                            userContext.SaveChanges();
+                        }
 
                         // Commit transaction to database
                         dbContextTransaction.Commit();

@@ -1,26 +1,13 @@
 <template>
   <div class="dictionary">
     <h2>Dictionary</h2>
-    <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
-      <div class="menu-item" v-for="(element, index) in MenuItems" :key="element">
-        {{element.menuItemName}} : ${{element.menuItemPrice}}<br />
-        <v-btn small=true v-on:click="ToggleEdit(index)">
-          Edit
-        </v-btn>
-        <v-btn small=true v-on:click="RemoveFromDictionary(index)">
+    <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people', pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
+      <div class="menu-item" v-for="(menuItem, menuItemIndex) in MenuItems" :key="menuItemIndex">
+        {{menuItem.name}} : ${{menuItem.price}}<br />
+        <edit-item :editType="editType" :itemIndex="menuItemIndex" :Item="menuItem"></edit-item>
+        <v-btn small dark color="red" v-on:click="RemoveFromDictionary(menuItemIndex)">
           Delete
         </v-btn>
-        <v-form v-if="element.menuItemEdit">
-          <label>Enter Food Item Name</label>
-          <v-text-field type="text" ref="menuItemName" required />
-          <br />
-          <label>Enter Food Item Price</label>
-          <v-text-field label="Item Price"
-                        prefix="$"
-                        v-model.lazy="menuItemPrice"
-                        v-money="money"
-                        required />
-        </v-form>
       </div>
     </draggable>
   </div>
@@ -29,15 +16,17 @@
 <script>
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
+import EditItem from './EditItem.vue'
 
 export default {
   name: 'Dictionary',
   components: {
+    'edit-item': EditItem,
     draggable
   },
-  directives: { money: VMoney },
   data () {
     return {
+      editType: 'dictionary',
       money: {
         decimal: '.',
         thousands: '',
@@ -48,13 +37,20 @@ export default {
       }
     }
   },
+  directives: { money: VMoney },
   methods: {
-    ToggleEdit: function (index) {
-      this.$store.dispatch('ToggleEdit', index)
+    clone: function (el) {
+      return {
+        name: el.name,
+        price: el.price
+      }
     },
-    RemoveFromDictionary: function (index) {
-      console.log(index)
-      this.$store.dispatch('RemoveFromDictionary', index)
+    RemoveFromDictionary: function (menuItemIndex) {
+      console.log(menuItemIndex)
+      this.$store.dispatch('RemoveFromDictionary', menuItemIndex)
+    },
+    Log: function () {
+      console.log(this.$refs.editForm)
     }
   },
   computed: {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSULB.GetUsGrub.Models.DTOs
+namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// Class that will be called in edit user controller.

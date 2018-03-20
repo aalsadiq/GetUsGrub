@@ -3,12 +3,13 @@
       <v-flex xs5 sm5 offset-sm3>
         <h1> Image Upload </h1>
           <v-card dark>
-              <br/>
-            <img id ="uploadPreview" style="width: 300px; height: 300px;"/>
             <br/>
-            <input multiple id= "uploadImage" type = "file" name ="uploadNewImage" onchange ="PreviewImage();" accept =".png"/>
-            <v-btn id = "subtmitImage" color ="pink" type="submit" name="upload_btn" value ="upload" v-onclick ="SubmitImageUpload">Upload Image </v-btn>
+              <input id="uploadImage" type="file" @change="previewImage" accept="image/*"/>
+              <v-btn id="subtmitImage" color="pink" type="submit" name="upload_btn" value ="upload" v-onclick ="SubmitImageUpload">Upload Image</v-btn>
+              <img id="uploadPreview" :src="imageData" alt="ProfileImage"/>
+            <br/>
           </v-card>
+          <br/>
       </v-flex>
   </div>
 </template>
@@ -20,19 +21,21 @@ export default {
   components: {
   },
   data: () => ({
-    image: '',
+    imageData: '',
+    imgPath: '',
     username: ''
   }),
   methods: {
-    PreviewImage: function () {
+    previewImage: function (input) {
     },
     SubmitImageUpload () {
-      axios.put('http://localhost:8081/User/Admin/EditUser', {
-        username: this.username
+      axios.put('http://localhost:8081/User/Profile/ImageUpload', {
+        username: 'Angelica',
+        imgPath: this.imageData
       }).then(response => {
-        this.responseDataStatus = 'Success! User has been created: '
+        this.responseDataStatus = 'Success! Image has been uploaded.'
         this.responseData = response.data
-        console.log(response)
+        console.log(imgPath)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
@@ -45,7 +48,11 @@ export default {
 
 <style>
 #image-upload{
-  height: 30em;
+  height: 40em;
   width: 80em;
+}
+#uploadPreview{
+  height: 100px;
+  width: 100px;
 }
 </style>

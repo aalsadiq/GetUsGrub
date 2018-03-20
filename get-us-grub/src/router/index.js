@@ -57,7 +57,7 @@ export default new Router({
       component: EditUser
     },
     {
-      path: '/User/ImageUpload',
+      path: '/User/Profile/ImageUpload',
       name: 'ImageUpload',
       component: ImageUpload
     },

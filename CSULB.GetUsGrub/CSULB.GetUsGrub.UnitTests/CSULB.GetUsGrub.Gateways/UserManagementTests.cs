@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
-using CSULB.GetUsGrub.Models.DTOs;
+using Newtonsoft.Json;
 
 namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
 {
@@ -19,7 +19,7 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         //public void DeactivateUser_When_GivenUserNameUser1()
         //{
         //    //Act
-        //    var result =  userGateway.DeactivateUser("User10");
+        //    var result = userGateway.DeactivateUser("User10");
 
         //    //Assert
         //    Assert.True(result);
@@ -105,7 +105,7 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         ////        NewDisplayName = "EditUserDisplayName8_3",
         ////        NewPassword = "EditUserPassword8_3"
         ////    };
-            
+
         ////    var result = userGateway.EditUser(user);
         ////    result.Should().Be(true);//Errors out here
         ////}

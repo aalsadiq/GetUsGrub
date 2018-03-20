@@ -23,6 +23,14 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
         public DbSet<BusinessHour> BussinessHours { get; set; }
         public UserContext() : base("GetUsGrub") { }
+
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<UserContext>()
+        //        .HasOptional(a => a.)
+        //        .WithOptionalDependent()
+        //        .WillCascadeOnDelete(true);
+        //}
     }
 
 }

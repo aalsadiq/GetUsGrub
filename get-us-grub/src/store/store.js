@@ -83,7 +83,7 @@ export const store = new Vuex.Store({
     },
     StoreImage: () => { // Added [-Angelica]
       // imagePath: '' // The path that the image is found on
-      // username: '' // the usersimage
+      // usesrname: '' // the usersimage
       // imageName: username + 'profile'
     },
     RemoveImage: () => { // Added [-Angelica]

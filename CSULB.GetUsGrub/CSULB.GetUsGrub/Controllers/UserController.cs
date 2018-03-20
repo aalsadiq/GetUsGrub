@@ -1,20 +1,12 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Services;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Security.Permissions;
 using System.Web.Http;
-using System.Web.Http.Description;
 using System.Web.Http.Cors;
 
-using CSULB.GetUsGrub.UserAccessControl;
-using System.IdentityModel.Services;
-using System.Security.Permissions;
-using CSULB.GetUsGrub.Models.DTOs;
+
 
 namespace CSULB.GetUsGrub.Controllers
 {

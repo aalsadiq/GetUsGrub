@@ -1,6 +1,5 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using CSULB.GetUsGrub.Models.DTOs;
 using CSULB.GetUsGrub.UserAccessControl;
 using System.Collections.Generic;
 using System.Linq;

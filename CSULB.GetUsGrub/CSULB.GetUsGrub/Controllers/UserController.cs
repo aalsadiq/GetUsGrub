@@ -62,7 +62,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 // Sending HTTP response 400 Status
-                return BadRequest("Something went wrong. Pleast try again later.");
+                return BadRequest("Something went wrong. Please try again later.");
             }
         }
 
@@ -108,8 +108,17 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-        //TOOD:@Angelica add createuser controller [Angelica]
-        // POST Registration/User
+        /// <summary>
+        /// The RegisterIndividualUser method.
+        /// Validates model state and routes the data transfer object.
+        /// <para>
+        /// @author: Jennifer Nguyen, Angelica Salas
+        /// @updated: 03/20/2018
+        /// </para>
+        /// </summary>
+        /// <param name="registerUserDto">The user information that will be stored in the database.</param>
+        /// <returns>Created HTTP response or Bad Request HTTP response</returns>
+        // POST User/Admin/Create
         [HttpPost]
         // Opts authentication
         [Route("User/Admin/Create")]
@@ -119,56 +128,45 @@ namespace CSULB.GetUsGrub.Controllers
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
+                // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
                 return BadRequest(ModelState);
             }
             try
             {
-                System.Diagnostics.Debug.WriteLine("herehere");
-                System.Diagnostics.Debug.WriteLine("Username: " + registerUserDto.UserAccountDto.Username);
-                System.Diagnostics.Debug.WriteLine("Password: " + registerUserDto.UserAccountDto.Password);
-                System.Diagnostics.Debug.WriteLine("Dsiplay: " + registerUserDto.UserProfileDto.DisplayName);
-                System.Diagnostics.Debug.WriteLine(registerUserDto);
                 var userManager = new UserManager();
-                var response = userManager.CreateAdmin(registerUserDto);//changed this line...-----
+                var response = userManager.CreateAdmin(registerUserDto);//Calls create admin method from usermanager.
                 if (response.Error != null)
                 {
                     return BadRequest(response.Error);
                 }
-                //return Ok(registerUserDto.UserAccount.Username);
-                // TODO: @Jenn Change to Created [-Jenn]
-                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
+                // Sending HTTP response 201 Status
+                return Created("User has been created: ", registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
-            catch (Exception ex)
+            catch (Exception)
             {
-                //return BadRequest(ErrorHandler.GetGeneralError());
-                return BadRequest(ex.Message);
+                // Sending HTTP response 400 Status
+                return BadRequest("Something went wrong. Please try again later.");
             }
         }
 
-
         /// <summary>
-        /// Controller that will be called when admin must deactivate a user. 
-        /// To access this controller, admin user must have valid claims.
-        /// @author: Angelica Salas Tovar
-        /// @updated: 03/08/2018
+        /// Delete User validates the model state and routes the data transfer object,
         /// </summary>
-        //DELETE AdminHome/DeactivateUser
-
-        //TODO: Add Claims
-
-        //[ResponseType(typeof(UserAccount))]
-        //TODO: @Rachel resposne type is a user? What does response type claim do return claims?
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// <param name="username">The expected user to be deleted.</param>
+        /// <returns>An Http response or Bad Request HTTP resposne.</returns>
+        // POST User/Admin/DeleteUser
         [Route("DeleteUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpDelete]
-        //TODO: Add claims
-        public IHttpActionResult Delete([FromBody] string username)
+        public IHttpActionResult DeleteUser([FromBody] string username)
         {
             if (!ModelState.IsValid)//if the model is not valid return a bad request
             {
-                return BadRequest(ModelState);//TODO: @Angelica Extract error [Angelica, Jen]
+                return BadRequest("Something went wrong, please try again later");//TODO: @Angelica Extract error [Angelica, Jen]
             }
             try
             {
@@ -178,7 +176,7 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                return Created("User has been deleted: ", username);
+                return Ok("User has been deleted:" + username);
             }
             catch (Exception ex)
             {
@@ -187,12 +185,13 @@ namespace CSULB.GetUsGrub.Controllers
         }
 
         /// <summary>
-        /// Controller that will be called when admin must deactivate a user. 
-        /// To access this controller, admin user must have valid claims.
-        /// @author: Angelica Salas Tovar
-        /// @updated: 03/08/2018
+        /// Deactivate User validates the model state and routes the data transfer object,
         /// </summary>
-        //PUT AdminHome/DeactivateUser
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// <param name="username">The expected user to be reactivated.</param>
+        /// <returns>An Http response or Bad Request HTTP resposne.</returns>
+        // POST User/Admin/DeactivateUser
         [Route("DeactivateUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
@@ -203,9 +202,7 @@ namespace CSULB.GetUsGrub.Controllers
                 //if the model is not valid return a bad request
                 if (!ModelState.IsValid)//was binding successful?
                 {
-                    //var modelState = ActionContext.ModelState;
-                    //ActionContext.Response = ActionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, modelState);//Returns the action context
-                return BadRequest(ModelState);
+                    return BadRequest("Something went wrong, please try again later");
                 }
                 try
                 {
@@ -215,24 +212,23 @@ namespace CSULB.GetUsGrub.Controllers
                     {
                         return BadRequest(response.Error);
                     }
-                return Created("User has been deactivated: ", username);//@Jenn What does this do?
-                //return Ok(response);//Returns a deactivated user response.
+                    return Ok("User has been deactivated:" + username);//Returns a deactivated user response.
                 }
                 catch (Exception ex)
                 {
                     return BadRequest(ex.Message); //Returns a message that describes the current exception.
                 }
             }
-   
+
 
         /// <summary>
-        /// Controller that will be called when admin must reactivate a user. 
-        /// To access this controller, admin user must have valid claims.
-        /// @author: Angelica Salas Tovar
-        /// @updated: 03/08/2018
+        /// Reactivate User validates the model state and routes the data transfer object,
         /// </summary>
-
-        //PUT AdminHome/ReactivateUser
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// <param name="username">The expected user to be reactivated.</param>
+        /// <returns>An Http response or Bad Request HTTP resposne.</returns>
+        // POST User/Admin/ReactivateUser
         [Route("ReactivateUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
@@ -241,7 +237,7 @@ namespace CSULB.GetUsGrub.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Something went wrong, please try again later");
             }
             try
             {
@@ -252,7 +248,7 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                return Created("User has been reactivated: ", username);//@Jenn What does this do?
+                return Ok("User has been reactivated:" + username);//Returns reactivated username
             }
             catch (Exception ex)
             {
@@ -261,36 +257,36 @@ namespace CSULB.GetUsGrub.Controllers
         }
 
         /// <summary>
-        /// Controller that will be called when admin must edit a user. 
-        /// To access this controller, admin user must have valid claims.
-        /// @author: Angelica Salas Tovar
-        /// @updated: 03/08/2018
+        /// Edit User validates the model state and routes the data transfer object,
         /// </summary>
-
-        //PUT AdminHome/EditUser
-        //[Route("EditUser")]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
-        //[HttpPut]
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// <param name="username">The expected user to be edited.</param>
+        /// <returns>An Http response or Bad Request HTTP resposne.</returns>
+        // POST User/Admin/EditUser
+        [Route("EditUser")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        [HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Something went wrong, please try again later");
             }
             try
             {
                 var manager = new UserManager();
                 var response = manager.edituser(user);
 
-                if (response.Error != null)
+                if (response.Error != null)//If manager has an error.
                 {
-                    return BadRequest(response.Error);
+                    return BadRequest(response.Error);//If manager fails, it returns a bad request which is then caught in the exception.
                 }
-                return Created("User has been edited: ", user);//@Jenn What does this do?
+                return Ok("User has been edited:" + user.Username);//Returns edited username
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message);//Http Resposne 400
             }
         }
     }

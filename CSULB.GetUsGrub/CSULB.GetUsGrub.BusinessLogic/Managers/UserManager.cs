@@ -299,11 +299,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 Data = registerUserDto
             };
         }
+
         /// <summary>
-        /// 
+        /// DeactivateUser deactivates the user when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @update: 03/20/2018
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
+        /// <param name="username">The user that will be deactivated.</param>
+        /// <returns>Response Dto</returns>
         public ResponseDto<bool> DeactivateUser(string username)
         {
             using (var gateway = new UserGateway())
@@ -325,12 +328,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
         }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="username"></param>
-            /// <returns></returns>
-            public ResponseDto<string> ReactivateUser(string username)
+        /// <summary>
+        /// ReactivateUser reactivates the user when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @update: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user that will be reactivated.</param>
+        /// <returns>Response Dto</returns>
+        public ResponseDto<string> ReactivateUser(string username)
             {
                 using (var gateway = new UserGateway())
                 {
@@ -350,14 +355,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
             }
 
-            /// <summary>
-            /// Manager that will handle business logic for delete user along with calling UserGateway.
-            /// </summary>
-            /// @author Angelica
-            /// @Last Update: 03/10/2018
-            /// <param name="username"></param>
-            /// <returns></returns>
-            public ResponseDto<string> DeleteUser(string username)
+        /// <summary>
+        /// DeleteUser deletes the user when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @update: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user that will be deleted.</param>
+        /// <returns>Response Dto</returns>
+        public ResponseDto<string> DeleteUser(string username)
             {
                 using (var gateway = new UserGateway())
                 {
@@ -376,15 +381,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
             }
-
         /// <summary>
-        /// Will take in a Registered User to modify
-        /// @author Angelica
-        /// @Last Update: 03/10/2018
+        /// EditUser edits the user when given a.
+        /// @author: Angelica Salas Tovar
+        /// @update: 03/20/2018
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public ResponseDto<EditUserDto> edituser(EditUserDto user)
+        /// <param name="username">The user that will be deactivated.</param>
+        /// <returns>Response Dto</returns>
+        public ResponseDto<EditUserDto> edituser(EditUserDto user)//@TODO:Change name later
         {
             using (var gateway = new UserGateway())
             {

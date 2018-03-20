@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
@@ -18,6 +19,7 @@ namespace CSULB.GetUsGrub.Models
             Salt = salt;
         }
 
+        [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
         public string Salt { get; set; }

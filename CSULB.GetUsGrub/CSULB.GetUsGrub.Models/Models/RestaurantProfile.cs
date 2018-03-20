@@ -15,6 +15,17 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.RestaurantProfile")]
     public class RestaurantProfile : IRestaurantProfile, IEntity
     {
+        public RestaurantProfile() { }
+
+        public RestaurantProfile(RestaurantProfileDto restaurantProfileDto)
+        {
+            PhoneNumber = restaurantProfileDto.PhoneNumber;
+            Address = restaurantProfileDto.Address;
+            Details = restaurantProfileDto.Details;
+            Latitude = restaurantProfileDto.Latitude;
+            Longitude = restaurantProfileDto.Longitude;
+        }
+
         [Key]
         [ForeignKey("UserProfile")]
         public int? Id { get; set; }
@@ -23,10 +34,11 @@ namespace CSULB.GetUsGrub.Models
         public RestaurantDetail Details { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        // TODO: @Rachel Need to include Food Preference List in RestaurantProfile [-Jenn]
         
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
-        public virtual ICollection<BusinessHour> BusinessHours { get; set; }
+        public virtual IList<BusinessHour> BusinessHours { get; set; }
     }
 }

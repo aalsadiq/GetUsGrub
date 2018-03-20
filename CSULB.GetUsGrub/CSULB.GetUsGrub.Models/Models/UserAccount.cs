@@ -64,8 +64,8 @@ namespace CSULB.GetUsGrub.Models
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual PasswordSalt PasswordSalt { get; set; }
-        public virtual Token Token { get; set; }
+        public virtual AuthenticationToken AuthenticationToken { get; set; }
         public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
-        public virtual UserClaims Claims { get; set; }
+        public virtual UserClaims UserClaims { get; set; }
     }
 }

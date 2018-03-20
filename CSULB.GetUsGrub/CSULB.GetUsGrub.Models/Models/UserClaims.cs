@@ -16,8 +16,15 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.UserClaims")]
-    public class UserClaims
+    public class UserClaims : IEntity
     {
+        public UserClaims() { }
+
+        public UserClaims(ICollection<Claim> claims)
+        {
+            Claims = claims;
+        }
+
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }

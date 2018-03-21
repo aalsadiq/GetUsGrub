@@ -4,32 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
-    /// <summary>
-    /// Restaurant menu class
-    /// 
-    /// @author: Andrew Kao
-    /// @updated: 3/15/18
-    /// </summary>
-
-    [Table("GetUsGrub.RestaurantMenus")]
-    public class RestaurantMenu : IRestaurantMenu
+    [Table("GetUsGrub.RestaurantMenu")]
+    public class RestaurantMenu : IRestaurantMenu, IEntity
     {
         [Key]
         public int? Id { get; set; }
 
-        [ForeignKey("GetUsGrub.RestaurantProfiles")]
+        [ForeignKey("RestaurantProfile")]
         public int? RestaurantId { get; set; }
 
-        [Required]
         public string MenuName { get; set; }
 
         public IEnumerable<IMenuItem> Items { get; set; }
 
-        // Constructor
-        public RestaurantMenu(string menuName, IEnumerable<IMenuItem> items)
-        {
-            MenuName = menuName;
-            Items = items;
-        }
+        // Navigation Properties
+        public virtual RestaurantProfile RestaurantProfile { get; set; }
+
+        public virtual ICollection<RestaurantMenuItem> RestaurantMenuItems { get; set; }
     }
 }

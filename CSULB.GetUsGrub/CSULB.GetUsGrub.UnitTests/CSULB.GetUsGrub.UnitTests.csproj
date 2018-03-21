@@ -52,10 +52,10 @@
       <HintPath>..\packages\FluentAssertions.5.1.2\lib\net47\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.7.5.2\lib\net45\FluentValidation.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.7.5.0\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation.WebApi, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.WebApi.7.5.2\lib\net45\FluentValidation.WebApi.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.WebApi.7.5.0\lib\net45\FluentValidation.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.8.2\lib\net45\Moq.dll</HintPath>
@@ -105,29 +105,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\RestaurantProfileMapperUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\SecurityQuestionMapperUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\UserAccountMapperUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\UserProfileMapperUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PayloadHasherUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\SaltGeneratorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\ValidationWrapperUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategyUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\RestaurantProfileMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\SecurityQuestionMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\UserAccountMapperUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\Mappers\UserProfileMapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\SecurityQuestionDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\UserAccountDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\UserProfileDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\AddressValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\BusinessHourValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\ClaimsValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\PasswordSaltValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\RestaurantProfileValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SecurityAnswerSaltValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SecurityQuestionValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserAccountValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserProfileValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\UserProfileGatewayUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\UserValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\UserGatewayUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +131,7 @@
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CSULB.GetUsGrub.BusinessLogic\Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.BusinessLogic\CSULB.GetUsGrub.BusinessLogic.csproj">
       <Project>{82085ead-6aae-4e25-ad90-84b414f2b491}</Project>
@@ -152,6 +144,10 @@
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">
       <Project>{c93e53a0-06b5-484e-abeb-1cbcdeb40de5}</Project>
       <Name>CSULB.GetUsGrub.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CSULB.GetUsGrub.UserAccessControl\CSULB.GetUsGrub.UserAccessControl.csproj">
+      <Project>{25bb252d-4ebc-4603-978d-657798e5a1fd}</Project>
+      <Name>CSULB.GetUsGrub.UserAccessControl</Name>
     </ProjectReference>
     <ProjectReference Include="..\CSULB.GetUsGrub\CSULB.GetUsGrub.csproj">
       <Project>{ed3b1782-7c3d-4d18-b560-b731b2b76942}</Project>

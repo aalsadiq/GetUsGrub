@@ -21,7 +21,13 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountValidator = new UserAccountValidator();
-            var userAccount = new UserAccount(username: "username", password: "!Q2w#E4r", isActive: true, isFirstTimeUser: false);
+            var userAccount = new UserAccount()
+            {
+                Username = "username",
+                Password = "!Q2w#E4r",
+                IsActive = true,
+                IsFirstTimeUser = false,
+            };
 
             // Act
             var result = userAccountValidator.Validate(userAccount, ruleSet: "CreateUser");
@@ -36,7 +42,13 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountValidator = new UserAccountValidator();
-            var userAccount = new UserAccount(username: "", password: "!Q2w#E4r", isActive: true, isFirstTimeUser: false);
+            var userAccount = new UserAccount()
+            {
+                Username = "",
+                Password = "!Q2w#E4r",
+                IsActive = true,
+                IsFirstTimeUser = false
+            };
 
             // Act
             var result = userAccountValidator.Validate(userAccount, ruleSet: "CreateUser");
@@ -51,7 +63,13 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountValidator = new UserAccountValidator();
-            var userAccount = new UserAccount(username: null, password: "!Q2w#E4r", isActive: true, isFirstTimeUser: false);
+            var userAccount = new UserAccount()
+            {
+                Username = null,
+                Password = "!Q2w#E4r",
+                IsActive = true,
+                IsFirstTimeUser = false
+            };
 
             // Act
             var result = userAccountValidator.Validate(userAccount, ruleSet: "CreateUser");
@@ -66,7 +84,13 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountValidator = new UserAccountValidator();
-            var userAccount = new UserAccount(username: "this is a fail username", password: "!Q2w#E4r", isActive: true, isFirstTimeUser: false);
+            var userAccount = new UserAccount()
+            {
+                Username = "this is a fail username",
+                Password = "!Q2w#E4r",
+                IsActive = true,
+                IsFirstTimeUser = false
+            };
 
             // Act
             var result = userAccountValidator.Validate(userAccount, ruleSet: "CreateUser");
@@ -81,7 +105,13 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountValidator = new UserAccountValidator();
-            var userAccount = new UserAccount(username: "!@#$!@!#", password: "!Q2w#E4r", isActive: true, isFirstTimeUser: false);
+            var userAccount = new UserAccount()
+            {
+                Username = "!@#$%^&*()",
+                Password = "!Q2w#E4r",
+                IsActive = true,
+                IsFirstTimeUser = false
+            };
 
             // Act
             var result = userAccountValidator.Validate(userAccount, ruleSet: "CreateUser");
@@ -96,7 +126,13 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountValidator = new UserAccountValidator();
-            var userAccount = new UserAccount(username: "username", password: "", isActive: true, isFirstTimeUser: false);
+            var userAccount = new UserAccount()
+            {
+                Username = "username",
+                Password = "",
+                IsActive = true,
+                IsFirstTimeUser = false
+            };
 
             // Act
             var result = userAccountValidator.Validate(userAccount, ruleSet: "CreateUser");
@@ -111,29 +147,19 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountValidator = new UserAccountValidator();
-            var userAccount = new UserAccount(username: "username", password: null, isActive: true, isFirstTimeUser: false);
+            var userAccount = new UserAccount()
+            {
+                Username = "username",
+                Password = null,
+                IsActive = true,
+                IsFirstTimeUser = false
+            };
 
             // Act
             var result = userAccountValidator.Validate(userAccount, ruleSet: "CreateUser");
             var isValid = result.IsValid;
 
             // Assert
-            isValid.Should().Be(false);
-        }
-
-        [Fact]
-        public void Should_FailSsoValidation_When_UsernameIsEmpty()
-        {
-            // Arrange
-            var userAccountValidator = new UserAccountValidator();
-            var userAccount = new UserAccount(username: "", password: "!Q2w#E4r", isFirstTimeUser: false, roleType: "public");
-
-            // Act
-            var result = userAccountValidator.Validate(userAccount, ruleSet: "SsoRegistration");
-            var isValid = result.IsValid;
-
-            // Assert
-            result.IsValid.Should().BeFalse();
             isValid.Should().Be(false);
         }
     }

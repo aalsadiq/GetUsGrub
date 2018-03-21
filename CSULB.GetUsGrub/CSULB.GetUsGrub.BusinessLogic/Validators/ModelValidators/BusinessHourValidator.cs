@@ -3,17 +3,19 @@ using FluentValidation;
 using System;
 using DayOfWeek = System.DayOfWeek;
 
+// TODO: @Jenn Comment BusinessHourValidator [-Jenn]
+// TODO: @Jenn Unit Test the two methods below [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
     /// The <c>BusinessHourValidator</c> class.
     /// Defines rules to validate a BusinessHour.
     /// <para>
-    /// @author: Jennifer Nguyen, Andrew Kao
-    /// @updated: 03/18/2018
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/11/2018
     /// </para>
     /// </summary>
-    public class BusinessHourValidator : AbstractValidator<IBusinessHour>
+    public class BusinessHourValidator : AbstractValidator<BusinessHour>
     {
         public BusinessHourValidator()
         {
@@ -32,36 +34,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty().WithMessage("Close time is required.")
                     .NotNull().WithMessage("Close time is required.")
                     .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");
-
-                RuleFor(x => x.TimeZone)
-                    .NotEmpty().WithMessage("Time zone is required.")
-                    .NotNull().WithMessage("Time zone is required.");
             });
         }
 
-        /// <summary>
-        /// The CheckIfDayIsDayOfWeek method.
-        /// Checks to see if day is in the enum DayOfWeek.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @update: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="day"></param>
-        /// <returns>A boolean</returns>
         public bool CheckIfDayIsDayOfWeek(string day)
         {
             // True if day is in DayOfWeek enum
             return Enum.IsDefined(typeof(DayOfWeek), day);
         }
 
-        /// <summary>
-        /// The CheckIfOpenTimeIsBeforeCloseTime method.
-        /// Checks that the opening time is before the closing time.
-        /// </summary>
-        /// <param name="openTime"></param>
-        /// <param name="closeTime"></param>
-        /// <returns>A boolean</returns>
         public bool CheckIfOpenTimeIsBeforeCloseTime(string openTime, string closeTime)
         {
             var openingTime = TimeSpan.Parse(openTime);

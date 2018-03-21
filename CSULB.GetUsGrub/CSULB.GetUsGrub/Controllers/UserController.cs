@@ -1,47 +1,33 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.IdentityModel.Services;
-using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Cors;
+
+using System.IdentityModel.Services;
+using System.Security.Permissions;
 
 namespace CSULB.GetUsGrub.Controllers
 {
     /// <summary>
-    /// The <c>UserController</c> class.
-    /// User controller will handle routes that deal with creating, updating, reading and deleting a user.
-    /// <para>
-    /// @author: Angelica Salas Tovar, Jennifer Nguyen
-    /// @updated: 03/13/2018
-    /// </para>
+    /// User controller will handle routes that deal with CRUD.
+    /// @author Angelica
     /// </summary>
     [RoutePrefix("User")] //default route
     public class UserController : ApiController
     {
-        /// <summary>
-        /// The RegisterIndividualUser method.
-        /// Validates model state and routes the data transfer object.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="registerUserDto"></param>
-        /// <returns>Created HTTP response or Bad Request HTTP response</returns>
+        //TODO: @Jenn Add create individual user controller. [-Angelica]
         // POST Registration/User
         [HttpPost]
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Individual")]
-        // TODO: @Jenn Test out the methods with POST [-Jenn]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
         public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
-                // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
                 return BadRequest(ModelState);
             }
             try
@@ -52,33 +38,25 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                // Sending HTTP response 201 Status
-                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
+                //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
+                return Ok(registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Sending HTTP response 400 Status
-                return BadRequest("Something went wrong. Pleast try again later.");
+                //return BadRequest(ErrorHandler.GetGeneralError());
+                return BadRequest(ex.Message);
             }
         }
 
-        /// <summary>
-        /// The RegisterRestaurantUser method.
-        /// Validates the model state and routes the data transfer object.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="registerRestaurantDto"></param>
-        /// <returns>Created HTTP response or Bad Request HTTP response</returns>
+        //TODO: @Jenn Add create individual user controller. [-Angelica]
         // POST Registration/User
         [HttpPost]
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Restaurant")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
         public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
         {
             // Model Binding Validation
@@ -94,14 +72,15 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                // HTTP 201 Status
-                return Created("Restaurant user has been created: ", registerRestaurantDto.UserAccountDto.Username);
+                //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
+                return Ok(registerRestaurantDto.UserAccountDto.Username);
             }
             // Catch exceptions
-            catch (Exception)
+            catch (Exception ex)
             {
-                // HTTP 400 Status
-                return BadRequest("Something went wrong. Please try again later.");
+                //return BadRequest(ErrorHandler.GetGeneralError());
+                return BadRequest(ex.Message);
             }
         }
 

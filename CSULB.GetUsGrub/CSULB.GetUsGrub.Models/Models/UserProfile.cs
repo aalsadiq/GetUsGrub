@@ -1,40 +1,22 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
-    /// User profile domain model
-    /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// The <c>UserProfile</c> class.
+    /// Defines properties pertaining to a user's profile.
+    /// <para>
+    /// @author: Andrew Kao, Jennifer Nguyen
+    /// @updated: 03/11/2018
+    /// </para>
     /// </summary>
-    
-    [Table("GetUsGrub.UserProfiles")]
-    public class UserProfile : IUserProfile
+    [Table("GetUsGrub.UserProfile")]
+    public class UserProfile : IProfile, IEntity
     {
-        [Key]
+        [ForeignKey("UserAccount")]
         public int? Id { get; set; }
-
-        [ForeignKey("GetUsGrub.UserAccounts")]
-        public int? UserId { get; set; }
-
-        [Required]
-        public string DisplayName { get; set; }
-
         public string DisplayPicture { get; set; }
-
-        public UserProfile(string name, string picture)
-        {
-            DisplayName = name;
-            DisplayPicture = picture;
-        }
-
-        public UserProfile()
-        {
-            DisplayName = null;
-            DisplayPicture = null;
-        }
-
+        public string DisplayName { get; set; }
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
         public virtual RestaurantProfile RestaurantProfile { get; set; }

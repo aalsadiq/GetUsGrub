@@ -21,10 +21,10 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userProfileDtoValidator = new UserProfileDtoValidator();
-
-            string displayName = "displayname";
-            string displayPicture = "";
-            var userProfileDto = new UserProfileDto(displayName, displayPicture);
+            var userProfileDto = new UserProfileDto()
+            {
+                DisplayName = "displayname"
+            };
 
             // Act
             var result = userProfileDtoValidator.Validate(userProfileDto, ruleSet: "CreateUser");
@@ -39,10 +39,10 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userProfileDtoValidator = new UserProfileDtoValidator();
-
-            string displayName = "";
-            string displayPicture = "";
-            var userProfileDto = new UserProfileDto(displayName, displayPicture);
+            var userProfileDto = new UserProfileDto()
+            {
+                DisplayName = ""
+            };
 
             // Act
             var result = userProfileDtoValidator.Validate(userProfileDto, ruleSet: "CreateUser");
@@ -60,11 +60,10 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userProfileDtoValidator = new UserProfileDtoValidator();
-
-            string displayName = null;
-            string displayPicture = null;
-
-            var userProfileDto = new UserProfileDto(displayName, displayPicture);
+            var userProfileDto = new UserProfileDto()
+            {
+                DisplayName = null
+            };
 
             // Act
             var result = userProfileDtoValidator.Validate(userProfileDto, ruleSet: "CreateUser");

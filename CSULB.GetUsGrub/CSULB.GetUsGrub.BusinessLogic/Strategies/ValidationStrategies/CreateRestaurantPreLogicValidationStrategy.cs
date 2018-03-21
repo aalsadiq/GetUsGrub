@@ -30,16 +30,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _addressValidator = new AddressValidator();
             _businessHourValidator = new BusinessHourValidator();
         }
-
-        /// <summary>
-        /// The ExecuteStrategy method.
-        /// Contains the logic to validate a data transfer object for creating a restaurant user.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <returns>ResponseDto</returns>
         public ResponseDto<RegisterRestaurantDto> ExecuteStrategy()
         {
             // Validate base user DTO
@@ -67,7 +57,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Validate Address
+            System.Diagnostics.Debug.WriteLine("Address Validate2");
             validationResult = _addressValidator.Validate(_registerRestaurantDto.RestaurantProfileDto.Address, ruleSet: "CreateUser");
+            System.Diagnostics.Debug.WriteLine("Address Validate2");
             if (!validationResult.IsValid)
             {
                 var errorsList = new List<string>();

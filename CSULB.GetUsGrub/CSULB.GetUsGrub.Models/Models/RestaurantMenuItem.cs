@@ -1,51 +1,36 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
-    /// Menu item class
+    /// Restaurant menu item class
     /// 
-    /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// Author: Andrew Kao
+    /// Last Updated: 2/20/18
     /// </summary>
-
-    [Table("GetUsGrub.RestaurantMenuItems")]
-    public class RestaurantMenuItem : IMenuItem
+    [Table("GetUsGrub.RestaurantMenuItem")]
+    public class RestaurantMenuItem : IMenuItem, IEntity
     {
         [Key]
         public int? Id { get; set; }
 
-        [ForeignKey("GetUsGrub.RestaurantMenus")]
+        [ForeignKey("RestaurantMenu")]
         public int? MenuId { get; set; }
 
-        [Required]
         public string ItemName { get; set; }
 
-        [Required]
-        [DataType(DataType.Currency)]
-        public decimal ItemPrice { get; set; }
+        public double ItemPrice { get; set; }
 
         public string ItemPicture { get; set; }
 
-        [Required]
-        public string ItemType { get; set; }
+        public string Tag { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
-        [Required]
         public bool IsActive { get; set; }
 
-        public RestaurantMenuItem(string name, decimal price, string picture, string type, string description, bool isActive)
-        {
-            ItemName = name;
-            ItemPrice = price;
-            ItemPicture = picture;
-            ItemType = type;
-            Description = description;
-            IsActive = isActive;
-        }
+        // Navigation Properties
+        public virtual RestaurantMenu RestaurantMenu { get; set; }
     }
 }

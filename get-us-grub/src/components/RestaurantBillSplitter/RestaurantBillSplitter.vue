@@ -43,6 +43,7 @@ export default {
   },
   data () {
     return {
+
     }
   },
   methods: {
@@ -67,6 +68,7 @@ export default {
   }
 
   .wrapper {
+    margin: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;

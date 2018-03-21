@@ -16,28 +16,21 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserManager
     {
-        /// <summary>
-        /// The CreateIndividualUser method.
-        /// Contains business logic to create an individual user.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="registerUserDto"></param>
-        /// <returns>ResponseDto</returns>
+        //TODO: @Jenn Unit test and comment CreateIndividualUser [-Angelica]
         public ResponseDto<RegisterUserDto> CreateIndividualUser(RegisterUserDto registerUserDto)
         {
             var createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerUserDto);
+            var userAccountMapper = new UserAccountMapper();
             var securityQuestionMapper = new SecurityQuestionMapper();
             var userProfileMapper = new UserProfileMapper();
             var securityAnswerSalts = new List<SecurityAnswerSalt>();
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
-
+            System.Diagnostics.Debug.WriteLine("UserManager1");
             // Validate data transfer object
             var result = createIndividualPreLogicValidationStrategy.ExecuteStrategy();
+            System.Diagnostics.Debug.WriteLine("UserManager2");
             if (result.Error != null)
             {
                 return new ResponseDto<RegisterUserDto>
@@ -47,21 +40,25 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
+            System.Diagnostics.Debug.WriteLine("UserManager3");
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(registerUserDto.UserAccountDto);
+            var userAccount = userAccountMapper.MapDtoToModel(registerUserDto.UserAccountDto);
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                                         .Select(securityQuestionDto => securityQuestionMapper.MapDtoToModel(securityQuestionDto))
                                         .ToList();
             var userProfile = userProfileMapper.MapDtoToModel(registerUserDto.UserProfileDto);
-
+            System.Diagnostics.Debug.WriteLine("UserManager4");
             // Hash password
-            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
+            var passwordSalt = new PasswordSalt
+            {
+                Salt = saltGenerator.GenerateSalt(128)
+            };
             userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
             // Hash security answers
             for (var i = 0; i < securityQuestions.Count; i++)
             {
-                securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
+                securityAnswerSalts.Add(new SecurityAnswerSalt {Salt = saltGenerator.GenerateSalt(128)});
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
@@ -76,7 +73,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Set UserAccount is not first time user
             userAccount.IsFirstTimeUser = false;
-
+            
             // Validate domain models
             var createIndividualPostLogicValdiationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, claims, userProfile);
             var validateResult = createIndividualPostLogicValdiationStrategy.ExecuteStrategy();
@@ -92,15 +89,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Store user in database
             using (var userGateway = new UserGateway())
             {
-                var gatewayResult = userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile);
-                if (gatewayResult.Data == false)
-                {
-                    return new ResponseDto<RegisterUserDto>()
-                    {
-                        Data = registerUserDto,
-                        Error = gatewayResult.Error
-                    };
-                }
+                userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile);
             }
 
             return new ResponseDto<RegisterUserDto>
@@ -109,19 +98,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        /// <summary>
-        /// The CreateRestaurantUser method.
-        /// Contains business logic for creating a restaurant user.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="registerRestaurantDto"></param>
-        /// <returns>ResponseDto</returns>
+        // TODO: @Jenn Comment and unit test the CreateRestaurantUser [-Jenn]
         public ResponseDto<RegisterRestaurantDto> CreateRestaurantUser(RegisterRestaurantDto registerRestaurantDto)
         {
             var createRestaurantPreLogicValidationStrategy = new CreateRestaurantPreLogicValidationStrategy(registerRestaurantDto);
+            var userAccountMapper = new UserAccountMapper();
             var securityQuestionMapper = new SecurityQuestionMapper();
             var userProfileMapper = new UserProfileMapper();
             var restaurantProfileMapper = new RestaurantProfileMapper();
@@ -142,7 +123,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(registerRestaurantDto.UserAccountDto);
+            var userAccount = userAccountMapper.MapDtoToModel(registerRestaurantDto.UserAccountDto);
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
                                         .Select(securityQuestionDto => securityQuestionMapper.MapDtoToModel(securityQuestionDto))
                                         .ToList();
@@ -154,7 +135,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Set longitude and latitude
 
             // Hash password
-            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
+            var passwordSalt = new PasswordSalt
+            {
+                Salt = saltGenerator.GenerateSalt(128)
+            };
             userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
             // Hash security answers
@@ -164,10 +148,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
-            // Set claims to be stored in UserClaims table
+            // Set claims
             var claims = new UserClaims
             {
-                Claims = claimsFactory.CreateRestaurantClaims()
+                Claims = claimsFactory.CreateIndividualClaims()
             };
 
             // Set UserAccount to active
@@ -191,60 +175,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Store user in database
             using (var userGateway = new UserGateway())
             {
-                var gatewayResult = userGateway.StoreRestaurantUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile, restaurantProfile);
-                if (gatewayResult.Data == false)
-                {
-                    return new ResponseDto<RegisterRestaurantDto>()
-                    {
-                        Data = registerRestaurantDto,
-                        Error = gatewayResult.Error
-                    };
-                }
+                userGateway.StoreRestaurantUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile, restaurantProfile);
             }
 
             return new ResponseDto<RegisterRestaurantDto>
             {
                 Data = registerRestaurantDto
-            };
-        }
-
-        // TODO: @Jenn
-        public ResponseDto<bool> CreateFirstTimeSsoUser(UserAccountDto userAccountDto)
-        {
-            var createFirstTimeSsoUserPreLogicStrategy = new CreateFirstTimeSsoUserPreLogicValidationStrategy(userAccountDto);
-            var saltGenerator = new SaltGenerator();
-            var payloadHasher = new PayloadHasher();
-
-            // Validate data transfer object
-            var result = createFirstTimeSsoUserPreLogicStrategy.ExecuteStrategy();
-            if (result.Error != null)
-            {
-                return new ResponseDto<bool>
-                {
-                    Data = false,
-                    Error = result.Error
-                };
-            }
-
-            // Hash password
-            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
-            var userAccount = new UserAccount(userAccountDto);
-            userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
-
-            var createFirstTimeSsoUserPostLogicStrategy = new CreateFirstTimeSsoUserPostLogicValidationStrategy(userAccount, passwordSalt);
-            result = createFirstTimeSsoUserPostLogicStrategy.ExecuteStrategy();
-            if (result.Error != null)
-            {
-                return new ResponseDto<bool>
-                {
-                    Data = false,
-                    Error = result.Error
-                };
-            }
-
-            return new ResponseDto<bool>()
-            {
-                Data = true
             };
         }
 

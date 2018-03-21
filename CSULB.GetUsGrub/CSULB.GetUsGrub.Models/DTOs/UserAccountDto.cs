@@ -10,23 +10,9 @@
     /// </summary>
     public class UserAccountDto : IUserAccount
     {
-        public UserAccountDto(string username, string password, string roleType)
-        {
-            Username = username;
-            Password = password;
-            RoleType = roleType;
-        }
-
-        public UserAccountDto(string username, string password)
-        {
-            Username = username;
-            Password = password;
-        }
-
         public string Username { get; set; }
         public string Password { get; set; }
-        public bool? IsActive { get; set; }
-        public bool? IsFirstTimeUser { get; set; }
-        public string RoleType { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsFirstTimeUser { get; set; }
     }
 }

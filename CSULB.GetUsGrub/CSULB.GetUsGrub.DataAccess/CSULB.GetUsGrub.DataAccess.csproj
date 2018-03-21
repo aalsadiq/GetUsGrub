@@ -50,6 +50,7 @@
     <Compile Include="Contexts\IndividualProfileContext.cs" />
     <Compile Include="Contexts\RestaurantContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
+    <Compile Include="Gateways\RestaurantBillSplitterGateway.cs" />
     <Compile Include="Gateways\RestaurantProfileGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Gateways\UserProfileGateway.cs" />

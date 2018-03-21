@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
+    <Compile Include="Managers\RestaurantBillSplitterManager.cs" />
     <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,8 +129,6 @@
       <Name>CSULB.GetUsGrub.UserAccessControl</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -66,6 +66,7 @@
     <Compile Include="DTOs\RegisterRestaurantDto.cs" />
     <Compile Include="DTOs\RegisterUserDto.cs" />
     <Compile Include="DTOs\ResponseDto.cs" />
+    <Compile Include="DTOs\RestaurantMenuDto.cs" />
     <Compile Include="DTOs\SecurityQuestionDto.cs" />
     <Compile Include="DTOs\UserAccountDto.cs" />
     <Compile Include="Models\Address.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Models\PasswordSalt.cs" />
     <Compile Include="Models\SecurityQuestion.cs" />
     <Compile Include="Models\UserAccount.cs" />
-    <Compile Include="DTOs\RestaurantProfileDto.cs" />
     <Compile Include="DTOs\UserProfileDto.cs" />
     <Compile Include="Models\BusinessHour.cs" />
     <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />

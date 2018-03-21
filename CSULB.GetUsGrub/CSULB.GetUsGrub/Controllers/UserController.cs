@@ -109,7 +109,7 @@ namespace CSULB.GetUsGrub.Controllers
         }
 
         /// <summary>
-        /// The RegisterIndividualUser method.
+        /// The RegisterAdminUser method.
         /// Validates model state and routes the data transfer object.
         /// <para>
         /// @author: Jennifer Nguyen, Angelica Salas
@@ -126,17 +126,22 @@ namespace CSULB.GetUsGrub.Controllers
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
+            //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {
-                // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
-                return BadRequest(ModelState);
+                //If mode is invalid, return a bad request.
+                return BadRequest("Something went wrong, please try again later");
             }
             try
             {
+                //Creating a manager to then call CreateAdmin
                 var userManager = new UserManager();
-                var response = userManager.CreateAdmin(registerUserDto);//Calls create admin method from usermanager.
+                //Calls create admin method from usermanager.
+                var response = userManager.CreateAdmin(registerUserDto);
+                //Checks the response from CreateAdmin. if Error is null, then it was successful!
                 if (response.Error != null)
                 {
+                    //Will return a bad request if error occured in manager.
                     return BadRequest(response.Error);
                 }
                 // Sending HTTP response 201 Status
@@ -164,23 +169,31 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteUser([FromBody] string username)
         {
-            if (!ModelState.IsValid)//if the model is not valid return a bad request
+            //Checks if what was given is a valid model
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Something went wrong, please try again later");//TODO: @Angelica Extract error [Angelica, Jen]
+                //If mode is invalid, return a bad request.
+                return BadRequest("Something went wrong, please try again later");
             }
             try
             {
+                //Creating a manager to then call DeleteUser
                 var manager = new UserManager();
+                //Calling DeleteUser method to delete the username that was received.
                 var response = manager.DeleteUser(username);
+                //Checks the response from DeleteUser. If Error is null, then it was successful!
                 if (response.Error != null)
                 {
+                    //Will return a bad request if error occured in manager.
                     return BadRequest(response.Error);
                 }
+                //If DeleteUser was successful return HTTP response with a successful message.
                 return Ok("User has been deleted:" + username);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                //If any exceptions occur, send an HTTP response 400 status.
+                return BadRequest("Something went wrong. Please try again later.");
             }
         }
 
@@ -199,24 +212,31 @@ namespace CSULB.GetUsGrub.Controllers
             //TODO: Add claims here
             public IHttpActionResult DeactivateUser([FromBody] string username)
             {
-                //if the model is not valid return a bad request
-                if (!ModelState.IsValid)//was binding successful?
+                //Checks if what was given is a valid model
+                if (!ModelState.IsValid)
                 {
+                    //If mode is invalid, return a bad request.
                     return BadRequest("Something went wrong, please try again later");
                 }
                 try
                 {
-                    var manager = new UserManager();//calling appropriate manager.
+                    //Creating a manger to then call Deactivateuser
+                    var manager = new UserManager();
+                    //Calling ReactivateUser method to reactivate the username that was recieved.
                     var response = manager.DeactivateUser(username);
+                    //Checks the response from ReactivateUser. If Error is null, then it was successful.
                     if (response.Error != null)
                     {
+                        //Will return a bad request if error occured in manager.
                         return BadRequest(response.Error);
                     }
-                    return Ok("User has been deactivated:" + username);//Returns a deactivated user response.
+                    //IF ReactivateUser was successful return HTTP response with a successful message.
+                    return Ok("User has been deactivated:" + username);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    return BadRequest(ex.Message); //Returns a message that describes the current exception.
+                    //If any exceptions occur, send an HTTP response 400 status.
+                    return BadRequest("Something went wrong. Please try again later.");
                 }
             }
 
@@ -235,24 +255,31 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPut]
         public IHttpActionResult ReactivateUser([FromBody] string username)
         {
+            //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {
+                //If model is invalid, return a bad request.
                 return BadRequest("Something went wrong, please try again later");
             }
             try
             {
+                //Creating a manager to then call ReactivateUser
                 var manager = new UserManager();
+                //Calling ReactivateUser method to reactivate the username that was recieved.
                 var response = manager.ReactivateUser(username);
-
+                //Checks the response from ReactivateUser. IF error is null, then it was successful.
                 if (response.Error != null)
                 {
+                    //Will return a bad request if error occured in manager.
                     return BadRequest(response.Error);
                 }
-                return Ok("User has been reactivated:" + username);//Returns reactivated username
+                //If ReactivateUser was successful return HTTP response with a successful message.
+                return Ok("User has been reactivated:" + username);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                //If any exceptions occur, send an HTTP response 400 status.
+                return BadRequest("Something went wrong. Please try again later.");
             }
         }
 
@@ -269,24 +296,31 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
+            //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {
+                //If model is invalid, return a bad request.
                 return BadRequest("Something went wrong, please try again later");
             }
             try
             {
+                //Creating a manager to then call EditUser.
                 var manager = new UserManager();
-                var response = manager.edituser(user);
-
-                if (response.Error != null)//If manager has an error.
+                //Calling EditUser method to edit the given user.
+                var response = manager.Edituser(user);
+                //Checks the response from EditUser. If error is null, then it was successful.
+                if (response.Error != null)
                 {
-                    return BadRequest(response.Error);//If manager fails, it returns a bad request which is then caught in the exception.
+                    //Will return a bad request if error occured in manager.
+                    return BadRequest(response.Error);
                 }
-                return Ok("User has been edited:" + user.Username);//Returns edited username
+                //If EditUser was successful return HTTP response with a successful message.
+                return Ok("User has been edited:" + user.Username);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);//Http Resposne 400
+                //If any exceptions occur, send an HTTP response 400 status.
+                return BadRequest("Something went wrong. Please try again later.");
             }
         }
     }

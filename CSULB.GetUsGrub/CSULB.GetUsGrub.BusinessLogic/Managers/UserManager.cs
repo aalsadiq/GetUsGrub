@@ -307,23 +307,27 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<bool> DeactivateUser(string username)
+        public ResponseDto<string> DeactivateUser(string username)
         {
+            //Creates a gateway
             using (var gateway = new UserGateway())
             {
+                //Gateway calls DeactivateUser and passes in the username to be deactivated.
                 var gatewayResult = gateway.DeactivateUser(username);
-
-                if (gatewayResult.Data == false)//If gateway has failed return false
+                //If the gateway returns false
+                if (gatewayResult.Data == false)
                 {
-                    return new ResponseDto<bool>()
+                    //Return response dto with an error.
+                    return new ResponseDto<string>()
                     {
-                        Data = false,
-                        Error = gatewayResult.Error
+                        Data = username,//The username
+                        Error = gatewayResult.Error//The error
                     };
                 }
-                return new ResponseDto<bool>//If gateway was successful return true
+                //If the gateway returns true, return a true dto.
+                return new ResponseDto<string>
                 {
-                    Data = true
+                    Data = username//The username
                 };
             }
         }
@@ -337,22 +341,27 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<string> ReactivateUser(string username)
             {
+                //Creates a gateway
                 using (var gateway = new UserGateway())
                 {
+                    //Gateway calls ReactivateUser and passes in the username to be reactivated.
                     var gatewayResult = gateway.ReactivateUser(username);
-                if (gatewayResult.Data == false)
-                {
-                    return new ResponseDto<string>()
+                    //If the gateway returns false
+                    if (gatewayResult.Data == false)
                     {
-                        Data = username,
-                        Error = gatewayResult.Error
+                        //Return response dto with an error..
+                        return new ResponseDto<string>()
+                        {
+                            Data = username,//The username
+                            Error = gatewayResult.Error//The error
+                        };
+                    }
+                    //If the gateway returns true, return username reactivated
+                    return new ResponseDto<string>
+                    {
+                        Data = username//The username
                     };
                 }
-                return new ResponseDto<string>
-                {
-                    Data = "Success!"
-                };
-            }
             }
 
         /// <summary>
@@ -364,22 +373,27 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<string> DeleteUser(string username)
             {
+                //Creates a gateway
                 using (var gateway = new UserGateway())
                 {
+                    //Gateway calls DeleteUser and passes in the username to be deleted.
                     var gatewayResult = gateway.DeleteUser(username);
-                if (gatewayResult.Data == false)
-                {
-                    return new ResponseDto<string>()
+                    //If they gateway returns false
+                    if (gatewayResult.Data == false)
                     {
-                        Data = username,
-                        Error = gatewayResult.Error
+                        //Return response dto with an error.
+                        return new ResponseDto<string>()
+                        {
+                            Data = username,//The username
+                            Error = gatewayResult.Error//The error
+                        };
+                    }
+                    //If the gateway returns true, return username deleted.
+                    return new ResponseDto<string>
+                    {
+                        Data = username//The username
                     };
                 }
-                return new ResponseDto<string>
-                {
-                    Data = "Success!"
-                };
-            }
             }
         /// <summary>
         /// EditUser edits the user when given a.
@@ -388,22 +402,26 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<EditUserDto> edituser(EditUserDto user)//@TODO:Change name later
+        public ResponseDto<string> Edituser(EditUserDto user)
         {
+            //Creates a gateway
             using (var gateway = new UserGateway())
             {
+                //Gateway calls EditUser and passes in the EditUserDto.
                 var gatewayresult = gateway.EditUser(user);
+                //If the gateway returns false
                 if (gatewayresult.Data == false)
                 {
-                    return new ResponseDto<EditUserDto>()
+                    //Return response dto with an error.
+                    return new ResponseDto<string>()
                     {
-                        Data = user,
-                        Error = gatewayresult.Error
+                        Data = user.Username,//The user.
+                        Error = gatewayresult.Error//The error.
                     };
                 }
-                return new ResponseDto<EditUserDto>
+                return new ResponseDto<string>
                 {
-                    Data = user
+                    Data = user.Username//The user.
                 };
             }
         }

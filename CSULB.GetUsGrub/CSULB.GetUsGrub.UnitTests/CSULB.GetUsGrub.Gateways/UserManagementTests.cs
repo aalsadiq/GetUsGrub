@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         //public void DeactivateUser_When_GivenUserName()
         //{
         //    //Act
-        //    var response = userGateway.DeactivateUser("User1");
+        //    var response = userGateway.DeactivateUser("User10");
         //    //Assert
         //    response.Data.Should().BeTrue();
         //    response.Error.Should().BeNull();
@@ -133,22 +133,22 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         //    //Assert
         //    response.Data.Should().BeTrue();
         //}
-   
+
         [Fact]
         public void DeleteUser_ValidDelete_Pass()
         {
             //Assert
-            var response = userGateway.DeleteUser("User1");
+            var response = userGateway.DeleteUser("User3");
             response.Data.Should().BeTrue();
         }
 
-        [Fact]
-        public void DeleteUser_ValidDelete_Fail()
-        {
-            //Assert
-            var response = userGateway.DeleteUser("User1");
-            response.Data.Should().BeTrue();
-        }
+        //[Fact]
+        //public void DeleteUser_ValidDelete_Fail()
+        //{
+        //    //Assert
+        //    var response = userGateway.DeleteUser("User100");
+        //    response.Data.Should().BeFalse();
+        //}
 
     }
 }

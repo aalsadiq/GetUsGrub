@@ -299,13 +299,15 @@ namespace CSULB.GetUsGrub.DataAccess
         /// Will deactivate user by username by changing IsActive to false.
         /// </summary>
         /// @author Angelica Salas Tovar
-        /// @updated 03-17-2018
+        /// @updated 03/20/2018
         /// <param name="username">The user you want to deactivate</param>
         /// <returns></returns>
         public ResponseDto<bool> DeactivateUser(string username)
         {
+            //Creates the user context
             using (var userContext = new UserContext())
             {
+                //Creates a database context transaction
                 using (var dbContextTransaction = userContext.Database.BeginTransaction())
                 {
                     try
@@ -314,29 +316,31 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).FirstOrDefault();
-                        //Check ifActive is true
+                        //Check if IsActive is true
                         if (userAccount.IsActive == true)
                         {
-                            //Change isActive to false if isActive is true
+                            //Change IsActive to false if IsActive is true
                             userAccount.IsActive = false;
-                            //save changes to the database
+                            //Save changes to the database
                             userContext.SaveChanges();
-                            //commit transaction
+                            //Commit transaction
                             dbContextTransaction.Commit();
                         }
                         //Return true if transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = true
+                            Data = true//Bool
                         };
                     }
                     catch (Exception)
                     {
+                        //If transaction failed, roll back.
                         dbContextTransaction.Rollback();
-                        return new ResponseDto<bool>()//Will return a false ResponseDto<bool> if dbContextTransaction fails
+                        //Will return a false ResponseDto<bool> if dbContextTransaction fails
+                        return new ResponseDto<bool>()
                         {
-                            Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
                         };
                     }
                 }
@@ -347,38 +351,48 @@ namespace CSULB.GetUsGrub.DataAccess
         /// Will reactivate user by username by changing IsActive to true.
         /// </summary>
         /// @author Angelica Salas Tovar
-        /// @updated 03-17-2018
+        /// @updated 03/20/2018
         /// <param name="username">The user you want to reactivate.</param>
         /// <returns></returns>
         public ResponseDto<bool> ReactivateUser(string username)
         {
+            //Creates the user context.
             using (var userContext = new UserContext())
             {
+                //Creates a database context transaction.
                 using (var dbContextTransaction = userContext.Database.BeginTransaction())
                 {
                     try
                     {
+                        //Queries for the user account based on username.
                         var activeStatus = (from account in userContext.UserAccounts
                                             where account.Username == username
                                             select account).SingleOrDefault();
+                        //Checks if IsActive is false.
                         if(activeStatus.IsActive == false)
                         {
+                            //Change IsActive to true if IsActive is false.
                             activeStatus.IsActive = true;
+                            //Save changes to the database.
                             userContext.SaveChanges();
+                            //Commit transaction.
                             dbContextTransaction.Commit();
                         }
+                        //Returns true if transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = true
+                            Data = true//Bool
                         };
                     }
                     catch (Exception)
                     {
+                        //If transaction failed, roll back.
                         dbContextTransaction.Rollback();
+                        //Will return a false ResponseDto<bool> if dbContextTransaction fails
                         return new ResponseDto<bool>()
                         {
-                            Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
                         };
                     }
                 }
@@ -388,13 +402,93 @@ namespace CSULB.GetUsGrub.DataAccess
         /// Will delete user by username.
         /// </summary>
         /// @author Angelica Salas Tovar
-        /// @updated 03-17-2018
+        /// @updated  03/20/2018
         /// <param name="username">The user you want to delete.</param>
         /// <returns></returns>
         public ResponseDto<bool> DeleteUser(string username)
         {
+            //Creates the user context
             using (var userContext = new UserContext())
             {
+                try
+                {
+                    //Queries for the user account based on username.
+                    var userAccount = new ResponseDto<UserAccount>();
+                    userAccount = GetUserByUsername(username);
+                    //If user account is null it will return a response dto
+                    if (userAccount == null)
+                    {
+                        //Will return a false ResponseDto<bool> if userAccount is null.
+                        return new ResponseDto<bool>()
+                        {
+                        Data = false,//Bool
+                        Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    }
+                    //Call delete security answer salt
+                    DeleteSecurityAnswerSaltByUserame(username);
+
+                    //Call delete security question
+                    DeleteSecurityQuestionByUsername(username);
+
+                    //Call delete password salt
+                    DeletePasswordSaltByUsername(username);
+
+                    //Call delete token
+                    DeleteTokenByUsername(username);
+
+                    //call delete restaurant menu items
+                    DeleteRestaurantMenuItemsByUsername(username);
+
+                    //Call delete restaurant menus
+                    DeleteRestaurantMenusByUsername(username);
+
+                    //Call delete business hours
+                    DeleteBusinessHoursByUsername(username);
+
+                    //Call delete restaurant profile
+                    DeleteRestaurantProfileByUsername(username);
+
+                    //Call delete profiles
+                    DeleteUserProfilesByUsername(username);
+
+                    //Call delete claims
+                    DeleteUserClaimsByUsername(username);
+
+                    //Call delete user account
+                    DeleteUserAccount(username);
+
+                    //Return true if transaction did not fail.
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true//Bool
+                    };
+                }
+                catch (Exception)
+                {
+                    //Will return a false ResponseDto<bool> when an exception has occured.
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,//Bool
+                        Error = "Something went wrong. Please try again later."//The error.
+                    };
+                }
+            }  
+        }
+
+        /// <summary>
+        /// DeleteUserAccount will delete the user account when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos account will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteUserAccount(string username)//securityAnswerSaltByUsername
+        {
+            //Creating user context.
+            using (var userContext = new UserContext())
+            {
+                //Creating database context transaction
                 using (var dbContextTransaction = userContext.Database.BeginTransaction())
                 {
                     try
@@ -403,120 +497,20 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).FirstOrDefault();
-
-                        //If the user account is null then return a ResponseDto
-                        if(userAccount == null)
+                        //Check if user account is null
+                        if (userAccount == null)
                         {
+                            //Return ResponseDto
                             return new ResponseDto<bool>()
                             {
-                                Data = false,
-                                Error = "Something went wrong. Please try again later."
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
                             };
-                        }
-                        
-                        //Queries for the users security answer salt based on user account id and security answer salt user id.
-                        var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
-                                                    where securityAnswerSalt.Id == userAccount.Id
-                                                    select securityAnswerSalt).FirstOrDefault();
-
-                        //Queries for the users security question based on user account id and security question user id.
-                        var userSecurityQuestion = (from securityQuestion in userContext.SecurityQuestions
-                                 where securityQuestion.Id == userAccount.Id
-                                 select securityQuestion).FirstOrDefault();
-
-                        //Queries for the users password salts based on user account id and password salt user id.
-                        var userPasswordSalts = (from passwordSalt in userContext.PasswordSalts
-                                                 where passwordSalt.Id == userAccount.Id
-                                                 select passwordSalt).FirstOrDefault();
-
-                        //Queries for the users tokens based on user account id and token user id.
-                        var userTokens = (from tokens in userContext.Tokens
-                                          where tokens.Id == userAccount.Id
-                                          select tokens).FirstOrDefault();
-
-                        //Queries for the users Restaurant Menu Items based on user account id and restaurant menu items user id.
-                        var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
-                                                       where restaurantMenuItems.Id == userAccount.Id
-                                                       select restaurantMenuItems).FirstOrDefault();
-
-                        //Queries for the users Restaurant Menu based on user account id and restaurant menu user id.
-                        var userRestaurantMenus = (from restaurantMenus in userContext.RestaurantMenus
-                                                   where restaurantMenus.Id == userAccount.Id
-                                                   select restaurantMenus).FirstOrDefault();
-
-                        //Queries for the users business hours based on user account id and business hours user id.
-                        var userBusinessHours = (from businessHours in userContext.BussinessHours
-                                                 where businessHours.Id == userAccount.Id
-                                                 select businessHours).FirstOrDefault();
-
-                        //Queries for the users Restaurant Profiles based on user account id and rrestaurant profile user id.
-                        var userRestaurantProfiles = (from restaurantProfiles in userContext.RestaurantProfiles
-                                                      where restaurantProfiles.Id == userAccount.Id
-                                                      select restaurantProfiles).FirstOrDefault();
-
-                        //Queries for the users Profiles based on user account id and profiles user id.
-                        var userProfiles = (from profiles in userContext.UserProfiles
-                                            where profiles.Id == userAccount.Id
-                                            select profiles).FirstOrDefault();
-
-                        //Queries for the users claims based on user account id and claims user id.
-                        var userClaims = (from claims in userContext.Claims
-                                          where claims.Id == userAccount.Id
-                                          select claims).FirstOrDefault();
-
-                        //Checks if security answer salt result is null, if not then delete from database.
-                        if (userSecurityAnswerSalt != null)
-                        {
-                            userContext.SecurityAnswerSalts.Remove(userSecurityAnswerSalt);
-                        }
-                        //Checks if security question result is null, if not then delete from database.
-                        if (userSecurityQuestion != null)
-                        {
-                            userContext.SecurityQuestions.Remove(userSecurityQuestion);
-                        }
-                        //Checks if password salts result is null, if not then delete from database.
-                        if (userPasswordSalts != null)
-                        {
-                            userContext.PasswordSalts.Remove(userPasswordSalts);
-                        }
-                        //Checks if tokens result is null, if not then delete from database.
-                        if (userTokens != null)
-                        {
-                            userContext.Tokens.Remove(userTokens);
-                        }
-                        //Checks if restaurant menu items result is null, if not then delete from database.
-                        if (userRestaurantMenuItems != null)
-                        {
-                            userContext.RestaurantMenuItems.Remove(userRestaurantMenuItems);
-                        }
-                        //Checks if restaurant menus result is null, if not then delete from database.
-                        if (userRestaurantMenus != null)
-                        {
-                            userContext.RestaurantMenus.Remove(userRestaurantMenus);
-                        }
-                        //Checks if business hours result is null, if not then delete from database.
-                        if (userBusinessHours != null)
-                        {
-                            userContext.BussinessHours.Remove(userBusinessHours);
-                        }
-                        //Checks if restaurant profiles result is null, if not then delete from database.
-                        if (userRestaurantProfiles != null)
-                        {
-                            userContext.RestaurantProfiles.Remove(userRestaurantProfiles);
-                        }
-                        //Checks if profiles result is null, if not then delete from database.
-                        if (userProfiles != null)
-                        {
-                            userContext.UserProfiles.Remove(userProfiles);
-                        }
-                        //Checks if claims result is null, if not then delete from database.
-                        if (userClaims != null)
-                        {
-                           userContext.Claims.Remove(userClaims);
                         }
                         //Checks if user account result is null, if not then delete from database.
                         if (userAccount != null)
                         {
+                            //Delete useraccount
                             userContext.UserAccounts.Remove(userAccount);
                         }
                         //save changes to the database
@@ -526,31 +520,160 @@ namespace CSULB.GetUsGrub.DataAccess
                         //Return true transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = true
+                            Data = true//Bool
                         };
                     }
                     catch (Exception)
                     {
                         //Rollbackk if transaction failed.
                         dbContextTransaction.Rollback();
+                        //Return ResponseDto 
                         return new ResponseDto<bool>()
                         {
-                            Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
                         };
-                    }
+                    };
                 }
-            }  
+            }
         }
 
         /// <summary>
-        /// Main method that will go through edit user metehods: editUsername, editDisplayName, and reset Password.
+        /// DeleteSecurityAnswerSalt will delete the securityAnswerSalt when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
         /// </summary>
-        /// @author Angelica Salas Tovar
-        /// @updated 03-17-2018
-        /// <param name="user">The user that will be edited.</param>
+        /// <param name="username">The user whos securityAnswerSalt will be deleted..</param>
         /// <returns>ResponseDto</returns>
-        public ResponseDto<bool> EditUser(EditUserDto user)
+        public ResponseDto<bool> DeleteSecurityAnswerSaltByUserame(string username)
+        {
+            //Create user context
+            using (var userContext = new UserContext())
+            {
+                //Create database context transaction
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check if user account is null
+                        if(userAccount.Data == null)
+                        {
+                            //Return ResponseDto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
+                            };
+                        }
+                        //Queries for the users security answer salt based on user account id and security answer salt user id.
+                        var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
+                                                      where securityAnswerSalt.Id == userAccount.Data.Id
+                                                      select securityAnswerSalt).FirstOrDefault();
+                        //Checks if security answer salt result is null, if not then delete from database.
+                        if (userSecurityAnswerSalt != null)
+                        {
+                            //Delete security answer salt
+                            userContext.SecurityAnswerSalts.Remove(userSecurityAnswerSalt);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Return ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeleteSecurityAnswerSaltByUsername will delete the SecurityAnswerSalt when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos SecurityAnswerSalt will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteSecurityAnswerSaltByUsername(string username)
+        {
+            //Creates user context.
+            using (var userContext = new UserContext())
+            {
+                //Creates database context transaction
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //If user account is null it will return a response dto
+                        if (userAccount.Data == null)
+                        {
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,
+                                Error = "Something went wrong. Please try again later."
+                            };
+                        }
+                        //Queries for the users security answer salt based on user account id and security answer salt user id.
+                        var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
+                                                      where securityAnswerSalt.Id == userAccount.Data.Id
+                                                      select securityAnswerSalt).FirstOrDefault();
+
+                        //Checks if security answer salt result is null, if not then delete from database.
+                        if (userSecurityAnswerSalt != null)
+                        {
+                            //Delete security answer salts
+                            userContext.SecurityAnswerSalts.Remove(userSecurityAnswerSalt);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Return ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeleteSecurityQuestionByUsername will delete the SecurityQuestions when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos SecurityQuestions will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteSecurityQuestionByUsername(string username)
         {
             using (var userContext = new UserContext())
             {
@@ -558,46 +681,629 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == user.Username
-                                           select account).SingleOrDefault();
-                        var resetPasswordResult = new ResponseDto<bool>();
-                        if (user.NewPassword != null && user.NewPassword != userAccount.Password)
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check if user account is null
+                        if (userAccount.Data == null)
                         {
-                            resetPasswordResult = ResetPassword(user.Username, user.NewPassword);
-                        }
-                        var editDisplayNameResult = new ResponseDto<bool>();
-                        if (user.NewDisplayName != null && user.NewDisplayName != userAccount.UserProfile.DisplayName)
-                        {
-                           editDisplayNameResult = EditDisplayName(user.Username, user.NewDisplayName);
-                        }
-                        var editUserNameResult = new ResponseDto<bool>();
-                        if (user.NewUsername != null && user.NewUsername != userAccount.Username)
-                        {
-                           editUserNameResult = EditUserName(user.Username, user.NewUsername);
-                        }
-                        if (resetPasswordResult.Data == true || editDisplayNameResult.Data == true || editUserNameResult.Data == true)
-                        {
+                            //Return Response Dto
                             return new ResponseDto<bool>()
                             {
-                                Data = true
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
                             };
                         }
+                        //Checks if security question result is null, if not then delete from database.
+                        var userSecurityQuestion = (from securityQuestion in userContext.SecurityQuestions
+                                                    where securityQuestion.Id == userAccount.Data.Id
+                                                    select securityQuestion).FirstOrDefault();
+                        //Checks if security question result is null, if not then delete from database.
+                        if (userSecurityQuestion != null)
+                        {
+                            //Delete security questions
+                            userContext.SecurityQuestions.Remove(userSecurityQuestion);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Data = true//Bool
                         };
                     }
                     catch (Exception)
                     {
+                        //Rollbackk if transaction failed.
                         dbContextTransaction.Rollback();
+                        //Return ResponseDto
                         return new ResponseDto<bool>()
                         {
-                            Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeletePasswordSaltByUsername will delete the password salt when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos password salt will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeletePasswordSaltByUsername(string username)
+        {
+            //Create the user context
+            using (var userContext = new UserContext())
+            {
+                //Create the database context transaction
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check if user account is null
+                        if (userAccount.Data == null)
+                        {
+                            //Return ResponseDto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
+                            };
+                        }
+                        //Queries for the users password salts based on user account id and password salt user id.
+                        var userPasswordSalts = (from passwordSalt in userContext.PasswordSalts
+                                                 where passwordSalt.Id == userAccount.Data.Id
+                                                 select passwordSalt).FirstOrDefault();
+                        //Checks if password salts result is null, if not then delete from database.
+                        if (userPasswordSalts != null)
+                        {
+                            //Delete password salts
+                            userContext.PasswordSalts.Remove(userPasswordSalts);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
                         };
                     }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Return ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeleteTokenByUsername will delete the password salt when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos token will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteTokenByUsername(string username)//Token by username
+        {
+            //Create user context
+            using (var userContext = new UserContext())
+            {
+                //Create database context transaction
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check is user account is null
+                        if (userAccount.Data == null)
+                        {
+                            //Returns ResponseDto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error
+                            };
+                        }
+                        //Queries for the users tokens based on user account id and token user id.
+                        var userTokens = (from tokens in userContext.Tokens
+                                          where tokens.Id == userAccount.Data.Id
+                                          select tokens).FirstOrDefault();
+                        //Checks if tokens result is null, if not then delete from database.
+                        if (userTokens != null)
+                        {
+                            //Delete Tokens
+                            userContext.Tokens.Remove(userTokens);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Returns Response Dto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeleteRestaurantMenuItemsByUsername will delete the RestaurantMenuItem when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos restaurant menu item will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteRestaurantMenuItemsByUsername(string username)//Token by username
+        {
+            //Creating the user context.
+            using (var userContext = new UserContext())
+            {
+                //Creating the database transaction context
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check if user account is null
+                        if (userAccount.Data == null)
+                        {
+                            //Return response Dto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
+                            };
+                        }
+                        //Queries for the users Restaurant Menu Items based on user account id and restaurant menu items user id.
+                        var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
+                                                       where restaurantMenuItems.Id == userAccount.Data.Id
+                                                       select restaurantMenuItems).FirstOrDefault();
+                        //Checks if restaurant menu items result is null, if not then delete from database.
+                        if (userRestaurantMenuItems != null)
+                        {
+                            //Delete restaurant menu items
+                            userContext.RestaurantMenuItems.Remove(userRestaurantMenuItems);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Return ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeleteRestaurantMenusByUsername will delete the restaurant menu when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos restaurant menu will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteRestaurantMenusByUsername(string username)//Token by username
+        {
+            //Creating the context
+            using (var userContext = new UserContext())
+            {
+                //Creating the database transaction context
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check is user account is null.
+                        if (userAccount.Data == null)
+                        {
+                            //Returns ResponseDto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error
+                            };
+                        }
+                        //Queries for the users Restaurant Menu based on user account id and restaurant menu user id.
+                        var userRestaurantMenus = (from restaurantMenus in userContext.RestaurantMenus
+                                                   where restaurantMenus.Id == userAccount.Data.Id
+                                                   select restaurantMenus).FirstOrDefault();
+                        //Checks if restaurant menus result is null, if not then delete from database.
+                        if (userRestaurantMenus != null)
+                        {
+                            //Deletes restaurant menus
+                            userContext.RestaurantMenus.Remove(userRestaurantMenus);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Returns ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+        /// <summary>
+        /// DeleteBusinessHoursByUsername will delete the business hours when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos bussines hours will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteBusinessHoursByUsername(string username)//Token by username
+        {
+            //Creating the context.
+            using (var userContext = new UserContext())
+            {
+                //Creating the database transaction context.
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check is user account is null
+                        if (userAccount.Data == null)
+                        {
+                            //Return ResponseDto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
+                            };
+                        }
+                        //Queries for the users business hours based on user account id and business hours user id.
+                        var userBusinessHours = (from businessHours in userContext.BussinessHours
+                                                 where businessHours.Id == userAccount.Data.Id
+                                                 select businessHours).FirstOrDefault();
+                        //Checks if business hours result is null, if not then delete from database.
+                        if (userBusinessHours != null)
+                        {
+                            //Delete Business hours
+                            userContext.BussinessHours.Remove(userBusinessHours);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Return ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeleteRestaurantProfileByUsername will delete the restaurant profile when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos restaurant profile will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteRestaurantProfileByUsername(string username)//Token by username
+        {
+            //Creating the user context.
+            using (var userContext = new UserContext())
+            {
+                //Creating the database transaction context.
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check if user account is null
+                        if (userAccount.Data == null)
+                        {
+                            //Return ResponseDto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
+                            };
+                        }
+                        //Queries for the users Restaurant Profiles based on user account id and rrestaurant profile user id.
+                        var userRestaurantProfiles = (from restaurantProfiles in userContext.RestaurantProfiles
+                                                      where restaurantProfiles.Id == userAccount.Data.Id
+                                                      select restaurantProfiles).FirstOrDefault();
+                        //Checks if restaurant profiles result is null, if not then delete from database.
+                        if (userRestaurantProfiles != null)
+                        {
+                            //Deleting restaurant profiles
+                            userContext.RestaurantProfiles.Remove(userRestaurantProfiles);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Returns ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeleteUserProfilesByUsername will delete the user profile when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos user profile will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteUserProfilesByUsername(string username)//Token by username
+        {
+            //Creating the user context.
+            using (var userContext = new UserContext())
+            {
+                //Creating the database transaction context.
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Check if useraccount is null
+                        if (userAccount.Data == null)
+                        {
+                            //Returns ResponseDto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
+                            };
+                        }
+                        //Queries for the users Profiles based on user account id and profiles user id.
+                        var userProfiles = (from profiles in userContext.UserProfiles
+                                            where profiles.Id == userAccount.Data.Id
+                                            select profiles).FirstOrDefault();
+                        //Checks if profiles result is null, if not then delete from database.
+                        if (userProfiles != null)
+                        {
+                            //Delete user profiles.
+                            userContext.UserProfiles.Remove(userProfiles);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Return ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+        /// <summary>
+        /// DeleteUserClaimsByUsername will delete the user claims when given a username.
+        /// @author: Angelica Salas Tovar
+        /// @updated: 03/20/2018
+        /// </summary>
+        /// <param name="username">The user whos user claims will be deleted.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> DeleteUserClaimsByUsername(string username)//Token by username
+        {
+            //Creating the user context.
+            using (var userContext = new UserContext())
+            {
+                //Creating the database transaction context.
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = GetUserByUsername(username);
+                        //Checks if userAccount is null
+                        if (userAccount.Data == null)
+                        {
+                            //Returns ResponseDto
+                            return new ResponseDto<bool>()
+                            {
+                                Data = false,//Bool
+                                Error = "Something went wrong. Please try again later."//The error.
+                            };
+                        }
+                        //Queries for the users claims based on user account id and claims user id.
+                        var userClaims = (from claims in userContext.Claims
+                                          where claims.Id == userAccount.Data.Id
+                                          select claims).FirstOrDefault();
+                        //Checks if claims result is null, if not then delete from database.
+                        if (userClaims != null)
+                        {
+                            //Delete user claims
+                            userContext.Claims.Remove(userClaims);
+                        }
+                        //save changes to the database
+                        userContext.SaveChanges();
+                        //commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        //Rollbackk if transaction failed.
+                        dbContextTransaction.Rollback();
+                        //Returns ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
+                        };
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// Main method that will go through edit user metehods: editUsername, editDisplayName, and reset Password.
+        /// </summary>
+        /// @author Angelica Salas Tovar
+        /// @updated 03/20/2018
+        /// <param name="user">The user that will be edited.</param>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> EditUser(EditUserDto user)
+        {
+            //Creating user context.
+            using (var userContext = new UserContext())
+            {
+                try
+                {
+                    //Queries for the user account based on the username passed in by the EditUserDto.
+                    var userAccount = (from account in userContext.UserAccounts
+                                        where account.Username == user.Username
+                                        select account).SingleOrDefault();
+                    //Create Response Dto.
+                    var resetPasswordResult = new ResponseDto<bool>();
+                    //Check if new password is not null and if it does not equal the password the user currently has.
+                    if (user.NewPassword != null && user.NewPassword != userAccount.Password)
+                    {
+                        //Set ResponseDto equal to the ResponseDto from ResetPassword.
+                        resetPasswordResult = ResetPassword(user.Username, user.NewPassword);
+                    }
+                    //Create Response Dto.
+                    var editDisplayNameResult = new ResponseDto<bool>();
+                    //Check if displayname is not null and if it does not equal to the display name the user currently has.
+                    if (user.NewDisplayName != null && user.NewDisplayName != userAccount.UserProfile.DisplayName)
+                    {
+                        //Set ResponseDto equal to the ResponseDto from EditDisplayName.
+                        editDisplayNameResult = EditDisplayName(user.Username, user.NewDisplayName);
+                    }
+                    //Create Response Dto.
+                    var editUserNameResult = new ResponseDto<bool>();
+                    //Check if username is not null and if it does not equal to the username the user currently has.
+                    if (user.NewUsername != null && user.NewUsername != userAccount.Username)
+                    {
+                        //Set ResponseDto equal to the ResponseDto from EditUserName.
+                        editUserNameResult = EditUserName(user.Username, user.NewUsername);
+                    }
+                    //If the ResponseDto.Data is true then return true.
+                    if (resetPasswordResult.Data == true || editDisplayNameResult.Data == true || editUserNameResult.Data == true)
+                    {
+                        //Return ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                         };
+                    }
+                    //Returns ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,//Bool
+                        Error = "Something went wrong. Please try again later."//The error.
+                    };
+                }
+                catch (Exception)
+                {
+                    //Returns ReponseDto
+                    return new ResponseDto<bool>()
+                    {
+                    Data = false,//Bool
+                    Error = "Something went wrong. Please try again later."//The error.
+                    };
                 }
             }
         }
@@ -605,36 +1311,46 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <summary>
         /// Will edit user name when given a the username to edit and the new username.
         /// </summary>
+        /// @author Angelica Salas Tovar
+        /// @updated 03/20/2018
         /// <param name="username">The user you want to edit.</param>
-        /// <param name="newUsername">The new username you want.</param>
+        /// <param name="newUsername">The new username you want to give the user.</param>
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> EditUserName(string username, string newUsername)
         {
+            //Creating the user context
             using (var userContext = new UserContext())
             {
+                //Creating the database transaction context.
                 using (var dbContextTransaction = userContext.Database.BeginTransaction())
                 {
                     try
                     {
+                        //Queries for the user account based on the username passed in.
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).SingleOrDefault();
-                          
-                            userAccount.Username = newUsername;
-                            userContext.SaveChanges();
-                            dbContextTransaction.Commit();
+                        //Select the username from useraccount and give it the new username.
+                        userAccount.Username = newUsername;
+                        //Save changes to the database
+                        userContext.SaveChanges();
+                        //Commit transaction
+                        dbContextTransaction.Commit();
+                        //Return true for ResponseDto if transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = true
+                            Data = true//Bool
                         };
                     }
                     catch (Exception)
                     {
+                        //If transaction failed, roll back.
                         dbContextTransaction.Rollback();
+                        //Return ResponseDto
                         return new ResponseDto<bool>()
                         {
-                            Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
                         };
                     }
                 }
@@ -651,32 +1367,39 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> EditDisplayName(string username, string newDisplayName)
         {
+            //Create user context.
             using (var userContext = new UserContext())
             {
+                //Create database transaction context.
                 using (var dbContextTransaction = userContext.Database.BeginTransaction())
                 {
                     try
                     {
+                        //Queries for the user account based on the username passed in.
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).SingleOrDefault();
-              
-                            userAccount.UserProfile.DisplayName = newDisplayName;
-                            userContext.SaveChanges();
-                            dbContextTransaction.Commit();
-
+                        //Select displayname from useraccount and give it the new display name.
+                        userAccount.UserProfile.DisplayName = newDisplayName;
+                        //Save changes to the database.
+                        userContext.SaveChanges();
+                        //Commit transaction.
+                        dbContextTransaction.Commit();
+                        //Return true for ResponseDto if transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = true
+                            Data = true//Bool
                         };
                     }
                     catch (Exception)
                     {
+                        //If transaction failed, roll back.
                         dbContextTransaction.Rollback();
+                        //Return ResponseDto
                         return new ResponseDto<bool>()
                         {
-                            Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
                         };
                     }
                 }
@@ -693,32 +1416,39 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> ResetPassword(string username, string newPassword)//EditPassword
         {
+            //Creating the user context.
             using (var userContext = new UserContext())
             {
+                //Creating the database transaction context.
                 using (var dbContextTransaction = userContext.Database.BeginTransaction())
                 {
                     try
                     {
+                        //Queries for the user account based on the username passed in.
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).SingleOrDefault();
-
+                        //Select the password from useraccount and give it the new username.
                         userAccount.Password = newPassword;
+                        //Save changes to the database.
                         userContext.SaveChanges();
+                        //Commit transaction.
                         dbContextTransaction.Commit();
-
+                        //Return true for ResponseDto if transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = true
+                            Data = true//Bool
                         };
                     }
                     catch (Exception)
                     {
+                        //If transaction failed, roll back.
                         dbContextTransaction.Rollback();
+                        //Return ResponseDto.
                         return new ResponseDto<bool>()
                         {
-                            Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Data = false,//Bool
+                            Error = "Something went wrong. Please try again later."//The error.
                         };
                     }
                 }

@@ -54,6 +54,7 @@
       <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.2.1\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -73,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\GoogleGeocodeService.cs" />
+    <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
     <Compile Include="Managers\RestaurantSelectionManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,6 +109,7 @@
     <Compile Include="Validators\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Api.config" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -125,6 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Managers\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

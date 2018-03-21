@@ -144,7 +144,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Set longitude and latitude
 
             // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.CreateIndividualClaims());
+            var userClaims = new UserClaims()
+            {
+                Claims = claimsFactory.CreateIndividualClaims()
+            };
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));

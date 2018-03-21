@@ -24,7 +24,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
             var restaurantProfileDto = new RestaurantProfileDto()
             {
-                BusinessHours = new List<BusinessHour>
+                /*BusinessHours = new List<BusinessHour>
                 {
                     new BusinessHour()
                     {
@@ -38,7 +38,7 @@ namespace CSULB.GetUsGrub.UnitTests
                         OpenTime = "8:00",
                         CloseTime = "23:00"
                     }
-                },
+                },*/
                 PhoneNumber = "(562)985-4111",
                 Address = new Address()
                 {
@@ -64,7 +64,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
             var restaurantProfileDto = new RestaurantProfileDto()
             {
-                BusinessHours = new List<BusinessHour>(),
+                //BusinessHours = new List<BusinessHour>(),
                 PhoneNumber = "(562)985-4111",
                 Address = new Address()
                 {
@@ -93,7 +93,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
             var restaurantProfileDto = new RestaurantProfileDto()
             {
-                BusinessHours = null,
+                //BusinessHours = null,
                 PhoneNumber = "(562)985-4111",
                 Address = new Address()
                 {
@@ -123,7 +123,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
             var restaurantProfileDto = new RestaurantProfileDto()
             {
-                BusinessHours = new List<BusinessHour>
+               /* BusinessHours = new List<BusinessHour>
                 {
                     new BusinessHour()
                     {
@@ -137,7 +137,7 @@ namespace CSULB.GetUsGrub.UnitTests
                         OpenTime = "8:00",
                         CloseTime = "23:00"
                     }
-                },
+                },*/
                 PhoneNumber = "",
                 Address = new Address()
                 {
@@ -167,7 +167,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
             var restaurantProfileDto = new RestaurantProfileDto()
             {
-                BusinessHours = new List<BusinessHour>
+                /*BusinessHours = new List<BusinessHour>
                 {
                     new BusinessHour()
                     {
@@ -181,7 +181,7 @@ namespace CSULB.GetUsGrub.UnitTests
                         OpenTime = "8:00",
                         CloseTime = "23:00"
                     }
-                },
+                },*/
                 PhoneNumber = null,
                 Address = new Address()
                 {
@@ -211,7 +211,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
             var restaurantProfileDto = new RestaurantProfileDto()
             {
-                BusinessHours = new List<BusinessHour>
+                /*BusinessHours = new List<BusinessHour>
                 {
                     new BusinessHour()
                     {
@@ -225,7 +225,7 @@ namespace CSULB.GetUsGrub.UnitTests
                         OpenTime = "8:00",
                         CloseTime = "23:00"
                     }
-                },
+                },*/
                 PhoneNumber = "562-985-4111",
                 Address = new Address()
                 {
@@ -255,7 +255,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
             var restaurantProfileDto = new RestaurantProfileDto()
             {
-                BusinessHours = new List<BusinessHour>
+                /*BusinessHours = new List<BusinessHour>
                 {
                     new BusinessHour()
                     {
@@ -269,7 +269,7 @@ namespace CSULB.GetUsGrub.UnitTests
                         OpenTime = "8:00",
                         CloseTime = "23:00"
                     }
-                },
+                },*/
                 PhoneNumber = "(562)985-4111"
             };
 
@@ -292,7 +292,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
             var restaurantProfileDto = new RestaurantProfileDto()
             {
-                BusinessHours = new List<BusinessHour>
+                /*BusinessHours = new List<BusinessHour>
                 {
                     new BusinessHour()
                     {
@@ -306,7 +306,7 @@ namespace CSULB.GetUsGrub.UnitTests
                         OpenTime = "8:00",
                         CloseTime = "23:00"
                     }
-                },
+                },*/
                 PhoneNumber = "(562)985-4111",
                 Address = null
             };

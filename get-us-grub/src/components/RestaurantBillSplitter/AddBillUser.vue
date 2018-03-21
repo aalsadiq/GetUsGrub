@@ -27,7 +27,7 @@ export default {
   methods: {
     AddBillUser: function (newBillUser) {
       if (this.$refs.addBillUserForm.validate()) {
-        this.$store.dispatch('AddBillUser', newBillUser)        
+        this.$store.dispatch('AddBillUser', newBillUser)
       }
     },
     RemoveFromBill: function (index) {

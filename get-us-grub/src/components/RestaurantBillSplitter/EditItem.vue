@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="editDialog" scrollable max-width="300px">
-    <v-btn small dark color="blue" slot="activator">Edit</v-btn>
+    <v-btn small dark color="blue" slot="activator" v-on:click="UpdateTextFields">Edit</v-btn>
     <v-card>
       <v-card-title><h2> {{Item.name}} : ${{Item.price}} </h2></v-card-title>
       <v-divider />
@@ -10,7 +10,7 @@
                 lazy-validation>
           <v-text-field label="Enter New Name"
                         :rules="[rules.required]"
-                        v-model="newItemNameData"
+                        v-model="newItemName"
                         required />
                         <!--
                         ref="newItemName"
@@ -19,7 +19,7 @@
           <v-text-field label="Enter New Price"
                         prefix="$"
                         :rules="[rules.required, rules.nonzero, rules.max]"
-                        v-model="newItemPriceData"
+                        v-model="newItemPrice"
                         v-money="money"
                         required />
                         <!--
@@ -33,7 +33,7 @@
           </v-btn>
           <v-btn color="blue"
                  dark
-                 v-on:click="EditFoodItem(editType, itemIndex, newItemNameData, newItemPriceData)">
+                 v-on:click="EditFoodItem(editType, itemIndex, newItemName, newItemPrice)">
             Save
           </v-btn>
           <v-btn v-on:click="Log">Log</v-btn>
@@ -55,8 +55,8 @@ export default {
   props: ['editType', 'itemIndex', 'Item'],
   data () {
     return {
-      newItemNameData: this.Item.name,
-      newItemPriceData: this.Item.price,
+      newItemName: this.Item.name,
+      newItemPrice: this.Item.price,
       editDialog: false,
       valid: true,
       rules: {
@@ -75,11 +75,6 @@ export default {
       }
     }
   },
-  updated () {
-    console.log('Hello Im being updated.')
-    this.newItemNameData = this.Item.name
-    this.newItemPriceData = this.Item.price
-  },
   directives: { money: VMoney },
   methods: {
     EditFoodItem: function (editType, itemIndex, newItemName, newItemPrice) {
@@ -96,8 +91,12 @@ export default {
         }
       }
     },
+    UpdateTextFields: function () {
+      this.newItemName = this.Item.name
+      this.newItemPrice = this.Item.price
+    },
     Log: function () {
-      console.log(this.newItemNameData)
+      console.log(this.newItemName)
     }
   },
   computed: {

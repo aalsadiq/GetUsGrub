@@ -101,7 +101,7 @@ export default {
     },
     usernameRules: [
       username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
+      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
     ]
   }),
   methods: {
@@ -129,7 +129,7 @@ export default {
         this.responseData = error.response.data
         console.log(error.response.data)
       })
-    }//,
+    }
     // restaurantSubmit () {
     //   axios.put('http://localhost:8081/User/Admin/EditRestaurant', {
     //     username: this.username// test

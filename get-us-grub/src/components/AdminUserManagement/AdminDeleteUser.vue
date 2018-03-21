@@ -3,7 +3,7 @@
       <app-admin-header/>
         <div id = 'user-text-box'>
             <h1> Delete User Page </h1>
-          <app-user-text-box/>
+          <app-user-text-box :viewType="submitType"/>
         </div>
     <app-footer/>
   </div>
@@ -13,7 +13,6 @@
 import AppAdminHeader from '@/components/AdminUserManagement/AdminHeader'
 import AppFooter from '@/components/AppFooter'
 import AppUserTextBox from '@/components/AdminUserManagement/UserTextBox'
-import axios from 'axios'
 export default {
   name: 'AdminHome',
   components: {
@@ -21,20 +20,9 @@ export default {
     'app-footer': AppFooter,
     'app-user-text-box': AppUserTextBox
   },
-  methods: {
-    userSubmit () {
-      axios.delete('http://localhost:8081/User/Admin/DeleteUser', {
-        username: this.username
-      }).then(response => {
-        this.responseDataStatus = 'Success! User has been created: '
-        this.responseData = response.data
-        console.log(response)
-      }).catch(error => {
-        this.responseDataStatus = 'An error has occurred: '
-        this.responseData = error.response.data
-        console.log(error.response.data)
-      })
-    }
-  }
+  data: () => ({
+    username: '',
+    submitType: 'DeleteUser'
+  })
 }
 </script>

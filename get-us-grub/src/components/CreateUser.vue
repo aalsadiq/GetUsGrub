@@ -419,7 +419,7 @@ export default {
     },
     usernameRules: [
       username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
+      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
     ],
     displayNameRules: [
       displayName => !!displayName || 'Display name is required'
@@ -437,11 +437,11 @@ export default {
     ],
     addressZipRules: [
       zip => !!zip || 'Zip code is required',
-      zip => /^\d{5}$/.test(v) || 'Zip code must contain 5 numbers'
+      zip => /^\d{5}$/.test(zip) || 'Zip code must contain 5 numbers'
     ],
     phoneNumberRules: [
       phone => !!phone || 'Phone number is required',
-      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(v) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
+      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
     ],
     securityQuestionsSet1: [{
       id: 1,

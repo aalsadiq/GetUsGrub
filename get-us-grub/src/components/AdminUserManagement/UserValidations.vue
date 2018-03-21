@@ -32,7 +32,7 @@ export default {
     password: '',
     usernameRules: [
       username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
+      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
     ],
     displayNameRules: [
       displayName => !!displayName || 'Display name is required'

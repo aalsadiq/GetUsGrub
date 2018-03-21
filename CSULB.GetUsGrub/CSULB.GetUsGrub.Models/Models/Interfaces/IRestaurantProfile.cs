@@ -12,6 +12,7 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public interface IRestaurantProfile
     {
+        IList<BusinessHour> BusinessHours { get; }
         string PhoneNumber { get; }
         Address Address { get; }
         double Longitude { get; }

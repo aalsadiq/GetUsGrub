@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CSULB.GetUsGrub.Models;
+﻿using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -17,7 +16,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             var restaurantProfileDto = new RestaurantProfileDto
             {
-                BusinessHours = new List<BusinessHour>(restaurantProfile.BusinessHours),
+                BusinessHours = restaurantProfile.BusinessHours,
                 PhoneNumber = restaurantProfile.PhoneNumber,
                 Address = restaurantProfile.Address,
                 Longitude = restaurantProfile.Longitude,

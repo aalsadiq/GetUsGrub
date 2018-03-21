@@ -3,55 +3,40 @@
     <h2>Dictionary</h2>
     <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(element, index) in MenuItems" :key="element">
-        {{element.menuItemName}} : ${{element.menuItemPrice}}<br />
-        <v-btn small=true v-on:click="ToggleEdit(index)">
+        {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}<br />
+        <v-btn small=true v-on:click="edit">
           Edit
         </v-btn>
         <v-btn small=true v-on:click="RemoveFromDictionary(index)">
           Delete
         </v-btn>
-        <v-form v-if="element.menuItemEdit">
+        <form v-if="edit">
           <label>Enter Food Item Name</label>
-          <v-text-field type="text" ref="menuItemName" required />
+          <input type="text" ref="menuItemName" required />
           <br />
           <label>Enter Food Item Price</label>
-          <v-text-field label="Item Price"
-                        prefix="$"
-                        v-model.lazy="menuItemPrice"
-                        v-money="money"
-                        required />
-        </v-form>
+          <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
+        </form>
       </div>
+
     </draggable>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-import { VMoney } from 'v-money'
 
 export default {
   name: 'Dictionary',
   components: {
     draggable
   },
-  directives: { money: VMoney },
   data () {
     return {
-      money: {
-        decimal: '.',
-        thousands: '',
-        prefix: '',
-        suffix: '',
-        precision: 2,
-        masked: false
-      }
+
     }
   },
   methods: {
-    ToggleEdit: function (index) {
-      this.$store.dispatch('ToggleEdit', index)
-    },
     RemoveFromDictionary: function (index) {
       console.log(index)
       this.$store.dispatch('RemoveFromDictionary', index)
@@ -69,7 +54,7 @@ export default {
   .dictionary {
     grid-column: 3;
     grid-row: 2 / 4;
-    outline: solid;
+    outline: dashed;
   }
 
   .dictionary > h2{

@@ -56,8 +56,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Validate BusinessHour
-            // Should we have a different validation process since business hours is a separate entity?
-            /*var businessHours = JsonConvert.DeserializeObject<List<BusinessHour>>(_restaurantProfile.BusinessHoursJson);
+            var businessHours = JsonConvert.DeserializeObject<List<BusinessHour>>(_restaurantProfile.BusinessHoursJson);
             foreach (var businessHour in businessHours)
             {
                 validationResult = _businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
@@ -78,7 +77,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return false;
                 }
             }
-            */
 
             return true;
         }

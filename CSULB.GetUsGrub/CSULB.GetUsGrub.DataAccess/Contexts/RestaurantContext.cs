@@ -17,8 +17,6 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<RestaurantProfile> RestaurantProfiles { get; set; }
 
         public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
-        
-        public DbSet<BusinessHour> BusinessHours { get; set; }
 
         public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
 

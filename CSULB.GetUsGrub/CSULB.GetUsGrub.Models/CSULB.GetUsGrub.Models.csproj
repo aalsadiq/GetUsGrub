@@ -72,7 +72,6 @@
     <Compile Include="DTOs\UserProfileDto.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\BusinessHour.cs" />
-    <Compile Include="Models\Interfaces\IBusinessHour.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
     <Compile Include="Models\Token.cs" />

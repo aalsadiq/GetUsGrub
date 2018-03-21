@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace CSULB.GetUsGrub.DataAccess
 {
 		public class RestaurantBillSplitterGateway
 		{
-				public ResponseDto<IList<RestaurantMenu>> GetRestaurantMenus(string displayName, double latitude, double longitude)
+				public ResponseDto<Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>> GetRestaurantMenus(string displayName, double latitude, double longitude)
 				{
 						using (var restaurantContext = new RestaurantContext())
 						{
@@ -30,6 +31,7 @@ namespace CSULB.GetUsGrub.DataAccess
 																			 where menus.IsActive == true
 																			 select menus).ToList();
 
+								Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary = new Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>();
 
 								foreach (var menu in restaurantMenus)
 								{
@@ -38,15 +40,15 @@ namespace CSULB.GetUsGrub.DataAccess
 																 where menuItems.MenuId == menu.Id
 																 select menuItems).ToList();
 
-										// Insert list into the menu
-										menu.MenuItems = items;
+										// Map menu items to menus in a dictionary
+										menuDictionary.Add(menu, items);
 								}
 
 
 								// Finally, add those menu objects into my IList<RestaurantMenu>
-								ResponseDto<IList<RestaurantMenu>> responseDto = new ResponseDto<IList<RestaurantMenu>>
+								ResponseDto<Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>> responseDto = new ResponseDto <Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>>
 								{
-										Data = restaurantMenus,
+										Data = menuDictionary,
 										Error = null
 								};
 

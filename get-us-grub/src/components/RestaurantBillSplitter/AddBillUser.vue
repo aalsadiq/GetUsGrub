@@ -6,7 +6,7 @@
                   v-model="newBillUser"
                   :rules="[rules.required]"
                   required />
-    <v-btn small dark color="blue" v-on:click="AddBillUser(newBillUser)">Add</v-btn>
+    <v-btn small dark color="blue" v-on:click="AddBillUser(newBillUser)" v-on:keyup.enter="AddBillUser(newBillUser)">Add</v-btn>
   </v-form>
 </template>
 
@@ -37,18 +37,12 @@ export default {
     }
   },
   computed: {
-    MenuItems () {
-      return this.$store.state.MenuItems
-    },
     BillItems () {
       return this.$store.state.BillItems
     },
     BillUsers () {
       return this.$store.state.BillUsers
     },
-    TotalPrice () {
-      return this.$store.getters.totalPrice
-    }
   }
 }
 </script>

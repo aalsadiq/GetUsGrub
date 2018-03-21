@@ -4,10 +4,8 @@
     <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="Clone" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(menuItem, menuItemIndex) in MenuItems" :key="menuItemIndex">
         {{menuItem.name}} : ${{menuItem.price}}<br />
-        <edit-item :editType="editType" :itemIndex="menuItemIndex" :Item="menuItem"></edit-item>
-        <v-btn small dark color="red" v-on:click="RemoveFromDictionary(menuItemIndex)">
-          Delete
-        </v-btn>
+        <edit-item :editType="$options.name" :itemIndex="menuItemIndex" :Item="menuItem" />
+        <delete-item :deleteType="$options.name" :itemIndex="menuItemIndex" />
       </div>
     </draggable>
   </div>
@@ -17,16 +15,17 @@
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 import EditItem from './EditItem.vue'
+import DeleteItem from './DeleteItem.vue'
 
 export default {
   name: 'Dictionary',
   components: {
     'edit-item': EditItem,
+    'delete-item': DeleteItem,
     draggable
   },
   data () {
     return {
-      editType: 'dictionary',
       money: {
         decimal: '.',
         thousands: '',
@@ -39,14 +38,11 @@ export default {
   },
   directives: { money: VMoney },
   methods: {
-    RemoveFromDictionary: function (menuItemIndex) {
-      console.log(menuItemIndex)
-      this.$store.dispatch('RemoveFromDictionary', menuItemIndex)
-    },
     Clone: function (el) {
       return {
         name: el.name,
-        price: el.price
+        price: el.price,
+        selected: el.selected
       }
     },
     Log: function () {

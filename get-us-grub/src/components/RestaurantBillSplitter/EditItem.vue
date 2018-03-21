@@ -12,30 +12,18 @@
                         :rules="[rules.required]"
                         v-model="newItemName"
                         required />
-                        <!--
-                        ref="newItemName"
-                        :value="Item.name"
-                        -->
           <v-text-field label="Enter New Price"
                         prefix="$"
                         :rules="[rules.required, rules.nonzero, rules.max]"
                         v-model="newItemPrice"
                         v-money="money"
                         required />
-                        <!--
-                        ref="newItemPrice"
-                        :value="Item.price"
-                        -->
           <v-btn color="blue"
                  dark
                  v-on:click.native="editDialog = false">
             Close
           </v-btn>
-          <v-btn color="blue"
-                 dark
-                 v-on:click="EditFoodItem(editType, itemIndex, newItemName, newItemPrice)">
-            Save
-          </v-btn>
+          <v-btn color="blue" dark v-on:click="EditFoodItem(editType, itemIndex, newItemName, newItemPrice)">Save</v-btn>
           <v-btn v-on:click="Log">Log</v-btn>
           <br /><small>*indicates required field</small>
         </v-form>
@@ -82,10 +70,10 @@ export default {
         console.log('Index: ' + itemIndex)
         console.log('New Name: ' + newItemName)
         console.log('New Price: ' + newItemPrice)
-        if (editType === 'dictionary') {
+        if (editType === 'Dictionary') {
           console.log('Dictionary Item Editted')
           this.$store.dispatch('EditDictionaryItem', [itemIndex, newItemName, newItemPrice])
-        } else if (editType === 'bill') {
+        } else if (editType === 'BillTable') {
           console.log('Bill Item Editted')
           this.$store.dispatch('EditBillItem', [itemIndex, newItemName, newItemPrice])
         }

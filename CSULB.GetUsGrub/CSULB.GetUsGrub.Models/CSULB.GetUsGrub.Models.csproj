@@ -67,6 +67,7 @@
     <Compile Include="DTOs\RegisterUserDto.cs" />
     <Compile Include="DTOs\ResponseDto.cs" />
     <Compile Include="DTOs\RestaurantMenuDto.cs" />
+    <Compile Include="DTOs\RestaurantProfileDto.cs" />
     <Compile Include="DTOs\SecurityQuestionDto.cs" />
     <Compile Include="DTOs\UserAccountDto.cs" />
     <Compile Include="Models\Address.cs" />

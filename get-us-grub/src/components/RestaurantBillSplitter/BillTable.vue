@@ -7,10 +7,12 @@
         <div class="bill-item" v-for="(billItem, billItemIndex) in BillItems" :key="billItemIndex">
           {{billItem.name}} : ${{billItem.price}}<br />
           <edit-item :editType="editType" :itemIndex="billItemIndex" :Item="billItem" />
-          <v-btn small dark color="red" v-on:click="RemoveFromBill(billItemIndex)">Delete</v-btn>
+          <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
           <manage-users :billItem="billItem"/>
           <v-divider/>
-          {{billItem.selected}}
+          <div v-for="(selected, selectedIndex) in BillItems" :key="selectedIndex">
+            <p> {{ selected[selectedIndex] }} </p>
+          </div>
         </div>
       </draggable>
     </div>
@@ -20,6 +22,7 @@
 
 <script>
 import EditItem from './EditItem.vue'
+import DeleteItem from './DeleteItem.vue'
 import AddBillUser from './AddBillUser.vue'
 import ManageUsers from './ManageUsers.vue'
 import draggable from 'vuedraggable'
@@ -29,6 +32,7 @@ export default {
   name: 'BillTable',
   components: {
     'edit-item': EditItem,
+    'delete-item': DeleteItem,
     'add-bill-user': AddBillUser,
     'manage-users': ManageUsers,
     draggable
@@ -36,7 +40,8 @@ export default {
   directives: { money: VMoney },
   data () {
     return {
-      editType: 'bill',
+      editType: 'BillTable',
+      deleteType: 'BillTable',
       money: {
         decimal: '.',
         thousands: '',
@@ -48,11 +53,6 @@ export default {
     }
   },
   methods: {
-    RemoveFromBill: function (index) {
-      // Parameters have to be placed into an array because dispatch can only take two. The name and the payload.
-      console.log(index)
-      this.$store.dispatch('RemoveFromBill', index)
-    }
   },
   computed: {
     MenuItems () {

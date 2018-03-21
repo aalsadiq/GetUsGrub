@@ -25,7 +25,8 @@ export const store = new Vuex.Store({
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
         name: payload[0],
-        price: payload[1]
+        price: payload[1],
+        selected: []
       })
     },
     AddBillUser: (state, payload) => {
@@ -42,11 +43,11 @@ export const store = new Vuex.Store({
       state.BillItems[payload[0]].price = payload[2]
     },
     RemoveFromDictionary: (state, payload) => {
-      console.log('Store Mutation: ' + payload)
+      console.log('Dictionary Store Mutation: ' + payload)
       state.MenuItems.splice(payload, 1)
     },
-    RemoveFromBill: (state, payload) => {
-      console.log('Store Mutation: ' + payload)
+    RemoveFromBillTable: (state, payload) => {
+      console.log('Bill Store Mutation: ' + payload)
       state.BillItems.splice(payload, 1)
     }
   },
@@ -80,9 +81,9 @@ export const store = new Vuex.Store({
         context.commit('RemoveFromDictionary', payload)
       }, 500)
     },
-    RemoveFromBill: (context, payload) => {
+    RemoveFromBillTable: (context, payload) => {
       setTimeout(function () {
-        context.commit('RemoveFromBill', payload)
+        context.commit('RemoveFromBillTable', payload)
       }, 500)
     }
   }

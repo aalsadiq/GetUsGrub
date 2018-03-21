@@ -3,10 +3,10 @@
     <h1>Your Bill</h1>
     <div>
       <h1 v-if="!BillItems.length"> Drag Items Here!</h1>
-      <draggable class="bill" v-bind:list="BillItems" v-bind:options="{group:'people'}" @start="drag=true" @end="drag=false">
+      <draggable class="bill" v-bind:list="BillItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
         <div class="bill-item" v-for="(billItem, billItemIndex) in BillItems" :key="billItemIndex">
           {{billItem.name}} : ${{billItem.price}}<br />
-          <edit-item :editType="editType" :itemIndex="billItemIndex" :Item="billItem" ></edit-item>
+          <edit-item :editType="editType" :itemIndex="billItemIndex" :Item="billItem" />
           <v-btn small dark color="red" v-on:click="RemoveFromBill(billItemIndex)">Delete</v-btn>
           <manage-users :billItem="billItem"/>
           <v-divider/>

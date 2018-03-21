@@ -42,7 +42,7 @@ export default {
     },
     BillUsers () {
       return this.$store.state.BillUsers
-    },
+    }
   }
 }
 </script>

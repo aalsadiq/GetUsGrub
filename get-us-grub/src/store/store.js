@@ -43,12 +43,16 @@ export const store = new Vuex.Store({
       state.BillItems[payload[0]].price = payload[2]
     },
     RemoveFromDictionary: (state, payload) => {
-      console.log('Dictionary Store Mutation: ' + payload)
+      console.log('Dictionary Store Mutation Index: ' + payload)
       state.MenuItems.splice(payload, 1)
     },
     RemoveFromBillTable: (state, payload) => {
-      console.log('Bill Store Mutation: ' + payload)
+      console.log('Bill Store Mutation Index: ' + payload)
       state.BillItems.splice(payload, 1)
+    },
+    RemoveUser: (state, payload) => {
+      console.log('User Store Mutation Index ' + payload)
+      state.BillUsers.splice(payload, 1)
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -58,7 +62,7 @@ export const store = new Vuex.Store({
         console.log('Added Food Item Name: ' + payload[0])
         console.log('Added Food Item Price: ' + payload[1])
         context.commit('AddToDictionary', payload)
-      }, 500)
+      }, 250)
     },
     AddBillUser: (context, payload) => {
       setTimeout(function () {
@@ -79,12 +83,17 @@ export const store = new Vuex.Store({
     RemoveFromDictionary: (context, payload) => {
       setTimeout(function () {
         context.commit('RemoveFromDictionary', payload)
-      }, 500)
+      }, 250)
     },
     RemoveFromBillTable: (context, payload) => {
       setTimeout(function () {
         context.commit('RemoveFromBillTable', payload)
-      }, 500)
+      }, 250)
+    },
+    RemoveUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('RemoveUser', payload)
+      }, 250)
     }
   }
 })

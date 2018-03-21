@@ -10,7 +10,7 @@ export default {
   name: 'DeleteItem',
   components: {
   },
-  data() {
+  data () {
     return {
 
     }

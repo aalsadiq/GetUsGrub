@@ -10,8 +10,8 @@
           <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
           <manage-users :billItem="billItem"/>
           <v-divider/>
-          <div v-for="(selected, selectedIndex) in BillItems" :key="selectedIndex">
-            <p> {{ selected[selectedIndex] }} </p>
+          <div v-for="(user, userIndex) in billItem.selected" :key="userIndex">
+            <p> {{ user }} </p>
           </div>
         </div>
       </draggable>
@@ -73,7 +73,7 @@ export default {
 
 <style>
   .bill-table {
-    grid-column: 1 / 3;
+    grid-column: 2 / 3;
     grid-row: 1 / 4;
     outline: solid;
   }

@@ -5,11 +5,13 @@
           lazy-validation>
     <v-text-field label="Item Name"
                   :rules="[rules.required]"
+                  ref="nameField"
                   v-model="name"
                   required />
     <v-text-field label="Item Price"
                   :rules="[rules.required, rules.nonzero, rules.max]"
                   prefix="$"
+                  ref="priceField"
                   v-model.lazy="price"
                   v-money="money"
                   required />

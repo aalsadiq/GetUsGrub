@@ -32,7 +32,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     // Find profile associated with account
                     var userProfile = (from profile in restaurantContext.UserProfiles
-                                       where profile.UserId == userAccount.Id
+                                       where profile.Id == userAccount.Id
                                        select profile).SingleOrDefault();
 
                     // Find restaurant associated with profile
@@ -94,7 +94,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     // Find profile associated with account
                     var dbUserProfile = (from profile in restaurantContext.UserProfiles
-                                        where profile.UserId == dbUserAccount.Id
+                                        where profile.Id == dbUserAccount.Id
                                         select profile).SingleOrDefault();
 
                     // Find restaurant associated with profile

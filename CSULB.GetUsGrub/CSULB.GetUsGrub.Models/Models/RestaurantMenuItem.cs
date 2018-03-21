@@ -10,7 +10,7 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 3/20/18
     /// </summary>
 
-    [Table("GetUsGrub.RestaurantMenuItems")]
+    [Table("GetUsGrub.RestaurantMenuItem")]
     public class RestaurantMenuItem : IMenuItem
     {
         public RestaurantMenuItem(int publicItemId, string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive)
@@ -40,7 +40,7 @@ namespace CSULB.GetUsGrub.Models
         [Key]
         public int? Id { get; set; }
 
-        [ForeignKey("GetUsGrub.RestaurantMenus")]
+        [ForeignKey("RestaurantMenu")]
         public int? MenuId { get; set; }
 
         [Required]
@@ -64,5 +64,7 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public bool IsActive { get; set; }
 
+        //Navigation Properties
+        public virtual RestaurantMenu RestaurantMenu { get;set; }
     }
 }

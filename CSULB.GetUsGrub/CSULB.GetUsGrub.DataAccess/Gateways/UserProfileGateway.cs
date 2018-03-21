@@ -30,7 +30,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     // Find profile associated with account
                     var userProfile = (from profile in profileContext.UserProfiles
-                                       where profile.UserId == userAccount.Id
+                                       where profile.Id == userAccount.Id
                                        select profile).SingleOrDefault();
 
                     ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
@@ -60,7 +60,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 using (var profileContext = new IndividualProfileContext())
                 {
                     var userProfile = (from profile in profileContext.UserProfiles
-                                       where profile.UserId == userAccount.Id
+                                       where profile.Id == userAccount.Id
                                        select profile).SingleOrDefault();
 
                     using (var dbContextTransaction = profileContext.Database.BeginTransaction())

@@ -9,14 +9,11 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 3/18/18
     /// </summary>
     
-    [Table("GetUsGrub.UserProfiles")]
+    [Table("GetUsGrub.UserProfile")]
     public class UserProfile : IUserProfile
     {
-        [Key]
+        [ForeignKey("UserAccount")]
         public int? Id { get; set; }
-
-        [ForeignKey("GetUsGrub.UserAccounts")]
-        public int? UserId { get; set; }
 
         [Required]
         public string DisplayName { get; set; }

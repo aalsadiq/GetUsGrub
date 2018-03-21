@@ -57,6 +57,11 @@
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Gateways\UserProfileGateway.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.cs" />
+    <Compile Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.Designer.cs">
+      <DependentUpon>201803212317008_Seed1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\UserManagement\ANYNAME\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +76,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gateways\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.resx">
+      <DependentUpon>201803212317008_Seed1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

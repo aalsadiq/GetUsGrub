@@ -43,22 +43,12 @@ namespace CSULB.GetUsGrub
             if (authHeader != null)
             {
                 var authenticationTokenManager = new AuthenticationTokenManager();
-                AuthenticationToken userPayloadToken = authenticationTokenManager.
+                AuthenticationToken userPayloadToken = null;
 
                 if (userPayloadToken != null)
                 {
                     //@TODO: I need to finish the filter and the Controler
-                    var identity = auth.PopulateUserIdentity(userPayloadToken);
-                    string[] roles = { "All" };
-                    var genericPrincipal = new GenericPrincipal(identity, roles);
-                    //Thread.CurrentPrincipal = genericPrincipal;
-                    //var authenticationIdentity = Thread.CurrentPrincipal.Identity as JWTAuthenticationIdentity;
-                    if (authenticationIdentity != null && !String.IsNullOrEmpty(authenticationIdentity.UserName))
-                    {
-                        authenticationIdentity.UserId = identity.UserId;
-                        authenticationIdentity.UserName = identity.UserName;
-                    }
-                    return true;
+                    
                 }
 
             }
@@ -68,13 +58,11 @@ namespace CSULB.GetUsGrub
         private string FetchFromHeader(HttpActionContext actionContext)
         {
             string requestToken = null;
-
             var authRequest = actionContext.Request.Headers.Authorization;
             if (authRequest != null)
             {
                 requestToken = authRequest.Parameter;
             }
-
             return requestToken;
         }
     }

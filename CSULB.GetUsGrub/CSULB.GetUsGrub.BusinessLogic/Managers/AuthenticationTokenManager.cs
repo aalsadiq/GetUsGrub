@@ -221,5 +221,26 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// Gets the parameters to help validate the token
+        /// 
+        /// </summary>
+        /// <param name="authenticationToken"></param>
+        /// <returns>
+        /// TokenValidationPatameters
+        /// </returns>
+        public TokenValidationParameters GetTokenValidationParameters(AuthenticationToken authenticationToken)
+        {
+            return new TokenValidationParameters()
+            {
+                ValidAudience = "https://www.GetUsGrub.com",
+                ValidIssuer = "GiftHub",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt)),
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateIssuerSigningKey = true,
+            };
+        }
     }
 }

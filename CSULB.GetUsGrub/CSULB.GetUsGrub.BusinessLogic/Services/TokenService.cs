@@ -43,9 +43,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return true;
         }
 
-        
-
-
         /// <summary>
         /// This Function is used to Validate the incoming token 
         /// </summary>
@@ -69,45 +66,5 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// GetTokenValidationParameters
-        /// 
-        /// Get the token's parameter to help with the validation
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="authenticationToken"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public TokenValidationParameters GetTokenValidationParameters(string source, AuthenticationToken authenticationToken)
-        {
-            string Audience= null, Issuer = null;
-            SecurityKey IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes("Nothing"));
-            // If the request 
-            if (source.Equals("getusgrub"))
-            {
-                Audience = "https://www.GetUsGrub.com";
-                Issuer = "GiftHub";
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt)); ;
-            }
-            else if (source.Equals("SSO"))
-            {
-                Audience = "https://www.GetUsGrub.com";
-                Issuer = "SSOwebsite";
-                IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String("SSOKEY"));
-            }
-
-            return new TokenValidationParameters()
-            {
-                ValidAudience = Audience,
-                ValidIssuer = Issuer,
-                IssuerSigningKey = IssuerSigningKey,
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidateIssuerSigningKey = true,
-            };
-        }
     }
 }

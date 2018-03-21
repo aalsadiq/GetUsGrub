@@ -157,5 +157,69 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
+        /// <summary>
+        /// 
+        /// GetTokenPrincipal
+        /// 
+        /// Gets the principals from inside the token
+        /// 
+        /// </summary>
+        /// <param name="authenticationToken"></param>
+        /// <param name="validatedToken"></param>
+        /// <returns>
+        /// Returns the ClaimsPrincipals from the token and out a validation 
+        /// </returns>
+        public ClaimsPrincipal GetTokenPrincipal(AuthenticationToken authenticationToken,
+            out SecurityToken validatedToken)
+        {
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            ClaimsPrincipal tokenClaimsPrincipal;
+
+            // Creating the Validation Parameter 
+            var tokenValidationParameter = GetTokenValidationParameters(authenticationToken);
+
+            // Validating the Token
+            try
+            {
+                tokenClaimsPrincipal = handler.ValidateToken(authenticationToken.TokenString, tokenValidationParameter, out validatedToken);
+            }
+            catch (Exception)
+            {
+                validatedToken = null;
+                return null;
+            }
+
+            return tokenClaimsPrincipal;
+        }
+
+        /// <summary>
+        /// 
+        /// GetTokenClaims
+        /// 
+        /// This Function gets the claims from inside the token
+        /// 
+        /// </summary>
+        /// <param name="tokenString"></param>
+        /// <param name="claimType"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public Claim GetTokenClaims(AuthenticationToken tokenString, string claimType)
+        {
+            SecurityToken validatedToken;
+            var tokenPrincipal = GetTokenPrincipal(tokenString, out validatedToken);
+            if (tokenPrincipal != null)
+            {
+                foreach (Claim claim in tokenPrincipal.Claims)
+                {
+                    if (claim.Type.Equals(claimType))
+                    {
+                        return claim;
+                    }
+                }
+            }
+            return null;
+        }
+
     }
 }

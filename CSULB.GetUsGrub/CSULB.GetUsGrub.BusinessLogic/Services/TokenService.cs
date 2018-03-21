@@ -43,69 +43,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// GetTokenPrincipal
-        /// 
-        /// Gets the principals from inside the token
-        /// 
-        /// </summary>
-        /// <param name="authenticationToken"></param>
-        /// <param name="validatedToken"></param>
-        /// <returns>
-        /// Returns the ClaimsPrincipals from the token and out a validation 
-        /// </returns>
-        public ClaimsPrincipal GetTokenPrincipal(AuthenticationToken authenticationToken,
-            out SecurityToken validatedToken, string source)
-        {
-            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            ClaimsPrincipal tokenClaimsPrincipal;
+        
 
-            // Creating the Validation Parameter 
-            var tokenValidationParameter = GetTokenValidationParameters(source , authenticationToken);
-
-            // Validating the Token
-            try
-            {
-                tokenClaimsPrincipal = handler.ValidateToken(authenticationToken.TokenString, tokenValidationParameter, out validatedToken);
-            }
-            catch (Exception)
-            {
-                validatedToken = null;
-                return null;
-            }
-
-            return tokenClaimsPrincipal;
-        }
-
-        /// <summary>
-        /// 
-        /// GetTokenClaims
-        /// 
-        /// This Function gets the claims from inside the token
-        /// 
-        /// </summary>
-        /// <param name="tokenString"></param>
-        /// <param name="claimType"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Claim GetTokenClaims(AuthenticationToken tokenString, string claimType)
-        {
-            SecurityToken validatedToken;
-            var tokenPrincipal = GetTokenPrincipal(tokenString, out validatedToken);
-            if (tokenPrincipal != null)
-            {
-                foreach (Claim claim in tokenPrincipal.Claims)
-                {
-                    if (claim.Type.Equals(claimType))
-                    {
-                        return claim;
-                    }
-                }
-            }
-            return null;
-        }
 
         /// <summary>
         /// This Function is used to Validate the incoming token 
@@ -114,44 +53,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>
         /// Respons with JwtSecurityToken that has been validated
         /// </returns>
-        public ResponseDto<JwtSecurityToken> ValidateToken(AuthenticationTokenDto authenticationTokenDto, string source)
+        public bool ValidateToken(string tokenString, TokenValidationParameters validationParameters)
         {
-            var authenticationTokenPreLogicValidationStrategy =
-                new AuthenticationTokenPreLogicValidationStrategy(authenticationTokenDto);
-
-            // Checking if the Dto has all the information it needs and assigning it to a AuthenticationToken
-            var validateAuthenticationTokenDtoResult = authenticationTokenPreLogicValidationStrategy.ExcuteStrategy();
-            if (validateAuthenticationTokenDtoResult.Error != null)
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            // Validating the Token
+            try
             {
-                return new ResponseDto<JwtSecurityToken>
-                {
-                    Error = validateAuthenticationTokenDtoResult.Error
-                };
+                jwtTokenHandler.ValidateToken(tokenString, validationParameters, out SecurityToken validatedToken);
             }
-            var incomeingAuthenticationtoken = new AuthenticationToken(authenticationTokenDto);
-
-            // Getting the Token from the Database
-            AuthenticationToken authenticationToken;
-            using (var authenticationGateway = new AuthenticationGateway())
+            catch (Exception)
             {
-                authenticationToken = authenticationGateway.GetAuthenticationToken(incomeingAuthenticationtoken).Data;
+                return false;
             }
 
-            // checking the expiration date on the Token if it matches what is in the 
-            if (DateTime.Compare(authenticationTokenDto.ExpiresOn, authenticationToken.ExpiresOn) != 0)
-            {
-                return new ResponseDto<JwtSecurityToken>
-                {
-                    Error = validateAuthenticationTokenDtoResult.Error
-                };
-            }
-
-            GetTokenPrincipal(authenticationToken, out var validatedToken, source);
-
-            return new ResponseDto<JwtSecurityToken>
-            {
-                Data = validatedToken as JwtSecurityToken
-            };
+            return true;
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPut]
         [AllowAnonymous] // TODO: Remove for deployment
         [Route("User/Edit")]
         [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]

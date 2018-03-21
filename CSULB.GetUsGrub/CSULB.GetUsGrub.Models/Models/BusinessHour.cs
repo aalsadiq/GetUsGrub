@@ -37,6 +37,9 @@ namespace CSULB.GetUsGrub.Models
         public int? RestaurantId { get; set; }
 
         [Required]
+        public int PublicHourId { get; set; }
+
+        [Required]
         public string Day { get; set; }
 
         [Required]

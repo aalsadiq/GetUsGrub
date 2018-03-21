@@ -8,6 +8,8 @@
     /// </summary>
     public interface IMenuItem
     {
+        int PublicItemId { get; set; }
+
         string ItemName { get; set; }
 
         decimal ItemPrice { get; set; }

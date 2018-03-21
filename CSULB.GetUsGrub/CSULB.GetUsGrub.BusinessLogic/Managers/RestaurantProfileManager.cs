@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -23,7 +24,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto)
         {
-            // Prelogic validation strategy
+            // Prelogic validation strategy TODO: @andrew move this to after the 
             var editRestaurantProfilePreLogicValidationStrategy = new EditRestaurantUserProfilePreLogicValidationStrategy(restaurantProfileDto);
 
             var result = editRestaurantProfilePreLogicValidationStrategy.ExecuteStrategy();
@@ -38,8 +39,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Extract DTO contents and map DTO to domain model
-            // TODO: @andrew extract BusinessHours and Menus
-            string username = restaurantProfileDto.Username;
+   
+            var username = restaurantProfileDto.Username;
+
+            // Extract restaurant profile domain
             var restaurantProfileDomain = new RestaurantProfile(
                 restaurantProfileDto.PhoneNumber,
                 restaurantProfileDto.Address,
@@ -47,10 +50,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 restaurantProfileDto.Latitude,
                 restaurantProfileDto.Longitude);
 
+            // Extract business hours domains
+            var businessHourDomains = restaurantProfileDto.BusinessHours;
+
+
+            // Extract restaurant menu
+            var restaurantMenuDomains = restaurantProfileDto.RestaurantMenus;
+
+            // Extract menu items
+            var restaurantMenuItemDomains = restaurantProfileDto.RestaurantMenuItems;
+
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfileByRestaurantProfileDomain(username, restaurantProfileDomain);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(username, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains, restaurantMenuItemDomains);
 
             return responseDtoFromGateway;
         }

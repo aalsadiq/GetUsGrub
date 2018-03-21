@@ -239,16 +239,16 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubContext2
             //RestaurantMenus seed
             var userRestaurantMenus = new List<RestaurantMenu>()
             {
-                new RestaurantMenu(1, 1, "Menu1"),
-                new RestaurantMenu(2, 2, "Menu2"),
-                new RestaurantMenu(3, 3, "Menu3"),
-                new RestaurantMenu(4, 4, "Menu4"),
-                new RestaurantMenu(5, 5, "Menu5"),
-                new RestaurantMenu(6, 6, "Menu6"),
-                new RestaurantMenu(7, 7, "Menu7"),
-                new RestaurantMenu(8, 8, "Menu8"),
-                new RestaurantMenu(9, 9, "Menu9"),
-                new RestaurantMenu(10, 10, "Menu10")
+                new RestaurantMenu(1, 1, 0001, "Menu1", true),
+                new RestaurantMenu(2, 2, 0002, "Menu2", true),
+                new RestaurantMenu(3, 3, 0003, "Menu3", true),
+                new RestaurantMenu(4, 4, 0004, "Menu4", true),
+                new RestaurantMenu(5, 5, 0005, "Menu5", true),
+                new RestaurantMenu(6, 6, 0006, "Menu6", true),
+                new RestaurantMenu(7, 7, 0007, "Menu7", true),
+                new RestaurantMenu(8, 8, 0008, "Menu8", true),
+                new RestaurantMenu(9, 9, 0009, "Menu9", true),
+                new RestaurantMenu(10, 10, 0010, "Menu10", true)
 
             };
             context.RestaurantMenus.AddOrUpdate(x => x.Id, (userRestaurantMenus.ToArray()));
@@ -257,25 +257,25 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubContext2
             //RestaurantMenuItems seed
             var userRestaurantMenuItems = new List<RestaurantMenuItem>()
             {
-               new RestaurantMenuItem(1, 1, "MenuItem1", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(1, 1, 0001, "MenuItem1", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag1", "Description1", true),
-               new RestaurantMenuItem(2, 2, "MenuItem2", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(2, 2, 0002, "MenuItem2", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag2", "Description2", true),
-               new RestaurantMenuItem(3, 3, "MenuItem3", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(3, 3, 0003, "MenuItem3", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag3", "Description3", true),
-               new RestaurantMenuItem(4, 4, "MenuItem4", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(4, 4, 0004, "MenuItem4", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag4", "Description4", true),
-               new RestaurantMenuItem(5, 5, "MenuItem5", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(5, 5, 0005, "MenuItem5", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag5", "Description5", true),
-               new RestaurantMenuItem(6, 6, "MenuItem6", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(6, 6, 0006, "MenuItem6", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag6", "Description6", true),
-               new RestaurantMenuItem(7, 7, "MenuItem7", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(7, 7, 0007, "MenuItem7", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag7", "Description7", true),
-               new RestaurantMenuItem(8, 8, "MenuItem8", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(8, 8, 0008, "MenuItem8", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag8", "Description8", true),
-               new RestaurantMenuItem(9, 9, "MenuItem9", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(9, 9, 0009, "MenuItem9", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag9", "Description9", true),
-               new RestaurantMenuItem(10, 10, "MenuItem10", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
+               new RestaurantMenuItem(10, 10, 0010, "MenuItem10", 1.50m, "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\EmptyImage.png",
                    "Tag10", "Description10", true),
             };
             context.RestaurantMenuItems.AddOrUpdate(x => x.Id, (userRestaurantMenuItems.ToArray()));

@@ -14,16 +14,20 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.RestaurantMenus")]
     public class RestaurantMenu : IRestaurantMenu
     {
-        public RestaurantMenu(string menuName)
+        public RestaurantMenu(int publicMenuId, string menuName, bool isActive)
         {
+            PublicMenuId = publicMenuId;
             MenuName = menuName;
+            IsActive = isActive;
         }
 
-        public RestaurantMenu(int? id, int? restaurantId, string menuName)
+        public RestaurantMenu(int? id, int? restaurantId, int publicMenuId, string menuName, bool isActive)
         {
             Id = id;
             RestaurantId = restaurantId;
+            PublicMenuId = publicMenuId;
             MenuName = menuName;
+            IsActive = isActive;
         }
 
         [Key]
@@ -33,11 +37,18 @@ namespace CSULB.GetUsGrub.Models
         public int? RestaurantId { get; set; }
 
         [Required]
+        public int PublicMenuId { get; set; }
+
+        [Required]
         public string MenuName { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
 
         // Navigation Properties
         public virtual RestaurantProfile RestaurantProfile { get; set; }
 
         public virtual ICollection<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+
     }
 }

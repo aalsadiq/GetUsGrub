@@ -17,8 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             RuleFor(x => x.MenuName)
                 .NotEmpty().WithMessage("Menu name is required.")
                 .NotNull().WithMessage("Menu name is required.");
-
-            RuleFor(x => x.Items).SetCollectionValidator(new RestaurantMenuItemValidator());
             });
         }
     }

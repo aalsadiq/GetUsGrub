@@ -38,27 +38,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Extract DTO contents and map DTO to domain model
+            // TODO: @andrew extract BusinessHours and Menus
             string username = restaurantProfileDto.Username;
             var restaurantProfileDomain = new RestaurantProfile(
-                restaurantProfileDto.RestaurantName,
-                restaurantProfileDto.Address,
-                restaurantProfileDto.Latitude,
-                restaurantProfileDto.Longitude,
                 restaurantProfileDto.PhoneNumber,
-                restaurantProfileDto.Menus,
-                restaurantProfileDto.BusinessHours,
-                restaurantProfileDto.FoodType,
-                restaurantProfileDto.HasReservations,
-                restaurantProfileDto.HasDelivery,
-                restaurantProfileDto.HasTakeOut,
-                restaurantProfileDto.AcceptCreditCards,
-                restaurantProfileDto.Attire,
-                restaurantProfileDto.ServesAlcohol,
-                restaurantProfileDto.HasOutdoorSeating,
-                restaurantProfileDto.HasTv,
-                restaurantProfileDto.HasDriveThru,
-                restaurantProfileDto.Caters,
-                restaurantProfileDto.AllowsPets);
+                restaurantProfileDto.Address,
+                restaurantProfileDto.Details,
+                restaurantProfileDto.Latitude,
+                restaurantProfileDto.Longitude);
 
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();

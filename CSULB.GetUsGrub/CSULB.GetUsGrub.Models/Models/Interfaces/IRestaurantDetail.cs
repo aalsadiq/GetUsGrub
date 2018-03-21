@@ -6,11 +6,13 @@ namespace CSULB.GetUsGrub.Models
     /// Additional restraurant information interface
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/15/18
+    /// @updated: 3/20/18
     /// @lastchange: Removed Category
     /// </summary>
-    interface IRestaurantDetail
+    public interface IRestaurantDetail
     {
+        int AvgFoodPrice { get; set; }
+
         bool? HasReservations { get; set; }
 
         bool? HasDelivery { get; set; }
@@ -32,5 +34,7 @@ namespace CSULB.GetUsGrub.Models
         bool? Caters { get; set; }
 
         bool? AllowsPets { get; set; }
+
+        string Category { get; set; }
     }
 }

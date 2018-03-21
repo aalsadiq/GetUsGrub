@@ -13,7 +13,5 @@
         string OpenTime { get; set; }
 
         string CloseTime { get; set; }
-
-        string TimeZone { get; set; }
     }
 }

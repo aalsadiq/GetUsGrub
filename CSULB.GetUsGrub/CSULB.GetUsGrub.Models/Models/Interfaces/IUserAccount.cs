@@ -12,7 +12,7 @@
     {
         string Username { get; }
         string Password { get; }
-        bool IsActive { get; }
-        bool IsFirstTimeUser { get; }
+        bool? IsActive { get; }
+        bool? IsFirstTimeUser { get; }
     }
 }

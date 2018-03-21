@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -27,28 +28,49 @@ namespace CSULB.GetUsGrub.DataAccess
                                    select account).SingleOrDefault();
 
                 
-                using (var profileContext = new IndividualProfileContext())
+                using (var restaurantContext = new RestaurantContext())
                 {
                     // Find profile associated with account
-                    var userProfile = (from profile in profileContext.UserProfiles
+                    var userProfile = (from profile in restaurantContext.UserProfiles
                                        where profile.UserId == userAccount.Id
                                        select profile).SingleOrDefault();
 
-                    using (var restaurantContext = new RestaurantContext())
+                    // Find restaurant associated with profile
+                    var restaurantProfile = (from restaurant in restaurantContext.RestaurantProfiles
+                                             where restaurant.Id == userProfile.Id
+                                             select restaurant).SingleOrDefault();
+
+                    // Find restaurant's business hours
+                    IList<BusinessHour> businessHours = (from hours in restaurantContext.BusinessHours
+                                         where hours.RestaurantId == restaurantProfile.Id
+                                         select hours).ToList();
+
+                    // Find restaurant's menus
+                    var restaurantMenus = (from menus in restaurantContext.RestaurantMenus
+                                           where menus.RestaurantId == restaurantProfile.Id
+                                           select menus).ToList();
+
+                   
+                    // Find restaurant's menu items
+                    ICollection<RestaurantMenuItem> restaurantMenuItems = new List<RestaurantMenuItem>();
+                    foreach (var menu in restaurantMenus)
                     {
-                        // Find restaurant associated with profile
-                        var restaurantProfile = (from restaurant in restaurantContext.RestaurantProfiles
-                                                 where restaurant.UserId == userProfile.Id
-                                                 select restaurant).SingleOrDefault();
+                        var items = (from menuItems in restaurantContext.RestaurantMenuItems
+                                    where menuItems.MenuId == menu.Id
+                                    select menuItems);
 
-                        ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
+                        foreach (var item in items)
                         {
-                            Data = new RestaurantProfileDto(restaurantProfile),
-                            Error = null
-                        };
-
-                        return responseDto;
+                            restaurantMenuItems.Add(item);
+                        }
                     }
+
+                    ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
+                    {
+                        Data = new RestaurantProfileDto(userProfile, restaurantProfile, businessHours, restaurantMenus, restaurantMenuItems),
+                        Error = null
+                    };
+                    return responseDto;
                 }
             }
         }
@@ -78,7 +100,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         // Find restaurant associated with profile
                         var restaurantProfile = (from restaurant in restaurantContext.RestaurantProfiles
-                                                 where restaurant.UserId == userProfile.Id
+                                                 where restaurant.Id == userProfile.Id
                                                  select restaurant).SingleOrDefault();
 
                        using (var dbContextTransaction = restaurantContext.Database.BeginTransaction())
@@ -86,25 +108,13 @@ namespace CSULB.GetUsGrub.DataAccess
                             try
                             {
                                 // Apply and save changes
-                                restaurantProfile.RestaurantName = restaurantProfileDomain.RestaurantName;
+                                restaurantProfile.PhoneNumber = restaurantProfileDomain.PhoneNumber;
                                 restaurantProfile.Address = restaurantProfileDomain.Address;
+                                restaurantProfile.Details = restaurantProfileDomain.Details;
                                 restaurantProfile.Latitude = restaurantProfileDomain.Latitude;
                                 restaurantProfile.Longitude = restaurantProfileDomain.Longitude;
-                                restaurantProfile.PhoneNumber = restaurantProfileDomain.PhoneNumber;
-                                restaurantProfile.Menus = restaurantProfileDomain.Menus;
+                                restaurantProfile.RestaurantMenus = restaurantProfileDomain.RestaurantMenus;
                                 restaurantProfile.BusinessHours = restaurantProfileDomain.BusinessHours;
-                                restaurantProfile.FoodType = restaurantProfileDomain.FoodType;
-                                restaurantProfile.HasReservations = restaurantProfileDomain.HasReservations;
-                                restaurantProfile.HasDelivery = restaurantProfileDomain.HasDelivery;
-                                restaurantProfile.HasTakeOut = restaurantProfileDomain.HasTakeOut;
-                                restaurantProfile.AcceptCreditCards = restaurantProfileDomain.AcceptCreditCards;
-                                restaurantProfile.Attire = restaurantProfileDomain.Attire;
-                                restaurantProfile.ServesAlcohol = restaurantProfileDomain.ServesAlcohol;
-                                restaurantProfile.HasOutdoorSeating = restaurantProfileDomain.HasOutdoorSeating;
-                                restaurantProfile.HasTv = restaurantProfileDomain.HasTv;
-                                restaurantProfile.HasDriveThru = restaurantProfileDomain.HasDriveThru;
-                                restaurantProfile.Caters = restaurantProfileDomain.Caters;
-                                restaurantProfile.AllowsPets = restaurantProfileDomain.AllowsPets;
                                 restaurantContext.SaveChanges();
 
                                 ResponseDto<bool> responseDto = new ResponseDto<bool>

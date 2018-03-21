@@ -34,10 +34,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty().WithMessage("Close time is required.")
                     .NotNull().WithMessage("Close time is required.")
                     .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");
-
-                RuleFor(x => x.TimeZone)
-                    .NotEmpty().WithMessage("Time zone is required.")
-                    .NotNull().WithMessage("Time zone is required.");
             });
         }
 

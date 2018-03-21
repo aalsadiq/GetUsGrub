@@ -73,6 +73,7 @@
     <Compile Include="DTOs\UserProfileDto.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />
     <Compile Include="Models\Interfaces\IException.cs" />
     <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />

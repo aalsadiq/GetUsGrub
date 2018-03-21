@@ -14,7 +14,7 @@
 
         string ItemPicture { get; set; }
 
-        string ItemType { get; set; }
+        string Tag { get; set; }
 
         string Description { get; set; }
 

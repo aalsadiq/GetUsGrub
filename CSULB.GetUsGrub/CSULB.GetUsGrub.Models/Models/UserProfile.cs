@@ -23,6 +23,8 @@ namespace CSULB.GetUsGrub.Models
 
         public string DisplayPicture { get; set; }
 
+        //TODO: @andrew @rachel add food preferences
+
         public UserProfile(string name, string picture)
         {
             DisplayName = name;

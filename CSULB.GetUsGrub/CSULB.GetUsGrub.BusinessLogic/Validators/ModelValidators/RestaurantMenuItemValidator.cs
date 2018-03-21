@@ -22,7 +22,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty().WithMessage("Item price is required.")
                     .NotNull().WithMessage("Item price is required.");
 
-                RuleFor(x => x.ItemType)
+                RuleFor(x => x.Tag)
                     .NotEmpty().WithMessage("Item type is required.")
                     .NotNull().WithMessage("Item type is required.");
 

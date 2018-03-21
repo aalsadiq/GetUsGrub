@@ -14,6 +14,18 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.RestaurantMenus")]
     public class RestaurantMenu : IRestaurantMenu
     {
+        public RestaurantMenu(string menuName)
+        {
+            MenuName = menuName;
+        }
+
+        public RestaurantMenu(int? id, int? restaurantId, string menuName)
+        {
+            Id = id;
+            RestaurantId = restaurantId;
+            MenuName = menuName;
+        }
+
         [Key]
         public int? Id { get; set; }
 
@@ -23,13 +35,9 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public string MenuName { get; set; }
 
-        public IEnumerable<IMenuItem> Items { get; set; }
+        // Navigation Properties
+        public virtual RestaurantProfile RestaurantProfile { get; set; }
 
-        // Constructor
-        public RestaurantMenu(string menuName, IEnumerable<IMenuItem> items)
-        {
-            MenuName = menuName;
-            Items = items;
-        }
+        public virtual ICollection<RestaurantMenuItem> RestaurantMenuItems { get; set; }
     }
 }

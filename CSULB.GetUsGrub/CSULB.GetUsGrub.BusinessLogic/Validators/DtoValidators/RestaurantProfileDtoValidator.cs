@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Defines rules to validate a RestaurantProfileDto.
     /// <para>
     /// @author: Jennifer Nguyen, Andrew Kao
-    /// @updated: 03/18/2018
+    /// @updated: 03/20/2018
     /// </para>
     /// </summary>
     public class RestaurantProfileDtoValidator : AbstractValidator<RestaurantProfileDto>
@@ -33,10 +33,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             RuleSet("EditProfile", () =>
             {
-                RuleFor(x => x.RestaurantName)
-                    .NotEmpty().WithMessage("Restaurant name is required.")
-                    .NotNull().WithMessage("Restaurant name is required.");
-
                 RuleFor(x => x.Address)
                     .NotEmpty().WithMessage("Address is required.")
                     .NotNull().WithMessage("Address is required.");
@@ -46,11 +42,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull().WithMessage("Phone number is required.")
                     .Matches(@"^\([2-9]\d{2}\)\d{3}\-\d{4}$").WithMessage("Phone number must be in (XXX)XXX-XXXX format.");
 
-                RuleFor(x => x.Menus)
+                RuleFor(x => x.RestaurantMenus)
                     .SetCollectionValidator(new RestaurantMenuValidator());
 
                 RuleFor(x => x.BusinessHours)
                     .SetCollectionValidator(new BusinessHourValidator());
+
+                RuleFor(x => x.RestaurantMenuItems)
+                    .SetCollectionValidator(new RestaurantMenuItemValidator());
             });
         }
     }

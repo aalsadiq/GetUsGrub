@@ -10,15 +10,6 @@ export const store = new Vuex.Store({
     BillItems: [
     ],
     BillUsers: [
-      {
-        name: 'George'
-      },
-      {
-        name: 'Ahmed'
-      },
-      {
-        name: 'Brian'
-      }
     ]
   },
   getters: {

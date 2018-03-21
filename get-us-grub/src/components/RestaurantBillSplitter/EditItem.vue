@@ -10,14 +10,22 @@
                 lazy-validation>
           <v-text-field label="Enter New Name"
                         :rules="[rules.required]"
-                        v-model="newItemName"
+                        v-model="newItemNameData"
                         required />
+                        <!--
+                        ref="newItemName"
+                        :value="Item.name"
+                        -->
           <v-text-field label="Enter New Price"
                         prefix="$"
                         :rules="[rules.required, rules.nonzero, rules.max]"
-                        v-model.lazy="newItemPrice"
+                        v-model="newItemPriceData"
                         v-money="money"
                         required />
+                        <!--
+                        ref="newItemPrice"
+                        :value="Item.price"
+                        -->
           <v-btn color="blue"
                  dark
                  v-on:click.native="editDialog = false">
@@ -25,9 +33,10 @@
           </v-btn>
           <v-btn color="blue"
                  dark
-                 v-on:click="EditFoodItem(editType, itemIndex, newItemName, newItemPrice)">
+                 v-on:click="EditFoodItem(editType, itemIndex, newItemNameData, newItemPriceData)">
             Save
           </v-btn>
+          <v-btn v-on:click="Log">Log</v-btn>
           <br /><small>*indicates required field</small>
         </v-form>
       </v-card-text>
@@ -46,8 +55,8 @@ export default {
   props: ['editType', 'itemIndex', 'Item'],
   data () {
     return {
-      newItemName: this.Item.name,
-      newItemPrice: this.Item.price,
+      newItemNameData: this.Item.name,
+      newItemPriceData: this.Item.price,
       editDialog: false,
       valid: true,
       rules: {
@@ -66,9 +75,10 @@ export default {
       }
     }
   },
-  mounted () {
-    this.newItemName = this.Item.name
-    this.newItemPrice = this.Item.price
+  updated () {
+    console.log('Hello Im being updated.')
+    this.newItemNameData = this.Item.name
+    this.newItemPriceData = this.Item.price
   },
   directives: { money: VMoney },
   methods: {
@@ -85,6 +95,9 @@ export default {
           this.$store.dispatch('EditBillItem', [itemIndex, newItemName, newItemPrice])
         }
       }
+    },
+    Log: function () {
+      console.log(this.newItemNameData)
     }
   },
   computed: {

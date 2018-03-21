@@ -1,7 +1,7 @@
 <template>
   <div class="dictionary">
     <h2>Dictionary</h2>
-    <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="clone" @start="drag=true" @end="drag=false">
+    <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="Clone" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(menuItem, menuItemIndex) in MenuItems" :key="menuItemIndex">
         {{menuItem.name}} : ${{menuItem.price}}<br />
         <edit-item :editType="editType" :itemIndex="menuItemIndex" :Item="menuItem"></edit-item>
@@ -39,15 +39,15 @@ export default {
   },
   directives: { money: VMoney },
   methods: {
-    clone: function (el) {
+    RemoveFromDictionary: function (menuItemIndex) {
+      console.log(menuItemIndex)
+      this.$store.dispatch('RemoveFromDictionary', menuItemIndex)
+    },
+    Clone: function (el) {
       return {
         name: el.name,
         price: el.price
       }
-    },
-    RemoveFromDictionary: function (menuItemIndex) {
-      console.log(menuItemIndex)
-      this.$store.dispatch('RemoveFromDictionary', menuItemIndex)
     },
     Log: function () {
       console.log(this.$refs.editForm)

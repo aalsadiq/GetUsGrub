@@ -858,14 +858,14 @@ namespace CSULB.GetUsGrub.DataAccess
                             };
                         }
                         //Queries for the users tokens based on user account id and token user id.
-                        var userTokens = (from tokens in userContext.Tokens
+                        var userTokens = (from tokens in userContext.AuthenticationTokens
                                           where tokens.Id == userAccount.Data.Id
                                           select tokens).FirstOrDefault();
                         //Checks if tokens result is null, if not then delete from database.
                         if (userTokens != null)
                         {
                             //Delete Tokens
-                            userContext.Tokens.Remove(userTokens);
+                            userContext.AuthenticationTokens.Remove(userTokens);
                         }
                         //save changes to the database
                         userContext.SaveChanges();
@@ -1049,14 +1049,14 @@ namespace CSULB.GetUsGrub.DataAccess
                             };
                         }
                         //Queries for the users business hours based on user account id and business hours user id.
-                        var userBusinessHours = (from businessHours in userContext.BussinessHours
+                        var userBusinessHours = (from businessHours in userContext.BusinessHours
                                                  where businessHours.Id == userAccount.Data.Id
                                                  select businessHours).FirstOrDefault();
                         //Checks if business hours result is null, if not then delete from database.
                         if (userBusinessHours != null)
                         {
                             //Delete Business hours
-                            userContext.BussinessHours.Remove(userBusinessHours);
+                            userContext.BusinessHours.Remove(userBusinessHours);
                         }
                         //save changes to the database
                         userContext.SaveChanges();
@@ -1240,14 +1240,14 @@ namespace CSULB.GetUsGrub.DataAccess
                             };
                         }
                         //Queries for the users claims based on user account id and claims user id.
-                        var userClaims = (from claims in userContext.Claims
+                        var userClaims = (from claims in userContext.UserClaims
                                           where claims.Id == userAccount.Data.Id
                                           select claims).FirstOrDefault();
                         //Checks if claims result is null, if not then delete from database.
                         if (userClaims != null)
                         {
                             //Delete user claims
-                            userContext.Claims.Remove(userClaims);
+                            userContext.UserClaims.Remove(userClaims);
                         }
                         //save changes to the database
                         userContext.SaveChanges();

@@ -18,13 +18,13 @@ namespace CSULB.GetUsGrub.Models
         public RestaurantProfile() { }
 
         // TODO: @Jenn Please parameterize this [-Jenn]
-        public RestaurantProfile(RestaurantProfileDto restaurantProfileDto)
+        public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details, double latitude, double longitude)
         {
-            PhoneNumber = restaurantProfileDto.PhoneNumber;
-            Address = restaurantProfileDto.Address;
-            Details = restaurantProfileDto.Details;
-            Latitude = restaurantProfileDto.Latitude;
-            Longitude = restaurantProfileDto.Longitude;
+            PhoneNumber = phoneNumber;
+            Address = address;
+            Details = details;
+            Latitude = latitude;
+            Longitude = longitude;
         }
 
         [Key]

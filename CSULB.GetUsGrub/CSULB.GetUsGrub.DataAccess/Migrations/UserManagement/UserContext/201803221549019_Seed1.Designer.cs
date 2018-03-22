@@ -7,13 +7,13 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.UserContext
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class UserContext : IMigrationMetadata
+    public sealed partial class Seed1 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UserContext));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Seed1));
         
         string IMigrationMetadata.Id
         {
-            get { return "201803151716224_UserContext"; }
+            get { return "201803221549019_Seed1"; }
         }
         
         string IMigrationMetadata.Source

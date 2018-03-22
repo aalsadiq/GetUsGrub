@@ -63,47 +63,12 @@
       <DependentUpon>201803201656396_seed1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserManagement\GetUsGrubContext2\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubUserContex\201803201625474_Seed1.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubUserContex\201803201625474_Seed1.Designer.cs">
-      <DependentUpon>201803201625474_Seed1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\GetUsGrubUserContex\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubUsers\201803172148289_Seed1.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubUsers\201803172148289_Seed1.Designer.cs">
-      <DependentUpon>201803172148289_Seed1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\GetUsGrubUsers\201803172200026_RemoveMenuProperty.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubUsers\201803172200026_RemoveMenuProperty.Designer.cs">
-      <DependentUpon>201803172200026_RemoveMenuProperty.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\GetUsGrubUsers\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\UserAccounts\201803162248521_UserAccountsDBSeed.cs" />
-    <Compile Include="Migrations\UserManagement\UserAccounts\201803162248521_UserAccountsDBSeed.Designer.cs">
-      <DependentUpon>201803162248521_UserAccountsDBSeed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\UserAccounts\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.Designer.cs">
-      <DependentUpon>201803151716224_UserContext.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\UserContext\201803161646091_DBSeedV1.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803161646091_DBSeedV1.Designer.cs">
-      <DependentUpon>201803161646091_DBSeedV1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\UserContext\201803161655189_UpdateSeedv2.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803161655189_UpdateSeedv2.Designer.cs">
-      <DependentUpon>201803161655189_UpdateSeedv2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\UserContext\201803161820020_DBSeed3.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803161820020_DBSeed3.Designer.cs">
-      <DependentUpon>201803161820020_DBSeed3.cs</DependentUpon>
+    <Compile Include="Migrations\UserManagement\GetUsGrubUserContext3\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.Designer.cs">
+      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserManagement\UserContext\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\User\201803161834272_UserSeed1.cs" />
-    <Compile Include="Migrations\UserManagement\User\201803161834272_UserSeed1.Designer.cs">
-      <DependentUpon>201803161834272_UserSeed1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\User\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -125,32 +90,8 @@
     <EmbeddedResource Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.resx">
       <DependentUpon>201803201656396_seed1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\GetUsGrubUserContex\201803201625474_Seed1.resx">
-      <DependentUpon>201803201625474_Seed1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\GetUsGrubUsers\201803172148289_Seed1.resx">
-      <DependentUpon>201803172148289_Seed1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\GetUsGrubUsers\201803172200026_RemoveMenuProperty.resx">
-      <DependentUpon>201803172200026_RemoveMenuProperty.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\UserAccounts\201803162248521_UserAccountsDBSeed.resx">
-      <DependentUpon>201803162248521_UserAccountsDBSeed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803151716224_UserContext.resx">
-      <DependentUpon>201803151716224_UserContext.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803161646091_DBSeedV1.resx">
-      <DependentUpon>201803161646091_DBSeedV1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803161655189_UpdateSeedv2.resx">
-      <DependentUpon>201803161655189_UpdateSeedv2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803161820020_DBSeed3.resx">
-      <DependentUpon>201803161820020_DBSeed3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\User\201803161834272_UserSeed1.resx">
-      <DependentUpon>201803161834272_UserSeed1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.resx">
+      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

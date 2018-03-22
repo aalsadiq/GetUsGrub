@@ -16,10 +16,10 @@ namespace CSULB.GetUsGrub.Models
     {
         public SecurityQuestion() { }
 
-        public SecurityQuestion(SecurityQuestionDto securityQuestionDto)
+        public SecurityQuestion( int question, string answer)
         {
-            Question = securityQuestionDto.Question;
-            Answer = securityQuestionDto.Answer;
+            Question = question;
+            Answer = answer;
         }
 
         [Key]

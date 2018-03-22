@@ -1,4 +1,4 @@
-namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserContex
+namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.UserContext
 {
     using CSULB.GetUsGrub.Models;
     using System;
@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserCont
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            MigrationsDirectory = @"Migrations\UserManagement\GetUsGrubUserContex";
+            MigrationsDirectory = @"Migrations\UserManagement\UserContext";
         }
 
         protected override void Seed(CSULB.GetUsGrub.DataAccess.UserContext context)
@@ -25,16 +25,16 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserCont
             //  to avoid creating duplicate seed data.
             var users = new List<UserAccount>()
             {
-               new UserAccount ("User1", "password123!@", true, true),
-               new UserAccount ("User2", "password123!@", true, true),
-               new UserAccount ("User3", "password123!@", true, true),
-               new UserAccount ("User4", "password123!@", true, true),
-               new UserAccount ("User5", "password123!@", true, true),
-               new UserAccount ("User6", "password123!@", true, true),
-               new UserAccount ("User7", "password123!@", true, true),
-               new UserAccount ("User8", "password123!@", true, true),
-               new UserAccount ("User9", "password123!@", true, true),
-               new UserAccount ("User10", "password123!@", true, true),
+               new UserAccount ("User1", "password123!@", true, true, "Private"),
+               new UserAccount ("User2", "password123!@", true, true, "Private"),
+               new UserAccount ("User3", "password123!@", true, true,"Private"),
+               new UserAccount ("User4", "password123!@", true, true,"Private"),
+               new UserAccount ("User5", "password123!@", true, true,"Private"),
+               new UserAccount ("User6", "password123!@", true, true,"Private"),
+               new UserAccount ("User7", "password123!@", true, true,"Private"),
+               new UserAccount ("User8", "password123!@", true, true,"Private"),
+               new UserAccount ("User9", "password123!@", true, true,"Private"),
+               new UserAccount ("User10", "password123!@", true, true,"Private")
             };
 
             //var users = new UserAccount("User1", "password123!@", true, true);
@@ -69,36 +69,59 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserCont
             //PasswordSalts seed
             var userPasswordSalts = new List<PasswordSalt>()
             {
-               new PasswordSalt("salt1"),
-               new PasswordSalt("salt2"),
-               new PasswordSalt("salt3"),
-               new PasswordSalt("salt4"),
-               new PasswordSalt("salt5"),
-               new PasswordSalt("salt6"),
-               new PasswordSalt("salt7"),
-               new PasswordSalt("salt8"),
-               new PasswordSalt("salt9"),
-               new PasswordSalt("salt10"),
-
+               new PasswordSalt("salt1"){ Id = 1},
+               new PasswordSalt("salt2"){ Id = 2},
+               new PasswordSalt("salt3"){ Id = 3},
+               new PasswordSalt("salt4"){ Id = 4},
+               new PasswordSalt("salt5"){ Id = 5},
+               new PasswordSalt("salt6"){ Id = 6},
+               new PasswordSalt("salt7"){Id = 7},
+               new PasswordSalt("salt8"){Id = 8 },
+               new PasswordSalt("salt9"){Id = 9 },
+               new PasswordSalt("salt10"){Id = 10 }
             };
-            //context.PasswordSalts.AddOrUpdate(x => x.Id, (userPasswordSalts.ToArray()));
-            userPasswordSalts.ForEach(x => context.PasswordSalts.AddOrUpdate(x));
+            context.PasswordSalts.AddOrUpdate(x => x.Id, (userPasswordSalts.ToArray()));
             context.SaveChanges();//Save the changes
                                   //SecurityAnswerSalts
                                   ////SecurityQuestions seed
 
             var userSecurityQuestions = new List<SecurityQuestion>()
             {
-                new SecurityQuestion() { Id = 1, UserId = 1, Question = 1, Answer = "A1"},
-                new SecurityQuestion() { Id = 2, UserId = 2, Question = 2, Answer = "A2"},
-                new SecurityQuestion() { Id = 3, UserId = 3, Question = 3, Answer = "A3"},
-                new SecurityQuestion() { Id = 4, UserId = 4, Question = 1, Answer = "A4"},
-                new SecurityQuestion() { Id = 5, UserId = 5, Question = 2, Answer = "A5"},
-                new SecurityQuestion() { Id = 6, UserId = 6, Question = 3, Answer = "A6"},
-                new SecurityQuestion() { Id = 7, UserId = 7, Question = 1, Answer = "A7"},
-                new SecurityQuestion() { Id = 8, UserId = 8, Question = 2, Answer = "A8"},
-                new SecurityQuestion() { Id = 9, UserId = 9, Question = 3, Answer = "A9"},
-                new SecurityQuestion() { Id = 10, UserId = 10, Question = 1, Answer = "A10"}
+                new SecurityQuestion() { UserId = 1, Question = 1, Answer = "A1"},
+                new SecurityQuestion() { UserId = 1, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { UserId = 1, Question = 3, Answer = "A3"},
+
+                new SecurityQuestion() {  UserId = 2, Question = 1, Answer = "A1"},
+                new SecurityQuestion() {  UserId = 2, Question = 2, Answer = "A2"},
+                new SecurityQuestion() {  UserId = 2, Question = 3, Answer = "A3"},
+
+                new SecurityQuestion() { UserId = 3, Question = 1, Answer = "A1"},
+                new SecurityQuestion() { UserId = 3, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { UserId = 3, Question = 3, Answer = "A3"},
+
+                new SecurityQuestion() { UserId = 4, Question = 1, Answer = "A1"},
+                new SecurityQuestion() {  UserId = 4, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { UserId = 4, Question = 3, Answer = "A3"},
+
+                new SecurityQuestion() { UserId = 5, Question = 1, Answer = "A1"},
+                new SecurityQuestion() { UserId = 5, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { UserId = 5, Question = 3, Answer = "A3"},
+
+                new SecurityQuestion() { UserId = 6, Question = 1, Answer = "A1"},
+                new SecurityQuestion() { UserId = 6, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { UserId = 6, Question = 3, Answer = "A3"},
+
+                new SecurityQuestion() { UserId = 7, Question = 1, Answer = "A1"},
+                new SecurityQuestion() { UserId = 7, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { UserId = 7, Question = 3, Answer = "A3"},
+
+                new SecurityQuestion() { UserId = 9, Question = 1, Answer = "A1"},
+                new SecurityQuestion() { UserId = 9, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { UserId = 9, Question = 3, Answer = "A3"},
+
+                new SecurityQuestion() { UserId = 10, Question = 1, Answer = "A1"},
+                new SecurityQuestion() { UserId = 10, Question = 2, Answer = "A2"},
+                new SecurityQuestion() { UserId = 10, Question = 3, Answer = "A3"}
             };
             context.SecurityQuestions.AddOrUpdate(x => x.Id, (userSecurityQuestions.ToArray()));
             context.SaveChanges();//Save the changes
@@ -121,20 +144,20 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserCont
             context.SaveChanges();//Save the changes
 
 
-            var userTokens = new List<Token>()
+            var userTokens = new List<AuthenticationToken>()
             {
-               new Token() { Id = 1, TokenHeader = "TokenHeader1", TokenSignature = "TokenSignature1", Salt = "Salt1", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 2, TokenHeader = "TokenHeader2", TokenSignature = "TokenSignature2", Salt = "Salt2", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 3, TokenHeader = "TokenHeader3", TokenSignature = "TokenSignature3", Salt = "Salt3", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 4, TokenHeader = "TokenHeader4", TokenSignature = "TokenSignature4", Salt = "Salt4", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 5, TokenHeader = "TokenHeader5", TokenSignature = "TokenSignature5", Salt = "Salt5", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 6, TokenHeader = "TokenHeader6", TokenSignature = "TokenSignature6", Salt = "Salt6", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 7, TokenHeader = "TokenHeader7", TokenSignature = "TokenSignature7", Salt = "Salt7", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 8, TokenHeader = "TokenHeader8", TokenSignature = "TokenSignature8", Salt = "Salt8", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 9, TokenHeader = "TokenHeader9", TokenSignature = "TokenSignature9", Salt = "Salt9", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now },
-               new Token() { Id = 10, TokenHeader = "TokenHeader10", TokenSignature = "TokenSignature10", Salt = "Salt10", IssuedOn = DateTime.Now, ExpiresOn = DateTime.Now }
+               new AuthenticationToken() { Id = 1, Username = "UserTokenName1", TokenString = "TokenString1", Salt = "Salt1",  ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 2, Username = "UserTokenName2", TokenString = "TokenString2", Salt = "Salt2",  ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 3, Username = "UserTokenName3", TokenString = "TokenString3", Salt = "Salt3",  ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 4, Username = "UserTokenName4", TokenString = "TokenString4", Salt = "Salt4",  ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 5, Username = "UserTokenName5", TokenString = "TokenString5", Salt = "Salt5", ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 6, Username = "UserTokenName6", TokenString = "TokenString6", Salt = "Salt6",  ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 7, Username = "UserTokenName7", TokenString = "TokenString7", Salt = "Salt7", ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 8, Username = "UserTokenName8", TokenString = "TokenString8", Salt = "Salt8",  ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 9, Username = "UserTokenName9", TokenString = "TokenString9", Salt = "Salt9",  ExpiresOn = DateTime.Now },
+               new AuthenticationToken() { Id = 10, Username = "UserTokenName10", TokenString = "TokenString10", Salt = "Salt10",  ExpiresOn = DateTime.Now }
             };
-            context.Tokens.AddOrUpdate(x => x.Id, (userTokens.ToArray()));
+            context.AuthenticationTokens.AddOrUpdate(x => x.Id, (userTokens.ToArray()));
             context.SaveChanges();//Save the changes
 
             //Claims
@@ -157,7 +180,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserCont
                new UserClaims() { Id = 9, Claims = claims },
                new UserClaims() { Id = 10, Claims = claims }
             };
-            context.Claims.AddOrUpdate(x => x.Id, (userClaims.ToArray()));
+            context.UserClaims.AddOrUpdate(x => x.Id, (userClaims.ToArray()));
             context.SaveChanges();//Save the changes
 
             //RestaurantProfiles seed
@@ -455,97 +478,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserCont
                     Longitude = 2.50
                 }
             };
-            /*{
-               new RestaurantProfile() {
-                   Id = 1,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", ServesAlcohol = true, HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 }
-
-               /*new RestaurantProfile() {
-                   Id = 2,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-
-                new RestaurantProfile() {
-                   Id = 3,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-
-                new RestaurantProfile() {
-                   Id = 4,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-
-                new RestaurantProfile() {
-                   Id = 5,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-
-                new RestaurantProfile() {
-                   Id = 6,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-
-                new RestaurantProfile() {
-                   Id = 7,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-
-                new RestaurantProfile() {
-                   Id = 8,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-
-                new RestaurantProfile() {
-                   Id = 9,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-
-                new RestaurantProfile() {
-                   Id = 10,
-                   PhoneNumber = "(555)555-555",
-                   Address = {Street1 = "Street1", Street2 ="Street2", City = "City1", State = "State1", Zip = 12345 },
-                   Details = {HasReservations = true, HasDelivery = true, HasTakeOut = true, AcceptCreditCards = true,
-                       Attire = "Attire1", HasOutdoorSeating = true, HasTv = true, HasDriveThru = true, Caters = true,
-                       AllowsPets = true, Category = "Category1" },
-                   Latitude = 2.50, Longitude = 2.50 },
-            };*/
 
             context.RestaurantProfiles.AddOrUpdate(x => x.Id, (userRestaurantProfiles.ToArray()));
             context.SaveChanges();//Save the changes
@@ -607,7 +539,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.GetUsGrubUserCont
                 new BusinessHour() { Id = 9, RestaurantId = 9, Day = "Tuesday", OpenTime = "12:23", CloseTime = "16:23"},
                 new BusinessHour() { Id = 10, RestaurantId = 10, Day = "Wednesday", OpenTime = "12:23", CloseTime = "16:23"}
             };
-            context.BussinessHours.AddOrUpdate(x => x.Id, (userBussinessHours.ToArray()));
+            context.BusinessHours.AddOrUpdate(x => x.Id, (userBussinessHours.ToArray()));
             context.SaveChanges();
         }
     }

@@ -62,6 +62,7 @@ namespace CSULB.GetUsGrub.UnitTests
         [Fact]
         public void Should_ThrowException_When_PrincipalIsInvalid()
         {
+            // Arrange
             var claims = factory.CreateIndividualClaims();
             claims.Add(new Claim("username", ""));
             var identity = new ClaimsIdentity(claims);

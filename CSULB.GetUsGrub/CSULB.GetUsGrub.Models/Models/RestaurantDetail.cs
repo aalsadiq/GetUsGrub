@@ -1,10 +1,36 @@
-﻿using System.Collections.Generic;
-
-namespace CSULB.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
-    [System.Serializable]
-    public class RestaurantDetail //: IRestaurantDetail
+    // TODO: @Jenn Ask what are best ways to label the food price ranges [-Jenn]
+    public enum AvgFoodPrices
     {
+        ZeroToTen = 0,
+        TenToFifty = 1,
+        FiftyPlus = 2
+    }
+    // TODO: @Jenn Comment these [-Jenn]
+    public enum RestaurantCategories
+    {
+        MexicanFood = 0,
+        ItalianCuisine = 1,
+        ThaiFood = 2,
+        GreekCuisine = 3,
+        ChineseFood = 4,
+        JapaneseCuisine = 5,
+        AmericanFood = 6,
+        MediterraneanCuisine = 7,
+        FrenchFood = 8,
+        SpanishCuisine = 9,
+        GermanFood = 10,
+        KoreanFood = 11,
+        VietnameseFood = 12,
+        TurkishCuisine = 13,
+        CaribbeanFood = 14
+    }
+
+    public class RestaurantDetail : IRestaurantDetail
+    {
+        public int AvgFoodPrice { get; set; }
+
         public bool? HasReservations { get; set; }
 
         public bool? HasDelivery { get; set; }
@@ -28,7 +54,5 @@ namespace CSULB.GetUsGrub.Models
         public bool? AllowsPets { get; set; }
 
         public string Category { get; set; }
-
-        //public IEnumerable<BusinessHour> BusinessSchedule { get; set; } Ask Brian if we need this?
     }
 }

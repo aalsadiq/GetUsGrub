@@ -17,12 +17,12 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<RestaurantProfile> RestaurantProfiles { get; set; }
         public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
         public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+        public DbSet<BusinessHour> BusinessHours { get; set; }
         public DbSet<SecurityQuestion> SecurityQuestions { get; set; }
-        public DbSet<Token> Tokens { get; set; }
-        public DbSet<UserClaims> Claims { get; set; }
+        public DbSet<AuthenticationToken> AuthenticationTokens { get; set; }
+        public DbSet<UserClaims> UserClaims { get; set; }
         public DbSet<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
         public DbSet<BusinessHour> BussinessHours { get; set; }
         public UserContext() : base("GetUsGrub") { }
     }
-
 }

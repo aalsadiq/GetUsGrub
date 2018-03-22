@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.UserClaims")]
-    public class UserClaims
+    public class UserClaims : IEntity
     {
         [System.Serializable]
         internal class ClaimsEntry

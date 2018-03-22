@@ -58,13 +58,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
-            userAccount.Password = payloadHasher.Sha256HashWithSaltBase64(passwordSalt.Salt, userAccount.Password);
+            userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
             // Hash security answers
             for (var i = 0; i < securityQuestions.Count; i++)
             {
                 securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
-                securityQuestions[i].Answer = payloadHasher.Sha256HashWithSaltBase64(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
+                securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
             // Validate domain models
@@ -148,13 +148,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
-            userAccount.Password = payloadHasher.Sha256HashWithSaltBase64(passwordSalt.Salt, userAccount.Password);
+            userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
             // Hash security answers
             for (var i = 0; i < securityQuestions.Count; i++)
             {
                 securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
-                securityQuestions[i].Answer = payloadHasher.Sha256HashWithSaltBase64(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
+                securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
             // Validate domain models
@@ -210,7 +210,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
             var userAccount = new UserAccount(userAccountDto: userAccountDto, isActive: false, isFirstTimeUser: true);
-            userAccount.Password = payloadHasher.Sha256HashWithSaltBase64(passwordSalt.Salt, userAccount.Password);
+            userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
             
             // Validate domain models
             var createFirstTimeSsoUserPostLogicStrategy = new CreateFirstTimeSsoUserPostLogicValidationStrategy(userAccount, passwordSalt);

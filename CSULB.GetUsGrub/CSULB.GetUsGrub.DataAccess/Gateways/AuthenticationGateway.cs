@@ -154,6 +154,34 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         // TODO: @Jenn Comment this method and unit test [-Jenn]
+        public ResponseDto<SsoToken> GetSsoToken(string token)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+                try
+                {
+                    var ssoToken = (from storedToken in authenticationContext.SsoTokens
+                        where storedToken.Token == token
+                        select storedToken).FirstOrDefault();
+
+                    // Return a ResponseDto with a UserAccount model
+                    return new ResponseDto<SsoToken>()
+                    {
+                        Data = ssoToken
+                    };
+                }
+                catch (Exception)
+                {
+                    return new ResponseDto<SsoToken>()
+                    {
+                        Data = new SsoToken(token),
+                        Error = "Something went wrong. Please try again later."
+                    };
+                }
+            }
+        }
+
+        // TODO: @Jenn Comment this method and unit test [-Jenn]
         public ResponseDto<bool> StoreSsoToken(SsoToken ssoToken)
         {
             using (var authenticationContext = new AuthenticationContext())

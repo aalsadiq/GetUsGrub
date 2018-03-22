@@ -46,11 +46,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(userAccountDto: registerUserDto.UserAccountDto, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
-                                        .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto))
+                                        .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto.Question, securityQuestionDto.Answer))
                                         .ToList();
-            var userProfile = new UserProfile(registerUserDto.UserProfileDto);
+            var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
 
             // Set user claims to be stored in UserClaims table
@@ -129,14 +129,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(userAccountDto: registerRestaurantDto.UserAccountDto, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
-                .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto))
+                .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
-            var userProfile = new UserProfile(registerRestaurantDto.UserProfileDto);
-            var restaurantProfile = new RestaurantProfile(registerRestaurantDto.RestaurantProfileDto);
+            var userProfile = new UserProfile(displayPicture: registerRestaurantDto.UserProfileDto.DisplayPicture, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
+            var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details, latitude: registerRestaurantDto.RestaurantProfileDto.Latitude, longitude: registerRestaurantDto.RestaurantProfileDto.Longitude);
             var businessHours = registerRestaurantDto.BusinessHourDtos
-                                    .Select(businessHourDto => new BusinessHour(businessHourDto))
+                                    .Select(businessHourDto => new BusinessHour(day: businessHourDto.Day, openTime: businessHourDto.OpenTime, closeTime: businessHourDto.CloseTime))
                                     .ToList();
 
             // TODO: @Brian Need Google Map integration for following [-Jenn]
@@ -209,7 +209,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
-            var userAccount = new UserAccount(userAccountDto: userAccountDto, isActive: false, isFirstTimeUser: true);
+            var userAccount = new UserAccount(username: userAccountDto.Username, password: userAccountDto.Password, isActive: false, isFirstTimeUser: true, roleType: userAccountDto.RoleType);
             userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
             
             // Validate domain models

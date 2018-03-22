@@ -33,7 +33,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
-
+            
             // Validate data transfer object
             var result = createIndividualPreLogicValidationStrategy.ExecuteStrategy();
             if (result.Error != null)
@@ -116,7 +116,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
-
+            System.Diagnostics.Debug.WriteLine("here");
             // Validate data transfer object
             var restaurantResult = createRestaurantPreLogicValidationStrategy.ExecuteStrategy();
             if (restaurantResult.Error != null)
@@ -127,7 +127,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = restaurantResult.Error
                 };
             }
-
+            System.Diagnostics.Debug.WriteLine("here1");
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
@@ -156,7 +156,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
-
+            System.Diagnostics.Debug.WriteLine("here2");
             // Validate domain models
             var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);
             var validateResult = createRestaurantPostLogicValdiationStrategy.ExecuteStrategy();
@@ -168,7 +168,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Something went wrong. Please try again later."
                 };
             }
-
+            System.Diagnostics.Debug.WriteLine("here3");
             // Store user in database
             using (var userGateway = new UserGateway())
             {

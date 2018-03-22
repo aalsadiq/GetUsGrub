@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 
-// TODO: @Jenn Waiting for Ahmed [-Jenn]
+// TODO: @Jenn Comment this yo [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class TokenService

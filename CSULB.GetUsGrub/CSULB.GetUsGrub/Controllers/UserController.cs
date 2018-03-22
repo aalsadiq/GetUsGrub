@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.Diagnostics;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web.Http;
@@ -169,21 +170,26 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
         {
+            Debug.Write("Inside delete controller!" + Environment.NewLine);
             //Checks if what was given is a valid model
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && user.Username == null)
             {
                 //If mode is invalid, return a bad request.
                 return BadRequest("Invalid username.");
             }
+            Debug.Write("After Model" + Environment.NewLine);
             try
             {
                 //Creating a manager to then call DeleteUser
                 var manager = new UserManager();
+                Debug.Write("After User manager Creation!" + Environment.NewLine);
                 //Calling DeleteUser method to delete the username that was received.
                 var response = manager.DeleteUser(user.Username);
+                Debug.Write("After response creation!" + Environment.NewLine);
                 //Checks the response from DeleteUser. If Error is null, then it was successful!
                 if (response.Error != null)
                 {
+                    Debug.Write("Inside Response.Error" + Environment.NewLine);
                     //Will return a bad request if error occured in manager.
                     return BadRequest(response.Error);
                 }

@@ -1,7 +1,9 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -396,13 +398,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<string> DeleteUser(string username)
             {
-                //Creates a gateway
-                using (var gateway = new UserGateway())
+            Debug.Write("Inside DeleteUser" + Environment.NewLine);
+            //Creates a gateway
+            using (var gateway = new UserGateway())
                 {
                     //Gateway calls DeleteUser and passes in the username to be deleted.
                     var gatewayResult = gateway.DeleteUser(username);
-                    //If they gateway returns false
-                    if (gatewayResult.Data == false)
+                Debug.Write("After delete usergateway" + Environment.NewLine);
+                //If they gateway returns false
+                if (gatewayResult.Data == false)
                     {
                         //Return response dto with an error.
                         return new ResponseDto<string>()

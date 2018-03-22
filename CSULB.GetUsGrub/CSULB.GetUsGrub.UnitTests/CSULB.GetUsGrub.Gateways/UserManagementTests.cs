@@ -133,21 +133,28 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         //    response.Data.Should().BeTrue();
         //}
 
-        //[Fact]
-        //public void DeleteUser_ValidDelete_Pass()//If you run twice, it should fail since user1 does not exist!
-        //{
-        //    //Assert
-        //    var response = userGateway.DeleteUser("User1");
-        //    response.Data.Should().BeTrue();
-        //}
-
         [Fact]
-        public void DeleteUser_ValidDelete_Fail()
+        public void DeleteUser_ValidDelete_Pass()//If you run twice, it should fail since user1 does not exist!
         {
             //Assert
-            var response = userGateway.DeleteUser("UserDoesNotExist");
-            response.Data.Should().BeFalse();
+            var response = userGateway.DeleteUser("Gaby");
+            response.Data.Should().BeTrue();
         }
+
+        //[Fact] 
+        //public void DeleteSecurityQuestionByUsernam_ValidDelete_Pass()
+        //{
+        //    //Assert
+        //    var response = userGateway.DeleteSecurityQuestionByUsername("Gaby");
+        //    response.Data.Should().BeTrue();
+        //}
+        //[Fact]
+        //public void DeleteUser_ValidDelete_Fail()
+        //{
+        //    //Assert
+        //    var response = userGateway.DeleteUser("Gaby");
+        //    response.Data.Should().BeFalse();
+        //}
 
     }
 }

@@ -57,6 +57,7 @@ export default {
         })
       }
       if (viewType === 'DeleteUser') {
+        console.log(this.username)
         axios.delete('http://localhost:8081/User/DeleteUser', {
           username: this.username
         }).then(response => {
@@ -66,7 +67,6 @@ export default {
         }).catch(error => {
           this.responseDataStatus = 'An error has occurred: '
           this.responseData = error.response.data
-          console.log(error.response.data)
         })
       }
     }

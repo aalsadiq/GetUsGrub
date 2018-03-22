@@ -97,6 +97,7 @@
     <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\SecurityQuestionDtoValidator.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Validators\ModelValidators\SecurityQuestionValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAccountValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserProfileValidator.cs" />
+    <Compile Include="Validators\TokenValidator.cs" />
     <Compile Include="Validators\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -15,21 +15,26 @@ namespace CSULB.GetUsGrub
         public IHttpActionResult RegisterFirstTimeSsoUser(HttpRequestMessage request)
         {
             try
-            {
+            { 
                 // TODO: @Jenn Check for if message has a token. Where to put this? [-Jenn]
                 if (request.Headers.Authorization == null)
                 {
                     return BadRequest("Request does not contain a token.");
                 }
 
-                var result = new SsoTokenManager().ValidateToken(request.Headers.Authorization.Parameter);
-
+                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ValidateToken();
                 if (result.Error != null)
                 {
                     return BadRequest(result.Error);
                 }
-
-                return Ok(result.Data);
+                var userManager = new UserManager();
+                var response = userManager.CreateFirstTimeSsoUser(result.Data);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                // TODO: @Jenn Should I return a string? [-Jenn]
+                return Ok("Success.");
             }
             catch (Exception)
             {

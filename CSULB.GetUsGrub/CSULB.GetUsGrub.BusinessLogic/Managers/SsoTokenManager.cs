@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System;
 using System.Text;
 
@@ -10,51 +9,50 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class SsoTokenManager : IDisposable
     {
-        private readonly SecurityKey _securityKey;
+        private readonly string _token;
         private readonly TokenService _tokenService;
+        private readonly SsoTokenPreLogicValidationStrategy _preLogicValidationStrategy;
 
-        public SsoTokenManager()
+        public SsoTokenManager(string token)
         {
-
-            _securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw=="));
+            _token = token;
             _tokenService = new TokenService();
+            _preLogicValidationStrategy = new SsoTokenPreLogicValidationStrategy(_token, GetSigningKey());
         }
-
+       
         // TODO: @Jenn Should we send back a ResponseDto? May need to encapsulate some procedures in reusable methods [-Jenn]
-        public ResponseDto<UserAccountDto> ValidateToken(string token)
+        public ResponseDto<UserAccountDto> ValidateToken()
         {
             string username = "";
             string password = "";
             string roleType = "";
-    
-            if (!_tokenService.CheckIfTokenIsJsonWebToken(token))
+
+            // Call strategy
+            var result = _preLogicValidationStrategy.ExecuteStrategy();
+            if (!result.Data)
             {
                 return new ResponseDto<UserAccountDto>()
                 {
-                    Error = "The token is not a well formed Json Web Token."
+                    Error = result.Error
                 };
             }
 
-            var jwt = _tokenService.GetJwtSecurityToken(token);
-            var header = jwt.Header;
+            // Stores token into database
+            using (var authenticationGateway = new AuthenticationGateway())
+            {
+                var gatewayResult = authenticationGateway.StoreSsoToken(new SsoToken(_token));
+                if (gatewayResult.Error != null)
+                {
+                    return new ResponseDto<UserAccountDto>()
+                    {
+                        Error = gatewayResult.Error
+                    };
+                }
+            }
+
+            var jwt = _tokenService.GetJwtSecurityToken(_token);
             var payload = jwt.Payload;
-            var rawSignature = jwt.RawSignature;
 
-            var tokenValidationParameters = new TokenValidationParameters()
-            {
-                IssuerSigningKey = _securityKey
-            };
-
-            var result = _tokenService.ValidateSignature(token, tokenValidationParameters);
-            if (!result)
-            {
-                return new ResponseDto<UserAccountDto>()
-                {
-                    Error = "Token does not have a valid signature."
-                };
-            }
-
-            var json = JsonConvert.SerializeObject(jwt);
             foreach (var keyValuePair in payload)
             {
                 switch (keyValuePair.Key)
@@ -82,22 +80,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
             }
 
-            using (var authenticationGateway = new AuthenticationGateway())
-            {
-                var gatewayResult = authenticationGateway.StoreSsoToken(new SsoToken(token));
-                if (gatewayResult.Error != null)
-                {
-                    return new ResponseDto<UserAccountDto>()
-                    {
-                        Error = gatewayResult.Error
-                    };
-                }
-            }
-
             return new ResponseDto<UserAccountDto>()
             {
                 Data = new UserAccountDto(username: username, password: password, roleType: roleType)
             };
+        }
+
+        private static SymmetricSecurityKey GetSigningKey()
+        {
+            const string secretKey = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            return signingKey;
         }
 
         public void Dispose() {}

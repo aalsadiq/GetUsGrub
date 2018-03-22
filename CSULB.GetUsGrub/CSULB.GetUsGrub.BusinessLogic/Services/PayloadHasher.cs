@@ -26,21 +26,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// @updated: 03/05/2018
         /// </para>
         /// </summary>
-        public string Sha256HashWithSaltBase64(string salt, string payload)
-        {
-            using (var hashProvider = new SHA256Cng())
-            {
-                // Concats salt as the prefix and payload as the suffix
-                // TODO: @Jenn outside using statement
-                var payloadAndSalt = string.Concat(payload, salt);
-                // TODO: @Jenn outside using statement
-                var hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(payloadAndSalt));
-                var hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
-                return hashedPayload;
-            }
-        }
-
-        // TODO: @Jenn Comments [-Jenn]
         public string Sha256HashWithSalt(string salt, string payload)
         {
             using (var hashProvider = new SHA256Cng())

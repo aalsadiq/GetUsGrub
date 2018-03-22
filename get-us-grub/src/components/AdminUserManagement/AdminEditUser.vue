@@ -7,15 +7,16 @@
       <!-- <v-flex xs5 sm3 offset-sm3> -->
       <v-flex xs15>
         <h1>Choose your user</h1>
-        <v-btn v-on:click="viewUserRequirements" id ="user-button" color="info">User</v-btn>
-        <v-btn v-on:click="viewRestaurantRequirements" id ="restaurant-button" color="info">Restaurant</v-btn>
-        <!-- <v-btn v-on:click="viewAdminRequirements" id ="admin-button" color="info">Admin</v-btn> -->
+        <v-btn v-on:click="viewUserRequirements" id ="user-button" color="info">User Account</v-btn>
+        <v-btn v-on:click="viewRestaurantRequirements" id ="restaurant-button" color="info">Restaurant Profile</v-btn>
+        <v-btn v-on:click="viewAdminRequirements" id ="admin-button" color="info">User Profile</v-btn>
       </v-flex>
     </v-layout>
       <v-flex sm2 offset-sm5>
         <h2>Input User To Edit</h2>
           <v-form v-model="validIdentificationInput">
             <v-text-field label="username" v-model="username" :rules="usernameRules" required ></v-text-field>
+            <v-btn v-on:click="imageuploadvue" id ="imageupload-button" color="warning">Image Upload</v-btn>
           </v-form>
       </v-flex>
       <v-container fluid grid-list-md>
@@ -29,7 +30,9 @@
               <app-restaurant-validations/>
               <v-spacer/>
             </div>
-            <v-btn id ="submit-button" color="warning" v-on:click="userSubmit">Submit</v-btn>
+            <v-btn id ="submit-account-button" color="warning" v-on:click="submitUserAccount">Submit UserAccount</v-btn>
+            <v-btn id ="submit-restaurant-button" color="warning" v-on:click="submitRestaurantProfile">Submit RestaurantProfile</v-btn>
+            <v-btn id ="submit-profile-button" color="warning" v-on:click="submitUserProfile">Submit UserProfile</v-btn>
           </v-card-text>
         </v-flex>
       </v-layout>
@@ -42,8 +45,8 @@
 import AppAdminHeader from '@/components/AdminUserManagement/AdminHeader'
 import AppFooter from '@/components/AppFooter'
 import AppUserTextBox from '@/components/AdminUserManagement/UserTextBox'
-import AppUserValidations from '@/components/AdminUserManagement/UserValidations'
-import AppRestaurantValidations from '@/components/AdminUserManagement/RestaurantValidations'
+import AppUserValidations from '@/components/AdminUserManagement/UserValidationNoRequiredFields'
+import AppRestaurantValidations from '@/components/AdminUserManagement/RestaurantValidationsNoRequiredFields'
 import axios from 'axios'
 export default {
   name: 'AdminHome',
@@ -86,7 +89,7 @@ export default {
     checkbox: function () {
       this.checkbox = !this.checkbox
     },
-    userSubmit () {
+    submitUserAccount () {
       axios.put('http://localhost:8081/User/Admin/EditUser', {
         editUser: this.userAccount
       }).then(response => {

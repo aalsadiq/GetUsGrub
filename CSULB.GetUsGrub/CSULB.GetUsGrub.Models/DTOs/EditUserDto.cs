@@ -14,9 +14,15 @@ namespace CSULB.GetUsGrub.Models
     public class EditUserDto
     {
         [Required]
-        public string Username { get; set; }
-        public string NewUsername { get; set; }
-        public string NewDisplayName { get; set; }
-        public string NewPassword { get; set; }
+        public string Username { get; set; }//The username that will be edited.
+        public string NewUsername { get; set; }//Part of user account
+        public string NewDisplayName { get; set; }//Part of user account
+        public string NewPassword { get; set; }//Part of user account
+        public string NewDisplayPicture { get; set; }
+        public IList<BusinessHour> NewBusinessHours { get; set; }
+        public string NewPhoneNumber { get; set; }
+        public Address NewAddress { get; set; }
+        public double NewLongitude { get; set; }
+        public double NewLatitude { get; set; }
     }
 }

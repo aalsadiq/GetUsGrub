@@ -10,8 +10,12 @@
           <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
           <manage-users :billItem="billItem"/>
           <v-divider/>
-          <div v-for="(user, userIndex) in billItem.selected" :key="userIndex">
-            <p> {{ user }} </p>
+          <div v-for="billUser in BillUsers">
+            <div v-for="uniqueID in billItem.selected">
+              <div v-if="billUser.uID === uniqueID">
+                <p> {{ billUser.name }} </p>
+              </div>
+            </div>
           </div>
         </div>
       </draggable>

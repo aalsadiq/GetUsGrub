@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    uniqueUserCounter: 0,
     MenuItems: [
     ],
     BillItems: [
@@ -31,7 +32,8 @@ export const store = new Vuex.Store({
     },
     AddBillUser: (state, payload) => {
       state.BillUsers.push({
-        name: payload
+        name: payload[0],
+        uID: payload[1]
       })
     },
     EditDictionaryItem: (state, payload) => {
@@ -52,7 +54,18 @@ export const store = new Vuex.Store({
     },
     RemoveUser: (state, payload) => {
       console.log('User Store Mutation Index ' + payload)
-      state.BillUsers.splice(payload, 1)
+      for (var i = 0, len0 = state.BillUsers.length; i < len0; i++) {
+        if (state.BillUsers[i].uID === payload) {
+          state.BillUsers.splice(i, 1)
+        }
+      }
+      for (var i = 0, len1 = state.BillItems.length; i < len1; i++) {
+        for (var j = 0, len2 = state.BillItems[i].selected.length; j < len2; j++) {
+          if (state.BillItems[i].selected[j] === payload) {
+            state.BillItems[i].selected.splice(j, 1)
+          }
+        }
+      }
     }
   },
   // Actions are necessary when performing asynchronous methods.

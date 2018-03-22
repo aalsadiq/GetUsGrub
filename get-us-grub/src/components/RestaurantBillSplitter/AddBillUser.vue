@@ -18,6 +18,7 @@ export default {
   data () {
     return {
       newBillUser: '',
+      counter: 0,
       valid: true,
       rules: {
         required: (value) => (!!value) || 'Required.'
@@ -27,7 +28,8 @@ export default {
   methods: {
     AddBillUser: function (newBillUser) {
       if (this.$refs.addBillUserForm.validate()) {
-        this.$store.dispatch('AddBillUser', newBillUser)
+        this.$store.dispatch('AddBillUser', [newBillUser, this.$store.state.uniqueUserCounter])
+        this.$store.state.uniqueUserCounter++
       }
     },
     RemoveFromBill: function (index) {

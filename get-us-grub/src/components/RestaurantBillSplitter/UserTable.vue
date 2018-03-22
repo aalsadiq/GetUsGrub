@@ -3,7 +3,7 @@
     <h1>Users</h1>
     <div v-for="(billUser, billUserIndex) in BillUsers" :key="billUserIndex">
       {{ billUser.name }}
-      <v-btn v-on:click="RemoveUser(billUserIndex)"><v-icon>clear</v-icon></v-btn>
+      <v-btn v-on:click="RemoveUser(billUser.uID)"><v-icon>clear</v-icon></v-btn>
     </div>
     <v-divider/>
     <add-bill-user class="add-bill-user"/>
@@ -38,9 +38,9 @@ export default {
     }
   },
   methods: {
-    RemoveUser: function (billUserIndex) {
-      console.log('Deleting' + billUserIndex)
-      this.$store.dispatch('RemoveUser', billUserIndex)
+    RemoveUser: function (billUserUID) {
+      console.log('Deleting ' + billUserUID)
+      this.$store.dispatch('RemoveUser', billUserUID)
     }
   },
   computed: {
@@ -71,5 +71,9 @@ export default {
   .add-bill-user {
     position: absolute;
     bottom: 0;
+    width: auto;
+    max-width: 200px;
+    left: 50%;
+    margin-left: -100px;
   }
 </style>

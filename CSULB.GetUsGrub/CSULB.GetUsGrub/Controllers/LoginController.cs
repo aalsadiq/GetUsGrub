@@ -1,52 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http.Cors;
 using System.Web.Http;
 using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.Controllers
 {
-    [RoutePrefix("Login")] //default route
+    
     public class LoginController : ApiController
     {
         // POST Login/User
         [HttpPost]
         // Opts authentication
         [AllowAnonymous]
-  
-        public IHttpActionResult AuthenticatingUser([FromBody] LoginDto loginDto)
+        [Route("Login/")]
+
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+
+        public HttpResponseMessage AuthenticatingUser([FromBody] LoginDto loginDto)
         {
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, "Something went very wrong", Configuration.Formatters.JsonFormatter);
             }
 
-            try
+            
+            var loginManager = new LoginManager();
+            var loginResponse = loginManager.LoginUser( loginDto) ;
+            if (loginResponse.Error != null)
             {
-                var loginManager = new LoginManager();
-                var loginResponse = loginManager.LoginUser( loginDto) ;
-                if (loginResponse.Error != null)
-                {
-                    return BadRequest(loginResponse.Error);
-                }
-
-                var authenticationTokenManager = new AuthenticationTokenManager();
-                var creatTokenResponse = authenticationTokenManager.CreateToken(loginResponse.Data);
-
-
-
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, loginResponse.Error, Configuration.Formatters.JsonFormatter);
             }
 
-            // Catch exceptions
-            catch (Exception)
+            var authenticationTokenManager = new AuthenticationTokenManager();
+            var creatTokenResponse = authenticationTokenManager.CreateToken(loginResponse.Data);
+            if (creatTokenResponse.Error != null)
             {
-                // HTTP 400 Status
-                return BadRequest("Something went wrong. Pleast try again later.");
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, creatTokenResponse.Error, Configuration.Formatters.JsonFormatter);
             }
+
+            return Request.CreateResponse(HttpStatusCode.OK, creatTokenResponse.Data.TokenString, Configuration.Formatters.JsonFormatter);           
         }
 
     }

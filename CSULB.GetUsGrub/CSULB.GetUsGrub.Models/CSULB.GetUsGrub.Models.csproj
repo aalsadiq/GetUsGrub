@@ -77,6 +77,7 @@
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\AuthenticationToken.cs" />
     <Compile Include="Models\BusinessHour.cs" />
+    <Compile Include="Models\FailedAttempts.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />
     <Compile Include="Models\Interfaces\IRestaurantProfile.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />

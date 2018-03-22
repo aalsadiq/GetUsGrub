@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.Models.Models;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
@@ -19,6 +20,8 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<AuthenticationToken> AuthenticationTokens { get; set; }
 
         public DbSet<SecurityQuestion> SecurityQuestions { get; set; }
+
+        public DbSet<FailedAttempts> FailedAttempts { get; set; }
 
         public AuthenticationContext() : base("GetUsGrub") { }
     }

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.Models.DTOs;
+using CSULB.GetUsGrub.Models.Models;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
@@ -15,6 +15,36 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class AuthenticationGateway : IDisposable
     {
+        /// <summary>
+        /// 
+        /// Gets the Failed attempt information from the DataBase
+        /// 
+        /// </summary>
+        /// <param name="incomingUser"></param>
+        /// <returns>
+        /// FailedAttemptobject
+        /// </returns>
+        public ResponseDto<FailedAttempts> GetFailedAttempt(UserAuthenticationModel incomingUser)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+
+                // Looking for the User matching the incoming Username 
+                var userId = (from account in authenticationContext.UserAccounts
+                    where account.Username == incomingUser.Username
+                    select account.Id).SingleOrDefault();
+
+                // Looking for the Users last attempt information
+                var lastFailedAttempt = (from dates in authenticationContext.FailedAttempts
+                    where dates.Id == userId
+                    select dates).SingleOrDefault();
+
+                return new ResponseDto<FailedAttempts>
+                {
+                    Data = lastFailedAttempt
+                };
+            }
+        }
 
         /// <summary>
         /// 
@@ -40,6 +70,61 @@ namespace CSULB.GetUsGrub.DataAccess
                 return new ResponseDto<UserAccount>
                 {
                     Data = userFromDataBase
+                };
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// GetAuthenticationToken
+        /// 
+        /// Gets the AuthenticationToken using the incoming TokenString to map 
+        /// to the Token String in the DataBas
+        /// </summary>
+        /// <param name="incomingAuthenticationToken"></param>
+        /// <returns></returns>
+        public ResponseDto<AuthenticationToken> GetAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+                var userId = (from account in authenticationContext.UserAccounts
+                              where account.Username == incomingAuthenticationToken.Username
+                              select account.Id).SingleOrDefault();
+
+                // Looking for the a Token that matches the incoming Token
+                var databaseToken = (from token in authenticationContext.AuthenticationTokens
+                                     where token.Id == userId
+                                     select token).SingleOrDefault();
+
+                return new ResponseDto<AuthenticationToken>
+                {
+                    Data = databaseToken
+                };
+            }
+        }
+
+        /// <summary>
+        /// GetUserPasswordSalt Uses the UserAccount.Id to map to the Salt.Is on the DB
+        /// 
+        /// </summary>
+        /// <param name="userFromDataBase"></param>
+        /// <returns>
+        /// 
+        /// string with the value of the salt associated with the user to the Manager
+        /// 
+        /// </returns>
+        public ResponseDto<PasswordSaltDto> GetUserPasswordSalt(UserAccount userFromDataBase)
+        {
+            using (var userContext = new AuthenticationContext())
+            {
+                var salt = (from salts in userContext.PasswordSalts
+                            where salts.Id == userFromDataBase.Id
+                            select salts.Salt).SingleOrDefault();
+                var passwordSaltDto = new PasswordSaltDto();
+                passwordSaltDto.Salt = salt;
+                return new ResponseDto<PasswordSaltDto>
+                {
+                    Data = passwordSaltDto
                 };
             }
         }
@@ -84,58 +169,28 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        /// <summary>
-        ///  
-        /// GetAuthenticationToken
-        /// 
-        /// Gets the AuthenticationToken using the incoming TokenString to map 
-        /// to the Token String in the DataBas
-        /// </summary>
-        /// <param name="incomingAuthenticationToken"></param>
-        /// <returns></returns>
-        public ResponseDto<AuthenticationToken> GetAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
+
+        public void UpdateFailedAttempt(FailedAttempts incomingFailedAttempt)
         {
             using (var authenticationContext = new AuthenticationContext())
             {
-                var userId = (from account in authenticationContext.UserAccounts
-                    where account.Username == incomingAuthenticationToken.Username
-                    select account.Id).SingleOrDefault();
-
-                // Looking for the a Token that matches the incoming Token
-                var databaseToken = (from token in authenticationContext.AuthenticationTokens
-                    where token.Id == userId
-                    select token).SingleOrDefault();
-
-                return new ResponseDto<AuthenticationToken>
+                using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
                 {
-                    Data = databaseToken
-                };
-            }
-        }
+                    try
+                    {
+                        // Updating the failed attempts
+                        authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
 
-        /// <summary>
-        /// GetUserPasswordSalt Uses the UserAccount.Id to map to the Salt.Is on the DB
-        /// 
-        /// </summary>
-        /// <param name="userFromDataBase"></param>
-        /// <returns>
-        /// 
-        /// string with the value of the salt associated with the user to the Manager
-        /// 
-        /// </returns>
-        public ResponseDto <PasswordSaltDto> GetUserPasswordSalt(UserAccount userFromDataBase)
-        {
-            using (var userContext = new AuthenticationContext())
-            {
-                var salt = (from salts in userContext.PasswordSalts
-                            where salts.Id == userFromDataBase.Id
-                                  select salts.Salt).SingleOrDefault();
-                var passwordSaltDto = new PasswordSaltDto();
-                passwordSaltDto.Salt = salt;
-                return new ResponseDto<PasswordSaltDto>
-                {
-                    Data = passwordSaltDto
-                };
+                        // Commiting the trasaction to the Database
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        // Rolls back the changes saved in the transaction
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
             }
         }
 

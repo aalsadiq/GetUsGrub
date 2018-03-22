@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>
-    class LoginDtoValidator : AbstractValidator<LoginDto>
+    public class LoginDtoValidator : AbstractValidator<LoginDto>
     {
         public LoginDtoValidator()
         {

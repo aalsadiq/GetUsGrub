@@ -8,19 +8,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class LoginPreLogicValidationStrategy
     {
-        private LoginDto loginDto;
-        private LoginDtoValidator loginDtoValidator;
+        readonly private LoginDto _loginDto;
+        private LoginDtoValidator _loginDtoValidator;
 
         public LoginPreLogicValidationStrategy(LoginDto loginDto)
         {
-            this.loginDto = loginDto;
+            this._loginDto = loginDto;
         }
 
         //private ValidationWrapper<LoginDto> loginDtoValidationWrapper = new ValidationWrapper<LoginDto>(loginDto,"UsernameAndPassword",loginDtoValidator);
 
         public ResponseDto<LoginDto> ExecuteStrategy()
         {
-            var validationResult = loginDtoValidator.Validate(loginDto, ruleSet: "UsernameAndPassword");
+            var validationResult = _loginDtoValidator.Validate(_loginDto, ruleSet: "UsernameAndPassword");
 
             if (!validationResult.IsValid)
             {
@@ -29,14 +29,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var errors = JsonConvert.SerializeObject(errorsList);
                 return new ResponseDto<LoginDto>
                 {
-                    Data = loginDto,
+                    Data = _loginDto,
                     Error = JsonConvert.SerializeObject(errors)
                 };
             }
            
             return new ResponseDto<LoginDto>
             {
-                Data = loginDto
+                Data = _loginDto
             };
         }
     }

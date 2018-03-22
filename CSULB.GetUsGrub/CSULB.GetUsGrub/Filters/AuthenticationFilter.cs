@@ -1,7 +1,5 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using CSULB.GetUsGrub.BusinessLogic;
@@ -9,7 +7,7 @@ using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub
 {
-    public class AuthenticationTokenFilter :  AuthorizationFilterAttribute, IAuthenticationFilter
+    public class AuthenticationTokenFilter :  AuthorizationFilterAttribute
     {
         public override void OnAuthorization(HttpActionContext filterContext)
         {

@@ -1,10 +1,6 @@
 ﻿using System;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using CSULB.GetUsGrub.DataAccess;
-using CSULB.GetUsGrub.Models;
 
 // TODO: @Jenn Waiting for Ahmed [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic

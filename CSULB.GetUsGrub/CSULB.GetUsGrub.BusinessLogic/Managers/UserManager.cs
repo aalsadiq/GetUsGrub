@@ -339,27 +339,27 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be reactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<string> ReactivateUser(string username)
+        public ResponseDto<string> ReactivateUser(UserAccountDto user)
             {
                 //Creates a gateway
                 using (var gateway = new UserGateway())
                 {
                     //Gateway calls ReactivateUser and passes in the username to be reactivated.
-                    var gatewayResult = gateway.ReactivateUser(username);
+                    var gatewayResult = gateway.ReactivateUser(user.Username);
                     //If the gateway returns false
                     if (gatewayResult.Data == false)
                     {
                         //Return response dto with an error..
                         return new ResponseDto<string>()
                         {
-                            Data = username,//The username
+                            Data = user.Username,//The username
                             Error = gatewayResult.Error//The error
                         };
                     }
                     //If the gateway returns true, return username reactivated
                     return new ResponseDto<string>
                     {
-                        Data = username//The username
+                        Data = user.Username//The username
                     };
                 }
             }

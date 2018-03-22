@@ -121,7 +121,7 @@ namespace CSULB.GetUsGrub.Controllers
         // POST User/Admin/Create
         [HttpPost]
         // Opts authentication
-        [Route("User/Admin/Create")]
+        [Route("Admin/Create")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
@@ -165,22 +165,22 @@ namespace CSULB.GetUsGrub.Controllers
         // POST User/Admin/DeleteUser
         [Route("DeleteUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
+       // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpDelete]
-        public IHttpActionResult DeleteUser([FromBody] string username)
+        public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
         {
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {
                 //If mode is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                return BadRequest("Invalid username.");
             }
             try
             {
                 //Creating a manager to then call DeleteUser
                 var manager = new UserManager();
                 //Calling DeleteUser method to delete the username that was received.
-                var response = manager.DeleteUser(username);
+                var response = manager.DeleteUser(user.Username);
                 //Checks the response from DeleteUser. If Error is null, then it was successful!
                 if (response.Error != null)
                 {
@@ -188,7 +188,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
                 //If DeleteUser was successful return HTTP response with a successful message.
-                return Ok("User has been deleted:" + username);
+                return Ok("User has been deleted:" + user.Username);
             }
             catch (Exception)
             {
@@ -207,23 +207,24 @@ namespace CSULB.GetUsGrub.Controllers
         // POST User/Admin/DeactivateUser
         [Route("DeactivateUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
         [HttpPut]
             //TODO: Add claims here
-            public IHttpActionResult DeactivateUser([FromBody] string username)
+            public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
             {
-                //Checks if what was given is a valid model
-                if (!ModelState.IsValid)
-                {
-                    //If mode is invalid, return a bad request.
-                    return BadRequest("Something went wrong, please try again later");
-                }
-                try
+            System.Diagnostics.Debug.WriteLine("The user name is "+ user.Username);
+            //Checks if what was given is a valid model
+            if (!ModelState.IsValid)
+            {
+                //If mode is invalid, return a bad request.
+                return BadRequest("The username " + user.Username);
+            }
+            try
                 {
                     //Creating a manger to then call Deactivateuser
                     var manager = new UserManager();
                     //Calling ReactivateUser method to reactivate the username that was recieved.
-                    var response = manager.DeactivateUser(username);
+                    var response = manager.DeactivateUser(user.Username);
                     //Checks the response from ReactivateUser. If Error is null, then it was successful.
                     if (response.Error != null)
                     {
@@ -231,7 +232,7 @@ namespace CSULB.GetUsGrub.Controllers
                         return BadRequest(response.Error);
                     }
                     //IF ReactivateUser was successful return HTTP response with a successful message.
-                    return Ok("User has been deactivated:" + username);
+                    return Ok("User has been deactivated:" + user.Username);
                 }
                 catch (Exception)
                 {
@@ -251,9 +252,9 @@ namespace CSULB.GetUsGrub.Controllers
         // POST User/Admin/ReactivateUser
         [Route("ReactivateUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpPut]
-        public IHttpActionResult ReactivateUser([FromBody] string username)
+        public IHttpActionResult ReactivateUser([FromBody] UserAccountDto user)
         {
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
@@ -266,7 +267,7 @@ namespace CSULB.GetUsGrub.Controllers
                 //Creating a manager to then call ReactivateUser
                 var manager = new UserManager();
                 //Calling ReactivateUser method to reactivate the username that was recieved.
-                var response = manager.ReactivateUser(username);
+                var response = manager.ReactivateUser(user);
                 //Checks the response from ReactivateUser. IF error is null, then it was successful.
                 if (response.Error != null)
                 {
@@ -274,7 +275,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
                 //If ReactivateUser was successful return HTTP response with a successful message.
-                return Ok("User has been reactivated:" + username);
+                return Ok("User has been reactivated:" + user.Username);
             }
             catch (Exception)
             {
@@ -292,7 +293,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/Admin/EditUser
         [Route("EditUser")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {

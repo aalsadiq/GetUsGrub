@@ -16,7 +16,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 export default {
   name: 'UserTextBox',
   props: ['viewType'],
@@ -31,24 +31,43 @@ export default {
   methods: {
     userSubmit: function (viewType) {
       if (viewType === 'DeactivateUser') {
-        // axios.put('http://localhost:8081/User/Admin/DeactivateUser', {
-        // username: this.username
-        // }).then(response => {
-        //   this.responseDataStatus = 'Success! User has been created: '
-        //   this.responseData = response.data
-        //   console.log(response)
-        // }).catch(error => {
-        //   this.responseDataStatus = 'An error has occurred: '
-        //   this.responseData = error.response.data
-        //   console.log(error.response.data)
-        // })
-        console.log('Inside deactivate')
+        console.log(this.username)
+        axios.put('http://localhost:8081/User/DeactivateUser', {
+          username: this.username
+        }).then(response => {
+          this.responseDataStatus = 'Success! User has been deactivated: '
+          this.responseData = response.data
+          console.log(response)
+        }).catch(error => {
+          this.responseDataStatus = 'An error has occurred: '
+          this.responseData = error.response.data
+          console.log(error.response.data)
+        })
       }
       if (viewType === 'ReactivateUser') {
-        console.log('Inside reactivate')
+        axios.put('http://localhost:8081/User/ReactivateUser', {
+          username: this.username
+        }).then(response => {
+          this.responseDataStatus = 'Success! User has been reactivated: '
+          this.responseData = response.data
+          console.log(response)
+        }).catch(error => {
+          this.responseDataStatus = 'An error has occurred: '
+          this.responseData = error.response.data
+        })
       }
       if (viewType === 'DeleteUser') {
-        console.log('Inside delete')
+        axios.delete('http://localhost:8081/User/DeleteUser', {
+          username: this.username
+        }).then(response => {
+          this.responseDataStatus = 'Success! User has been deleted: '
+          this.responseData = response.data
+          console.log(response)
+        }).catch(error => {
+          this.responseDataStatus = 'An error has occurred: '
+          this.responseData = error.response.data
+          console.log(error.response.data)
+        })
       }
     }
   }

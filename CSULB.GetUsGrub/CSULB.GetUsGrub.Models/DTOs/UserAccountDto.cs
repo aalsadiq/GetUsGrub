@@ -10,6 +10,7 @@
     /// </summary>
     public class UserAccountDto : IUserAccount
     {
+        public UserAccountDto() { }
         public UserAccountDto(string username, string password, string roleType)
         {
             Username = username;

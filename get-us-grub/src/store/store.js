@@ -5,59 +5,71 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    MINIMUM_MENU_ITEM_PRICE: 0.01,
-    MAX_MENU_ITEM_PRICE: 1000,
+    restaurantDisplayName: '',
+    restaurantLatitude: '',
+    restaurantLongitude: '',
+    uniqueUserCounter: 0,
     MenuItems: [
-      {
-        menuItemName: 'Big Mac',
-        menuItemPrice: 4.00
-      },
-      {
-        menuItemName: 'Large Fries',
-        menuItemPrice: 2.50
-      },
-      {
-        menuItemName: 'McFlurry',
-        menuItemPrice: 1.00
-      },
-      {
-        menuItemName: 'Large Soft Drink',
-        menuItemPrice: 2.00
-      },
-      {
-        menuItemName: 'McChicken',
-        menuItemPrice: 1.50
-      },
-      {
-        menuItemName: 'Water Bottle',
-        menuItemPrice: 10.50
-      }
     ],
     BillItems: [
-    ]
+    ],
+    BillUsers: [
+    ],
+    isAuthenticated: false
   },
   getters: {
-    // totalPrice: state => {
-    //  var totalPrice = this.$store.state.BillItems.map(BillItems => {
-    //    return state.BillItems.menuItemPrice
-    //  })
-    // }
+    totalPrice: state => {
+      var temp = 0
+      state.BillItems.forEach(function (element) {
+        temp = temp + element.price
+      })
+      return temp
+    }
   },
   mutations: {
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
-        menuItemName: payload[0],
-        menuItemPrice: payload[1]
+        name: payload[0],
+        price: payload[1],
+        selected: []
       })
     },
-
+    AddBillUser: (state, payload) => {
+      state.BillUsers.push({
+        name: payload[0],
+        uID: payload[1]
+      })
+    },
+    EditDictionaryItem: (state, payload) => {
+      state.MenuItems[payload[0]].name = payload[1]
+      state.MenuItems[payload[0]].price = payload[2]
+    },
+    EditBillItem: (state, payload) => {
+      state.BillItems[payload[0]].name = payload[1]
+      state.BillItems[payload[0]].price = payload[2]
+    },
     RemoveFromDictionary: (state, payload) => {
-      console.log('Store Mutation: ' + payload)
+      console.log('Dictionary Store Mutation Index: ' + payload)
       state.MenuItems.splice(payload, 1)
     },
-    RemoveFromBill: (state, payload) => {
-      console.log('Store Mutation: ' + payload)
+    RemoveFromBillTable: (state, payload) => {
+      console.log('Bill Store Mutation Index: ' + payload)
       state.BillItems.splice(payload, 1)
+    },
+    RemoveUser: (state, payload) => {
+      console.log('User Store Mutation Index ' + payload)
+      state.BillUsers.forEach(function (element, index) {
+        if (element.uID === payload) {
+          state.BillUsers.splice(index, 1)
+        }
+      })
+      for (var i = 0, len1 = state.BillItems.length; i < len1; i++) {
+        for (var j = 0, len2 = state.BillItems[i].selected.length; j < len2; j++) {
+          if (state.BillItems[i].selected[j] === payload) {
+            state.BillItems[i].selected.splice(j, 1)
+          }
+        }
+      };
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -67,17 +79,38 @@ export const store = new Vuex.Store({
         console.log('Added Food Item Name: ' + payload[0])
         console.log('Added Food Item Price: ' + payload[1])
         context.commit('AddToDictionary', payload)
-      }, 500)
+      }, 250)
+    },
+    AddBillUser: (context, payload) => {
+      setTimeout(function () {
+        console.log('Added New Bill User: ' + payload)
+        context.commit('AddBillUser', payload)
+      }, 250)
+    },
+    EditDictionaryItem: (context, payload) => {
+      setTimeout(function () {
+        context.commit('EditDictionaryItem', payload)
+      }, 250)
+    },
+    EditBillItem: (context, payload) => {
+      setTimeout(function () {
+        context.commit('EditBillItem', payload)
+      }, 250)
     },
     RemoveFromDictionary: (context, payload) => {
       setTimeout(function () {
         context.commit('RemoveFromDictionary', payload)
-      }, 500)
+      }, 250)
     },
-    RemoveFromBill: (context, payload) => {
+    RemoveFromBillTable: (context, payload) => {
       setTimeout(function () {
-        context.commit('RemoveFromBill', payload)
-      }, 500)
+        context.commit('RemoveFromBillTable', payload)
+      }, 250)
+    },
+    RemoveUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('RemoveUser', payload)
+      }, 250)
     }
   }
 })

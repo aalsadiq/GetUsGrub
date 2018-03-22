@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             result = _userValidator.CheckIfUserExists(_userAccountDto.Username);
-            if (!result.Data)
+            if (result.Data)
             {
                 result.Error = "Username is already used.";
             }

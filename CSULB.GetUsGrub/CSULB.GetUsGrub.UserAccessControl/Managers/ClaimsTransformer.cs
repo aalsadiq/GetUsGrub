@@ -61,6 +61,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             if (resourceName == "read")
             {
                 claims.RemoveAll(x => !x.Type.StartsWith("Read"));
+                claims.Add(new Claim("username", username));
             }
 
             // Create ClaimsIdentity with the list of claims

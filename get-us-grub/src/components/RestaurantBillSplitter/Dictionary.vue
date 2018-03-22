@@ -1,5 +1,6 @@
 <template>
   <div class="dictionary">
+    <h2 v-if="restaurantDisplayName">{{ restaurantDisplayName }}</h2>
     <h2>Dictionary</h2>
     <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="Clone" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(menuItem, menuItemIndex) in MenuItems" :key="menuItemIndex">
@@ -12,6 +13,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 import EditItem from './EditItem.vue'
@@ -26,6 +28,7 @@ export default {
   },
   data () {
     return {
+      restaurantDisplayName: '',
       money: {
         decimal: '.',
         thousands: '',
@@ -35,6 +38,9 @@ export default {
         masked: false
       }
     }
+  },
+  created () {
+    this.restaurantDisplayName = this.$store.restaurantDisplayName
   },
   directives: { money: VMoney },
   methods: {
@@ -47,6 +53,11 @@ export default {
     },
     Log: function () {
       console.log(this.$refs.editForm)
+    },
+    GetRestaurantMenus: function () {
+      axios.get('http://localhost:8081/RestaurantBillSplitter', {
+        displayName: ''
+      })
     }
   },
   computed: {

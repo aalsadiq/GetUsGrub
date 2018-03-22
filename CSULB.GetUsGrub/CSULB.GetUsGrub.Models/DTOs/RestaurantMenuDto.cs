@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace CSULB.GetUsGrub.Models
 {
 		/// <summary>
+		/// Retreives information from a restaurant by its public DisplayName, Latitude, and Longitude
+		/// and returns the Menus and MenuItems that specific restaurant has.
 		/// @author Ryan Luong
 		/// </summary>
 		public class RestaurantMenuDto

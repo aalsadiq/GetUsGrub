@@ -38,6 +38,7 @@ namespace CSULB.GetUsGrub.DataAccess
 										// Then, find all menu items associated with each menu and turn that into a list
 										var items = (from menuItems in restaurantContext.RestaurantMenuItems
 																 where menuItems.MenuId == menu.Id
+																 where menuItems.IsActive == true
 																 select menuItems).ToList();
 
 										// Map menu items to menus in a dictionary

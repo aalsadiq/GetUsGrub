@@ -12,11 +12,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
 		{
 				public ResponseDto<Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>> GetRestaurantMenus(string displayName, double latitude, double longitude)
 				{
-
 						var restaurantBillSplitterGateway = new RestaurantBillSplitterGateway();
-
 						var responseDtoFromGateway = restaurantBillSplitterGateway.GetRestaurantMenus(displayName, latitude, longitude);
-
 						return responseDtoFromGateway;
 				}
 		}

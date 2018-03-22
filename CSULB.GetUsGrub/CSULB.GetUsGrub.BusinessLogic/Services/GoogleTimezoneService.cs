@@ -28,20 +28,24 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// Calculates offset from UTC from geocoordinates using Google's Timezone API.
         /// </summary>
         /// <param name="coordinates">Coordinates of location to check time zone.</param>
-        /// <returns>Offset of time from UTC.</returns>
+        /// <returns>Offset of time (in seconds) from UTC.</returns>
         public async Task<ResponseDto<int>> GetOffsetAsync(IGeoCoordinates coordinates)
         {
             try
             {
+                // Get current date in seconds to determine if its DST for Google's API.
                 var baseTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
                 var timeStamp = (int)DateTime.Now.Subtract(baseTime).TotalSeconds;
 
+                // Retrieve key from configuration and build url for get request.
                 var key = ConfigurationManager.AppSettings["GoogleTimezoneApi"];
                 var url = BuildUrl(coordinates, key, timeStamp);
 
+                // Send get request and parse response
                 var responseJson = await new GoogleBackoffGetRequest(url, "OVER_QUERY_LIMIT").TryExecute();
                 var responseObj = JObject.Parse(responseJson);
 
+                // Retrieve status code from response
                 var status = (string)responseObj.SelectToken("status");
 
                 // Exit early if status is not OK.
@@ -62,6 +66,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
 
+                // Retrieve offsets from response and return the sum of the offsets.
                 var offset = (int)responseObj.SelectToken("rawOffset");
                 var dstOffset = (int)responseObj.SelectToken("dstOffset");
 
@@ -73,7 +78,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // If API Key not found, throw error.
             catch (ConfigurationErrorsException)
             {
-                throw new System.Exception("Google Timezone API Key not found.");
+                throw new Exception("Google Timezone API Key not found.");
             }
         }
     }

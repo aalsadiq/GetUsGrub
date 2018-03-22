@@ -32,11 +32,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             try
             {
+                // Retrieve key from configuration and build url for the get request.
                 var key = ConfigurationManager.AppSettings["GoogleGeocodingApi"];
                 var url = BuildUrl(address, key);
+
+                // Send get request and parse the response
                 var responseJson = await new GoogleBackoffGetRequest(url, "OVER_QUERY_LIMIT").TryExecute();
                 var responseObj = JObject.Parse(responseJson);
 
+                // Retrieve status code from the response
                 var status = (string)responseObj.SelectToken("status");
 
                 // Exit early if status is not OK.
@@ -57,18 +61,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
 
+                // Retrieve latitude and longitude data from response and return coordinates.
                 var lat = (float)responseObj.SelectToken("results[0].geometry.location.lat");
                 var lng = (float)responseObj.SelectToken("results[0].geometry.location.lng");
-
-                var coordinates = new GeoCoordinates()
-                {
-                    Latitude = lat,
-                    Longitude = lng
-                };
-
+                
                 return new ResponseDto<IGeoCoordinates>()
                 {
-                    Data = coordinates
+                    Data = new GeoCoordinates()
+                    {
+                        Latitude = lat,
+                        Longitude = lng
+                    }
                 };
             }
             // If API Key not found, throw error.

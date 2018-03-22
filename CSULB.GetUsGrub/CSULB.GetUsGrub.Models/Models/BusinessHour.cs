@@ -16,11 +16,11 @@ namespace CSULB.GetUsGrub.Models
     {
         public BusinessHour() { }
 
-        public BusinessHour(BusinessHourDto businessHourDto)
+        public BusinessHour(string day, string openTime, string closeTime)
         {
-            Day = businessHourDto.Day;
-            OpenTime = businessHourDto.OpenTime;
-            CloseTime = businessHourDto.CloseTime;
+            Day = day;
+            OpenTime = openTime;
+            CloseTime = closeTime;
         }
 
         [Key]

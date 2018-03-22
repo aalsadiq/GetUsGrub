@@ -32,24 +32,6 @@ namespace CSULB.GetUsGrub.Models
             RoleType = roleType;
         }
 
-        public UserAccount(UserAccountDto userAccountDto, bool isActive, bool isFirstTimeUser, string roleType)
-        {
-            Username = userAccountDto.Username;
-            Password = userAccountDto.Password;
-            IsActive = isActive;
-            IsFirstTimeUser = isFirstTimeUser;
-            RoleType = roleType;
-        }
-
-        public UserAccount(UserAccountDto userAccountDto, bool isActive, bool isFirstTimeUser)
-        {
-            Username = userAccountDto.Username;
-            Password = userAccountDto.Password;
-            IsActive = isActive;
-            IsFirstTimeUser = isFirstTimeUser;
-            RoleType = userAccountDto.RoleType;
-        }
-
         [Key]
         public int? Id { get; set; }
         public string Username { get; set; }

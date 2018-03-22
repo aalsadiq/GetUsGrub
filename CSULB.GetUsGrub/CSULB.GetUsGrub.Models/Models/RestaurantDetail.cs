@@ -1,12 +1,5 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Jenn Ask what are best ways to label the food price ranges [-Jenn]
-    public enum AvgFoodPrices
-    {
-        ZeroToTen = 0,
-        TenToFifty = 1,
-        FiftyPlus = 2
-    }
     // TODO: @Jenn Comment these [-Jenn]
     public enum RestaurantCategories
     {

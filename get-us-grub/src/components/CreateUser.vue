@@ -619,7 +619,7 @@ export default {
     },
     {
       id: 14,
-      question: 'Caribbean Food'
+      category: 'Caribbean Food'
     }],
     states: [
       'CA'

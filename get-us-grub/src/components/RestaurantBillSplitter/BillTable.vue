@@ -10,8 +10,8 @@
           <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
           <manage-users :billItem="billItem"/>
           <v-divider/>
-          <div v-for="billUser in BillUsers">
-            <div v-for="uniqueID in billItem.selected">
+          <div v-for="billUser in BillUsers" :key="billUser">
+            <div v-for="uniqueID in billItem.selected" :key="uniqueID">
               <div v-if="billUser.uID === uniqueID">
                 <p> {{ billUser.name }} </p>
               </div>

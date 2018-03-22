@@ -452,7 +452,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var userAccount = new ResponseDto<UserAccount>();
                     userAccount = GetUserByUsername(username);
                     //If user account is null it will return a response dto
-                    if (userAccount == null)
+                    if (userAccount.Data == null && userAccount.Data.Username != username)
                     {
                         //Will return a false ResponseDto<bool> if userAccount is null.
                         return new ResponseDto<bool>()
@@ -606,12 +606,15 @@ namespace CSULB.GetUsGrub.DataAccess
                         //Queries for the users security answer salt based on user account id and security answer salt user id.
                         var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
                                                       where securityAnswerSalt.Id == userAccount.Data.Id
-                                                      select securityAnswerSalt).FirstOrDefault();
+                                                      select securityAnswerSalt);
                         //Checks if security answer salt result is null, if not then delete from database.
                         if (userSecurityAnswerSalt != null)
                         {
-                            //Delete security answer salt
-                            userContext.SecurityAnswerSalts.Remove(userSecurityAnswerSalt);
+                            foreach (var answers in userSecurityAnswerSalt)
+                            {
+                                //Delete security answer salt
+                                userContext.SecurityAnswerSalts.Remove(answers);
+                            }
                         }
                         //save changes to the database
                         userContext.SaveChanges();
@@ -731,13 +734,16 @@ namespace CSULB.GetUsGrub.DataAccess
                         }
                         //Checks if security question result is null, if not then delete from database.
                         var userSecurityQuestion = (from securityQuestion in userContext.SecurityQuestions
-                                                    where securityQuestion.Id == userAccount.Data.Id
-                                                    select securityQuestion).FirstOrDefault();
+                                                    where securityQuestion.UserId == userAccount.Data.Id
+                                                    select securityQuestion);
                         //Checks if security question result is null, if not then delete from database.
                         if (userSecurityQuestion != null)
                         {
                             //Delete security questions
-                            userContext.SecurityQuestions.Remove(userSecurityQuestion);
+                            foreach (var question in userSecurityQuestion)
+                            {
+                                userContext.SecurityQuestions.Remove(question);
+                            }
                         }
                         //save changes to the database
                         userContext.SaveChanges();

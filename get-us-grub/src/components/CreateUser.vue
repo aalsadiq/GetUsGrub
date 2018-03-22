@@ -490,19 +490,19 @@ export default {
       phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
     ],
     businessDayRules: [
-      day => !!day || 'Day is required',
+      day => !!day || 'Day is required'
     ],
     openTimeRules: [
-      openTime => !!openTime || 'Opening time is required',
+      openTime => !!openTime || 'Opening time is required'
     ],
     closeTimeRules: [
-      closeTime => !!closeTime || 'Closing time is required',
+      closeTime => !!closeTime || 'Closing time is required'
     ],
     foodCategoryRules: [
-      category => !!category || 'Food category is required',
+      category => !!category || 'Food category is required'
     ],
     avgFoodPriceRules: [
-      price => !!price || 'Food price is required',
+      price => !!price || 'Food price is required'
     ],
     securityQuestionsSet1: [{
       id: 1,
@@ -658,7 +658,7 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
         restaurantProfileDto: this.restaurantProfile,
-        businessHourDtos: this.businessHours,
+        businessHourDtos: this.businessHours
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data

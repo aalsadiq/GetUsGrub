@@ -17,6 +17,7 @@ namespace CSULB.GetUsGrub.Models
     {
         public RestaurantProfile() { }
 
+        // TODO: @Jenn Please parameterize this [-Jenn]
         public RestaurantProfile(RestaurantProfileDto restaurantProfileDto)
         {
             PhoneNumber = restaurantProfileDto.PhoneNumber;

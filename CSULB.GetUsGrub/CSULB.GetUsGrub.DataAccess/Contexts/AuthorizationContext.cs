@@ -6,13 +6,13 @@ namespace CSULB.GetUsGrub.DataAccess
     /// <summary>
     /// Context containing all tables for user management.
     /// 
-    /// @Created by: Brian Fann
-    /// @Last Updated: 3/9/18
+    /// @Created by: Brian Fann, Rachel Dang
+    /// @Created: 3/9/18
+    /// @Last Updated: 03/21/2018
     /// </summary>
-
     public class AuthorizationContext : DbContext
     {
-        // TODO Add DbSets once claims are implemented.
+        public DbSet<UserClaims> Claims { get; set; }
 
         public AuthorizationContext() : base("GetUsGrub") { }
     }

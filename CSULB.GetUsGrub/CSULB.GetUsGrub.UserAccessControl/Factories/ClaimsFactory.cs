@@ -20,18 +20,17 @@ namespace CSULB.GetUsGrub.UserAccessControl
             return new List<Claim>
             {
                 // For Individual Profie Management
-                new Claim("ReadIndividualProfile", "True"),
-                new Claim("UpdateIndividualProfile", "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.INDIVIDUAL, "True"),
+                new Claim(ActionConstant.UPDATE+ResourceConstant.INDIVIDUAL, "True"),
 
                 // For Food Preferences
-                new Claim("ReadPreferences", "True"),
-                new Claim("UpdatePreferences", "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.PREFERENCES, "True"),
+                new Claim(ActionConstant.UPDATE+ResourceConstant.PREFERENCES, "True"),
 
                 // For Bill Splitter
-                new Claim("ReadBillSplitter", "True"),
-                new Claim("ReadMenu", "True"),
-                new Claim("ReadDictionary", "True"),
-                new Claim("UpdateDictionary", "True")
+                new Claim(ActionConstant.READ+ResourceConstant.MENU, "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.DICTIONARY, "True"),
+                new Claim(ActionConstant.UPDATE+ResourceConstant.DICTIONARY, "True")
             };
         }
 
@@ -44,12 +43,11 @@ namespace CSULB.GetUsGrub.UserAccessControl
             return new List<Claim>
             {
                 // For Restaurant Profie Management
-                new Claim("ReadRestsaurantProfile", "True"),
-                new Claim("UpdateRestaurantProfile", "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.RESTAURANT, "True"),
+                new Claim(ActionConstant.UPDATE+ResourceConstant.RESTAURANT, "True"),
 
                 // For Bill Splitter
-                new Claim("ReadBillSplitter", "True"),
-                new Claim("ReadMenu", "True")
+                new Claim(ActionConstant.READ+ResourceConstant.MENU, "True")
             };
         }
 
@@ -62,29 +60,28 @@ namespace CSULB.GetUsGrub.UserAccessControl
             return new List<Claim>
             {
                 // For User Management
-                new Claim("CreateUser", "True"),
-                new Claim("ReadUser", "True"),
-                new Claim("UpdateUser", "True"),
-                new Claim("DeleteUser", "True"),
-                new Claim("DeactivateUser", "True"),
-                new Claim("ReactivateUser", "True"),
-
+                new Claim(ActionConstant.CREATE+ResourceConstant.USER, "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.USER, "True"),
+                new Claim(ActionConstant.UPDATE+ResourceConstant.USER, "True"),
+                new Claim(ActionConstant.DELETE+ResourceConstant.USER, "True"),
+                new Claim(ActionConstant.DEACTIVATE+ResourceConstant.USER, "True"),
+                new Claim(ActionConstant.REACTIVATE+ResourceConstant.USER, "True"),
 
                 // For Indvidiual and Restaurant Profile Management
-                new Claim("ReadIndividualProfile", "True"),
-                new Claim("UpdateIndividualProfile", "True"),
-                new Claim("ReadRestsaurantProfile", "True"),
-                new Claim("UpdateRestaurantProfile", "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.INDIVIDUAL, "True"),
+                new Claim(ActionConstant.UPDATE+ResourceConstant.INDIVIDUAL, "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.RESTAURANT, "True"),
+                new Claim(ActionConstant.UPDATE+ResourceConstant.RESTAURANT, "True"),
 
                 // For Food Preferences
-                new Claim("CreatePreferences", "True"),
-                new Claim("ReadPreferences", "True"),
-                new Claim("DeletePreferences", "True"),
+                new Claim(ActionConstant.CREATE+ResourceConstant.PREFERENCES, "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.PREFERENCES, "True"),
+                new Claim(ActionConstant.UPDATE+ResourceConstant.PREFERENCES, "True"),
+                new Claim(ActionConstant.DELETE+ResourceConstant.PREFERENCES, "True"),
 
                 // For Bill Splitter
-                new Claim("ReadBillSplitter", "True"),
-                new Claim("ReadMenu", "True"),
-                new Claim("ReadDictionary", "True")
+                new Claim(ActionConstant.READ+ResourceConstant.DICTIONARY, "True"),
+                new Claim(ActionConstant.READ+ResourceConstant.MENU, "True"),
             };
         }
     }

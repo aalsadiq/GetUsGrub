@@ -5,6 +5,8 @@ using System.Security.Permissions;
 using System.Threading;
 using System.Web.Http;
 
+using CSULB.GetUsGrub.UserAccessControl;
+
 namespace CSULB.GetUsGrub
 {
     public class UserAccessTestController : ApiController
@@ -30,7 +32,7 @@ namespace CSULB.GetUsGrub
         }
 
         [Route("api/UAC/Admin")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Read")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.READ)]
         public IHttpActionResult GetAdmin()
         {
             return Ok();
@@ -38,21 +40,21 @@ namespace CSULB.GetUsGrub
 
         [Route("api/UAC/Admin/2")]
         [HttpGet]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.UPDATE)]
         public IHttpActionResult GetTest()
         {
             return Ok();
         }
 
         [Route("api/UAC/Individual")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "Individual", Operation = "Read")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
         public IHttpActionResult GetIndividual()
         {
             return Ok();
         }
 
         [Route("api/UAC/Restaurant")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "Restaurant", Operation = "Read")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.READ)]
         public IHttpActionResult GetRestaurant()
         {
             return Ok();

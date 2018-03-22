@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Security;
 using System.Security.Claims;
-using System;
 using System.Linq;
+using CSULB.GetUsGrub.DataAccess;
 
 namespace CSULB.GetUsGrub.UserAccessControl
 {
     /// <summary>
     /// Create a new ClaimsPrincipal with the user's permission claims
     /// 
-    /// Author: Rachel Dang
-    /// Last Updated: 3/17/18
+    /// @author: Rachel Dang
+    /// @updated: 3/21/18
     /// </summary>
     public class ClaimsTransformer : ClaimsAuthenticationManager
     {
@@ -26,50 +26,35 @@ namespace CSULB.GetUsGrub.UserAccessControl
             ClaimsPrincipal principal = incomingPrincipal;
             string username = principal.FindFirst("username").Value;
 
-            // If username is null, throw exception
-            if (string.IsNullOrWhiteSpace(username))
-            {
-                throw new SecurityException("Username not found.");
-            }
-
-            // If resourceName is null, throw exception
-            if (string.IsNullOrWhiteSpace(resourceName))
-            {
-                throw new SecurityException("Requested resource name is invalid.");
-            }
-
-            // If username is valid, but does not exist in the database
-
             // Create the new ClaimsPrincipal
-            principal = CreatePrincipal(username, resourceName);
+            principal = CreatePrincipal(resourceName, principal);
 
             // Return proper ClaimsPrincipal
             return principal;
         }
 
         /// <summary>
-        /// Generate a new ClaimsPrincipal with all of the user's read or permission claims
-        /// bassed on the resourceName that is passed in (read or permission)
+        /// Generate a new claims principal containing all of the user's permission claims
+        /// or just the read claims based on the resource name ("read", "permission").
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns>New ClaimsPrincipal with</returns>
-        private ClaimsPrincipal CreatePrincipal(string username, string resourceName)
+        /// <param name="resourceName"></param>
+        /// <param name="incomingPrincipal"></param>
+        /// <returns>Claims principal with permissions from the database</returns>
+        private ClaimsPrincipal CreatePrincipal(string resourceName, ClaimsPrincipal incomingPrincipal)
         {
-            // Get user's list of claims from databases
-            // var gateway = new UserAccessGateway(); ???
-            // claims = gateway.GetClaimsByUsername(username); ???
+            // Take the claims from the incoming principal
+            var username = incomingPrincipal.FindFirst("username").Value;
+            List<Claim> claims = incomingPrincipal.Claims.ToList();
+
+            // Add to list with user's list of claims from database
             using(var gateway = new AuthorizationGateway())
             {
-                var claims = gateway.GetClaimsByUsername(username);
-            }
-            // For testing
-            ClaimsFactory factory = new ClaimsFactory();
-            List<Claim> claims = factory.CreateAdminClaims().ToList();
+                var userClaims = gateway.GetClaimsByUsername(username).Data.ToList();
 
-            // If claims do not exist
-            if (claims == null)
-            {
-                throw new System.Exception("No claims for found for this user.");
+                foreach (var claim in userClaims)
+                {
+                    claims.Add(claim);
+                }
             }
 
             // If resourceName is read, filter out the claims that are not read claims

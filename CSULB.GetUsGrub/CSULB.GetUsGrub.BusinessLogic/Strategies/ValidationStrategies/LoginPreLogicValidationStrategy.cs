@@ -9,7 +9,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     public class LoginPreLogicValidationStrategy
     {
         readonly private LoginDto _loginDto;
-        private LoginDtoValidator _loginDtoValidator;
+        private LoginDtoValidator _loginDtoValidator = new LoginDtoValidator();
 
         public LoginPreLogicValidationStrategy(LoginDto loginDto)
         {

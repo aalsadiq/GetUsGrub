@@ -1,11 +1,9 @@
 ﻿using Xunit;
+using FluentAssertions;
+using System;
+using System.Security;
 using System.Security.Claims;
 using CSULB.GetUsGrub.UserAccessControl;
-using System;
-
-using System.Security;
-
-
 namespace CSULB.GetUsGrub.UnitTests
 {
     /// <summary>
@@ -34,11 +32,10 @@ namespace CSULB.GetUsGrub.UnitTests
             var context = new AuthorizationContext(principal, resource, action);
 
             // Act
-            var actual = manager.CheckAccess(context);
-            var expected = true;
+            var result = manager.CheckAccess(context);
 
             // Assert
-            Assert.Equal(expected, actual);
+            result.Should().BeTrue();
         }
 
         [Fact]
@@ -56,11 +53,10 @@ namespace CSULB.GetUsGrub.UnitTests
             var context = new AuthorizationContext(principal, resource, action);
 
             // Act
-            var actual = manager.CheckAccess(context);
-            var expected = false;
+            var result = manager.CheckAccess(context);
 
             // Assert
-            Assert.Equal(expected, actual);
+            result.Should().BeFalse();
         }
 
         [Fact]
@@ -77,12 +73,11 @@ namespace CSULB.GetUsGrub.UnitTests
             var context = new AuthorizationContext(principal, resource, action);
 
             // Act
-            Exception ex = Assert.Throws<SecurityException>(() => manager.CheckAccess(context));
-            var actual = ex.Message;
+            var result = Assert.Throws<SecurityException>(() => manager.CheckAccess(context)).Message;
             var expected = "Username is invalid.";
 
             // Assert
-            Assert.Equal(expected, actual);
+            result.Should().Be(expected);
         }
     }
 }

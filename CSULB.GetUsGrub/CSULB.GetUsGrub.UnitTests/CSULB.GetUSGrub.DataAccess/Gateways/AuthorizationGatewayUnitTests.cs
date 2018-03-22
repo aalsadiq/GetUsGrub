@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using Xunit;
+using FluentAssertions;
 
 namespace CSULB.GetUsGrub.UnitTests
 {
@@ -39,11 +40,11 @@ namespace CSULB.GetUsGrub.UnitTests
             var expected = typeof(List<Claim>);
 
             // Act
-            var actual = gateway.GetClaimsByUsername(username);
+            var result = gateway.GetClaimsByUsername(username);
 
             // Assert
-            Assert.IsType(expected, actual.Data);
-            Assert.NotNull(actual.Error);
+            result.Should().BeOfType(expected);
+            result.Error.Should().NotBeNull();
         }
     }
 }

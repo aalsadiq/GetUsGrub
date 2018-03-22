@@ -1,8 +1,7 @@
 ﻿using Xunit;
 using System.Security.Claims;
 using CSULB.GetUsGrub.UserAccessControl;
-using System;
-using System.Security;
+using FluentAssertions;
 
 namespace CSULB.GetUsGrub.UnitTests
 {
@@ -29,11 +28,11 @@ namespace CSULB.GetUsGrub.UnitTests
             var resourceName = "permission";
 
             // Act
-            var actual = transformer.Authenticate(resourceName, principal);
+            var result = transformer.Authenticate(resourceName, principal).GetType();
             var expected = typeof(ClaimsPrincipal);
 
             // Assert
-            Assert.IsType(expected, actual);
+            result.Should().BeOfType(expected);
         }
 
         [Fact]
@@ -48,11 +47,11 @@ namespace CSULB.GetUsGrub.UnitTests
             var resourceName = "read";
 
             // Act
-            var actual = transformer.Authenticate(resourceName, principal);
+            var result = transformer.Authenticate(resourceName, principal).GetType();
             var expected = typeof(ClaimsPrincipal);
 
             // Assert
-            Assert.IsType(expected, actual);
+            result.Should().BeOfType(expected);
         }
     }
 }

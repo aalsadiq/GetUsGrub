@@ -2,39 +2,59 @@
 using CSULB.GetUsGrub.Models;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
-using System.Net.Http;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// Service for accessing Google's Geocoding API to handle geocoding.
+    /// 
+    /// @Author: Brian Fann
+    /// @Last Updated: 3/22/18
+    /// </summary>
     public class GoogleGeocodeService : IGeocodeServiceAsync
     {
-        private static readonly HttpClient client = new HttpClient();
-
         private string BuildUrl(IAddress address, string key)
         {
-            var url = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-            url += $"{address.Street1} {address.Street2}, {address.City}, {address.State} {address.Zip}";
+            var url = "https://maps.googleapis.com/maps/api/geocode/json?";
+            url += $"address={address.Street1} {address.Street2}, {address.City}, {address.State} {address.Zip}";
             url.Replace(' ', '+');
             url += $"&key={key}";
 
             return url;
         }
 
-        public async Task<IGeoCoordinates> GeocodeAsync(IAddress address)
+        /// <summary>
+        /// Converts an address into geocoordinates using Google's Geocoding API.
+        /// </summary>
+        /// <param name="address">Address to geocode.</param>
+        /// <returns>Coordinates of address.</returns>
+        public async Task<ResponseDto<IGeoCoordinates>> GeocodeAsync(IAddress address)
         {
             try
             {
                 var key = ConfigurationManager.AppSettings["GoogleGeocodingApi"];
                 var url = BuildUrl(address, key);
-
-                var responseJson = await client.GetStringAsync(url);
+                var responseJson = await new GoogleBackoffGetRequest(url, "OVER_QUERY_LIMIT").TryExecute();
                 var responseObj = JObject.Parse(responseJson);
 
                 var status = (string)responseObj.SelectToken("status");
 
+                // Exit early if status is not OK.
                 if (!status.Equals("OK"))
                 {
-                    throw new System.Exception(status);
+                    if (status.Equals("ZERO_RESULTS"))
+                    {
+                        status = "Invalid Input";
+                    }
+                    else
+                    {
+                        status = "Unexpected Error";
+                    }
+
+                    return new ResponseDto<IGeoCoordinates>()
+                    {
+                        Error = status
+                    };
                 }
 
                 var lat = (float)responseObj.SelectToken("results[0].geometry.location.lat");
@@ -46,12 +66,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Longitude = lng
                 };
 
-                return coordinates;
+                return new ResponseDto<IGeoCoordinates>()
+                {
+                    Data = coordinates
+                };
             }
-            // If API Key not found, return null
+            // If API Key not found, throw error.
             catch (ConfigurationErrorsException)
             {
-                return null;
+                throw new System.Exception("Google Geocoding API Key not found.");
             }
         }
     }

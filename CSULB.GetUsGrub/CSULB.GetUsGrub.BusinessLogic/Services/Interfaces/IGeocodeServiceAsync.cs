@@ -5,6 +5,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public interface IGeocodeServiceAsync
     {
-        Task<IGeoCoordinates> GeocodeAsync(IAddress address);
+        Task<ResponseDto<IGeoCoordinates>> GeocodeAsync(IAddress address);
     }
 }

@@ -2,7 +2,7 @@
 {
     public class GeoCoordinates : IGeoCoordinates
     {
-        public float Latitude { get; set; }
-        public float Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

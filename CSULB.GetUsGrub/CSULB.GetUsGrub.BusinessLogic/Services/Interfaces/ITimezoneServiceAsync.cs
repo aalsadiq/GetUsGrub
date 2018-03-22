@@ -5,6 +5,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public interface ITimezoneServiceAsync
     {
-        Task<int?> GetOffsetAsync(IGeoCoordinates coordinates);
+        Task<ResponseDto<int>> GetOffsetAsync(IGeoCoordinates coordinates);
     }
 }

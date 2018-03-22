@@ -20,32 +20,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return url;
         }
 
-        public async Task<int> TestQuotaLimit()
-        {
-            var service = new GoogleGeocodeService();
-            var status = "";
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = "CA",
-                Zip = 90840
-            };
-            var key = ConfigurationManager.AppSettings["GoogleGeocodingApi"];
-            var url = BuildUrl(address, key);
-            var count = 0;
-
-            do
-            {
-                var responseJson = await client.GetStringAsync(url);
-                var responseObj = JObject.Parse(responseJson);
-                status = (string)responseObj.SelectToken("status");
-                count++;
-            } while (status.Equals("OK"));
-
-            return count;
-        }
-
         public async Task<IGeoCoordinates> GeocodeAsync(IAddress address)
         {
             try

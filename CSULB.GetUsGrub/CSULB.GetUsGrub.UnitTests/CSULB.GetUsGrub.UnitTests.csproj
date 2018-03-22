@@ -104,7 +104,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GeocodeIntegrationTest.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleGeocodeIntegrationTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleTimezoneIntegrationTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PayloadHasherUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\SaltGeneratorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\TokenServiceUnitTests.cs" />

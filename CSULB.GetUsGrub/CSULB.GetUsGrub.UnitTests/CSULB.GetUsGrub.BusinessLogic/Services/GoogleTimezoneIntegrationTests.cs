@@ -12,41 +12,21 @@ using Xunit;
 
 namespace CSULB.GetUsGrub.UnitTests
 {
-    public class GeocodeIntegrationTest
+    public class GoogleTimezoneIntegrationTest
     {
         [Fact]
-        public async void Should_Pass_When_Hitting_Quota_Per_Second()
+        public async void Should_Pass_When_Getting_Csulb_Timezone()
         {
-            var service = new GoogleGeocodeService();
-            var expected = 50;
-            int actual = await NewMethod(service);
-
-            actual.Should().Be(-1);
-        }
-
-        private static async Task<int> NewMethod(GoogleGeocodeService service)
-        {
-            return await service.TestQuotaLimit();
-        }
-
-        //[Fact]
-        public async void Should_Pass_When_Geocoding_Csulb()
-        {
-            var service = new GoogleGeocodeService();
-            var address = new Address()
+            var service = new GoogleTimezoneService();
+            var coordinates = new GeoCoordinates
             {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = "CA",
-                Zip = 90840
+                Latitude = 33.7830608f,
+                Longitude = -118.1148909f
             };
-            var expectedLat = 33.7830608;
-            var expectedLong = -118.1148909;
 
-            var result = await service.GeocodeAsync(address);
-            
-            result.Latitude.Should().Equals(expectedLat);
-            result.Longitude.Should().Equals(expectedLong);
+            var result = await service.GetOffsetAsync(coordinates);
+
+            result.Should().Be(0);
         }
 
         //[Fact]

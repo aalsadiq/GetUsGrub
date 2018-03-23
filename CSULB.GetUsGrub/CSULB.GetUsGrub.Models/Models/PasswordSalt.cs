@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
@@ -13,6 +14,16 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.PasswordSalt")]
     public class PasswordSalt : IEntity
     {
+        public PasswordSalt()
+        {
+            Salt = "";
+        }
+        public PasswordSalt(string salt)
+        {
+            Salt = salt;
+        }
+
+        [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
 

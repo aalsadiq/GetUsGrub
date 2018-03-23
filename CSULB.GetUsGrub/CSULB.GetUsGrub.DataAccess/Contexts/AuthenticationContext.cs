@@ -13,13 +13,10 @@ namespace CSULB.GetUsGrub.DataAccess
     public class AuthenticationContext : DbContext
     {
         public DbSet<UserAccount> UserAccounts { get; set; }
-
         public DbSet<PasswordSalt> PasswordSalts { get; set; }
-
-        public DbSet<Token> Tokens { get; set; }
-
+        public DbSet<AuthenticationToken> AuthenticationTokens { get; set; }
         public DbSet<SecurityQuestion> SecurityQuestions { get; set; }
-
+        public DbSet<SsoToken> SsoTokens { get; set; }
         public AuthenticationContext() : base("GetUsGrub") { }
     }
 

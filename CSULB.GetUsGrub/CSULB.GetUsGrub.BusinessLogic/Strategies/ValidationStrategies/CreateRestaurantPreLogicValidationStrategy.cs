@@ -1,8 +1,5 @@
 ﻿using CSULB.GetUsGrub.Models;
-using FluentValidation;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -11,107 +8,83 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Defines a strategy for validating models before processing business logic for creating a restaurant.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/12/2018
+    /// @updated: 03/20/2018
     /// </para>
     /// </summary>
     public class CreateRestaurantPreLogicValidationStrategy
     {
         private readonly RegisterRestaurantDto _registerRestaurantDto;
-        private readonly CreateIndividualPreLogicValidationStrategy _createIndividualPreLogicValidationStrategy;
-        private readonly RestaurantProfileDtoValidator _restaurantProfileDtoValidator;
-        private readonly AddressValidator _addressValidator;
+        private readonly BusinessHourDtoValidator _businessHourDtoValidator;
         private readonly BusinessHourValidator _businessHourValidator;
+        private readonly CreateIndividualPreLogicValidationStrategy _createIndividualPreLogicValidationStrategy;
 
         public CreateRestaurantPreLogicValidationStrategy(RegisterRestaurantDto registerRestaurantDto)
         {
             _registerRestaurantDto = registerRestaurantDto;
-            _createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerRestaurantDto);
-            _restaurantProfileDtoValidator = new RestaurantProfileDtoValidator();
-            _addressValidator = new AddressValidator();
+            _businessHourDtoValidator = new BusinessHourDtoValidator();
             _businessHourValidator = new BusinessHourValidator();
+            _createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerRestaurantDto);
         }
-        public ResponseDto<RegisterRestaurantDto> ExecuteStrategy()
+
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate a data transfer object for creating a restaurant user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/20/2018
+        /// </para>
+        /// </summary>
+        /// <returns>ResponseDto</returns>
+        public ResponseDto<bool> ExecuteStrategy()
         {
             // Validate base user DTO
-            var response = _createIndividualPreLogicValidationStrategy.ExecuteStrategy();
-            if (response.Error != null)
+            var result = _createIndividualPreLogicValidationStrategy.ExecuteStrategy();
+            if (!result.Data)
             {
-                return new ResponseDto<RegisterRestaurantDto>
-                {
-                    Data = _registerRestaurantDto,
-                    Error =  response.Error
-                };
-            }
-            // Validate RestaurantProfileDto
-            var validationResult = _restaurantProfileDtoValidator.Validate(_registerRestaurantDto.RestaurantProfileDto, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
-            {
-                var errorsList = new List<string>();
-                validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
-                var errors = JsonConvert.SerializeObject(errorsList);
-                return new ResponseDto<RegisterRestaurantDto>
-                {
-                    Data = _registerRestaurantDto,
-                    Error = JsonConvert.SerializeObject(errors)
-            };
+                return result;
             }
 
-            // Validate Address
-            System.Diagnostics.Debug.WriteLine("Address Validate2");
-            validationResult = _addressValidator.Validate(_registerRestaurantDto.RestaurantProfileDto.Address, ruleSet: "CreateUser");
-            System.Diagnostics.Debug.WriteLine("Address Validate2");
-            if (!validationResult.IsValid)
+            var validationWrappers = new List<IValidationWrapper>()
             {
-                var errorsList = new List<string>();
-                validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
-                var errors = JsonConvert.SerializeObject(errorsList);
-                return new ResponseDto<RegisterRestaurantDto>
+                new ValidationWrapper<RestaurantProfileDto>(_registerRestaurantDto.RestaurantProfileDto, "CreateUser", new RestaurantProfileDtoValidator()),
+                new ValidationWrapper<Address>(_registerRestaurantDto.RestaurantProfileDto.Address, "CreateUser", new AddressValidator())
+            };
+
+            foreach (var businessHourDto in _registerRestaurantDto.BusinessHourDtos)
+            {
+                validationWrappers.Add(new ValidationWrapper<BusinessHourDto>(businessHourDto, "CreateUser", _businessHourDtoValidator));
+            }
+
+            foreach (var validationWrapper in validationWrappers)
+            {
+                result = validationWrapper.ExecuteValidator();
+                if (!result.Data)
                 {
-                    Data = _registerRestaurantDto,
-                    Error = JsonConvert.SerializeObject(errors)
-                };
+                    return result;
+                }
             }
 
             // Validate BusinessHour
-            foreach (var businessHour in _registerRestaurantDto.RestaurantProfileDto.BusinessHours)
+            foreach (var businessHour in _registerRestaurantDto.BusinessHourDtos)
             {
-                validationResult = _businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
-                if (!validationResult.IsValid)
+                result = _businessHourValidator.CheckIfDayIsDayOfWeek(businessHour.Day);
+                if (!result.Data)
                 {
-                    var errorsList = new List<string>();
-                    validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
-                    var errors = JsonConvert.SerializeObject(errorsList);
-                    return new ResponseDto<RegisterRestaurantDto>
-                    {
-                        Data = _registerRestaurantDto,
-                        Error = JsonConvert.SerializeObject(errors)
-                    };
-                }
-
-                var result = _businessHourValidator.CheckIfDayIsDayOfWeek(businessHour.Day);
-                if (!result)
-                {
-                    return new ResponseDto<RegisterRestaurantDto>
-                    {
-                        Data = _registerRestaurantDto,
-                        Error = "Day must be either Sunday, Monday, Tuesday, Wednesday, Thursday, Friday or Saturday."
-                    };
+                    result.Error = "Day must be either Sunday, Monday, Tuesday, Wednesday, Thursday, Friday or Saturday.";
+                    return result;
                 }
 
                 result = _businessHourValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHour.OpenTime, businessHour.CloseTime);
-                if (!result)
+                if (!result.Data)
                 {
-                    return new ResponseDto<RegisterRestaurantDto>
-                    {
-                        Data = _registerRestaurantDto,
-                        Error = "Opening time must be less than closing time."
-                    };
+                    result.Error = "Opening time must be less than closing time.";
+                    return result;
                 }
             }
 
-            return new ResponseDto<RegisterRestaurantDto>
+            return new ResponseDto<bool>()
             {
-                Data = _registerRestaurantDto
+                Data = true
             };
         }
     }

@@ -54,18 +54,28 @@
     <Compile Include="Contexts\AuthorizationContext.cs" />
     <Compile Include="Contexts\IndividualProfileContext.cs" />
     <Compile Include="Contexts\RestaurantContext.cs" />
+    <Compile Include="Contexts\SsoContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
+    <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\AuthorizationGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Migrations\201803122339016_Initial.cs" />
-    <Compile Include="Migrations\201803122339016_Initial.Designer.cs">
-      <DependentUpon>201803122339016_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.cs" />
+    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.Designer.cs">
+      <DependentUpon>201803201656396_seed1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\UserConfiguration.cs" />
+    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\GetUsGrubUserContext3\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.Designer.cs">
+      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\UserManagement\UserContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -78,8 +88,11 @@
     <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803122339016_Initial.resx">
-      <DependentUpon>201803122339016_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.resx">
+      <DependentUpon>201803201656396_seed1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.resx">
+      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

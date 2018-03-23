@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -321,27 +322,5 @@ namespace CSULB.GetUsGrub.DataAccess
             //}
             return true;
         }
-
-        /// <summary>
-        /// The GetUserByUsername method.
-        /// Gets a user by username.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns>UserAccount model</returns>
-        public UserAccount GetUserByUsername(string username)
-        {
-            using (var userContext = new UserContext())
-            {
-                var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
-                return userAccount;
-            }
-        }
-        
     }
 }

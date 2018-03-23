@@ -105,6 +105,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\AuthenticationTokenDtoValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\LoginDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\RestaurantProfileMapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\SecurityQuestionMapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\UserAccountMapperUnitTests.cs" />

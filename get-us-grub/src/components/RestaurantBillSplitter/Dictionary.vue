@@ -1,5 +1,6 @@
 <template>
   <div class="dictionary">
+    <h2 v-if="restaurantDisplayName">{{ restaurantDisplayName }}</h2>
     <h2>Dictionary</h2>
     <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(element, index) in MenuItems" :key="element">
@@ -27,12 +28,15 @@
 </template>
 
 <script>
+import axios from 'axios'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 
 export default {
   name: 'Dictionary',
   components: {
+    'edit-item': EditItem,
+    'delete-item': DeleteItem,
     draggable
   },
   directives: { money: VMoney },
@@ -48,6 +52,10 @@ export default {
       }
     }
   },
+  created () {
+    this.restaurantDisplayName = this.$store.restaurantDisplayName
+  },
+  directives: { money: VMoney },
   methods: {
     ToggleEdit: function (index) {
       this.$store.dispatch('ToggleEdit', index)

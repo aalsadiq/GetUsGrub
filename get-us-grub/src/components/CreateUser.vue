@@ -132,7 +132,9 @@
                 <v-divider></v-divider>
                 <v-stepper-step step="3" :complete="restaurantStep > 3">Business Hours</v-stepper-step>
                 <v-divider></v-divider>
-                <v-stepper-step step="4" :complete="restaurantStep > 4">Contact Information</v-stepper-step>
+                <v-stepper-step step="4" :complete="restaurantStep > 4">Business Hours</v-stepper-step>
+                <v-divider></v-divider>
+                <v-stepper-step step="5" :complete="restaurantStep > 5">Contact Information</v-stepper-step>
                 <v-divider></v-divider>
               </v-stepper-header>
               <v-stepper-items>
@@ -350,6 +352,63 @@
                     </v-flex>
                   </v-form>
                   <v-btn color="grey lighten-5" @click="restaurantStep = 3">Previous</v-btn>
+                  <v-btn color="primary" @click.prevent="restaurantSubmit" :disabled="!validContactInput">Submit</v-btn>
+                </v-stepper-content>
+                <v-stepper-content step="5">
+                  <v-form v-model="validContactInput">
+                    <v-flex xs4>
+                      <v-subheader>Enter the address of your restaurant</v-subheader>
+                    </v-flex>
+                    <v-text-field
+                      label="Street 1"
+                      placeholder="1111 Snowy Rock Pl"
+                      v-model="restaurantProfile.address.street1"
+                      :rules="addressStreet1Rules"
+                      required
+                    ></v-text-field>
+                    <v-text-field
+                      label="Street 2"
+                      placeholder="Unit 2"
+                      v-model="restaurantProfile.address.street2"
+                    ></v-text-field>
+                    <v-text-field
+                      label="City"
+                      placeholder="Long Beach"
+                      v-model="restaurantProfile.address.city"
+                      required
+                    ></v-text-field>
+                    <v-select
+                      :items="states"
+                      v-model="restaurantProfile.address.state"
+                      label="Select a state"
+                      single-line
+                      auto
+                      append-icon="map"
+                      hide-details
+                      required
+                    ></v-select>
+                      <v-text-field
+                      label="Zip"
+                      placeholder="92812"
+                      :rules="addressZipRules"
+                      type="number"
+                      v-model.number="restaurantProfile.address.zip"
+                      required
+                    ></v-text-field>
+                    <v-flex xs4>
+                      <v-subheader>Enter a phone number</v-subheader>
+                    </v-flex>
+                    <v-flex xs12 sm5>
+                      <v-text-field
+                        v-model="restaurantProfile.phoneNumber"
+                        placeholder="(562)111-5555"
+                        prepend-icon="phone"
+                        :rules="phoneNumberRules"
+                        single-line
+                      ></v-text-field>
+                    </v-flex>
+                  </v-form>
+                  <v-btn color="grey lighten-5" @click="restaurantStep = 4">Previous</v-btn>
                   <v-btn color="primary" @click.prevent="restaurantSubmit" :disabled="!validContactInput">Submit</v-btn>
                 </v-stepper-content>
               </v-stepper-items>

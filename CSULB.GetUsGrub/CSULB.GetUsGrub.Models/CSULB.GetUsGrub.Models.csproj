@@ -63,6 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\AuthenticationTokenDto.cs" />
+    <Compile Include="DTOs\LoginDto.cs" />
+    <Compile Include="DTOs\PasswordSaltDto.cs" />
     <Compile Include="DTOs\RegisterRestaurantDto.cs" />
     <Compile Include="DTOs\RegisterUserDto.cs" />
     <Compile Include="DTOs\ResponseDto.cs" />
@@ -71,11 +74,11 @@
     <Compile Include="DTOs\UserAccountDto.cs" />
     <Compile Include="DTOs\UserProfileDto.cs" />
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\AuthenticationToken.cs" />
     <Compile Include="Models\BusinessHour.cs" />
     <Compile Include="Models\Interfaces\IBusinessHour.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
-    <Compile Include="Models\Token.cs" />
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />
@@ -84,11 +87,13 @@
     <Compile Include="Models\Interfaces\IProfile.cs" />
     <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />
     <Compile Include="Models\Interfaces\IRestaurantMenu.cs" />
+    <Compile Include="Models\FailedAttempts.cs" />
     <Compile Include="Models\Interfaces\IRestaurantProfile.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestionsList.cs" />
     <Compile Include="Models\Interfaces\IToken.cs" />
     <Compile Include="Models\Interfaces\IUserAccount.cs" />
+    <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\PasswordSalt.cs" />
     <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\RestaurantMenu.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,10 @@ namespace CSULB.GetUsGrub.Models
 		/// and returns the Menus and MenuItems that specific restaurant has.
 		/// @author Ryan Luong
 		/// </summary>
-		public class RestaurantMenuDto
+		[Serializable]
+		public class RestaurantDto
 		{
-				public RestaurantMenuDto(string displayName, double latitude, double longitude)
+				public RestaurantDto(string displayName, double latitude, double longitude)
 				{
 						DisplayName = displayName;
 						Latitude = latitude;
@@ -26,8 +28,9 @@ namespace CSULB.GetUsGrub.Models
 
 				public double Longitude { get; set; }
 
-				public ICollection<RestaurantMenu> RestaurantMenus { get; set; }
+				// TODO @Andrew Why do you have these in here? I'm assuming they're navigation properties, but nav props should be strictly in domain models because they are used for entity framework [-Brian]
+				//public ICollection<RestaurantMenu> RestaurantMenus { get; set; }
 
-				public ICollection<RestaurantMenuItem> RestaurantMenuItem { get; set; }
+				//public ICollection<RestaurantMenuItem> RestaurantMenuItem { get; set; }
 		}
 }

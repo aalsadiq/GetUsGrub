@@ -8,53 +8,95 @@ using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
-		public class RestaurantBillSplitterGateway
+		public class RestaurantBillSplitterGateway : IDisposable
 		{
-				public ResponseDto<Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>> GetRestaurantMenus(string displayName, double latitude, double longitude)
+				RestaurantContext context = new RestaurantContext();
+				public ResponseDto<List<RestaurantMenuWithItems>> GetRestaurantMenus(string displayName, double latitude, double longitude)
 				{
-						using (var restaurantContext = new RestaurantContext())
+						try
 						{
-								var userProfile = (from profile in restaurantContext.UserProfiles
+								var userProfile = (from profile in context.UserProfiles
 																	 where profile.DisplayName == displayName
 																	 select profile).SingleOrDefault();
 
 								// Find restaurant by Display Name, Latitude, Longitude
-								var restaurantProfile = (from restaurant in restaurantContext.RestaurantProfiles
+								var restaurantProfile = (from restaurant in context.RestaurantProfiles
 																				 where restaurant.Id == userProfile.Id
 																				 where restaurant.Latitude == latitude
 																				 where restaurant.Longitude == longitude
 																				 select restaurant).SingleOrDefault();
-
+								//TODO: @Ryan TEST ALL SCENARIOS [-Ryan]
 								// Then, find all active menus associated with this restaurant and turn it into a List
-								var restaurantMenus = (from menus in restaurantContext.RestaurantMenus
+								var restaurantMenus = (from menus in context.RestaurantMenus
 																			 where menus.RestaurantId == restaurantProfile.Id
 																			 where menus.IsActive == true
 																			 select menus).ToList();
 
-								Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary = new Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>();
+								List<RestaurantMenuWithItems> restaurantMenuWithItemsList = new List<RestaurantMenuWithItems>();
 
 								foreach (var menu in restaurantMenus)
 								{
 										// Then, find all menu items associated with each menu and turn that into a list
-										var items = (from menuItems in restaurantContext.RestaurantMenuItems
+										var items = (from menuItems in context.RestaurantMenuItems
 																 where menuItems.MenuId == menu.Id
 																 where menuItems.IsActive == true
 																 select menuItems).ToList();
 
-										// Map menu items to menus in a dictionary
-										menuDictionary.Add(menu, items);
+										RestaurantMenuWithItems restaurantMenuWithItems = new RestaurantMenuWithItems(menu, items);
+
+										// Map menu items to menus in a list of menus
+										restaurantMenuWithItemsList.Add(restaurantMenuWithItems);
 								}
 
-
 								// Finally, add those menu objects into my IList<RestaurantMenu>
-								ResponseDto<Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>> responseDto = new ResponseDto<Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>>
+								return new ResponseDto<List<RestaurantMenuWithItems>>
 								{
-										Data = menuDictionary,
+										Data = restaurantMenuWithItemsList,
 										Error = null
 								};
-
-								return responseDto;
+						}
+						catch
+						{
+								return new ResponseDto<List<RestaurantMenuWithItems>>
+								{
+										Error = "Something in your gateway went wrong."
+								};
 						}
 				}
+
+				#region IDisposable Support
+				private bool disposedValue = false; // To detect redundant calls
+
+				protected virtual void Dispose(bool disposing)
+				{
+						if (!disposedValue)
+						{
+								if (disposing)
+								{
+										context.Dispose();
+								}
+
+								// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+								// TODO: set large fields to null.s
+
+								disposedValue = true;
+						}
+				}
+
+				// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+				// ~RestaurantBillSplitterGateway() {
+				//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+				//   Dispose(false);
+				// }
+
+				// This code added to correctly implement the disposable pattern.
+				public void Dispose()
+				{
+						// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+						Dispose(true);
+						// TODO: uncomment the following line if the finalizer is overridden above.
+						// GC.SuppressFinalize(this);
+				}
+				#endregion
 		}
 }

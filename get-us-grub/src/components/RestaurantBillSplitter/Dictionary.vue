@@ -29,6 +29,8 @@ export default {
   data () {
     return {
       restaurantDisplayName: '',
+      restaurantLatitude: null,
+      restaurantLongitude: null,
       money: {
         decimal: '.',
         thousands: '',
@@ -41,6 +43,8 @@ export default {
   },
   created () {
     this.restaurantDisplayName = this.$store.restaurantDisplayName
+    this.restaurantLatitude = this.$store.restaurantLatitude
+    this.restaurantLongitude = this.$store.restaurantLongitude
   },
   directives: { money: VMoney },
   methods: {

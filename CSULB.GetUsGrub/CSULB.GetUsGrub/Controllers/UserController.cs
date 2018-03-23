@@ -1,10 +1,6 @@
-﻿using CSULB.GetUsGrub.BusinessLogic.Managers;
-using CSULB.GetUsGrub.Models;
+﻿using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.BusinessLogic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace CSULB.GetUsGrub.Controllers

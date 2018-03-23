@@ -1,12 +1,10 @@
-﻿using CSULB.GetUsGrub.DataAccess.Gateways;
-using CSULB.GetUsGrub.Models;
-using System;
+﻿using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.DataAccess;
+using CSULB.GetUsGrub.UserAccessControl;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CSULB.GetUsGrub.BusinessLogic.Managers
+namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
     /// The <c>UserManager</c> class.

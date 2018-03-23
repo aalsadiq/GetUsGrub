@@ -90,7 +90,6 @@
     <Compile Include="Services\Interfaces\IValidationWrapper.cs" />
     <Compile Include="Services\PayloadHasher.cs" />
     <Compile Include="Services\SaltGenerator.cs" />
-    <Compile Include="Services\TokenService.cs" />
     <Compile Include="Managers\SsoTokenManager.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\ValidationWrapper.cs" />
@@ -128,7 +127,6 @@
     <Compile Include="Validators\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Api.config" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

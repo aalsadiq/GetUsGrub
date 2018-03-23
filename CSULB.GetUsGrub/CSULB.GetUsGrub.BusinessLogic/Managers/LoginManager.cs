@@ -1,8 +1,6 @@
-﻿
-using System;
+﻿using System;
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using CSULB.GetUsGrub.Models.Models;
 
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -36,7 +34,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Checking if user Exists
             var userExistanceValidator = new UserValidator();
             var validateUserExistanceResult = userExistanceValidator.CheckIfUserExists(loginDto.Username);
-            if (validateUserExistanceResult)
+            if (validateUserExistanceResult.Data)
             {
                 return new ResponseDto<LoginDto>
                 {
@@ -90,7 +88,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Check if user is Active
-            if (!dataBaseUserAccount.IsActive)
+            if (!dataBaseUserAccount.IsActive.Value)
             {
                 return new ResponseDto<LoginDto>
                 {
@@ -100,7 +98,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Cheking if user is first time
-            if (!dataBaseUserAccount.IsFirstTimeUser)
+            if (!dataBaseUserAccount.IsFirstTimeUser.Value)
             {
                 // Send them to complete registration
             }

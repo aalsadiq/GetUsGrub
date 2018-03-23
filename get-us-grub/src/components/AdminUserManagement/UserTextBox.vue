@@ -1,5 +1,6 @@
 <template>
     <div>
+      {{ responseData }}
       <v-app id="inputUser">
           <v-container fluid>
             <v-spacer/>
@@ -26,7 +27,8 @@ export default {
     usernameRules: [
       username => !!username || 'Username is required',
       username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-    ]
+    ],
+    responseData: ''
   }),
   methods: {
     userSubmit: function (viewType) {

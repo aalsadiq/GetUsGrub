@@ -170,9 +170,8 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
         {
-            Debug.Write("Inside delete controller!" + Environment.NewLine);
             //Checks if what was given is a valid model
-            if (!ModelState.IsValid && user.Username == null)
+            if (!ModelState.IsValid)
             {
                 //If mode is invalid, return a bad request.
                 return BadRequest("Invalid username.");
@@ -199,7 +198,8 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("Something went wrong. Please try again later.");
+                //return BadRequest("Something went wrong. Please try again later.");
+                return Ok(user);
             }
         }
 
@@ -218,7 +218,7 @@ namespace CSULB.GetUsGrub.Controllers
             //TODO: Add claims here
             public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
             {
-            System.Diagnostics.Debug.WriteLine("The user name is "+ user.Username);
+            //System.Diagnostics.Debug.WriteLine("The user name is "+ user.Username);
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {

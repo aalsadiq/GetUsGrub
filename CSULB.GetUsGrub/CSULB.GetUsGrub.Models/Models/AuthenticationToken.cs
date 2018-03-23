@@ -13,13 +13,11 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.AuthenticationToken")]
-
     public class AuthenticationToken : IEntity
     {
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
-
         public string Username { get; set; }
         public DateTime ExpiresOn { get; set; }
         public string Salt { get; set; }
@@ -43,6 +41,5 @@ namespace CSULB.GetUsGrub.Models
 
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
-        
     }
 }

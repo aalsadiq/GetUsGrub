@@ -9,9 +9,9 @@ export const store = new Vuex.Store({
     ],
     BillItems: [
       {
-      menuItemName: 'Test',
-      menuItemPrice: 2.00,
-      menuItemEdit: false
+        menuItemName: 'Test',
+        menuItemPrice: 2.00,
+        menuItemEdit: false
       }
     ]
   },
@@ -22,7 +22,7 @@ export const store = new Vuex.Store({
         temp += element.menuItemPrice
       })
       return temp
-     }
+    }
   },
   mutations: {
     AddToDictionary: (state, payload) => {
@@ -37,7 +37,7 @@ export const store = new Vuex.Store({
       state.MenuItems.forEach(function (element) {
         element.menuItemEdit = false
       })
-      if (temp == false) {
+      if (temp === false) {
         state.MenuItems[payload].menuItemEdit = true
       }
     },

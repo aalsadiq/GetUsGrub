@@ -9,10 +9,9 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @Created by: Brian Fann
     /// @Last Updated: 3/9/18
     /// </summary>
-
     public class AuthorizationContext : DbContext
     {
-        // TODO Add DbSets once claims are implemented.
+        DbSet<UserClaims> UserClaims { get; set; }
 
         public AuthorizationContext() : base("GetUsGrub") { }
     }

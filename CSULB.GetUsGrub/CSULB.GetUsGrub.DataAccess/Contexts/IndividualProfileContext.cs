@@ -1,5 +1,5 @@
-﻿using System.Data.Entity;
-using CSULB.GetUsGrub.Models;
+﻿using CSULB.GetUsGrub.Models;
+using System.Data.Entity;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
@@ -13,7 +13,6 @@ namespace CSULB.GetUsGrub.DataAccess
     public class IndividualProfileContext : DbContext
     {
         public DbSet<UserProfile> RestaurantProfiles { get; set; }
-
         public IndividualProfileContext() : base("GetUsGrub") { }
     }
 

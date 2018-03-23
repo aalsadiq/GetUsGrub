@@ -64,7 +64,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\AuthenticationTokenDto.cs" />
+<<<<<<< HEAD
     <Compile Include="DTOs\LoginDto.cs" />
+=======
+    <Compile Include="DTOs\BusinessHourDto.cs" />
+    <Compile Include="Models\GeoCoordinates.cs" />
+    <Compile Include="Models\Interfaces\IAddress.cs" />
+    <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
+>>>>>>> BrianFann
     <Compile Include="DTOs\PasswordSaltDto.cs" />
     <Compile Include="DTOs\RegisterRestaurantDto.cs" />
     <Compile Include="DTOs\RegisterUserDto.cs" />
@@ -78,7 +85,13 @@
     <Compile Include="Models\BusinessHour.cs" />
     <Compile Include="Models\Interfaces\IBusinessHour.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
+    <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Models\SsoToken.cs" />
+    <Compile Include="Models\UserAuthenticationModel.cs" />
+>>>>>>> BrianFann
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />
@@ -95,13 +108,13 @@
     <Compile Include="Models\Interfaces\IUserAccount.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\PasswordSalt.cs" />
-    <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\RestaurantMenu.cs" />
     <Compile Include="Models\RestaurantMenuItem.cs" />
     <Compile Include="Models\RestaurantProfile.cs" />
     <Compile Include="Models\SecurityQuestion.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DTOs\RestaurantSelectionDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

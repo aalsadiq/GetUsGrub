@@ -2,10 +2,10 @@
 {
     public interface IBusinessHour
     {
-        string Day { get; set; }
+        string Day { get; }
 
-        string OpenTime { get; set; }
+        string OpenTime { get; }
 
-        string CloseTime { get; set; }
+        string CloseTime { get; }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using CSULB.GetUsGrub.Models;
-using FluentValidation;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -10,13 +8,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Defines a strategy for validating models after processing business logic for creating a restaurant.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/12/2018
+    /// @updated: 03/20/2018
     /// </para>
     /// </summary>
     public class CreateRestaurantPostLogicValidationStrategy
     {
         private readonly CreateIndividualPostLogicValidationStrategy _createIndividualPostLogicValidationStrategy;
         private readonly RestaurantProfile _restaurantProfile;
+        private readonly IList<BusinessHour> _businessHours;
         private readonly RestaurantProfileValidator _restaurantProfileValidator;
         private readonly AddressValidator _addressValidator;
         private readonly BusinessHourValidator _businessHourValidator;
@@ -25,7 +24,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// Constructor for CreateRestaurantPostLogicValidationStrategy.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @update: 03/18/2018
+        /// @update: 03/20/2018
         /// </para>
         /// </summary>
         /// <param name="userAccount"></param>
@@ -35,11 +34,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
         /// <param name="restaurantProfile"></param>
+        /// <param name="businessHours"></param>
         public CreateRestaurantPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
             IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
-            UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile)
+            UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours)
         {
             _restaurantProfile = restaurantProfile;
+            _businessHours = businessHours;
             _createIndividualPostLogicValidationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, claims, userProfile);
             _restaurantProfileValidator = new RestaurantProfileValidator();
             _addressValidator = new AddressValidator();
@@ -51,59 +52,62 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// Contains the logic to validate a domain models for creating a restaurant user.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
+        /// @updated: 03/20/2018
         /// </para>
         /// </summary>
         /// <returns>A boolean</returns>
-        public bool ExecuteStrategy()
+        public ResponseDto<bool> ExecuteStrategy()
         {
             // Validate base user
             var result = _createIndividualPostLogicValidationStrategy.ExecuteStrategy();
-            if (!result)
+            if (!result.Data)
             {
-                return false;
+                return result;
             }
 
-            // Validate RestaurantProfile
-            var validationResult = _restaurantProfileValidator.Validate(_restaurantProfile, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
+            var validationWrappers = new List<IValidationWrapper>()
             {
-                return false;
+                new ValidationWrapper<RestaurantProfile>(_restaurantProfile, "CreateUser", new RestaurantProfileValidator()),
+                new ValidationWrapper<Address>(_restaurantProfile.Address, "CreateUser", new AddressValidator())
+            };
+
+            foreach (var businessHour in _businessHours)
+            {
+                validationWrappers.Add(new ValidationWrapper<BusinessHour>(businessHour, "CreateUser", _businessHourValidator));
             }
 
-            // Validate Address
-            validationResult = _addressValidator.Validate(_restaurantProfile.Address, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
+            foreach (var validationWrapper in validationWrappers)
             {
-                return false;
+                result = validationWrapper.ExecuteValidator();
+                if (!result.Data)
+                {
+                    result.Error = "Something went wrong. Please try again later.";
+                    return result;
+                }
             }
 
             // Validate BusinessHour
-            // Should we have a different validation process since business hours is a separate entity?
-            /*var businessHours = JsonConvert.DeserializeObject<List<BusinessHour>>(_restaurantProfile.BusinessHoursJson);
-            foreach (var businessHour in businessHours)
+            foreach (var businessHour in _businessHours)
             {
-                validationResult = _businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
-                if (!validationResult.IsValid)
-                {
-                    return false;
-                }
-
                 result = _businessHourValidator.CheckIfDayIsDayOfWeek(businessHour.Day);
-                if (!result)
+                if (!result.Data)
                 {
-                    return false;
+                    result.Error = "Something went wrong. Please try again later.";
+                    return result;
                 }
 
                 result = _businessHourValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHour.OpenTime, businessHour.CloseTime);
-                if (!result)
+                if (!result.Data)
                 {
-                    return false;
+                    result.Error = "Something went wrong. Please try again later.";
+                    return result;
                 }
             }
-            */
 
-            return true;
+            return new ResponseDto<bool>()
+            {
+                Data = true
+            };
         }
     }
 }

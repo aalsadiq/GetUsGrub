@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             foreach (var validationWrapper in validationWrappers)
             {
                 var result = validationWrapper.ExecuteValidator();
-                if (result.Data == false)
+                if (!result.Data)
                 {
                     result.Error = "Something went wrong. Please try again later.";
                     return result;

@@ -9,7 +9,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// Gateway to Access information from the DB for authentication purposes.
     /// 
     /// @Created by: Ahmed AlSadiq, Jennifer Nguyen
-    /// @Last Updated: 3/19/18
+    /// @Last Updated: 03/22/18
     /// </summary>
     public class AuthenticationGateway : IDisposable
     {
@@ -137,6 +137,7 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
+        // TODO: @Ahmed Need to comment this [-Jenn]
         public ResponseDto<AuthenticationToken> GetExpirationTime(AuthenticationToken incomingAuthenticationToken)
         {
             AuthenticationToken tokenWithNewExpirationDate;

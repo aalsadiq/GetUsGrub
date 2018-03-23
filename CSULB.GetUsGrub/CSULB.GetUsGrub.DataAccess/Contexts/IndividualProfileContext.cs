@@ -9,7 +9,6 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @Created by: Brian Fann
     /// @Last Updated: 3/9/18
     /// </summary>
-
     public class IndividualProfileContext : DbContext
     {
         public DbSet<UserProfile> RestaurantProfiles { get; set; }

@@ -7,6 +7,14 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>TokenValidator</c> class.
+    /// Defines rules to validate a token.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/22/2018
+    /// </para>
+    /// </summary>
     public class TokenValidator
     {
         private readonly JwtSecurityTokenHandler _jwtTokenHandler;
@@ -16,7 +24,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _jwtTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        // TODO: @Jenn May need to create an interface for this [-Jenn]
+        /// <summary>
+        /// The CheckIfSsoTokenExists method.
+        /// Checks if there is an SSO token in the database.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public ResponseDto<bool> CheckIfSsoTokenExists(string token)
         {
             using (var authenticationGateway = new AuthenticationGateway())
@@ -31,7 +48,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
         }
 
-        // TODO: @Jenn Comment this [-Jenn]
+        /// <summary>
+        /// The CheckIfTokenIsJsonWebToken method.
+        /// Checks if the token is a valid Json web Token.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public ResponseDto<bool> CheckIfTokenIsJsonWebToken(string token)
         {
             if (!_jwtTokenHandler.CanReadToken(token))
@@ -49,7 +75,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        // TODO: @Jenn Comment this [-Jenn]
+        /// <summary>
+        /// The ValidateJwt method.
+        /// Checks if the Jwt has valid parameters defined for the token.
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/22/2018
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="tokenValidationParameters"></param>
+        /// <returns></returns>
         public ResponseDto<bool> ValidateJwt(string token, TokenValidationParameters tokenValidationParameters)
         {
             try

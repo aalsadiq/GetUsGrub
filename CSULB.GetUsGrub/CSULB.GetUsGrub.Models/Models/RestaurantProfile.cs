@@ -30,6 +30,7 @@ namespace CSULB.GetUsGrub.Models
         [Key]
         [ForeignKey("UserProfile")]
         public int? Id { get; set; }
+
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
         public RestaurantDetail Details { get; set; }//ASK Andrew & Brian
@@ -40,6 +41,6 @@ namespace CSULB.GetUsGrub.Models
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
-        public virtual IList<BusinessHour> BusinessHours { get; set; }
+        public virtual ICollection<BusinessHour> BusinessHours { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using CSULB.GetUsGrub.UserAccessControl;
 using FluentAssertions;
+using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.UnitTests
 {
@@ -17,41 +18,40 @@ namespace CSULB.GetUsGrub.UnitTests
         ClaimsFactory factory = new ClaimsFactory();
 
         [Fact]
-        public void Should_ReturnClaimsPrincipalWithAllPermissions_When_UsernameIsPassed()
+        public void Should_ReturnClaimsPrincipal_With_AllClaims()
         {
             // Arrange
-            var claims = factory.CreateAdminClaims();
-            claims.Add(new Claim("username", "Admin"));
+            var user = "username";
+            var claims = new List<Claim> { new Claim("username", user) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
             var resourceName = "permission";
 
             // Act
-            var result = transformer.Authenticate(resourceName, principal).GetType();
-            var expected = typeof(ClaimsPrincipal);
-
+            var result = transformer.Authenticate(resourceName, principal).HasClaim("UpdatePreferences", "True");
+            
             // Assert
-            result.Should().BeOfType(expected);
+            result.Should().BeTrue();
         }
 
         [Fact]
         public void Should_ReturnClaimsPrincipalWithReadPermissions_When_UsernameIsPassed()
         {
             // Arrange
-            var claims = factory.CreateAdminClaims();
-            claims.Add(new Claim("username", "Admin"));
+            var user = "username";
+            var claims = new List<Claim> { new Claim("username", user) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
             var resourceName = "read";
 
             // Act
-            var result = transformer.Authenticate(resourceName, principal).GetType();
-            var expected = typeof(ClaimsPrincipal);
-
+            var allClaims = transformer.Authenticate(resourceName, principal).HasClaim("UpdatePreferences", "True");
+            var readClaims = transformer.Authenticate(resourceName, principal).HasClaim("ReadPreferences", "True");
             // Assert
-            result.Should().BeOfType(expected);
+            allClaims.Should().BeFalse();
+            readClaims.Should().BeTrue();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using CSULB.GetUsGrub.Models;
+using System.Data.Entity;
 
 namespace CSULB.GetUsGrub.DataAccess
 {

@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
 
-// TODO: @Jenn Unit test ValidationStrategy [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -18,6 +17,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly SecurityQuestionDtoValidator _securityQuestionDtoValidator;
         private readonly UserValidator _userValidator;
 
+        /// <summary>
+        /// Constructor for CreateIndividualPreLogicValidationStrategy.
+        /// <para>
+        /// @author: Jennifer
+        /// @update: 03/18/2018
+        /// </para>
+        /// </summary>
+        /// <param name="registerUserDto"></param>
         public CreateIndividualPreLogicValidationStrategy(RegisterUserDto registerUserDto)
         {
             _registerUserDto = registerUserDto;
@@ -44,7 +51,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 new ValidationWrapper<UserProfileDto>(_registerUserDto.UserProfileDto, "CreateUser", new UserProfileDtoValidator())
 
             };
-            
+
             foreach (var securityQuestionDto in _registerUserDto.SecurityQuestionDtos)
             {
                 validationWrappers.Add(new ValidationWrapper<SecurityQuestionDto>(securityQuestionDto, "CreateUser", _securityQuestionDtoValidator));
@@ -69,8 +76,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_registerUserDto.UserAccountDto.Username);
-            System.Diagnostics.Debug.WriteLine("UserManager1231");
-            if (result)
+            if (result.Data)
             {
                 result.Error = "Username is already used.";
                 return result;

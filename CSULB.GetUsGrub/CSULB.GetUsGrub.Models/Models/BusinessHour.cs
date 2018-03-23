@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -34,5 +35,7 @@ namespace CSULB.GetUsGrub.Models
         public string OpenTime { get; set; }
         [Required]
         public string CloseTime { get; set; }
+
+        public virtual RestaurantProfile RestaurantProfile { get; set; }
     }
 }

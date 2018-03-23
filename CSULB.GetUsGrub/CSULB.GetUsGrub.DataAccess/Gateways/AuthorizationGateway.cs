@@ -34,7 +34,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     return new ResponseDto<ICollection<Claim>>
                     {
                         Data = new List<Claim> { },
-                        Error = "No claims found in the database."
+                        Error = "User is invalid."
                     };
                 }
 

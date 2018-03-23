@@ -46,7 +46,7 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Sending HTTP response 400 Status
                 return BadRequest("Something went wrong. Please try again later.");

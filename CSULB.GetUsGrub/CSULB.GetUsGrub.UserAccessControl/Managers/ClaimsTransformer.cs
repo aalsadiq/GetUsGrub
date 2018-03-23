@@ -44,14 +44,22 @@ namespace CSULB.GetUsGrub.UserAccessControl
         {
             // Take the claims from the incoming principal
             var username = incomingPrincipal.FindFirst("username").Value;
-            List<Claim> claims = incomingPrincipal.Claims.ToList();
+            List<Claim> claims = new List<Claim> { };
 
             // Add to list with user's list of claims from database
             using(var gateway = new AuthorizationGateway())
             {
-                var userClaims = gateway.GetClaimsByUsername(username).Data.ToList();
+                // Grab user's list of claims from the database
+                var userClaims = gateway.GetClaimsByUsername(username);
+                
+                // If user is invalid and an error returns
+                if (userClaims.Error != null)
+                {
+                    throw new SecurityException(userClaims.Error);
+                }
 
-                foreach (var claim in userClaims)
+                // If user is valid, proceed to add claims
+                foreach (var claim in userClaims.Data)
                 {
                     claims.Add(claim);
                 }
@@ -61,8 +69,10 @@ namespace CSULB.GetUsGrub.UserAccessControl
             if (resourceName == "read")
             {
                 claims.RemoveAll(x => !x.Type.StartsWith("Read"));
-                claims.Add(new Claim("username", username));
             }
+
+            // Add original username claim
+            claims.Add(new Claim("username", username));
 
             // Create ClaimsIdentity with the list of claims
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, resourceName);

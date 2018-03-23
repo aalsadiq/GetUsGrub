@@ -106,10 +106,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\RestaurantProfileMapperUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\SecurityQuestionMapperUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\UserAccountMapperUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Mappers\UserProfileMapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PayloadHasherUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\SaltGeneratorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\TokenServiceUnitTests.cs" />

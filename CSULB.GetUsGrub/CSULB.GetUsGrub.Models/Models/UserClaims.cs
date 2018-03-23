@@ -75,12 +75,6 @@ namespace CSULB.GetUsGrub.Models
             set => Entries = JsonConvert.DeserializeObject<Collection<ClaimsEntry>>(value);
         }
 
-        internal class ClaimsEntry
-        {
-            public string Type { get; set; }
-            public string Value { get; set; }
-        }
-
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
     }

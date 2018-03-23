@@ -1,4 +1,6 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.Collections.Generic;
+
+namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// The IRestaurantProfile interface.
@@ -10,7 +12,6 @@
     /// </summary>
     public interface IRestaurantProfile
     {
-        IList<BusinessHour> BusinessHours { get; }
         string PhoneNumber { get; }
         Address Address { get; }
         double Longitude { get; }

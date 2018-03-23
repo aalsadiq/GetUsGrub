@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace CSULB.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
     public interface IRestaurantDetail
     {
         string Category { get; set; }
 
-        IEnumerable<BusinessHour> BusinessSchedule { get; set; }
+        int AvgFoodPrice { get; set; }
 
         bool? HasReservations { get; set; }
 

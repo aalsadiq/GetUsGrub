@@ -10,7 +10,6 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
-    //[System.Serializable]
     public class Address
     {
         [Required]

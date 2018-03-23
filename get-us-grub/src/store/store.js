@@ -34,14 +34,40 @@ export const store = new Vuex.Store({
       }
     ],
     BillItems: [
+      {
+        menuItemName: 'Test',
+        menuItemPrice: 2.00,
+        menuItemEdit: false
+      }
+    ],
+    Tokens: [ // Added token info [-Angelica]
+      {
+        // username: '',
+        // iat:'',
+        // exp:'',
+        // claims:''
+      }
+    ],
+    Claims: [ // Added claims [-Angelica]
+      {
+        // ReadUser: 'ReadUser',
+        // ReadIndividualProfile: 'ReadIndividualProfile',
+        // ReadPreferences: 'ReadPreferences',
+        // ReadBillSplitter: 'ReadBillSplitter',
+        // ReadMenu: 'ReadMenu',
+        // ReadDictionary: 'ReadDictionary',
+        // ReadRestaurantProfile: 'ReadRestaurantProfile'
+      }
     ]
   },
   getters: {
-    // totalPrice: state => {
-    //  var totalPrice = this.$store.state.BillItems.map(BillItems => {
-    //    return state.BillItems.menuItemPrice
-    //  })
-    // }
+    totalPrice: state => {
+      var temp = 0
+      state.BillItems.forEach(function (element) {
+        temp += element.menuItemPrice
+      })
+      return temp
+    }
   },
   mutations: {
     AddToDictionary: (state, payload) => {
@@ -50,7 +76,15 @@ export const store = new Vuex.Store({
         menuItemPrice: payload[1]
       })
     },
-
+    ToggleEdit: (state, payload) => {
+      var temp = state.MenuItems[payload].menuItemEdit
+      state.MenuItems.forEach(function (element) {
+        element.menuItemEdit = false
+      })
+      if (temp === false) {
+        state.MenuItems[payload].menuItemEdit = true
+      }
+    },
     RemoveFromDictionary: (state, payload) => {
       console.log('Store Mutation: ' + payload)
       state.MenuItems.splice(payload, 1)
@@ -58,6 +92,29 @@ export const store = new Vuex.Store({
     RemoveFromBill: (state, payload) => {
       console.log('Store Mutation: ' + payload)
       state.BillItems.splice(payload, 1)
+    },
+    checkClaims: () => { // check claims here..
+      // ReadUser: 'ReadUser'
+      // ReadIndividualProfile: 'ReadIndividualProfile'
+      // ReadPreferences: 'ReadPreferences'
+      // ReadBillSplitter: 'ReadBillSplitter'
+      // ReadMenu: 'ReadMenu'
+      // ReadDictionary: 'ReadDictionary'
+      // ReadRestaurantProfile: 'ReadRestaurantProfile'
+    },
+    StoreToken: () => { // Added [-Angelica]
+    },
+    RemoveToken: () => { // Added [-Angelica]
+    },
+    StoreImage: () => { // Added [-Angelica]
+      // imagePath: '' // The path that the image is found on
+      // usesrname: '' // the usersimage
+      // imageName: username + 'profile'
+    },
+    RemoveImage: () => { // Added [-Angelica]
+      // imagePath: ''
+      // username: ''
+      // imageName: username
     }
   },
   // Actions are necessary when performing asynchronous methods.

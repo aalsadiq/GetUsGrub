@@ -13,10 +13,19 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.UserProfile")]
     public class UserProfile : IProfile, IEntity
     {
+        public UserProfile() { }
+
+        public UserProfile( string displayPicture, string displayName)
+        {
+            DisplayPicture = displayPicture;
+            DisplayName = displayName;
+        }
+
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
         public string DisplayPicture { get; set; }
         public string DisplayName { get; set; }
+
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
         public virtual RestaurantProfile RestaurantProfile { get; set; }

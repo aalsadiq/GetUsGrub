@@ -15,8 +15,6 @@ namespace CSULB.GetUsGrub.Models
 
         public string MenuName { get; set; }
 
-        public IEnumerable<IMenuItem> Items { get; set; }
-
         // Navigation Properties
         public virtual RestaurantProfile RestaurantProfile { get; set; }
 

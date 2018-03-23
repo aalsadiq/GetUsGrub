@@ -4,6 +4,6 @@ namespace CSULB.GetUsGrub.Models
 {
     public interface IRestaurantMenu
     {
-        IEnumerable<IMenuItem> Items { get; set; }
+        string MenuName { get; set; }
     }
 }

@@ -1,8 +1,15 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
+    /// <summary>
+    /// The <c>ResponseDto</c> class.
+    /// Defines properties for a ResponseDto
+    /// <para>
+    /// @author: Andrew Kao, Jennifer Nguyen
+    /// @updated: 03/05/2018
+    /// </para>
+    /// </summary>
     public class ResponseDto<T>
     {
-        // A type of data you would like to store in the ResponseDto
         public T Data { get; set; }
         public string Error { get; set; }
     }

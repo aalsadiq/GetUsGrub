@@ -2,7 +2,6 @@
   <div id="restaurant-bill-splitter">
     <app-header />
     <div class="wrapper">
-      <restaurantBillSplitter-userTable />
       <restaurantBillSplitter-billTable />
       <restaurantBillSplitter-dictionaryInput />
       <restaurantBillSplitter-dictionary />
@@ -36,7 +35,6 @@
 <script>
 import AppHeader from '../AppHeader.vue'
 import AppFooter from '../AppFooter.vue'
-import UserTable from './UserTable.vue'
 import BillTable from './BillTable.vue'
 import Dictionary from './Dictionary.vue'
 import DictionaryInput from './DictionaryInput.vue'
@@ -46,7 +44,6 @@ export default {
   components: {
     'app-header': AppHeader,
     'app-footer': AppFooter,
-    'restaurantBillSplitter-userTable': UserTable,
     'restaurantBillSplitter-billTable': BillTable,
     'restaurantBillSplitter-dictionaryInput': DictionaryInput,
     'restaurantBillSplitter-dictionary': Dictionary

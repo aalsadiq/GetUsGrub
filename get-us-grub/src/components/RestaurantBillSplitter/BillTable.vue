@@ -3,60 +3,41 @@
     <h1>Your Bill</h1>
     <div>
       <h1 v-if="!BillItems.length"> Drag Items Here!</h1>
-      <draggable class="bill" v-bind:list="BillItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
-        <div class="bill-item" v-for="(billItem, billItemIndex) in BillItems" :key="billItemIndex">
-          {{billItem.name}} : ${{billItem.price}}<br />
-          <edit-item :editType="editType" :itemIndex="billItemIndex" :Item="billItem" />
-          <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
-          <manage-users :billItem="billItem"/>
-          <v-divider/>
-          <div v-for="billUser in BillUsers" :key="billUser">
-            <div v-for="uniqueID in billItem.selected" :key="uniqueID">
-              <div v-if="billUser.uID === uniqueID">
-                <p> {{ billUser.name }} </p>
-              </div>
-            </div>
+      <draggable class="bill" v-bind:list="BillItems" v-bind:options="{group:'people'}" @start="drag=true" @end="drag=false">
+        <div class="bill-item" v-for="(element, index) in BillItems" :key="index">
+          {{index}} - {{element.menuItemName}} : ${{element.menuItemPrice}}<br />
+          <div style="display: inline-block">
+            <v-btn small><!--v-on:click="EditDictionaryFoodItem"-->Edit</v-btn>
+            <v-btn small v-on:click="RemoveFromBill(index)">Delete</v-btn>
+            <v-btn small>Manage Users</v-btn>
           </div>
         </div>
       </draggable>
     </div>
-    <h2 class="total">Total: {{ TotalPrice }} </h2>
+    <h2 class="total">Total: <span v-money="money" v-model="TotalPrice" /></h2>
   </div>
 </template>
 
 <script>
-import EditItem from './EditItem.vue'
-import DeleteItem from './DeleteItem.vue'
-import AddBillUser from './AddBillUser.vue'
-import ManageUsers from './ManageUsers.vue'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 
 export default {
   name: 'BillTable',
   components: {
-    'edit-item': EditItem,
-    'delete-item': DeleteItem,
-    'add-bill-user': AddBillUser,
-    'manage-users': ManageUsers,
     draggable
   },
   directives: { money: VMoney },
   data () {
     return {
-      editType: 'BillTable',
-      deleteType: 'BillTable',
-      money: {
-        decimal: '.',
-        thousands: '',
-        prefix: '$',
-        suffix: '',
-        precision: 2,
-        masked: false
-      }
     }
   },
   methods: {
+    RemoveFromBill: function (index) {
+      // Parameters have to be placed into an array because dispatch can only take two. The name and the payload.
+      console.log(index)
+      this.$store.dispatch('RemoveFromBill', index)
+    }
   },
   computed: {
     MenuItems () {
@@ -65,10 +46,7 @@ export default {
     BillItems () {
       return this.$store.state.BillItems
     },
-    BillUsers () {
-      return this.$store.state.BillUsers
-    },
-    TotalPrice () {
+    TotalPrice() {
       return this.$store.getters.totalPrice
     }
   }
@@ -77,7 +55,7 @@ export default {
 
 <style>
   .bill-table {
-    grid-column: 2 / 3;
+    grid-column: 1 / 3;
     grid-row: 1 / 4;
     outline: solid;
   }
@@ -103,8 +81,4 @@ export default {
       border-radius: 10px;
       text-align: center;
     }
-
-  .total {
-    margin-bottom: 10px;
-  }
 </style>

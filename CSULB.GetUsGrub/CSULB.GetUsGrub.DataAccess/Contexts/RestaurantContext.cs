@@ -1,16 +1,27 @@
 ﻿using System.Data.Entity;
+using CSULB.GetUsGrub.Models;
 
-namespace GitGrub.GetUsGrub.DataAccess
+namespace CSULB.GetUsGrub.DataAccess
 {
     /// <summary>
-    /// Context used for food selection + restaurant user profile management.
-    /// Context that allows connections to specific entities for restaurant selection and restaurant profile management.
-    ///
-    /// Brian Fann
-    /// 2/21/18
+    /// Context containing all tables for user management.
+    /// 
+    /// @Created by: Brian Fann
+    /// @Last Updated: 3/9/18
     /// </summary>
+
     public class RestaurantContext : DbContext
     {
+        public DbSet<UserProfile> UserProfiles { get; set; }
+
+        public DbSet<RestaurantProfile> RestaurantProfiles { get; set; }
+
+        public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
+        
+        public DbSet<BusinessHour> BusinessHours { get; set; }
+
+        public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+
         public RestaurantContext() : base("GetUsGrub") { }
     }
 

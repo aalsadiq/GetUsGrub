@@ -1,25 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
     /// The <c>RestaurantProfile</c> class.
     /// Defines properties pertaining to user account.
     /// <para>
-    /// @author: Jennifer Nguyen
-    /// @updated: 03/10/2018
+    /// @author: Andrew Kao, Jennifer Nguyen
+    /// @updated: 03/11/2018
     /// </para>
     /// </summary>
-    public class RestaurantProfile
+    [Table("GetUsGrub.RestaurantProfile")]
+    public class RestaurantProfile : IRestaurantProfile, IEntity
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        // TODO: @Jenn Why did you pick a list? [-Jenn]
-        public IList<BusinessHour> BusinessHoursList { get; set; }
+        [Key]
+        [ForeignKey("UserProfile")]
+        public int? Id { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
-        public double Longitude { get; set; }
+        public RestaurantDetail Details { get; set; }
         public double Latitude { get; set; }
+        public double Longitude { get; set; }
+
+        
+        // Navigation Properties
+        public virtual UserProfile UserProfile { get; set; }
+        public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
+        public virtual ICollection<BusinessHour> BusinessHours { get; set; }
     }
 }

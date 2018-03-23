@@ -15,10 +15,10 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<PasswordSalt> PasswordSalts { get; set; }
         public DbSet<RestaurantProfile> RestaurantProfiles { get; set; }
-        // DbSet<RestaurantMenu> RestaurantMenus { get; set; }
-        //public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+        public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
+        public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
         public DbSet<SecurityQuestion> SecurityQuestions { get; set; }
-        //public DbSet<Token> Tokens { get; set; }
+        public DbSet<AuthenticationToken> AuthenticationTokens { get; set; }
         public DbSet<UserClaims> Claims { get; set; }
         public DbSet<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
         public UserContext() : base("GetUsGrub") { }

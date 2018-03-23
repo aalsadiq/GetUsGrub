@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @update: 03/15/2018
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ValidationWrapper<T>
+    public class ValidationWrapper<T> : IValidationWrapper
     {
         private readonly T _data;
         private readonly AbstractValidator<T> _validator;
@@ -34,23 +34,32 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _ruleSet = "";
         }
 
-        public ResponseDto<T> ExecuteValidator()
+        public ResponseDto<bool> ExecuteValidator()
         {
-            var validationResult = _validator.Validate(_data, _ruleSet);
-            if (!validationResult.IsValid)
+            var validationResult = _validator.Validate(_data, ruleSet: _ruleSet);
+            if (!validationResult.IsValid && validationResult.Errors != null)
             {
                 var errorsList = new List<string>();
                 validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
                 var errors = JsonConvert.SerializeObject(errorsList);
-                return new ResponseDto<T>
+                return new ResponseDto<bool>()
                 {
-                    Data = _data,
+                    Data = false,
                     Error = JsonConvert.SerializeObject(errors)
                 };
             }
-            return new ResponseDto<T>()
+            if (!validationResult.IsValid)
             {
-                Data = _data
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = "Something went wrong. Please try again later."
+                };
+            }
+
+            return new ResponseDto<bool>()
+            {
+                Data = true
             };
         }
 

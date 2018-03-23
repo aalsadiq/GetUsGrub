@@ -1,5 +1,5 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
-
+using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -13,6 +13,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserValidator
     {
+        // TODO: @Jenn What should we do about errors in the gateways? [-Jenn]
         /// <summary>
         /// The CheckIfUserExists method.
         /// Checks if a user exists in the user data store.
@@ -23,12 +24,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username"></param>
         /// <returns>A boolean</returns>
-        public bool CheckIfUserExists(string username)
+        public ResponseDto<bool> CheckIfUserExists(string username)
         {
             using (var userGateway = new UserGateway())
             {
-                var user = userGateway.GetUserByUsername(username);
-                return user != null;
+                var gatewayResult = userGateway.GetUserByUsername(username);
+                return new ResponseDto<bool>()
+                {
+                    Data = gatewayResult.Data != null,
+                    Error = gatewayResult.Error
+                };
             }
         }
 
@@ -43,9 +48,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <param name="username"></param>
         /// <param name="displayName"></param>
         /// <returns>A boolean</returns>
-        public bool CheckIfUsernameEqualsDisplayName(string username, string displayName)
+        public ResponseDto<bool> CheckIfUsernameEqualsDisplayName(string username, string displayName)
         {
-            return username == displayName;
+            return new ResponseDto<bool>()
+            {
+                Data = username == displayName
+            };
         }
     }
 }

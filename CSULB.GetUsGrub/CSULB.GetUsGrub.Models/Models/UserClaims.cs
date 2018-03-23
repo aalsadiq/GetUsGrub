@@ -1,21 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 
 namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Add data annotations? [-Jenn]
     /// <summary>
-    /// The <c>Claims</c> class.
+    /// The <c>UserClaims</c> class.
     /// Defines properties pertaining to a user's claims.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/10/2018
+    /// @updated: 03/12/2018
     /// </para>
     /// </summary>
+    [Table("GetUsGrub.UserClaims")]
     public class UserClaims
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public IList<Claim> Claims { get; set; }
+        [Key]
+        [ForeignKey("UserAccount")]
+        public int? Id { get; set; }
+
+        [NotMapped]
+        public ICollection<Claim> Claims { get; set; }
+
+        public string ClaimsJson
+        {
+            get => JsonConvert.SerializeObject(Claims);
+            set => Claims = JsonConvert.DeserializeObject<Collection<Claim>>(value);
+        }
+
+        // Navigation Property
+        public virtual UserAccount UserAccount { get; set; }
     }
 }

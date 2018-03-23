@@ -5,49 +5,41 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    restaurantDisplayName: '',
-    restaurantLatitude: '',
-    restaurantLongitude: '',
-    uniqueUserCounter: 0,
     MenuItems: [
     ],
     BillItems: [
-    ],
-    BillUsers: [
-    ],
-    isAuthenticated: false,
-    authenticationToken: ''
+      {
+      menuItemName: 'Test',
+      menuItemPrice: 2.00,
+      menuItemEdit: false
+      }
+    ]
   },
   getters: {
     totalPrice: state => {
       var temp = 0
       state.BillItems.forEach(function (element) {
-        temp = temp + element.price
+        temp += element.menuItemPrice
       })
       return temp
-    }
+     }
   },
   mutations: {
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
-        name: payload[0],
-        price: payload[1],
-        selected: []
+        menuItemName: payload[0],
+        menuItemPrice: payload[1],
+        menuItemEdit: false
       })
     },
-    AddBillUser: (state, payload) => {
-      state.BillUsers.push({
-        name: payload[0],
-        uID: payload[1]
+    ToggleEdit: (state, payload) => {
+      var temp = state.MenuItems[payload].menuItemEdit
+      state.MenuItems.forEach(function (element) {
+        element.menuItemEdit = false
       })
-    },
-    EditDictionaryItem: (state, payload) => {
-      state.MenuItems[payload[0]].name = payload[1]
-      state.MenuItems[payload[0]].price = payload[2]
-    },
-    EditBillItem: (state, payload) => {
-      state.BillItems[payload[0]].name = payload[1]
-      state.BillItems[payload[0]].price = payload[2]
+      if (temp == false) {
+        state.MenuItems[payload].menuItemEdit = true
+      }
     },
     RemoveFromDictionary: (state, payload) => {
       console.log('Dictionary Store Mutation Index: ' + payload)
@@ -82,20 +74,9 @@ export const store = new Vuex.Store({
         context.commit('AddToDictionary', payload)
       }, 250)
     },
-    AddBillUser: (context, payload) => {
+    ToggleEdit: (context, payload) => {
       setTimeout(function () {
-        console.log('Added New Bill User: ' + payload)
-        context.commit('AddBillUser', payload)
-      }, 250)
-    },
-    EditDictionaryItem: (context, payload) => {
-      setTimeout(function () {
-        context.commit('EditDictionaryItem', payload)
-      }, 250)
-    },
-    EditBillItem: (context, payload) => {
-      setTimeout(function () {
-        context.commit('EditBillItem', payload)
+        context.commit('ToggleEdit', payload)
       }, 250)
     },
     RemoveFromDictionary: (context, payload) => {

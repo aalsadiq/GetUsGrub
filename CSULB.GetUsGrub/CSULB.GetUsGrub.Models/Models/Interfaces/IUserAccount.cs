@@ -10,7 +10,10 @@
     /// </summary>
     public interface IUserAccount
     {
-        string Username { get; set; }
-        string Password { get; set; }
+        string Username { get; }
+        string Password { get; }
+        bool? IsActive { get; }
+        bool? IsFirstTimeUser { get; }
+        string RoleType { get; }
     }
 }

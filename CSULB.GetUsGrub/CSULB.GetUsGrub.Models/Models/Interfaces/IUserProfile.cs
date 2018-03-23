@@ -10,7 +10,7 @@
     /// </summary>
     public interface IUserProfile
     {
-        string DisplayPictureUrl { get; set; }
-        string DisplayName { get; set; }
+        string DisplayPicture { get; }
+        string DisplayName { get; }
     }
 }

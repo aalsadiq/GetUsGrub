@@ -15,7 +15,8 @@ export const store = new Vuex.Store({
     ],
     BillUsers: [
     ],
-    isAuthenticated: false
+    isAuthenticated: false,
+    authenticationToken: ''
   },
   getters: {
     totalPrice: state => {

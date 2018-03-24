@@ -163,13 +163,17 @@ namespace CSULB.GetUsGrub.Controllers
         /// @updated: 03/20/2018
         /// <param name="username">The expected user to be deleted.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
-        // POST User/Admin/DeleteUser
+        // DELETE User/Admin/DeleteUser
         [Route("DeleteUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
        // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpDelete]
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
         {
+            if (user == null)
+            {
+                return Ok("This user is actually null");
+            }
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {

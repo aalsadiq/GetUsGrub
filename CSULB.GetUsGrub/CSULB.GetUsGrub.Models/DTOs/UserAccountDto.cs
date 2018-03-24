@@ -12,7 +12,11 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class UserAccountDto : IUserAccount
     {
-        public UserAccountDto() {}
+        public UserAccountDto() {
+            Username = "";
+            Password = "";
+            RoleType = "";
+        }
         public UserAccountDto(string username, string password, string roleType)
         {
             Username = username;

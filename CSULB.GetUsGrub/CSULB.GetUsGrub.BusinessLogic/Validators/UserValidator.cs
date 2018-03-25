@@ -13,7 +13,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserValidator
     {
-        // TODO: @Jenn What should we do about errors in the gateways? [-Jenn]
         /// <summary>
         /// The CheckIfUserExists method.
         /// Checks if a user exists in the user data store.

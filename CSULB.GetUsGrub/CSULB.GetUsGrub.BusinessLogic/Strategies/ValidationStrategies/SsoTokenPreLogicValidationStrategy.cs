@@ -1,9 +1,16 @@
 ﻿using CSULB.GetUsGrub.Models;
 using Microsoft.IdentityModel.Tokens;
 
-// TODO: @Jenn Comment this please [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>SsoTokenPreLogicValidationStrategy</c> class.
+    /// Defines a strategy for validating models before processing business logic for validating a token from Single Sign On.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/22/2018
+    /// </para>
+    /// </summary>
     public class SsoTokenPreLogicValidationStrategy
     {
         private readonly string _token;

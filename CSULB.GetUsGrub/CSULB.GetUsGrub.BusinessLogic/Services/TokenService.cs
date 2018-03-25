@@ -2,9 +2,16 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 
-// TODO: @Jenn Waiting for Ahmed [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>TokenService</c> class.
+    /// Contains methods that pertains to a token.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/22/2018
+    /// </para>
+    /// </summary>
     public class TokenService
     {
         private readonly JwtSecurityTokenHandler _jwtTokenHandler;
@@ -14,19 +21,23 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _jwtTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        // TODO: @Jenn Comment this [-Jenn]
-        public bool CheckIfTokenIsJsonWebToken(string token)
-        {
-            return _jwtTokenHandler.CanReadToken(token);
-        }
-
+        /// <summary>
+        /// The GetJwtSecurityToken method.
+        /// Converts a string token to a JwtSecurityToken.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public JwtSecurityToken GetJwtSecurityToken(string token)
         {
             return _jwtTokenHandler.ReadJwtToken(token);
         }
 
-        // TODO: @Jenn Comment this [-Jenn]
-        public bool ValidateSignature(string token, TokenValidationParameters tokenValidationParameters)
+        // TODO: @Everyone This is commented section is moved to the TokenValidator class. Please remove. [-Jenn]
+        /*public bool ValidateSignature(string token, TokenValidationParameters tokenValidationParameters)
         {
             //var payloadHasher = new PayloadHasher();
             //// TODO: @Jenn Unit Test this encoder [-Jenn]
@@ -61,6 +72,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             return true;
         }
+        */
 
     }
 }

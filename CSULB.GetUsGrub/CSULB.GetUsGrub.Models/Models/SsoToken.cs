@@ -3,7 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Jenn Need to create DbContext and comment this [-Jenn]
+    /// <summary>
+    /// The <c>SsoToken</c> class.
+    /// Defines properties pertaining to an Sso Token.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/22/2018
+    /// </para>
+    /// </summary>
     [Table("GetUsGrub.SsoToken")]
     public class SsoToken : IEntity
     {

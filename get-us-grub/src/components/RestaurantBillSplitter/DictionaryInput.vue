@@ -60,6 +60,7 @@ export default {
       }
     }
   },
+  directives: { money: VMoney },
   methods: {
     AddToDictionary: function (menuItemName, menuItemPrice) {
       if (this.$refs.dictionaryInputForm.validate()) {

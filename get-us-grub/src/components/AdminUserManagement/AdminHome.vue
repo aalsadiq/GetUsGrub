@@ -1,7 +1,14 @@
 <template>
     <div>
-      <app-admin-header/>
-      <app-footer/>
+      <div id ="vue-app-admin-header" >
+        <app-admin-header/>
+      </div>
+      <div id ='adminhomevue'>
+        <h1> Welcome to home Admin! </h1>
+      </div>
+      <div id ="vue-app-footer">
+        <app-footer/>
+      </div>
     </div>
 </template>
 
@@ -14,6 +21,8 @@ export default {
   components: {
     'app-admin-header': AppAdminHeader,
     'app-footer': AppFooter
+  },
+  mounted () {
   }
 }
 </script>

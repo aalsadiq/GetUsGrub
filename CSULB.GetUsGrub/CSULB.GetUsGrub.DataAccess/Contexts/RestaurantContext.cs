@@ -1,5 +1,5 @@
-﻿using System.Data.Entity;
-using CSULB.GetUsGrub.Models;
+﻿using CSULB.GetUsGrub.Models;
+using System.Data.Entity;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
@@ -9,17 +9,13 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @Created by: Brian Fann
     /// @Last Updated: 3/9/18
     /// </summary>
-
     public class RestaurantContext : DbContext
     {
         public DbSet<UserProfile> UserProfiles { get; set; }
-
         public DbSet<RestaurantProfile> RestaurantProfiles { get; set; }
-
         public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
-
+        public DbSet<BusinessHour> BusinessHours { get; set; }
         public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
-
         public RestaurantContext() : base("GetUsGrub") { }
     }
 

@@ -1,8 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
-using FluentValidation;
 using System.Collections.Generic;
 
-// TODO: @Jenn Unit test for Validation strategy [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -19,101 +17,100 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly IList<SecurityQuestion> _securityQuestions;
         private readonly IList<SecurityAnswerSalt> _securityAnswerSalts;
         private readonly PasswordSalt _passwordSalt;
-        private readonly UserClaims _claims;
+        private readonly UserClaims _userClaims;
         private readonly UserProfile _userProfile;
-        private readonly UserAccountValidator _userAccountValidator;
         private readonly SecurityQuestionValidator _securityQuestionValidator;
         private readonly SecurityAnswerSaltValidator _securityAnswerSaltValidator;
-        private readonly PasswordSaltValidator _passwordSaltValidator;
-        private readonly UserProfileValidator _userProfileValidator;
-        private readonly ClaimsValidator _claimsValidator;
         private readonly UserValidator _userValidator;
 
-    
+        /// <summary>
+        /// Constructor for CreateIndividualPostLogicValidationStrategy
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccount"></param>
+        /// <param name="securityQuestions"></param>
+        /// <param name="securityAnswerSalts"></param>
+        /// <param name="passwordSalt"></param>
+        /// <param name="userClaims"></param>
+        /// <param name="userProfile"></param>
         public CreateIndividualPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
                                                            IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
-                                                           UserClaims claims, UserProfile userProfile)
+                                                           UserClaims userClaims, UserProfile userProfile)
         {
             _userAccount = userAccount;
             _securityQuestions = securityQuestions;
             _securityAnswerSalts = securityAnswerSalts;
             _passwordSalt = passwordSalt;
-            _claims = claims;
+            _userClaims = userClaims;
             _userProfile = userProfile;
-            _userAccountValidator = new UserAccountValidator();
             _securityQuestionValidator = new SecurityQuestionValidator();
             _securityAnswerSaltValidator = new SecurityAnswerSaltValidator();
-            _passwordSaltValidator = new PasswordSaltValidator();
-            _userProfileValidator = new UserProfileValidator();
-            _claimsValidator = new ClaimsValidator();
             _userValidator = new UserValidator();
         }
 
-        public bool ExecuteStrategy()
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate domain models for creating an individual user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/13/2018
+        /// </para>
+        /// </summary>
+        /// <returns>A boolean</returns>
+        public ResponseDto<bool> ExecuteStrategy()
         {
-            // Validate UserAccount
-            var validationResult = _userAccountValidator.Validate(_userAccount, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
-            {
-                return false;
-            }
+            ResponseDto<bool> result;
 
-            // Validate PasswordSalt
-            validationResult = _passwordSaltValidator.Validate(_passwordSalt, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
+            var validationWrappers = new List<IValidationWrapper>()
             {
-                return false;
-            }
+                new ValidationWrapper<UserAccount>(_userAccount, "CreateUser", new UserAccountValidator()),
+                new ValidationWrapper<PasswordSalt>(_passwordSalt, new PasswordSaltValidator()),
+                new ValidationWrapper<UserProfile>(_userProfile, "CreateUser", new UserProfileValidator()),
+                new ValidationWrapper<UserClaims>(_userClaims, new ClaimsValidator())
+            };
 
-            // Validate SecurityQuestions
             foreach (var securityQuestion in _securityQuestions)
             {
-                validationResult = _securityQuestionValidator.Validate(securityQuestion, ruleSet: "CreateUser");
-                if (!validationResult.IsValid)
-                {
-                    return false;
-                }
+                validationWrappers.Add(new ValidationWrapper<SecurityQuestion>(securityQuestion, "CreateUser", _securityQuestionValidator));
             }
 
-            // Validate SecurityAnswerSalts
             foreach (var securityAnswerSalt in _securityAnswerSalts)
             {
-                validationResult = _securityAnswerSaltValidator.Validate(securityAnswerSalt, ruleSet: "CreateUser");
-                if (!validationResult.IsValid)
+                validationWrappers.Add(new ValidationWrapper<SecurityAnswerSalt>(securityAnswerSalt, _securityAnswerSaltValidator));
+            }
+
+            foreach (var validationWrapper in validationWrappers)
+            {
+                result = validationWrapper.ExecuteValidator();
+                if (!result.Data)
                 {
-                    return false;
+                    result.Error = "Something went wrong. Please try again later.";
+                    return result;
                 }
-            }
-
-            // Validate UserProfileDto
-            validationResult = _userProfileValidator.Validate(_userProfile, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
-            {
-                return false;
-            }
-
-            // Validate claims
-            validationResult = _claimsValidator.Validate(_claims);
-            if (!validationResult.IsValid)
-            {
-                return false;
             }
 
             // Validate username and display name are not equal
-            var result = _userValidator.CheckIfUsernameEqualsDisplayName(_userAccount.Username, _userProfile.DisplayName);
-            if (result)
+            result = _userValidator.CheckIfUsernameEqualsDisplayName(_userAccount.Username, _userProfile.DisplayName);
+            if (result.Data)
             {
-                return false;
+                result.Error = "Something went wrong. Please try again later.";
+                return result;
             }
 
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_userAccount.Username);
-            if (result)
+            if (result.Data)
             {
-                return false;
+                result.Error = "Something went wrong. Please try again later.";
+                return result;
             }
-
-            return true;
+            return new ResponseDto<bool>()
+            {
+                Data = true
+            };
         }
     }
 }

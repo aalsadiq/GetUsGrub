@@ -17,10 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.BusinessHours)
-                    .NotEmpty().WithMessage("At least one business hour must be filled.")
-                    .NotNull().WithMessage("At least one business hour must be filled.");
-
                 RuleFor(x => x.PhoneNumber)
                     .NotEmpty().WithMessage("Phone number is required.")
                     .NotNull().WithMessage("Phone number is required.")

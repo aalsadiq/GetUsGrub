@@ -1,42 +1,65 @@
 <template>
   <div class="dictionary">
+    <h2 v-if="restaurantDisplayName">{{ restaurantDisplayName }}</h2>
     <h2>Dictionary</h2>
     <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'people',  pull:'clone', put:false }}" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(element, index) in MenuItems" :key="element">
-        {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}
-        <btn type="primary" size="xs" v-on:click="edit">
+        {{element.menuItemName}} : ${{element.menuItemPrice}}<br />
+        <v-btn small=true v-on:click="ToggleEdit(index)">
           Edit
-        </btn>
-        <v-button v-on:click="RemoveFromDictionary(index)">
+        </v-btn>
+        <v-btn small=true v-on:click="RemoveFromDictionary(index)">
           Delete
-        </v-button>
-        <form v-if="edit">
+        </v-btn>
+        <v-form v-if="element.menuItemEdit">
           <label>Enter Food Item Name</label>
-          <input type="text" ref="menuItemName" required />
+          <v-text-field type="text" ref="menuItemName" required />
           <br />
           <label>Enter Food Item Price</label>
-          <input type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
-        </form>
+          <v-text-field label="Item Price"
+                        prefix="$"
+                        v-model.lazy="menuItemPrice"
+                        v-money="money"
+                        required />
+        </v-form>
       </div>
-
     </draggable>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import draggable from 'vuedraggable'
+import { VMoney } from 'v-money'
 
 export default {
   name: 'Dictionary',
   components: {
+    'edit-item': EditItem,
+    'delete-item': DeleteItem,
     draggable
   },
+  directives: { money: VMoney },
   data () {
     return {
-
+      money: {
+        decimal: '.',
+        thousands: '',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
+      }
     }
   },
+  created () {
+    this.restaurantDisplayName = this.$store.restaurantDisplayName
+  },
+  directives: { money: VMoney },
   methods: {
+    ToggleEdit: function (index) {
+      this.$store.dispatch('ToggleEdit', index)
+    },
     RemoveFromDictionary: function (index) {
       console.log(index)
       this.$store.dispatch('RemoveFromDictionary', index)
@@ -54,7 +77,7 @@ export default {
   .dictionary {
     grid-column: 3;
     grid-row: 2 / 4;
-    outline: dashed;
+    outline: solid;
   }
 
   .dictionary > h2{
@@ -68,4 +91,5 @@ export default {
     border-radius: 10px;
     text-align: center;
   }
+
 </style>

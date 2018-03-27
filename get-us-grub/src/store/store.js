@@ -13,6 +13,25 @@ export const store = new Vuex.Store({
         menuItemPrice: 2.00,
         menuItemEdit: false
       }
+    ],
+    Tokens: [ // Added token info [-Angelica]
+      {
+        // username: '',
+        // iat:'',
+        // exp:'',
+        // claims:''
+      }
+    ],
+    Claims: [ // Added claims [-Angelica]
+      {
+        // ReadUser: 'ReadUser',
+        // ReadIndividualProfile: 'ReadIndividualProfile',
+        // ReadPreferences: 'ReadPreferences',
+        // ReadBillSplitter: 'ReadBillSplitter',
+        // ReadMenu: 'ReadMenu',
+        // ReadDictionary: 'ReadDictionary',
+        // ReadRestaurantProfile: 'ReadRestaurantProfile'
+      }
     ]
   },
   getters: {

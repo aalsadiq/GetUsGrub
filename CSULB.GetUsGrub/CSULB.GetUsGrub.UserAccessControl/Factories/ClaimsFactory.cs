@@ -63,7 +63,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             {
                 // For User Management
                 new Claim("CreateUser", "True"),
-                new Claim("ReadUser", "True"),
+                new Claim("ReadUser", "True"),//has READ/VUE access
                 new Claim("UpdateUser", "True"),
                 new Claim("DeleteUser", "True"),
                 new Claim("DeactivateUser", "True"),
@@ -73,18 +73,18 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // For Indvidiual and Restaurant Profile Management
                 new Claim("ReadIndividualProfile", "True"),
                 new Claim("UpdateIndividualProfile", "True"),
-                new Claim("ReadRestsaurantProfile", "True"),
+                new Claim("ReadRestsaurantProfile", "True"),//has READ/VUE access
                 new Claim("UpdateRestaurantProfile", "True"),
 
                 // For Food Preferences
                 new Claim("CreatePreferences", "True"),
-                new Claim("ReadPreferences", "True"),
+                new Claim("ReadPreferences", "True"),//has READ/VUE access
                 new Claim("DeletePreferences", "True"),
 
                 // For Bill Splitter
-                new Claim("ReadBillSplitter", "True"),
-                new Claim("ReadMenu", "True"),
-                new Claim("ReadDictionary", "True")
+                new Claim("ReadBillSplitter", "True"),//has READ/VUE access
+                new Claim("ReadMenu", "True"),//has READ/VUE access
+                new Claim("ReadDictionary", "True")//has READ/VUE access
             };
         }
     }

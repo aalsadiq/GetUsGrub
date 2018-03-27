@@ -12,12 +12,19 @@ namespace CSULB.GetUsGrub.Models
     /// Defines properties pertaining to a user's claims.
     /// <para>
     /// @author: Brian Fann, Jennifer Nguyen
-    /// @updated: 03/12/2018
+    /// @updated: 03/20/2018
     /// </para>
     /// </summary>
     [Table("GetUsGrub.UserClaims")]
     public class UserClaims : IEntity
     {
+        [System.Serializable]
+        internal class ClaimsEntry
+        {
+            public string Type { get; set; }
+            public string Value { get; set; }
+        }
+
         public UserClaims() { }
         public UserClaims(ICollection<Claim> claims) { Claims = claims; }
 
@@ -28,7 +35,7 @@ namespace CSULB.GetUsGrub.Models
         [NotMapped]
         public ICollection<Claim> Claims { get; set; }
 
-        [NotMapped]
+        [NotMapped]//Currently a work around to make storing in DB cleaner - Brian
         ICollection<ClaimsEntry> Entries
         {
             get
@@ -36,40 +43,33 @@ namespace CSULB.GetUsGrub.Models
                 var entries = new Collection<ClaimsEntry>();
 
                 // Exit early
-                if (Claims == null) return entries;
+                if (Claims == null) return entries; //Used for linq since claim is initially null
 
-                foreach(var claim in Claims)
+                foreach (var claim in Claims)
                 {
-                    entries.Add(new ClaimsEntry { Type = claim.Type, Value = claim.Value });
+                    entries.Add(new ClaimsEntry()
+                    {
+                        Type = claim.Type,
+                        Value = claim.Value
+                    });
                 }
-
                 return entries;
             }
             set
             {
                 var claims = new Collection<Claim>();
 
-                foreach(var entry in value)
+                foreach (var entry in value)
                 {
                     claims.Add(new Claim(entry.Type, entry.Value));
                 }
-
-                Claims = claims;
             }
         }
-
         public string ClaimsJson
         {
             get => JsonConvert.SerializeObject(Entries);
             set => Entries = JsonConvert.DeserializeObject<Collection<ClaimsEntry>>(value);
         }
-
-        internal class ClaimsEntry
-        {
-            public string Type { get; set; }
-            public string Value { get; set; }
-        }
-
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
     }

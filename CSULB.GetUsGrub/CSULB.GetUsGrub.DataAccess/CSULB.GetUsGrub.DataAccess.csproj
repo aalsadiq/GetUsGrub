@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -55,31 +58,34 @@
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.cs" />
-    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.Designer.cs">
-      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.cs" />
+    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.Designer.cs">
+      <DependentUpon>201803201656396_seed1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.cs" />
-    <Compile Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.Designer.cs">
-      <DependentUpon>201803201649052_InitialDbCreation.cs</DependentUpon>
+    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\GetUsGrubUserContext3\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.Designer.cs">
+      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\UserDbContext\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\UserContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.resx">
-      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.resx">
+      <DependentUpon>201803201656396_seed1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.resx">
-      <DependentUpon>201803201649052_InitialDbCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.resx">
+      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

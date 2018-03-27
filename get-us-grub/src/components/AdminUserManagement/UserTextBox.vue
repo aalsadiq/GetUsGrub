@@ -1,5 +1,6 @@
 <template>
     <div>
+      {{ responseData }}
       <v-app id="inputUser">
           <v-container fluid>
             <v-spacer/>
@@ -26,10 +27,12 @@ export default {
     usernameRules: [
       username => !!username || 'Username is required',
       username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-    ]
+    ],
+    responseData: ''
   }),
   methods: {
     userSubmit: function (viewType) {
+      console.log(this.username)
       if (viewType === 'DeactivateUser') {
         console.log(this.username)
         axios.put('http://localhost:8081/User/DeactivateUser', {
@@ -44,6 +47,7 @@ export default {
           console.log(error.response.data)
         })
       }
+      console.log(this.username)
       if (viewType === 'ReactivateUser') {
         axios.put('http://localhost:8081/User/ReactivateUser', {
           username: this.username
@@ -56,7 +60,9 @@ export default {
           this.responseData = error.response.data
         })
       }
+      console.log(this.username)
       if (viewType === 'DeleteUser') {
+        // console.log(this.username)
         axios.delete('http://localhost:8081/User/DeleteUser', {
           username: this.username
         }).then(response => {
@@ -66,9 +72,9 @@ export default {
         }).catch(error => {
           this.responseDataStatus = 'An error has occurred: '
           this.responseData = error.response.data
-          console.log(error.response.data)
         })
       }
+      console.log(this.username)
     }
   }
 }

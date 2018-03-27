@@ -14,6 +14,10 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.PasswordSalt")]
     public class PasswordSalt : IEntity
     {
+        public PasswordSalt()
+        {
+            Salt = "";
+        }
         public PasswordSalt(string salt)
         {
             Salt = salt;

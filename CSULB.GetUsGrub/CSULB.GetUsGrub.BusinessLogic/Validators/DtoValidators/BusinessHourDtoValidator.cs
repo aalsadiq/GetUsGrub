@@ -4,6 +4,14 @@ using System;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>BusinessHourDtoValidator</c> class.
+    /// Defines rules to validate a BusinessHourDto.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/11/2018
+    /// </para>
+    /// </summary>
     public class BusinessHourDtoValidator : AbstractValidator<BusinessHourDto>
     {
         public BusinessHourDtoValidator()

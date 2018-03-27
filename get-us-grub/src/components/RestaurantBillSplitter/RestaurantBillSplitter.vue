@@ -20,6 +20,13 @@
           {{element}}
         </li>
       </ul>
+      <h2> Bill Users</h2>
+      <ul>
+        <h3> Unique ID Next: {{ this.$store.state.uniqueUserCounter }} </h3>
+        <li v-for="element in BillUsers" :key="element">
+          {{element}}
+        </li>
+      </ul>
     </div>
     <app-footer />
   </div>
@@ -43,7 +50,6 @@ export default {
   },
   data () {
     return {
-
     }
   },
   methods: {
@@ -55,6 +61,9 @@ export default {
     },
     BillItems () {
       return this.$store.state.BillItems
+    },
+    BillUsers () {
+      return this.$store.state.BillUsers
     },
     totalPrice () {
       return this.$store.getters.totalPrice
@@ -68,7 +77,6 @@ export default {
   }
 
   .wrapper {
-    margin: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;

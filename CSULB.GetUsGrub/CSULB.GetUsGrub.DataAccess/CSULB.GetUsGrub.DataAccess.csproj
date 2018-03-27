@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -60,16 +63,17 @@
       <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.cs" />
-    <Compile Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.Designer.cs">
-      <DependentUpon>201803201649052_InitialDbCreation.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">
@@ -78,14 +82,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gateways\Interfaces\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.resx">
       <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserDbContext\201803201649052_InitialDbCreation.resx">
-      <DependentUpon>201803201649052_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

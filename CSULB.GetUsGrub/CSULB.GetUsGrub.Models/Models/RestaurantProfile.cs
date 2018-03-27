@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.RestaurantProfile")]
-    public class RestaurantProfile : IRestaurantProfile, IEntity
+    public class RestaurantProfile : IRestaurantProfile, IEntity//Maybe Remove Profile...
     {
         public RestaurantProfile() { }
 
@@ -31,7 +31,7 @@ namespace CSULB.GetUsGrub.Models
         public int? Id { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
-        public RestaurantDetail Details { get; set; }
+        public RestaurantDetail Details { get; set; }//ASK Andrew & Brian
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         // TODO: @Rachel Need to include Food Preference List in RestaurantProfile [-Jenn]

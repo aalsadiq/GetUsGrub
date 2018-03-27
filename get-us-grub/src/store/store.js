@@ -13,6 +13,25 @@ export const store = new Vuex.Store({
         menuItemPrice: 2.00,
         menuItemEdit: false
       }
+    ],
+    Tokens: [ // Added token info [-Angelica]
+      {
+        // username: '',
+        // iat:'',
+        // exp:'',
+        // claims:''
+      }
+    ],
+    Claims: [ // Added claims [-Angelica]
+      {
+        // ReadUser: 'ReadUser',
+        // ReadIndividualProfile: 'ReadIndividualProfile',
+        // ReadPreferences: 'ReadPreferences',
+        // ReadBillSplitter: 'ReadBillSplitter',
+        // ReadMenu: 'ReadMenu',
+        // ReadDictionary: 'ReadDictionary',
+        // ReadRestaurantProfile: 'ReadRestaurantProfile'
+      }
     ]
   },
   getters: {
@@ -42,12 +61,27 @@ export const store = new Vuex.Store({
       }
     },
     RemoveFromDictionary: (state, payload) => {
-      console.log('Store Mutation: ' + payload)
+      console.log('Dictionary Store Mutation Index: ' + payload)
       state.MenuItems.splice(payload, 1)
     },
-    RemoveFromBill: (state, payload) => {
-      console.log('Store Mutation: ' + payload)
+    RemoveFromBillTable: (state, payload) => {
+      console.log('Bill Store Mutation Index: ' + payload)
       state.BillItems.splice(payload, 1)
+    },
+    RemoveUser: (state, payload) => {
+      console.log('User Store Mutation Index ' + payload)
+      state.BillUsers.forEach(function (element, index) {
+        if (element.uID === payload) {
+          state.BillUsers.splice(index, 1)
+        }
+      })
+      for (var i = 0, len1 = state.BillItems.length; i < len1; i++) {
+        for (var j = 0, len2 = state.BillItems[i].selected.length; j < len2; j++) {
+          if (state.BillItems[i].selected[j] === payload) {
+            state.BillItems[i].selected.splice(j, 1)
+          }
+        }
+      };
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -57,7 +91,7 @@ export const store = new Vuex.Store({
         console.log('Added Food Item Name: ' + payload[0])
         console.log('Added Food Item Price: ' + payload[1])
         context.commit('AddToDictionary', payload)
-      }, 500)
+      }, 250)
     },
     ToggleEdit: (context, payload) => {
       setTimeout(function () {
@@ -67,12 +101,17 @@ export const store = new Vuex.Store({
     RemoveFromDictionary: (context, payload) => {
       setTimeout(function () {
         context.commit('RemoveFromDictionary', payload)
-      }, 500)
+      }, 250)
     },
-    RemoveFromBill: (context, payload) => {
+    RemoveFromBillTable: (context, payload) => {
       setTimeout(function () {
-        context.commit('RemoveFromBill', payload)
-      }, 500)
+        context.commit('RemoveFromBillTable', payload)
+      }, 250)
+    },
+    RemoveUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('RemoveUser', payload)
+      }, 250)
     }
   }
 })

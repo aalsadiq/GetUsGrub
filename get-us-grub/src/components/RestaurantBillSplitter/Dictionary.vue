@@ -28,15 +28,15 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 
 export default {
   name: 'Dictionary',
   components: {
-    'edit-item': EditItem,
-    'delete-item': DeleteItem,
+    // 'edit-item': EditItem,
+    // 'delete-item': DeleteItem,
     draggable
   },
   directives: { money: VMoney },
@@ -55,7 +55,7 @@ export default {
   created () {
     this.restaurantDisplayName = this.$store.restaurantDisplayName
   },
-  directives: { money: VMoney },
+  // directives: { money: VMoney },
   methods: {
     ToggleEdit: function (index) {
       this.$store.dispatch('ToggleEdit', index)

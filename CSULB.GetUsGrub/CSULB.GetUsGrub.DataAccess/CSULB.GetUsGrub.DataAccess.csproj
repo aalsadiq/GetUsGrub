@@ -58,6 +58,7 @@
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
+    <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.cs" />
     <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.Designer.cs">
       <DependentUpon>201803201656396_seed1.cs</DependentUpon>

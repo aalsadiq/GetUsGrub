@@ -1,23 +1,18 @@
-﻿using CSULB.GetUsGrub.BusinessLogic;
-using CSULB.GetUsGrub.Models;
+﻿using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.BusinessLogic;
 using System;
 using System.Diagnostics;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 
 
 namespace CSULB.GetUsGrub.Controllers
 {
     /// <summary>
-    /// The <c>UserController</c> class.
-    /// User controller will handle routes that deal with creating, updating, reading and deleting a user.
-    /// <para>
-    /// @author: Angelica Salas Tovar, Jennifer Nguyen
-    /// @updated: 03/13/2018
-    /// </para>
+    /// User controller will handle routes that deal with CRUD.
+    /// @author Angelica
     /// </summary>
     
     [RoutePrefix("User")] //default route

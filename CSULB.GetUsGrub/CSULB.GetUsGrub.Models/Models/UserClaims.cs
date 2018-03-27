@@ -26,11 +26,7 @@ namespace CSULB.GetUsGrub.Models
         }
 
         public UserClaims() { }
-
-        public UserClaims(ICollection<Claim> claims)
-        {
-            Claims = claims;
-        }
+        public UserClaims(ICollection<Claim> claims) { Claims = claims; }
 
         [Key]
         [ForeignKey("UserAccount")]

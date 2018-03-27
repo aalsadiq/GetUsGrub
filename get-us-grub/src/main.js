@@ -16,8 +16,9 @@ import 'es6-promise/auto'
 
 Vue.use(axios)
 Vue.use(Vuetify)
-
 Vue.config.productionTip = false
+
+export const bus = new Vue()
 
 /* eslint-disable no-new */
 new Vue({

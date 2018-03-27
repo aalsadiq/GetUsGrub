@@ -326,12 +326,6 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
             }
         }
-
-        public void Dispose()
-        {
-            //throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Will deactivate user by username by changing IsActive to false.
         /// </summary>
@@ -1542,6 +1536,10 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
             }
         }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
     }
 }
-

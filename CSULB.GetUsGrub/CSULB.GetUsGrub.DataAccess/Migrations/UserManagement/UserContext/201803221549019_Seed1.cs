@@ -1,9 +1,9 @@
-namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
+namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.UserContext
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialDbCreation : DbMigration
+    public partial class Seed1 : DbMigration
     {
         public override void Up()
         {

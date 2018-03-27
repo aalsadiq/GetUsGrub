@@ -37,7 +37,7 @@ export default {
   components: {
     axios
   },
-  directives: { money: VMoney },
+  // directives: { money: VMoney },
   data () {
     return {
       valid: true,

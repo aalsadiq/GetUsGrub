@@ -17,7 +17,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
         /// </summary>
         /// <param name="context"></param>
         /// <returns>True or False on whether user has access</returns>
-        public override bool CheckAccess(AuthorizationContext context)
+        public override bool CheckAccess(AuthorizationContext context)//------------------------------------------ASK RACHEL
         {
             // Create the claim based on the resource action pair
             var resource = context.Resource.First().Value;

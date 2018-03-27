@@ -39,8 +39,8 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.BusinessLogic.Services
             var secondSalt = "ThisIsADifferentSalt$%^";
             var payload = "ThisIsThePayload";
 
-            // Act
-            var firstHash = payloadHasher.Sha256HashWithSalt(firstSalt, payload);
+           // Act
+           var firstHash = payloadHasher.Sha256HashWithSalt(firstSalt, payload);
             var secondHash = payloadHasher.Sha256HashWithSalt(secondSalt, payload);
 
             // Assert
@@ -56,8 +56,8 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.BusinessLogic.Services
             var firstPayload = "ThisIsThePayload";
             var secondPayload = "ThisIsADifferentPayload%^&";
 
-            // Act
-            var firstHash = payloadHasher.Sha256HashWithSalt(salt, firstPayload);
+           // Act
+           var firstHash = payloadHasher.Sha256HashWithSalt(salt, firstPayload);
             var secondHash = payloadHasher.Sha256HashWithSalt(salt, secondPayload);
 
             // Assert

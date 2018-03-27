@@ -25,12 +25,10 @@ export default {
     username: ''
   }),
   methods: {
-    previewImage: function (input) {
-    },
     SubmitImageUpload: function () {
       // axios.put('/User/Profile/ImageUpload', { // http://localhost:8081
       //   username: 'Angelica',
-      //   imgPath: this.imageData
+      //   imgPath:this.$refs.imageData.value
       // }).then(response => {
       //   this.responseDataStatus = 'Success! Image has been uploaded.'
       //   this.responseData = response.data

@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 CSULB.GetUsGrub/CSULB.GetUsGrub.BusinessLogic/Api.config
+CSULB.GetUsGrub/CSULB.GetUsGrub.DataAccess/Migrations

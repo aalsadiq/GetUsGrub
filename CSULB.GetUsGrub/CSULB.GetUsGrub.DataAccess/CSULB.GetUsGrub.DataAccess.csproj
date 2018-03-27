@@ -58,18 +58,12 @@
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
+    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.cs" />
+    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.Designer.cs">
+      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.Designer.cs">
-      <DependentUpon>201803201656396_seed1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubUserContext3\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.Designer.cs">
-      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\UserContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,18 +76,15 @@
     <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.resx">
-      <DependentUpon>201803201656396_seed1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.resx">
-      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">
       <Project>{c93e53a0-06b5-484e-abeb-1cbcdeb40de5}</Project>
       <Name>CSULB.GetUsGrub.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.resx">
+      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

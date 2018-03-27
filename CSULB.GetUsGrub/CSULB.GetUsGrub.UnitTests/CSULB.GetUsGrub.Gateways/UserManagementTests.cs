@@ -1,7 +1,6 @@
 ﻿using Xunit;
 using FluentAssertions;
 using CSULB.GetUsGrub.DataAccess;
-using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
 {

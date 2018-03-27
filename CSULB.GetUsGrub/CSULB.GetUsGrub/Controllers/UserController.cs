@@ -5,8 +5,7 @@ using System.Diagnostics;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web.Http;
-
-
+using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {

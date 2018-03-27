@@ -136,7 +136,7 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         public void DeleteUser_ValidDelete_Pass()//If you run twice, it should fail since user1 does not exist!
         {
             //Assert
-            var response = userGateway.DeleteUser("Gaby");
+            var response = userGateway.DeleteUser("User3");
             response.Data.Should().BeTrue();
         }
 

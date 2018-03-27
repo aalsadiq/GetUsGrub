@@ -32,7 +32,6 @@ export default {
   }),
   methods: {
     userSubmit: function (viewType) {
-      console.log(this.username)
       if (viewType === 'DeactivateUser') {
         console.log(this.username)
         axios.put('http://localhost:8081/User/DeactivateUser', {
@@ -47,7 +46,6 @@ export default {
           console.log(error.response.data)
         })
       }
-      console.log(this.username)
       if (viewType === 'ReactivateUser') {
         axios.put('http://localhost:8081/User/ReactivateUser', {
           username: this.username
@@ -60,7 +58,6 @@ export default {
           this.responseData = error.response.data
         })
       }
-      console.log(this.username)
       if (viewType === 'DeleteUser') {
         // console.log(this.username)
         axios.delete('http://localhost:8081/User/DeleteUser', {
@@ -74,7 +71,6 @@ export default {
           this.responseData = error.response.data
         })
       }
-      console.log(this.username)
     }
   }
 }

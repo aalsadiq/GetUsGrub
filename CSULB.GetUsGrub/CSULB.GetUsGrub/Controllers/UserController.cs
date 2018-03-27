@@ -114,18 +114,22 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="registerUserDto">The user information that will be stored in the database.</param>
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
         // POST User/Admin/Create
-        [HttpPost]
+
         // Opts authentication
-        [Route("Admin/Create")]
+        [Route("CreateAdmin")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [HttpPost]
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
+            Debug.Write("Username is..." + registerUserDto.UserAccountDto.Username+ Environment.NewLine);
+
+            Debug.Write("In Create Admin" + Environment.NewLine);
             // Model Binding Validation
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {
                 //If mode is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                return BadRequest("Invalid model!");
             }
             try
             {
@@ -166,7 +170,7 @@ namespace CSULB.GetUsGrub.Controllers
         {
             if (user == null)
             {
-                return Ok("This user is actually null");
+                return Ok(user);
             }
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)

@@ -1,5 +1,9 @@
 <template>
   <div>
+      {{ responseData }}
+      <!-- {{ userAccount }}
+      {{ userProfile }}
+      {{ securityQuestions }} -->
     <app-admin-header/>
     <v-flex xs15order-lg2>
       <h1>Select your user!</h1>
@@ -14,9 +18,9 @@
             <v-flex xs6 sm3 offset-sm5>
               <!-- <app-user-validations/> -->
               <v-form v-model="validIdentificationInput">
-              <v-text-field label="Enter new username" v-model="username" :rules="usernameRules" required></v-text-field>
-              <v-text-field label="Enter new display name" v-model="displayName" :rules="displayNameRules" required></v-text-field>
-              <v-text-field label="Enter new password" v-model="password" :rules="passwordRules" :min="8" :counter="64" :append-icon="visibile ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (visibile = !visibile)" :type=" visibile ? 'text' : 'password'" required></v-text-field>
+              <v-text-field label="Enter new username" v-model="userAccount.username" :rules="usernameRules" required></v-text-field>
+              <v-text-field label="Enter new display name" v-model="userProfile.displayname" :rules="displayNameRules" required></v-text-field>
+              <v-text-field label="Enter new password" v-model="userAccount.password" :rules="passwordRules" :min="8" :counter="64" :append-icon="visibile ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (visibile = !visibile)" :type=" visibile ? 'text' : 'password'" required></v-text-field>
                 </v-form>
                <v-form v-model="validSecurityInput">
                   <v-layout row wrap>
@@ -78,7 +82,7 @@
                     </v-flex>
                   </v-layout>
                   </v-form>
-              <v-btn v-on:click="userSubmit" id ="submit-admin" color="info" >Submit</v-btn>
+              <v-btn id ="submit-admin" v-on:click="userSubmit" color="info" >Submit</v-btn>
             </v-flex>
           </div>
     </v-flex>
@@ -104,6 +108,7 @@ export default {
     check: false,
     validIdentificationInput: false,
     validSecurityInput: false,
+    ResponseData: '',
     userAccount: {
       username: '',
       password: ''
@@ -175,13 +180,6 @@ export default {
       question: 'What was the name of your first pet?'
     }]
   }),
-  // props: {
-  //   userAccount: {
-  //     sendUsername: this.username,
-  //     sendDisplayname: this.displayName,
-  //     sendPassword: this.passowrd
-  //   }
-  // },
   methods: {
     normalUser: function () {
       this.check = false
@@ -189,11 +187,8 @@ export default {
     adminUser: function () {
       this.check = true
     },
-    testingUserSubmit: function () {
-      // console.log(this.$emit('grabUserAccount'),userName)
-    },
     userSubmit () {
-      axios.post('http://localhost:8081/User/CreateUser', {
+      axios.post('http://localhost:8081/User/CreateAdmin', {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile

@@ -60,7 +60,6 @@
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.cs" />
     <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.Designer.cs">
-    
       <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserManagement\GetUsGrubContext2\Configuration.cs" />

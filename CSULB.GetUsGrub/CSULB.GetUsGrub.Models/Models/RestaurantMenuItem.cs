@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
-    /// Menu item class
+    /// Restaurant menu item class
     /// 
     /// @author: Andrew Kao
     /// @updated: 3/20/18
@@ -49,19 +49,15 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public string ItemName { get; set; }
 
-        [Required]
-        [DataType(DataType.Currency)]
-        public decimal ItemPrice { get; set; }
+        public double ItemPrice { get; set; }
 
         public string ItemPicture { get; set; }
 
         [Required]
         public string Tag { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
-        [Required]
         public bool IsActive { get; set; }
 
         //Navigation Properties

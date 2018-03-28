@@ -50,23 +50,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contexts\AuthenticationContext.cs" />
+    <Compile Include="Contexts\AuthorizationContext.cs" />
     <Compile Include="Contexts\IndividualProfileContext.cs" />
     <Compile Include="Contexts\RestaurantContext.cs" />
+    <Compile Include="Contexts\SsoContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
-    <Compile Include="Gateways\RestaurantProfileGateway.cs" />
+    <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Gateways\UserProfileGateway.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.cs" />
-    <Compile Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.Designer.cs">
-      <DependentUpon>201803212317008_Seed1.cs</DependentUpon>
+    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.cs" />
+    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.Designer.cs">
+      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\UserManagement\ANYNAME\Configuration.cs" />
+    <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
+    <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gateways\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">
@@ -75,7 +82,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gateways\Interfaces\" />
+    <EmbeddedResource Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.resx">
+      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.resx">

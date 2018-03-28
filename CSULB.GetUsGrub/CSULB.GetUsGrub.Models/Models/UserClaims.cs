@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.UserClaims")]
-    public class UserClaims
+    public class UserClaims : IEntity
     {
         [System.Serializable]
         internal class ClaimsEntry
@@ -26,11 +26,7 @@ namespace CSULB.GetUsGrub.Models
         }
 
         public UserClaims() { }
-
-        public UserClaims(ICollection<Claim> claims)
-        {
-            Claims = claims;
-        }
+        public UserClaims(ICollection<Claim> claims) { Claims = claims; }
 
         [Key]
         [ForeignKey("UserAccount")]

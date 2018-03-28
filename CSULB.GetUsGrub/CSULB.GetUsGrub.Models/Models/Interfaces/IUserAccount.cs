@@ -14,5 +14,6 @@
         string Password { get; }
         bool? IsActive { get; }
         bool? IsFirstTimeUser { get; }
+        string RoleType { get; }
     }
 }

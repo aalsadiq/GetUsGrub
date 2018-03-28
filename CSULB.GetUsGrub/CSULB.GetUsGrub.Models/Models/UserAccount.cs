@@ -15,40 +15,21 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.UserAccount")]
     public class UserAccount : IUserAccount, IEntity
     {
-        public UserAccount()
-        {
-            Username = "";
-            Password = "";
-            IsActive = false;
-            IsFirstTimeUser = false;
-            RoleType = "";
-        }
+        // TODO: @Jenn Need a parameterless constructor for all models in database for EF to work [-Jenn]
+        public UserAccount() { }
+
         public UserAccount(string username)
         {
             Username = username;
         }
 
-        public UserAccount(string username, string password, bool isFirstTimeUser, string roleType)
-        {
-            Username = username;
-            Password = password;
-            IsFirstTimeUser = isFirstTimeUser;
-            RoleType = roleType;
-        }
-
-        public UserAccount(string username, string password, bool isActive, bool isFirstTimeUser)
+        public UserAccount(string username, string password, bool isActive, bool isFirstTimeUser, string roleType)
         {
             Username = username;
             Password = password;
             IsActive = isActive;
             IsFirstTimeUser = isFirstTimeUser;
-        }
-
-        public UserAccount(UserAccountDto userAccountDto)
-        {
-            Username = userAccountDto.Username;
-            IsActive = userAccountDto.IsActive;
-            IsFirstTimeUser = userAccountDto.IsFirstTimeUser;
+            RoleType = roleType;
         }
 
         [Key]
@@ -65,8 +46,8 @@ namespace CSULB.GetUsGrub.Models
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }
         public virtual PasswordSalt PasswordSalt { get; set; }
-        public virtual Token Token { get; set; }
+        public virtual AuthenticationToken AuthenticationToken { get; set; }
         public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
-        public virtual UserClaims Claims { get; set; }
+        public virtual UserClaims UserClaims { get; set; }
     }
 }

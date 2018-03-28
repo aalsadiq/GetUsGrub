@@ -29,9 +29,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
 
                 RuleFor(x => x.CloseTime)
-                    .NotEmpty()
-                    .NotNull()
-                    .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
+                    .NotEmpty().WithMessage("Close time is required.")
+                    .NotNull().WithMessage("Close time is required.")
+                    .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");
             });
         }
 

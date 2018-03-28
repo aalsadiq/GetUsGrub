@@ -14,18 +14,16 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.RestaurantMenu")]
     public class RestaurantMenu : IRestaurantMenu
     {
-        public RestaurantMenu(int publicMenuId, string menuName, bool isActive)
+        public RestaurantMenu(string menuName, bool isActive)
         {
-            PublicMenuId = publicMenuId;
             MenuName = menuName;
             IsActive = isActive;
         }
 
-        public RestaurantMenu(int? id, int? restaurantId, int publicMenuId, string menuName, bool isActive)
+        public RestaurantMenu(int? id, int? restaurantId, string menuName, bool isActive)
         {
             Id = id;
             RestaurantId = restaurantId;
-            PublicMenuId = publicMenuId;
             MenuName = menuName;
             IsActive = isActive;
         }
@@ -35,9 +33,6 @@ namespace CSULB.GetUsGrub.Models
 
         [ForeignKey("RestaurantProfile")]
         public int? RestaurantId { get; set; }
-
-        [Required]
-        public int PublicMenuId { get; set; }
 
         [Required]
         public string MenuName { get; set; }

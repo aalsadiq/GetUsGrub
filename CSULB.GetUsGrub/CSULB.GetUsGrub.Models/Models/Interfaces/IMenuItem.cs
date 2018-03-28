@@ -2,11 +2,9 @@
 {
     public interface IMenuItem
     {
-        int PublicItemId { get; set; }
-
         string ItemName { get; set; }
 
-        double ItemPrice { get; set; }
+        decimal ItemPrice { get; set; }
 
         string ItemPicture { get; set; }
 

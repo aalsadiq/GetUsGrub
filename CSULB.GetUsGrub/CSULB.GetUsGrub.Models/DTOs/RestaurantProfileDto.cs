@@ -10,6 +10,8 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class RestaurantProfileDto : IRestaurantProfile
     {
+        // TODO: @andrew temporary for RestaurantProfileDtoValidatorUnitTests, make unit tests use actual constructor
+        public RestaurantProfileDto() { }
         public RestaurantProfileDto(RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours, IList<RestaurantMenu> restaurantMenus, IList<RestaurantMenuItem> restaurantMenuItems)
         {
             PhoneNumber = restaurantProfile.PhoneNumber;

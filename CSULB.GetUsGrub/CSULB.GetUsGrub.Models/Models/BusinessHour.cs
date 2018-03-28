@@ -14,6 +14,7 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.BusinessHour")]
     public class BusinessHour : IBusinessHour, IEntity
     {
+        public BusinessHour() { }
         public BusinessHour(string day, string openTime, string closeTime)
         {
             Day = day;
@@ -35,9 +36,6 @@ namespace CSULB.GetUsGrub.Models
 
         [ForeignKey("RestaurantProfile")]
         public int? RestaurantId { get; set; }
-
-        [Required]
-        public int PublicHourId { get; set; }
 
         [Required]
         public string Day { get; set; }

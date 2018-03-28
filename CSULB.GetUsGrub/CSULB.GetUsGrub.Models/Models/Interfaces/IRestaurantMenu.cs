@@ -9,8 +9,6 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public interface IRestaurantMenu
     {
-        int PublicMenuId { get; set; }
-
         string MenuName { get; set; }
 
         bool IsActive { get; set; }

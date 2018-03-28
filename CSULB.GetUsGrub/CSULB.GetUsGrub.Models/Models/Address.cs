@@ -13,6 +13,8 @@ namespace CSULB.GetUsGrub.Models
     //[System.Serializable]
     public class Address : IAddress
     {
+        public Address() { }
+
         public Address(string street1, string street2, string city, string state, int zip)
         {
             Street1 = street1;

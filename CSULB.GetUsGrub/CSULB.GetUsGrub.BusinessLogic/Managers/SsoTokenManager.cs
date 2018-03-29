@@ -4,31 +4,46 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 
-// TODO: @Jenn compare token to database. Add token to database [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>SsoTokenManager</c> class.
+    /// Contains all methods for performing business logic to a token from a SSO.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/18/2018
+    /// </para>
+    /// </summary>
     public class SsoTokenManager : IDisposable
     {
         private readonly string _token;
         private readonly TokenService _tokenService;
-        private readonly SsoTokenPreLogicValidationStrategy _preLogicValidationStrategy;
+        private readonly SsoTokenValidationStrategy _ssoTokenValidationStrategy;
 
         public SsoTokenManager(string token)
         {
             _token = token;
             _tokenService = new TokenService();
-            _preLogicValidationStrategy = new SsoTokenPreLogicValidationStrategy(_token, GetSigningKey());
+            _ssoTokenValidationStrategy = new SsoTokenValidationStrategy(_token, GetSigningKey());
         }
-       
-        // TODO: @Jenn Should we send back a ResponseDto? May need to encapsulate some procedures in reusable methods [-Jenn]
-        public ResponseDto<UserAccountDto> ValidateToken()
+
+        /// <summary>
+        /// The ManageToken method.
+        /// Applies business logic to a token coming from the Single Sign On client.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/22/2018
+        /// </para>
+        /// </summary>
+        /// <returns>ResponseDto with a UserAccountDto</returns>
+        public ResponseDto<UserAccountDto> ManageToken()
         {
             string username = "";
             string password = "";
             string roleType = "";
 
             // Call strategy
-            var result = _preLogicValidationStrategy.ExecuteStrategy();
+            var result = _ssoTokenValidationStrategy.ExecuteStrategy();
             if (!result.Data)
             {
                 return new ResponseDto<UserAccountDto>()
@@ -53,6 +68,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var jwt = _tokenService.GetJwtSecurityToken(_token);
             var payload = jwt.Payload;
 
+            // Check if required information is in the payload
             foreach (var keyValuePair in payload)
             {
                 switch (keyValuePair.Key)
@@ -86,6 +102,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
+        /// <summary>
+        /// The GetSigningKey method.
+        /// Gets the secret key and creates a SecurityKey from it.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/22/2018
+        /// </para>
+        /// </summary>
+        /// <returns>SymmetricSecurityKey</returns>
         private static SymmetricSecurityKey GetSigningKey()
         {
             const string secretKey = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";

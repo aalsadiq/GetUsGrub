@@ -1,14 +1,7 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Jenn Ask what are best ways to label the food price ranges [-Jenn]
-    public enum AvgFoodPrices
-    {
-        ZeroToTen = 0,
-        TenToFifty = 1,
-        FiftyPlus = 2
-    }
     // TODO: @Jenn Comment these [-Jenn]
-    public enum RestaurantCategories
+    public enum RestaurantFoodTypes
     {
         MexicanFood = 0,
         ItalianCuisine = 1,
@@ -29,6 +22,31 @@
 
     public class RestaurantDetail : IRestaurantDetail
     {
+        public RestaurantDetail(
+            int avgFoodPrice, bool? hasReservations, 
+            bool? hasDelivery, bool? hasTakeOut, 
+            bool? acceptCreditCards, string attire, 
+            bool? servesAlcohol, bool? hasOutdoorSeating, 
+            bool? hasTv, bool? hasDriveThru, bool? caters, 
+            bool? allowsPets, string foodType)
+        {
+            FoodType = foodType;
+            AvgFoodPrice = avgFoodPrice;
+            HasReservations = hasReservations;
+            HasDelivery = hasDelivery;
+            HasTakeOut = hasTakeOut;
+            AcceptCreditCards = acceptCreditCards;
+            Attire = attire;
+            ServesAlcohol = servesAlcohol;
+            HasOutdoorSeating = hasOutdoorSeating;
+            HasTv = hasTv;
+            HasDriveThru = hasDriveThru;
+            Caters = caters;
+            AllowsPets = allowsPets;
+        }
+
+        public RestaurantDetail() { }
+
         public int AvgFoodPrice { get; set; }
 
         public bool? HasReservations { get; set; }
@@ -53,6 +71,6 @@
 
         public bool? AllowsPets { get; set; }
 
-        public string Category { get; set; }
+        public string FoodType { get; set; }
     }
 }

@@ -12,7 +12,6 @@
             <v-icon>store</v-icon>
           </v-tab>
           <v-spacer/>
-          <v-tabs-slider color="pink"></v-tabs-slider>
         </v-tabs>
       </v-toolbar>
       <v-tabs-items v-model="tabs">
@@ -268,6 +267,18 @@
                 </v-stepper-content>
                 <v-stepper-content step="4">
                   <v-form v-model="validAddBusinessHour">
+                    <v-select
+                      :items="timeZones"
+                      item-text="displayString"
+                      item-value="timeZoneName"
+                      v-model="timeZone"
+                      label="Select your time zone"
+                      single-line
+                      auto
+                      hide-details
+                      :rules="timeZoneRules"
+                      required
+                    ></v-select>
                     <v-select
                       :items="dayOfWeek"
                       v-model="businessHour.day"
@@ -540,6 +551,10 @@ export default {
       id: 9,
       question: 'What was the name of your first pet?'
     }],
+    timeZones: [{
+      displayString: '(UTC-08:00) Pacific Standard Time',
+      timeZoneName: 'Pacific Standard Time'
+    }],
     dayOfWeek: [
       'Sunday',
       'Monday',
@@ -619,7 +634,7 @@ export default {
     },
     {
       id: 14,
-      question: 'Caribbean Food'
+      category: 'Caribbean Food'
     }],
     states: [
       'CA'
@@ -658,6 +673,7 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
         restaurantProfileDto: this.restaurantProfile,
+        timeZone: this.timeZone,
         businessHourDtos: this.businessHours
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '

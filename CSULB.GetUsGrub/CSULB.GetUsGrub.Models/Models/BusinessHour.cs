@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
@@ -16,11 +17,20 @@ namespace CSULB.GetUsGrub.Models
     {
         public BusinessHour() { }
 
-        public BusinessHour(BusinessHourDto businessHourDto)
+        public BusinessHour(string day, DateTime openTime, DateTime closeTime)
         {
-            Day = businessHourDto.Day;
-            OpenTime = businessHourDto.OpenTime;
-            CloseTime = businessHourDto.CloseTime;
+            Day = day;
+            OpenTime = openTime;
+            CloseTime = closeTime;
+        }
+        
+        public BusinessHour(int? id, int? restaurantId, string day, DateTime openTime, DateTime closeTime)
+        {
+            Id = id;
+            RestaurantId = restaurantId;
+            Day = day;
+            OpenTime = openTime;
+            CloseTime = closeTime;
         }
 
         [Key]
@@ -33,10 +43,10 @@ namespace CSULB.GetUsGrub.Models
         public string Day { get; set; }
 
         [Required]
-        public string OpenTime { get; set; }
+        public DateTime OpenTime { get; set; }
 
         [Required]
-        public string CloseTime { get; set; }
+        public DateTime CloseTime { get; set; }
 
         // Navigation Properties
         public virtual RestaurantProfile RestaurantProfile { get; set; }

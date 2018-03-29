@@ -14,6 +14,9 @@ namespace CSULB.GetUsGrub.Models
     public class RegisterRestaurantDto : RegisterUserDto
     {
         [Required]
+        public string TimeZone { get; set; }
+
+        [Required]
         public RestaurantProfileDto RestaurantProfileDto { get; set; }
 
         [Required]

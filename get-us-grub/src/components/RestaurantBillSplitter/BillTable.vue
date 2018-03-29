@@ -14,7 +14,7 @@
         </div>
       </draggable>
     </div>
-    <h2 class="total">Total: <span v-money="money" /></h2>
+    <!-- <h2 class="total">Total: <span v-money="money" v-model="TotalPrice" /></h2> -->
   </div>
 </template>
 

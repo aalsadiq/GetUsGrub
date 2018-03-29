@@ -15,10 +15,10 @@ namespace CSULB.GetUsGrub.Models
     {
         public UserProfile() { }
 
-        public UserProfile(UserProfileDto userProfileDto)
+        public UserProfile(string displayPicture, string displayName)
         {
-            DisplayPicture = userProfileDto.DisplayPicture;
-            DisplayName = userProfileDto.DisplayName;
+            DisplayPicture = displayPicture;
+            DisplayName = displayName;
         }
 
         [ForeignKey("UserAccount")]

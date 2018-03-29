@@ -22,6 +22,29 @@
 
     public class RestaurantDetail : IRestaurantDetail
     {
+        public RestaurantDetail(
+            int avgFoodPrice, bool? hasReservations, 
+            bool? hasDelivery, bool? hasTakeOut, 
+            bool? acceptCreditCards, string attire, 
+            bool? servesAlcohol, bool? hasOutdoorSeating, 
+            bool? hasTv, bool? hasDriveThru, bool? caters, 
+            bool? allowsPets, string category)
+        {
+            AvgFoodPrice = avgFoodPrice;
+            HasReservations = hasReservations;
+            HasDelivery = hasDelivery;
+            HasTakeOut = hasTakeOut;
+            AcceptCreditCards = acceptCreditCards;
+            Attire = attire;
+            ServesAlcohol = servesAlcohol;
+            HasOutdoorSeating = hasOutdoorSeating;
+            HasTv = hasTv;
+            HasDriveThru = hasDriveThru;
+            Caters = caters;
+            AllowsPets = allowsPets;
+            Category = category;
+        }
+
         public int AvgFoodPrice { get; set; }
 
         public bool? HasReservations { get; set; }

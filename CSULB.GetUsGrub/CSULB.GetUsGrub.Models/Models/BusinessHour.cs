@@ -16,9 +16,26 @@ namespace CSULB.GetUsGrub.Models
     public class BusinessHour : IBusinessHour, IEntity
     {
         public BusinessHour() { }
+        public BusinessHour(string day, string openTime, string closeTime)
+        {
+            Day = day;
+            OpenTime = openTime;
+            CloseTime = closeTime;
+        }
 
         public BusinessHour(string day, DateTime openTime, DateTime closeTime)
         {
+            Id = id;
+            RestaurantId = restaurantId;
+            Day = day;
+            OpenTime = openTime;
+            CloseTime = closeTime;
+        }
+        
+        public BusinessHour(int? id, int? restaurantId, string day, string openTime, string closeTime)
+        {
+            Id = id;
+            RestaurantId = restaurantId;
             Day = day;
             OpenTime = openTime;
             CloseTime = closeTime;

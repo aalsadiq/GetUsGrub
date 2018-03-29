@@ -86,5 +86,10 @@
       <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.resx">
+      <DependentUpon>201803212317008_Seed1.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -41,12 +41,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
-            {
-                Day = "",
-                OpenTime = "8:00",
-                CloseTime = "23:00"
-            };
+            var businessHour = new BusinessHour("", "8:00", "23:00");
 
             // Act
             var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
@@ -64,12 +59,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
-            {
-                Day = null,
-                OpenTime = "8:00",
-                CloseTime = "23:00"
-            };
+            var businessHour = new BusinessHour(null, "8:00", "23:00");
 
             // Act
             var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
@@ -88,12 +78,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
-            {
-                Day = "Monday",
-                OpenTime = "",
-                CloseTime = "23:00"
-            };
+            var businessHour = new BusinessHour("Monday", "", "23:00");
 
             // Act
             var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
@@ -112,12 +97,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
-            {
-                Day = "Monday",
-                OpenTime = null,
-                CloseTime = "23:00"
-            };
+            var businessHour = new BusinessHour("Monday", null, "23:00");
 
             // Act
             var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
@@ -136,12 +116,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
-            {
-                Day = "Monday",
-                OpenTime = "8",
-                CloseTime = "23:00"
-            };
+            var businessHour = new BusinessHour("Monday", "8", "23:00");
 
             // Act
             var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
@@ -159,12 +134,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
-            {
-                Day = "Monday",
-                OpenTime = "8:00",
-                CloseTime = ""
-            };
+            var businessHour = new BusinessHour("Monday", "8:00", "");
 
             // Act
             var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
@@ -183,12 +153,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
-            {
-                Day = "Monday",
-                OpenTime = "8:00",
-                CloseTime = null
-            };
+            var businessHour = new BusinessHour("Monday", "8:00", null);
 
             // Act
             var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
@@ -207,12 +172,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
-            {
-                Day = "Monday",
-                OpenTime = "8:00",
-                CloseTime = "23"
-            };
+            var businessHour = new BusinessHour("Monday", "8:00", "23");
 
             // Act
             var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");

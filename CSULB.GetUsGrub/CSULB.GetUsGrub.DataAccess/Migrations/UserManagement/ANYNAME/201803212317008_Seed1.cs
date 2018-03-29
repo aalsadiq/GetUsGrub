@@ -1,0 +1,211 @@
+namespace CSULB.GetUsGrub.DataAccess.Migrations.UserManagement.ANYNAME
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class Seed1 : DbMigration
+    {
+        public override void Up()
+        {
+            CreateTable(
+                "GetUsGrub.BusinessHour",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        RestaurantId = c.Int(),
+                        PublicHourId = c.Int(nullable: false),
+                        Day = c.String(nullable: false),
+                        OpenTime = c.String(nullable: false),
+                        CloseTime = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.RestaurantProfile", t => t.RestaurantId)
+                .Index(t => t.RestaurantId);
+            
+            CreateTable(
+                "GetUsGrub.RestaurantProfile",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        PhoneNumber = c.String(),
+                        Address_Street1 = c.String(nullable: false),
+                        Address_Street2 = c.String(),
+                        Address_City = c.String(nullable: false),
+                        Address_State = c.String(nullable: false),
+                        Address_Zip = c.Int(nullable: false),
+                        Details_AvgFoodPrice = c.Int(nullable: false),
+                        Details_HasReservations = c.Boolean(),
+                        Details_HasDelivery = c.Boolean(),
+                        Details_HasTakeOut = c.Boolean(),
+                        Details_AcceptCreditCards = c.Boolean(),
+                        Details_Attire = c.String(),
+                        Details_ServesAlcohol = c.Boolean(),
+                        Details_HasOutdoorSeating = c.Boolean(),
+                        Details_HasTv = c.Boolean(),
+                        Details_HasDriveThru = c.Boolean(),
+                        Details_Caters = c.Boolean(),
+                        Details_AllowsPets = c.Boolean(),
+                        Details_Category = c.String(),
+                        Latitude = c.Double(nullable: false),
+                        Longitude = c.Double(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.UserProfile", t => t.Id)
+                .Index(t => t.Id);
+            
+            CreateTable(
+                "GetUsGrub.RestaurantMenu",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        RestaurantId = c.Int(),
+                        PublicMenuId = c.Int(nullable: false),
+                        MenuName = c.String(nullable: false),
+                        IsActive = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.RestaurantProfile", t => t.RestaurantId)
+                .Index(t => t.RestaurantId);
+            
+            CreateTable(
+                "GetUsGrub.RestaurantMenuItem",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        MenuId = c.Int(),
+                        PublicItemId = c.Int(nullable: false),
+                        ItemName = c.String(nullable: false),
+                        ItemPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        ItemPicture = c.String(),
+                        Tag = c.String(nullable: false),
+                        Description = c.String(nullable: false),
+                        IsActive = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.RestaurantMenu", t => t.MenuId)
+                .Index(t => t.MenuId);
+            
+            CreateTable(
+                "GetUsGrub.UserProfile",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        DisplayName = c.String(nullable: false),
+                        DisplayPicture = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.UserAccount", t => t.Id)
+                .Index(t => t.Id);
+            
+            CreateTable(
+                "GetUsGrub.UserAccount",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Username = c.String(),
+                        Password = c.String(),
+                        IsActive = c.Boolean(),
+                        IsFirstTimeUser = c.Boolean(),
+                        RoleType = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "GetUsGrub.UserClaims",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        ClaimsJson = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.UserAccount", t => t.Id)
+                .Index(t => t.Id);
+            
+            CreateTable(
+                "GetUsGrub.PasswordSalt",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        Salt = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.UserAccount", t => t.Id)
+                .Index(t => t.Id);
+            
+            CreateTable(
+                "GetUsGrub.SecurityQuestion",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserId = c.Int(),
+                        Question = c.Int(nullable: false),
+                        Answer = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.UserAccount", t => t.UserId)
+                .Index(t => t.UserId);
+            
+            CreateTable(
+                "GetUsGrub.SecurityAnswerSalt",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        Salt = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.SecurityQuestion", t => t.Id)
+                .Index(t => t.Id);
+            
+            CreateTable(
+                "GetUsGrub.Token",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        TokenHeader = c.String(),
+                        TokenSignature = c.String(),
+                        Salt = c.String(),
+                        IssuedOn = c.DateTime(nullable: false),
+                        ExpiresOn = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("GetUsGrub.UserAccount", t => t.Id)
+                .Index(t => t.Id);
+            
+        }
+        
+        public override void Down()
+        {
+            DropForeignKey("GetUsGrub.BusinessHour", "RestaurantId", "GetUsGrub.RestaurantProfile");
+            DropForeignKey("GetUsGrub.RestaurantProfile", "Id", "GetUsGrub.UserProfile");
+            DropForeignKey("GetUsGrub.UserProfile", "Id", "GetUsGrub.UserAccount");
+            DropForeignKey("GetUsGrub.Token", "Id", "GetUsGrub.UserAccount");
+            DropForeignKey("GetUsGrub.SecurityQuestion", "UserId", "GetUsGrub.UserAccount");
+            DropForeignKey("GetUsGrub.SecurityAnswerSalt", "Id", "GetUsGrub.SecurityQuestion");
+            DropForeignKey("GetUsGrub.PasswordSalt", "Id", "GetUsGrub.UserAccount");
+            DropForeignKey("GetUsGrub.UserClaims", "Id", "GetUsGrub.UserAccount");
+            DropForeignKey("GetUsGrub.RestaurantMenu", "RestaurantId", "GetUsGrub.RestaurantProfile");
+            DropForeignKey("GetUsGrub.RestaurantMenuItem", "MenuId", "GetUsGrub.RestaurantMenu");
+            DropIndex("GetUsGrub.Token", new[] { "Id" });
+            DropIndex("GetUsGrub.SecurityAnswerSalt", new[] { "Id" });
+            DropIndex("GetUsGrub.SecurityQuestion", new[] { "UserId" });
+            DropIndex("GetUsGrub.PasswordSalt", new[] { "Id" });
+            DropIndex("GetUsGrub.UserClaims", new[] { "Id" });
+            DropIndex("GetUsGrub.UserProfile", new[] { "Id" });
+            DropIndex("GetUsGrub.RestaurantMenuItem", new[] { "MenuId" });
+            DropIndex("GetUsGrub.RestaurantMenu", new[] { "RestaurantId" });
+            DropIndex("GetUsGrub.RestaurantProfile", new[] { "Id" });
+            DropIndex("GetUsGrub.BusinessHour", new[] { "RestaurantId" });
+            DropTable("GetUsGrub.Token");
+            DropTable("GetUsGrub.SecurityAnswerSalt");
+            DropTable("GetUsGrub.SecurityQuestion");
+            DropTable("GetUsGrub.PasswordSalt");
+            DropTable("GetUsGrub.UserClaims");
+            DropTable("GetUsGrub.UserAccount");
+            DropTable("GetUsGrub.UserProfile");
+            DropTable("GetUsGrub.RestaurantMenuItem");
+            DropTable("GetUsGrub.RestaurantMenu");
+            DropTable("GetUsGrub.RestaurantProfile");
+            DropTable("GetUsGrub.BusinessHour");
+        }
+    }
+}

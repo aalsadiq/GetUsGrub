@@ -10,7 +10,7 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
-    public class BusinessHourDto : IBusinessHour
+    public class BusinessHourDto
     {
         [Required]
         public string Day { get; set; }

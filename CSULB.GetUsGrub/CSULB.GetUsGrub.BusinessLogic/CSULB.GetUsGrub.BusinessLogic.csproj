@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />
     <Compile Include="Services\GoogleBackoffGetRequest.cs" />
     <Compile Include="Services\GoogleGeocodeService.cs" />
@@ -103,11 +104,15 @@
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPostLogicValidation.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
+    <Compile Include="Validators\DtoValidators\RestaurantSelectionDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\SecurityQuestionDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserAccountDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserProfileDtoValidator.cs" />

@@ -1,5 +1,5 @@
-﻿using CSULB.GetUsGrub.Models;
-using CSULB.GetUsGrub.DataAccess;
+﻿using CSULB.GetUsGrub.DataAccess;
+using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// The <c>UserManager</c> class.
     /// Contains all methods for performing the create, get, update, delete actions for a user.
     /// <para>
-    /// @author: Angelica, Jennifer Nguyen
+    /// @author: Angelica Salas Tovar, Jennifer Nguyen
     /// @updated: 03/18/2018
     /// </para>
     /// </summary>
@@ -118,7 +118,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
-            System.Diagnostics.Debug.WriteLine("here");
+            var dateTimeService = new DateTimeService();
+
             // Validate data transfer object
             var restaurantResult = createRestaurantPreLogicValidationStrategy.ExecuteStrategy();
             if (restaurantResult.Error != null)
@@ -129,7 +130,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = restaurantResult.Error
                 };
             }
-            System.Diagnostics.Debug.WriteLine("here1");
+
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
@@ -137,9 +138,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .ToList();
             var userProfile = new UserProfile(displayPicture: registerRestaurantDto.UserProfileDto.DisplayPicture, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
             var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details, latitude: registerRestaurantDto.RestaurantProfileDto.Latitude, longitude: registerRestaurantDto.RestaurantProfileDto.Longitude);
-            var businessHours = registerRestaurantDto.BusinessHourDtos
-                                    .Select(businessHourDto => new BusinessHour(day: businessHourDto.Day, openTime: businessHourDto.OpenTime, closeTime: businessHourDto.CloseTime))
-                                    .ToList();
+            var businessHours = registerRestaurantDto.BusinessHourDtos.Select(businessHourDto => 
+                                                                                new BusinessHour(day: businessHourDto.Day, 
+                                                                                                 openTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime
+                                                                                                    (dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime),
+                                                                                                     registerRestaurantDto.TimeZone), 
+                                                                                                 closeTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime
+                                                                                                     (dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime),
+                                                                                                     registerRestaurantDto.TimeZone)))
+                                                                                                .ToList();
 
             // TODO: @Brian Need Google Map integration for following [-Jenn]
             // Get longitude and latitude given Address model to Google Map service
@@ -161,7 +168,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
-            System.Diagnostics.Debug.WriteLine("here2");
+
+            // Convert time to DateTime
+
             // Validate domain models
             var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);
             var validateResult = createRestaurantPostLogicValdiationStrategy.ExecuteStrategy();
@@ -173,7 +182,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Something went wrong. Please try again later."
                 };
             }
-            System.Diagnostics.Debug.WriteLine("here3");
+
             // Store user in database
             using (var userGateway = new UserGateway())
             {

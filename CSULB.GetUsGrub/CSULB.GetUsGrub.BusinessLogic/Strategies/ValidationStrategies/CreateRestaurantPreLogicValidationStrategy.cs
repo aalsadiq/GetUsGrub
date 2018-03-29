@@ -45,54 +45,53 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 return result;
             }
-            System.Diagnostics.Debug.WriteLine("strategy");
+
             var validationWrappers = new List<IValidationWrapper>()
             {
                 new ValidationWrapper<RestaurantProfileDto>(_registerRestaurantDto.RestaurantProfileDto, "CreateUser", new RestaurantProfileDtoValidator()),
                 new ValidationWrapper<Address>(_registerRestaurantDto.RestaurantProfileDto.Address, "CreateUser", new AddressValidator()),
                 new ValidationWrapper<RestaurantDetail>(_registerRestaurantDto.RestaurantProfileDto.Details, "CreateUser", _restaurantDetailValidator)
             };
-            System.Diagnostics.Debug.WriteLine("strategy1");
+
             foreach (var businessHourDto in _registerRestaurantDto.BusinessHourDtos)
             {
                 validationWrappers.Add(new ValidationWrapper<BusinessHourDto>(businessHourDto, "CreateUser", _businessHourDtoValidator));
             }
-            System.Diagnostics.Debug.WriteLine("strategy2");
+
             foreach (var validationWrapper in validationWrappers)
             {
-                System.Diagnostics.Debug.WriteLine("strategy3");
                 result = validationWrapper.ExecuteValidator();
                 if (!result.Data)
                 {
                     return result;
                 }
             }
-            System.Diagnostics.Debug.WriteLine("strategy4");
+
             // Validate BusinessHour
-            foreach (var businessHour in _registerRestaurantDto.BusinessHourDtos)
+            foreach (var businessHourDto in _registerRestaurantDto.BusinessHourDtos)
             {
-                result = _businessHourValidator.CheckIfDayIsDayOfWeek(businessHour.Day);
+                result = _businessHourDtoValidator.CheckIfDayIsDayOfWeek(businessHourDto.Day);
                 if (!result.Data)
                 {
                     result.Error = "Day must be either Sunday, Monday, Tuesday, Wednesday, Thursday, Friday or Saturday.";
                     return result;
                 }
 
-                result = _businessHourValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHour.OpenTime, businessHour.CloseTime);
+                result = _businessHourDtoValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHourDto.OpenTime, businessHourDto.CloseTime);
                 if (!result.Data)
                 {
                     result.Error = "Opening time must be less than closing time.";
                     return result;
                 }
             }
-            System.Diagnostics.Debug.WriteLine("strategy5");
-            result = _restaurantDetailValidator.CheckIfCategoryIsRestaurantCategory(_registerRestaurantDto.RestaurantProfileDto.Details.Category);
+
+            result = _restaurantDetailValidator.CheckIfCategoryIsRestaurantCategory(_registerRestaurantDto.RestaurantProfileDto.Details.FoodType);
             if (!result.Data)
             {
                 result.Error = "Category must be a valid restaurant category.";
                 return result;
             }
-            System.Diagnostics.Debug.WriteLine("strategy6");
+
             return new ResponseDto<bool>()
             {
                 Data = true

@@ -69,6 +69,11 @@
       <DependentUpon>201803282030389_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
+    <Compile Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.cs" />
+    <Compile Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.Designer.cs">
+      <DependentUpon>201803212317008_Seed1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\UserManagement\ANYNAME\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

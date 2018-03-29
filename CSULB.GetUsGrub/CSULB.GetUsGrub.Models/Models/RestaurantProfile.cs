@@ -26,6 +26,16 @@ namespace CSULB.GetUsGrub.Models
             Longitude = longitude;
         }
 
+        public RestaurantProfile(int? id, string phoneNumber, Address address, RestaurantDetail details, double latitude, double longitude)
+        {
+            Id = id;
+            PhoneNumber = phoneNumber;
+            Address = address;
+            Details = details;
+            Latitude = latitude;
+            Longitude = longitude;
+        }
+
         [Key]
         [ForeignKey("UserProfile")]
         public int? Id { get; set; }

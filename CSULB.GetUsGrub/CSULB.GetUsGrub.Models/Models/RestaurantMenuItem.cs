@@ -13,6 +13,8 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.RestaurantMenuItem")]
     public class RestaurantMenuItem : IMenuItem
     {
+        public RestaurantMenuItem() { }
+
         public RestaurantMenuItem(string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive)
         {
             ItemName = itemName;

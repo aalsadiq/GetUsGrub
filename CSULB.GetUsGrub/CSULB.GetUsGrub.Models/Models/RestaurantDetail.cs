@@ -45,6 +45,8 @@
             AllowsPets = allowsPets;
         }
 
+        public RestaurantDetail() { }
+
         public int AvgFoodPrice { get; set; }
 
         public bool? HasReservations { get; set; }

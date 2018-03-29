@@ -2,7 +2,7 @@
 {
     public interface IRestaurantDetail
     {
-        string Category { get; set; }
+        string FoodType { get; set; }
 
         int AvgFoodPrice { get; set; }
 

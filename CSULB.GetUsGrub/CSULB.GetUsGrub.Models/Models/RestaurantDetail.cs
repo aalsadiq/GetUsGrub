@@ -46,6 +46,6 @@
 
         public bool? AllowsPets { get; set; }
 
-        public string Category { get; set; }
+        public string FoodType { get; set; }
     }
 }

@@ -10,9 +10,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Category)
-                    .NotEmpty().WithMessage("Restaurant category is required.")
-                    .NotNull().WithMessage("Restaurant category is required.");
+                RuleFor(x => x.FoodType)
+                    .NotEmpty().WithMessage("Restaurant food type is required.")
+                    .NotNull().WithMessage("Restaurant food type is required.");
 
                 RuleFor(x => x.AvgFoodPrice)
                     .NotNull().WithMessage("Average food price is required.")

@@ -59,21 +59,16 @@
     <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\RestaurantGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Migrations\SsoDbContext\201803282031087_InitialDbCreation.cs" />
-    <Compile Include="Migrations\SsoDbContext\201803282031087_InitialDbCreation.Designer.cs">
-      <DependentUpon>201803282031087_InitialDbCreation.cs</DependentUpon>
+    <Compile Include="Migrations\SsoDbContext\201803291309436_InitialDbCreation.cs" />
+    <Compile Include="Migrations\SsoDbContext\201803291309436_InitialDbCreation.Designer.cs">
+      <DependentUpon>201803291309436_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserDbContext\201803282030389_InitialDbCreation.cs" />
-    <Compile Include="Migrations\UserDbContext\201803282030389_InitialDbCreation.Designer.cs">
-      <DependentUpon>201803282030389_InitialDbCreation.cs</DependentUpon>
+    <Compile Include="Migrations\UserDbContext\201803291308275_InitialDbCreation.cs" />
+    <Compile Include="Migrations\UserDbContext\201803291308275_InitialDbCreation.Designer.cs">
+      <DependentUpon>201803291308275_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.cs" />
-    <Compile Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.Designer.cs">
-      <DependentUpon>201803212317008_Seed1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\ANYNAME\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,16 +87,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\SsoDbContext\201803282031087_InitialDbCreation.resx">
-      <DependentUpon>201803282031087_InitialDbCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\SsoDbContext\201803291309436_InitialDbCreation.resx">
+      <DependentUpon>201803291309436_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserDbContext\201803282030389_InitialDbCreation.resx">
-      <DependentUpon>201803282030389_InitialDbCreation.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\UserManagement\ANYNAME\201803212317008_Seed1.resx">
-      <DependentUpon>201803212317008_Seed1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserDbContext\201803291308275_InitialDbCreation.resx">
+      <DependentUpon>201803291308275_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

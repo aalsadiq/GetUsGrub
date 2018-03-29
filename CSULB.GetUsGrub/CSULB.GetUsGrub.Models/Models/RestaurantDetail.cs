@@ -28,8 +28,9 @@
             bool? acceptCreditCards, string attire, 
             bool? servesAlcohol, bool? hasOutdoorSeating, 
             bool? hasTv, bool? hasDriveThru, bool? caters, 
-            bool? allowsPets, string category)
+            bool? allowsPets, string foodType)
         {
+            FoodType = foodType;
             AvgFoodPrice = avgFoodPrice;
             HasReservations = hasReservations;
             HasDelivery = hasDelivery;
@@ -42,7 +43,6 @@
             HasDriveThru = hasDriveThru;
             Caters = caters;
             AllowsPets = allowsPets;
-            Category = category;
         }
 
         public int AvgFoodPrice { get; set; }

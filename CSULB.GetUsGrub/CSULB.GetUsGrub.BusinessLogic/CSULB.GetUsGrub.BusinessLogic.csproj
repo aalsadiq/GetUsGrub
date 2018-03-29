@@ -138,6 +138,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Exceptions\" />
+    <Folder Include="Managers\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.DataAccess\CSULB.GetUsGrub.DataAccess.csproj">
       <Project>{f19c4df1-91c3-46de-9b27-bd3b91d2294a}</Project>
       <Name>CSULB.GetUsGrub.DataAccess</Name>
@@ -150,13 +157,6 @@
       <Project>{25bb252d-4ebc-4603-978d-657798e5a1fd}</Project>
       <Name>CSULB.GetUsGrub.UserAccessControl</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-    <Folder Include="Managers\Interfaces\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

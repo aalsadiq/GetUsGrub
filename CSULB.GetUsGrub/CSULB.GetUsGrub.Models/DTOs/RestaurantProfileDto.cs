@@ -45,6 +45,5 @@ namespace CSULB.GetUsGrub.Models
         public IList<BusinessHour> BusinessHours { get; set; }
         public IList<RestaurantMenu> RestaurantMenus { get; set; }
         public IList<RestaurantMenuItem> RestaurantMenuItems { get; set; }
-        // TODO: @jenn why are menus and menu items collections instead of lists
     }
 }

@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />
     <Compile Include="Services\GoogleBackoffGetRequest.cs" />
     <Compile Include="Services\GoogleGeocodeService.cs" />
@@ -103,11 +104,15 @@
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPostLogicValidation.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
+    <Compile Include="Validators\DtoValidators\RestaurantSelectionDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\SecurityQuestionDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserAccountDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserProfileDtoValidator.cs" />
@@ -133,6 +138,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Exceptions\" />
+    <Folder Include="Managers\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.DataAccess\CSULB.GetUsGrub.DataAccess.csproj">
       <Project>{f19c4df1-91c3-46de-9b27-bd3b91d2294a}</Project>
       <Name>CSULB.GetUsGrub.DataAccess</Name>
@@ -145,13 +157,6 @@
       <Project>{25bb252d-4ebc-4603-978d-657798e5a1fd}</Project>
       <Name>CSULB.GetUsGrub.UserAccessControl</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-    <Folder Include="Managers\Interfaces\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

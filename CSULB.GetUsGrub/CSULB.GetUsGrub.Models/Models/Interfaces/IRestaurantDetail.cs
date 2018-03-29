@@ -9,6 +9,8 @@
     /// </summary>
     public interface IRestaurantDetail
     {
+        string FoodType { get; set; }
+
         int AvgFoodPrice { get; set; }
 
         bool? HasReservations { get; set; }
@@ -32,7 +34,5 @@
         bool? Caters { get; set; }
 
         bool? AllowsPets { get; set; }
-
-        string Category { get; set; }
     }
 }

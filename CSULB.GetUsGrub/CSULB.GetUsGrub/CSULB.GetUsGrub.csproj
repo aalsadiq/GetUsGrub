@@ -134,7 +134,7 @@
       <Name>CSULB.GetUsGrub.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\CSULB.GetUsGrub.DataAccess\CSULB.GetUsGrub.DataAccess.csproj">
-      <Project>{F19C4DF1-91C3-46DE-9B27-BD3B91D2294A}</Project>
+      <Project>{f19c4df1-91c3-46de-9b27-bd3b91d2294a}</Project>
       <Name>CSULB.GetUsGrub.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">

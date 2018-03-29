@@ -16,6 +16,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly RegisterRestaurantDto _registerRestaurantDto;
         private readonly BusinessHourDtoValidator _businessHourDtoValidator;
         private readonly BusinessHourValidator _businessHourValidator;
+        private readonly RestaurantDetailValidator _restaurantDetailValidator;
         private readonly CreateIndividualPreLogicValidationStrategy _createIndividualPreLogicValidationStrategy;
 
         public CreateRestaurantPreLogicValidationStrategy(RegisterRestaurantDto registerRestaurantDto)
@@ -23,6 +24,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _registerRestaurantDto = registerRestaurantDto;
             _businessHourDtoValidator = new BusinessHourDtoValidator();
             _businessHourValidator = new BusinessHourValidator();
+            _restaurantDetailValidator = new RestaurantDetailValidator();
             _createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerRestaurantDto);
         }
 
@@ -47,7 +49,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var validationWrappers = new List<IValidationWrapper>()
             {
                 new ValidationWrapper<RestaurantProfileDto>(_registerRestaurantDto.RestaurantProfileDto, "CreateUser", new RestaurantProfileDtoValidator()),
-                new ValidationWrapper<Address>(_registerRestaurantDto.RestaurantProfileDto.Address, "CreateUser", new AddressValidator())
+                new ValidationWrapper<Address>(_registerRestaurantDto.RestaurantProfileDto.Address, "CreateUser", new AddressValidator()),
+                new ValidationWrapper<RestaurantDetail>(_registerRestaurantDto.RestaurantProfileDto.Details, "CreateUser", _restaurantDetailValidator)
             };
 
             foreach (var businessHourDto in _registerRestaurantDto.BusinessHourDtos)
@@ -65,21 +68,28 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Validate BusinessHour
-            foreach (var businessHour in _registerRestaurantDto.BusinessHourDtos)
+            foreach (var businessHourDto in _registerRestaurantDto.BusinessHourDtos)
             {
-                result = _businessHourValidator.CheckIfDayIsDayOfWeek(businessHour.Day);
+                result = _businessHourDtoValidator.CheckIfDayIsDayOfWeek(businessHourDto.Day);
                 if (!result.Data)
                 {
                     result.Error = "Day must be either Sunday, Monday, Tuesday, Wednesday, Thursday, Friday or Saturday.";
                     return result;
                 }
 
-                result = _businessHourValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHour.OpenTime, businessHour.CloseTime);
+                result = _businessHourDtoValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHourDto.OpenTime, businessHourDto.CloseTime);
                 if (!result.Data)
                 {
                     result.Error = "Opening time must be less than closing time.";
                     return result;
                 }
+            }
+
+            result = _restaurantDetailValidator.CheckIfFoodTypeIsRestaurantFoodType(_registerRestaurantDto.RestaurantProfileDto.Details.FoodType);
+            if (!result.Data)
+            {
+                result.Error = "Food type must be a valid restaurant food type.";
+                return result;
             }
 
             return new ResponseDto<bool>()

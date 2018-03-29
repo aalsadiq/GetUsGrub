@@ -1,11 +1,13 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System;
+
+namespace CSULB.GetUsGrub.Models
 {
     public interface IBusinessHour
     {
-        string Day { get; set; }
+        string Day { get; }
 
-        string OpenTime { get; }
+        DateTime OpenTime { get; }
 
-        string CloseTime { get; set; }
+        DateTime CloseTime { get; }
     }
 }

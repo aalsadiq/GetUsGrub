@@ -11,13 +11,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
-    public class SsoTokenPreLogicValidationStrategy
+    public class SsoTokenValidationStrategy
     {
         private readonly string _token;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly TokenValidator _tokenValidator;
 
-        public SsoTokenPreLogicValidationStrategy(string token, SymmetricSecurityKey key)
+        public SsoTokenValidationStrategy(string token, SymmetricSecurityKey key)
         {
             _token = token;
             _tokenValidationParameters = new TokenValidationParameters()

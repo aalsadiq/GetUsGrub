@@ -1,7 +1,7 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
     // TODO: @Jenn Comment these [-Jenn]
-    public enum RestaurantCategories
+    public enum RestaurantFoodTypes
     {
         MexicanFood = 0,
         ItalianCuisine = 1,

@@ -85,10 +85,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
             }
 
-            result = _restaurantDetailValidator.CheckIfCategoryIsRestaurantCategory(_registerRestaurantDto.RestaurantProfileDto.Details.FoodType);
+            result = _restaurantDetailValidator.CheckIfFoodTypeIsRestaurantFoodType(_registerRestaurantDto.RestaurantProfileDto.Details.FoodType);
             if (!result.Data)
             {
-                result.Error = "Category must be a valid restaurant category.";
+                result.Error = "Food type must be a valid restaurant food type.";
                 return result;
             }
 

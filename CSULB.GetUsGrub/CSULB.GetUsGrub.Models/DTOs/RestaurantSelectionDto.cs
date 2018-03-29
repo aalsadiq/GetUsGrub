@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -15,5 +16,14 @@ namespace CSULB.GetUsGrub.Models
         public int Distance { get; set; }
         [Required]
         public int AvgFoodPrice { get; set; }
+
+        // TODO: @Rachel Need FoodPrefences list for comment below [-Jenn]
+        //public IList<FoodPreferences> FoodPreferences { get; set; }
+
+        public DateTime CurrentUtcDateTime { get; set; }
+
+        public DayOfWeek CurrentDayOfWeek { get; set; }
+
+        public GeoCoordinates GeoCoordinates { get; set; }
     }
 }

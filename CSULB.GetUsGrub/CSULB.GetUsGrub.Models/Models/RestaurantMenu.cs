@@ -14,6 +14,8 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.RestaurantMenu")]
     public class RestaurantMenu : IRestaurantMenu
     {
+        public RestaurantMenu() { }
+
         public RestaurantMenu(string menuName, bool isActive)
         {
             MenuName = menuName;

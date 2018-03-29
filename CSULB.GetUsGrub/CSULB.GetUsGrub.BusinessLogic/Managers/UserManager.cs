@@ -169,8 +169,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
-            // Convert time to DateTime
-
             // Validate domain models
             var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);
             var validateResult = createRestaurantPostLogicValdiationStrategy.ExecuteStrategy();

@@ -18,13 +18,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         private readonly string _token;
         private readonly TokenService _tokenService;
-        private readonly SsoTokenPreLogicValidationStrategy _preLogicValidationStrategy;
+        private readonly SsoTokenValidationStrategy _ssoTokenValidationStrategy;
 
         public SsoTokenManager(string token)
         {
             _token = token;
             _tokenService = new TokenService();
-            _preLogicValidationStrategy = new SsoTokenPreLogicValidationStrategy(_token, GetSigningKey());
+            _ssoTokenValidationStrategy = new SsoTokenValidationStrategy(_token, GetSigningKey());
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             string roleType = "";
 
             // Call strategy
-            var result = _preLogicValidationStrategy.ExecuteStrategy();
+            var result = _ssoTokenValidationStrategy.ExecuteStrategy();
             if (!result.Data)
             {
                 return new ResponseDto<UserAccountDto>()

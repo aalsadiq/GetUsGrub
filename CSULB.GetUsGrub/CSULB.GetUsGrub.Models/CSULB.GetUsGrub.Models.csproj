@@ -66,6 +66,7 @@
     <Compile Include="DTOs\AuthenticationTokenDto.cs" />
     <Compile Include="DTOs\LoginDto.cs" />
     <Compile Include="DTOs\BusinessHourDto.cs" />
+    <Compile Include="DTOs\SelectedRestaurantDto.cs" />
     <Compile Include="Models\GeoCoordinates.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />

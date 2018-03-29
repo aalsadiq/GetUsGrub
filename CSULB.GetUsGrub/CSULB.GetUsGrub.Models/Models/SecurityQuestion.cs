@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.Models
     {
         public SecurityQuestion() { }
 
-        public SecurityQuestion( int question, string answer)
+        public SecurityQuestion(int question, string answer)
         {
             Question = question;
             Answer = answer;

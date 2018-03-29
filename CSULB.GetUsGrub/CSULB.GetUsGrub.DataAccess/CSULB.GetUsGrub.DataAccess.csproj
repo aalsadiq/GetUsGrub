@@ -57,12 +57,17 @@
     <Compile Include="Contexts\SsoContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
+    <Compile Include="Gateways\RestaurantGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.cs" />
-    <Compile Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.Designer.cs">
-      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    <Compile Include="Migrations\SsoDbContext\201803282031087_InitialDbCreation.cs" />
+    <Compile Include="Migrations\SsoDbContext\201803282031087_InitialDbCreation.Designer.cs">
+      <DependentUpon>201803282031087_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
+    <Compile Include="Migrations\UserDbContext\201803282030389_InitialDbCreation.cs" />
+    <Compile Include="Migrations\UserDbContext\201803282030389_InitialDbCreation.Designer.cs">
+      <DependentUpon>201803282030389_InitialDbCreation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,8 +87,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\SsoDbContext\201803201649392_InitialDbCreation.resx">
-      <DependentUpon>201803201649392_InitialDbCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\SsoDbContext\201803282031087_InitialDbCreation.resx">
+      <DependentUpon>201803282031087_InitialDbCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\UserDbContext\201803282030389_InitialDbCreation.resx">
+      <DependentUpon>201803282030389_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

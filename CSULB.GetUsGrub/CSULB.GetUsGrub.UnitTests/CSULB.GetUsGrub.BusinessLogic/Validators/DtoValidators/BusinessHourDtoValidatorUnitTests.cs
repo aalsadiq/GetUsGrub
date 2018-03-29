@@ -7,21 +7,21 @@ using Xunit;
 namespace CSULB.GetUsGrub.UnitTests
 {
     /// <summary>
-    /// The <c>BusinessHourValidatorUnitTests</c> class.
-    /// Contains unit tests for BusinessHourValidator.
+    /// The <c>BusinessHourDtoValidatorUnitTests</c> class.
+    /// Contains unit tests for BusinessHourDtoValidator.
     /// <para>
     /// @author: Jennifer Nguyen
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>
-    public class BusinessHourValidatorUnitTests
+    public class BusinessHourDtoValidatorUnitTests
     {
         [Fact]
         public void Should_PassValidation_When_AllRulesPass()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
             {
                 Day = "Monday",
                 OpenTime = "8:00",
@@ -29,7 +29,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
 
             // Assert
@@ -40,11 +40,16 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_DayIsEmpty()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour("", "8:00", "23:00");
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
+            {
+                Day = "",
+                OpenTime = "8:00",
+                CloseTime = "23:00"
+            };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
             var errors = result.Errors;
 
@@ -58,11 +63,16 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_DayIsNull()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour(null, "8:00", "23:00");
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
+            {
+                Day = null,
+                OpenTime = "8:00",
+                CloseTime = "23:00"
+            };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
             var errors = result.Errors;
 
@@ -77,11 +87,16 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_OpenTimeIsEmpty()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour("Monday", "", "23:00");
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
+            {
+                Day = "Monday",
+                OpenTime = "",
+                CloseTime = "23:00"
+            };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
             var errors = result.Errors;
 
@@ -96,11 +111,16 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_OpenTimeIsNull()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour("Monday", null, "23:00");
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
+            {
+                Day = "Monday",
+                OpenTime = null,
+                CloseTime = "23:00"
+            };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
             var errors = result.Errors;
 
@@ -115,11 +135,16 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_OpenTimeIsNotIn24HourFormat()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour("Monday", "8", "23:00");
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
+            {
+                Day = "Monday",
+                OpenTime = "8",
+                CloseTime = "23:00"
+            };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
             var errors = result.Errors;
 
@@ -133,11 +158,16 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_CloseTimeIsEmpty()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour("Monday", "8:00", "");
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
+            {
+                Day = "Monday",
+                OpenTime = "8:00",
+                CloseTime = ""
+            };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
             var errors = result.Errors;
 
@@ -152,11 +182,16 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_CloseTimeIsNull()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour("Monday", "8:00", null);
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
+            {
+                Day = "Monday",
+                OpenTime = "8:00",
+                CloseTime = null
+            };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
             var errors = result.Errors;
 
@@ -171,11 +206,16 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_CloseTimeIsNotIn24HourFormat()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour("Monday", "8:00", "23");
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
+            {
+                Day = "Monday",
+                OpenTime = "8:00",
+                CloseTime = "23"
+            };
 
             // Act
-            var result = businessHourValidator.Validate(businessHour, ruleSet: "CreateUser");
+            var result = businessHourDtoValidator.Validate(businessHourDto, ruleSet: "CreateUser");
             var isValid = result.IsValid;
             var errors = result.Errors;
 
@@ -189,8 +229,8 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidtion_When_OpenTimeIsAfterCloseTime()
         {
             // Arrange
-            var businessHourValidator = new BusinessHourValidator();
-            var businessHour = new BusinessHour()
+            var businessHourDtoValidator = new BusinessHourDtoValidator();
+            var businessHourDto = new BusinessHourDto()
             {
                 Day = "Monday",
                 OpenTime = "23:12",
@@ -198,7 +238,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = businessHourValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHour.OpenTime, businessHour.CloseTime);
+            var result = businessHourDtoValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHourDto.OpenTime, businessHourDto.CloseTime);
 
             // Assert
             result.Should().Be(false);

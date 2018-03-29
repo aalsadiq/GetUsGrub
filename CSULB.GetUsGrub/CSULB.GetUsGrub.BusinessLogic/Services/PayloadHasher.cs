@@ -31,9 +31,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             using (var hashProvider = new SHA256Cng())
             {
                 // Concats salt as the prefix and payload as the suffix
-                // TODO: @Jenn outside using statement
+                // TODO: @Jenn outside using statement [-Jenn]
                 var payloadAndSalt = string.Concat(payload, salt);
-                // TODO: @Jenn outside using statement
+                // TODO: @Jenn outside using statement [-Jenn]
                 var hashedPayloadBytes = hashProvider.ComputeHash(Encoding.ASCII.GetBytes(payloadAndSalt));
                 var hashedPayload = Convert.ToBase64String(hashedPayloadBytes);
                 return hashedPayload;

@@ -44,10 +44,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="day"></param>
         /// <returns>A boolean</returns>
-        public bool CheckIfDayIsDayOfWeek(string day)
+        public ResponseDto<bool> CheckIfDayIsDayOfWeek(string day)
         {
             // True if day is in DayOfWeek enum
-            return Enum.IsDefined(typeof(DayOfWeek), day);
+            return new ResponseDto<bool>()
+            {
+                Data = Enum.IsDefined(typeof(DayOfWeek), day)
+            };
         }
 
         /// <summary>
@@ -57,13 +60,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <param name="openTime"></param>
         /// <param name="closeTime"></param>
         /// <returns>A boolean</returns>
-        public bool CheckIfOpenTimeIsBeforeCloseTime(string openTime, string closeTime)
+        public ResponseDto<bool> CheckIfOpenTimeIsBeforeCloseTime(string openTime, string closeTime)
         {
             var openingTime = TimeSpan.Parse(openTime);
             var closingTime = TimeSpan.Parse(closeTime);
             // -1 means openingTime < closingTime, 0 means openingTime == closingTime, and 1 means openingTime > closingTime
             var compare = TimeSpan.Compare(openingTime, closingTime);
-            return compare == -1;
+            return new ResponseDto<bool>()
+            {
+                Data = compare == -1
+            };
         }
     }
 }

@@ -17,7 +17,6 @@ namespace CSULB.GetUsGrub.Models
     {
         public RestaurantProfile() { }
 
-        // TODO: @Jenn Please parameterize this [-Jenn]
         public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details, double latitude, double longitude)
         {
             PhoneNumber = phoneNumber;

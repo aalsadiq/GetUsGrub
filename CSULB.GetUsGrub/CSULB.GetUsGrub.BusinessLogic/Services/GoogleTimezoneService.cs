@@ -1,9 +1,9 @@
-﻿using System.Configuration;
+﻿using CSULB.GetUsGrub.Models;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 using System;
-using CSULB.GetUsGrub.Models;
-
+using System.Configuration;
+using System.Threading.Tasks;
+// TODO: @Brian Time Zone is two words. Please change the class name and its interface to reflect this [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>

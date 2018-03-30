@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -51,8 +50,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
-                                        .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto.Question, securityQuestionDto.Answer))
-                                        .ToList();
+                .Select(securityQuestionDto => new SecurityQuestion(
+                    securityQuestionDto.Question, securityQuestionDto.Answer))
+                .ToList();
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
 
@@ -136,23 +136,21 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
-                .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto.Question, securityQuestionDto.Answer))
+                .Select(securityQuestionDto => new SecurityQuestion(
+                    securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
             var userProfile = new UserProfile(displayPicture: registerRestaurantDto.UserProfileDto.DisplayPicture, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
             var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details, latitude: registerRestaurantDto.RestaurantProfileDto.Latitude, longitude: registerRestaurantDto.RestaurantProfileDto.Longitude);
-            var businessHours = registerRestaurantDto.BusinessHourDtos.Select(businessHourDto => 
-                                                                                new BusinessHour(day: businessHourDto.Day, 
-                                                                                                 openTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime
-                                                                                                    (dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime),
-                                                                                                     registerRestaurantDto.TimeZone), 
-                                                                                                 closeTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime
-                                                                                                     (dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime),
-                                                                                                     registerRestaurantDto.TimeZone)))
-                                                                                                .ToList();
+            var businessHours = registerRestaurantDto.BusinessHourDtos
+                .Select(businessHourDto => new BusinessHour(
+                    day: businessHourDto.Day, 
+                    openTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
+                    closeTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
+                .ToList();
 
-            // TODO: @Jenn Setup Geocode service here [-Jenn]
-            var geocodeResponse = Task.Run(() => geocodeService.GeocodeAsync(restaurantProfile.Address));
-            if (geocodeResponse.Result.Error != null)
+            // Call GeocodeService to get geocoordinates of the restaurant
+            var geocodeResponse = geocodeService.Geocode(restaurantProfile.Address);
+            if (geocodeResponse.Error != null)
             {
                 return new ResponseDto<RegisterRestaurantDto>
                 {
@@ -161,13 +159,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            restaurantProfile.Latitude = geocodeResponse.Result.Data.Latitude;
-            restaurantProfile.Longitude = geocodeResponse.Result.Data.Longitude;
+            restaurantProfile.Latitude = geocodeResponse.Data.Latitude;
+            restaurantProfile.Longitude = geocodeResponse.Data.Longitude;
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims()
             {
-                Claims = claimsFactory.CreateIndividualClaims()
+                Claims = claimsFactory.CreateRestaurantClaims()
             };
 
             // Hash password
@@ -264,6 +262,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
+        // TODO: @Angelica Please change this comment below [-Jenn]
         /// <summary>
         /// The CreateIndividualUser method.
         /// Contains business logic to create an individual user.
@@ -296,8 +295,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
-                                        .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto.Question, securityQuestionDto.Answer))
-                                        .ToList();
+                .Select(securityQuestionDto => new SecurityQuestion(
+                    securityQuestionDto.Question, securityQuestionDto.Answer))
+                .ToList();
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
 

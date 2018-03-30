@@ -17,13 +17,6 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.UserClaims")]
     public class UserClaims : IEntity
     {
-        [System.Serializable]
-        internal class ClaimsEntry
-        {
-            public string Type { get; set; }
-            public string Value { get; set; }
-        }
-
         public UserClaims() { }
         public UserClaims(ICollection<Claim> claims) { Claims = claims; }
 

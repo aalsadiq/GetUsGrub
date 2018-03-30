@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using CSULB.GetUsGrub.Models;
+﻿using CSULB.GetUsGrub.Models;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -79,7 +79,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // Retrieve latitude and longitude data from response and return coordinates.
                 var lat = (float)responseObj.SelectToken("results[0].geometry.location.lat");
                 var lng = (float)responseObj.SelectToken("results[0].geometry.location.lng");
-                
+
                 return new ResponseDto<IGeoCoordinates>()
                 {
                     Data = new GeoCoordinates()

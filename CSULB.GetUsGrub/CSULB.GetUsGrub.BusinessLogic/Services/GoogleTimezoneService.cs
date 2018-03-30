@@ -55,7 +55,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var url = BuildUrl(coordinates, key, timeStamp);
 
                 // Send get request and parse response
-                var responseJson = await new GoogleBackoffGetRequest(url, "OVER_QUERY_LIMIT").TryExecute();
+                var request = new GetRequestService(url);
+                var response = await new GoogleBackoffRequest(request).TryExecute();
+                var responseJson = await response.Content.ReadAsStringAsync();
                 var responseObj = JObject.Parse(responseJson);
 
                 // Retrieve status code from response

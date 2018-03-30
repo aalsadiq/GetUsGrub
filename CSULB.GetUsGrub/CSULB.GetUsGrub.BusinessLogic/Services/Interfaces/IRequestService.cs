@@ -1,12 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
-    /// Interface for a service that sends an out-going request.
+    /// Interface for a service that sends an outgoing request.
     /// </summary>
     public interface IRequestService
     {
-        Task<string> Execute();
+        Task<HttpResponseMessage> Execute();
     }
 }

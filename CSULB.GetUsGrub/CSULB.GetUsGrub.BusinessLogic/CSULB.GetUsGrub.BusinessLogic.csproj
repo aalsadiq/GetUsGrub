@@ -74,9 +74,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\BackoffRequest.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />
-    <Compile Include="Services\GoogleBackoffGetRequest.cs" />
+    <Compile Include="Services\GoogleBackoffRequest.cs" />
     <Compile Include="Services\GoogleGeocodeService.cs" />
     <Compile Include="Services\GoogleTimeZoneService.cs" />
     <Compile Include="Services\Interfaces\IBackoff.cs" />

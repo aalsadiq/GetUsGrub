@@ -20,11 +20,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _url = url;
         }
 
-        public async Task<string> Execute()
+        public async Task<HttpResponseMessage> Execute()
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            // TODO Check to see if there's a way to enable this via configuration rather than with each request [-Brian]
+            // Sets Security Protocol to TLS 1.2 -- Required by PwnedPasswords API
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            return await _client.GetStringAsync(_url);
+            return await _client.GetAsync(_url);
         }
     }
 }

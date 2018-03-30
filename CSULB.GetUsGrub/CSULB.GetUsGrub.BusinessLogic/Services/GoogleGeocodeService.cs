@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// Converts an address into geocoordinates using Google's Geocoding API.
-        /// This is a synchronous method wrapped around the GeocodeAsync.
+        /// This is a synchronous method wrapped around GeocodeAsync().
         /// </summary>
         /// <param name="address">Address to geocode.</param>
         /// <returns>Coordinates of address.</returns>
@@ -50,7 +50,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var url = BuildUrl(address, key);
 
                 // Send get request and parse the response
-                var responseJson = await new GoogleBackoffGetRequest(url, "OVER_QUERY_LIMIT").TryExecute();
+                var request = new GetRequestService(url);
+                var response = await new GoogleBackoffRequest(request).TryExecute();
+                var responseJson = await response.Content.ReadAsStringAsync();
                 var responseObj = JObject.Parse(responseJson);
 
                 // Retrieve status code from the response

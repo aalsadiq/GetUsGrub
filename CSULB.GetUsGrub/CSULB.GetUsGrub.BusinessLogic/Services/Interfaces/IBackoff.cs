@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -7,6 +8,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public interface IBackoff
     {
-        Task<string> TryExecute();
+        Task<HttpResponseMessage> TryExecute();
     }
 }

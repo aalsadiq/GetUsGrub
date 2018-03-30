@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -19,9 +20,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _url = url;
         }
 
-        public async Task<string> Execute()
+        public async Task<HttpResponseMessage> Execute()
         {
-            return await _client.GetStringAsync(_url);
+            // TODO Check to see if there's a way to enable this via configuration rather than with each request [-Brian]
+            // Sets Security Protocol to TLS 1.2 -- Required by PwnedPasswords API
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            return await _client.GetAsync(_url);
         }
     }
 }

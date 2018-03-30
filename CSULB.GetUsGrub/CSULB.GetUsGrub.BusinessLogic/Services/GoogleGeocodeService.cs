@@ -9,9 +9,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Service for accessing Google's Geocoding API to handle geocoding.
     /// 
     /// @Author: Brian Fann
-    /// @Last Updated: 3/22/18
+    /// @Last Updated: 3/29/18
     /// </summary>
-    public class GoogleGeocodeService : IGeocodeServiceAsync
+    public class GoogleGeocodeService : IGeocodeService, IGeocodeServiceAsync
     {
         private string BuildUrl(IAddress address, string key)
         {
@@ -21,6 +21,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
             url += $"&key={key}";
 
             return url;
+        }
+
+        /// <summary>
+        /// Converts an address into geocoordinates using Google's Geocoding API.
+        /// This is a synchronous method wrapped around the GeocodeAsync.
+        /// </summary>
+        /// <param name="address">Address to geocode.</param>
+        /// <returns>Coordinates of address.</returns>
+        public ResponseDto<IGeoCoordinates> Geocode(IAddress address)
+        {
+            var result = Task.Run(() => GeocodeAsync(address)).Result;
+
+            return result;
         }
 
         /// <summary>

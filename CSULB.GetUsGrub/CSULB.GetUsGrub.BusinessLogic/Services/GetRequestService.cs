@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -21,6 +22,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public async Task<string> Execute()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             return await _client.GetStringAsync(_url);
         }
     }

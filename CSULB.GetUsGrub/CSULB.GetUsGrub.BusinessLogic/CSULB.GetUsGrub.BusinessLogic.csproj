@@ -86,9 +86,11 @@
     <Compile Include="Managers\AuthenticationTokenManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Interfaces\IGeocodeService.cs" />
     <Compile Include="Services\Interfaces\IPasswordValidationService.cs" />
     <Compile Include="Services\Interfaces\IPasswordValidationServiceAsync.cs" />
     <Compile Include="Services\Interfaces\IRequestService.cs" />
+    <Compile Include="Services\Interfaces\ITimeZoneService.cs" />
     <Compile Include="Services\Interfaces\ITimeZoneServiceAsync.cs" />
     <Compile Include="Services\Interfaces\IValidationWrapper.cs" />
     <Compile Include="Services\PayloadHasher.cs" />

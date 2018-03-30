@@ -5,13 +5,13 @@ using Xunit;
 
 namespace CSULB.GetUsGrub.UnitTests
 {
-    public class GoogleTimezoneIntegrationTest
+    public class GoogleTimeZoneIntegrationTest
     {
         [Fact]
         public async void Should_Pass_When_Getting_Csulb_Timezone()
         {
             var expected = -25200;
-            var service = new GoogleTimezoneService();
+            var service = new GoogleTimeZoneService();
             var coordinates = new GeoCoordinates
             {
                 Latitude = 33.7830608,

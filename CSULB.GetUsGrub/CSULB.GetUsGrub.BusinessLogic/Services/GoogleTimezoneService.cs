@@ -1,8 +1,8 @@
-﻿using System.Configuration;
+﻿using CSULB.GetUsGrub.Models;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 using System;
-using CSULB.GetUsGrub.Models;
+using System.Configuration;
+using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -10,9 +10,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Service for accessing Google's Timezone API to calculate a location's offset from UTC.
     /// 
     /// @Author: Brian Fann
-    /// @Last Updated: 3/22/18
+    /// @Last Updated: 3/29/18
     /// </summary>
-    public class GoogleTimezoneService : ITimezoneServiceAsync
+    public class GoogleTimeZoneService : ITimeZoneService, ITimeZoneServiceAsync
     {
         private string BuildUrl(IGeoCoordinates coordinates, string key, int timestamp)
         {
@@ -22,6 +22,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
             url += $"&key={key}";
 
             return url;
+        }
+
+        /// <summary>
+        /// Calculates offset from UTC from geocoordinates using Google's Timezone API.
+        /// This is a synchronous method wrapped around GetOffsetAsync()
+        /// </summary>
+        /// <param name="coordinates">Coordinates of location to check time zone.</param>
+        /// <returns>Offset of time (in seconds) from UTC</returns>
+        public ResponseDto<int> GetOffset(IGeoCoordinates coordinates)
+        {
+            var result = Task.Run(() => GetOffsetAsync(coordinates)).Result;
+
+            return result;
         }
 
         /// <summary>
@@ -42,7 +55,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var url = BuildUrl(coordinates, key, timeStamp);
 
                 // Send get request and parse response
-                var responseJson = await new GoogleBackoffGetRequest(url, "OVER_QUERY_LIMIT").TryExecute();
+                var request = new GetRequestService(url);
+                var response = await new GoogleBackoffRequest(request).TryExecute();
+                var responseJson = await response.Content.ReadAsStringAsync();
                 var responseObj = JObject.Parse(responseJson);
 
                 // Retrieve status code from response

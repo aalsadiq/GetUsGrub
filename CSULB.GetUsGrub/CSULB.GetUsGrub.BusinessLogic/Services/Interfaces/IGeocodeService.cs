@@ -1,21 +1,20 @@
 ﻿using CSULB.GetUsGrub.Models;
-using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
-    /// Interface for an asynchronous service that converts addresses into geocoordinates.
+    /// Interface for a synchronous service that converts addresses into geocoordinates.
     /// 
     /// @Author: Brian Fann
     /// @Last Updated: 3/29/18
     /// </summary>
-    public interface IGeocodeServiceAsync
+    public interface IGeocodeService
     {
         /// <summary>
         /// Converts an address into geocoordinates.
         /// </summary>
         /// <param name="address">Address to geocode.</param>
         /// <returns>Coordinates of address.</returns>
-        Task<ResponseDto<IGeoCoordinates>> GeocodeAsync(IAddress address);
+        ResponseDto<IGeoCoordinates> Geocode(IAddress address);
     }
 }

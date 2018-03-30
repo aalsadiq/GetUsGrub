@@ -11,8 +11,7 @@ namespace CSULB.GetUsGrub.DataAccess
     public class RestaurantGateway : IDisposable
     {
         public ResponseDto<SelectedRestaurantDto> GetRestaurantWithoutFoodPreferences(string city, string state, string foodType, 
-                                                                                        int distance, int avgFoodPrice, DateTime currentUtcDateTime, 
-                                                                                        DayOfWeek currentDayOfWeek, double longitude, double latitude)
+            int distance, int avgFoodPrice, DateTime currentUtcDateTime, DayOfWeek currentDayOfWeek, double longitude, double latitude)
         {
             using (var restaurantContext = new RestaurantContext())
             {
@@ -21,16 +20,16 @@ namespace CSULB.GetUsGrub.DataAccess
                     var selectedRestaurant = (from userProfile in restaurantContext.UserProfiles
                                                 join restaurantProfile in restaurantContext.RestaurantProfiles 
                                                     on userProfile.Id equals restaurantProfile.Id
-                                                join businessHour in restaurantContext.BusinessHours
-                                                    on restaurantProfile.Id equals businessHour.RestaurantId
+                                                join restaurantBusinessHour in restaurantContext.BusinessHours
+                                                    on restaurantProfile.Id equals restaurantBusinessHour.RestaurantId
                                                 where restaurantProfile.Address.City == city
                                                         && state == restaurantProfile.Address.State
                                                         && foodType == restaurantProfile.Details.FoodType
                                                         && avgFoodPrice == restaurantProfile.Details.AvgFoodPrice
-                                                        && currentDayOfWeek.ToString() == businessHour.Day
-                                                        && currentUtcDateTime.Hour > businessHour.OpenTime.Hour
-                                                        && currentUtcDateTime.Hour < businessHour.CloseTime.Hour
-                                                        && distance == Convert.ToInt32(DbGeography.FromText($"Point{latitude} {longitude}")
+                                                        && currentDayOfWeek.ToString() == restaurantBusinessHour.Day
+                                                        && currentUtcDateTime.Hour > restaurantBusinessHour.OpenTime.Hour
+                                                        && currentUtcDateTime.Hour < restaurantBusinessHour.CloseTime.Hour
+                                                        && distance >= Convert.ToInt32(DbGeography.FromText($"Point{latitude} {longitude}")
                                                                         .Distance(DbGeography.FromText($"Point{restaurantProfile.Latitude} {restaurantProfile.Longitude}")))
                                                 select new
                                                 {
@@ -39,11 +38,11 @@ namespace CSULB.GetUsGrub.DataAccess
                                                     address = restaurantProfile.Address,
                                                     phoneNumber = restaurantProfile.PhoneNumber,
                                                     displayName = userProfile.DisplayName,
-                                                    businessHours = (from businessDay in restaurantContext.BusinessHours
-                                                                        where businessDay.RestaurantId == restaurantProfile.Id
-                                                                        select businessDay).ToList()
-                                                })
-                                                .ToList().OrderBy(order => SqlFunctions.Rand()).First();
+                                                    businessHours = (from businessHour in restaurantContext.BusinessHours
+                                                                        where businessHour.RestaurantId == restaurantProfile.Id
+                                                                        select businessHour).ToList()
+                                                }).ToList().OrderBy(order => SqlFunctions.Rand()).First();
+
                     return new ResponseDto<SelectedRestaurantDto>()
                     {
                         Data = new SelectedRestaurantDto(latitude: selectedRestaurant.latitude, longitude: selectedRestaurant.longitude, address: selectedRestaurant.address,

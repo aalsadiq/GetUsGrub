@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -36,7 +34,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return _jwtTokenHandler.ReadJwtToken(token);
         }
 
-        // TODO: @Everyone This is commented section is moved to the TokenValidator class. Please remove. [-Jenn]
+        // TODO: @Everyone This commented section is moved to the TokenValidator class. Please remove. [-Jenn]
         /*public bool ValidateSignature(string token, TokenValidationParameters tokenValidationParameters)
         {
             //var payloadHasher = new PayloadHasher();

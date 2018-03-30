@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -119,6 +120,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
             var dateTimeService = new DateTimeService();
+            var geocodeService = new GoogleGeocodeService();
 
             // Validate data transfer object
             var restaurantResult = createRestaurantPreLogicValidationStrategy.ExecuteStrategy();
@@ -148,9 +150,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
                                                                                                      registerRestaurantDto.TimeZone)))
                                                                                                 .ToList();
 
-            // TODO: @Brian Need Google Map integration for following [-Jenn]
-            // Get longitude and latitude given Address model to Google Map service
-            // Set longitude and latitude
+            // TODO: @Jenn Setup Geocode service here [-Jenn]
+            var geocodeResponse = Task.Run(() => geocodeService.GeocodeAsync(restaurantProfile.Address));
+            if (geocodeResponse.Result.Error != null)
+            {
+                return new ResponseDto<RegisterRestaurantDto>
+                {
+                    Data = registerRestaurantDto,
+                    Error = "Something went wrong. Please try again later."
+                };
+            }
+
+            restaurantProfile.Latitude = geocodeResponse.Result.Data.Latitude;
+            restaurantProfile.Longitude = geocodeResponse.Result.Data.Longitude;
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims()
@@ -168,8 +180,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
-
-            // Convert time to DateTime
 
             // Validate domain models
             var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);

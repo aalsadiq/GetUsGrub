@@ -3,16 +3,16 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
-// TODO: @Brian Time Zone is two words. Please change the class name and its interface to reflect this [-Jenn]
+
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
     /// Service for accessing Google's Timezone API to calculate a location's offset from UTC.
     /// 
     /// @Author: Brian Fann
-    /// @Last Updated: 3/22/18
+    /// @Last Updated: 3/29/18
     /// </summary>
-    public class GoogleTimeZoneService : ITimeZoneServiceAsync
+    public class GoogleTimeZoneService : ITimeZoneService, ITimeZoneServiceAsync
     {
         private string BuildUrl(IGeoCoordinates coordinates, string key, int timestamp)
         {
@@ -22,6 +22,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
             url += $"&key={key}";
 
             return url;
+        }
+
+        /// <summary>
+        /// Calculates offset from UTC from geocoordinates using Google's Timezone API.
+        /// This is a synchronous method wrapped around GetOffsetAsync()
+        /// </summary>
+        /// <param name="coordinates">Coordinates of location to check time zone.</param>
+        /// <returns>Offset of time (in seconds) from UTC</returns>
+        public ResponseDto<int> GetOffset(IGeoCoordinates coordinates)
+        {
+            var result = Task.Run(() => GetOffsetAsync(coordinates)).Result;
+
+            return result;
         }
 
         /// <summary>

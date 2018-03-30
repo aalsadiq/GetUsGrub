@@ -11,11 +11,11 @@ namespace CSULB.GetUsGrub.UnitTests
         public async void Should_Fail_When_Validating_Insecure_Password()
         {
             var service = new PwnedPasswordValidationService();
-            var password = "password123";
+            var password = "password";
 
             var result = await service.IsPasswordValidAsync(password);
 
-            result.Should().Be(false);
+            result.Data.Should().Be(false);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace CSULB.GetUsGrub.UnitTests
 
             var result = await service.IsPasswordValidAsync(password);
 
-            result.Should().Be(true);
+            result.Data.Should().Be(true);
         }
     }
 }

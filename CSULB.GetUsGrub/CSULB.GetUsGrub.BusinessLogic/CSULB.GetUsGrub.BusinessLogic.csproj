@@ -78,7 +78,7 @@
     <Compile Include="Services\GetRequestService.cs" />
     <Compile Include="Services\GoogleBackoffGetRequest.cs" />
     <Compile Include="Services\GoogleGeocodeService.cs" />
-    <Compile Include="Services\GoogleTimezoneService.cs" />
+    <Compile Include="Services\GoogleTimeZoneService.cs" />
     <Compile Include="Services\Interfaces\IBackoff.cs" />
     <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
     <Compile Include="Managers\RestaurantSelectionManager.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IRequestService.cs" />
-    <Compile Include="Services\Interfaces\ITimezoneServiceAsync.cs" />
+    <Compile Include="Services\Interfaces\ITimeZoneServiceAsync.cs" />
     <Compile Include="Services\Interfaces\IValidationWrapper.cs" />
     <Compile Include="Services\PayloadHasher.cs" />
     <Compile Include="Services\SaltGenerator.cs" />

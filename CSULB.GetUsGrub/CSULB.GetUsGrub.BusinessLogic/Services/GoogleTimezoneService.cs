@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @Author: Brian Fann
     /// @Last Updated: 3/22/18
     /// </summary>
-    public class GoogleTimezoneService : ITimezoneServiceAsync
+    public class GoogleTimeZoneService : ITimeZoneServiceAsync
     {
         private string BuildUrl(IGeoCoordinates coordinates, string key, int timestamp)
         {

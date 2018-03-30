@@ -7,7 +7,7 @@
               <v-flex  xs5 sm2 offset-sm5>
                 <h2>Input User Name </h2>
                 <v-form v-model="validIdentificationInput">
-                  <v-text-field label="username" v-model="username" :rules="usernameRules" required />
+                  <v-text-field label="username" v-model="userAccount.username" :rules="usernameRules" required />
                 </v-form>
               </v-flex>
               <v-btn id ="submit-button" color="warning" v-on:click="userSubmit(viewType)">Submit</v-btn>
@@ -23,20 +23,23 @@ export default {
   props: ['viewType'],
   data: () => ({
     validIdentificationInput: false,
-    username: '',
+    userAccount: {
+      username: '',
+      password: ''
+    },
     usernameRules: [
       username => !!username || 'Username is required',
       username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
     ],
+    responseDataStatus: '',
     responseData: ''
   }),
   methods: {
     userSubmit: function (viewType) {
-      console.log(this.username)
       if (viewType === 'DeactivateUser') {
         console.log(this.username)
         axios.put('http://localhost:8081/User/DeactivateUser', {
-          username: this.username
+          username: this.userAccount.username
         }).then(response => {
           this.responseDataStatus = 'Success! User has been deactivated: '
           this.responseData = response.data
@@ -47,10 +50,9 @@ export default {
           console.log(error.response.data)
         })
       }
-      console.log(this.username)
       if (viewType === 'ReactivateUser') {
         axios.put('http://localhost:8081/User/ReactivateUser', {
-          username: this.username
+          username: this.userAccount.username
         }).then(response => {
           this.responseDataStatus = 'Success! User has been reactivated: '
           this.responseData = response.data
@@ -58,13 +60,12 @@ export default {
         }).catch(error => {
           this.responseDataStatus = 'An error has occurred: '
           this.responseData = error.response.data
+          console.log(error.response.data)
         })
       }
-      console.log(this.username)
       if (viewType === 'DeleteUser') {
-        // console.log(this.username)
         axios.delete('http://localhost:8081/User/DeleteUser', {
-          username: this.username
+          data: {username: this.userAccount.username}
         }).then(response => {
           this.responseDataStatus = 'Success! User has been deleted: '
           this.responseData = response.data
@@ -72,9 +73,9 @@ export default {
         }).catch(error => {
           this.responseDataStatus = 'An error has occurred: '
           this.responseData = error.response.data
+          console.log(error.response.data)
         })
       }
-      console.log(this.username)
     }
   }
 }

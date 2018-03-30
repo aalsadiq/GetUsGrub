@@ -1339,14 +1339,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var userAccount = (from account in userContext.UserAccounts
                                         where account.Username == user.Username
                                         select account).SingleOrDefault();
-                    //Create Response Dto.
-                    var resetPasswordResult = new ResponseDto<bool>();
-                    //Check if new password is not null and if it does not equal the password the user currently has.
-                    if (user.NewPassword != null && user.NewPassword != userAccount.Password)
-                    {
-                        //Set ResponseDto equal to the ResponseDto from ResetPassword.
-                        resetPasswordResult = ResetPassword(user.Username, user.NewPassword);
-                    }
+
                     //Create Response Dto.
                     var editDisplayNameResult = new ResponseDto<bool>();
                     //Check if displayname is not null and if it does not equal to the display name the user currently has.
@@ -1364,7 +1357,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         editUserNameResult = EditUserName(user.Username, user.NewUsername);
                     }
                     //If the ResponseDto.Data is true then return true.
-                    if (resetPasswordResult.Data == true || editDisplayNameResult.Data == true || editUserNameResult.Data == true)
+                    if (editDisplayNameResult.Data == true || editUserNameResult.Data == true) 
                     {
                         //Return ResponseDto
                         return new ResponseDto<bool>()

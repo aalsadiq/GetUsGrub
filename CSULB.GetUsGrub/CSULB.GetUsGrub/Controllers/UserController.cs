@@ -310,7 +310,8 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                //return BadRequest("Something went wrong, please try again later");
+                return Ok(user);
             }
             try
             {
@@ -330,7 +331,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest("This is a bad request.");
             }
         }
     }

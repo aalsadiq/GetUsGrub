@@ -1,9 +1,7 @@
-﻿using CSULB.GetUsGrub.Models;
-using CSULB.GetUsGrub.BusinessLogic;
+﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
 using System;
 using System.Diagnostics;
-using System.IdentityModel.Services;
-using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -13,7 +11,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// User controller will handle routes that deal with CRUD.
     /// @author Angelica
     /// </summary>
-    
+
     [RoutePrefix("User")] //default route
     public class UserController : ApiController
     {
@@ -32,7 +30,6 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Individual")]
-        // TODO: @Jenn Test out the methods with POST [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
@@ -76,7 +73,7 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Restaurant")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
         {
             // Model Binding Validation
@@ -117,7 +114,8 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPost]
         // Opts authentication
         [Route("Admin/Create")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        // TODO: @Angelica Change methods to POST [-Jenn]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")] 
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
@@ -159,6 +157,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // DELETE User/Admin/DeleteUser
         [Route("DeleteUser")]
+        // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
        // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpDelete]
@@ -210,6 +209,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/Admin/DeactivateUser
         [Route("DeactivateUser")]
+        // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
         [HttpPut]
@@ -255,6 +255,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/Admin/ReactivateUser
         [Route("ReactivateUser")]
+        // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpPut]

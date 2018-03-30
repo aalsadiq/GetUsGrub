@@ -1,5 +1,5 @@
-﻿using CSULB.GetUsGrub.Models;
-using CSULB.GetUsGrub.DataAccess;
+﻿using CSULB.GetUsGrub.DataAccess;
+using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// The <c>UserManager</c> class.
     /// Contains all methods for performing the create, get, update, delete actions for a user.
     /// <para>
-    /// @author: Angelica, Jennifer Nguyen
+    /// @author: Angelica Salas Tovar, Jennifer Nguyen
     /// @updated: 03/18/2018
     /// </para>
     /// </summary>
@@ -35,7 +35,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
-
+            
             // Validate data transfer object
             var result = createIndividualPreLogicValidationStrategy.ExecuteStrategy();
             if (result.Error != null)
@@ -50,8 +50,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
-                                        .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto.Question, securityQuestionDto.Answer))
-                                        .ToList();
+                .Select(securityQuestionDto => new SecurityQuestion(
+                    securityQuestionDto.Question, securityQuestionDto.Answer))
+                .ToList();
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
 
@@ -118,6 +119,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             var claimsFactory = new ClaimsFactory();
+            var dateTimeService = new DateTimeService();
+            var geocodeService = new GoogleGeocodeService();
 
             // Validate data transfer object
             var restaurantResult = createRestaurantPreLogicValidationStrategy.ExecuteStrategy();
@@ -133,22 +136,36 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
-                .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto.Question, securityQuestionDto.Answer))
+                .Select(securityQuestionDto => new SecurityQuestion(
+                    securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
             var userProfile = new UserProfile(displayPicture: registerRestaurantDto.UserProfileDto.DisplayPicture, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
             var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details, latitude: registerRestaurantDto.RestaurantProfileDto.Latitude, longitude: registerRestaurantDto.RestaurantProfileDto.Longitude);
             var businessHours = registerRestaurantDto.BusinessHourDtos
-                                    .Select(businessHourDto => new BusinessHour(day: businessHourDto.Day, openTime: businessHourDto.OpenTime, closeTime: businessHourDto.CloseTime))
-                                    .ToList();
+                .Select(businessHourDto => new BusinessHour(
+                    day: businessHourDto.Day, 
+                    openTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
+                    closeTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
+                .ToList();
 
-            // TODO: @Brian Need Google Map integration for following [-Jenn]
-            // Get longitude and latitude given Address model to Google Map service
-            // Set longitude and latitude
+            // Call GeocodeService to get geocoordinates of the restaurant
+            var geocodeResponse = geocodeService.Geocode(restaurantProfile.Address);
+            if (geocodeResponse.Error != null)
+            {
+                return new ResponseDto<RegisterRestaurantDto>
+                {
+                    Data = registerRestaurantDto,
+                    Error = "Something went wrong. Please try again later."
+                };
+            }
+
+            restaurantProfile.Latitude = geocodeResponse.Data.Latitude;
+            restaurantProfile.Longitude = geocodeResponse.Data.Longitude;
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims()
             {
-                Claims = claimsFactory.CreateIndividualClaims()
+                Claims = claimsFactory.CreateRestaurantClaims()
             };
 
             // Hash password
@@ -245,6 +262,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
+        // TODO: @Angelica Please change this comment below [-Jenn]
         /// <summary>
         /// The CreateIndividualUser method.
         /// Contains business logic to create an individual user.
@@ -277,8 +295,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
-                                        .Select(securityQuestionDto => new SecurityQuestion(securityQuestionDto.Question, securityQuestionDto.Answer))
-                                        .ToList();
+                .Select(securityQuestionDto => new SecurityQuestion(
+                    securityQuestionDto.Question, securityQuestionDto.Answer))
+                .ToList();
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
 

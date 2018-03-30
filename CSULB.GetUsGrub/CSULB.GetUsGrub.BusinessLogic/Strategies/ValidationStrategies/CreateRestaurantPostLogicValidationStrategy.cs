@@ -16,8 +16,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly CreateIndividualPostLogicValidationStrategy _createIndividualPostLogicValidationStrategy;
         private readonly RestaurantProfile _restaurantProfile;
         private readonly IList<BusinessHour> _businessHours;
-        private readonly RestaurantProfileValidator _restaurantProfileValidator;
-        private readonly AddressValidator _addressValidator;
         private readonly BusinessHourValidator _businessHourValidator;
 
         /// <summary>
@@ -42,8 +40,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _restaurantProfile = restaurantProfile;
             _businessHours = businessHours;
             _createIndividualPostLogicValidationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, claims, userProfile);
-            _restaurantProfileValidator = new RestaurantProfileValidator();
-            _addressValidator = new AddressValidator();
             _businessHourValidator = new BusinessHourValidator();
         }
 
@@ -79,24 +75,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             foreach (var validationWrapper in validationWrappers)
             {
                 result = validationWrapper.ExecuteValidator();
-                if (!result.Data)
-                {
-                    result.Error = "Something went wrong. Please try again later.";
-                    return result;
-                }
-            }
-
-            // Validate BusinessHour
-            foreach (var businessHour in _businessHours)
-            {
-                result = _businessHourValidator.CheckIfDayIsDayOfWeek(businessHour.Day);
-                if (!result.Data)
-                {
-                    result.Error = "Something went wrong. Please try again later.";
-                    return result;
-                }
-
-                result = _businessHourValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHour.OpenTime, businessHour.CloseTime);
                 if (!result.Data)
                 {
                     result.Error = "Something went wrong. Please try again later.";

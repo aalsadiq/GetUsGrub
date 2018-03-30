@@ -279,9 +279,10 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         // Dispose release unmangaed resources 
-            public void Dispose()
+        // TODO: @Jenn Add in implementation of Dispose [-Jenn]
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

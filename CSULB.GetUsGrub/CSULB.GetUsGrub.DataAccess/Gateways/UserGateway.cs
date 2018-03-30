@@ -43,8 +43,9 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = userAccount
                     };
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Debug.WriteLine(ex);
 
                     return new ResponseDto<UserAccount>()
                     {

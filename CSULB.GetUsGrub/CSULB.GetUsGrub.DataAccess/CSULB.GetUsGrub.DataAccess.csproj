@@ -57,18 +57,10 @@
     <Compile Include="Contexts\SsoContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
+    <Compile Include="Gateways\RestaurantGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.Designer.cs">
-      <DependentUpon>201803201656396_seed1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\GetUsGrubContext2\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\GetUsGrubUserContext3\Configuration.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.cs" />
-    <Compile Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.Designer.cs">
-      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\UserManagement\UserContext\Configuration.cs" />
+    <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
+    <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,14 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gateways\Interfaces\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\UserManagement\GetUsGrubContext2\201803201656396_seed1.resx">
-      <DependentUpon>201803201656396_seed1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserManagement\UserContext\201803221549019_Seed1.resx">
-      <DependentUpon>201803221549019_Seed1.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Migrations\UserManagement\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">

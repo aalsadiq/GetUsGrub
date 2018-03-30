@@ -75,10 +75,6 @@
       <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.ComponentModel.Primitives">
-      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
@@ -117,10 +113,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PwnedPasswordIntegrationTest.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\AuthenticationTokenDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\LoginDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleGeocodeIntegrationTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleTimezoneIntegrationTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleTimeZoneIntegrationTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PayloadHasherUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\SaltGeneratorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\TokenServiceUnitTests.cs" />
@@ -131,7 +128,7 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\UserAccountDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\UserProfileDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\AddressValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\BusinessHourValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\BusinessHourDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\ClaimsValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\PasswordSaltValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\RestaurantProfileValidatorUnitTests.cs" />
@@ -153,7 +150,6 @@
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.BusinessLogic\CSULB.GetUsGrub.BusinessLogic.csproj">
       <Project>{82085ead-6aae-4e25-ad90-84b414f2b491}</Project>

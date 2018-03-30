@@ -18,13 +18,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         private readonly string _token;
         private readonly TokenService _tokenService;
-        private readonly SsoTokenPreLogicValidationStrategy _preLogicValidationStrategy;
+        private readonly SsoTokenValidationStrategy _ssoTokenValidationStrategy;
 
         public SsoTokenManager(string token)
         {
             _token = token;
             _tokenService = new TokenService();
-            _preLogicValidationStrategy = new SsoTokenPreLogicValidationStrategy(_token, GetSigningKey());
+            _ssoTokenValidationStrategy = new SsoTokenValidationStrategy(_token, GetSigningKey());
         }
 
         /// <summary>
@@ -42,8 +42,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             string password = "";
             string roleType = "";
 
-            // Call strategy
-            var result = _preLogicValidationStrategy.ExecuteStrategy();
+            // TODO: @Jenn Validation Strategy to check if all the required things are there?
+            // Call validation strategy
+            var result = _ssoTokenValidationStrategy.ExecuteStrategy();
             if (!result.Data)
             {
                 return new ResponseDto<UserAccountDto>()
@@ -68,34 +69,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var jwt = _tokenService.GetJwtSecurityToken(_token);
             var payload = jwt.Payload;
 
-            // Check if required information is in the payload
-            foreach (var keyValuePair in payload)
-            {
-                switch (keyValuePair.Key)
-                {
-                    case "username":
-                        username = keyValuePair.Value.ToString();
-                        break;
-                    case "password":
-                        password = keyValuePair.Value.ToString();
-                        break;
-                    case "application":
-                        if (keyValuePair.Value.ToString() != "GetUsGrub")
-                        {
-                            return new ResponseDto<UserAccountDto>()
-                            {
-                                Error = "Request does not match application name."
-                            };
-                        }
-                        break;
-                    case "roleType":
-                        roleType = keyValuePair.Value.ToString();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
             return new ResponseDto<UserAccountDto>()
             {
                 Data = new UserAccountDto(username: username, password: password, roleType: roleType)
@@ -113,6 +86,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>SymmetricSecurityKey</returns>
         private static SymmetricSecurityKey GetSigningKey()
         {
+            // TODO: @Jenn Where to hide this secret key? Also will need a new secret key [-Jenn]
             const string secretKey = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             return signingKey;

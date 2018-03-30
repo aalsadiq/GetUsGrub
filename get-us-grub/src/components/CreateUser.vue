@@ -12,7 +12,6 @@
             <v-icon>store</v-icon>
           </v-tab>
           <v-spacer/>
-          <v-tabs-slider color="pink"></v-tabs-slider>
         </v-tabs>
       </v-toolbar>
       <v-tabs-items v-model="tabs">
@@ -269,6 +268,18 @@
                 <v-stepper-content step="4">
                   <v-form v-model="validAddBusinessHour">
                     <v-select
+                      :items="timeZones"
+                      item-text="displayString"
+                      item-value="timeZoneName"
+                      v-model="timeZone"
+                      label="Select your time zone"
+                      single-line
+                      auto
+                      hide-details
+                      :rules="timeZoneRules"
+                      required
+                    ></v-select>
+                    <v-select
                       :items="dayOfWeek"
                       v-model="businessHour.day"
                       label="Select a day"
@@ -335,63 +346,6 @@
                   </ul>
                   <v-btn color="grey lighten-5" @click="restaurantStep = 3">Previous</v-btn>
                   <v-btn color="primary" :disabled="!validBusinessHourInput" @click="restaurantStep = 5">Next</v-btn>
-                </v-stepper-content>
-                <v-stepper-content step="5">
-                  <v-form v-model="validContactInput">
-                    <v-flex xs4>
-                      <v-subheader>Enter the address of your restaurant</v-subheader>
-                    </v-flex>
-                    <v-text-field
-                      label="Street 1"
-                      placeholder="1111 Snowy Rock Pl"
-                      v-model="restaurantProfile.address.street1"
-                      :rules="addressStreet1Rules"
-                      required
-                    ></v-text-field>
-                    <v-text-field
-                      label="Street 2"
-                      placeholder="Unit 2"
-                      v-model="restaurantProfile.address.street2"
-                    ></v-text-field>
-                    <v-text-field
-                      label="City"
-                      placeholder="Long Beach"
-                      v-model="restaurantProfile.address.city"
-                      required
-                    ></v-text-field>
-                    <v-select
-                      :items="states"
-                      v-model="restaurantProfile.address.state"
-                      label="Select a state"
-                      single-line
-                      auto
-                      append-icon="map"
-                      hide-details
-                      required
-                    ></v-select>
-                      <v-text-field
-                      label="Zip"
-                      placeholder="92812"
-                      :rules="addressZipRules"
-                      type="number"
-                      v-model.number="restaurantProfile.address.zip"
-                      required
-                    ></v-text-field>
-                    <v-flex xs4>
-                      <v-subheader>Enter a phone number</v-subheader>
-                    </v-flex>
-                    <v-flex xs12 sm5>
-                      <v-text-field
-                        v-model="restaurantProfile.phoneNumber"
-                        placeholder="(562)111-5555"
-                        prepend-icon="phone"
-                        :rules="phoneNumberRules"
-                        single-line
-                      ></v-text-field>
-                    </v-flex>
-                  </v-form>
-                  <v-btn color="grey lighten-5" @click="restaurantStep = 4">Previous</v-btn>
-                  <v-btn color="primary" @click.prevent="restaurantSubmit" :disabled="!validContactInput">Submit</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="5">
                   <v-form v-model="validContactInput">
@@ -597,6 +551,10 @@ export default {
       id: 9,
       question: 'What was the name of your first pet?'
     }],
+    timeZones: [{
+      displayString: '(UTC-08:00) Pacific Standard Time',
+      timeZoneName: 'Pacific Standard Time'
+    }],
     dayOfWeek: [
       'Sunday',
       'Monday',
@@ -676,7 +634,7 @@ export default {
     },
     {
       id: 14,
-      question: 'Caribbean Food'
+      category: 'Caribbean Food'
     }],
     states: [
       'CA'
@@ -717,6 +675,7 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
         restaurantProfileDto: this.restaurantProfile,
+        timeZone: this.timeZone,
         businessHourDtos: this.businessHours
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '

@@ -11,13 +11,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
-    public class SsoTokenPreLogicValidationStrategy
+    public class SsoTokenValidationStrategy
     {
         private readonly string _token;
         private readonly TokenValidationParameters _tokenValidationParameters;
-        private readonly TokenValidator _tokenValidator;
+        private readonly SsoTokenValidator _ssotokenValidator;
+        private readonly TokenService _tokenService;
 
-        public SsoTokenPreLogicValidationStrategy(string token, SymmetricSecurityKey key)
+        public SsoTokenValidationStrategy(string token, SymmetricSecurityKey key)
         {
             _token = token;
             _tokenValidationParameters = new TokenValidationParameters()
@@ -28,18 +29,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key
             };
-            _tokenValidator = new TokenValidator();
+            _ssotokenValidator = new SsoTokenValidator();
+            _tokenService = new TokenService();
         }
 
         public ResponseDto<bool> ExecuteStrategy()
         {
-            var result = _tokenValidator.CheckIfTokenIsJsonWebToken(_token);
+            var result = _ssotokenValidator.CheckIfTokenIsJsonWebToken(_token);
             if (!result.Data)
             {
                 return result;
             }
 
-            result = _tokenValidator.CheckIfSsoTokenExists(_token);
+            result = _ssotokenValidator.CheckIfSsoTokenExists(_token);
             if (result.Data)
             {
                 result.Error = "Token already exists.";
@@ -47,6 +49,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return result;
             }
 
+            result = _ssotokenValidator.ValidateJwt(_token, _tokenValidationParameters);
+            if (!result.Data)
+            {
+                return result;
+            }
+
+            // TODO: @Jenn Make a call to the SsoTokenValidator [-Jenn]
+            foreach (var key in _tokenService.GetJwtSecurityToken(_token).Payload)
+            {
+
+            }
 
             return new ResponseDto<bool>()
             {

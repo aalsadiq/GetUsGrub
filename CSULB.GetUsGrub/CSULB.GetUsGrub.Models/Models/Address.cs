@@ -10,8 +10,28 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
+    //[System.Serializable]
     public class Address : IAddress
     {
+        public Address() { }
+
+        public Address(string street1, string street2, string city, string state, int zip)
+        {
+            Street1 = street1;
+            Street2 = street2;
+            City = city;
+            State = state;
+            Zip = zip;
+        }
+
+        public Address(string street1, string city, string state, int zip)
+        {
+            Street1 = street1;
+            City = city;
+            State = state;
+            Zip = zip;
+        }
+
         [Required]
         public string Street1 { get; set; }
 

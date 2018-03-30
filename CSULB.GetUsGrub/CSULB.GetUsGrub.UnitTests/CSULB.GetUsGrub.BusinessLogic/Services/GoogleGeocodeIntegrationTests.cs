@@ -64,5 +64,25 @@ namespace CSULB.GetUsGrub.UnitTests
 
             result.Error.Should().Be(expected);
         }
+
+        [Fact]
+        public void Should_Pass_When_Geocoding_Csulb_Synchronously()
+        {
+            var service = new GoogleGeocodeService();
+            var address = new Address()
+            {
+                Street1 = "1250 Bellflower Blvd",
+                City = "Long Beach",
+                State = "CA",
+                Zip = 90840
+            };
+            var expectedLat = 33.7830608;
+            var expectedLong = -118.1148909;
+
+            var result = service.Geocode(address);
+
+            result?.Data.Latitude.Should().Equals(expectedLat);
+            result?.Data.Longitude.Should().Equals(expectedLong);
+        }
     }
 }

@@ -111,19 +111,23 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="registerUserDto">The user information that will be stored in the database.</param>
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
         // POST User/Admin/Create
-        [HttpPost]
+
         // Opts authentication
-        [Route("Admin/Create")]
+        [Route("CreateAdmin")]
         // TODO: @Angelica Change methods to POST [-Jenn]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")] 
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [HttpPost]
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
+            Debug.Write("Username is..." + registerUserDto.UserAccountDto.Username+ Environment.NewLine);
+
+            Debug.Write("In Create Admin" + Environment.NewLine);
             // Model Binding Validation
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {
                 //If mode is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                return BadRequest("Invalid model!");
             }
             try
             {
@@ -165,7 +169,7 @@ namespace CSULB.GetUsGrub.Controllers
         {
             if (user == null)
             {
-                return Ok("This user is actually null");
+                return Ok(user);
             }
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
@@ -298,6 +302,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/Admin/EditUser
         [Route("EditUser")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
@@ -306,7 +311,8 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                //return BadRequest("Something went wrong, please try again later");
+                return Ok(user);
             }
             try
             {
@@ -326,7 +332,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest("This is a bad request.");
             }
         }
     }

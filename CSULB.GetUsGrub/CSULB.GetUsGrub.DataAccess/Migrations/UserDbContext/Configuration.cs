@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
     /// Contains a seed method to populate the database with users.
     /// <para>
     /// @author: Jennifer Nguyen
-    /// @updated: 03/29/2018
+    /// @updated: 03/30/2018
     /// </para>
     /// </summary>
     internal sealed class Configuration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.UserContext>
@@ -30,7 +30,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
         /// Populates the database with number of users specified by the for-loop.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/29/2018
+        /// @updated: 03/30/2018
         /// </para>
         /// </summary>
         /// <param name="context"></param>
@@ -90,12 +90,12 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
             };
 
             // maxNumberOfUsers must be an even number
-            const int maxUsers = 20;
+            const int maxUsers = 50;
             // maxNumberOfSecurityQuestions must be 3
             const int maxClaimsPerUserClaims = 3;
             const int maxBusinessHours = 3;
             const int maxRestaurantMenus = 2;
-            const int maxRestaurantMenuItems = 10;
+            const int maxRestaurantMenuItems = 5;
 
             // Directory Paths
             const string directoryPathToUserProfileDisplayPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\ProfileImages\\";
@@ -158,7 +158,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                             Id = j,
                             UserId = i,
                             // Total of 9 security questions to choose from
-                            Question = randomizer.Next(1, 9),
+                            Question = randomizer.Next(1, 9+1),
                             Answer = $"answer{j}"
                         }
                     );
@@ -209,7 +209,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                 if (i > maxUsers / 2)
                 {
                     restaurantCounter++;
-                    var rand = randomizer.Next(0, geoCoordinates.Count - 1);
+                    var rand = randomizer.Next(0, geoCoordinates.Count);
 
                     // AddorUpdate to RestaurantProfile table
                     context.RestaurantProfiles.AddOrUpdate
@@ -230,8 +230,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                             Details = new RestaurantDetail()
                             {
                                 // 0 = $0 to $10, 1 = $10.01 to $50, 2 = $50.01+
-                                AvgFoodPrice = randomizer.Next(0, 2),
-                                FoodType = validFoodTypes[randomizer.Next(0, validFoodTypes.Count - 1)],
+                                AvgFoodPrice = randomizer.Next(0, 2+1),
+                                FoodType = validFoodTypes[randomizer.Next(0, validFoodTypes.Count)],
                                 HasReservations = true,
                                 HasDelivery = true,
                                 HasTakeOut = true,
@@ -259,7 +259,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                             {
                                 Id = j,
                                 RestaurantId = i,
-                                Day = validDayOfWeek[randomizer.Next(0, validDayOfWeek.Count - 1)],
+                                Day = validDayOfWeek[randomizer.Next(0, validDayOfWeek.Count)],
                                 OpenTime = DateTime.UtcNow,
                                 CloseTime = DateTime.UtcNow.AddHours(8)
                             }

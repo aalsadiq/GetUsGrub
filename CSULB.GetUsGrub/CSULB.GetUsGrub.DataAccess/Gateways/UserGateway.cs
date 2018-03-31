@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -33,16 +34,19 @@ namespace CSULB.GetUsGrub.DataAccess
                 try
                 {
                     var userAccount = (from account in userContext.UserAccounts
-                        where account.Username == username
-                        select account).FirstOrDefault();
+                                       where account.Username == username
+                                       select account).FirstOrDefault();
+
                     // Return a ResponseDto with a UserAccount model
                     return new ResponseDto<UserAccount>()
                     {
                         Data = userAccount
                     };
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Debug.WriteLine(ex);
+
                     return new ResponseDto<UserAccount>()
                     {
                         Data = new UserAccount(username),
@@ -121,7 +125,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         userContext.PasswordSalts.Add(passwordSalt);
 
                         // Add UserClaims
-                        userContext.Claims.Add(claims);
+                        userContext.UserClaims.Add(claims);
 
                         // Add UserProfile
                         userContext.UserProfiles.Add(userProfile);
@@ -166,9 +170,10 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
         /// <param name="restaurantProfile"></param>
+        /// <param name="businessHours"></param>
         /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, 
-            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile)
+            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours)
         {
             using (var userContext = new UserContext())
             {
@@ -211,6 +216,7 @@ namespace CSULB.GetUsGrub.DataAccess
                             var securityQuestionId = (from query in queryable
                                                       where query.Question == securityQuestions[i].Question
                                                       select query.Id).SingleOrDefault();
+
                             // Set SecurityQuestionId for SecurityAnswerSalt
                             securityAnswerSalts[i].Id = securityQuestionId;
                             // Add SecurityAnswerSalt
@@ -222,7 +228,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         userContext.PasswordSalts.Add(passwordSalt);
 
                         // Add UserClaims
-                        userContext.Claims.Add(claims);
+                        userContext.UserClaims.Add(claims);
 
                         // Add UserProfile
                         userContext.UserProfiles.Add(userProfile);
@@ -230,6 +236,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         // Add RestaurantProfile
                         userContext.RestaurantProfiles.Add(restaurantProfile);
                         userContext.SaveChanges();
+
+                        // Add BusinessHours
+                        foreach (var businessHour in businessHours)
+                        {
+                            businessHour.RestaurantId = userId;
+                            userContext.BusinessHours.Add(businessHour);
+                            userContext.SaveChanges();
+                        }
 
                         // Commit transaction to database
                         dbContextTransaction.Commit();
@@ -264,37 +278,55 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </para>
         /// </summary>
         /// <param name="userAccount"></param>
+        /// <param name="passwordSalt"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreUserAccount(UserAccount userAccount)
+        public ResponseDto<bool> StoreSsoUser(UserAccount userAccount, PasswordSalt passwordSalt)
         {
             using (var userContext = new UserContext())
             {
-                try
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
                 {
-                    userContext.UserAccounts.Add(userAccount);
-                    userContext.SaveChanges();
-                    return new ResponseDto<bool>()
+                    try
                     {
-                        Data = true
-                    };
-                }
-                catch (Exception)
-                {
-                    return new ResponseDto<bool>()
+                        // Add UserAccount
+                        userContext.UserAccounts.Add(userAccount);
+                        userContext.SaveChanges();
+
+                        // Get Id from UserAccount
+                        var userId = (from account in userContext.UserAccounts
+                            where account.Username == userAccount.Username
+                            select account.Id).SingleOrDefault();
+
+                        // Set UserId to dependencies
+                        passwordSalt.Id = userId;
+
+                        // Add PasswordSalt
+                        userContext.PasswordSalts.Add(passwordSalt);
+                        userContext.SaveChanges();
+
+                        // Commit transaction to database
+                        dbContextTransaction.Commit();
+
+                        // Return true ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
+                    }
+                    catch (Exception)
                     {
-                        Data = false,
-                        Error = "Something went wrong. Please try again later."
-                    };
+                        // Rolls back the changes saved in the transaction
+                        dbContextTransaction.Rollback();
+                        // Return false ResponseDto
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
+                    }
                 }
-                
             }
         }
-
-        public void Dispose()
-        {
-            //throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Will deactivate user by username by changing IsActive to false.
         /// </summary>
@@ -412,56 +444,92 @@ namespace CSULB.GetUsGrub.DataAccess
             {
                 try
                 {
+                    Debug.WriteLine("Inside userGateway!");
                     //Queries for the user account based on username.
-                    var userAccount = new ResponseDto<UserAccount>();
-                    userAccount = GetUserByUsername(username);
+
+                    //var userAccount = GetUserByUsername(username);
+                    //Queries for the user account based on username.
+                    var userAccount = (from account in userContext.UserAccounts
+                                        where account.Username == username
+                                        select account).SingleOrDefault();
                     //If user account is null it will return a response dto
-                    if (userAccount == null)
+                    Debug.WriteLine("The user name is...." + userAccount.Username);
+                    if (userAccount== null || userAccount.Username != username)
                     {
                         //Will return a false ResponseDto<bool> if userAccount is null.
                         return new ResponseDto<bool>()
                         {
                         Data = false,//Bool
-                        Error = "Something went wrong. Please try again later."//The error.
+                        Error = "In deleteuser-gateway"//The error.Something went wrong. Please try again later.
                         };
                     }
                     //Call delete security answer salt
-                    DeleteSecurityAnswerSaltByUserame(username);
+                   var deleteSecurityAnswerResponse = DeleteSecurityAnswerSaltByUserame(username);
+                    Debug.Write("After Security Answer Salt" + Environment.NewLine);
 
                     //Call delete security question
-                    DeleteSecurityQuestionByUsername(username);
-
+                   var deleteSecurityQuestionResponse = DeleteSecurityQuestionByUsername(username);
+                    Debug.Write("After Security Question" + Environment.NewLine);
                     //Call delete password salt
-                    DeletePasswordSaltByUsername(username);
+                    var deletePasswordSaltResponse = DeletePasswordSaltByUsername(username);
+                    Debug.Write("After Password Salt!" + Environment.NewLine);
 
                     //Call delete token
-                    DeleteTokenByUsername(username);
+                    var deleteTokenResponse = DeleteTokenByUsername(username);
+                    Debug.Write("After Token!" + Environment.NewLine);
 
                     //call delete restaurant menu items
-                    DeleteRestaurantMenuItemsByUsername(username);
+                    var deleteRestaurantMenuItemResponse = DeleteRestaurantMenuItemsByUsername(username);
+                    Debug.Write("Restaurant Menu Item" + Environment.NewLine);
 
                     //Call delete restaurant menus
-                    DeleteRestaurantMenusByUsername(username);
+                    var deleteRestaurantMenuResponse = DeleteRestaurantMenusByUsername(username);
+                    Debug.Write("Restaurant Menu!" + Environment.NewLine);
 
                     //Call delete business hours
-                    DeleteBusinessHoursByUsername(username);
+                    var deleteBusinessHoursResponse = DeleteBusinessHoursByUsername(username);
+                    Debug.Write("Hours" + Environment.NewLine);
 
                     //Call delete restaurant profile
-                    DeleteRestaurantProfileByUsername(username);
+                    var deleteRestaurantProfileResponse = DeleteRestaurantProfileByUsername(username);
+                    Debug.Write("Restaurant Profile" + Environment.NewLine);
 
                     //Call delete profiles
-                    DeleteUserProfilesByUsername(username);
+                    var deleteUserProfileResponse = DeleteUserProfilesByUsername(username);
+                    Debug.Write("Profile" + Environment.NewLine);
 
                     //Call delete claims
-                    DeleteUserClaimsByUsername(username);
+                    var deleteUserClaimResponse = DeleteUserClaimsByUsername(username);
+                    Debug.Write("Claim" + Environment.NewLine);
 
                     //Call delete user account
-                    DeleteUserAccount(username);
+                    var deleteUserAccountResponse = DeleteUserAccount(username);
+                    Debug.Write("Account" + Environment.NewLine);
 
-                    //Return true if transaction did not fail.
+                    if(deleteSecurityAnswerResponse.Data == true &&
+                        deleteSecurityQuestionResponse.Data == true &&
+                        deletePasswordSaltResponse.Data == true &&
+                        deleteTokenResponse.Data == true &&
+                        deleteRestaurantMenuItemResponse.Data == true &&
+                        deleteRestaurantMenuResponse.Data == true &&
+                        deleteBusinessHoursResponse.Data == true &&
+                        deleteRestaurantProfileResponse.Data == true &&
+                        deleteUserProfileResponse.Data == true &&
+                        deleteUserClaimResponse.Data == true &&
+                        deleteUserAccountResponse.Data == true
+                        )
+                    {
+                        //Return true if transaction did not fail.
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true//Bool
+                        };
+                    }
+
                     return new ResponseDto<bool>()
                     {
-                        Data = true//Bool
+                        Data = false,//Bool
+                        Error = "deleteuser-gateway2"//The error.
                     };
                 }
                 catch (Exception)
@@ -470,7 +538,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     return new ResponseDto<bool>()
                     {
                         Data = false,//Bool
-                        Error = "Something went wrong. Please try again later."//The error.
+                        Error = "deleteuser-gateway3"//The error.
                     };
                 }
             }  
@@ -555,6 +623,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
+                        Debug.Write("Inside Delete Security Salt by username" + Environment.NewLine);
                         //Queries for the user account based on username.
                         var userAccount = GetUserByUsername(username);
                         //Check if user account is null
@@ -569,13 +638,19 @@ namespace CSULB.GetUsGrub.DataAccess
                         }
                         //Queries for the users security answer salt based on user account id and security answer salt user id.
                         var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
-                                                      where securityAnswerSalt.Id == userAccount.Data.Id
-                                                      select securityAnswerSalt).FirstOrDefault();
+                                                      join securityQuestion in userContext.SecurityQuestions
+                                                      on securityAnswerSalt.Id equals securityQuestion.Id
+                                                      where securityQuestion.UserId == userAccount.Data.Id
+                                                      select securityAnswerSalt);
                         //Checks if security answer salt result is null, if not then delete from database.
                         if (userSecurityAnswerSalt != null)
                         {
-                            //Delete security answer salt
-                            userContext.SecurityAnswerSalts.Remove(userSecurityAnswerSalt);
+                            foreach (var answers in userSecurityAnswerSalt)
+                            {
+                                //Delete security answer salt
+                                Debug.Write("Inside Delete Security Salt by username"  + answers + Environment.NewLine);
+                                userContext.SecurityAnswerSalts.Remove(answers);
+                            }
                         }
                         //save changes to the database
                         userContext.SaveChanges();
@@ -633,13 +708,17 @@ namespace CSULB.GetUsGrub.DataAccess
                         //Queries for the users security answer salt based on user account id and security answer salt user id.
                         var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
                                                       where securityAnswerSalt.Id == userAccount.Data.Id
-                                                      select securityAnswerSalt).FirstOrDefault();
+                                                      select securityAnswerSalt).ToList();
 
                         //Checks if security answer salt result is null, if not then delete from database.
                         if (userSecurityAnswerSalt != null)
                         {
-                            //Delete security answer salts
-                            userContext.SecurityAnswerSalts.Remove(userSecurityAnswerSalt);
+
+                            //Delete security questions
+                            foreach (var securityQuestionSalt in userSecurityAnswerSalt)
+                            {
+                                userContext.SecurityAnswerSalts.Remove(securityQuestionSalt);
+                            }
                         }
                         //save changes to the database
                         userContext.SaveChanges();
@@ -695,16 +774,20 @@ namespace CSULB.GetUsGrub.DataAccess
                         }
                         //Checks if security question result is null, if not then delete from database.
                         var userSecurityQuestion = (from securityQuestion in userContext.SecurityQuestions
-                                                    where securityQuestion.Id == userAccount.Data.Id
-                                                    select securityQuestion).FirstOrDefault();
+                                                    where securityQuestion.UserId == userAccount.Data.Id
+                                                    select securityQuestion).ToList();
                         //Checks if security question result is null, if not then delete from database.
                         if (userSecurityQuestion != null)
                         {
                             //Delete security questions
-                            userContext.SecurityQuestions.Remove(userSecurityQuestion);
+                            foreach (var question in userSecurityQuestion)
+                            {
+                                userContext.SecurityQuestions.Remove(question);
+                                //save changes to the database
+                                userContext.SaveChanges();
+                            }
                         }
-                        //save changes to the database
-                        userContext.SaveChanges();
+
                         //commit transaction
                         dbContextTransaction.Commit();
                         //Return true transaction did not fail.
@@ -822,14 +905,14 @@ namespace CSULB.GetUsGrub.DataAccess
                             };
                         }
                         //Queries for the users tokens based on user account id and token user id.
-                        var userTokens = (from tokens in userContext.Tokens
+                        var userTokens = (from tokens in userContext.AuthenticationTokens
                                           where tokens.Id == userAccount.Data.Id
                                           select tokens).FirstOrDefault();
                         //Checks if tokens result is null, if not then delete from database.
                         if (userTokens != null)
                         {
                             //Delete Tokens
-                            userContext.Tokens.Remove(userTokens);
+                            userContext.AuthenticationTokens.Remove(userTokens);
                         }
                         //save changes to the database
                         userContext.SaveChanges();
@@ -1013,14 +1096,14 @@ namespace CSULB.GetUsGrub.DataAccess
                             };
                         }
                         //Queries for the users business hours based on user account id and business hours user id.
-                        var userBusinessHours = (from businessHours in userContext.BussinessHours
+                        var userBusinessHours = (from businessHours in userContext.BusinessHours
                                                  where businessHours.Id == userAccount.Data.Id
                                                  select businessHours).FirstOrDefault();
                         //Checks if business hours result is null, if not then delete from database.
                         if (userBusinessHours != null)
                         {
                             //Delete Business hours
-                            userContext.BussinessHours.Remove(userBusinessHours);
+                            userContext.BusinessHours.Remove(userBusinessHours);
                         }
                         //save changes to the database
                         userContext.SaveChanges();
@@ -1204,14 +1287,14 @@ namespace CSULB.GetUsGrub.DataAccess
                             };
                         }
                         //Queries for the users claims based on user account id and claims user id.
-                        var userClaims = (from claims in userContext.Claims
+                        var userClaims = (from claims in userContext.UserClaims
                                           where claims.Id == userAccount.Data.Id
                                           select claims).FirstOrDefault();
                         //Checks if claims result is null, if not then delete from database.
                         if (userClaims != null)
                         {
                             //Delete user claims
-                            userContext.Claims.Remove(userClaims);
+                            userContext.UserClaims.Remove(userClaims);
                         }
                         //save changes to the database
                         userContext.SaveChanges();
@@ -1256,14 +1339,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var userAccount = (from account in userContext.UserAccounts
                                         where account.Username == user.Username
                                         select account).SingleOrDefault();
-                    //Create Response Dto.
-                    var resetPasswordResult = new ResponseDto<bool>();
-                    //Check if new password is not null and if it does not equal the password the user currently has.
-                    if (user.NewPassword != null && user.NewPassword != userAccount.Password)
-                    {
-                        //Set ResponseDto equal to the ResponseDto from ResetPassword.
-                        resetPasswordResult = ResetPassword(user.Username, user.NewPassword);
-                    }
+
                     //Create Response Dto.
                     var editDisplayNameResult = new ResponseDto<bool>();
                     //Check if displayname is not null and if it does not equal to the display name the user currently has.
@@ -1281,7 +1357,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         editUserNameResult = EditUserName(user.Username, user.NewUsername);
                     }
                     //If the ResponseDto.Data is true then return true.
-                    if (resetPasswordResult.Data == true || editDisplayNameResult.Data == true || editUserNameResult.Data == true)
+                    if (editDisplayNameResult.Data == true || editUserNameResult.Data == true) 
                     {
                         //Return ResponseDto
                         return new ResponseDto<bool>()
@@ -1454,6 +1530,10 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
             }
         }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
     }
 }
-

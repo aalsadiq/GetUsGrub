@@ -21,13 +21,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = "CA",
-                Zip = 90840
-            };
+            var address = new Address("1250 Bellflower Blvd", "Long Beach", "CA", 90840);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -42,13 +36,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "",
-                City = "Long Beach",
-                State = "CA",
-                Zip = 90840
-            };
+            var address = new Address("", "Long Beach", "CA", 90840);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -66,13 +54,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = null,
-                City = "Long Beach",
-                State = "CA",
-                Zip = 90840
-            };
+            var address = new Address(null, "Long Beach", "CA", 90840);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -91,13 +73,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "",
-                State = "CA",
-                Zip = 90840
-            };
+            var address = new Address("1250 Bellflower Blvd", "", "CA", 90840);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -115,13 +91,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = null,
-                State = "CA",
-                Zip = 90840
-            };
+            var address = new Address("1250 Bellflower Blvd", null, "CA", 90840);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -140,13 +110,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = "",
-                Zip = 90840
-            };
+            var address = new Address("1250 Bellflower Blvd", "Long Beach", "", 90840);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -165,13 +129,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = null,
-                Zip = 90840
-            };
+            var address = new Address("1250 Bellflower Blvd", "Long Beach", null, 90840);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -190,13 +148,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = "NY",
-                Zip = 90840
-            };
+            var address = new Address("1250 Bellflower Blvd", "Long Beach", "NY", 90840);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -209,17 +161,15 @@ namespace CSULB.GetUsGrub.UnitTests
             errors[0].ToString().Should().Be("State must be CA.");
         }
 
+
+        // @jenn Constructor will enforce that Zip is provided.
+        /*
         [Fact]
         public void Should_FailValidationWithMessage_When_ZipIsEmpty()
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = "CA",
-            };
+            var address = new Address("1250 Bellflower Blvd", "Long Beach", "CA");
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
@@ -232,20 +182,14 @@ namespace CSULB.GetUsGrub.UnitTests
             errors[0].ToString().Should().Be("Address needs a zip code.");
             errors[1].ToString().Should().Be("Zip code must contain 5 numbers.");
         }
+        */
 
         [Fact]
         public void Should_FailValidationWithMessage_When_ZipIsGreaterThan5DigitsLong()
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = "CA",
-                Zip = 100000
-            };
-
+            var address = new Address("1250 Bellflower Blvd", "Long Beach", "CA", 100000);
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");
             var isValid = result.IsValid;
@@ -262,13 +206,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var addressValidator = new AddressValidator();
-            var address = new Address()
-            {
-                Street1 = "1250 Bellflower Blvd",
-                City = "Long Beach",
-                State = "CA",
-                Zip = 0001
-            };
+            var address = new Address("1250 Bellflower Blvd", "Long Beach", "CA", 0001);
 
             // Act
             var result = addressValidator.Validate(address, ruleSet: "CreateUser");

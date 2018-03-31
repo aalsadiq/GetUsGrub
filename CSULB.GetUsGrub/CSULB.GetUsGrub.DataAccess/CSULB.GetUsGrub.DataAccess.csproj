@@ -54,9 +54,14 @@
     <Compile Include="Contexts\AuthorizationContext.cs" />
     <Compile Include="Contexts\IndividualProfileContext.cs" />
     <Compile Include="Contexts\RestaurantContext.cs" />
+    <Compile Include="Contexts\SsoContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\RestaurantBillSplitterGateway.cs" />
+    <Compile Include="Gateways\AuthenticationGateway.cs" />
+    <Compile Include="Gateways\RestaurantGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
+    <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
+    <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Migrations\UserManagement\GetUsGrubUserContext\201803220916040_Ryanseed.cs" />
     <Compile Include="Migrations\UserManagement\GetUsGrubUserContext\201803220916040_Ryanseed.Designer.cs">
       <DependentUpon>201803220916040_Ryanseed.cs</DependentUpon>
@@ -110,6 +115,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gateways\Interfaces\" />
+    <Folder Include="Migrations\UserManagement\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">

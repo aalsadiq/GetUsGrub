@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.SecurityAnswerSalt")]
-    public class SecurityAnswerSalt
+    public class SecurityAnswerSalt : IEntity
     {
         [Key]
         [ForeignKey("SecurityQuestion")]

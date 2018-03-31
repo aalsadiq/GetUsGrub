@@ -1,8 +1,5 @@
 ﻿using CSULB.GetUsGrub.Models;
-using FluentValidation;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -17,9 +14,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     public class CreateIndividualPreLogicValidationStrategy
     {
         private readonly RegisterUserDto _registerUserDto;
-        private readonly UserAccountDtoValidator _userAccountDtoValidator;
         private readonly SecurityQuestionDtoValidator _securityQuestionDtoValidator;
-        private readonly UserProfileDtoValidator _userProfileDtoValidator;
         private readonly UserValidator _userValidator;
 
         /// <summary>
@@ -33,9 +28,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public CreateIndividualPreLogicValidationStrategy(RegisterUserDto registerUserDto)
         {
             _registerUserDto = registerUserDto;
-            _userAccountDtoValidator = new UserAccountDtoValidator();
             _securityQuestionDtoValidator = new SecurityQuestionDtoValidator();
-            _userProfileDtoValidator = new UserProfileDtoValidator();
             _userValidator = new UserValidator();
         }
 
@@ -44,89 +37,60 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// Contains the logic to validate a data transfer object for creating an individual user.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
+        /// @updated: 03/20/2018
         /// </para>
         /// </summary>
         /// <returns>ResponseDto</returns>
-        public ResponseDto<RegisterUserDto> ExecuteStrategy()
+        public ResponseDto<bool> ExecuteStrategy()
         {
-            // Validate UserAccountDto
-            var validationResult = _userAccountDtoValidator.Validate(_registerUserDto.UserAccountDto, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
+            ResponseDto<bool> result;
+
+            var validationWrappers = new List<IValidationWrapper>()
             {
-                var errorsList = new List<string>();
-                validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
-                var errors = JsonConvert.SerializeObject(errorsList);
-                return new ResponseDto<RegisterUserDto>
-                {
-                    Data = _registerUserDto,
-                    Error = JsonConvert.SerializeObject(errors)
-                };
+                new ValidationWrapper<UserAccountDto>(_registerUserDto.UserAccountDto, "CreateUser", new UserAccountDtoValidator()),
+                new ValidationWrapper<UserProfileDto>(_registerUserDto.UserProfileDto, "CreateUser", new UserProfileDtoValidator())
+
+            };
+            
+            foreach (var securityQuestionDto in _registerUserDto.SecurityQuestionDtos)
+            {
+                validationWrappers.Add(new ValidationWrapper<SecurityQuestionDto>(securityQuestionDto, "CreateUser", _securityQuestionDtoValidator));
             }
 
-            // Validate SecurityQuestionDtos
-            foreach (var securityQuestion in _registerUserDto.SecurityQuestionDtos)
+            foreach (var validationWrapper in validationWrappers)
             {
-                var errorsList = new List<string>();
-                validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
-                var errors = JsonConvert.SerializeObject(errorsList);
-                validationResult = _securityQuestionDtoValidator.Validate(securityQuestion, ruleSet: "CreateUser");
-                if (!validationResult.IsValid)
+                result = validationWrapper.ExecuteValidator();
+                if (!result.Data)
                 {
-                    return new ResponseDto<RegisterUserDto>
-                    {
-                        Data = _registerUserDto,
-                        Error = JsonConvert.SerializeObject(errors)
-                    };
+                    return result;
                 }
             }
 
-            // Validate UserProfileDto
-            validationResult = _userProfileDtoValidator.Validate(_registerUserDto.UserProfileDto, ruleSet: "CreateUser");
-            if (!validationResult.IsValid)
+            // Validate username and display name are not equal
+            result = _userValidator.CheckIfUsernameEqualsDisplayName(_registerUserDto.UserAccountDto.Username, _registerUserDto.UserProfileDto.DisplayName);
+            if (result.Data)
             {
-                var errorsList = new List<string>();
-                validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
-                var errors = JsonConvert.SerializeObject(errorsList);
-                return new ResponseDto<RegisterUserDto>
+                if (result.Error == null)
                 {
-                    Data = _registerUserDto,
-                    Error = JsonConvert.SerializeObject(errors)
-                };
+                    result.Error = "Username must not be the same as display name.";
+                }
+                return result;
             }
 
-            // Validate username and display name are not equal
-            var result = _userValidator.CheckIfUsernameEqualsDisplayName(_registerUserDto.UserAccountDto.Username, _registerUserDto.UserProfileDto.DisplayName);
-            if (result.Error != null)
-            {
-                return new ResponseDto<RegisterUserDto>()
-                {
-                    Data = _registerUserDto,
-                    Error = result.Error
-                };
-            }
-            else if (result.Data)
-            {
-                return new ResponseDto<RegisterUserDto>
-                {
-                    Data = _registerUserDto,
-                    Error = "Username must not be the same as display name."
-                };
-            }
             // Validate user does not exist
             result = _userValidator.CheckIfUserExists(_registerUserDto.UserAccountDto.Username);
             if (result.Data)
             {
-                return new ResponseDto<RegisterUserDto>
+                if (result.Error == null)
                 {
-                    Data = _registerUserDto,
-                    Error = "Username is already used."
-                };
+                    result.Error = "Username is already used.";
+                }
+                return result;
             }
 
-            return new ResponseDto<RegisterUserDto>
+            return new ResponseDto<bool>()
             {
-                Data = _registerUserDto
+                Data = true
             };
         }
     }

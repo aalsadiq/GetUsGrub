@@ -1,103 +1,45 @@
 <template>
   <div>
+      {{ responseData }}
     <app-admin-header/>
-    <!-- <v-container id="choose-your-user" fluid>
-    </v-container> -->
-    <v-layout>
-      <!-- <v-flex xs5 sm3 offset-sm3> -->
-      <v-flex xs15>
-        <h1>Choose your user</h1>
-        <v-btn v-on:click="viewUserRequirements" id ="user-button" color="info">User</v-btn>
-        <v-btn v-on:click="viewRestaurantRequirements" id ="restaurant-button" color="info">Restaurant</v-btn>
-        <!-- <v-btn v-on:click="viewAdminRequirements" id ="admin-button" color="info">Admin</v-btn> -->
-      </v-flex>
-    </v-layout>
-      <v-flex sm2 offset-sm5>
-        <h2>Input User To Edit</h2>
-          <v-form v-model="validIdentificationInput">
-            <v-text-field label="username" v-model="username" :rules="usernameRules" required ></v-text-field>
-          </v-form>
-      </v-flex>
-      <v-container fluid grid-list-md>
-      <v-layout row wrap>
-        <v-flex sm2 offset-sm5>
-          <v-card-text>
-            <h1> New User Information</h1>
-            <app-user-validations/>
-            <div v-if="check">
-              <h1>Additional Restaurant requireinformation</h1>
-              <app-restaurant-validations/>
-              <v-spacer/>
+    <v-flex xs15order-lg2>
+      <h1>Select your user!</h1>
+      <v-btn v-on:click="editUserAccountButton" id ="editUserAccount-button" color="info">Edit User Account</v-btn>
+      <v-btn v-on:click="editUserProfileButton" id ="editUserProfile-button" color="info">Edit User Profile Profile</v-btn>
+          <div v-if="check===false">
+            <app-user-validations-not-required :viewType="submitType"/>
             </div>
-            <v-btn id ="submit-button" color="warning" v-on:click="userSubmit">Submit</v-btn>
-          </v-card-text>
-        </v-flex>
-      </v-layout>
-    </v-container>
+          <div v-else>
+            {{ 'Call Profile vue... '}}
+          </div>
+    </v-flex>
     <app-footer/>
   </div>
 </template>
 
 <script>
-import AppAdminHeader from '@/components/AdminUserManagement/AdminHeader'
+import AppCreateUser from '@/components/CreateUser'
+import AdminHeader from '@/components/AdminUserManagement/AdminHeader'
 import AppFooter from '@/components/AppFooter'
-import AppUserTextBox from '@/components/AdminUserManagement/UserTextBox'
-import AppUserValidations from '@/components/AdminUserManagement/UserValidations'
-import AppRestaurantValidations from '@/components/AdminUserManagement/RestaurantValidations'
-import axios from 'axios'
+import UserValidationsNoRequiredFields from '@/components/AdminUserManagement/UserValidationNoRequiredFields'
 export default {
-  name: 'AdminHome',
+  name: 'CreateUser',
   components: {
-    'app-admin-header': AppAdminHeader,
+    'app-create-user': AppCreateUser,
+    'app-admin-header': AdminHeader,
     'app-footer': AppFooter,
-    'app-user-text-box': AppUserTextBox,
-    'app-user-validations': AppUserValidations,
-    'app-restaurant-validations': AppRestaurantValidations
+    'app-user-validations-not-required': UserValidationsNoRequiredFields
   },
   data: () => ({
     check: false,
-    validIdentificationInput: false,
-    userAccount: {
-      username: '',
-      displayname: '',
-      password: '',
-      street1: '',
-      street2: '',
-      city: '',
-      zip: '',
-      phone: '',
-      businesshours: ''
-    },
-    usernameRules: [
-      username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-    ]
+    submitType: 'EditUser'
   }),
   methods: {
-    viewRestaurantRequirements: function () {
+    editUserAccountButton: function () {
+      this.check = false
+    },
+    editUserProfileButton: function () {
       this.check = true
-    },
-    viewUserRequirements: function () {
-      this.check = false
-    },
-    viewAdminRequirements: function () {
-      this.check = false
-    },
-    checkbox: function () {
-      this.checkbox = !this.checkbox
-    },
-    userSubmit () {
-      axios.put('http://localhost:8081/User/Admin/EditUser', {
-        editUser: this.userAccount
-      }).then(response => {
-        this.responseDataStatus = 'Success! User has been created: '
-        this.responseData = response.data
-        console.log(response)
-      }).catch(error => {
-        this.responseDataStatus = 'An error has occurred: '
-        this.responseData = error.response.data
-        console.log(error.response.data)
-      })
     }
   }
 }

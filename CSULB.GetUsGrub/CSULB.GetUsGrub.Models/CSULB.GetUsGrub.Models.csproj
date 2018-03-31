@@ -44,10 +44,6 @@
       <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.ComponentModel.Primitives">
-      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -63,6 +59,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\ClaimConverter.cs" />
+    <Compile Include="DTOs\AuthenticationTokenDto.cs" />
+    <Compile Include="DTOs\LoginDto.cs" />
+    <Compile Include="DTOs\BusinessHourDto.cs" />
+    <Compile Include="DTOs\SelectedRestaurantDto.cs" />
+    <Compile Include="Models\GeoCoordinates.cs" />
+    <Compile Include="Models\Interfaces\IAddress.cs" />
+    <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
+    <Compile Include="DTOs\PasswordSaltDto.cs" />
     <Compile Include="DTOs\EditUserDto.cs" />
     <Compile Include="DTOs\RegisterRestaurantDto.cs" />
     <Compile Include="DTOs\RegisterUserDto.cs" />
@@ -74,12 +79,15 @@
     <Compile Include="DTOs\UserAccountDto.cs" />
     <Compile Include="DTOs\UserProfileDto.cs" />
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\AuthenticationToken.cs" />
     <Compile Include="Models\BusinessHour.cs" />
     <Compile Include="Models\Interfaces\IBusinessHour.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
     <Compile Include="DTOs\RestaurantMenuWithItems.cs" />
+    <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
-    <Compile Include="Models\Token.cs" />
+    <Compile Include="Models\SsoToken.cs" />
+    <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />
@@ -88,19 +96,20 @@
     <Compile Include="Models\Interfaces\IProfile.cs" />
     <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />
     <Compile Include="Models\Interfaces\IRestaurantMenu.cs" />
+    <Compile Include="Models\FailedAttempts.cs" />
     <Compile Include="Models\Interfaces\IRestaurantProfile.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestionsList.cs" />
     <Compile Include="Models\Interfaces\IToken.cs" />
     <Compile Include="Models\Interfaces\IUserAccount.cs" />
     <Compile Include="Models\PasswordSalt.cs" />
-    <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\RestaurantMenu.cs" />
     <Compile Include="Models\RestaurantMenuItem.cs" />
     <Compile Include="Models\RestaurantProfile.cs" />
     <Compile Include="Models\SecurityQuestion.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DTOs\RestaurantSelectionDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -13,6 +14,12 @@ namespace CSULB.GetUsGrub.Models
     public class RegisterRestaurantDto : RegisterUserDto
     {
         [Required]
+        public string TimeZone { get; set; }
+
+        [Required]
         public RestaurantProfileDto RestaurantProfileDto { get; set; }
+
+        [Required]
+        public IList<BusinessHourDto> BusinessHourDtos { get; set; }
     }
 }

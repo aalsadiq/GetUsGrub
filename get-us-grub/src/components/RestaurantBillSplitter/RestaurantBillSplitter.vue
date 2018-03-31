@@ -36,33 +36,37 @@ export default {
   },
   data () {
     return {
-      restaurantDisplayName: this.$store.state.restaurantDisplayName
+      restaurantDisplayName: '',
+      restaurantLatitude: null,
+      restaurantLongitude: null
     }
   },
   created () {
-    //console.log(this.$store.state.restaurantDisplayName)
-    //console.log(this.$store.state.restaurantLatitude)
-    //console.log(this.$store.state.restaurantLongitude)
-    //if (this.$store.state.isAuthenticated) {
-    //console.log('Authenticated')
-    //axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
-    //  headers: {
-    //    'Access-Control-Allow-Origin': '*'
-    //  },
-    //  DisplayName: this.$store.state.restaurantDisplayName,
-    //  Latitude: this.$store.state.restaurantLatitude,
-    //  Longitude: this.$store.state.restaurantLongitude
-    //}).then(response => {
-    //  console.log('GET Success!')
-    //  // this.responseDataStatus = 'Success! Restaurant Menus have been get: '
-    //  // this.responseData = response.data
-    //  // console.log(response)
-    //}).catch(error => {
-    //  this.responseDataStatus = 'An error has occurred: '
-    //  this.responseData = error.response.data
-    //  console.log(error.response.data)
-    //})
-    //}
+    this.restaurantDisplayName = this.$store.state.restaurantDisplayName
+    this.restaurantLatitude = this.$store.state.restaurantLatitude
+    this.restaurantLongitude = this.$store.state.restaurantLongitude
+    if (this.$store.state.isAuthenticated) {
+      console.log('Authenticated')
+      axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        },
+        params: {
+          DisplayName: this.restaurantDisplayName,
+          Latitude: this.restaurantLatitude,
+          Longitude: this.restaurantLongitude
+        }
+      }).then(response => {
+        console.log(response)
+        // this.responseDataStatus = 'Success! Restaurant Menus have been get: '
+        // this.responseData = response.data
+        // console.log(response)
+      }).catch(error => {
+        this.responseDataStatus = 'An error has occurred: '
+        this.responseData = error.response.data
+        console.log(error.response.data)
+      })
+    }
   },
   methods: {
     GetRestaurantMenus: function () {

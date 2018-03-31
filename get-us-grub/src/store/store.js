@@ -9,8 +9,12 @@ export const store = new Vuex.Store({
     restaurantLatitude: '1.11',
     restaurantLongitude: '1.11',
     uniqueUserCounter: 0,
-    MenuItems: [
-    ],
+    Menus: [
+      {
+        MenuItems: [
+        ],
+      }
+    ],    
     BillItems: [
     ],
     BillUsers: [

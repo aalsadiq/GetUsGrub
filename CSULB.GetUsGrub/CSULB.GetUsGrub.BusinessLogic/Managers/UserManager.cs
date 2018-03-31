@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.DataAccess.Gateways;
+﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSULB.GetUsGrub.BusinessLogic.Managers
+namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
     /// Manager that will handel CRUD.
@@ -44,10 +44,10 @@ namespace CSULB.GetUsGrub.BusinessLogic.Managers
         /// <returns></returns>
         public bool ReactivateUser(string username)
         {
-            using (var gateway = new UserGateway())
+            /*using (var gateway = new UserGateway())
             {
                 return gateway.ReactivateUser(username);
-            }
+            }*/
         }
 
         /// <summary>
@@ -59,10 +59,10 @@ namespace CSULB.GetUsGrub.BusinessLogic.Managers
         /// <returns></returns>
         public bool DeleteUser(string username)//RegisterRestaurantUserDto
         {
-            using (var gateway = new UserGateway())
+            /*using (var gateway = new UserGateway())
             {
                 return gateway.DeleteUser(username);
-            }
+            }*/
         }
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace CSULB.GetUsGrub.BusinessLogic.Managers
         /// <returns></returns>
         public RegisterUserDto EditUser(RegisterUserDto user)//RegisterRestaurantUserDto
         {
-            using (var gateway = new UserGateway())
+            /*using (var gateway = new UserGateway())
             {
                 return gateway.EditUser(user);//will return edited user
-            }
+            }*/
         }
 
         /// <summary>
@@ -89,10 +89,10 @@ namespace CSULB.GetUsGrub.BusinessLogic.Managers
         /// <returns></returns>
         public RegisterRestaurantDto EditRestaurant(RegisterRestaurantDto user)//RegisterRestaurantUserDto
         {
-            using (var gateway = new UserGateway())
+            /*using (var gateway = new UserGateway())
             {
                 return gateway.EditRestaurant(user);//will return edited user...
-            }
+            }*/
         }
     }
 }

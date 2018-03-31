@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.BusinessLogic.Managers;
+﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;

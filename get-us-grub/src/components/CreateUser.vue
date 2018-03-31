@@ -12,7 +12,6 @@
             <v-icon>store</v-icon>
           </v-tab>
           <v-spacer/>
-          <v-tabs-slider color="pink"></v-tabs-slider>
         </v-tabs>
       </v-toolbar>
       <v-tabs-items v-model="tabs">
@@ -130,7 +129,7 @@
                 <v-divider></v-divider>
                 <v-stepper-step step="2" :complete="restaurantStep > 2">Security Questions</v-stepper-step>
                 <v-divider></v-divider>
-                <v-stepper-step step="3" :complete="restaurantStep > 3">Business Hours</v-stepper-step>
+                <v-stepper-step step="3" :complete="restaurantStep > 3">Restaurant Details</v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step step="4" :complete="restaurantStep > 4">Business Hours</v-stepper-step>
                 <v-divider></v-divider>
@@ -231,7 +230,55 @@
                   <v-btn color="primary" :disabled="!validSecurityInput" @click="restaurantStep = 3">Next</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="3">
+                  <v-form v-model="validRestaurantDetailsInput">
+                    <v-flex xs12>
+                      <v-select
+                        :items="foodCategories"
+                        item-text="category"
+                        item-value="category"
+                        v-model="restaurantProfile.details.category"
+                        label="Select a food category"
+                        single-line
+                        auto
+                        prepend-icon="restaurant"
+                        hide-details
+                        :rules="foodCategoryRules"
+                        required
+                      ></v-select>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-select
+                        :items="avgFoodPrices"
+                        item-text="price"
+                        item-value="id"
+                        v-model="restaurantProfile.details.avgFoodPrice"
+                        label="Select average food price"
+                        single-line
+                        auto
+                        prepend-icon="money"
+                        hide-details
+                        :rules="avgFoodPriceRules"
+                        required
+                      ></v-select>
+                    </v-flex>
+                  </v-form>
+                  <v-btn color="grey lighten-5" @click="restaurantStep = 2">Previous</v-btn>
+                  <v-btn color="primary" :disabled="!validRestaurantDetailsInput" @click="restaurantStep = 4">Next</v-btn>
+                </v-stepper-content>
+                <v-stepper-content step="4">
                   <v-form v-model="validAddBusinessHour">
+                    <v-select
+                      :items="timeZones"
+                      item-text="displayString"
+                      item-value="timeZoneName"
+                      v-model="timeZone"
+                      label="Select your time zone"
+                      single-line
+                      auto
+                      hide-details
+                      :rules="timeZoneRules"
+                      required
+                    ></v-select>
                     <v-select
                       :items="dayOfWeek"
                       v-model="businessHour.day"
@@ -239,6 +286,7 @@
                       single-line
                       auto
                       hide-details
+                      :rules="businessDayRules"
                       required
                     ></v-select>
                     <v-menu
@@ -259,6 +307,7 @@
                         label="Select opening time (24hr format)"
                         v-model="businessHour.openTime"
                         prepend-icon="access_time"
+                        :rules="openTimeRules"
                         readonly
                         required
                       ></v-text-field>
@@ -282,6 +331,7 @@
                         label="Select closing time (24hr format)"
                         v-model="businessHour.closeTime"
                         prepend-icon="access_time"
+                        :rules="closeTimeRules"
                         readonly
                         required
                       ></v-text-field>
@@ -290,69 +340,12 @@
                   </v-form>
                   <v-btn @click.prevent="add" :disabled="!validAddBusinessHour">Add</v-btn>
                   <ul class="list-group">
-                      <li v-for="storeHour in restaurantProfile.businessHours" :key="storeHour" class="list-group-item">
+                      <li v-for="storeHour in businessHours" :key="storeHour" class="list-group-item">
                           {{ storeHour.day }}: {{ storeHour.openTime }} - {{ storeHour.closeTime }}
                       </li>
                   </ul>
-                  <v-btn color="grey lighten-5" @click="restaurantStep = 2">Previous</v-btn>
-                  <v-btn color="primary" :disabled="!validBusinessHourInput" @click="restaurantStep = 4">Next</v-btn>
-                </v-stepper-content>
-                <v-stepper-content step="4">
-                  <v-form v-model="validContactInput">
-                    <v-flex xs4>
-                      <v-subheader>Enter the address of your restaurant</v-subheader>
-                    </v-flex>
-                    <v-text-field
-                      label="Street 1"
-                      placeholder="1111 Snowy Rock Pl"
-                      v-model="restaurantProfile.address.street1"
-                      :rules="addressStreet1Rules"
-                      required
-                    ></v-text-field>
-                    <v-text-field
-                      label="Street 2"
-                      placeholder="Unit 2"
-                      v-model="restaurantProfile.address.street2"
-                    ></v-text-field>
-                    <v-text-field
-                      label="City"
-                      placeholder="Long Beach"
-                      v-model="restaurantProfile.address.city"
-                      required
-                    ></v-text-field>
-                    <v-select
-                      :items="states"
-                      v-model="restaurantProfile.address.state"
-                      label="Select a state"
-                      single-line
-                      auto
-                      append-icon="map"
-                      hide-details
-                      required
-                    ></v-select>
-                      <v-text-field
-                      label="Zip"
-                      placeholder="92812"
-                      :rules="addressZipRules"
-                      type="number"
-                      v-model.number="restaurantProfile.address.zip"
-                      required
-                    ></v-text-field>
-                    <v-flex xs4>
-                      <v-subheader>Enter a phone number</v-subheader>
-                    </v-flex>
-                    <v-flex xs12 sm5>
-                      <v-text-field
-                        v-model="restaurantProfile.phoneNumber"
-                        placeholder="(562)111-5555"
-                        prepend-icon="phone"
-                        :rules="phoneNumberRules"
-                        single-line
-                      ></v-text-field>
-                    </v-flex>
-                  </v-form>
                   <v-btn color="grey lighten-5" @click="restaurantStep = 3">Previous</v-btn>
-                  <v-btn color="primary" @click.prevent="restaurantSubmit" :disabled="!validContactInput">Submit</v-btn>
+                  <v-btn color="primary" :disabled="!validBusinessHourInput" @click="restaurantStep = 5">Next</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="5">
                   <v-form v-model="validContactInput">
@@ -433,6 +426,7 @@ export default {
     validIdentificationInput: false,
     validSecurityInput: false,
     validBusinessHourInput: false,
+    validRestaurantDetailsInput: false,
     validAddBusinessHour: false,
     validContactInput: false,
     visibile: false,
@@ -469,8 +463,12 @@ export default {
         zip: null
       },
       phoneNumber: '',
-      businessHours: []
+      details: {
+        category: '',
+        avgFoodPrice: null
+      }
     },
+    businessHours: [],
     businessHour: {
       day: '',
       openTime: null,
@@ -478,7 +476,7 @@ export default {
     },
     usernameRules: [
       username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(v) || 'Username must contain only letters and numbers'
+      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
     ],
     displayNameRules: [
       displayName => !!displayName || 'Display name is required'
@@ -496,11 +494,26 @@ export default {
     ],
     addressZipRules: [
       zip => !!zip || 'Zip code is required',
-      zip => /^\d{5}$/.test(v) || 'Zip code must contain 5 numbers'
+      zip => /^\d{5}$/.test(zip) || 'Zip code must contain 5 numbers'
     ],
     phoneNumberRules: [
       phone => !!phone || 'Phone number is required',
-      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(v) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
+      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
+    ],
+    businessDayRules: [
+      day => !!day || 'Day is required'
+    ],
+    openTimeRules: [
+      openTime => !!openTime || 'Opening time is required'
+    ],
+    closeTimeRules: [
+      closeTime => !!closeTime || 'Closing time is required'
+    ],
+    foodCategoryRules: [
+      category => !!category || 'Food category is required'
+    ],
+    avgFoodPriceRules: [
+      price => !!price || 'Food price is required'
     ],
     securityQuestionsSet1: [{
       id: 1,
@@ -538,6 +551,10 @@ export default {
       id: 9,
       question: 'What was the name of your first pet?'
     }],
+    timeZones: [{
+      displayString: '(UTC-08:00) Pacific Standard Time',
+      timeZoneName: 'Pacific Standard Time'
+    }],
     dayOfWeek: [
       'Sunday',
       'Monday',
@@ -547,6 +564,78 @@ export default {
       'Friday',
       'Saturday'
     ],
+    avgFoodPrices: [{
+      id: 0,
+      price: '$0.00 to $10.00'
+    },
+    {
+      id: 1,
+      price: '$10.01 to $50.00'
+    },
+    {
+      id: 2,
+      price: '$50.01+'
+    }],
+    foodCategories: [{
+      id: 0,
+      category: 'Mexican Food'
+    },
+    {
+      id: 1,
+      category: 'Italian Cuisine'
+    },
+    {
+      id: 2,
+      category: 'Thai Food'
+    },
+    {
+      id: 3,
+      category: 'Greek Cuisine'
+    },
+    {
+      id: 4,
+      category: 'Chinese Food'
+    },
+    {
+      id: 5,
+      category: 'Japanese Cuisine'
+    },
+    {
+      id: 6,
+      category: 'American Food'
+    },
+    {
+      id: 7,
+      category: 'Mediterranean Cuisine'
+    },
+    {
+      id: 8,
+      category: 'French Food'
+    },
+    {
+      id: 9,
+      category: 'Spanish Cuisine'
+    },
+    {
+      id: 10,
+      category: 'German Food'
+    },
+    {
+      id: 11,
+      category: 'Korean Food'
+    },
+    {
+      id: 12,
+      category: 'Vietnamese Food'
+    },
+    {
+      id: 13,
+      category: 'Turkish Cuisine'
+    },
+    {
+      id: 14,
+      category: 'Caribbean Food'
+    }],
     states: [
       'CA'
     ],
@@ -556,7 +645,7 @@ export default {
 
   methods: {
     add () {
-      this.restaurantProfile.businessHours.push({day: this.businessHour.day, openTime: this.businessHour.openTime, closeTime: this.businessHour.closeTime})
+      this.businessHours.push({day: this.businessHour.day, openTime: this.businessHour.openTime, closeTime: this.businessHour.closeTime})
       this.businessHour.day = ''
       this.businessHour.openTime = null
       this.businessHour.closeTime = null
@@ -573,9 +662,11 @@ export default {
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
+        console.log(response)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
+        console.log(error.response.data)
       })
     },
     restaurantSubmit () {
@@ -583,13 +674,17 @@ export default {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
-        restaurantProfileDto: this.restaurantProfile
+        restaurantProfileDto: this.restaurantProfile,
+        timeZone: this.timeZone,
+        businessHourDtos: this.businessHours
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
+        console.log(response)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
+        console.log(error.response.data)
       })
     }
   }

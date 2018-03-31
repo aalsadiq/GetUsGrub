@@ -21,7 +21,7 @@ namespace CSULB.GetUsGrub.Models
         {
             Username = username;
             ExpiresOn = expiresOn;
-            TokenString = tokenString;     
+            TokenString = tokenString;
         }
     }
 }

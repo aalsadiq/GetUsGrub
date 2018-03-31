@@ -13,19 +13,17 @@ namespace CSULB.GetUsGrub.Models
     /// </para>
     /// </summary>
     [Table("GetUsGrub.AuthenticationToken")]
-
     public class AuthenticationToken : IEntity
     {
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
-
         public string Username { get; set; }
         public DateTime ExpiresOn { get; set; }
         public string Salt { get; set; }
         public string TokenString { get; set; }
 
-        // Ask about this
+        // TODO: @Ahmed Please delete this [-Jenn]
         public AuthenticationToken()
         {
             this.Username = Username;
@@ -34,6 +32,7 @@ namespace CSULB.GetUsGrub.Models
             this.TokenString = TokenString;
         }
 
+        // TODO: @Ahmed Please separate the DTO input into separate parameters next time. I created a new constructor to reflect this for you. Please delete this constructor below. [-Jenn]
         public AuthenticationToken(AuthenticationTokenDto authenticationTokenDto)
         {
             Username = authenticationTokenDto.Username;
@@ -41,8 +40,16 @@ namespace CSULB.GetUsGrub.Models
             TokenString = authenticationTokenDto.TokenString;
         }
 
+        public AuthenticationToken(int? id, string username, DateTime expiresOn, string salt, string tokenString)
+        {
+            Id = id;
+            Username = username;
+            ExpiresOn = expiresOn;
+            Salt = salt;
+            TokenString = tokenString;
+        }
+
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
-        
     }
 }

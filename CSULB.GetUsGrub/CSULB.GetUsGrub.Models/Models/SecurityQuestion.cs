@@ -14,6 +14,14 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.SecurityQuestion")]
     public class SecurityQuestion : IEntity
     {
+        public SecurityQuestion() { }
+
+        public SecurityQuestion(int question, string answer)
+        {
+            Question = question;
+            Answer = answer;
+        }
+
         [Key]
         public int? Id { get; set; }
         [ForeignKey("UserAccount")]

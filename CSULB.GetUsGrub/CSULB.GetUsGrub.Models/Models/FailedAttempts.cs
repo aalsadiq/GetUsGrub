@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CSULB.GetUsGrub.Models.Models
+namespace CSULB.GetUsGrub.Models
 {
     [Table("GetUsGrub.FailedAttempts")]
     public class FailedAttempts : IEntity

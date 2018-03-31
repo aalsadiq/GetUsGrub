@@ -1,8 +1,6 @@
-﻿using System;
+﻿using CSULB.GetUsGrub.Models;
+using System;
 using System.Linq;
-using CSULB.GetUsGrub.Models;
-using CSULB.GetUsGrub.Models.DTOs;
-using CSULB.GetUsGrub.Models.Models;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
@@ -10,8 +8,8 @@ namespace CSULB.GetUsGrub.DataAccess
     /// <summary>
     /// Gateway to Access information from the DB for authentication purposes.
     /// 
-    /// @Created by: Ahmed AlSadiq
-    /// @Last Updated: 3/12/18
+    /// @Created by: Ahmed AlSadiq, Jennifer Nguyen
+    /// @Last Updated: 03/22/18
     /// </summary>
     public class AuthenticationGateway : IDisposable
     {
@@ -31,13 +29,13 @@ namespace CSULB.GetUsGrub.DataAccess
 
                 // Looking for the User matching the incoming Username 
                 var userId = (from account in authenticationContext.UserAccounts
-                    where account.Username == incomingUser.Username
-                    select account.Id).SingleOrDefault();
+                              where account.Username == incomingUser.Username
+                              select account.Id).SingleOrDefault();
 
                 // Looking for the Users last attempt information
                 var lastFailedAttempt = (from dates in authenticationContext.FailedAttempts
-                    where dates.Id == userId
-                    select dates).SingleOrDefault();
+                                         where dates.Id == userId
+                                         select dates).SingleOrDefault();
 
                 return new ResponseDto<FailedAttempts>
                 {
@@ -59,14 +57,14 @@ namespace CSULB.GetUsGrub.DataAccess
         /// UserAccount object to the Manager
         /// 
         /// </returns>
-        public ResponseDto <UserAccount> GetUserAccount(UserAuthenticationModel incomingUser)
+        public ResponseDto<UserAccount> GetUserAccount(UserAuthenticationModel incomingUser)
         {
-            using ( var authenticationContext = new AuthenticationContext())
+            using (var authenticationContext = new AuthenticationContext())
             {
                 // Looking for the User matching the incoming Username 
                 var userFromDataBase = (from user in authenticationContext.UserAccounts
-                    where user.Username == incomingUser.Username
-                    select user).SingleOrDefault();
+                                        where user.Username == incomingUser.Username
+                                        select user).SingleOrDefault();
                 return new ResponseDto<UserAccount>
                 {
                     Data = userFromDataBase
@@ -129,46 +127,38 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        /// <summary>
-        ///
-        ///  The StoreAuthenticationToken Method
-        ///
-        ///  Saves the Authentication Token created for the user onto the DataBase
-        /// </summary>
-        /// <param name="incomingAuthenticationToken">
-        /// </param>
-        public void StoreAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
-        {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        // Get the UserId using Username
-                        var userId = (from account in authenticationContext.UserAccounts
-                            where account.Username == incomingAuthenticationToken.Username
-                            select account.Id).SingleOrDefault();
-                        
-                        // Adding the Username to the Token as the Token ID
-                        incomingAuthenticationToken.Id = userId;
+        // TODO: @Ahmed Need to return a ResponseDto<AuthenticationToken> in the logic [-Jenn]
+        //public ResponseDto<AuthenticationToken> GetExpirationTime(AuthenticationToken incomingAuthenticationToken)
+        //{
+        //    using (var authenticationContext = new AuthenticationContext())
+        //    {
+        //        using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
+        //        {
+        //            try
+        //            {
+        //                // Get the UserId using Username
+        //                var userId = (from account in authenticationContext.UserAccounts
+        //                              where account.Username == incomingAuthenticationToken.Username
+        //                              select account.Id).SingleOrDefault();
 
-                        // Adding the Token to the DataBase
-                        authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
+        //                // Adding the Username to the Token as the Token ID
+        //                incomingAuthenticationToken.Id = userId;
 
-                        // Commiting the trasaction to the Database
-                        dbContextTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        // Rolls back the changes saved in the transaction
-                        dbContextTransaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
+        //                // Adding the Token to the DataBase
+        //                authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
 
+        //                // Commiting the trasaction to the Database
+        //                dbContextTransaction.Commit();
+        //            }
+        //            catch (Exception)
+        //            {
+        //                // Rolls back the changes saved in the transaction
+        //                dbContextTransaction.Rollback();
+        //                throw;
+        //            }
+        //        }
+        //    }
+        //}
 
         public void UpdateFailedAttempt(FailedAttempts incomingFailedAttempt)
         {
@@ -194,10 +184,105 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
+        // TODO: @Jenn Comment this method and unit test [-Jenn]
+        public ResponseDto<SsoToken> GetSsoToken(string token)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+                try
+                {
+                    var ssoToken = (from storedToken in authenticationContext.SsoTokens
+                                    where storedToken.Token == token
+                                    select storedToken).FirstOrDefault();
+
+                    // Return a ResponseDto with a UserAccount model
+                    return new ResponseDto<SsoToken>()
+                    {
+                        Data = ssoToken
+                    };
+                }
+                catch (Exception)
+                {
+                    return new ResponseDto<SsoToken>()
+                    {
+                        Data = new SsoToken(token),
+                        Error = "Something went wrong. Please try again later."
+                    };
+                }
+            }
+        }
+
+        // TODO: @Jenn Comment this method and unit test [-Jenn]
+        public ResponseDto<bool> StoreSsoToken(SsoToken ssoToken)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+                try
+                {
+                    authenticationContext.SsoTokens.Add(ssoToken);
+                    authenticationContext.SaveChanges();
+
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = "Something went wrong. Please try again later."
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        ///
+        ///  The StoreAuthenticationToken Method
+        ///
+        ///  Saves the Authentication Token created for the user onto the DataBase
+        /// </summary>
+        /// <param name="incomingAuthenticationToken">
+        /// </param>
+        public void StoreAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+                using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Get the UserId using Username
+                        var userId = (from account in authenticationContext.UserAccounts
+                            where account.Username == incomingAuthenticationToken.Username
+                            select account.Id).SingleOrDefault();
+
+                        // Adding the Username to the Token as the Token ID
+                        incomingAuthenticationToken.Id = userId;
+
+                        // Adding the Token to the DataBase
+                        authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
+
+                        // Commiting the trasaction to the Database
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        // Rolls back the changes saved in the transaction
+                        dbContextTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
         // Dispose release unmangaed resources 
+        // TODO: @Jenn Add in implementation of Dispose [-Jenn]
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

@@ -16,6 +16,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public AuthenticationTokenPreLogicValidationStrategy(AuthenticationTokenDto authenticationTokenDto)
         {
             _authenticationTokenDto = authenticationTokenDto;
+            _authenticationTokenDtoValidator = new AuthenticationTokenDtoValidator();
         }
 
         public ResponseDto<AuthenticationTokenDto> ExcuteStrategy()

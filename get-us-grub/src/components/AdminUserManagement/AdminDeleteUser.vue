@@ -14,7 +14,7 @@ import AppAdminHeader from '@/components/AdminUserManagement/AdminHeader'
 import AppFooter from '@/components/AppFooter'
 import AppUserTextBox from '@/components/AdminUserManagement/UserTextBox'
 export default {
-  name: 'DeleteUser',
+  name: 'DeleteUserVue',
   components: {
     'app-admin-header': AppAdminHeader,
     'app-footer': AppFooter,

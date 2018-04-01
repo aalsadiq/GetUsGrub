@@ -30,7 +30,7 @@ namespace CSULB.GetUsGrub.Models
         public string ClaimsJson
         {
             get => JsonConvert.SerializeObject(Claims);
-            set => Claims = JsonConvert.DeserializeObject<List<Claim>>(value, new ClaimsConverter());
+            set => Claims = JsonConvert.DeserializeObject<List<Claim>>(value, new ClaimConverter());
         }
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }

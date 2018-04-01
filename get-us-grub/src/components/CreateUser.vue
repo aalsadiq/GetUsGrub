@@ -662,9 +662,11 @@ export default {
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
+        console.log(response)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
+        console.log(error.response.data)
       })
     },
     restaurantSubmit () {
@@ -678,9 +680,11 @@ export default {
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
+        console.log(response)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
+        console.log(error.response.data)
       })
     }
   }

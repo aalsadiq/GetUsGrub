@@ -8,10 +8,12 @@ using System.Web.Http.Cors;
 namespace CSULB.GetUsGrub.Controllers
 {
     /// <summary>
-    /// User controller will handle routes that deal with CRUD.
-    /// @author Angelica
+    /// User controller will handle routes that deal with creating, reading, updating and deleting a user.
+    /// <para>
+    /// @author: Angelica Salas Tovar, Jennifer Nguyen
+    /// @updated: 03/30/2018
+    /// </para>
     /// </summary>
-
     [RoutePrefix("User")] //default route
     public class UserController : ApiController
     {
@@ -25,7 +27,6 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// <param name="registerUserDto"></param>
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
-        // POST Registration/User
         [HttpPost]
         // Opts authentication
         [AllowAnonymous]
@@ -68,7 +69,6 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// <param name="registerRestaurantDto"></param>
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
-        // POST Registration/User
         [HttpPost]
         // Opts authentication
         [AllowAnonymous]

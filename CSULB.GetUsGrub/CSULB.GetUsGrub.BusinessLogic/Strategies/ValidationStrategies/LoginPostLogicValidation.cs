@@ -3,7 +3,6 @@ using FluentValidation;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
-    // TODO: @Ahmed Please fix this error [-Jenn]
     class LoginPostLogicValidation
     {
         private readonly UserAuthenticationModel _userAuthenticationModel;

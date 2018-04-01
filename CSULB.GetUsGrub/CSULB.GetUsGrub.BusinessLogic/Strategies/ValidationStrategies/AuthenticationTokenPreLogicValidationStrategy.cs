@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
-    // TODO: @Ahmed Please fix this error [-Jenn]
     public class AuthenticationTokenPreLogicValidationStrategy
     {
         private readonly AuthenticationTokenDto _authenticationTokenDto;

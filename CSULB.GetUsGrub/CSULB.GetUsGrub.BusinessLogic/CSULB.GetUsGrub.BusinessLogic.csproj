@@ -79,6 +79,7 @@
     <Compile Include="Services\Interfaces\IBackoff.cs" />
     <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
     <Compile Include="Managers\RestaurantSelectionManager.cs" />
+    <Compile Include="Managers\RestaurantBillSplitterManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\AuthenticationTokenManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />

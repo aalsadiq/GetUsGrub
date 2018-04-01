@@ -3,7 +3,6 @@ using FluentValidation;
 
 namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
 {
-    // TODO: @Ahmed Please fix this error [-Jenn]
     class AuthenticationTokenPostLogicValidationStrategy
     {
         private readonly AuthenticationToken _authenticationToken;

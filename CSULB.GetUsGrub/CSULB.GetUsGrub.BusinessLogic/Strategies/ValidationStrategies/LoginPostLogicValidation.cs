@@ -11,6 +11,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public LoginPostLogicValidation(UserAuthenticationModel userAuthenticationModel)
         {
             _userAuthenticationModel = userAuthenticationModel;
+            _userAuthenticationModelValidator = new UserAuthenticationModelValidator();
         }
 
         public bool ExcuteStrategy()

@@ -12,7 +12,17 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class UserAccountDto : IUserAccount
     {
-        public UserAccountDto() {
+        // Automatic Properties
+        [Required]
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public bool? IsActive { get; set; }
+        public bool? IsFirstTimeUser { get; set; }
+        public string RoleType { get; set; }
+
+        // Constructors
+        public UserAccountDto()
+        {
             Username = "";
             Password = "";
             RoleType = "";
@@ -29,12 +39,5 @@ namespace CSULB.GetUsGrub.Models
             Username = username;
             Password = password;
         }
-
-        [Required]
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public bool? IsActive { get; set; }
-        public bool? IsFirstTimeUser { get; set; }
-        public string RoleType { get; set; }
     }
 }

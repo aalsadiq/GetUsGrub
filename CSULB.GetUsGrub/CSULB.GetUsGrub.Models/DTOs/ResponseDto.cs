@@ -10,6 +10,7 @@
     /// </summary>
     public class ResponseDto<T>
     {
+        // Automatic Properties
         public T Data { get; set; }
         public string Error { get; set; }
     }

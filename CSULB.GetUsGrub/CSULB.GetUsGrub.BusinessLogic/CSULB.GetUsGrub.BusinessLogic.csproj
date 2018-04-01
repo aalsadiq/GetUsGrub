@@ -142,6 +142,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ErrorMessages\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Managers\Interfaces\" />
   </ItemGroup>

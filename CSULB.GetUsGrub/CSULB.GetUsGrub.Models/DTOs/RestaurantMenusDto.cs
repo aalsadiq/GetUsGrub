@@ -35,7 +35,7 @@ namespace CSULB.GetUsGrub.Models
 				public string ItemName { get; set; }
 
 				[JsonProperty]
-				public double ItemPrice { get; set; }
+				public decimal ItemPrice { get; set; }
 
 				[JsonProperty]
 				public string ItemPicture { get; set; }

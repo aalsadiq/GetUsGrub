@@ -113,6 +113,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
   #restaurant-bill-splitter{
     margin: 0 0 100px 0;

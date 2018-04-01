@@ -22,12 +22,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty().WithMessage("Food type is required.")
                     .NotNull().WithMessage("Food type is required.");
 
+                // TODO: @Jenn Check that the distance is 1, 5, 10, or 15 [-Jenn]
                 RuleFor(x => x.Distance)
                     .NotEmpty().WithMessage("Distance is required.")
                     .NotNull().WithMessage("Distance is required.");
 
                 RuleFor(x => x.AvgFoodPrice)
-                    .NotEmpty().WithMessage("Average food price is required")
                     .NotNull().WithMessage("Average food price is required");
             });
 
@@ -50,14 +50,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull();
 
                 RuleFor(x => x.AvgFoodPrice)
-                    .NotEmpty()
                     .NotNull();
 
                 RuleFor(x => x.CurrentUtcDateTime)
-                    .NotEmpty()
-                    .NotNull();
-
-                RuleFor(x => x.CurrentDayOfWeek)
                     .NotEmpty()
                     .NotNull();
             });
@@ -86,14 +81,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 //    .NotNull();
 
                 RuleFor(x => x.AvgFoodPrice)
-                    .NotEmpty()
                     .NotNull();
 
                 RuleFor(x => x.CurrentUtcDateTime)
-                    .NotEmpty()
-                    .NotNull();
-
-                RuleFor(x => x.CurrentDayOfWeek)
                     .NotEmpty()
                     .NotNull();
             });

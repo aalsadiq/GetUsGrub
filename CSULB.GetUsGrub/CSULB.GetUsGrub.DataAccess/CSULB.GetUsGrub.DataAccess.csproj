@@ -71,7 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gateways\Interfaces\" />
-    <Folder Include="Migrations\UserManagement\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">

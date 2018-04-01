@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -12,13 +13,14 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class BusinessHourDto
     {
+        // Automatic Properties
         [Required]
         public string Day { get; set; }
-
         [Required]
         public string OpenTime { get; set; }
-
         [Required]
         public string CloseTime { get; set; }
+        public DateTime OpenDateTime { get; set; }
+        public DateTime CloseDateTime { get; set; }
     }
 }

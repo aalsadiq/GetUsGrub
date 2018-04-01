@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -13,6 +9,7 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class EditUserDto
     {
+        // Automatic Properties
         [Required]
         public string Username { get; set; }//The username that will be edited.
         public string NewUsername { get; set; }//Part of user account

@@ -8,6 +8,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import axios from 'axios'
 import 'es6-promise/auto'
+import VueFrame from 'vue-frame'
 // Ensure you are using css-loader
 
 // window.axios.defaults.headers.common = {

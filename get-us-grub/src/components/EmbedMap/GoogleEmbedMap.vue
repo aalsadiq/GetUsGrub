@@ -1,12 +1,15 @@
 <template>
-<div id="vue-frame">
-   <vue-frame text="VueJS" url="https://vuejs.org" frame="myframe" type="button" class="form-control"></vue-frame>
-   <vue-frame text="Api Vue" url="https://vuejs.org/v2/api" frame="myframe" type="a"></vue-frame>
-   <br />
- 
-   <iframe id="myframe" width="800"></iframe>
-</div>
- </template>
+  <div id="google-embed-map">
+    <app-header />
+    <div id="vue-frame">
+      <!--iframe src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg&amp;origin=Oslo+Norway&amp;destination=Telemark+Norway"></iframe>-->
+      <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg&amp;origin=Oslo+Norway&amp;destination=Telemark+Norway" allowfullscreen></iframe>
+      <br />
+    </div>
+    <app-footer />
+  </div>
+</template>
+
 <script src="/dist/vue-frame.js"></script>
 <script>
 import AppHeader from '@/components/AppHeader'
@@ -15,10 +18,9 @@ export default {
   name: 'GoogleEmbedMap',
   components: {
     'app-header': AppHeader,
-    'app-footer': AppFooter,
-    'app-create-user': AppCreateUser
+    'app-footer': AppFooter
   }
 }
 </script>
 
-AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg
+<!--API Key: AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg-->

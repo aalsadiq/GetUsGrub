@@ -10,6 +10,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             var restaurantSelectionPreLogicValidationStrategy = new RestaurantSelectionPreLogicValidationStrategy(restaurantSelectionDto);
             var geocodeService = new GoogleGeocodeService();
+            var timeZoneService = new GoogleTimeZoneService();
             var dateTimeService = new DateTimeService();
             var selectedRestaurantDto = new SelectedRestaurantDto();
             Debug.WriteLine("Here1");
@@ -35,7 +36,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
             Debug.WriteLine("Here3");
-            // TODO: @Jenn Uncomment below after Geocoding is done [-Jenn]
             // Set coordinates to the DTO
             restaurantSelectionDto.GeoCoordinates = new GeoCoordinates(geocodeResponse.Data.Latitude, geocodeResponse.Data.Longitude);
 
@@ -43,6 +43,23 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Set current Coordinate Universal Time (UTC) DateTime
             restaurantSelectionDto.CurrentUtcDateTime = dateTimeService.GetCurrentCoordinateUniversalTime();
 
+            Debug.WriteLine("Here5");
+            // Set current local day of week
+            var timeZoneResponse = timeZoneService.GetOffset(restaurantSelectionDto.GeoCoordinates);
+            if (timeZoneResponse.Error != null)
+            {
+                return new ResponseDto<SelectedRestaurantDto>
+                {
+                    Data = selectedRestaurantDto,
+                    Error = "Something went wrong. Please try again later."
+                };
+            }
+            Debug.WriteLine("Here623123");
+            // Get current day of week local to the user
+            restaurantSelectionDto.CurrentLocalDayOfWeek = dateTimeService.GetCurrentLocalDayOfWeekFromUtc(timeZoneResponse.Data, restaurantSelectionDto.CurrentUtcDateTime);
+            Debug.WriteLine("Here3eeeeeeeeeee");
+            Debug.WriteLine("utcDayOfWeek" + restaurantSelectionDto.CurrentUtcDateTime.DayOfWeek);
+            Debug.WriteLine("localDayOfWeek" + restaurantSelectionDto.CurrentLocalDayOfWeek);
             // Validate data transfer object before querying for restaurant selection in the database
             var unregisteredUserRestaurantSelectionPostLogicValidationStrategy = new UnregisteredUserRestaurantSelectionPostLogicValidationStrategy(restaurantSelectionDto);
             result = unregisteredUserRestaurantSelectionPostLogicValidationStrategy.ExecuteStrategy();
@@ -62,8 +79,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     city: restaurantSelectionDto.City, state: restaurantSelectionDto.State,
                     foodType: restaurantSelectionDto.FoodType, distance: restaurantSelectionDto.Distance,
                     avgFoodPrice: restaurantSelectionDto.AvgFoodPrice,
-                    currentUtcDateTime: restaurantSelectionDto.CurrentUtcDateTime,
-                    currentDayOfWeek: restaurantSelectionDto.CurrentUtcDateTime.DayOfWeek.ToString(),
+                    currentUtcTimeOfDay: restaurantSelectionDto.CurrentUtcDateTime.TimeOfDay,
+                    currentLocalDayOfWeek: restaurantSelectionDto.CurrentLocalDayOfWeek.ToString(),
                     longitude: restaurantSelectionDto.GeoCoordinates.Longitude,
                     latitude: restaurantSelectionDto.GeoCoordinates.Latitude);
                 if (gatewayResult.Error != null)

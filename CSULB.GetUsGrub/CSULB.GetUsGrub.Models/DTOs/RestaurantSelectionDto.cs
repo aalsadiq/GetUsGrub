@@ -18,7 +18,7 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public int AvgFoodPrice { get; set; }
         public DateTime CurrentUtcDateTime { get; set; }
-        public DayOfWeek CurrentDayOfWeek { get; set; }
+        public DayOfWeek CurrentLocalDayOfWeek { get; set; }
         public GeoCoordinates GeoCoordinates { get; set; }
 
         // TODO: @Rachel Need FoodPrefences list for comment below [-Jenn]

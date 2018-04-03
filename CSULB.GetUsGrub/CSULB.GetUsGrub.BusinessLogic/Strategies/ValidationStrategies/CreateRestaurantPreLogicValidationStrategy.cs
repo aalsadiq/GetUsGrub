@@ -80,7 +80,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 result = _businessHourDtoValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHourDto.OpenTime, businessHourDto.CloseTime);
                 if (!result.Data)
                 {
-                    result.Error = "Opening time must be less than or equal to closing time.";
+                    result.Error = "Opening time must be less than closing time.";
                     return result;
                 }
             }

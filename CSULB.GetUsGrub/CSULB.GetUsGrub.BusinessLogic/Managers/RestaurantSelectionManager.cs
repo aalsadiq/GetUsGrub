@@ -1,14 +1,17 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class RestaurantSelectionManager
     {
-        public ResponseDto<SelectedRestaurantDto> SelectRestaurantWithoutFoodPreferences(RestaurantSelectionDto restaurantSelectionDto)
+        public ResponseDto<SelectedRestaurantDto> SelectRestaurantWithoutFoodPreferences(
+            RestaurantSelectionDto restaurantSelectionDto)
         {
-            var restaurantSelectionPreLogicValidationStrategy = new RestaurantSelectionPreLogicValidationStrategy(restaurantSelectionDto);
+            var restaurantSelectionPreLogicValidationStrategy =
+                new RestaurantSelectionPreLogicValidationStrategy(restaurantSelectionDto);
             var geocodeService = new GoogleGeocodeService();
             var timeZoneService = new GoogleTimeZoneService();
             var dateTimeService = new DateTimeService();
@@ -24,9 +27,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = result.Error
                 };
             }
+
             Debug.WriteLine("Here2");
             //Call GeocodeService to get geocoordinates of the restaurant
-            var geocodeResponse = geocodeService.Geocode(new Address(city: restaurantSelectionDto.City, state: restaurantSelectionDto.State));
+            var geocodeResponse = geocodeService.Geocode(new Address(city: restaurantSelectionDto.City,
+                state: restaurantSelectionDto.State));
             if (geocodeResponse.Data == null | geocodeResponse.Error != null)
             {
                 return new ResponseDto<SelectedRestaurantDto>
@@ -35,11 +40,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Something went wrong. Please try again later."
                 };
             }
+
             Debug.WriteLine("Here3");
             // Set coordinates to the DTO
-            restaurantSelectionDto.GeoCoordinates = new GeoCoordinates(geocodeResponse.Data.Latitude, geocodeResponse.Data.Longitude);
+            restaurantSelectionDto.GeoCoordinates = new GeoCoordinates()
+            {
+                Latitude = geocodeResponse.Data.Latitude,
+                Longitude = geocodeResponse.Data.Longitude
+            };
 
-            Debug.WriteLine("Here4");
+        Debug.WriteLine("Here4");
             // Set current Coordinate Universal Time (UTC) DateTime
             restaurantSelectionDto.CurrentUtcDateTime = dateTimeService.GetCurrentCoordinateUniversalTime();
 
@@ -72,17 +82,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
             Debug.WriteLine("Here7");
+            Debug.WriteLine(JsonConvert.SerializeObject(restaurantSelectionDto));
             // Select a restaurant in the database
             using (var restaurantGateway = new RestaurantGateway())
             {
                 var gatewayResult = restaurantGateway.GetRestaurantWithoutFoodPreferences(
                     city: restaurantSelectionDto.City, state: restaurantSelectionDto.State,
-                    foodType: restaurantSelectionDto.FoodType, distance: restaurantSelectionDto.Distance,
+                    foodType: restaurantSelectionDto.FoodType, distanceInMeters: ConvertDistanceInMilesToMeters(restaurantSelectionDto.DistanceInMiles),
                     avgFoodPrice: restaurantSelectionDto.AvgFoodPrice,
                     currentUtcTimeOfDay: restaurantSelectionDto.CurrentUtcDateTime.TimeOfDay,
                     currentLocalDayOfWeek: restaurantSelectionDto.CurrentLocalDayOfWeek.ToString(),
-                    longitude: restaurantSelectionDto.GeoCoordinates.Longitude,
-                    latitude: restaurantSelectionDto.GeoCoordinates.Latitude);
+                    location: restaurantSelectionDto.Location);
                 if (gatewayResult.Error != null)
                 {
                     return new ResponseDto<SelectedRestaurantDto>()
@@ -100,6 +110,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 Data = selectedRestaurantDto
             };
+        }
+
+        public double ConvertDistanceInMilesToMeters(double distanceInMiles)
+        {
+            return distanceInMiles * 1609.34;
         }
     }
 }

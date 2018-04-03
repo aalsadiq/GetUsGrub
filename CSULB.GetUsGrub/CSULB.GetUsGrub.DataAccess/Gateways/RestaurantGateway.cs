@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Spatial;
 using System.Diagnostics;
 using System.Linq;
 
@@ -10,7 +11,7 @@ namespace CSULB.GetUsGrub.DataAccess
     public class RestaurantGateway : IDisposable
     {
         public ResponseDto<SelectedRestaurantDto> GetRestaurantWithoutFoodPreferences(string city, string state, string foodType,
-            int distance, int avgFoodPrice, TimeSpan currentUtcTimeOfDay, string currentLocalDayOfWeek, double longitude, double latitude)
+            double distanceInMeters, int avgFoodPrice, TimeSpan currentUtcTimeOfDay, string currentLocalDayOfWeek, DbGeography location)
         {
             using (var restaurantContext = new RestaurantContext())
             {
@@ -18,7 +19,6 @@ namespace CSULB.GetUsGrub.DataAccess
 
                 try
                 {
-                    // TODO: @Jenn Brian will change the Longitude and Latitude to be DbGeography instead [-Jenn]
                     var businessHours = from userProfile in restaurantContext.UserProfiles
                         join restaurantProfile in restaurantContext.RestaurantProfiles
                             on userProfile.Id equals restaurantProfile.Id
@@ -28,18 +28,18 @@ namespace CSULB.GetUsGrub.DataAccess
                               && state == restaurantProfile.Address.State
                               && foodType == restaurantProfile.Details.FoodType
                               && avgFoodPrice == restaurantProfile.Details.AvgFoodPrice
-                              //&& distance >= DbGeography.FromText($"Point{latitude} {longitude}")
-                              //    .Distance(DbGeography.FromText($"Point{restaurantProfile.Latitude} {restaurantProfile.Longitude}"))
+                              && distanceInMeters >= location.Distance(restaurantProfile.Location)
                               && currentLocalDayOfWeek == businessHour.Day
                          select businessHour;
 
                     var selectedRestaurantProfileId = businessHours
-                            .Where(businessHour => (DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second) <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second))
-                            ? (currentUtcTimeOfDay >= DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second)
-                               && currentUtcTimeOfDay <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second)) 
-                            : (currentUtcTimeOfDay >= DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second)
-                               || currentUtcTimeOfDay <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second)))
-                        .Select(businessHour => businessHour.RestaurantId).OrderBy(businessHour => Guid.NewGuid()).FirstOrDefault();
+                            .Where(businessHour => (DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second) 
+                                <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second))
+                                ? (currentUtcTimeOfDay >= DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second)
+                                   && currentUtcTimeOfDay <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second)) 
+                                : (currentUtcTimeOfDay >= DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second)
+                                   || currentUtcTimeOfDay <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second)))
+                            .Select(businessHour => businessHour.RestaurantId).OrderBy(businessHour => Guid.NewGuid()).FirstOrDefault();
 
                     var selectedRestaurant = (from userProfile in restaurantContext.UserProfiles
                         join restaurantProfile in restaurantContext.RestaurantProfiles
@@ -48,11 +48,8 @@ namespace CSULB.GetUsGrub.DataAccess
                         select new SelectedRestaurantDto()
                         {
                             DisplayName = userProfile.DisplayName,
-                            GeoCoordinates = new GeoCoordinates()
-                            {
-                                Latitude = restaurantProfile.Latitude,
-                                Longitude = restaurantProfile.Longitude
-                            },
+                            restaurantLatitude = restaurantProfile.Location.Latitude,
+                            restaurantLongitude = restaurantProfile.Location.Longitude,
                             Address = restaurantProfile.Address,
                             PhoneNumber = restaurantProfile.PhoneNumber,
                             BusinessHourDtos = (from businessHour in restaurantContext.BusinessHours
@@ -62,7 +59,6 @@ namespace CSULB.GetUsGrub.DataAccess
                                     Day = businessHour.Day,
                                     OpenDateTime = businessHour.OpenTime,
                                     CloseDateTime = businessHour.CloseTime
-
                                 }).ToList()
                         }).FirstOrDefault();
 
@@ -87,7 +83,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     return new ResponseDto<SelectedRestaurantDto>()
                     {
                         Data = null,
-                        Error = "Something went wrong. Please try again later."
+                        Error = ErrorMessages.GENERAL_ERROR
                     };
                 }
             }

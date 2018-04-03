@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="create-user">
       {{ responseDataStatus }} {{ responseData }}
       <v-toolbar dark tabs flat>
         <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-3">
@@ -261,6 +261,21 @@
                         required
                       ></v-select>
                     </v-flex>
+                    <v-flex xs12 sm6>
+                      <v-select
+                        label="Select a food preference"
+                        item-text="foodPreference"
+                        item-value="id"
+                        :items="foodPreferences"
+                        v-model="restaurantProfile.foodPreferences"
+                        multiple
+                        chips
+                        prepend-icon="restaurant"
+                        persistent-hint
+                        :rules="foodPreferenceRules"
+                        required
+                      ></v-select>
+                    </v-flex>
                   </v-form>
                   <v-btn color="grey lighten-5" @click="restaurantStep = 2">Previous</v-btn>
                   <v-btn color="primary" :disabled="!validRestaurantDetailsInput" @click="restaurantStep = 4">Next</v-btn>
@@ -466,7 +481,9 @@ export default {
       details: {
         category: '',
         avgFoodPrice: null
-      }
+      },
+      foodPreferences: [
+      ]
     },
     businessHours: [],
     businessHour: {
@@ -500,20 +517,14 @@ export default {
       phone => !!phone || 'Phone number is required',
       phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
     ],
-    businessDayRules: [
-      day => !!day || 'Day is required'
-    ],
-    openTimeRules: [
-      openTime => !!openTime || 'Opening time is required'
-    ],
-    closeTimeRules: [
-      closeTime => !!closeTime || 'Closing time is required'
-    ],
     foodCategoryRules: [
       category => !!category || 'Food category is required'
     ],
     avgFoodPriceRules: [
       price => !!price || 'Food price is required'
+    ],
+    foodPreferenceRules: [
+      foodPreference => !!foodPreference || 'Food preference is required'
     ],
     securityQuestionsSet1: [{
       id: 1,
@@ -565,15 +576,15 @@ export default {
       'Saturday'
     ],
     avgFoodPrices: [{
-      id: 0,
+      id: 1,
       price: '$0.00 to $10.00'
     },
     {
-      id: 1,
+      id: 2,
       price: '$10.01 to $50.00'
     },
     {
-      id: 2,
+      id: 3,
       price: '$50.01+'
     }],
     foodCategories: [{
@@ -636,6 +647,14 @@ export default {
       id: 14,
       category: 'Caribbean Food'
     }],
+    foodPreferences: [{
+      id: 1,
+      foodPreference: 'Food preference 1'
+    },
+    {
+      id: 2,
+      foodPreference: 'Food preference 2'
+    }],
     states: [
       'CA'
     ],
@@ -690,3 +709,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  #create-user {
+    margin: 0 0 7em 0;
+  }
+</style>

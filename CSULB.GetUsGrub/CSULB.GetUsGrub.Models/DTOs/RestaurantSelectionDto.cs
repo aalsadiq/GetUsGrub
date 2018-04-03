@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Spatial;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -14,12 +15,29 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public string FoodType { get; set; }
         [Required]
-        public int Distance { get; set; }
+        public int DistanceInMiles { get; set; }
         [Required]
         public int AvgFoodPrice { get; set; }
         public DateTime CurrentUtcDateTime { get; set; }
-        public DayOfWeek CurrentDayOfWeek { get; set; }
+        public DayOfWeek CurrentLocalDayOfWeek { get; set; }
         public GeoCoordinates GeoCoordinates { get; set; }
+        public DbGeography Location
+        {
+            get
+            {
+                int srid = 4326;
+                string wkt = $"POINT({GeoCoordinates.Longitude} {GeoCoordinates.Latitude})";
+
+                return DbGeography.PointFromText(wkt, srid);
+            }
+            set
+            {
+                if (value == null) return;
+
+                GeoCoordinates.Latitude = value.Latitude.Value;
+                GeoCoordinates.Longitude = value.Longitude.Value;
+            }
+        }
 
         // TODO: @Rachel Need FoodPrefences list for comment below [-Jenn]
         //public IList<FoodPreferences> FoodPreferences { get; set; }
@@ -27,12 +45,12 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public RestaurantSelectionDto() { }
 
-        public RestaurantSelectionDto(string city, string state, string foodType, int distance, int avgFoodPrice)
+        public RestaurantSelectionDto(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
             City = city;
             State = state;
             FoodType = foodType;
-            Distance = distance;
+            DistanceInMiles = distanceInMiles;
             AvgFoodPrice = avgFoodPrice;
         }
     }

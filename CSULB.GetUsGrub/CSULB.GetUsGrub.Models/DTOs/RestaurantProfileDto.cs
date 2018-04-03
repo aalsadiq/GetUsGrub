@@ -16,8 +16,7 @@ namespace CSULB.GetUsGrub.Models
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
         public RestaurantDetail Details { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public GeoCoordinates GeoCoordinates { get; set; }
         public Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> MenuDictionary { get; set; }
         public IList<BusinessHour> BusinessHours { get; set; }
         public IList<RestaurantMenu> RestaurantMenus { get; set; }
@@ -32,8 +31,6 @@ namespace CSULB.GetUsGrub.Models
             PhoneNumber = restaurantProfile.PhoneNumber;
             Address = restaurantProfile.Address;
             Details = restaurantProfile.Details;
-            Latitude = restaurantProfile.Latitude;
-            Longitude = restaurantProfile.Longitude;
             BusinessHours = businessHours;
             RestaurantMenus = restaurantMenus;
             RestaurantMenuItems = restaurantMenuItems;
@@ -44,11 +41,8 @@ namespace CSULB.GetUsGrub.Models
             PhoneNumber = restaurantProfile.PhoneNumber;
             Address = restaurantProfile.Address;
             Details = restaurantProfile.Details;
-            Latitude = restaurantProfile.Latitude;
-            Longitude = restaurantProfile.Longitude;
             BusinessHours = businessHours;
             MenuDictionary = menuDictionary;
         }
-
     }
 }

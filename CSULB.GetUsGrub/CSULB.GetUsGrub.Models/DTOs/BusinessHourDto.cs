@@ -20,7 +20,35 @@ namespace CSULB.GetUsGrub.Models
         public string OpenTime { get; set; }
         [Required]
         public string CloseTime { get; set; }
-        public DateTime OpenDateTime { get; set; }
-        public DateTime CloseDateTime { get; set; }
+        private DateTime _odt;
+        private DateTime _cdt;
+        public DateTime OpenDateTime
+        {
+            get => _odt;
+            set
+            {
+                _odt = DateTime.Today.AddDays((int)Enum.Parse(typeof(DayOfWeek), Day) * 1 - 1) + value.ToLocalTime().TimeOfDay;
+                OpenTime = value.ToLocalTime().TimeOfDay.ToString();
+            }
+        }
+        public DateTime CloseDateTime
+        {
+            get => _cdt;
+            set
+            {
+                _cdt = DateTime.Today.AddDays((int)Enum.Parse(typeof(DayOfWeek), Day) * 1 - 1) + value.ToLocalTime().TimeOfDay;
+                CloseTime = value.ToLocalTime().TimeOfDay.ToString();
+            }
+        }
+
+        // Constructors
+        public BusinessHourDto () { }
+
+        public BusinessHourDto(string day, DateTime openDateTime, DateTime closeDateTime)
+        {
+            Day = day;
+            OpenDateTime = openDateTime;
+            CloseDateTime = closeDateTime;
+        }
     }
 }

@@ -38,14 +38,14 @@ namespace CSULB.GetUsGrub.Controllers
         [AllowAnonymous]
         [Route("Unregistered")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult UnregisteredUserRestaurantSelection(string city, string state, string foodType, int distance, int avgFoodPrice)
+        public IHttpActionResult UnregisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
-            var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distance: distance, avgFoodPrice: avgFoodPrice);
+            var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distanceInMiles: distanceInMiles, avgFoodPrice: avgFoodPrice);
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
                 // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
-                return BadRequest(ModelState);
+                return BadRequest("A required input is missing.");
             }
             try
             {

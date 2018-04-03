@@ -10,7 +10,6 @@
         string PhoneNumber { get; set; }
         Address Address { get; set; }
         RestaurantDetail Details { get; set; }
-        double Latitude { get; set; }
-        double Longitude { get; set; }
+        GeoCoordinates GeoCoordinates { get; set; }
     }
 }

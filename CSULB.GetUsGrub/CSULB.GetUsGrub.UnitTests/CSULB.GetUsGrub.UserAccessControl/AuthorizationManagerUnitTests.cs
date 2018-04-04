@@ -1,6 +1,5 @@
 ﻿using Xunit;
 using FluentAssertions;
-using System;
 using System.Security;
 using System.Security.Claims;
 using CSULB.GetUsGrub.UserAccessControl;

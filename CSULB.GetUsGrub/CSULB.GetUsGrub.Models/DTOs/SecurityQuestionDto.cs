@@ -10,6 +10,7 @@
     /// </summary>
     public class SecurityQuestionDto
     {
+        // Automatic Properties
         public int Question { get; set; }
         public string Answer { get; set; }
     }

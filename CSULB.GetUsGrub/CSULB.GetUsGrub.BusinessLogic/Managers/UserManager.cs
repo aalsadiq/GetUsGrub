@@ -78,7 +78,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = ErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -91,7 +91,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = gatewayResult.Error
+                        Error = ErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -140,7 +140,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
             var userProfile = new UserProfile(displayPicture: registerRestaurantDto.UserProfileDto.DisplayPicture, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
-            var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details, latitude: registerRestaurantDto.RestaurantProfileDto.Latitude, longitude: registerRestaurantDto.RestaurantProfileDto.Longitude);
+            var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, 
+                address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details);
             var businessHours = registerRestaurantDto.BusinessHourDtos
                 .Select(businessHourDto => new BusinessHour(
                     day: businessHourDto.Day, 
@@ -155,12 +156,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = ErrorMessages.GENERAL_ERROR
                 };
             }
 
-            restaurantProfile.Latitude = geocodeResponse.Data.Latitude;
-            restaurantProfile.Longitude = geocodeResponse.Data.Longitude;
+            restaurantProfile.GeoCoordinates.Latitude = geocodeResponse.Data.Latitude;
+            restaurantProfile.GeoCoordinates.Longitude = geocodeResponse.Data.Longitude;
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims()
@@ -187,7 +188,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = ErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -200,7 +201,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterRestaurantDto>()
                     {
                         Data = registerRestaurantDto,
-                        Error = gatewayResult.Error
+                        Error = ErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -252,7 +253,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var gatewayResult = userGateway.StoreSsoUser(userAccount, passwordSalt);
                 if (gatewayResult.Data == false)
                 {
-                    return gatewayResult;
+                    return new ResponseDto<bool>()
+                    {
+                        Data = gatewayResult.Data,
+                        Error = ErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
 
@@ -262,7 +267,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        // TODO: @Angelica Please change this comment below [-Jenn]
         /// <summary>
         /// The CreateIndividualUser method.
         /// Contains business logic to create an individual user.
@@ -301,7 +305,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
 
-            // Set user claims to be stored in UserClaims table
+            // Set user claims to be stored in UserClaims table as administrator
             var userClaims = new UserClaims(claimsFactory.CreateAdminClaims());
 
             // Hash password
@@ -323,7 +327,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = ErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -336,7 +340,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = gatewayResult.Error
+                        Error = ErrorMessages.GENERAL_ERROR
                     };
                 }
             }

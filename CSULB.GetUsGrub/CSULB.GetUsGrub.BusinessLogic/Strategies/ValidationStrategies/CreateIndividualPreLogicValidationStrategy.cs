@@ -74,6 +74,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 {
                     result.Error = "Username must not be the same as display name.";
                 }
+
+                result.Data = false;
                 return result;
             }
 
@@ -85,6 +87,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 {
                     result.Error = "Username is already used.";
                 }
+
+                result.Data = false;
                 return result;
             }
 

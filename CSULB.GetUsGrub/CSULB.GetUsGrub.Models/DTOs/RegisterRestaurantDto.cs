@@ -13,12 +13,11 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class RegisterRestaurantDto : RegisterUserDto
     {
+        // Automatic Properties
         [Required]
         public string TimeZone { get; set; }
-
         [Required]
         public RestaurantProfileDto RestaurantProfileDto { get; set; }
-
         [Required]
         public IList<BusinessHourDto> BusinessHourDtos { get; set; }
     }

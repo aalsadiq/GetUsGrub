@@ -13,7 +13,6 @@ import 'es6-promise/auto'
 // window.axios.defaults.headers.common = {
 //   'X-Requested-With' : 'XMLHttpRequest'
 // };
-
 Vue.use(axios)
 Vue.use(Vuetify)
 Vue.config.productionTip = false

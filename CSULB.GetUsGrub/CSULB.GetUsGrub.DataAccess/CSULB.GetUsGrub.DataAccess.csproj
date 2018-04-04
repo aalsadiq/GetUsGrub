@@ -56,6 +56,7 @@
     <Compile Include="Contexts\RestaurantContext.cs" />
     <Compile Include="Contexts\SsoContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
+    <Compile Include="Gateways\RestaurantBillSplitterGateway.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\RestaurantGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
@@ -79,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gateways\Interfaces\" />
-    <Folder Include="Migrations\UserManagement\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">

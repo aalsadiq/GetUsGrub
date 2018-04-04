@@ -14,6 +14,7 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.SecurityAnswerSalt")]
     public class SecurityAnswerSalt : IEntity
     {
+        // Automatic Properties
         [Key]
         [ForeignKey("SecurityQuestion")]
         public int? Id { get; set; }

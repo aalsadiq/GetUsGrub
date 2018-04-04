@@ -1,14 +1,11 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
-		public class RestaurantBillSplitterGateway : IDisposable
+    public class RestaurantBillSplitterGateway : IDisposable
 		{
 				RestaurantContext context = new RestaurantContext();
 				public ResponseDto<List<RestaurantMenuWithItems>> GetRestaurantMenus(string displayName, double latitude, double longitude)
@@ -22,8 +19,8 @@ namespace CSULB.GetUsGrub.DataAccess
 								// Find restaurant by Display Name, Latitude, Longitude
 								var restaurantProfile = (from restaurant in context.RestaurantProfiles
 																				 where restaurant.Id == userProfile.Id
-																				 where restaurant.Latitude == latitude
-																				 where restaurant.Longitude == longitude
+																				 where restaurant.GeoCoordinates.Latitude == latitude
+																				 where restaurant.GeoCoordinates.Longitude == longitude
 																				 select restaurant).SingleOrDefault();
 								//TODO: @Ryan TEST ALL SCENARIOS [-Ryan]
 								// Then, find all active menus associated with this restaurant and turn it into a List

@@ -87,13 +87,5 @@
       <Name>CSULB.GetUsGrub.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\SsoDbContext\201804010318067_InitialDbCreation.resx">
-      <DependentUpon>201804010318067_InitialDbCreation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserDbContext\201804010317014_InitialDbCreation.resx">
-      <DependentUpon>201804010317014_InitialDbCreation.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,7 +13,25 @@ namespace CSULB.GetUsGrub.Models
     //[System.Serializable]
     public class Address : IAddress
     {
+        // Automatic properties
+        [Required]
+        public string Street1 { get; set; }
+        public string Street2 { get; set; }
+        [Required]
+        public string City { get; set; }
+        [Required]
+        public string State { get; set; }
+        [Required]
+        public int Zip { get; set; }
+
+        // Constructors
         public Address() { }
+
+        public Address(string city, string state)
+        {
+            City = city;
+            State = state;
+        }
 
         public Address(string street1, string street2, string city, string state, int zip)
         {
@@ -31,19 +49,5 @@ namespace CSULB.GetUsGrub.Models
             State = state;
             Zip = zip;
         }
-
-        [Required]
-        public string Street1 { get; set; }
-
-        public string Street2 { get; set; }
-
-        [Required]
-        public string City { get; set; }
-
-        [Required]
-        public string State { get; set; }
-
-        [Required]
-        public int Zip { get; set; }
     }
 }

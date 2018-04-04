@@ -3,7 +3,6 @@ using FluentValidation;
 
 namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
 {
-    // TODO: @Ahmed Please fix this error [-Jenn]
     class AuthenticationTokenPostLogicValidationStrategy
     {
         private readonly AuthenticationToken _authenticationToken;
@@ -12,12 +11,12 @@ namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
         public AuthenticationTokenPostLogicValidationStrategy(AuthenticationToken authenticationToken)
         {
             _authenticationToken = authenticationToken;
+            _authenticationTokenValidator = new AuthenticationTokenValidator();
         }
 
         public bool ExcuteStrategy()
         {
-            var validationResult = _authenticationTokenValidator
-                .Validate(_authenticationToken, ruleSet: "UsernameAndPassword");
+            var validationResult = _authenticationTokenValidator.Validate(_authenticationToken, ruleSet: "UsernameAndPassword");
 
             if (!validationResult.IsValid)
             {

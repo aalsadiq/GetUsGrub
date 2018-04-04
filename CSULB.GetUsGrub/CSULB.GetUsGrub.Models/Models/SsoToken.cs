@@ -14,10 +14,12 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.SsoToken")]
     public class SsoToken : IEntity
     {
+        // Automatic Properties
         [Key]
         public int? Id { get; set; }
         public string Token { get; set; }
 
+        // Constructors
         public SsoToken() {}
 
         public SsoToken(string token)

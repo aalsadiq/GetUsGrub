@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -12,13 +13,42 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class BusinessHourDto
     {
+        // Automatic Properties
         [Required]
         public string Day { get; set; }
-
         [Required]
         public string OpenTime { get; set; }
-
         [Required]
         public string CloseTime { get; set; }
+        private DateTime _odt;
+        private DateTime _cdt;
+        public DateTime OpenDateTime
+        {
+            get => _odt;
+            set
+            {
+                _odt = DateTime.Today.AddDays((int)Enum.Parse(typeof(DayOfWeek), Day) * 1 - 1) + value.ToLocalTime().TimeOfDay;
+                OpenTime = value.ToLocalTime().TimeOfDay.ToString();
+            }
+        }
+        public DateTime CloseDateTime
+        {
+            get => _cdt;
+            set
+            {
+                _cdt = DateTime.Today.AddDays((int)Enum.Parse(typeof(DayOfWeek), Day) * 1 - 1) + value.ToLocalTime().TimeOfDay;
+                CloseTime = value.ToLocalTime().TimeOfDay.ToString();
+            }
+        }
+
+        // Constructors
+        public BusinessHourDto () { }
+
+        public BusinessHourDto(string day, DateTime openDateTime, DateTime closeDateTime)
+        {
+            Day = day;
+            OpenDateTime = openDateTime;
+            CloseDateTime = closeDateTime;
+        }
     }
 }

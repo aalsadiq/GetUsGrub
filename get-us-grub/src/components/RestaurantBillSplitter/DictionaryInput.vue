@@ -1,13 +1,31 @@
 <template>
-  <v-form :rules=ValidatePrice class="dictionaryInput">
-    <label>Enter Food Item Name</label>
-    <v-text-field type="text" ref="menuItemName" required />
-    <br />
-    <label>Enter Food Item Price</label>
-    <v-text-field prefix="$" type="number" min="0.00" max="1000.00" step="0.01" ref="menuItemPrice" required />
-    <br />
-    <v-btn v-on:click="AddToDictionary($refs.menuItemName.value, $refs.menuItemPrice.valueAsNumber)">Add To Dictionary</v-btn>
-    <v-btn v-on:click="log">Log</v-btn>
+  <v-form v-model="valid"
+          ref="dictionaryInputForm"
+          class="dictionaryInput"
+          lazy-validation>
+    <v-text-field label="Item Name"
+                  :rules="[rules.required]"
+                  ref="nameField"
+                  v-model="name"
+                  required />
+    <v-text-field label="Item Price"
+                  :rules="[rules.required, rules.nonzero, rules.max]"
+                  prefix="$"
+                  ref="priceField"
+                  v-model.lazy="price"
+                  v-money="money"
+                  required />
+    <v-btn color="teal"
+           dark
+           v-on:click="AddToDictionary(name, price)" >
+      Add To Dictionary
+    </v-btn>
+    <v-btn color="teal"
+           dark
+           v-on:click="log">
+      Log
+    </v-btn>
+    <br /><small>*indicates required field</small>
   </v-form>
 </template>
 
@@ -18,8 +36,27 @@ export default {
   components: {
     axios
   },
+  // directives: { money: VMoney },
   data () {
     return {
+      valid: true,
+      maxValue: 1000,
+      name: '',
+      price: null,
+      rules: {
+        required: (value) => (!!value) || 'Required.',
+        nonzero: (value) => value != 0 || 'Price must not be 0.',
+        // TODO: make max rule more extensible. -Ryan Luong
+        max: (value) => value < 1000.00 || ('Price must be less than 1000.')
+      },
+      money: {
+        decimal: '.',
+        thousands: '',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
+      }
     }
   },
   methods: {

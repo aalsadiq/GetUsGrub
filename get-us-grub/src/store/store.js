@@ -5,60 +5,17 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    MINIMUM_MENU_ITEM_PRICE: 0.01,
-    MAX_MENU_ITEM_PRICE: 1000,
+    restaurantDisplayName: 'DisplayName1',
+    restaurantLatitude: '1.11',
+    restaurantLongitude: '1.11',
+    uniqueUserCounter: 0,
     MenuItems: [
-      {
-        menuItemName: 'Big Mac',
-        menuItemPrice: 4.00
-      },
-      {
-        menuItemName: 'Large Fries',
-        menuItemPrice: 2.50
-      },
-      {
-        menuItemName: 'McFlurry',
-        menuItemPrice: 1.00
-      },
-      {
-        menuItemName: 'Large Soft Drink',
-        menuItemPrice: 2.00
-      },
-      {
-        menuItemName: 'McChicken',
-        menuItemPrice: 1.50
-      },
-      {
-        menuItemName: 'Water Bottle',
-        menuItemPrice: 10.50
-      }
     ],
     BillItems: [
-      {
-        menuItemName: 'Test',
-        menuItemPrice: 2.00,
-        menuItemEdit: false
-      }
     ],
-    Tokens: [ // Added token info [-Angelica]
-      {
-        // username: '',
-        // iat:'',
-        // exp:'',
-        // claims:''
-      }
+    BillUsers: [
     ],
-    Claims: [ // Added claims [-Angelica]
-      {
-        // ReadUser: 'ReadUser',
-        // ReadIndividualProfile: 'ReadIndividualProfile',
-        // ReadPreferences: 'ReadPreferences',
-        // ReadBillSplitter: 'ReadBillSplitter',
-        // ReadMenu: 'ReadMenu',
-        // ReadDictionary: 'ReadDictionary',
-        // ReadRestaurantProfile: 'ReadRestaurantProfile'
-      }
-    ]
+    isAuthenticated: true
   },
   getters: {
     totalPrice: state => {
@@ -72,49 +29,47 @@ export const store = new Vuex.Store({
   mutations: {
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
-        menuItemName: payload[0],
-        menuItemPrice: payload[1]
+        name: payload[0],
+        price: payload[1],
+        selected: []
       })
     },
-    ToggleEdit: (state, payload) => {
-      var temp = state.MenuItems[payload].menuItemEdit
-      state.MenuItems.forEach(function (element) {
-        element.menuItemEdit = false
+    AddBillUser: (state, payload) => {
+      state.BillUsers.push({
+        name: payload[0],
+        uID: payload[1]
       })
-      if (temp === false) {
-        state.MenuItems[payload].menuItemEdit = true
-      }
+    },
+    EditDictionaryItem: (state, payload) => {
+      state.MenuItems[payload[0]].name = payload[1]
+      state.MenuItems[payload[0]].price = payload[2]
+    },
+    EditBillItem: (state, payload) => {
+      state.BillItems[payload[0]].name = payload[1]
+      state.BillItems[payload[0]].price = payload[2]
     },
     RemoveFromDictionary: (state, payload) => {
-      console.log('Store Mutation: ' + payload)
+      console.log('Dictionary Store Mutation Index: ' + payload)
       state.MenuItems.splice(payload, 1)
     },
-    RemoveFromBill: (state, payload) => {
-      console.log('Store Mutation: ' + payload)
+    RemoveFromBillTable: (state, payload) => {
+      console.log('Bill Store Mutation Index: ' + payload)
       state.BillItems.splice(payload, 1)
     },
-    checkClaims: () => { // check claims here..
-      // ReadUser: 'ReadUser'
-      // ReadIndividualProfile: 'ReadIndividualProfile'
-      // ReadPreferences: 'ReadPreferences'
-      // ReadBillSplitter: 'ReadBillSplitter'
-      // ReadMenu: 'ReadMenu'
-      // ReadDictionary: 'ReadDictionary'
-      // ReadRestaurantProfile: 'ReadRestaurantProfile'
-    },
-    StoreToken: () => { // Added [-Angelica]
-    },
-    RemoveToken: () => { // Added [-Angelica]
-    },
-    StoreImage: () => { // Added [-Angelica]
-      // imagePath: '' // The path that the image is found on
-      // usesrname: '' // the usersimage
-      // imageName: username + 'profile'
-    },
-    RemoveImage: () => { // Added [-Angelica]
-      // imagePath: ''
-      // username: ''
-      // imageName: username
+    RemoveUser: (state, payload) => {
+      console.log('User Store Mutation Index ' + payload)
+      state.BillUsers.forEach(function (element, index) {
+        if (element.uID === payload) {
+          state.BillUsers.splice(index, 1)
+        }
+      })
+      for (var i = 0, len1 = state.BillItems.length; i < len1; i++) {
+        for (var j = 0, len2 = state.BillItems[i].selected.length; j < len2; j++) {
+          if (state.BillItems[i].selected[j] === payload) {
+            state.BillItems[i].selected.splice(j, 1)
+          }
+        }
+      };
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -124,17 +79,22 @@ export const store = new Vuex.Store({
         console.log('Added Food Item Name: ' + payload[0])
         console.log('Added Food Item Price: ' + payload[1])
         context.commit('AddToDictionary', payload)
-      }, 500)
+      }, 250)
     },
     RemoveFromDictionary: (context, payload) => {
       setTimeout(function () {
         context.commit('RemoveFromDictionary', payload)
-      }, 500)
+      }, 250)
     },
-    RemoveFromBill: (context, payload) => {
+    RemoveFromBillTable: (context, payload) => {
       setTimeout(function () {
-        context.commit('RemoveFromBill', payload)
-      }, 500)
+        context.commit('RemoveFromBillTable', payload)
+      }, 250)
+    },
+    RemoveUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('RemoveUser', payload)
+      }, 250)
     }
   }
 })

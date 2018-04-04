@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Spatial;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -15,32 +16,67 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.RestaurantProfile")]
     public class RestaurantProfile : IRestaurantProfile, IEntity//Maybe Remove Profile...
     {
+        // Automatic Properties
+        [Key]
+        [ForeignKey("UserProfile")]
+        public int? Id { get; set; }
+        public string PhoneNumber { get; set; }
+        public Address Address { get; set; }
+        public RestaurantDetail Details { get; set; }//ASK Andrew & Brian
+        public DbGeography Location
+        {
+            get
+            {
+                int srid = 4326;
+                string wkt = $"POINT({GeoCoordinates.Longitude} {GeoCoordinates.Latitude})";
+
+                return DbGeography.PointFromText(wkt, srid);
+            }
+            set
+            {
+                if (value == null) return;
+
+                GeoCoordinates.Latitude = value.Latitude.Value;
+                GeoCoordinates.Longitude = value.Longitude.Value;
+            }
+        }
+        [NotMapped]
+        public GeoCoordinates GeoCoordinates { get; set; }
+
+        // TODO: @Rachel Need to include Food Preference List in RestaurantProfile [-Jenn]
+
+        // Navigation Properties
+        public virtual UserProfile UserProfile { get; set; }
+        public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
+        public virtual IList<BusinessHour> BusinessHours { get; set; }
+
+        // Constructors
         public RestaurantProfile() { }
 
-        // TODO: @Jenn Please parameterize this [-Jenn]
-        public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details, double latitude, double longitude)
+        public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details, double? latitude, double? longitude)
         {
             PhoneNumber = phoneNumber;
             Address = address;
             Details = details;
-            Latitude = latitude;
-            Longitude = longitude;
+            GeoCoordinates.Latitude = latitude;
+            GeoCoordinates.Longitude = longitude;
         }
 
-        [Key]
-        [ForeignKey("UserProfile")]
-        public int? Id { get; set; }
+        public RestaurantProfile(int? id, string phoneNumber, Address address, RestaurantDetail details, double latitude, double longitude)
+        {
+            Id = id;
+            PhoneNumber = phoneNumber;
+            Address = address;
+            Details = details;
+            GeoCoordinates.Latitude = latitude;
+            GeoCoordinates.Longitude = longitude;
+        }
 
-        public string PhoneNumber { get; set; }
-        public Address Address { get; set; }
-        public RestaurantDetail Details { get; set; }//ASK Andrew & Brian
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        // TODO: @Rachel Need to include Food Preference List in RestaurantProfile [-Jenn]
-        
-        // Navigation Properties
-        public virtual UserProfile UserProfile { get; set; }
-        public virtual ICollection<RestaurantMenu> RestaurantMenu { get; set; }
-        public virtual ICollection<BusinessHour> BusinessHours { get; set; }
+        public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details)
+        {
+            PhoneNumber = phoneNumber;
+            Address = address;
+            Details = details;
+        }
     }
 }

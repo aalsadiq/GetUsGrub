@@ -14,14 +14,7 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.SecurityQuestion")]
     public class SecurityQuestion : IEntity
     {
-        public SecurityQuestion() { }
-
-        public SecurityQuestion( int question, string answer)
-        {
-            Question = question;
-            Answer = answer;
-        }
-
+        // Automatic Properties
         [Key]
         public int? Id { get; set; }
         [ForeignKey("UserAccount")]
@@ -32,5 +25,14 @@ namespace CSULB.GetUsGrub.Models
         // Navigation Properties
         public virtual UserAccount UserAccount { get; set; }
         public virtual SecurityAnswerSalt SecurityAnswerSalt { get; set; }
+
+        // Constructors
+        public SecurityQuestion() { }
+
+        public SecurityQuestion(int question, string answer)
+        {
+            Question = question;
+            Answer = answer;
+        }
     }
 }

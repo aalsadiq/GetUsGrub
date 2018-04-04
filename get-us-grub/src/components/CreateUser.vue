@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <v-toolbar dark tabs flat>
+    <div id="create-user">
+      {{ responseDataStatus }} {{ responseData }}
+      <v-toolbar dark tabs flat>
         <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-3">
           <v-spacer/>
           <v-tab href="#user">User
@@ -11,7 +12,6 @@
             <v-icon>store</v-icon>
           </v-tab>
           <v-spacer/>
-          <v-tabs-slider color="pink"></v-tabs-slider>
         </v-tabs>
       </v-toolbar>
       <v-tabs-items v-model="tabs">
@@ -249,12 +249,39 @@
                         required
                       ></v-select>
                     </v-flex>
+                    <v-flex xs12 sm6>
+                      <v-select
+                        label="Select a food preference"
+                        item-text="foodPreference"
+                        item-value="id"
+                        :items="foodPreferences"
+                        v-model="restaurantProfile.foodPreferences"
+                        multiple
+                        chips
+                        prepend-icon="restaurant"
+                        persistent-hint
+                        :rules="foodPreferenceRules"
+                        required
+                      ></v-select>
+                    </v-flex>
                   </v-form>
                   <v-btn color="grey lighten-5" @click="restaurantStep = 2">Previous</v-btn>
                   <v-btn color="primary" :disabled="!validRestaurantDetailsInput" @click="restaurantStep = 4">Next</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="4">
                   <v-form v-model="validAddBusinessHour">
+                    <v-select
+                      :items="timeZones"
+                      item-text="displayString"
+                      item-value="timeZoneName"
+                      v-model="timeZone"
+                      label="Select your time zone"
+                      single-line
+                      auto
+                      hide-details
+                      :rules="timeZoneRules"
+                      required
+                    ></v-select>
                     <v-select
                       :items="dayOfWeek"
                       v-model="businessHour.day"
@@ -441,7 +468,9 @@ export default {
       details: {
         category: '',
         avgFoodPrice: null
-      }
+      },
+      foodPreferences: [
+      ]
     },
     businessHours: [],
     businessHour: {
@@ -484,20 +513,14 @@ export default {
       phone => !!phone || 'Phone number is required',
       phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
     ],
-    businessDayRules: [
-      day => !!day || 'Day is required'
-    ],
-    openTimeRules: [
-      openTime => !!openTime || 'Opening time is required'
-    ],
-    closeTimeRules: [
-      closeTime => !!closeTime || 'Closing time is required'
-    ],
     foodCategoryRules: [
       category => !!category || 'Food category is required'
     ],
     avgFoodPriceRules: [
       price => !!price || 'Food price is required'
+    ],
+    foodPreferenceRules: [
+      foodPreference => !!foodPreference || 'Food preference is required'
     ],
     securityQuestionsSet1: [{
       id: 1,
@@ -535,6 +558,10 @@ export default {
       id: 9,
       question: 'What was the name of your first pet?'
     }],
+    timeZones: [{
+      displayString: '(UTC-08:00) Pacific Standard Time',
+      timeZoneName: 'Pacific Standard Time'
+    }],
     dayOfWeek: [
       'Sunday',
       'Monday',
@@ -545,15 +572,15 @@ export default {
       'Saturday'
     ],
     avgFoodPrices: [{
-      id: 0,
+      id: 1,
       price: '$0.00 to $10.00'
     },
     {
-      id: 1,
+      id: 2,
       price: '$10.01 to $50.00'
     },
     {
-      id: 2,
+      id: 3,
       price: '$50.01+'
     }],
     foodCategories: [{
@@ -614,7 +641,15 @@ export default {
     },
     {
       id: 14,
-      question: 'Caribbean Food'
+      category: 'Caribbean Food'
+    }],
+    foodPreferences: [{
+      id: 1,
+      foodPreference: 'Food preference 1'
+    },
+    {
+      id: 2,
+      foodPreference: 'Food preference 2'
     }],
     states: [
       'CA'
@@ -642,9 +677,11 @@ export default {
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
+        console.log(response)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
+        console.log(error.response.data)
       })
     },
     restaurantSubmit () {
@@ -653,15 +690,24 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
         restaurantProfileDto: this.restaurantProfile,
+        timeZone: this.timeZone,
         businessHourDtos: this.businessHours
       }).then(response => {
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
+        console.log(response)
       }).catch(error => {
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
+        console.log(error.response.data)
       })
     }
   }
 }
 </script>
+
+<style>
+  #create-user {
+    margin: 0 0 7em 0;
+  }
+</style>

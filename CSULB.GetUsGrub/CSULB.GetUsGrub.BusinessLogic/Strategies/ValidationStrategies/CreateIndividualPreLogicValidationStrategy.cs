@@ -70,7 +70,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
             result = _userValidator.CheckIfUsernameEqualsDisplayName(_registerUserDto.UserAccountDto.Username, _registerUserDto.UserProfileDto.DisplayName);
             if (result.Data)
             {
-                result.Error = "Username must not be the same as display name.";
+                if (result.Error == null)
+                {
+                    result.Error = "Username must not be the same as display name.";
+                }
+
+                result.Data = false;
                 return result;
             }
 
@@ -78,7 +83,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
             result = _userValidator.CheckIfUserExists(_registerUserDto.UserAccountDto.Username);
             if (result.Data)
             {
-                result.Error = "Username is already used.";
+                if (result.Error == null)
+                {
+                    result.Error = "Username is already used.";
+                }
+
+                result.Data = false;
                 return result;
             }
 

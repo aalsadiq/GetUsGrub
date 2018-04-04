@@ -27,8 +27,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                 RuleFor(x => x.State)
                     .NotEmpty().WithMessage("Address needs a state.")
-                    .NotNull().WithMessage("Address needs a state.")
-                    .Matches(@"^CA$").WithMessage("State must be CA.");
+                    .NotNull().WithMessage("Address needs a state.");
 
                 RuleFor(x => x.Zip)
                     .NotEmpty().WithMessage("Address needs a zip code.")
@@ -36,5 +35,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .LessThanOrEqualTo(99999).WithMessage("Zip code must contain 5 numbers.");
             });
         }
+
+        // TODO: @Brian Need to integrate with Google Maps API for the following [-Jenn]
+        // Call Google Maps API to check if the address is a valid address in Los Angeles, CA and Orange County, CA
+
+        // TODO: @Jenn Validate enum for states? [-Jenn]
     }
 }

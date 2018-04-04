@@ -12,11 +12,13 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class AuthenticationTokenDto
     {
+        // Automatic Properties
         public int? Id { get; set; }
         public string Username { get; set; }
         public DateTime ExpiresOn { get; set; }
         public string TokenString { get; set; }
 
+        // Constructors
         public AuthenticationTokenDto(string username, DateTime expiresOn, string tokenString)
         {
             Username = username;

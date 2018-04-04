@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace CSULB.GetUsGrub.Models
+﻿namespace CSULB.GetUsGrub.Models
 {
     public interface IRestaurantMenu
-    {
-        string MenuName { get; set; }
-    }
+		{
+			string MenuName { get; set; }
+			bool IsActive { get; set; }
+		}
 }

@@ -2,65 +2,100 @@
   <div>
     <app-header></app-header>
     <div class="wrapper">
-      <div class="one">
-        <h1>Your Bill</h1>
-        <draggable class="bill" v-bind:list="BillItems" v-bind:options="{group:'people'}" @start="drag=true" @end="drag=false">
-          <div class="bill-item" v-for="(element, index) in BillItems" :key="index">
-            {{index}} - {{element.menuItemName}} : ${{element.menuItemPrice.toFixed(2)}}
-            <div style="display: inline-block">
-              <v-btn small=true><!--v-on:click="EditDictionaryFoodItem"-->Edit</v-btn>
-              <v-btn small=true v-on:click="RemoveFromBill(index)">Delete</v-btn>
-            </div>
-          </div>
-        </draggable>
-        <h2 class="total">Total:</h2>
-      </div>
-      <restaurantBillSplitter-dictionaryInput/>
-      <restaurantBillSplitter-dictionary/>
+      <restaurantBillSplitter-userTable />
+      <restaurantBillSplitter-billTable />
+      <restaurantBillSplitter-dictionaryInput />
+      <restaurantBillSplitter-dictionary />
+      <debug/>
+      <v-btn v-on:click="GetRestaurantMenus(restaurantDisplayName)"> Test Get Request </v-btn>
     </div>
-    <div>
-      <h1> Debug </h1>
-      <h2> Menu Items</h2>
-      <ul>
-        <li v-for="element in MenuItems" :key="element">
-          {{element}}
-        </li>
-      </ul>
-      <h2> Bill Items</h2>
-      <ul>
-        <li v-for="element in BillItems" :key="element">
-          {{element}}
-        </li>
-      </ul>
-    </div>
+    <app-footer />
   </div>
 
 </template>
 
 <script>
+import axios from 'axios'
 import AppHeader from '../AppHeader.vue'
+import AppFooter from '../AppFooter.vue'
+import UserTable from './UserTable.vue'
+import BillTable from './BillTable.vue'
 import Dictionary from './Dictionary.vue'
 import DictionaryInput from './DictionaryInput.vue'
-import draggable from 'vuedraggable'
+import Debug from './Debug.vue'
 
 export default {
   name: 'RestaurantBillSplitter',
   components: {
     'app-header': AppHeader,
+    'app-footer': AppFooter,
+    'restaurantBillSplitter-userTable': UserTable,
+    'restaurantBillSplitter-billTable': BillTable,
     'restaurantBillSplitter-dictionaryInput': DictionaryInput,
     'restaurantBillSplitter-dictionary': Dictionary,
-    draggable
+    'debug': Debug
   },
   data () {
     return {
-
+      restaurantDisplayName: '',
+      restaurantLatitude: null,
+      restaurantLongitude: null
+    }
+  },
+  created () {
+    this.restaurantDisplayName = this.$store.state.restaurantDisplayName
+    this.restaurantLatitude = this.$store.state.restaurantLatitude
+    this.restaurantLongitude = this.$store.state.restaurantLongitude
+    if (this.$store.state.isAuthenticated) {
+      console.log('Authenticated')
+      axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        },
+        params: {
+          DisplayName: this.restaurantDisplayName,
+          Latitude: this.restaurantLatitude,
+          Longitude: this.restaurantLongitude
+        }
+      }).then(response => {
+        console.log(response)
+        // this.responseDataStatus = 'Success! Restaurant Menus have been get: '
+        // this.responseData = response.data
+        // console.log(response)
+      }).catch(error => {
+        this.responseDataStatus = 'An error has occurred: '
+        this.responseData = error.response.data
+        console.log(error.response.data)
+      })
     }
   },
   methods: {
-    RemoveFromBill: function (index) {
-      // Parameters have to be placed into an array because dispatch can only take two. The name and the payload.
-      console.log(index)
-      this.$store.dispatch('RemoveFromBill', index)
+    GetRestaurantMenus: function () {
+      console.log(this.$store.state.restaurantDisplayName)
+      console.log(this.$store.state.restaurantLatitude)
+      console.log(this.$store.state.restaurantLongitude)
+      if (this.$store.state.isAuthenticated) {
+        console.log('Authenticated')
+        axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          },
+          params: {
+            DisplayName: this.$store.state.restaurantDisplayName,
+            Latitude: this.$store.state.restaurantLatitude,
+            Longitude: this.$store.state.restaurantLongitude
+          }
+        }).then(response => {
+          console.log(response)
+          // this.responseDataStatus = 'Success! Restaurant Menus have been get: '
+          // this.responseData = response.data
+          // console.log(response)
+        }).catch(error => {
+          this.responseDataStatus = 'An error has occurred: '
+          this.responseData = error.response.data
+          console.log(error.response.data)
+        })
+      }
     }
   },
   computed: {
@@ -70,12 +105,16 @@ export default {
     BillItems () {
       return this.$store.state.BillItems
     },
+    BillUsers () {
+      return this.$store.state.BillUsers
+    },
     totalPrice () {
       return this.$store.getters.totalPrice
     }
   }
 }
 </script>
+
 <style scoped>
   .wrapper {
     margin: 20px;

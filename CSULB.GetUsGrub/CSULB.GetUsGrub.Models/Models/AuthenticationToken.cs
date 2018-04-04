@@ -15,6 +15,7 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.AuthenticationToken")]
     public class AuthenticationToken : IEntity
     {
+        // Automatic properties
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
@@ -23,23 +24,26 @@ namespace CSULB.GetUsGrub.Models
         public string Salt { get; set; }
         public string TokenString { get; set; }
 
-        // Ask about this
-        public AuthenticationToken()
-        {
-            this.Username = Username;
-            this.ExpiresOn = ExpiresOn;
-            this.Salt = Salt;
-            this.TokenString = TokenString;
-        }
-
-        public AuthenticationToken(AuthenticationTokenDto authenticationTokenDto)
-        {
-            Username = authenticationTokenDto.Username;
-            ExpiresOn = authenticationTokenDto.ExpiresOn;
-            TokenString = authenticationTokenDto.TokenString;
-        }
-
-        // Navigation Property
+        // Navigation Properties
         public virtual UserAccount UserAccount { get; set; }
+
+        // Constructors
+        public AuthenticationToken() { }
+
+        public AuthenticationToken(string username,  DateTime expiresOn, string tokenString)
+        {
+            Username = username;
+            ExpiresOn = expiresOn;
+            TokenString = tokenString;
+        }
+
+        public AuthenticationToken(int? id, string username, DateTime expiresOn, string salt, string tokenString)
+        {
+            Id = id;
+            Username = username;
+            ExpiresOn = expiresOn;
+            Salt = salt;
+            TokenString = tokenString;
+        }
     }
 }

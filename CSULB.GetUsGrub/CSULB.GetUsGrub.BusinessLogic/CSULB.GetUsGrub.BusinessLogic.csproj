@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.7.5.1\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
@@ -54,6 +55,7 @@
       <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.2.1\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -73,11 +75,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\Interfaces\IProfileManager.cs" />
+    <Compile Include="Managers\RestaurantProfileManager.cs" />
+    <Compile Include="Managers\UserProfileManager.cs" />
+    <Compile Include="Services\BackoffRequest.cs" />
+    <Compile Include="Services\DateTimeService.cs" />
+    <Compile Include="Services\GetRequestService.cs" />
+    <Compile Include="Services\GoogleBackoffRequest.cs" />
+    <Compile Include="Services\GoogleGeocodeService.cs" />
+    <Compile Include="Services\GoogleTimeZoneService.cs" />
+    <Compile Include="Services\Interfaces\IBackoff.cs" />
+    <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
     <Compile Include="Managers\RestaurantSelectionManager.cs" />
+    <Compile Include="Managers\RestaurantBillSplitterManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
+    <Compile Include="Managers\AuthenticationTokenManager.cs" />
+    <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Interfaces\IGeocodeService.cs" />
+    <Compile Include="Services\Interfaces\IPasswordValidationService.cs" />
+    <Compile Include="Services\Interfaces\IPasswordValidationServiceAsync.cs" />
+    <Compile Include="Services\Interfaces\IRequestService.cs" />
+    <Compile Include="Services\Interfaces\ITimeZoneService.cs" />
+    <Compile Include="Services\Interfaces\ITimeZoneServiceAsync.cs" />
     <Compile Include="Services\Interfaces\IValidationWrapper.cs" />
     <Compile Include="Services\PayloadHasher.cs" />
+    <Compile Include="Services\PwnedPasswordValidationService.cs" />
     <Compile Include="Services\SaltGenerator.cs" />
     <Compile Include="Managers\SsoTokenManager.cs" />
     <Compile Include="Services\TokenService.cs" />
@@ -88,12 +111,28 @@
     <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPreLogicValidationStrategy.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditRestaurantUserProfilePreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditUserProfilePreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\LoginPostLogicValidation.cs" />
+    <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
+    <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
+    <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
+    <Compile Include="Validators\DtoValidators\RestaurantSelectionDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\SecurityQuestionDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserAccountDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserProfileDtoValidator.cs" />
+    <Compile Include="Validators\ModelValidators\AuthenticationTokenValidator.cs" />
+    <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
+    <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
+    <Compile Include="Validators\ModelValidators\UserAuthenticationModelValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
     <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />
@@ -104,12 +143,19 @@
     <Compile Include="Validators\ModelValidators\SecurityQuestionValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAccountValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserProfileValidator.cs" />
+    <Compile Include="Validators\SsoTokenValidator.cs" />
     <Compile Include="Validators\TokenValidator.cs" />
     <Compile Include="Validators\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSULB.GetUsGrub.DataAccess\CSULB.GetUsGrub.DataAccess.csproj">
@@ -125,6 +171,5 @@
       <Name>CSULB.GetUsGrub.UserAccessControl</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -63,11 +63,9 @@
     <Compile Include="Gateways\RestaurantBillSplitterGateway.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\RestaurantGateway.cs" />
+    <Compile Include="Gateways\RestaurantProfileGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
-    <Compile Include="Migrations\SsoDbContext\201804010318067_InitialDbCreation.cs" />
-    <Compile Include="Migrations\SsoDbContext\201804010318067_InitialDbCreation.Designer.cs">
-      <DependentUpon>201804010318067_InitialDbCreation.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Gateways\UserProfileGateway.cs" />
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
     <Compile Include="Migrations\UserDbContext\201804040305197_InitialDbCreation.cs" />
     <Compile Include="Migrations\UserDbContext\201804040305197_InitialDbCreation.Designer.cs">

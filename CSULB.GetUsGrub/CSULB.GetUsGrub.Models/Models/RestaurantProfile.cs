@@ -53,7 +53,7 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public RestaurantProfile() { }
 
-        public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details, double latitude, double longitude)
+        public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details, double? latitude, double? longitude)
         {
             PhoneNumber = phoneNumber;
             Address = address;

@@ -22,15 +22,16 @@ namespace CSULB.GetUsGrub.Models
         public IList<RestaurantMenu> RestaurantMenus { get; set; }
         public IList<RestaurantMenuItem> RestaurantMenuItems { get; set; }
 
-        // TODO: @andrew temporary for RestaurantProfileDtoValidatorUnitTests, make unit tests use actual constructor
         // Constructors
         public RestaurantProfileDto() { }
 
-        public RestaurantProfileDto(RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours, IList<RestaurantMenu> restaurantMenus, IList<RestaurantMenuItem> restaurantMenuItems)
+        public RestaurantProfileDto(RestaurantProfile restaurantProfile, double? latitude, double? longitude, IList<BusinessHour> businessHours, IList<RestaurantMenu> restaurantMenus, IList<RestaurantMenuItem> restaurantMenuItems)
         {
             PhoneNumber = restaurantProfile.PhoneNumber;
             Address = restaurantProfile.Address;
             Details = restaurantProfile.Details;
+            GeoCoordinates.Latitude = latitude;
+            GeoCoordinates.Longitude = longitude;
             BusinessHours = businessHours;
             RestaurantMenus = restaurantMenus;
             RestaurantMenuItems = restaurantMenuItems;

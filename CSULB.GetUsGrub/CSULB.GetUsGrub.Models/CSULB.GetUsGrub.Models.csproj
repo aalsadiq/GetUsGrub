@@ -65,12 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadKeys.cs" />
+    <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadValues.cs" />
     <Compile Include="Converters\ClaimConverter.cs" />
     <Compile Include="DTOs\AuthenticationTokenDto.cs" />
     <Compile Include="DTOs\LoginDto.cs" />
     <Compile Include="DTOs\BusinessHourDto.cs" />
     <Compile Include="DTOs\SelectedRestaurantDto.cs" />
-    <Compile Include="ErrorMessages\ErrorMessages.cs" />
+    <Compile Include="Constants\ErrorMessages\GeneralErrorMessages.cs" />
+    <Compile Include="Constants\ErrorMessages\SsoErrorMessages.cs" />
     <Compile Include="Models\GeoCoordinates.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
@@ -94,6 +97,7 @@
     <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
     <Compile Include="Models\SsoToken.cs" />
+    <Compile Include="Models\SsoTokenPayload.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />

@@ -2,6 +2,7 @@
 using FluentValidation;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -37,11 +38,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<bool> ExecuteValidator()
         {
             var validationResult = _validator.Validate(_data, ruleSet: _ruleSet);
+            Debug.WriteLine("HEREHEREHERE");
+            Debug.WriteLine(JsonConvert.SerializeObject(validationResult.Errors));
             if (!validationResult.IsValid && validationResult.Errors != null)
             {
+                Debug.WriteLine("HEREHEREHERE1283912390102832190389018038");
+                Debug.WriteLine(JsonConvert.SerializeObject(validationResult.IsValid));
                 var errorsList = new List<string>();
                 validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
                 var errors = JsonConvert.SerializeObject(errorsList);
+                Debug.WriteLine(JsonConvert.SerializeObject(validationResult.Errors));
                 return new ResponseDto<bool>()
                 {
                     Data = false,
@@ -50,6 +56,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
             if (!validationResult.IsValid)
             {
+                Debug.WriteLine("HEREHERE");
+                Debug.WriteLine(JsonConvert.SerializeObject(validationResult.IsValid));
                 return new ResponseDto<bool>()
                 {
                     Data = false,

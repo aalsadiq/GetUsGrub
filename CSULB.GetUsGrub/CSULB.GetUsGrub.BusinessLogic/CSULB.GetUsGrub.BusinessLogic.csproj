@@ -110,10 +110,11 @@
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantSelectionDtoValidator.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Validators\ModelValidators\AuthenticationTokenValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
+    <Compile Include="Validators\ModelValidators\SsoTokenPayloadValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAuthenticationModelValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
@@ -134,7 +136,6 @@
     <Compile Include="Validators\ModelValidators\SecurityQuestionValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAccountValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserProfileValidator.cs" />
-    <Compile Include="Validators\SsoTokenValidator.cs" />
     <Compile Include="Validators\TokenValidator.cs" />
     <Compile Include="Validators\UserValidator.cs" />
   </ItemGroup>

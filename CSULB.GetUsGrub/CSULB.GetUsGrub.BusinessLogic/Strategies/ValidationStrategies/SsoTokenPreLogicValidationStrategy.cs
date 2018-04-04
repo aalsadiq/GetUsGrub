@@ -11,14 +11,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
-    public class SsoTokenValidationStrategy
+    public class SsoTokenPreLogicValidationStrategy
     {
         private readonly string _token;
         private readonly TokenValidationParameters _tokenValidationParameters;
-        private readonly SsoTokenValidator _ssotokenValidator;
-        private readonly TokenService _tokenService;
+        private readonly TokenValidator _tokenValidator;
 
-        public SsoTokenValidationStrategy(string token, SymmetricSecurityKey key)
+        public SsoTokenPreLogicValidationStrategy(string token, SymmetricSecurityKey key)
         {
             _token = token;
             _tokenValidationParameters = new TokenValidationParameters()
@@ -29,36 +28,32 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key
             };
-            _ssotokenValidator = new SsoTokenValidator();
-            _tokenService = new TokenService();
+            _tokenValidator = new TokenValidator();
         }
 
         public ResponseDto<bool> ExecuteStrategy()
         {
-            var result = _ssotokenValidator.CheckIfTokenIsJsonWebToken(_token);
+            // Check if the token has a valid Json Web Token (JWT) structure
+            var result = _tokenValidator.CheckIfTokenIsJsonWebToken(_token);
             if (!result.Data)
             {
                 return result;
             }
 
-            result = _ssotokenValidator.CheckIfSsoTokenExists(_token);
+            // Check if the same token exist in the database
+            result = _tokenValidator.CheckIfSsoTokenExists(_token);
             if (result.Data)
             {
-                result.Error = "Token already exists.";
+                result.Error = SsoErrorMessages.TOKEN_EXISTS_ERROR;
                 result.Data = false;
                 return result;
             }
 
-            result = _ssotokenValidator.ValidateJwt(_token, _tokenValidationParameters);
+            // Checks if JWT has valid token parameters
+            result = _tokenValidator.ValidateJwt(_token, _tokenValidationParameters);
             if (!result.Data)
             {
                 return result;
-            }
-
-            // TODO: @Jenn Make a call to the SsoTokenValidator [-Jenn]
-            foreach (var key in _tokenService.GetJwtSecurityToken(_token).Payload)
-            {
-
             }
 
             return new ResponseDto<bool>()

@@ -33,6 +33,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 RuleFor(x => x.IsFirstTimeUser)
                     .NotEmpty()
                     .NotNull();
+
+                RuleFor(x => x.RoleType)
+                    .NotEmpty()
+                    .NotNull()
+                    .Matches(@"^((public)|(private))$");
             });
 
             RuleSet("SsoRegistration", () =>
@@ -52,7 +57,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                 RuleFor(x => x.RoleType)
                     .NotEmpty()
-                    .NotNull();
+                    .NotNull()
+                    .Matches(@"^((public)|(private))$");
             });
         }
     }

@@ -20,7 +20,7 @@
             <v-stepper v-model="userStep" vertical>
               <v-stepper-header>
                 <v-divider></v-divider>
-                <v-stepper-step step="1" :complete="userStep > 1" editable>Identification</v-stepper-step>
+                <v-stepper-step step="1" :complete="userStep > 1">Identification</v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step step="2" :complete="userStep > 2">Security Questions</v-stepper-step>
                 <v-divider></v-divider>
@@ -270,7 +270,7 @@
                         v-model="restaurantProfile.foodPreferences"
                         multiple
                         chips
-                        prepend-icon="restaurant"
+                        prepend-icon=""
                         persistent-hint
                         :rules="foodPreferenceRules"
                         required
@@ -563,7 +563,7 @@ export default {
       question: 'What was the name of your first pet?'
     }],
     timeZones: [{
-      displayString: '(UTC-08:00) Pacific Standard Time',
+      displayString: 'Pacific Standard Time',
       timeZoneName: 'Pacific Standard Time'
     }],
     dayOfWeek: [

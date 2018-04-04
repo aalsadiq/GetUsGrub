@@ -18,5 +18,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(dateTime, tz);
             return utcDateTime;
         }
+
+        public DateTime GetCurrentCoordinateUniversalTime()
+        {
+            return DateTime.UtcNow;
+        }
+
+        public DayOfWeek GetCurrentLocalDayOfWeekFromUtc(int offsetInSeconds, DateTime utcDateTime)
+        {
+            var localDateTime = utcDateTime.AddSeconds(offsetInSeconds);
+            return localDateTime.DayOfWeek;
+        }
     }
 }

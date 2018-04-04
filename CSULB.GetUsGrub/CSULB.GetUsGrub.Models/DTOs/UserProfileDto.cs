@@ -10,6 +10,7 @@
     /// </summary>
     public class UserProfileDto : IUserProfile
     {
+        // Automatic Properties
         public string DisplayPicture { get; set; }
         public string DisplayName { get; set; }
     }

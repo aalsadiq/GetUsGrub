@@ -68,7 +68,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var compare = TimeSpan.Compare(openingTime, closingTime);
             return new ResponseDto<bool>()
             {
-                Data = compare == -1
+                Data = (compare == -1)
             };
         }
     }

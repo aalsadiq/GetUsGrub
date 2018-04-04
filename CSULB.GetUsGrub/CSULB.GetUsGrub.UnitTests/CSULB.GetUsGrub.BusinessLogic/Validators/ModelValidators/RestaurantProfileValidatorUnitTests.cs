@@ -31,8 +31,11 @@ namespace CSULB.GetUsGrub.UnitTests
                     State = "CA",
                     Zip = 90840
                 },
-                Longitude = 33.7838,
-                Latitude = -118.1141
+                GeoCoordinates = new GeoCoordinates()
+                {
+                    Longitude = 33.7838,
+                    Latitude = -118.1141
+                } 
             };
 
             // Act
@@ -58,8 +61,11 @@ namespace CSULB.GetUsGrub.UnitTests
                     State = "CA",
                     Zip = 90840
                 },
-                Longitude = 33.7838,
-                Latitude = -118.1141
+                GeoCoordinates = new GeoCoordinates()
+                {
+                    Longitude = 33.7838,
+                    Latitude = -118.1141
+                }
             };
 
             // Act
@@ -85,8 +91,11 @@ namespace CSULB.GetUsGrub.UnitTests
                     State = "CA",
                     Zip = 90840
                 },
-                Longitude = 33.7838,
-                Latitude = -118.1141
+                GeoCoordinates = new GeoCoordinates()
+                {
+                    Longitude = 33.7838,
+                    Latitude = -118.1141
+                }
             };
 
             // Act
@@ -112,8 +121,11 @@ namespace CSULB.GetUsGrub.UnitTests
                     State = "CA",
                     Zip = 90840
                 },
-                Longitude = 33.7838,
-                Latitude = -118.1141
+                GeoCoordinates = new GeoCoordinates()
+                {
+                    Longitude = 33.7838,
+                    Latitude = -118.1141
+                }
             };
 
             // Act
@@ -132,8 +144,11 @@ namespace CSULB.GetUsGrub.UnitTests
             var restaurantProfile = new RestaurantProfile()
             {
                 PhoneNumber = "(562)985-4111",
-                Longitude = 33.7838,
-                Latitude = -118.1141
+                GeoCoordinates = new GeoCoordinates()
+                {
+                    Longitude = 33.7838,
+                    Latitude = -118.1141
+                }
             };
 
             // Act
@@ -153,8 +168,11 @@ namespace CSULB.GetUsGrub.UnitTests
             {
                 PhoneNumber = "(562)985-4111",
                 Address = null,
-                Longitude = 33.7838,
-                Latitude = -118.1141
+                GeoCoordinates = new GeoCoordinates()
+                {
+                    Longitude = 33.7838,
+                    Latitude = -118.1141
+                }
             };
 
             // Act
@@ -174,7 +192,10 @@ namespace CSULB.GetUsGrub.UnitTests
             {
                 PhoneNumber = "(562)985-4111",
                 Address = null,
-                Latitude = -118.1141
+                GeoCoordinates = new GeoCoordinates()
+                {
+                    Latitude = -118.1141
+                }
             };
 
             // Act
@@ -194,7 +215,10 @@ namespace CSULB.GetUsGrub.UnitTests
             {
                 PhoneNumber = "(562)985-4111",
                 Address = null,
-                Longitude = 33.7838,
+                GeoCoordinates = new GeoCoordinates()
+                {
+                    Longitude = 33.7838
+                }
             };
 
             // Act

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies;
+﻿using CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies;
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -127,7 +126,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             authenticationTokenDto.ExpiresOn = DateTime.UtcNow;
 
             // Creating the Model to save in the DB
-            var incomingAuthenticationToken = new AuthenticationToken(authenticationTokenDto);
+            var incomingAuthenticationToken = new AuthenticationToken(authenticationTokenDto.Username, authenticationTokenDto.ExpiresOn, authenticationTokenDto.TokenString);
 
             // Validating the Model after creation
             var authenticationTokenPostLogicValidationStrategy =

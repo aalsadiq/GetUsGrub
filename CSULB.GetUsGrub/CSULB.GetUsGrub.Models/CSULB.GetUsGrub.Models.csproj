@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.7.5.0\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
@@ -64,6 +70,7 @@
     <Compile Include="DTOs\LoginDto.cs" />
     <Compile Include="DTOs\BusinessHourDto.cs" />
     <Compile Include="DTOs\SelectedRestaurantDto.cs" />
+    <Compile Include="ErrorMessages\ErrorMessages.cs" />
     <Compile Include="Models\GeoCoordinates.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />

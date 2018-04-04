@@ -13,6 +13,7 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class RegisterUserDto
     {
+        // Automatic Properties
         [Required]
         public UserAccountDto UserAccountDto { get; set; }
         [Required]

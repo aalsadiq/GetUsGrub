@@ -83,7 +83,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     return new ResponseDto<SelectedRestaurantDto>()
                     {
                         Data = null,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }

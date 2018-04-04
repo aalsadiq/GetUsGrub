@@ -194,7 +194,6 @@ namespace CSULB.GetUsGrub.DataAccess
                     var ssoToken = (from storedToken in authenticationContext.SsoTokens
                                     where storedToken.Token == token
                                     select storedToken).FirstOrDefault();
-
                     // Return a ResponseDto with a UserAccount model
                     return new ResponseDto<SsoToken>()
                     {

@@ -271,7 +271,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
         /// <summary>
         /// The StoreUserAccount method.
-        /// Contains logic to store a user account to the database.
+        /// Contains logic to store a user account and password salt to the database.
         /// <para>
         /// @author: Jennifer Nguyen
         /// @updated: 03/17/2018

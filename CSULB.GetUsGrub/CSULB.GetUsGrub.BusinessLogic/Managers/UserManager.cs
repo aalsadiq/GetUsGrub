@@ -78,7 +78,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -91,7 +91,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -156,7 +156,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -188,7 +188,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -201,7 +201,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterRestaurantDto>()
                     {
                         Data = registerRestaurantDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -247,7 +247,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Store user in database
+            // Store a user from Single Sign On registration request
             using (var userGateway = new UserGateway())
             {
                 var gatewayResult = userGateway.StoreSsoUser(userAccount, passwordSalt);
@@ -256,7 +256,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<bool>()
                     {
                         Data = gatewayResult.Data,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -297,7 +297,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "private");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
@@ -327,7 +327,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -340,7 +340,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }

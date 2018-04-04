@@ -293,7 +293,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "private");//changed this to private
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
@@ -359,6 +359,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             //Creates a gateway
             using (var gateway = new UserGateway())
             {
+                var check = new UserProfileDtoValidator(); //Check this...
+               //
+   
                 //Gateway calls DeactivateUser and passes in the username to be deactivated.
                 var gatewayResult = gateway.DeactivateUser(username);
                 //If the gateway returns false
@@ -420,13 +423,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<string> DeleteUser(string username)
             {
-            Debug.Write("Inside DeleteUser" + Environment.NewLine);
             //Creates a gateway
             using (var gateway = new UserGateway())
                 {
                     //Gateway calls DeleteUser and passes in the username to be deleted.
                     var gatewayResult = gateway.DeleteUser(username);
-                Debug.Write("After delete usergateway" + Environment.NewLine);
                 //If they gateway returns false
                 if (gatewayResult.Data == false)
                     {

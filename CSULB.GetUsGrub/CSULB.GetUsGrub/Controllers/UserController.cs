@@ -119,15 +119,12 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPost]
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
-            Debug.Write("Username is..." + registerUserDto.UserAccountDto.Username+ Environment.NewLine);
-
-            Debug.Write("In Create Admin" + Environment.NewLine);
             // Model Binding Validation
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {
                 //If mode is invalid, return a bad request.
-                return BadRequest("Invalid model!");
+                return BadRequest("Invalid input, please try again.");
             }
             try
             {
@@ -177,20 +174,16 @@ namespace CSULB.GetUsGrub.Controllers
                 //If mode is invalid, return a bad request.
                 return BadRequest("Invalid username.");
             }
-            Debug.Write("After Model" + Environment.NewLine);
             try
             {
                 //Creating a manager to then call DeleteUser
                 var manager = new UserManager();
-                Debug.Write("After User manager Creation!" + Environment.NewLine);
                 //Calling DeleteUser method to delete the username that was received.
                 var response = manager.DeleteUser(user.Username);
-                Debug.Write("After response creation!" + Environment.NewLine);
                 //Checks the response from DeleteUser. If Error is null, then it was successful!
                 if (response.Error != null)
                 {
-                    Debug.Write("Inside Response.Error" + Environment.NewLine);
-                    //Will return a bad request if error occured in manager.
+                //Will return a bad request if error occured in manager.
                     return BadRequest(response.Error);
                 }
                 //If DeleteUser was successful return HTTP response with a successful message.
@@ -307,12 +300,15 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
+            Debug.WriteLine("username" + user.Username);
+            Debug.WriteLine("new username" + user.NewUsername);
+            Debug.WriteLine("new displayname" + user.NewDisplayName);
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                //return BadRequest("Something went wrong, please try again later");
-                return Ok(user);
+                return BadRequest("Something went wrong, please try again later");
+                //return Ok(user);
             }
             try
             {

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
@@ -10,10 +9,24 @@ namespace CSULB.GetUsGrub.Models
     /// @author: Andrew Kao
     /// @updated: 3/15/18
     /// </summary>
-
     [Table("GetUsGrub.RestaurantMenu")]
     public class RestaurantMenu : IRestaurantMenu
     {
+        // Automatic Properties
+        [Key]
+        public int? Id { get; set; }
+        [ForeignKey("RestaurantProfile")]
+        public int? RestaurantId { get; set; }
+        [Required]
+        public string MenuName { get; set; }
+        [Required]
+        public bool IsActive { get; set; }
+
+        // Navigation Properties
+        public virtual RestaurantProfile RestaurantProfile { get; set; }
+        public virtual ICollection<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+
+        // Constructors
         public RestaurantMenu() { }
 
         public RestaurantMenu(string menuName, bool isActive)
@@ -30,22 +43,6 @@ namespace CSULB.GetUsGrub.Models
             IsActive = isActive;
         }
 
-        [Key]
-        public int? Id { get; set; }
-
-        [ForeignKey("RestaurantProfile")]
-        public int? RestaurantId { get; set; }
-
-        [Required]
-        public string MenuName { get; set; }
-
-        [Required]
-        public bool IsActive { get; set; }
-
-        // Navigation Properties
-        public virtual RestaurantProfile RestaurantProfile { get; set; }
-
-        public virtual ICollection<RestaurantMenuItem> RestaurantMenuItems { get; set; }
 
     }
 }

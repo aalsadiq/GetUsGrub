@@ -10,7 +10,24 @@
     /// </summary>
     public class UserProfileDto : IUserProfile
     {
+        // Automatic Properties
+        public string Username { get; set; }
         public string DisplayPicture { get; set; }
         public string DisplayName { get; set; }
+
+        // Constructors
+        public UserProfileDto() { }
+
+        public UserProfileDto(string displayName, string displayPicture)
+        {
+            DisplayName = displayName;
+            DisplayPicture = displayPicture;
+        }
+
+        public UserProfileDto(UserProfile userProfile)
+        {
+            DisplayName = userProfile.DisplayName;
+            DisplayPicture = userProfile.DisplayPicture;
+        }
     }
 }

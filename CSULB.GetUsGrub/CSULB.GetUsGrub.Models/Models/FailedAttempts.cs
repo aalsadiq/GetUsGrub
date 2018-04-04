@@ -7,8 +7,10 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.FailedAttempts")]
     public class FailedAttempts : IEntity
     {
-        [Key] [ForeignKey("UserAccount")] public int? Id { get; set; }
-
+        // Automatic Properties
+        [Key]
+        [ForeignKey("UserAccount")]
+        public int? Id { get; set; }
         public DateTime LastAttemptTime { get; set; }
         public int Count { get; set; }
 

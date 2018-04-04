@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                 RuleFor(x => x.AvgFoodPrice)
                     .NotNull().WithMessage("Average food price is required.")
-                    .Must(x => (x >= 0 && x <= 2)).WithMessage("Average food price is invalid.");
+                    .Must(x => (x >= 1 && x <= 3)).WithMessage("Average food price is invalid.");
             });
         }
         // TODO: @Jenn Validate Category is not empty, not null and in enum [-Jenn]

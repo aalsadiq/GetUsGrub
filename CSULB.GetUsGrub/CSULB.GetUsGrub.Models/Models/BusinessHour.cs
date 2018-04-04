@@ -15,6 +15,22 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.BusinessHour")]
     public class BusinessHour : IBusinessHour, IEntity
     {
+        // Automatic Properties
+        [Key]
+        public int? Id { get; set; }
+        [ForeignKey("RestaurantProfile")]
+        public int? RestaurantId { get; set; }
+        [Required]
+        public string Day { get; set; }
+        [Required]
+        public DateTime OpenTime { get; set; }
+        [Required]
+        public DateTime CloseTime { get; set; }
+
+        // Navigation Properties
+        public virtual RestaurantProfile RestaurantProfile { get; set; }
+
+        // Constructors
         public BusinessHour() { }
 
         public BusinessHour(string day, DateTime openTime, DateTime closeTime)
@@ -23,7 +39,7 @@ namespace CSULB.GetUsGrub.Models
             OpenTime = openTime;
             CloseTime = closeTime;
         }
-        
+
         public BusinessHour(int? id, int? restaurantId, string day, DateTime openTime, DateTime closeTime)
         {
             Id = id;
@@ -32,23 +48,5 @@ namespace CSULB.GetUsGrub.Models
             OpenTime = openTime;
             CloseTime = closeTime;
         }
-
-        [Key]
-        public int? Id { get; set; }
-
-        [ForeignKey("RestaurantProfile")]
-        public int? RestaurantId { get; set; }
-
-        [Required]
-        public string Day { get; set; }
-
-        [Required]
-        public DateTime OpenTime { get; set; }
-
-        [Required]
-        public DateTime CloseTime { get; set; }
-
-        // Navigation Properties
-        public virtual RestaurantProfile RestaurantProfile { get; set; }
     }
 }

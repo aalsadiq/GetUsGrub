@@ -5,40 +5,23 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    restaurantDisplayName: 'displayName26',
+    restaurantLatitude: '34.047041',
+    restaurantLongitude: '-118.256578',
+    uniqueUserCounter: 0,
     MenuItems: [
     ],
     BillItems: [
-      {
-        menuItemName: 'Test',
-        menuItemPrice: 2.00,
-        menuItemEdit: false
-      }
     ],
-    Tokens: [ // Added token info [-Angelica]
-      {
-        // username: '',
-        // iat:'',
-        // exp:'',
-        // claims:''
-      }
+    BillUsers: [
     ],
-    Claims: [ // Added claims [-Angelica]
-      {
-        // ReadUser: 'ReadUser',
-        // ReadIndividualProfile: 'ReadIndividualProfile',
-        // ReadPreferences: 'ReadPreferences',
-        // ReadBillSplitter: 'ReadBillSplitter',
-        // ReadMenu: 'ReadMenu',
-        // ReadDictionary: 'ReadDictionary',
-        // ReadRestaurantProfile: 'ReadRestaurantProfile'
-      }
-    ]
+    isAuthenticated: true
   },
   getters: {
     totalPrice: state => {
       var temp = 0
       state.BillItems.forEach(function (element) {
-        temp += element.menuItemPrice
+        temp = temp + element.price
       })
       return temp
     }
@@ -46,19 +29,24 @@ export const store = new Vuex.Store({
   mutations: {
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
-        menuItemName: payload[0],
-        menuItemPrice: payload[1],
-        menuItemEdit: false
+        name: payload[0],
+        price: payload[1],
+        selected: []
       })
     },
-    ToggleEdit: (state, payload) => {
-      var temp = state.MenuItems[payload].menuItemEdit
-      state.MenuItems.forEach(function (element) {
-        element.menuItemEdit = false
+    AddBillUser: (state, payload) => {
+      state.BillUsers.push({
+        name: payload[0],
+        uID: payload[1]
       })
-      if (temp === false) {
-        state.MenuItems[payload].menuItemEdit = true
-      }
+    },
+    EditDictionaryItem: (state, payload) => {
+      state.MenuItems[payload[0]].name = payload[1]
+      state.MenuItems[payload[0]].price = payload[2]
+    },
+    EditBillItem: (state, payload) => {
+      state.BillItems[payload[0]].name = payload[1]
+      state.BillItems[payload[0]].price = payload[2]
     },
     RemoveFromDictionary: (state, payload) => {
       console.log('Dictionary Store Mutation Index: ' + payload)
@@ -93,9 +81,20 @@ export const store = new Vuex.Store({
         context.commit('AddToDictionary', payload)
       }, 250)
     },
-    ToggleEdit: (context, payload) => {
+    AddBillUser: (context, payload) => {
       setTimeout(function () {
-        context.commit('ToggleEdit', payload)
+        console.log('Added New Bill User: ' + payload)
+        context.commit('AddBillUser', payload)
+      }, 250)
+    },
+    EditDictionaryItem: (context, payload) => {
+      setTimeout(function () {
+        context.commit('EditDictionaryItem', payload)
+      }, 250)
+    },
+    EditBillItem: (context, payload) => {
+      setTimeout(function () {
+        context.commit('EditBillItem', payload)
       }, 250)
     },
     RemoveFromDictionary: (context, payload) => {

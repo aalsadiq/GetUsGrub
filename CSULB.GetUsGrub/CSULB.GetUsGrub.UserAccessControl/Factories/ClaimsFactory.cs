@@ -7,7 +7,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// Factory that creates a set of claims for new users
     /// 
     /// Author: Rachel Dang
-    /// Last Updated: 3/08/18
+    /// Last Updated: 4/04/18
     /// </summary>
     public class ClaimsFactory
     {
@@ -27,10 +27,12 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 new Claim(ActionConstant.READ+ResourceConstant.PREFERENCES, "True"),
                 new Claim(ActionConstant.UPDATE+ResourceConstant.PREFERENCES, "True"),
 
-                // For Bill Splitter
-                new Claim(ActionConstant.READ+ResourceConstant.MENU, "True"),
-                new Claim(ActionConstant.READ+ResourceConstant.DICTIONARY, "True"),
-                new Claim(ActionConstant.UPDATE+ResourceConstant.DICTIONARY, "True")
+                // For Bill Splitter  
+                new Claim(ActionConstant.ACCESS+ResourceConstant.DICTIONARY, "True"),
+                new Claim(ActionConstant.ACCESS+ResourceConstant.MENU, "True"),
+
+                // For Restaurant Selector
+                new Claim(ActionConstant.ACCESS+ResourceConstant.PREFERENCES, "True")
             };
         }
 
@@ -45,9 +47,6 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // For Restaurant Profie Management
                 new Claim(ActionConstant.READ+ResourceConstant.RESTAURANT, "True"),
                 new Claim(ActionConstant.UPDATE+ResourceConstant.RESTAURANT, "True"),
-
-                // For Bill Splitter
-                new Claim(ActionConstant.READ+ResourceConstant.MENU, "True")
             };
         }
 
@@ -80,8 +79,8 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 new Claim(ActionConstant.DELETE+ResourceConstant.PREFERENCES, "True"),
 
                 // For Bill Splitter
-                new Claim(ActionConstant.READ+ResourceConstant.DICTIONARY, "True"),
-                new Claim(ActionConstant.READ+ResourceConstant.MENU, "True"),
+                new Claim(ActionConstant.ACCESS+ResourceConstant.DICTIONARY, "True"),
+                new Claim(ActionConstant.ACCESS+ResourceConstant.MENU, "True"),
             };
         }
     }

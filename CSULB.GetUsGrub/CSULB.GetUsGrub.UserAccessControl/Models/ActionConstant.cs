@@ -20,5 +20,8 @@
 
         // Action Types specifically for Food Preferences
         public const string SUGGEST = "Suggest";
+
+        // Action Type specifically for Bill Splitter & Restaurant Selector
+        public const string ACCESS = "Access";
     }
 }

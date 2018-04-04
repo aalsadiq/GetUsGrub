@@ -107,81 +107,29 @@ namespace CSULB.GetUsGrub.DataAccess
                                                          where hours.RestaurantId == dbRestaurantProfile.Id
                                                          select hours).ToList();
 
-                    // Then, find all active menus associated with this restaurant and turn it into a List
+                    // Then, find all menus associated with this restaurant and turn it into a List
                     var dbRestaurantMenus = (from menus in restaurantContext.RestaurantMenus
                                            where menus.RestaurantId == dbRestaurantProfile.Id
-                                           where menus.IsActive == true
                                            select menus).ToList();
 
                     using (var dbContextTransaction = restaurantContext.Database.BeginTransaction())
                     {
                         try
                         {
-                            // Apply and save changes
-                            // TODO: @andrew logic for creating new menus
-                            // TODO: @andrew logic for creating new menu items in the table
-
                             // Update restaurant profile table
-                            dbRestaurantProfile.PhoneNumber = restaurantProfileDomain.PhoneNumber;
-                            dbRestaurantProfile.Address = restaurantProfileDomain.Address;
-                            dbRestaurantProfile.Details = restaurantProfileDomain.Details;
-                            dbRestaurantProfile.Latitude = restaurantProfileDomain.Latitude;
-                            dbRestaurantProfile.Longitude = restaurantProfileDomain.Longitude;
+                            dbRestaurantProfile = restaurantProfileDomain;
 
-                            // ONLY Update businessHours table
-
-                            // Find the business hours on the database that have the same publicIds as the new business hours
-                            foreach(var dbBusinessHour in dbBusinessHours)
-                            {
-                                foreach (var businessHour in businessHourDomains)
-                                {
-                                    if (dbBusinessHour.PublicHourId == businessHour.PublicHourId)
-                                    {
-                                        dbBusinessHour.Day = businessHour.Day;
-                                        dbBusinessHour.OpenTime = businessHour.OpenTime;
-                                        dbBusinessHour.CloseTime = businessHour.CloseTime;
-                                    }
-                                }
-                            }
+                            // Find the business hours on the database that have the same Ids as the new business hours
+                            
 
                             //Update menu
-                            foreach (var dbMenu in dbRestaurantMenus)
-                            {
-                               foreach (var restaurantMenu in restaurantMenuDomains)
-                                {
-                                    if (dbMenu.PublicMenuId == restaurantMenu.PublicMenuId)
-                                    {
-                                        dbMenu.MenuName = restaurantMenu.MenuName;
-                                        dbMenu.IsActive = restaurantMenu.IsActive;
-                                    }
-                                }
-                            }
+                            
 
                             // Update menu items
                             // Find restaurant's menu items
-                            foreach (var dbMenu in dbRestaurantMenus)
-                            {
-                                // Then, find all menu items associated with each menu and turn that into a list
-                                var dbRestaurantMenuItems = (from menuItems in restaurantContext.RestaurantMenuItems
-                                                         where menuItems.MenuId == dbMenu.Id
-                                                         select menuItems).ToList();
 
-                                foreach (var dbRestaurantMenuItem in dbRestaurantMenuItems)
-                                {
-                                    foreach(var restaurantMenuItem in restaurantMenuItemDomains)
-                                    {
-                                        if (dbRestaurantMenuItem.PublicItemId == restaurantMenuItem.PublicItemId)
-                                        {
-                                            dbRestaurantMenuItem.ItemName = restaurantMenuItem.ItemName;
-                                            dbRestaurantMenuItem.ItemPicture = restaurantMenuItem.ItemPicture;
-                                            dbRestaurantMenuItem.ItemPrice = restaurantMenuItem.ItemPrice;
-                                            dbRestaurantMenuItem.Description = restaurantMenuItem.Description;
-                                            dbRestaurantMenuItem.Tag = restaurantMenuItem.Tag;
-                                            dbRestaurantMenuItem.IsActive = restaurantMenuItem.IsActive;
-                                        }
-                                    }
-                                }
-                            }
+                                // Then, find all menu items associated with each menu and turn that into a list
+                            
 
                             restaurantContext.SaveChanges();
 

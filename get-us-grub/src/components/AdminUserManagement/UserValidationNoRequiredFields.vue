@@ -5,7 +5,7 @@
           <v-text-field label="Enter user to edit" v-model="userAccount.username" :rules="usernameRules"></v-text-field>
           <v-text-field label="Enter new username" v-model="userAccount.newUsername" :rules="newUsernameRules"></v-text-field>
           <v-text-field label="Enter new display name" v-model="userProfile.newDisplayName"></v-text-field>
-          <!-- @Ahmed Password reset vue -->
+          <!-- @Andrews Password reset vue -->
         </v-form>
         <v-btn id ="submit-button" color="info" v-on:click="userSubmit(viewType)">Submit</v-btn>
       </v-flex>

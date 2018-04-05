@@ -12,7 +12,9 @@
           <router-link to="/Registration">
             <v-btn color="teal">Register</v-btn>
           </router-link>
-          <v-btn color="teal">Login</v-btn>
+          <router-link to="/Login">
+            <v-btn color="teal">Login</v-btn>
+          </router-link>
           <router-link to="/RestaurantBillSplitter">
             <v-btn color="teal">Split Bill</v-btn>
           </router-link>

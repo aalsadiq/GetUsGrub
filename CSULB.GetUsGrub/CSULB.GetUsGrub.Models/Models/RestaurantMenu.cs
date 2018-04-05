@@ -21,6 +21,7 @@ namespace CSULB.GetUsGrub.Models
         public string MenuName { get; set; }
         [Required]
         public bool IsActive { get; set; }
+        public Flag Flag { get; set; }
 
         // Navigation Properties
         public virtual RestaurantProfile RestaurantProfile { get; set; }
@@ -29,10 +30,21 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public RestaurantMenu() { }
 
-        public RestaurantMenu(string menuName, bool isActive)
+        // For getting
+        public RestaurantMenu(int? id, string menuName, bool isActive)
         {
+            Id = id;
             MenuName = menuName;
             IsActive = isActive;
+        }
+
+        // For editing
+        public RestaurantMenu(int? id, string menuName, bool isActive, Flag flag)
+        {
+            Id = id;
+            MenuName = menuName;
+            IsActive = isActive;
+            Flag = flag;
         }
 
         public RestaurantMenu(int? id, int? restaurantId, string menuName, bool isActive)

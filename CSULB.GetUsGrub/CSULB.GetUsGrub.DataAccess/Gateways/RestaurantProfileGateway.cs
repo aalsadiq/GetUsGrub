@@ -98,19 +98,13 @@ namespace CSULB.GetUsGrub.DataAccess
                                         select profile).SingleOrDefault();
 
                     // Find restaurant associated with profile
-                    var dbRestaurantProfile = (from restaurant in restaurantContext.RestaurantProfiles
-                                                where restaurant.Id == dbUserProfile.Id
-                                                select restaurant).SingleOrDefault();
+                    var dbRestaurantProfile = dbUserProfile.RestaurantProfile;
 
                     // Find restaurant's business hours
-                    var dbBusinessHours = (from hours in restaurantContext.BusinessHours
-                                                         where hours.RestaurantId == dbRestaurantProfile.Id
-                                                         select hours).ToList();
+                    var dbBusinessHours = dbRestaurantProfile.BusinessHours;
 
                     // Then, find all menus associated with this restaurant and turn it into a List
-                    var dbRestaurantMenus = (from menus in restaurantContext.RestaurantMenus
-                                           where menus.RestaurantId == dbRestaurantProfile.Id
-                                           select menus).ToList();
+                    var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
 
                     using (var dbContextTransaction = restaurantContext.Database.BeginTransaction())
                     {

@@ -71,6 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\Interfaces\IProfileManager.cs" />
+    <Compile Include="Managers\RestaurantProfileManager.cs" />
+    <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Services\BackoffRequest.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />
@@ -106,6 +109,8 @@
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditRestaurantUserProfilePreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPostLogicValidation.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
@@ -145,7 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Exceptions\" />
-    <Folder Include="Managers\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

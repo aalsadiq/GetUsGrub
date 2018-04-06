@@ -5,9 +5,9 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    restaurantDisplayName: 'DisplayName1',
-    restaurantLatitude: '1.11',
-    restaurantLongitude: '1.11',
+    restaurantDisplayName: 'displayName26',
+    restaurantLatitude: '34.047041',
+    restaurantLongitude: '-118.256578',
     uniqueUserCounter: 0,
     MenuItems: [
     ],

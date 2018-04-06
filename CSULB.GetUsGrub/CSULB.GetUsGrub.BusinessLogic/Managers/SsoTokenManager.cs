@@ -2,6 +2,7 @@
 using CSULB.GetUsGrub.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -40,6 +41,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>ResponseDto with a UserAccountDto</returns>
         public ResponseDto<UserAccountDto> ManageToken()
         {
+            
+            // Instantiating SSO token model
+            var ssoToken = new SsoToken()
+            {
+                Token = _token
+            };
+
             // Validate token before applying business logic
             var result = _ssoTokenPreLogicValidationStrategy.ExecuteStrategy();
             if (!result.Data)
@@ -50,22 +58,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            Debug.WriteLine("Here");
-            // Creating a new SsoToken model after validation
-            var ssoToken = new SsoToken(_token);
-
-            // Stores token into database
-            using (var authenticationGateway = new AuthenticationGateway())
-            {
-                var gatewayResult = authenticationGateway.StoreSsoToken(ssoToken);
-                if (gatewayResult.Error != null)
-                {
-                    return new ResponseDto<UserAccountDto>()
-                    {
-                        Error = gatewayResult.Error
-                    };
-                }
-            }
             Debug.WriteLine("Here2");
             // Convert string token to Json Web Security Token (JwtSecurityToken)
             var jwt = _tokenService.GetJwtSecurityToken(_token);
@@ -94,6 +86,23 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = result.Error
                 };
             }
+
+            // Creating valid SSO token
+            var validSsoToken = new ValidSsoToken(ssoToken.Token);
+
+            // Stores valid token into database
+            using (var authenticationGateway = new AuthenticationGateway())
+            {
+                var gatewayResult = authenticationGateway.StoreValidSsoToken(validSsoToken);
+                if (gatewayResult.Error != null)
+                {
+                    return new ResponseDto<UserAccountDto>()
+                    {
+                        Error = gatewayResult.Error
+                    };
+                }
+            }
+
             Debug.WriteLine("Here5");
             // TODO: @Jenn should I do this? [-Jenn]
             // Send back a new UserAccountDto
@@ -114,8 +123,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>SymmetricSecurityKey</returns>
         private SymmetricSecurityKey GetSigningKey()
         {
-            // TODO: @Jenn Where to hide this secret key? Also will need a new secret key [-Jenn]
-            const string secretKey = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+            var secretKey = ConfigurationManager.AppSettings["SsoToken"];
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             return signingKey;
         }
@@ -143,7 +151,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                         ssoTokenPayload.Application = keyValuePair.Value.ToString().ToLower();
                         break;
                     case SsoTokenPayloadKeys.IAT:
-                        ssoTokenPayload.Application = keyValuePair.Value.ToString();
+                        ssoTokenPayload.IssuedAt = keyValuePair.Value.ToString();
                         break;
                     default:
                         return new ResponseDto<SsoTokenPayload>()

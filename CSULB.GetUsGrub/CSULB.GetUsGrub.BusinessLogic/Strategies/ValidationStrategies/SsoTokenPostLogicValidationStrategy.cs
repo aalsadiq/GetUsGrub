@@ -22,6 +22,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             Debug.WriteLine("Validation5");
             var result = validationWrapper.ExecuteValidator();
             Debug.WriteLine(JsonConvert.SerializeObject(result));
+            Debug.WriteLine(JsonConvert.SerializeObject(result));
             if (!result.Data)
             {
                 result.Error = SsoErrorMessages.INVALID_TOKEN_PAYLOAD;

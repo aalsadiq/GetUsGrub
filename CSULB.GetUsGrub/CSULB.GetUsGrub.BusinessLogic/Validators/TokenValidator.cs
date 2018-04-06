@@ -38,7 +38,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             using (var authenticationGateway = new AuthenticationGateway())
             {
-                var gatewayResult = authenticationGateway.GetSsoToken(token);
+                var gatewayResult = authenticationGateway.GetValidSsoToken(token);
                 return new ResponseDto<bool>()
                 {
                     // Returns true if SsoToken exists

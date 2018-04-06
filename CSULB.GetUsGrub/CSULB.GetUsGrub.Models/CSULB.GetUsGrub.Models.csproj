@@ -65,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ErrorMessages\RestaurantSelectionErrorMessages.cs" />
+    <Compile Include="Constants\RoleTypes.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadKeys.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadValues.cs" />
     <Compile Include="Converters\ClaimConverter.cs" />
@@ -74,6 +76,8 @@
     <Compile Include="DTOs\SelectedRestaurantDto.cs" />
     <Compile Include="Constants\ErrorMessages\GeneralErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\SsoErrorMessages.cs" />
+    <Compile Include="Enums\States.cs" />
+    <Compile Include="Models\BaseModels\SsoToken.cs" />
     <Compile Include="Models\GeoCoordinates.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
@@ -94,9 +98,10 @@
     <Compile Include="Models\Interfaces\IBusinessHour.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
     <Compile Include="DTOs\RestaurantMenuWithItems.cs" />
+    <Compile Include="Models\InvalidSsoToken.cs" />
     <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
-    <Compile Include="Models\SsoToken.cs" />
+    <Compile Include="Models\ValidSsoToken.cs" />
     <Compile Include="Models\SsoTokenPayload.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\UserClaims.cs" />

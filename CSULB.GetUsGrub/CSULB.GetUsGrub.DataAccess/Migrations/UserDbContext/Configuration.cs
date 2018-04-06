@@ -178,7 +178,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                 // Creating a list of claims
                 var claims = new List<Claim>();
 
-                // Adding 3 claims to the list of claims
+                // Adding claims to the list of claims
                 for (var j = 1; j <= maxClaimsPerUserClaims; j++)
                 {
                     claims.Add(new Claim($"claimType{j}", $"claimValue{j}"));
@@ -224,7 +224,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                                 Street1 = $"{i} Street1",
                                 Street2 = $"{i} Street2",
                                 City = $"city{i}",
-                                State = $"CA",
+                                State = "CA",
                                 Zip = 90711 + i
                             },
                             Details = new RestaurantDetail()

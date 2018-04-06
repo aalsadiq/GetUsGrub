@@ -121,26 +121,7 @@ namespace CSULB.GetUsGrub.UnitTests
             isValid.Should().Be(false);
             errors.Count.Should().Be(2);
             errors[0].ToString().Should().Be("Address needs a state.");
-            errors[1].ToString().Should().Be("State must be CA.");
-        }
-
-        [Fact]
-        public void Should_FailValidationWithMessage_When_StateIsNull()
-        {
-            // Arrange
-            var addressValidator = new AddressValidator();
-            var address = new Address("1250 Bellflower Blvd", "Long Beach", null, 90840);
-
-            // Act
-            var result = addressValidator.Validate(address, ruleSet: "CreateUser");
-            var isValid = result.IsValid;
-            var errors = result.Errors;
-
-            // Assert
-            isValid.Should().Be(false);
-            errors.Count.Should().Be(2);
-            errors[0].ToString().Should().Be("Address needs a state.");
-            errors[1].ToString().Should().Be("Address needs a state.");
+            errors[1].ToString().Should().Be("Address must be a valid state.");
         }
 
         [Fact]
@@ -158,31 +139,8 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(1);
-            errors[0].ToString().Should().Be("State must be CA.");
+            errors[0].ToString().Should().Be("Address must be a valid state.");
         }
-
-
-        // @jenn Constructor will enforce that Zip is provided.
-        /*
-        [Fact]
-        public void Should_FailValidationWithMessage_When_ZipIsEmpty()
-        {
-            // Arrange
-            var addressValidator = new AddressValidator();
-            var address = new Address("1250 Bellflower Blvd", "Long Beach", "CA");
-
-            // Act
-            var result = addressValidator.Validate(address, ruleSet: "CreateUser");
-            var isValid = result.IsValid;
-            var errors = result.Errors;
-
-            // Assert
-            isValid.Should().Be(false);
-            errors.Count.Should().Be(2);
-            errors[0].ToString().Should().Be("Address needs a zip code.");
-            errors[1].ToString().Should().Be("Zip code must contain 5 numbers.");
-        }
-        */
 
         [Fact]
         public void Should_FailValidationWithMessage_When_ZipIsGreaterThan5DigitsLong()

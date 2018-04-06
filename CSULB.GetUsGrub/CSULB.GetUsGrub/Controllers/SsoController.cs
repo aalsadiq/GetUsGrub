@@ -1,5 +1,8 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
+using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -37,26 +40,28 @@ namespace CSULB.GetUsGrub
                 // Check that request header has a token
                 if (request.Headers.Authorization == null)
                 {
-                    return BadRequest("Request does not contain a token.");
+                    return BadRequest(SsoErrorMessages.NO_TOKEN_ERROR);
                 }
 
                 var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageToken();
+                Debug.WriteLine(JsonConvert.SerializeObject(result.Error));
                 if (result.Error != null)
                 {
                     return BadRequest(result.Error);
                 }
+                Debug.WriteLine(JsonConvert.SerializeObject(result));
                 var userManager = new UserManager();
                 var response = userManager.CreateFirstTimeSsoUser(result.Data);
                 if (response.Error != null)
                 {
-                    return BadRequest(response.Error);
+                    return BadRequest(result.Error);
                 }
 
                 return Ok("Success.");
             }
             catch (Exception)
             {
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
     }

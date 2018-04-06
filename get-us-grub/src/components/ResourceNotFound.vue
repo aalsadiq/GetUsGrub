@@ -1,5 +1,7 @@
 <template>
 <div>
-Error Page.
+  <p>
+    Not found error.
+  </p>
 </div>
 </template>

@@ -30,7 +30,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <param name="foodType"></param>
-        /// <param name="distance"></param>
+        /// <param name="distanceInMiles"></param>
         /// <param name="avgFoodPrice"></param>
         /// <returns>Ok HTTP response or Bad Request HTTP response</returns>
         [HttpGet]
@@ -40,19 +40,22 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult UnregisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
-            var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distanceInMiles: distanceInMiles, avgFoodPrice: avgFoodPrice);
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
-                // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
-                return BadRequest("A required input is missing.");
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
             }
             try
             {
+                // Instantiating dependencies
+                var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distanceInMiles: distanceInMiles, avgFoodPrice: avgFoodPrice);
                 var restaurantSelectionManager = new RestaurantSelectionManager();
-                var response = restaurantSelectionManager.SelectRestaurantWithoutFoodPreferences(restaurantSelectionDto);
+
+                // Routing RestaurantSelectionDto to the RestaurantSelectionManager
+                var response = restaurantSelectionManager.SelectRestaurantForUnregisteredUser(restaurantSelectionDto);
                 if (response.Error != null)
                 {
+                    // Sending HTTP response 400 Status
                     return BadRequest(response.Error);
                 }
 
@@ -62,8 +65,57 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // Sending HTTP response 400 Status
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+            }
+        }
+
+        /// <summary>
+        /// /// <summary>
+        /// The RegisteredUserRestaurantSelection method.
+        /// Routes to entities that will select a restaurant for registered users.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/04/2018
+        /// </para>
+        /// </summary>
+        /// </summary>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="foodType"></param>
+        /// <param name="distanceInMiles"></param>
+        /// <param name="avgFoodPrice"></param>
+        /// <returns>Ok HTTP response or Bad Request HTTP response</returns>
+        [HttpGet]
+        [Route("Registered")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        public IHttpActionResult RegisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
+        {
+            // Model Binding Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
+            }
+            try
+            {
+                // Instantiating dependencies
+                var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distanceInMiles: distanceInMiles, avgFoodPrice: avgFoodPrice);
+                var restaurantSelectionManager = new RestaurantSelectionManager();
+
+                // Routing RestaurantSelectionDto to the RestaurantSelectionManager
+                var response = restaurantSelectionManager.SelectRestaurantForRegisteredUser(restaurantSelectionDto);
+                if (response.Error != null)
+                {
+                    // Sending HTTP response 400 Status
+                    return BadRequest(response.Error);
+                }
+
+                // Sending HTTP response 200 Status
+                return Ok(response.Data);
+            }
+            // Catch exceptions
+            catch (Exception)
+            {
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
     }

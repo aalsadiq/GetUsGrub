@@ -74,6 +74,7 @@ namespace CSULB.GetUsGrub.Models
 
         public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details)
         {
+            GeoCoordinates = new GeoCoordinates(0,0);
             PhoneNumber = phoneNumber;
             Address = address;
             Details = details;

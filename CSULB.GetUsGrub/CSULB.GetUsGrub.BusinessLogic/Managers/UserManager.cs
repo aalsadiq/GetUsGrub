@@ -145,8 +145,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var businessHours = registerRestaurantDto.BusinessHourDtos
                 .Select(businessHourDto => new BusinessHour(
                     day: businessHourDto.Day, 
-                    openTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
-                    closeTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
+                    openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
+                    closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
                 .ToList();
 
             // Call GeocodeService to get geocoordinates of the restaurant
@@ -160,8 +160,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            restaurantProfile.GeoCoordinates.Latitude = geocodeResponse.Data.Latitude;
-            restaurantProfile.GeoCoordinates.Longitude = geocodeResponse.Data.Longitude;
+            restaurantProfile.GeoCoordinates = new GeoCoordinates(latitude: geocodeResponse.Data.Latitude, longitude: geocodeResponse.Data.Longitude);
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims()

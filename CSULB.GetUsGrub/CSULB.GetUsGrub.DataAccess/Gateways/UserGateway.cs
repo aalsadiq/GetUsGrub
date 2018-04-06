@@ -43,14 +43,12 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = userAccount
                     };
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Debug.WriteLine("GetUserByUsername" + ex);
-
                     return new ResponseDto<UserAccount>()
                     {
                         Data = new UserAccount(username),
-                        Error = "Something went wrong. Please try again later."
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }

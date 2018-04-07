@@ -1,7 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
 
-namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
+namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class UsernameValidationStrategy
     {
@@ -20,7 +20,7 @@ namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
             _userAccountDto = userAccount;
             _userAccountDtoValidator = new UserAccountDtoValidator();
         }
-
+        
 
         public ResponseDto<bool> ExecuteStrategy()
         {

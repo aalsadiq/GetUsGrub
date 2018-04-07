@@ -497,7 +497,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<string> Edituser(EditUserDto user)//@TODO: Angelica (Add ProfileDtoValidations...)
         {
-            //@TODO: Angelica (Add prelogic and postlogic validations...) 
+
+            //Validation Strategy will validate if the user meets the requirements
+            var editUserValidation = new EditUserValidationStrategy(user);
+            // Validate data transfer object
+            var result = editUserValidation.ExecuteStrategy();
+            if (result.Error != null)
+            {
+                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                {
+                    Data = user.Username,
+                    Error = result.Error
+                };
+            }
 
             //Creates a gateway
             using (var gateway = new UserGateway())

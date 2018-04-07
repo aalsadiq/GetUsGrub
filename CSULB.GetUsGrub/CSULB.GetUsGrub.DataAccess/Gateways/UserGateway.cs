@@ -702,6 +702,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).SingleOrDefault();
+                        
                         //Select the username from useraccount and give it the new username.
                         userAccount.Username = newUsername;
                         //Save changes to the database

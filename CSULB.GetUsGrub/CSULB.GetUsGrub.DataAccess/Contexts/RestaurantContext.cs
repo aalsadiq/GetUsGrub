@@ -7,7 +7,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// Context containing all tables for user management.
     /// 
     /// @Created by: Brian Fann
-    /// @Last Updated: 3/9/18
+    /// @Last Updated: 4/07/18
     /// </summary>
     public class RestaurantContext : DbContext
     {
@@ -16,6 +16,7 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
         public DbSet<BusinessHour> BusinessHours { get; set; }
         public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+        public DbSet<FoodPreferences> FoodPreferences { get; set; }
         public RestaurantContext() : base("GetUsGrub") { }
     }
 

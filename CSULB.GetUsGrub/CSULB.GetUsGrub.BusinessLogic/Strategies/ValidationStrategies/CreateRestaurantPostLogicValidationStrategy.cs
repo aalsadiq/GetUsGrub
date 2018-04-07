@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
 
+// TODO: @Jenn Unit Test for Restaurant Validation [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>

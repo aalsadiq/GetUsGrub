@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "v-money": "^0.8.1",
     "vue": "^2.5.2",
+    "vue-axios": "^2.0.2",
     "vue-router": "^3.0.1",
     "vuedraggable": "^2.16.0",
     "vuetify": "^1.0.5",
@@ -88,7 +88,7 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
-    "webpack": "^3.6.0",
+    "webpack": "^3.11.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"

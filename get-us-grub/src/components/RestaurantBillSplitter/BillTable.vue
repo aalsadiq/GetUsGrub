@@ -103,8 +103,4 @@ export default {
       border-radius: 10px;
       text-align: center;
     }
-
-  .total {
-    margin-bottom: 10px;
-  }
 </style>

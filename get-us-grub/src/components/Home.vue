@@ -2,6 +2,7 @@
     <div id="home">
       <app-header/>
       <img src="@/assets/GetUsGrub.png">
+      <restaurant-selection-unregistered-user-main/>
       <app-footer/>
     </div>
 </template>
@@ -9,9 +10,14 @@
 <script>
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
+import RestaurantSelectionUnregisteredUserMain from '@/components/RestaurantSelection/RestaurantSelectionUnregisteredUserMain'
 
 export default {
   name: 'Home',
-  components: {AppHeader, AppFooter}
+  components: {
+    AppHeader,
+    RestaurantSelectionUnregisteredUserMain,
+    AppFooter
+  }
 }
 </script>

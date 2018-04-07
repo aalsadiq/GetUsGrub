@@ -20,7 +20,7 @@
             <v-stepper v-model="userStep" vertical>
               <v-stepper-header>
                 <v-divider></v-divider>
-                <v-stepper-step step="1" :complete="userStep > 1" editable>Identification</v-stepper-step>
+                <v-stepper-step step="1" :complete="userStep > 1">Identification</v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step step="2" :complete="userStep > 2">Security Questions</v-stepper-step>
                 <v-divider></v-divider>
@@ -30,20 +30,20 @@
                     <v-form v-model="validIdentificationInput">
                       <v-text-field
                         label="Enter a username"
-                        v-model="username"
-                        :rules="usernameRules"
+                        v-model="userAccount.username"
+                        :rules="$store.state.rules.usernameRules"
                         required
                       ></v-text-field>
                       <v-text-field
                         label="Enter a display name"
-                        v-model="displayName"
-                        :rules="displayNameRules"
+                        v-model="userProfile.displayName"
+                        :rules="$store.state.rules.displayNameRules"
                         required
                       ></v-text-field>
                       <v-text-field
                         label="Enter a password"
-                        v-model="password"
-                        :rules="passwordRules"
+                        v-model="userAccount.password"
+                        :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
                         :append-icon="visibile ? 'visibility' : 'visibility_off'"
@@ -59,8 +59,10 @@
                   <v-layout row wrap>
                     <v-flex xs12>
                       <v-select
-                        :items="firstSecurityQuestionsSet"
-                        v-model="firstSecurityQuestion"
+                        :items="$store.state.constants.securityQuestionsSet1"
+                        item-text="question"
+                        item-value="id"
+                        v-model="securityQuestions[0].question"
                         label="Select a security question"
                         single-line
                         auto
@@ -70,13 +72,15 @@
                       ></v-select>
                       <v-text-field
                         label="Enter an answer to the above security question"
-                        v-model="firstSecurityAnswer"
-                        :rules="securityAnswerRules"
+                        v-model="securityQuestions[0].answer"
+                        :rules="$store.state.rules.securityAnswerRules"
                         required
                       ></v-text-field>
                       <v-select
-                        :items="secondSecurityQuestionsSet"
-                        v-model="secondSecurityQuestion"
+                        :items="$store.state.constants.securityQuestionsSet2"
+                        item-text="question"
+                        item-value="id"
+                        v-model="securityQuestions[1].question"
                         label="Select a security question"
                         single-line
                         auto
@@ -86,13 +90,15 @@
                       ></v-select>
                       <v-text-field
                       label="Enter an answer to the above security question"
-                      v-model="secondSecurityAnswer"
-                      :rules="securityAnswerRules"
+                      v-model="securityQuestions[1].answer"
+                      :rules="$store.state.rules.securityAnswerRules"
                       required
                     ></v-text-field>
                     <v-select
-                        :items="thirdSecurityQuestionsSet"
-                        v-model="thirdSecurityQuestion"
+                        :items="$store.state.constants.securityQuestionsSet3"
+                        item-text="question"
+                        item-value="id"
+                        v-model="securityQuestions[2].question"
                         label="Select a security question"
                         single-line
                         auto
@@ -102,8 +108,8 @@
                       ></v-select>
                       <v-text-field
                       label="Enter an answer to the above security question"
-                      v-model="thirdSecurityAnswer"
-                      :rules="securityAnswerRules"
+                      v-model="securityQuestions[2].answer"
+                      :rules="$store.state.rules.securityAnswerRules"
                       required
                     ></v-text-field>
                     </v-flex>
@@ -135,20 +141,20 @@
                     <v-form v-model="validIdentificationInput">
                       <v-text-field
                         label="Enter a username"
-                        v-model="username"
-                        :rules="usernameRules"
+                        v-model="userAccount.username"
+                        :rules="$store.state.rules.usernameRules"
                         required
                       ></v-text-field>
                       <v-text-field
                         label="Enter a display name"
-                        v-model="displayName"
-                        :rules="displayNameRules"
+                        v-model="userProfile.displayName"
+                        :rules="$store.state.rules.displayNameRules"
                         required
                       ></v-text-field>
                       <v-text-field
                         label="Enter a password"
-                        v-model="password"
-                        :rules="passwordRules"
+                        v-model="userAccount.password"
+                        :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
                         :append-icon="visibile ? 'visibility' : 'visibility_off'"
@@ -164,8 +170,10 @@
                   <v-layout row wrap>
                     <v-flex xs12>
                       <v-select
-                        :items="firstSecurityQuestionsSet"
-                        v-model="firstSecurityQuestion"
+                        :items="$store.state.constants.securityQuestionsSet1"
+                        item-text="question"
+                        item-value="id"
+                        v-model="securityQuestions[0].question"
                         label="Select a security question"
                         single-line
                         auto
@@ -175,13 +183,15 @@
                       ></v-select>
                       <v-text-field
                         label="Enter an answer to the above security question"
-                        v-model="firstSecurityAnswer"
-                        :rules="securityAnswerRules"
+                        v-model="securityQuestions[0].answer"
+                        :rules="$store.state.rules.securityAnswerRules"
                         required
                       ></v-text-field>
                       <v-select
-                        :items="secondSecurityQuestionsSet"
-                        v-model="secondSecurityQuestion"
+                        :items="$store.state.constants.securityQuestionsSet2"
+                        item-text="question"
+                        item-value="id"
+                        v-model="securityQuestions[1].question"
                         label="Select a security question"
                         single-line
                         auto
@@ -191,13 +201,15 @@
                       ></v-select>
                       <v-text-field
                       label="Enter an answer to the above security question"
-                      v-model="secondSecurityAnswer"
-                      :rules="securityAnswerRules"
+                      v-model="securityQuestions[1].answer"
+                      :rules="$store.state.rules.securityAnswerRules"
                       required
                     ></v-text-field>
                     <v-select
-                        :items="thirdSecurityQuestionsSet"
-                        v-model="thirdSecurityQuestion"
+                        :items="$store.state.constants.securityQuestionsSet3"
+                        item-text="question"
+                        item-value="id"
+                        v-model="securityQuestions[2].question"
                         label="Select a security question"
                         single-line
                         auto
@@ -207,8 +219,8 @@
                       ></v-select>
                       <v-text-field
                       label="Enter an answer to the above security question"
-                      v-model="thirdSecurityAnswer"
-                      :rules="securityAnswerRules"
+                      v-model="securityQuestions[2].answer"
+                      :rules="$store.state.rules.securityAnswerRules"
                       required
                     ></v-text-field>
                     </v-flex>
@@ -221,22 +233,22 @@
                   <v-form v-model="validRestaurantDetailsInput">
                     <v-flex xs12>
                       <v-select
-                        :items="foodCategories"
-                        item-text="category"
-                        item-value="category"
+                        :items="$store.state.constants.foodTypes"
+                        item-text="type"
+                        item-value="type"
                         v-model="restaurantProfile.details.category"
-                        label="Select a food category"
+                        label="Select a food type associated with your restaurant"
                         single-line
                         auto
                         prepend-icon="restaurant"
                         hide-details
-                        :rules="foodCategoryRules"
+                        :rules="$store.state.rules.foodTypeRules"
                         required
                       ></v-select>
                     </v-flex>
                     <v-flex xs12>
                       <v-select
-                        :items="avgFoodPrices"
+                        :items="$store.state.constants.avgFoodPrices"
                         item-text="price"
                         item-value="id"
                         v-model="restaurantProfile.details.avgFoodPrice"
@@ -245,7 +257,7 @@
                         auto
                         prepend-icon="money"
                         hide-details
-                        :rules="avgFoodPriceRules"
+                        :rules="$store.state.rules.avgFoodPriceRules"
                         required
                       ></v-select>
                     </v-flex>
@@ -254,13 +266,13 @@
                         label="Select a food preference"
                         item-text="foodPreference"
                         item-value="id"
-                        :items="foodPreferences"
+                        :items="$store.state.constants.foodPreferences"
                         v-model="restaurantProfile.foodPreferences"
                         multiple
                         chips
-                        prepend-icon="restaurant"
+                        prepend-icon=""
                         persistent-hint
-                        :rules="foodPreferenceRules"
+                        :rules="$store.state.rules.foodPreferenceRules"
                         required
                       ></v-select>
                     </v-flex>
@@ -271,7 +283,7 @@
                 <v-stepper-content step="4">
                   <v-form v-model="validAddBusinessHour">
                     <v-select
-                      :items="timeZones"
+                      :items="$store.state.constants.timeZones"
                       item-text="displayString"
                       item-value="timeZoneName"
                       v-model="timeZone"
@@ -279,17 +291,17 @@
                       single-line
                       auto
                       hide-details
-                      :rules="timeZoneRules"
+                      :rules="$store.state.rules.timeZoneRules"
                       required
                     ></v-select>
                     <v-select
-                      :items="dayOfWeek"
+                      :items="$store.state.constants.dayOfWeek"
                       v-model="businessHour.day"
                       label="Select a day"
                       single-line
                       auto
                       hide-details
-                      :rules="businessDayRules"
+                      :rules="$store.state.rules.businessDayRules"
                       required
                     ></v-select>
                     <v-menu
@@ -310,7 +322,7 @@
                         label="Select opening time (24hr format)"
                         v-model="businessHour.openTime"
                         prepend-icon="access_time"
-                        :rules="openTimeRules"
+                        :rules="$store.state.rules.openTimeRules"
                         readonly
                         required
                       ></v-text-field>
@@ -334,7 +346,7 @@
                         label="Select closing time (24hr format)"
                         v-model="businessHour.closeTime"
                         prepend-icon="access_time"
-                        :rules="closeTimeRules"
+                        :rules="$store.state.rules.closeTimeRules"
                         readonly
                         required
                       ></v-text-field>
@@ -359,7 +371,7 @@
                       label="Street 1"
                       placeholder="1111 Snowy Rock Pl"
                       v-model="restaurantProfile.address.street1"
-                      :rules="addressStreet1Rules"
+                      :rules="$store.state.rules.addressStreet1Rules"
                       required
                     ></v-text-field>
                     <v-text-field
@@ -371,12 +383,16 @@
                       label="City"
                       placeholder="Long Beach"
                       v-model="restaurantProfile.address.city"
+                      :rules="$store.state.constants.addressCityRules"
                       required
                     ></v-text-field>
                     <v-select
-                      :items="states"
+                      :items="$store.state.constants.states"
                       v-model="restaurantProfile.address.state"
+                      item-text="name"
+                      item-value="abbreviation"
                       label="Select a state"
+                      :rules="$store.state.rules.addressStateRules"
                       single-line
                       auto
                       append-icon="map"
@@ -386,7 +402,7 @@
                       <v-text-field
                       label="Zip"
                       placeholder="92812"
-                      :rules="addressZipRules"
+                      :rules="$store.state.rules.addressZipRules"
                       type="number"
                       v-model.number="restaurantProfile.address.zip"
                       required
@@ -399,7 +415,7 @@
                         v-model="restaurantProfile.phoneNumber"
                         placeholder="(562)111-5555"
                         prepend-icon="phone"
-                        :rules="phoneNumberRules"
+                        :rules="$store.state.rules.phoneNumberRules"
                         single-line
                       ></v-text-field>
                     </v-flex>
@@ -478,182 +494,6 @@ export default {
       openTime: null,
       closeTime: null
     },
-    usernameRules: [
-      username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-    ],
-    displayName: '',
-    displayNameRules: [
-      v => !!v || 'Display name is required'
-      // Should display name have spaces and special characters?
-    ],
-    password: '',
-    passwordRules: [
-      v => !!v || 'Password is required',
-      v => v.length > 8 || 'Password must be at least 8 characters',
-      v => v.length < 64 || 'Password must be at most 64 characters'
-    ],
-    firstSecurityQuestion: null,
-    firstSecurityQuestionsSet: [
-      'Who was the company you first worked for?',
-      'Where did you go to highschool or college?',
-      'What was the name of the teacher who gave you your first failing grade?'
-    ],
-    secondSecurityQuestion: null,
-    secondSecurityQuestionsSet: [
-      'What is your favorite song?',
-      'What is your mother\'s maiden name?',
-      'What is your favorite sports team?'
-    ],
-    addressZipRules: [
-      zip => !!zip || 'Zip code is required',
-      zip => /^\d{5}$/.test(zip) || 'Zip code must contain 5 numbers'
-    ],
-    phoneNumberRules: [
-      phone => !!phone || 'Phone number is required',
-      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
-    ],
-    foodCategoryRules: [
-      category => !!category || 'Food category is required'
-    ],
-    avgFoodPriceRules: [
-      price => !!price || 'Food price is required'
-    ],
-    foodPreferenceRules: [
-      foodPreference => !!foodPreference || 'Food preference is required'
-    ],
-    securityQuestionsSet1: [{
-      id: 1,
-      question: 'Who was the company you first worked for?'
-    },
-    {
-      id: 2,
-      question: 'Where did you go to highschool or college?'
-    },
-    {
-      id: 3,
-      question: 'What was the name of the teacher who gave you your first failing grade?'
-    }],
-    securityQuestionsSet2: [{
-      id: 4,
-      question: 'What is your favorite song?'
-    },
-    {
-      id: 5,
-      question: 'What is your mother\'s maiden name?'
-    },
-    {
-      id: 6,
-      question: 'What is your favorite sports team?'
-    }],
-    securityQuestionsSet3: [{
-      id: 7,
-      question: 'What was the name of your first crush?'
-    },
-    {
-      id: 8,
-      question: 'What is the name of your hometown?'
-    },
-    {
-      id: 9,
-      question: 'What was the name of your first pet?'
-    }],
-    timeZones: [{
-      displayString: '(UTC-08:00) Pacific Standard Time',
-      timeZoneName: 'Pacific Standard Time'
-    }],
-    dayOfWeek: [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'
-    ],
-    avgFoodPrices: [{
-      id: 1,
-      price: '$0.00 to $10.00'
-    },
-    {
-      id: 2,
-      price: '$10.01 to $50.00'
-    },
-    {
-      id: 3,
-      price: '$50.01+'
-    }],
-    foodCategories: [{
-      id: 0,
-      category: 'Mexican Food'
-    },
-    {
-      id: 1,
-      category: 'Italian Cuisine'
-    },
-    {
-      id: 2,
-      category: 'Thai Food'
-    },
-    {
-      id: 3,
-      category: 'Greek Cuisine'
-    },
-    {
-      id: 4,
-      category: 'Chinese Food'
-    },
-    {
-      id: 5,
-      category: 'Japanese Cuisine'
-    },
-    {
-      id: 6,
-      category: 'American Food'
-    },
-    {
-      id: 7,
-      category: 'Mediterranean Cuisine'
-    },
-    {
-      id: 8,
-      category: 'French Food'
-    },
-    {
-      id: 9,
-      category: 'Spanish Cuisine'
-    },
-    {
-      id: 10,
-      category: 'German Food'
-    },
-    {
-      id: 11,
-      category: 'Korean Food'
-    },
-    {
-      id: 12,
-      category: 'Vietnamese Food'
-    },
-    {
-      id: 13,
-      category: 'Turkish Cuisine'
-    },
-    {
-      id: 14,
-      category: 'Caribbean Food'
-    }],
-    foodPreferences: [{
-      id: 1,
-      foodPreference: 'Food preference 1'
-    },
-    {
-      id: 2,
-      foodPreference: 'Food preference 2'
-    }],
-    states: [
-      'CA'
-    ],
     responseDataStatus: '',
     responseData: ''
   }),

@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using FluentValidation;
+using System;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -27,7 +28,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                 RuleFor(x => x.State)
                     .NotEmpty().WithMessage("Address needs a state.")
-                    .NotNull().WithMessage("Address needs a state.");
+                    .NotNull().WithMessage("Address needs a state.")
+                    .Must(x => Enum.IsDefined(typeof(States), x)).WithMessage("Address must be a valid state.");
 
                 RuleFor(x => x.Zip)
                     .NotEmpty().WithMessage("Address needs a zip code.")

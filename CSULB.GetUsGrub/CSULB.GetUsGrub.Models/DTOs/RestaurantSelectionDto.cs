@@ -20,13 +20,13 @@ namespace CSULB.GetUsGrub.Models
         public int AvgFoodPrice { get; set; }
         public DateTime CurrentUtcDateTime { get; set; }
         public DayOfWeek CurrentLocalDayOfWeek { get; set; }
-        public GeoCoordinates GeoCoordinates { get; set; }
+        public GeoCoordinates ClientUserGeoCoordinates { get; set; }
         public DbGeography Location
         {
             get
             {
                 int srid = 4326;
-                string wkt = $"POINT({GeoCoordinates.Longitude} {GeoCoordinates.Latitude})";
+                string wkt = $"POINT({ClientUserGeoCoordinates.Longitude} {ClientUserGeoCoordinates.Latitude})";
 
                 return DbGeography.PointFromText(wkt, srid);
             }
@@ -34,8 +34,8 @@ namespace CSULB.GetUsGrub.Models
             {
                 if (value == null) return;
 
-                GeoCoordinates.Latitude = value.Latitude.Value;
-                GeoCoordinates.Longitude = value.Longitude.Value;
+                ClientUserGeoCoordinates.Latitude = value.Latitude.Value;
+                ClientUserGeoCoordinates.Longitude = value.Longitude.Value;
             }
         }
 
@@ -44,9 +44,9 @@ namespace CSULB.GetUsGrub.Models
 
         // Constructors
         public RestaurantSelectionDto() { }
-
         public RestaurantSelectionDto(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
+            ClientUserGeoCoordinates = new GeoCoordinates(0,0);
             City = city;
             State = state;
             FoodType = foodType;

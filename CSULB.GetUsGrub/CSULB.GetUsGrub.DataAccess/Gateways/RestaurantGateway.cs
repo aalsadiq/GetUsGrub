@@ -2,7 +2,6 @@
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Spatial;
-using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -15,6 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             using (var restaurantContext = new RestaurantContext())
             {
+                // TODO: @Jenn Test to see if code below is necesssary
                 restaurantContext.Configuration.ProxyCreationEnabled = false;
 
                 try
@@ -48,8 +48,11 @@ namespace CSULB.GetUsGrub.DataAccess
                         select new SelectedRestaurantDto()
                         {
                             DisplayName = userProfile.DisplayName,
-                            restaurantLatitude = restaurantProfile.Location.Latitude,
-                            restaurantLongitude = restaurantProfile.Location.Longitude,
+                            RestaurantGeoCoordinates = new GeoCoordinates
+                            {
+                                Latitude = restaurantProfile.Location.Latitude,
+                                Longitude = restaurantProfile.Location.Longitude
+                            },
                             Address = restaurantProfile.Address,
                             PhoneNumber = restaurantProfile.PhoneNumber,
                             BusinessHourDtos = (from businessHour in restaurantContext.BusinessHours
@@ -62,36 +65,23 @@ namespace CSULB.GetUsGrub.DataAccess
                                 }).ToList()
                         }).FirstOrDefault();
 
-                    if (selectedRestaurant == null)
-                    {
-                        return new ResponseDto<SelectedRestaurantDto>()
-                        {
-                            Data = null,
-                            Error = "Unable find a restaurant. Please try again."
-                        };
-                    }
-
                     return new ResponseDto<SelectedRestaurantDto>()
                     {
                         Data = selectedRestaurant
                     };
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Debug.WriteLine(ex);
-
+                    // When exception is caught, then return a ResponseDto with null data with a general error message set
                     return new ResponseDto<SelectedRestaurantDto>()
                     {
                         Data = null,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
         }
 
-        public void Dispose()
-        {
-            // TODO: @Jenn implement the dispose [-Jenn]
-        }
+        public void Dispose() { }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System.Web.Http;
+﻿using CSULB.GetUsGrub.UserAccessControl;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Net.Http.Formatting;
+using System.Web.Http;
 
 namespace CSULB.GetUsGrub
 {
@@ -21,6 +25,11 @@ namespace CSULB.GetUsGrub
             // Add GlobalSecurityExceptionFilter for User Access Control
             // Last Updated: 03/14/18 by Rachel Dang
             config.Filters.Add(new GlobalSecurityExceptionFilter());
+
+            // Setting up JSON serialization
+            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.MediaTypeMappings.Add(new RequestHeaderMapping("Accept", "text/html", StringComparison.InvariantCultureIgnoreCase, true, "application/json"));
         }
     }
 }

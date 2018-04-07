@@ -3,7 +3,15 @@ using FluentValidation;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
-    // TODO: @Jenn Unit test this [-Jenn]
+    /// <summary>
+    /// The <c>RestaurantSelectionDtoValidator</c> class.
+    /// Defines rules to validate a RestaurantSelectionDto.
+    /// Includes the pre-logic and post-logic validations.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 04/04/2018
+    /// </para>
+    /// </summary>
     public class RestaurantSelectionDtoValidator : AbstractValidator<RestaurantSelectionDto>
     {
         public RestaurantSelectionDtoValidator()

@@ -5,9 +5,9 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    restaurantDisplayName: 'DisplayName1',
-    restaurantLatitude: '1.11',
-    restaurantLongitude: '1.11',
+    restaurantDisplayName: 'displayName26',
+    restaurantLatitude: '34.047041',
+    restaurantLongitude: '-118.256578',
     uniqueUserCounter: 0,
     MenuItems: [
     ],
@@ -15,7 +15,222 @@ export const store = new Vuex.Store({
     ],
     BillUsers: [
     ],
-    isAuthenticated: true
+    isAuthenticated: true,
+    restaurantSelection: {
+      request: {
+        foodType: '',
+        city: '',
+        state: '',
+        distance: 1,
+        avgFoodPrice: 1
+      },
+      selectedRestaurant: {
+        isConfirmed: false,
+        restaurantGeoCoordinates: {
+          latitude: null,
+          longitude: null
+        },
+        clientUserGeoCoordinates: {
+          latitude: null,
+          longitude: null
+        },
+        displayName: '',
+        address: {
+          street1: '',
+          street2: '',
+          city: '',
+          state: '',
+          zip: null
+        },
+        phoneNumber: '',
+        businessHours: []
+      }
+    },
+    rules: {
+      usernameRules: [
+        username => !!username || 'Username is required',
+        username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
+      ],
+      displayNameRules: [
+        displayName => !!displayName || 'Display name is required'
+      ],
+      passwordRules: [
+        password => !!password || 'Password is required',
+        password => password.length >= 8 || 'Password must be at least 8 characters',
+        password => password.length < 64 || 'Password must be at most 64 characters'
+      ],
+      securityAnswerRules: [
+        securityAnswer => !!securityAnswer || 'Security answer is required'
+      ],
+      addressStreet1Rules: [
+        street1 => !!street1 || 'Street 1 is required'
+      ],
+      addressCityRules: [
+        city => !!city || 'City is required'
+      ],
+      addressStateRules: [
+        state => !!state || 'State is required'
+      ],
+      addressZipRules: [
+        zip => !!zip || 'Zip code is required',
+        zip => /^\d{5}$/.test(zip) || 'Zip code must contain 5 numbers'
+      ],
+      phoneNumberRules: [
+        phone => !!phone || 'Phone number is required',
+        phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
+      ],
+      foodTypeRules: [
+        type => !!type || 'Food type is required'
+      ],
+      avgFoodPriceRules: [
+        price => !!price || 'Food price is required'
+      ],
+      foodPreferenceRules: [
+        foodPreference => !!foodPreference || 'Food preference is required'
+      ]
+    },
+    constants: {
+      securityQuestionsSet1: [{
+        id: 1,
+        question: 'Who was the company you first worked for?'
+      },
+      {
+        id: 2,
+        question: 'Where did you go to highschool or college?'
+      },
+      {
+        id: 3,
+        question: 'What was the name of the teacher who gave you your first failing grade?'
+      }],
+      securityQuestionsSet2: [{
+        id: 4,
+        question: 'What is your favorite song?'
+      },
+      {
+        id: 5,
+        question: 'What is your mother\'s maiden name?'
+      },
+      {
+        id: 6,
+        question: 'What is your favorite sports team?'
+      }],
+      securityQuestionsSet3: [{
+        id: 7,
+        question: 'What was the name of your first crush?'
+      },
+      {
+        id: 8,
+        question: 'What is the name of your hometown?'
+      },
+      {
+        id: 9,
+        question: 'What was the name of your first pet?'
+      }],
+      timeZones: [{
+        displayString: 'Pacific Standard Time',
+        timeZoneName: 'Pacific Standard Time'
+      }],
+      dayOfWeek: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ],
+      avgFoodPrices: [{
+        id: 1,
+        price: '$0.00 to $10.00'
+      },
+      {
+        id: 2,
+        price: '$10.01 to $50.00'
+      },
+      {
+        id: 3,
+        price: '$50.01+'
+      }],
+      foodTypes: [{
+        id: 0,
+        type: 'Mexican Food'
+      },
+      {
+        id: 1,
+        type: 'Italian Cuisine'
+      },
+      {
+        id: 2,
+        type: 'Thai Food'
+      },
+      {
+        id: 3,
+        type: 'Greek Cuisine'
+      },
+      {
+        id: 4,
+        type: 'Chinese Food'
+      },
+      {
+        id: 5,
+        type: 'Japanese Cuisine'
+      },
+      {
+        id: 6,
+        type: 'American Food'
+      },
+      {
+        id: 7,
+        type: 'Mediterranean Cuisine'
+      },
+      {
+        id: 8,
+        type: 'French Food'
+      },
+      {
+        id: 9,
+        type: 'Spanish Cuisine'
+      },
+      {
+        id: 10,
+        type: 'German Food'
+      },
+      {
+        id: 11,
+        type: 'Korean Food'
+      },
+      {
+        id: 12,
+        type: 'Vietnamese Food'
+      },
+      {
+        id: 13,
+        type: 'Turkish Cuisine'
+      },
+      {
+        id: 14,
+        type: 'Caribbean Food'
+      }],
+      foodPreferences: [{
+        id: 1,
+        foodPreference: 'Food preference 1'
+      },
+      {
+        id: 2,
+        foodPreference: 'Food preference 2'
+      }],
+      states: [{
+        id: 1,
+        name: 'California',
+        abbreviation: 'CA'
+      }],
+      distanceRestaurantSelections: [
+        1,
+        5,
+        10,
+        15
+      ]
+    }
   },
   getters: {
     totalPrice: state => {
@@ -26,6 +241,7 @@ export const store = new Vuex.Store({
       return temp
     }
   },
+  // @Ryan Methods should be lowercase in javascript [-Jenn]
   mutations: {
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
@@ -70,6 +286,14 @@ export const store = new Vuex.Store({
           }
         }
       };
+    },
+    setSelectedRestaurant: (state, payload) => {
+      state.restaurantSelection.selectedRestaurant.restaurantGeoCoordinates = payload.restaurantGeoCoordinates
+      state.restaurantSelection.selectedRestaurant.clientUserGeoCoordinates = payload.clientUserGeoCoordinates
+      state.restaurantSelection.selectedRestaurant.displayName = payload.displayName
+      state.restaurantSelection.selectedRestaurant.address = payload.address
+      state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
+      state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -110,6 +334,11 @@ export const store = new Vuex.Store({
     RemoveUser: (context, payload) => {
       setTimeout(function () {
         context.commit('RemoveUser', payload)
+      }, 250)
+    },
+    setSelectedRestaurant: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setSelectedRestaurant', payload)
       }, 250)
     }
   }

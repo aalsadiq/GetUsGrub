@@ -79,7 +79,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -92,7 +92,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -146,8 +146,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var businessHours = registerRestaurantDto.BusinessHourDtos
                 .Select(businessHourDto => new BusinessHour(
                     day: businessHourDto.Day, 
-                    openTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
-                    closeTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
+                    openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
+                    closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
                 .ToList();
 
             // Call GeocodeService to get geocoordinates of the restaurant
@@ -157,12 +157,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
-            restaurantProfile.GeoCoordinates.Latitude = geocodeResponse.Data.Latitude;
-            restaurantProfile.GeoCoordinates.Longitude = geocodeResponse.Data.Longitude;
+            restaurantProfile.GeoCoordinates = new GeoCoordinates(latitude: geocodeResponse.Data.Latitude, longitude: geocodeResponse.Data.Longitude);
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims()
@@ -189,7 +188,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -202,7 +201,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterRestaurantDto>()
                     {
                         Data = registerRestaurantDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -248,7 +247,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Store user in database
+            // Store a user from Single Sign On registration request
             using (var userGateway = new UserGateway())
             {
                 var gatewayResult = userGateway.StoreSsoUser(userAccount, passwordSalt);
@@ -257,7 +256,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<bool>()
                     {
                         Data = gatewayResult.Data,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -298,7 +297,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "private");//changed this to private
+            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "private");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
@@ -328,7 +327,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -341,7 +340,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }

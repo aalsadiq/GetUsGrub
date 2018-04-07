@@ -3,8 +3,7 @@
     <v-app>
       <v-container id="router-container">
         <div>
-            <!-- <img src="./assets/logo.png"> -->
-            <router-view/>
+          <router-view/>
         </div>
       </v-container>
     </v-app>

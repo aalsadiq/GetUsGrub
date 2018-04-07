@@ -92,7 +92,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // If API Key not found, throw error.
             catch (ConfigurationErrorsException)
             {
-                throw new System.Exception("Google Geocoding API Key not found.");
+                throw new System.Exception("Google Geocoding API Key not found."); // TODO: @Brian Please return a ResponseDto instead [-Jenn]
             }
         }
     }

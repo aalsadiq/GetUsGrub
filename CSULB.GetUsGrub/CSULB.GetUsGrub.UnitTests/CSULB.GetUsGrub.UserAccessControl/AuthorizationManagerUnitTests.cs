@@ -3,6 +3,7 @@ using FluentAssertions;
 using System.Security;
 using System.Security.Claims;
 using CSULB.GetUsGrub.UserAccessControl;
+using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.UnitTests

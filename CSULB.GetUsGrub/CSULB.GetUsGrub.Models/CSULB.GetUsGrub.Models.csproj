@@ -65,7 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ActionConstant.cs" />
     <Compile Include="Constants\ErrorMessages\RestaurantSelectionErrorMessages.cs" />
+    <Compile Include="Constants\ResourceConstant.cs" />
     <Compile Include="Constants\RoleTypes.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadKeys.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadValues.cs" />
@@ -98,7 +100,7 @@
     <Compile Include="Models\AuthenticationToken.cs" />
     <Compile Include="Models\BusinessHour.cs" />
     <Compile Include="Models\Interfaces\IBusinessHour.cs" />
-    <Compile Include="Models\Interfaces\IPreferences.cs" />
+    <Compile Include="Models\Interfaces\IPreference.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
     <Compile Include="DTOs\RestaurantMenuWithItems.cs" />
     <Compile Include="Models\InvalidSsoToken.cs" />

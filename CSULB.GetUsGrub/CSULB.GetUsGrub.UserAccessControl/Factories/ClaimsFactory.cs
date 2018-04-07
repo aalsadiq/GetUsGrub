@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.UserAccessControl
 {

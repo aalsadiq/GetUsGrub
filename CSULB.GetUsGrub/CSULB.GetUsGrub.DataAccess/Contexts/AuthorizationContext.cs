@@ -13,7 +13,6 @@ namespace CSULB.GetUsGrub.DataAccess
     public class AuthorizationContext : DbContext
     {
         public DbSet<UserClaims> Claims { get; set; }
-
         public AuthorizationContext() : base("GetUsGrub") { }
     }
 

@@ -55,8 +55,6 @@
     <Compile Include="Filters\GlobalSecurityExceptionFilter.cs" />
     <Compile Include="Managers\AuthorizationManager.cs" />
     <Compile Include="Managers\ClaimsTransformer.cs" />
-    <Compile Include="Models\ActionConstant.cs" />
-    <Compile Include="Models\ResourceConstant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

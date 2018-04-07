@@ -1,4 +1,4 @@
-﻿namespace CSULB.GetUsGrub.UserAccessControl
+﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// Constant class for Resource Types

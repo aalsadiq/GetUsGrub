@@ -5,6 +5,7 @@ using System.Security.Permissions;
 using System.Threading;
 using System.Web.Http;
 using System.Linq;
+using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
 
 namespace CSULB.GetUsGrub

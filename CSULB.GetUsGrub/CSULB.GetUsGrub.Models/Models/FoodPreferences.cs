@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
@@ -13,15 +11,17 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 04/07/18
     /// </summary>
     [Table("GetUsGrub.FoodPreferences")]
-    public class FoodPreferences : IPreferences, IEntity
+    public class FoodPreferences : IPreference, IEntity
     {
         // Automatic Properties
         [Key]
-        [ForeignKey("UserAccount")]
         public int? Id { get; set; }
 
+        [ForeignKey("UserAccount")]
+        public int? UserId { get; set; }
+
         [Required]
-        public ICollection<String> Preferences { get; set; }
+        public string Preference { get; set; }
 
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
@@ -29,9 +29,9 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public FoodPreferences() { }
 
-        public FoodPreferences(ICollection<string> preferences)
+        public FoodPreferences(string preference)
         {
-            Preferences = preferences;
+            Preference = preference;
         }
     }
 }

@@ -147,6 +147,10 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="keys.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

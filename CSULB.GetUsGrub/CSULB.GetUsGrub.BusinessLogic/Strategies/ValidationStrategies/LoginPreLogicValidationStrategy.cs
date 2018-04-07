@@ -8,18 +8,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class LoginPreLogicValidationStrategy
     {
-        readonly private LoginDto _loginDto;
-        private LoginDtoValidator _loginDtoValidator = new LoginDtoValidator();
+        private readonly LoginDto _loginDto;
+        private readonly LoginDtoValidator _loginDtoValidator = new LoginDtoValidator();
 
         public LoginPreLogicValidationStrategy(LoginDto loginDto)
         {
-            this._loginDto = loginDto;
+            _loginDto = loginDto;
         }
 
         //private ValidationWrapper<LoginDto> loginDtoValidationWrapper = new ValidationWrapper<LoginDto>(loginDto,"UsernameAndPassword",loginDtoValidator);
 
         public ResponseDto<LoginDto> ExecuteStrategy()
         {
+            // TODO @Ahmed Put the Wrapper here @Ahmed
             var validationResult = _loginDtoValidator.Validate(_loginDto, ruleSet: "UsernameAndPassword");
 
             if (!validationResult.IsValid)

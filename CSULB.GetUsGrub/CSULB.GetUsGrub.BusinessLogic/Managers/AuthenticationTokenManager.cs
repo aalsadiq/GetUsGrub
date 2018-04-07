@@ -234,7 +234,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return new TokenValidationParameters()
             {
                 ValidAudience = "https://www.GetUsGrub.com",
-                ValidIssuer = "GiftHub",
+                ValidIssuer = "CSULB.GetUsGrub",
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt)),
                 ValidateAudience = true,
                 ValidateIssuer = true,

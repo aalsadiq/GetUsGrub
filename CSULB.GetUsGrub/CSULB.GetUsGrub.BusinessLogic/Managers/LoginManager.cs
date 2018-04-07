@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>
         /// ResponseDto with the updated LoginDto 
         /// </returns>
-        public ResponseDto<LoginDto> LoginUser( LoginDto loginDto)
+        public ResponseDto<LoginDto> LoginUser(LoginDto loginDto)
         {
             var loginPreLogicValidationStrategy = new LoginPreLogicValidationStrategy(loginDto);
             UserAccount dataBaseUserAccount;
@@ -30,7 +30,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = validateLoginDtoResult.Error
                 };
             }
-
+            // TODO @Ahmed This goes inside the preValidator Logic @Ahmed 
             // Checking if user Exists
             var userExistanceValidator = new UserValidator();
             var validateUserExistanceResult = userExistanceValidator.CheckIfUserExists(loginDto.Username);
@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Turn the Dto into a Model
-            var incomingLoginModel = new UserAuthenticationModel(loginDto.Username,loginDto.Password);
+            var incomingLoginModel = new UserAuthenticationDto(loginDto.Username,loginDto.Password);
             var loginPostLogicValidationStrategy = new LoginPostLogicValidation(incomingLoginModel);
             var validateLoginModelResult = loginPostLogicValidationStrategy.ExcuteStrategy();
 
@@ -60,7 +60,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Pulling attempts from DB
             using (AuthenticationGateway gateway = new AuthenticationGateway())
             {
-                userAttempts = (gateway.GetFailedAttempt(incomingLoginModel)).Data;
+                userAttempts = gateway.GetFailedAttempt(incomingLoginModel).Data;
             }
 
             // Checking if they already have 5 failed attempts 20 mins ago 
@@ -79,16 +79,18 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     userAttempts.Count = 0;
                 }
             }
-
+            
+            // TODO @Ahmed Make sure that we check for errors Move this above the attempts @Ahmed 
             // Pull the User From DB
             using (AuthenticationGateway gateway = new AuthenticationGateway())
             {
-                dataBaseUserAccount = (gateway.GetUserAccount(incomingLoginModel)).Data;
-                incomingLoginModel.Salt = (gateway.GetUserPasswordSalt(dataBaseUserAccount)).Data.Salt;
+                dataBaseUserAccount = gateway.GetUserAccount(incomingLoginModel).Data;
+                // TODO @Ahmed Check if this has an error before you do this or pull the whole PasswordSaltmodel -Ahmed 
+                incomingLoginModel.Salt = gateway.GetUserPasswordSalt(dataBaseUserAccount).Data.Salt;
             }
 
             // Check if user is Active
-            if (!dataBaseUserAccount.IsActive.Value)
+            if (dataBaseUserAccount.IsActive == null && dataBaseUserAccount.IsActive == false)
             {
                 return new ResponseDto<LoginDto>
                 {
@@ -98,8 +100,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Cheking if user is first time
-            if (!dataBaseUserAccount.IsFirstTimeUser.Value)
+            if (dataBaseUserAccount.IsFirstTimeUser == null && dataBaseUserAccount.IsFirstTimeUser == true)
             {
+                // TODO: @Jenn Need your SSO Login Service here [-Ahmed]
                 // Send them to complete registration
             }
 
@@ -110,10 +113,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Checking if the Password is equal to what is in the DataBase
             var checkPasswordResult = incomingLoginModel.Password == dataBaseUserAccount.Password;
+
+            // If Password does not match log the attempt and send an error back
             if (!checkPasswordResult)
             {
                 userAttempts.Count++;
-                if (userAttempts.Count == 5)
+                if (userAttempts.Count >= 5)
                 {
                     userAttempts.LastAttemptTime = DateTime.Now;
                 }
@@ -141,12 +146,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 Data = loginDto
             };
-
         }
-
-        /*private void UpdatingAttempt(FailedAttempts failedAttempts)
-        {
-
-        }*/
     }
 }

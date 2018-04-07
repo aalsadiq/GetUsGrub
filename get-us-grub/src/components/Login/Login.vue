@@ -16,7 +16,6 @@
         id="password"
         :rules="rules.passwordRules"
         :min="8"
-        :counter="64"
         :append-icon="visibile ? 'visibility' : 'visibility_off'"
         :append-icon-cb="() => (visibile = !visibile)"
         :type=" visibile ? 'text' : 'password'"
@@ -35,7 +34,7 @@
 <script>
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: 'Login',
@@ -67,6 +66,11 @@ export default {
   methods: {
     LoginUser: function (username, password) {
       console.log('you in son')
+      axios({
+        method: 'POST',
+        url: 'http://',
+        data:{'': ''}
+      })
     }
   }
 }

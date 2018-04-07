@@ -132,7 +132,7 @@
     <Compile Include="Validators\ModelValidators\AuthenticationTokenValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
-    <Compile Include="Validators\ModelValidators\UserAuthenticationModelValidator.cs" />
+    <Compile Include="Validators\DtoValidators\UserAuthenticationDtoValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
     <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />

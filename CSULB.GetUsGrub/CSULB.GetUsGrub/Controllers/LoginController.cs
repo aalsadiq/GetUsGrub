@@ -16,33 +16,32 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Login/")]
-
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-
-        public HttpResponseMessage AuthenticatingUser([FromBody] LoginDto loginDto)
+        public HttpResponseMessage AuthenticateUser([FromBody] LoginDto loginDto)
         {
+            // TODO @Ahmed But All this in Try Catch @Ahmed 
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
+                // TODO @Ahmed change to Bad request To @Ahmed
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, "Something went very wrong", Configuration.Formatters.JsonFormatter);
             }
 
-            
             var loginManager = new LoginManager();
-            var loginResponse = loginManager.LoginUser( loginDto) ;
+            var loginResponse = loginManager.LoginUser(loginDto) ;
             if (loginResponse.Error != null)
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, loginResponse.Error, Configuration.Formatters.JsonFormatter);
             }
 
             var authenticationTokenManager = new AuthenticationTokenManager();
-            var creatTokenResponse = authenticationTokenManager.CreateToken(loginResponse.Data);
-            if (creatTokenResponse.Error != null)
+            var tokenResponse = authenticationTokenManager.CreateToken(loginResponse.Data);
+            if (tokenResponse.Error != null)
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, creatTokenResponse.Error, Configuration.Formatters.JsonFormatter);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, tokenResponse.Error, Configuration.Formatters.JsonFormatter);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, creatTokenResponse.Data.TokenString, Configuration.Formatters.JsonFormatter);           
+            return Request.CreateResponse(HttpStatusCode.OK, tokenResponse.Data.TokenString, Configuration.Formatters.JsonFormatter);           
         }
 
     }

@@ -5,19 +5,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     class LoginPostLogicValidation
     {
-        private readonly UserAuthenticationModel _userAuthenticationModel;
-        private readonly UserAuthenticationModelValidator _userAuthenticationModelValidator;
+        private readonly UserAuthenticationDto _userAuthenticationDto;
+        private readonly UserAuthenticationDtoValidator _userAuthenticationDtoValidator;
 
-        public LoginPostLogicValidation(UserAuthenticationModel userAuthenticationModel)
+        public LoginPostLogicValidation(UserAuthenticationDto userAuthenticationDto)
         {
-            _userAuthenticationModel = userAuthenticationModel;
-            _userAuthenticationModelValidator = new UserAuthenticationModelValidator();
+            _userAuthenticationDto = userAuthenticationDto;
+            _userAuthenticationDtoValidator = new UserAuthenticationDtoValidator();
         }
 
         public bool ExcuteStrategy()
         {
-            var validationResult = _userAuthenticationModelValidator
-                .Validate(_userAuthenticationModel, ruleSet: "UsernameAndPassword");
+            var validationResult = _userAuthenticationDtoValidator
+                .Validate(_userAuthenticationDto, ruleSet: "UsernameAndPassword");
 
             if (!validationResult.IsValid)
             {

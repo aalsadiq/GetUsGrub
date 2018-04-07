@@ -13,6 +13,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class LoginDtoValidator : AbstractValidator<LoginDto>
     {
+        // TODO @Ahmed put RegX and Error Mesages in the Constant in the Model Layer @Ahmed 
         public LoginDtoValidator()
         {
             RuleSet("UsernameAndPassword", () =>

@@ -13,6 +13,7 @@ import DeleteUser from '@/components/AdminUserManagement/AdminDeleteUser.vue'
 import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
 import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
+import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap.vue'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
@@ -81,6 +82,15 @@ export default new Router({
       component: RestaurantBillSplitter,
       beforeEnter: (to, from, next) => {
         document.title = 'Split Your Bill!'
+        next()
+      }
+    },
+    {
+      path: '/GoogleEmbedMap',
+      name: 'GoogleEmbedMap',
+      component: GoogleEmbedMap,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Directions to your Restaurant?!?!?!?!'
         next()
       }
     },

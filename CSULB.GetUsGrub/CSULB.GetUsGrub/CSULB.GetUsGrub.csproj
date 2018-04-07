@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FoodPreferencesController.cs" />
     <Compile Include="Controllers\RestaurantBillSplitterController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RestaurantProfileController.cs" />

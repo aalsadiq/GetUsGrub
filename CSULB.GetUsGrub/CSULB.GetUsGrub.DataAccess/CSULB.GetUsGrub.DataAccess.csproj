@@ -52,10 +52,12 @@
   <ItemGroup>
     <Compile Include="Contexts\AuthenticationContext.cs" />
     <Compile Include="Contexts\AuthorizationContext.cs" />
+    <Compile Include="Contexts\FoodPreferencesContext.cs" />
     <Compile Include="Contexts\IndividualProfileContext.cs" />
     <Compile Include="Contexts\RestaurantContext.cs" />
     <Compile Include="Contexts\SsoContext.cs" />
     <Compile Include="Contexts\UserContext.cs" />
+    <Compile Include="Gateways\FoodPreferencesGateway.cs" />
     <Compile Include="Gateways\RestaurantBillSplitterGateway.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
     <Compile Include="Gateways\AuthorizationGateway.cs" />

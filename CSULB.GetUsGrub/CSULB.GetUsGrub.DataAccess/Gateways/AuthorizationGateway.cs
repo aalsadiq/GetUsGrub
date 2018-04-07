@@ -17,13 +17,13 @@ namespace CSULB.GetUsGrub.DataAccess
         /// Method to retrieve user's claims from the database given the username.
         /// </summary>
         /// <param name="username"></param>
-        /// <returns>User's collection of claimss</returns>
+        /// <returns>User's collection of claims</returns>
         public ResponseDto<ICollection<Claim>> GetClaimsByUsername(string username)
         {
             // Find the user account associated with the username
             using (var authorizationContext = new AuthorizationContext())
             {
-                // Get the claims for the database
+                // Get the claims from the database
                 var claims = (from userClaims in authorizationContext.Claims
                               where userClaims.UserAccount.Username == username
                               select userClaims).FirstOrDefault();

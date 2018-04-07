@@ -12,7 +12,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class GetRequestService : IRequestService
     {
-        private static readonly HttpClient _client = new HttpClient();
         private string _url { get; set; }
 
         public GetRequestService(string url)
@@ -22,11 +21,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public async Task<HttpResponseMessage> Execute()
         {
-            // TODO Check to see if there's a way to enable this via configuration rather than with each request [-Brian]
-            // Sets Security Protocol to TLS 1.2 -- Required by PwnedPasswords API
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            return await _client.GetAsync(_url);
+            using (var client = new HttpClient())
+            {
+                return await client.GetAsync(_url);
+            }
         }
     }
 }

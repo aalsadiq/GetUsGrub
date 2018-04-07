@@ -27,7 +27,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull().WithMessage("Open time is required.")
                     .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");
 
-                RuleFor(xBusinessHour => BusinessHour.CloseTime)
+                RuleFor(BusinessHour => BusinessHour.CloseTime)
                     .NotEmpty().WithMessage("Close time is required.")
                     .NotNull().WithMessage("Close time is required.")
                     .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");

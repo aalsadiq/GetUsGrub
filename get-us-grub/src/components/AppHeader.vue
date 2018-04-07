@@ -16,6 +16,9 @@
           <router-link to="/RestaurantBillSplitter">
             <v-btn color="teal">Split Bill</v-btn>
           </router-link>
+          <router-link to="/GoogleEmbedMap">
+            <v-btn color="teal">Map Test</v-btn>
+          </router-link>
 
           <v-btn icon><v-icon>email</v-icon></v-btn>
     </v-toolbar>

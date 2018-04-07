@@ -50,10 +50,6 @@
       <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.ComponentModel.Primitives">
-      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -69,12 +65,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ErrorMessages\RestaurantSelectionErrorMessages.cs" />
+    <Compile Include="Constants\RoleTypes.cs" />
+    <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadKeys.cs" />
+    <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadValues.cs" />
     <Compile Include="Converters\ClaimConverter.cs" />
     <Compile Include="DTOs\AuthenticationTokenDto.cs" />
     <Compile Include="DTOs\LoginDto.cs" />
     <Compile Include="DTOs\BusinessHourDto.cs" />
     <Compile Include="DTOs\SelectedRestaurantDto.cs" />
-    <Compile Include="ErrorMessages\ErrorMessages.cs" />
+    <Compile Include="Constants\ErrorMessages\GeneralErrorMessages.cs" />
+    <Compile Include="Constants\ErrorMessages\SsoErrorMessages.cs" />
+    <Compile Include="Enums\States.cs" />
+    <Compile Include="Models\BaseModels\SsoToken.cs" />
     <Compile Include="Models\GeoCoordinates.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
@@ -95,9 +98,11 @@
     <Compile Include="Models\Interfaces\IBusinessHour.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
     <Compile Include="DTOs\RestaurantMenuWithItems.cs" />
+    <Compile Include="Models\InvalidSsoToken.cs" />
     <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
-    <Compile Include="Models\SsoToken.cs" />
+    <Compile Include="Models\ValidSsoToken.cs" />
+    <Compile Include="Models\SsoTokenPayload.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />

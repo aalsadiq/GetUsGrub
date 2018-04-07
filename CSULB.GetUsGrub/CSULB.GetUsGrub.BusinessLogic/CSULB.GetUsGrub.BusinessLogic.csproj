@@ -111,6 +111,7 @@
     <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\UsernameValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
     <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />

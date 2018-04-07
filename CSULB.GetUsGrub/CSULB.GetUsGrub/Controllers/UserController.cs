@@ -179,7 +179,7 @@ namespace CSULB.GetUsGrub.Controllers
                 //Creating a manager to then call DeleteUser
                 var manager = new UserManager();
                 //Calling DeleteUser method to delete the username that was received.
-                var response = manager.DeleteUser(user.Username);
+                var response = manager.DeleteUser(user);
                 //Checks the response from DeleteUser. If Error is null, then it was successful!
                 if (response.Error != null)
                 {
@@ -225,7 +225,7 @@ namespace CSULB.GetUsGrub.Controllers
                     //Creating a manger to then call Deactivateuser
                     var manager = new UserManager();
                     //Calling ReactivateUser method to reactivate the username that was recieved.
-                    var response = manager.DeactivateUser(user.Username);
+                    var response = manager.DeactivateUser(user);
                     //Checks the response from ReactivateUser. If Error is null, then it was successful.
                     if (response.Error != null)
                     {

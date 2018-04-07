@@ -68,9 +68,15 @@ export default {
       console.log('you in son')
       axios({
         method: 'POST',
-        url: 'http://',
-        data:{'': ''}
+        url: 'http://localhost:8081/Login',
+        data: { 'Username': this.username, 'Password': this.password},
+        header:{ 
+          'Access-Control-Allow-Origin': 'http://localhost:8080/#/Login'
+        }
       })
+        .then(function (response){
+
+        })
     }
   }
 }

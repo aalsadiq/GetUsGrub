@@ -19,7 +19,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var gateway = new AuthorizationGateway();
-            var username = "User1";
+            var username = "username1";
             var expected = typeof(ResponseDto<ICollection<Claim>>);
 
             // Act

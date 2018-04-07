@@ -21,7 +21,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_ReturnTrue_When_PrincipalHasClaim()
         {
             // Arrange
-            var username = "username";
+            var username = "username1";
             var claims = new List<Claim> { new Claim("username", username) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
@@ -42,7 +42,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_ReturnFalse_When_PrincipalDoesNotHaveClaim()
         {
             // Arrange
-            var username = "username";
+            var username = "username1";
             var claims = new List<Claim> { new Claim("username", username) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);

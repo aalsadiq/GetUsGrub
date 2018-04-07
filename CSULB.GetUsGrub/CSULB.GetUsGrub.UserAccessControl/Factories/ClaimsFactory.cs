@@ -47,6 +47,9 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // For Restaurant Profie Management
                 new Claim(ActionConstant.READ+ResourceConstant.RESTAURANT, "True"),
                 new Claim(ActionConstant.UPDATE+ResourceConstant.RESTAURANT, "True"),
+
+                // For Bill Splitter
+                new Claim(ActionConstant.ACCESS+ResourceConstant.MENU, "True")
             };
         }
 
@@ -80,7 +83,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
 
                 // For Bill Splitter
                 new Claim(ActionConstant.ACCESS+ResourceConstant.DICTIONARY, "True"),
-                new Claim(ActionConstant.ACCESS+ResourceConstant.MENU, "True"),
+                new Claim(ActionConstant.ACCESS+ResourceConstant.MENU, "True")
             };
         }
     }

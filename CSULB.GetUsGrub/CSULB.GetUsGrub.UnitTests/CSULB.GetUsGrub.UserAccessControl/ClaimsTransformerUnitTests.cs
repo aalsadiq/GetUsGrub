@@ -22,7 +22,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var user = "username";
-            var claims = new List<Claim> { new Claim("username", user) };
+            var claims = new List<Claim> { new Claim("username1", user) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
@@ -36,7 +36,7 @@ namespace CSULB.GetUsGrub.UnitTests
         }
 
         [Fact]
-        public void Should_ReturnClaimsPrincipalWithReadPermissions_When_UsernameIsPassed()
+        public void Should_ReturnClaimsPrincipal_With_ReadPermissions()
         {
             // Arrange
             var user = "username";
@@ -49,6 +49,7 @@ namespace CSULB.GetUsGrub.UnitTests
             // Act
             var allClaims = transformer.Authenticate(resourceName, principal).HasClaim("UpdatePreferences", "True");
             var readClaims = transformer.Authenticate(resourceName, principal).HasClaim("ReadPreferences", "True");
+
             // Assert
             allClaims.Should().BeFalse();
             readClaims.Should().BeTrue();

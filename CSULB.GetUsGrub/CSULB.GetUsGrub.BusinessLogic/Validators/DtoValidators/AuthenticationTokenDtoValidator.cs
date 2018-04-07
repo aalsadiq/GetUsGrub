@@ -10,7 +10,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("TokenRules", () =>
             {
-                RuleFor(x => x.TokenString)
+                RuleFor(AuthenticationToken => AuthenticationToken.TokenString)
                     .NotEmpty()
                     .NotNull();
 

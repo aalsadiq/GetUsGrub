@@ -17,11 +17,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Question)
+                RuleFor(User => User.Question)
                     .NotEmpty().WithMessage("Must answer 3 security questions.")
                     .GreaterThan(0).WithMessage("Something went wrong. Please try again later.");
 
-                RuleFor(x => x.Answer)
+                RuleFor(User => User.Answer)
                     .NotEmpty().WithMessage("Must answer 3 security questions.")
                     .NotNull().WithMessage("Must answer 3 security questions.");
             });

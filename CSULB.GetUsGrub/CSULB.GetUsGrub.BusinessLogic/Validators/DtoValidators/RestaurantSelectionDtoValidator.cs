@@ -10,68 +10,68 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("PreLogic", () =>
             {
-                RuleFor(x => x.City)
+                RuleFor(RestaurantSelection => RestaurantSelection.City)
                     .NotEmpty().WithMessage("City is required.")
                     .NotNull().WithMessage("City is required.");
 
-                RuleFor(x => x.State)
+                RuleFor(RestaurantSelection => RestaurantSelection.State)
                     .NotEmpty().WithMessage("State is required.")
                     .NotNull().WithMessage("State is required.");
 
-                RuleFor(x => x.FoodType)
+                RuleFor(RestaurantSelection => RestaurantSelection.FoodType)
                     .NotEmpty().WithMessage("Food type is required.")
                     .NotNull().WithMessage("Food type is required.");
 
-                RuleFor(x => x.DistanceInMiles)
+                RuleFor(RestaurantSelection => RestaurantSelection.DistanceInMiles)
                     .NotEmpty().WithMessage("Distance is required.")
                     .NotNull().WithMessage("Distance is required.")
                     .Must(distance => distance.Equals(1) | distance.Equals(5) | distance.Equals(10) | distance.Equals(15));
 
-                RuleFor(x => x.AvgFoodPrice)
+                RuleFor(RestaurantSelection => RestaurantSelection.AvgFoodPrice)
                     .NotNull().WithMessage("Average food price is required");
             });
 
             RuleSet("UnregisteredUserPostLogic", () =>
             {
-                RuleFor(x => x.City)
+                RuleFor(RestaurantSelection => RestaurantSelection.City)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.State)
+                RuleFor(RestaurantSelection => RestaurantSelection.State)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.FoodType)
+                RuleFor(RestaurantSelection => RestaurantSelection.FoodType)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.DistanceInMiles)
+                RuleFor(RestaurantSelection => RestaurantSelection.DistanceInMiles)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.AvgFoodPrice)
+                RuleFor(RestaurantSelection => RestaurantSelection.AvgFoodPrice)
                     .NotNull();
 
-                RuleFor(x => x.CurrentUtcDateTime)
+                RuleFor(RestaurantSelection => RestaurantSelection.CurrentUtcDateTime)
                     .NotEmpty()
                     .NotNull();
             });
 
             RuleSet("RegisteredUserPostLogic", () =>
             {
-                RuleFor(x => x.City)
+                RuleFor(RestaurantSelection => RestaurantSelection.City)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.State)
+                RuleFor(RestaurantSelection => RestaurantSelection.State)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.FoodType)
+                RuleFor(RestaurantSelection => RestaurantSelection.FoodType)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.DistanceInMiles)
+                RuleFor(RestaurantSelection => RestaurantSelection.DistanceInMiles)
                     .NotEmpty()
                     .NotNull();
                 
@@ -80,10 +80,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 //    .NotEmpty()
                 //    .NotNull();
 
-                RuleFor(x => x.AvgFoodPrice)
+                RuleFor(RestaurantSelection => RestaurantSelection.AvgFoodPrice)
                     .NotNull();
 
-                RuleFor(x => x.CurrentUtcDateTime)
+                RuleFor(RestaurantSelection => RestaurantSelection.CurrentUtcDateTime)
                     .NotEmpty()
                     .NotNull();
             });

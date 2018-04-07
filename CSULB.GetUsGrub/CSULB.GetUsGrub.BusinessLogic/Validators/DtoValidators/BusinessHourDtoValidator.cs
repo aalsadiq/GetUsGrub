@@ -18,16 +18,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Day)
+                RuleFor(BusinessHour => BusinessHour.Day)
                     .NotEmpty().WithMessage("Business day is required.")
                     .NotNull().WithMessage("Business day is required.");
 
-                RuleFor(x => x.OpenTime)
+                RuleFor(BusinessHour => BusinessHour.OpenTime)
                     .NotEmpty().WithMessage("Open time is required.")
                     .NotNull().WithMessage("Open time is required.")
                     .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");
 
-                RuleFor(x => x.CloseTime)
+                RuleFor(xBusinessHour => BusinessHour.CloseTime)
                     .NotEmpty().WithMessage("Close time is required.")
                     .NotNull().WithMessage("Close time is required.")
                     .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");

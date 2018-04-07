@@ -17,12 +17,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("UsernameAndPassword", () =>
             {
-                RuleFor(x => x.Username)
+                RuleFor(User => User.Username)
                     .NotEmpty().WithMessage("Username is required.")
                     .NotNull().WithMessage("Username is required.")
                     .Matches(@"^[A-Za-z\d]+$").WithMessage("Username must not contain spaces and special characters.");
 
-                RuleFor(x => x.Password)
+                RuleFor(User => User.Password)
                     .NotEmpty().WithMessage("Password is required.")
                     .NotNull().WithMessage("Password is required.")
                     .Length(8, 64).WithMessage("Password must be at least 8 characters and less than or equal to 64.")

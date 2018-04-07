@@ -499,6 +499,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<string> Edituser(EditUserDto user)//@TODO: Angelica (Add ProfileDtoValidations...)
         {
             //@TODO: Angelica (Add prelogic and postlogic validations...) 
+
             //Creates a gateway
             using (var gateway = new UserGateway())
             {

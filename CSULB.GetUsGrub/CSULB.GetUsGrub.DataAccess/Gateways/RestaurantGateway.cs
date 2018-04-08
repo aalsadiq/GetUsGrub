@@ -1,8 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
+using System.Data.Entity;
 using System.Data.Entity.Spatial;
-using System.Data.Entity.SqlServer;
-using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -10,62 +9,79 @@ namespace CSULB.GetUsGrub.DataAccess
     // TODO: @Jenn Unit test and comment this [-Jenn]
     public class RestaurantGateway : IDisposable
     {
-        public ResponseDto<SelectedRestaurantDto> GetRestaurantWithoutFoodPreferences(string city, string state, string foodType, 
-            int distance, int avgFoodPrice, DateTime currentUtcDateTime, DayOfWeek currentDayOfWeek, double longitude, double latitude)
+        public ResponseDto<SelectedRestaurantDto> GetRestaurantWithoutFoodPreferences(string city, string state, string foodType,
+            double distanceInMeters, int avgFoodPrice, TimeSpan currentUtcTimeOfDay, string currentLocalDayOfWeek, DbGeography location)
         {
             using (var restaurantContext = new RestaurantContext())
             {
+                // TODO: @Jenn Test to see if code below is necesssary
+                restaurantContext.Configuration.ProxyCreationEnabled = false;
+
                 try
                 {
+                    var businessHours = from userProfile in restaurantContext.UserProfiles
+                        join restaurantProfile in restaurantContext.RestaurantProfiles
+                            on userProfile.Id equals restaurantProfile.Id
+                        join businessHour in restaurantContext.BusinessHours
+                            on restaurantProfile.Id equals businessHour.RestaurantId
+                        where restaurantProfile.Address.City == city
+                              && state == restaurantProfile.Address.State
+                              && foodType == restaurantProfile.Details.FoodType
+                              && avgFoodPrice == restaurantProfile.Details.AvgFoodPrice
+                              && distanceInMeters >= location.Distance(restaurantProfile.Location)
+                              && currentLocalDayOfWeek == businessHour.Day
+                         select businessHour;
+
+                    var selectedRestaurantProfileId = businessHours
+                            .Where(businessHour => (DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second) 
+                                <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second))
+                                ? (currentUtcTimeOfDay >= DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second)
+                                   && currentUtcTimeOfDay <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second)) 
+                                : (currentUtcTimeOfDay >= DbFunctions.CreateTime(businessHour.OpenTime.Hour, businessHour.OpenTime.Minute, businessHour.OpenTime.Second)
+                                   || currentUtcTimeOfDay <= DbFunctions.CreateTime(businessHour.CloseTime.Hour, businessHour.CloseTime.Minute, businessHour.CloseTime.Second)))
+                            .Select(businessHour => businessHour.RestaurantId).OrderBy(businessHour => Guid.NewGuid()).FirstOrDefault();
+
                     var selectedRestaurant = (from userProfile in restaurantContext.UserProfiles
-                                                join restaurantProfile in restaurantContext.RestaurantProfiles 
-                                                    on userProfile.Id equals restaurantProfile.Id
-                                                join restaurantBusinessHour in restaurantContext.BusinessHours
-                                                    on restaurantProfile.Id equals restaurantBusinessHour.RestaurantId
-                                                where restaurantProfile.Address.City == city
-                                                        && state == restaurantProfile.Address.State
-                                                        && foodType == restaurantProfile.Details.FoodType
-                                                        && avgFoodPrice == restaurantProfile.Details.AvgFoodPrice
-                                                        && currentDayOfWeek.ToString() == restaurantBusinessHour.Day
-                                                        && currentUtcDateTime.Hour > restaurantBusinessHour.OpenTime.Hour
-                                                        && currentUtcDateTime.Hour < restaurantBusinessHour.CloseTime.Hour
-                                                        && distance >= Convert.ToInt32(DbGeography.FromText($"Point{latitude} {longitude}")
-                                                                        .Distance(DbGeography.FromText($"Point{restaurantProfile.Latitude} {restaurantProfile.Longitude}")))
-                                                select new
-                                                {
-                                                    latitude = restaurantProfile.Latitude,
-                                                    longitude = restaurantProfile.Longitude,
-                                                    address = restaurantProfile.Address,
-                                                    phoneNumber = restaurantProfile.PhoneNumber,
-                                                    displayName = userProfile.DisplayName,
-                                                    businessHours = (from businessHour in restaurantContext.BusinessHours
-                                                                        where businessHour.RestaurantId == restaurantProfile.Id
-                                                                        select businessHour).ToList()
-                                                }).ToList().OrderBy(order => SqlFunctions.Rand()).First();
+                        join restaurantProfile in restaurantContext.RestaurantProfiles
+                            on userProfile.Id equals restaurantProfile.Id
+                        where restaurantProfile.Id == selectedRestaurantProfileId
+                        select new SelectedRestaurantDto()
+                        {
+                            DisplayName = userProfile.DisplayName,
+                            RestaurantGeoCoordinates = new GeoCoordinates
+                            {
+                                Latitude = restaurantProfile.Location.Latitude,
+                                Longitude = restaurantProfile.Location.Longitude
+                            },
+                            Address = restaurantProfile.Address,
+                            PhoneNumber = restaurantProfile.PhoneNumber,
+                            BusinessHourDtos = (from businessHour in restaurantContext.BusinessHours
+                                where businessHour.RestaurantId == restaurantProfile.Id
+                                select new BusinessHourDto()
+                                {
+                                    Day = businessHour.Day,
+                                    OpenDateTime = businessHour.OpenTime,
+                                    CloseDateTime = businessHour.CloseTime
+                                }).ToList()
+                        }).FirstOrDefault();
 
                     return new ResponseDto<SelectedRestaurantDto>()
                     {
-                        Data = new SelectedRestaurantDto(latitude: selectedRestaurant.latitude, longitude: selectedRestaurant.longitude, address: selectedRestaurant.address,
-                                                         phoneNumber: selectedRestaurant.phoneNumber, displayName: selectedRestaurant.displayName, 
-                                                         businessHours: selectedRestaurant.businessHours)
+                        Data = selectedRestaurant
                     };
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Debug.WriteLine(ex);
-
+                    // When exception is caught, then return a ResponseDto with null data with a general error message set
                     return new ResponseDto<SelectedRestaurantDto>()
                     {
                         Data = null,
-                        Error = "Something went wrong. Please try again later."
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
         }
 
-        public void Dispose()
-        {
-            // TODO: @Jenn implement the dispose [-Jenn]
-        }
+        public void Dispose() { }
     }
 }

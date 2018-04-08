@@ -39,7 +39,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Extract DTO contents and map DTO to domain model
-   
+
             var username = restaurantProfileDto.Username;
 
             // Extract restaurant profile domain
@@ -47,8 +47,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 restaurantProfileDto.PhoneNumber,
                 restaurantProfileDto.Address,
                 restaurantProfileDto.Details,
-                restaurantProfileDto.Latitude,
-                restaurantProfileDto.Longitude);
+                restaurantProfileDto.GeoCoordinates.Latitude,
+                restaurantProfileDto.GeoCoordinates.Longitude);
 
             // Extract business hours domains
             var businessHourDomains = restaurantProfileDto.BusinessHours;

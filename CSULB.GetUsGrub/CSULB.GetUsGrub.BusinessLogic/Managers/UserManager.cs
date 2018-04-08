@@ -18,16 +18,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserManager
     {
-        /// <summary>
-        /// The CreateIndividualUser method.
-        /// Contains business logic to create an individual user.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="registerUserDto"></param>
-        /// <returns>ResponseDto</returns>
+        //TODO: @Jenn Unit test and comment CreateIndividualUser [-Angelica]
         public ResponseDto<RegisterUserDto> CreateIndividualUser(RegisterUserDto registerUserDto)
         {
             var createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerUserDto);
@@ -38,6 +29,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             
             // Validate data transfer object
             var result = createIndividualPreLogicValidationStrategy.ExecuteStrategy();
+            System.Diagnostics.Debug.WriteLine("UserManager2");
             if (result.Error != null)
             {
                 return new ResponseDto<RegisterUserDto>
@@ -47,6 +39,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
+            System.Diagnostics.Debug.WriteLine("UserManager3");
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
@@ -60,13 +53,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userClaims = new UserClaims(claimsFactory.CreateIndividualClaims());
 
             // Hash password
-            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
+            var passwordSalt = new PasswordSalt
+            {
+                Salt = saltGenerator.GenerateSalt(128)
+            };
             userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
             // Hash security answers
             for (var i = 0; i < securityQuestions.Count; i++)
             {
-                securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
+                securityAnswerSalts.Add(new SecurityAnswerSalt {Salt = saltGenerator.GenerateSalt(128)});
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
@@ -78,7 +74,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -91,7 +87,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = gatewayResult.Error
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -102,16 +98,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        /// <summary>
-        /// The CreateRestaurantUser method.
-        /// Contains business logic for creating a restaurant user.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="registerRestaurantDto"></param>
-        /// <returns>ResponseDto</returns>
+        // TODO: @Jenn Comment and unit test the CreateRestaurantUser [-Jenn]
         public ResponseDto<RegisterRestaurantDto> CreateRestaurantUser(RegisterRestaurantDto registerRestaurantDto)
         {
             var createRestaurantPreLogicValidationStrategy = new CreateRestaurantPreLogicValidationStrategy(registerRestaurantDto);
@@ -140,12 +127,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
             var userProfile = new UserProfile(displayPicture: registerRestaurantDto.UserProfileDto.DisplayPicture, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
-            var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details, latitude: registerRestaurantDto.RestaurantProfileDto.Latitude, longitude: registerRestaurantDto.RestaurantProfileDto.Longitude);
+            var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, 
+                address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details);
             var businessHours = registerRestaurantDto.BusinessHourDtos
                 .Select(businessHourDto => new BusinessHour(
                     day: businessHourDto.Day, 
-                    openTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
-                    closeTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
+                    openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
+                    closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
                 .ToList();
 
             // Call GeocodeService to get geocoordinates of the restaurant
@@ -155,12 +143,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
-            restaurantProfile.Latitude = geocodeResponse.Data.Latitude;
-            restaurantProfile.Longitude = geocodeResponse.Data.Longitude;
+            restaurantProfile.GeoCoordinates = new GeoCoordinates(latitude: geocodeResponse.Data.Latitude, longitude: geocodeResponse.Data.Longitude);
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims()
@@ -169,7 +156,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
 
             // Hash password
-            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
+            var passwordSalt = new PasswordSalt
+            {
+                Salt = saltGenerator.GenerateSalt(128)
+            };
             userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
             // Hash security answers
@@ -187,7 +177,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -200,7 +190,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterRestaurantDto>()
                     {
                         Data = registerRestaurantDto,
-                        Error = gatewayResult.Error
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -246,13 +236,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Store user in database
+            // Store a user from Single Sign On registration request
             using (var userGateway = new UserGateway())
             {
                 var gatewayResult = userGateway.StoreSsoUser(userAccount, passwordSalt);
                 if (gatewayResult.Data == false)
                 {
-                    return gatewayResult;
+                    return new ResponseDto<bool>()
+                    {
+                        Data = gatewayResult.Data,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
 
@@ -262,7 +256,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        // TODO: @Angelica Please change this comment below [-Jenn]
         /// <summary>
         /// The CreateIndividualUser method.
         /// Contains business logic to create an individual user.
@@ -293,7 +286,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "private");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
@@ -301,7 +294,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
 
-            // Set user claims to be stored in UserClaims table
+            // Set user claims to be stored in UserClaims table as administrator
             var userClaims = new UserClaims(claimsFactory.CreateAdminClaims());
 
             // Hash password
@@ -323,7 +316,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -336,7 +329,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = gatewayResult.Error
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -359,6 +352,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             //Creates a gateway
             using (var gateway = new UserGateway())
             {
+                var check = new UserProfileDtoValidator(); //Check this...
+               //
+   
                 //Gateway calls DeactivateUser and passes in the username to be deactivated.
                 var gatewayResult = gateway.DeactivateUser(username);
                 //If the gateway returns false
@@ -420,13 +416,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<string> DeleteUser(string username)
             {
-            Debug.Write("Inside DeleteUser" + Environment.NewLine);
             //Creates a gateway
             using (var gateway = new UserGateway())
                 {
                     //Gateway calls DeleteUser and passes in the username to be deleted.
                     var gatewayResult = gateway.DeleteUser(username);
-                Debug.Write("After delete usergateway" + Environment.NewLine);
                 //If they gateway returns false
                 if (gatewayResult.Data == false)
                     {

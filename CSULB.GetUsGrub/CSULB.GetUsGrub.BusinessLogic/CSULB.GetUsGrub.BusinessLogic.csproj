@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.7.5.1\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
@@ -70,6 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\Interfaces\IProfileManager.cs" />
+    <Compile Include="Managers\RestaurantProfileManager.cs" />
+    <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Services\BackoffRequest.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />
@@ -79,6 +83,7 @@
     <Compile Include="Services\Interfaces\IBackoff.cs" />
     <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
     <Compile Include="Managers\RestaurantSelectionManager.cs" />
+    <Compile Include="Managers\RestaurantBillSplitterManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\AuthenticationTokenManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
@@ -104,14 +109,17 @@
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditRestaurantUserProfilePreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPostLogicValidation.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantSelectionDtoValidator.cs" />
@@ -121,6 +129,7 @@
     <Compile Include="Validators\ModelValidators\AuthenticationTokenValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
+    <Compile Include="Validators\ModelValidators\SsoTokenPayloadValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAuthenticationModelValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
@@ -132,7 +141,6 @@
     <Compile Include="Validators\ModelValidators\SecurityQuestionValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAccountValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserProfileValidator.cs" />
-    <Compile Include="Validators\SsoTokenValidator.cs" />
     <Compile Include="Validators\TokenValidator.cs" />
     <Compile Include="Validators\UserValidator.cs" />
   </ItemGroup>
@@ -142,7 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Exceptions\" />
-    <Folder Include="Managers\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

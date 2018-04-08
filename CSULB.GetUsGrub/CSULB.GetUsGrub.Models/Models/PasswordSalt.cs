@@ -14,21 +14,22 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.PasswordSalt")]
     public class PasswordSalt : IEntity
     {
-        public PasswordSalt()
-        {
-            Salt = "";
-        }
-        public PasswordSalt(string salt)
-        {
-            Salt = salt;
-        }
-
+        // Automatic Properties
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
+
         public string Salt { get; set; }
 
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
+
+        // Constructors
+        public PasswordSalt() { }
+
+        public PasswordSalt(string salt)
+        {
+            Salt = salt;
+        }
     }
 }

@@ -185,16 +185,15 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         // TODO: @Jenn Comment this method and unit test [-Jenn]
-        public ResponseDto<SsoToken> GetSsoToken(string token)
+        public ResponseDto<SsoToken> GetValidSsoToken(string token)
         {
             using (var authenticationContext = new AuthenticationContext())
             {
                 try
                 {
-                    var ssoToken = (from storedToken in authenticationContext.SsoTokens
-                                    where storedToken.Token == token
-                                    select storedToken).FirstOrDefault();
-
+                    var ssoToken = (from validSsoToken in authenticationContext.ValidSsoTokens
+                                    where validSsoToken.Token == token
+                                    select validSsoToken).FirstOrDefault();
                     // Return a ResponseDto with a UserAccount model
                     return new ResponseDto<SsoToken>()
                     {
@@ -205,7 +204,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     return new ResponseDto<SsoToken>()
                     {
-                        Data = new SsoToken(token),
+                        Data = new ValidSsoToken(token),
                         Error = "Something went wrong. Please try again later."
                     };
                 }
@@ -213,13 +212,40 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         // TODO: @Jenn Comment this method and unit test [-Jenn]
-        public ResponseDto<bool> StoreSsoToken(SsoToken ssoToken)
+        public ResponseDto<SsoToken> GetInvalidSsoToken(string token)
         {
             using (var authenticationContext = new AuthenticationContext())
             {
                 try
                 {
-                    authenticationContext.SsoTokens.Add(ssoToken);
+                    var ssoToken = (from invalidSsoToken in authenticationContext.InvalidSsoTokens
+                        where invalidSsoToken.Token == token
+                        select invalidSsoToken).FirstOrDefault();
+                    // Return a ResponseDto with a UserAccount model
+                    return new ResponseDto<SsoToken>()
+                    {
+                        Data = ssoToken
+                    };
+                }
+                catch (Exception)
+                {
+                    return new ResponseDto<SsoToken>()
+                    {
+                        Data = new ValidSsoToken(token),
+                        Error = "Something went wrong. Please try again later."
+                    };
+                }
+            }
+        }
+
+        // TODO: @Jenn Comment this method and unit test [-Jenn]
+        public ResponseDto<bool> StoreValidSsoToken(ValidSsoToken validSsoToken)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+                try
+                {
+                    authenticationContext.ValidSsoTokens.Add(validSsoToken);
                     authenticationContext.SaveChanges();
 
                     return new ResponseDto<bool>()

@@ -1,67 +1,49 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Security;
 using System.Security.Claims;
 
 namespace CSULB.GetUsGrub.UserAccessControl
 {
     /// <summary>
-    /// Checks if a user has access whenever a request hits the Authorization Filters
-    /// 
-    /// Author: Rachel Dang
-    /// Last Updated: 03/14/18
+    /// Determines whether a user has access to a particular resource by checking their claims.
+    /// @author: Rachel Dang
+    /// @updated: 03/22/18
     /// </summary>
     public class AuthorizationManager : ClaimsAuthorizationManager
     {
         /// <summary>
-        /// Check if a user has access by running through their list of permission claims
+        /// Check if a user has access to a particular resource given the authorization context.
         /// </summary>
         /// <param name="context"></param>
         /// <returns>True or False on whether user has access</returns>
         public override bool CheckAccess(AuthorizationContext context)//------------------------------------------ASK RACHEL
         {
-            // Create the claim based on the resource action pair
+            // Create the claim needed to access the resource
             var resource = context.Resource.First().Value;
             var action = context.Action.First().Value;
             string claim = string.Concat(action, resource);
 
-            // This is here to create a tester ClaimsPrincipal for testing purposes
-            // Supposed to be var p = context.Principal; which is taken from the token
-            var p = CreateTestPrincipal();
+            // Create a new principal with the read-only principal give from context
+            ClaimsPrincipal principal = context.Principal;
 
-            // Pass principal with just the username claim into the ClaimsTransformer
-            // to grab appropriate permission claims for the rest of the application
+            // Get the username claim from the principal
+            var username = principal.FindFirst("username").Value;
+
+            // Check if username is valid
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new SecurityException("Username is invalid.");
+            }
+
+            // Pass principal into transformer to create principal with all of the user's claims
             ClaimsTransformer transformer = new ClaimsTransformer();
-            ClaimsPrincipal principal = transformer.Authenticate("permissions", p);
+            principal = transformer.Authenticate("permission", principal);
 
-            // Check if the ClaimsPrincipal contains the claim
+            // Check principal to see if it contains the claim needed
             bool hasAccess = principal.HasClaim(claim, "True");
 
             // Return true or false
             return hasAccess;
-        }
-
-        /// <summary>
-        /// Create a test ClaimsPrincipal to test the User Controller. Contains only the name claim.
-        /// To be passed into the ClaimsTransformer to grab all admin claims based on the name.
-        /// 
-        /// </summary>
-        /// <returns>ClaimsPrincipal for testing</returns>
-        private ClaimsPrincipal CreateTestPrincipal()
-        {
-            // Test Principal with "Admin" username to test the User Controller
-            var testClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, "Admin")
-            };
-
-            // Create Test ClaimsIdentity
-            ClaimsIdentity testClaimsIdentity = new ClaimsIdentity(testClaims, "Test");
-
-            // Create Test ClaimsPrincipal
-            ClaimsPrincipal testClaimsPrincipal = new ClaimsPrincipal(testClaimsIdentity);
-
-            // Return Test Claimsprincipl
-            return testClaimsPrincipal;
         }
     }
 }

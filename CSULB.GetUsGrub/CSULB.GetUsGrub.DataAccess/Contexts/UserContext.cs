@@ -7,7 +7,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// Context containing all tables for user management.
     /// 
     /// @Created by: Brian Fann
-    /// @Last Updated: 3/9/18
+    /// @Last Updated: 4/07/18
     /// </summary>
     public class UserContext : DbContext
     {
@@ -22,6 +22,8 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<AuthenticationToken> AuthenticationTokens { get; set; }
         public DbSet<UserClaims> UserClaims { get; set; }
         public DbSet<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
+        public DbSet<FoodPreferences> FoodPreferences { get; set; }
+
         public UserContext() : base("GetUsGrub") { }
     }
 }

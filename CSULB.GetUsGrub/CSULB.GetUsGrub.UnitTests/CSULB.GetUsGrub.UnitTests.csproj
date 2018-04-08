@@ -123,7 +123,9 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\TokenServiceUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\ValidationWrapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategyUnitTests.cs" />
+    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\AuthorizationGatewayUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantSelectionDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\SecurityQuestionDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\UserAccountDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\UserProfileDtoValidatorUnitTests.cs" />
@@ -134,20 +136,23 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\RestaurantProfileValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SecurityAnswerSaltValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SecurityQuestionValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SsoTokenPayloadValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserAccountValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserProfileValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\UserGatewayUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.UserAccessControl\AuthorizationManagerUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsTransformerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\TokenValidator.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\UserValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.Gateways\UserManagementTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="api.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="keys.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

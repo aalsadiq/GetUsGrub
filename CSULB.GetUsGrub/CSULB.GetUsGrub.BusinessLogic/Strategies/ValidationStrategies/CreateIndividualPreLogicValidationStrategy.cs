@@ -51,7 +51,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 new ValidationWrapper<UserProfileDto>(_registerUserDto.UserProfileDto, "CreateUser", new UserProfileDtoValidator())
 
             };
-            
+
             foreach (var securityQuestionDto in _registerUserDto.SecurityQuestionDtos)
             {
                 validationWrappers.Add(new ValidationWrapper<SecurityQuestionDto>(securityQuestionDto, "CreateUser", _securityQuestionDtoValidator));
@@ -74,6 +74,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 {
                     result.Error = "Username must not be the same as display name.";
                 }
+
+                result.Data = false;
                 return result;
             }
 
@@ -85,6 +87,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 {
                     result.Error = "Username is already used.";
                 }
+
+                result.Data = false;
                 return result;
             }
 

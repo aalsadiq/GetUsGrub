@@ -17,22 +17,27 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.UserClaims")]
     public class UserClaims : IEntity
     {
-        public UserClaims() { }
-        public UserClaims(ICollection<Claim> claims) { Claims = claims; }
-
+        // Automatic Properties
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
-
-        [NotMapped]
-        public ICollection<Claim> Claims { get; set; }
-
         public string ClaimsJson
         {
             get => JsonConvert.SerializeObject(Claims);
             set => Claims = JsonConvert.DeserializeObject<List<Claim>>(value, new ClaimConverter());
         }
+        [NotMapped]
+        public ICollection<Claim> Claims { get; set; }
+
         // Navigation Property
         public virtual UserAccount UserAccount { get; set; }
+
+        // Constructors
+        public UserClaims() { }
+
+        public UserClaims(ICollection<Claim> claims)
+        {
+            Claims = claims;
+        }
     }
 }

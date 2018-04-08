@@ -1,4 +1,6 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.Collections.Generic;
+
+namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// Restaurant profile interface
@@ -10,7 +12,6 @@
         string PhoneNumber { get; set; }
         Address Address { get; set; }
         RestaurantDetail Details { get; set; }
-        double Latitude { get; set; }
-        double Longitude { get; set; }
+        GeoCoordinates GeoCoordinates { get; set; }
     }
 }

@@ -178,7 +178,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                 // Creating a list of claims
                 var claims = new List<Claim>();
 
-                // Adding 3 claims to the list of claims
+                // Adding claims to the list of claims
                 for (var j = 1; j <= maxClaimsPerUserClaims; j++)
                 {
                     claims.Add(new Claim($"claimType{j}", $"claimValue{j}"));
@@ -224,13 +224,13 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                                 Street1 = $"{i} Street1",
                                 Street2 = $"{i} Street2",
                                 City = $"city{i}",
-                                State = $"CA",
+                                State = "CA",
                                 Zip = 90711 + i
                             },
                             Details = new RestaurantDetail()
                             {
-                                // 0 = $0 to $10, 1 = $10.01 to $50, 2 = $50.01+
-                                AvgFoodPrice = randomizer.Next(0, 2+1),
+                                // 1 = $0 to $10, 2 = $10.01 to $50, 3 = $50.01+
+                                AvgFoodPrice = randomizer.Next(1, 3+1),
                                 FoodType = validFoodTypes[randomizer.Next(0, validFoodTypes.Count)],
                                 HasReservations = true,
                                 HasDelivery = true,
@@ -244,8 +244,11 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                                 Caters = true,
                                 AllowsPets = true
                             },
-                            Latitude = geoCoordinates[rand].Latitude,
-                            Longitude = geoCoordinates[rand].Longitude
+                            GeoCoordinates = new GeoCoordinates()
+                            {
+                                Latitude = geoCoordinates[rand].Latitude,
+                                Longitude = geoCoordinates[rand].Longitude
+                            }
                         }
                     );
                     context.SaveChanges();

@@ -30,6 +30,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var gatewayResult = userGateway.GetUserByUsername(username);
                 return new ResponseDto<bool>()
                 {
+                    // If user exists, then return true
                     Data = gatewayResult.Data != null,
                     Error = gatewayResult.Error
                 };

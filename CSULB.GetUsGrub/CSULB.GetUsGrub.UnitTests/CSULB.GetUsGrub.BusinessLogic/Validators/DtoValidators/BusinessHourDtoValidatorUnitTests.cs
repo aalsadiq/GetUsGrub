@@ -241,7 +241,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var result = businessHourDtoValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHourDto.OpenTime, businessHourDto.CloseTime);
 
             // Assert
-            result.Should().Be(false);
+            result.Data.Should().Be(false);
         }
     }
 }

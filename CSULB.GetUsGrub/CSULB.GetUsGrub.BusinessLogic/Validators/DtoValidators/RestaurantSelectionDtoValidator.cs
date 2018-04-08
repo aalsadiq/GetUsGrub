@@ -3,7 +3,15 @@ using FluentValidation;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
-    // TODO: @Jenn Unit test this [-Jenn]
+    /// <summary>
+    /// The <c>RestaurantSelectionDtoValidator</c> class.
+    /// Defines rules to validate a RestaurantSelectionDto.
+    /// Includes the pre-logic and post-logic validations.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 04/04/2018
+    /// </para>
+    /// </summary>
     public class RestaurantSelectionDtoValidator : AbstractValidator<RestaurantSelectionDto>
     {
         public RestaurantSelectionDtoValidator()
@@ -22,12 +30,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty().WithMessage("Food type is required.")
                     .NotNull().WithMessage("Food type is required.");
 
-                RuleFor(x => x.Distance)
+                RuleFor(x => x.DistanceInMiles)
                     .NotEmpty().WithMessage("Distance is required.")
-                    .NotNull().WithMessage("Distance is required.");
+                    .NotNull().WithMessage("Distance is required.")
+                    .Must(distance => distance.Equals(1) | distance.Equals(5) | distance.Equals(10) | distance.Equals(15));
 
                 RuleFor(x => x.AvgFoodPrice)
-                    .NotEmpty().WithMessage("Average food price is required")
                     .NotNull().WithMessage("Average food price is required");
             });
 
@@ -45,19 +53,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.Distance)
+                RuleFor(x => x.DistanceInMiles)
                     .NotEmpty()
                     .NotNull();
 
                 RuleFor(x => x.AvgFoodPrice)
-                    .NotEmpty()
                     .NotNull();
 
                 RuleFor(x => x.CurrentUtcDateTime)
-                    .NotEmpty()
-                    .NotNull();
-
-                RuleFor(x => x.CurrentDayOfWeek)
                     .NotEmpty()
                     .NotNull();
             });
@@ -76,7 +79,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.Distance)
+                RuleFor(x => x.DistanceInMiles)
                     .NotEmpty()
                     .NotNull();
                 
@@ -86,14 +89,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 //    .NotNull();
 
                 RuleFor(x => x.AvgFoodPrice)
-                    .NotEmpty()
                     .NotNull();
 
                 RuleFor(x => x.CurrentUtcDateTime)
-                    .NotEmpty()
-                    .NotNull();
-
-                RuleFor(x => x.CurrentDayOfWeek)
                     .NotEmpty()
                     .NotNull();
             });

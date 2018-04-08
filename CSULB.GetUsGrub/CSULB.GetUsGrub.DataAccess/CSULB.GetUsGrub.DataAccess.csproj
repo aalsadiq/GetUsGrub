@@ -58,6 +58,7 @@
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\RestaurantBillSplitterGateway.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
+    <Compile Include="Gateways\AuthorizationGateway.cs" />
     <Compile Include="Gateways\RestaurantGateway.cs" />
     <Compile Include="Gateways\RestaurantProfileGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />

@@ -69,7 +69,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, 
+        public ResponseDto<bool> StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
             IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile)
         {
             using (var userContext = new UserContext())
@@ -102,8 +102,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
                         // Get SecurityQuestions in database
                         var updatedSecurityQuestions = (from question in userContext.SecurityQuestions
-                                        where question.UserId == userId
-                                        select question).ToList();
+                                                        where question.UserId == userId
+                                                        select question).ToList();
 
                         // Add SecurityAnswerSalts
                         for (var i = 0; i < securityQuestions.Count; i++)
@@ -170,7 +170,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="restaurantProfile"></param>
         /// <param name="businessHours"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions, 
+        public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
             IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours)
         {
             using (var userContext = new UserContext())
@@ -292,8 +292,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
                         // Get Id from UserAccount
                         var userId = (from account in userContext.UserAccounts
-                            where account.Username == userAccount.Username
-                            select account.Id).SingleOrDefault();
+                                      where account.Username == userAccount.Username
+                                      select account.Id).SingleOrDefault();
 
                         // Set UserId to dependencies
                         passwordSalt.Id = userId;
@@ -399,7 +399,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                             where account.Username == username
                                             select account).SingleOrDefault();
                         //Checks if IsActive is false.
-                        if(activeStatus.IsActive == false)
+                        if (activeStatus.IsActive == false)
                         {
                             //Change IsActive to true if IsActive is false.
                             activeStatus.IsActive = true;
@@ -659,7 +659,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         return new ResponseDto<bool>()
                         {
                             Data = true//Bool
-                         };
+                        };
                     }
                     //Returns ResponseDto
                     return new ResponseDto<bool>()
@@ -673,8 +673,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     //Returns ReponseDto
                     return new ResponseDto<bool>()
                     {
-                    Data = false,//Bool
-                    Error = "Something went wrong. Please try again later."//The error.
+                        Data = false,//Bool
+                        Error = "Something went wrong. Please try again later."//The error.
                     };
                 }
             }

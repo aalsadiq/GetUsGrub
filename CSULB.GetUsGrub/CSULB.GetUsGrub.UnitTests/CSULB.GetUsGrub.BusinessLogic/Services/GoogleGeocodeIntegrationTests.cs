@@ -11,6 +11,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public async void Should_Pass_When_Geocoding_Csulb()
         {
             var service = new GoogleGeocodeService();
+
             var address = new Address()
             {
                 Street1 = "1250 Bellflower Blvd",
@@ -18,6 +19,7 @@ namespace CSULB.GetUsGrub.UnitTests
                 State = "CA",
                 Zip = 90840
             };
+
             var expectedLat = 33.7830608;
             var expectedLong = -118.1148909;
 

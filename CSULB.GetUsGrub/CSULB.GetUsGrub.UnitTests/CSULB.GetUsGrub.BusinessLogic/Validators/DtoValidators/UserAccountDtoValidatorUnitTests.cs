@@ -21,7 +21,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "username", password: "password");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "username",
+                Password = "password"
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -36,7 +40,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "", password: "password");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "",
+                Password = "password"
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -55,7 +63,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: null, password: "password");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = null,
+                Password = "password"
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -74,7 +86,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "this is a fail username", password: "password");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "this is a fail username",
+                Password = "password"
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -92,7 +108,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "!@#$%^&*()", password: "password");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "!@#$%^&*()",
+                Password = "password"
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -110,7 +130,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "username", password: "");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "username",
+                Password = ""
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -130,7 +154,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "username", password: null);
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "username",
+                Password = null
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -149,7 +177,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "username", password: "hi!");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "username",
+                Password = "hi!"
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -167,7 +199,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "username", password: "resultshouldbefalseisvalidgiventhispasswordismorethan64characterslong");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "username",
+                Password = "resultshouldbefalseisvalidgiventhispasswordismorethan64characterslong"
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");
@@ -185,7 +221,11 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var userAccountDtoValidator = new UserAccountDtoValidator();
-            var userAccountDto = new UserAccountDto(username: "username", password: "this is a fail password");
+            var userAccountDto = new UserAccountDto()
+            {
+                Username = "username",
+                Password = "this is a fail password"
+            };
 
             // Act
             var result = userAccountDtoValidator.Validate(userAccountDto, ruleSet: "CreateUser");

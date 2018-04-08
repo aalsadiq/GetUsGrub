@@ -27,7 +27,7 @@
               </v-stepper-header>
               <v-stepper-items>
                 <v-stepper-content step="1">
-                    <v-form ref="form" v-model="validIdentificationInput">
+                    <v-form v-model="validIdentificationInput">
                       <v-text-field
                         label="Enter a username"
                         v-model="userAccount.username"
@@ -55,7 +55,7 @@
                   <v-btn color="primary" @click="userStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="2">
-                  <v-form v-model="validSecurityInput" ref="form">
+                  <v-form v-model="validSecurityInput">
                   <v-layout row wrap>
                     <v-flex xs12>
                       <v-select
@@ -116,7 +116,7 @@
                   </v-layout>
                   </v-form>
                   <v-btn color="grey lighten-5" @click="userStep = 1">Previous</v-btn>
-                  <v-btn color="primary" @click="userSubmit" :disabled="!validSecurityInput">Submit</v-btn>
+                  <v-btn color="primary" @submit.prevent="userSubmit" :disabled="!validSecurityInput">Submit</v-btn>
                 </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
@@ -441,7 +441,6 @@ export default {
     tabs: null,
     userStep: 0,
     restaurantStep: 0,
-    time: null,
     validIdentificationInput: false,
     validSecurityInput: false,
     validBusinessHourInput: false,

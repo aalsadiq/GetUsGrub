@@ -61,6 +61,7 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Services" />
     <Reference Include="System.IdentityModel.Services" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -100,11 +101,17 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FoodPreferencesController.cs" />
     <Compile Include="Controllers\RestaurantBillSplitterController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RestaurantProfileController.cs" />
@@ -112,7 +119,9 @@
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Filters\AuthenticationFilter.cs" />
     <Compile Include="Controllers\SsoController.cs" />
+    <Compile Include="Controllers\UserAccessTestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Filters\GlobalSecurityExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -8,6 +8,6 @@
     /// </summary>
     public interface IPreference
     {
-        string Preference { get; set; }
+        string Preference { get; }
     }
 }

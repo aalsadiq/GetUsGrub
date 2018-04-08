@@ -24,7 +24,7 @@ namespace CSULB.GetUsGrub
         {
             // Create ClaimsFactory to create admin claims
             var factory = new ClaimsFactory();
-            List<Claim> claims = factory.CreateIndividualClaims().ToList();
+            List<Claim> claims = factory.Create(AccountType.INDIVIDUAL).ToList();
 
             // Add "username" claim
             claims.Add(new Claim("username", "Individual"));

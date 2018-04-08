@@ -21,7 +21,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _userAccountDtoValidator = new UserAccountDtoValidator();
         }
         
-
+        //Executes the username strategy
         public ResponseDto<bool> ExecuteStrategy()
         {
             var validationWrappers = new List<IValidationWrapper>()

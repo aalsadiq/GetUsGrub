@@ -109,10 +109,10 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RestaurantProfileController.cs" />
     <Compile Include="Controllers\RestaurantSelectionController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Filters\AuthenticationFilter.cs" />
     <Compile Include="Controllers\SsoController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -123,7 +123,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>SymmetricSecurityKey</returns>
         private SymmetricSecurityKey GetSigningKey()
         {
-            var secretKey = ConfigurationManager.AppSettings["SsoToken"];
+            var secretKey = ConfigurationManager.AppSettings["SsoKey"];
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             return signingKey;
         }

@@ -10,22 +10,25 @@
     </p>
     <h3>Address:</h3>
     <p>
-      {{ restaurant.address.street1 }}
+      {{ restaurant.address.street1 }},
       {{ restaurant.address.street2 }}
       {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
     </p>
     <h3>BusinessHours:</h3>
     <p v-for="businessHour in restaurant.businessHours" :key="businessHour.day">
       {{ businessHour.day }}:
-      {{ businessHour.openTime }}
+      {{ businessHour.openTime }} -
       {{ businessHour.closeTime }}
     </p>
     <v-flex xs12>
-      <v-btn @click="submit" color="primary">
-        rerun
+      <v-btn @click="submit" color="pink lighten-1" dark>
+        NEW
       </v-btn>
-      <v-btn @click="confirmRestaurant" color="primary">
-        confirm restaurant
+      <v-btn @click="submit" color="primary">
+        RERUN
+      </v-btn>
+      <v-btn @click="confirmRestaurant" color="green lighten-1" dark>
+        CONFIRM
       </v-btn>
     </v-flex>
   </div>

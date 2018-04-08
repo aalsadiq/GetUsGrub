@@ -2,7 +2,7 @@
     <div id="create-user">
       {{ responseDataStatus }} {{ responseData }}
       <v-toolbar dark tabs flat>
-        <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-3">
+        <v-tabs v-model="tabs" icons-and-text centered dark color="blue-grey darken-2">
           <v-spacer/>
           <v-tab href="#user">User
             <v-icon>face</v-icon>
@@ -46,9 +46,9 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
-                        :append-icon="visibile ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (visibile = !visibile)"
-                        :type=" visibile ? 'text' : 'password'"
+                        :append-icon="visible ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (visiile = !visible)"
+                        :type=" visible ? 'text' : 'password'"
                         required
                       ></v-text-field>
                     </v-form>
@@ -157,9 +157,9 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
-                        :append-icon="visibile ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (visibile = !visibile)"
-                        :type=" visibile ? 'text' : 'password'"
+                        :append-icon="visible ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (visible = !visible)"
+                        :type=" visible ? 'text' : 'password'"
                         required
                       ></v-text-field>
                     </v-form>
@@ -448,7 +448,7 @@ export default {
     validRestaurantDetailsInput: false,
     validAddBusinessHour: false,
     validContactInput: false,
-    visibile: false,
+    visible: false,
     openMenu: false,
     closeMenu: false,
     openTimeSync: false,

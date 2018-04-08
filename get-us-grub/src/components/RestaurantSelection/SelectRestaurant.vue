@@ -4,17 +4,15 @@
       <restaurant-selection-response/>
     </div>
     <div>
-      <div v-show="showAlert">
-        <v-alert type="orange" icon="new_releases" class="text-xs-center">
-          Unable to find a restaurant that meets your selection criteria
-        </v-alert>
-      </div>
-      <div v-show="!showAlert">
-        <v-alert type="blue-grey" :value="true">
-          This is a success alert.
-        </v-alert>
-      </div>
       <v-container fluid v-show="showSelectionPage">
+        <div>
+          <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
+            Unable to find a restaurant that meets your selection criteria
+          </v-alert>
+          <v-alert id="selectRestaurantTitleBar" :value=!showAlert>
+            "With great power comes great responsibility" - Uncle Ben
+          </v-alert>
+        </div>
         <v-form v-model="valid" ref="form">
           <v-layout row justify-space-between>
             <v-flex xs6>
@@ -53,23 +51,39 @@
             </v-flex>
           </v-layout>
           <v-layout row justify-space-between>
-            <v-subheader>Select the distance</v-subheader>
+            <v-subheader>PRICE*</v-subheader>
             <v-flex xs6>
-              <v-radio-group v-model="$store.state.restaurantSelection.request.distance" row required>
-                <v-radio label="1" value="1"></v-radio>
-                <v-radio label="5" value="5"></v-radio>
-                <v-radio label="10" value="10"></v-radio>
-                <v-radio label="15" value="15"></v-radio>
+              <v-radio-group :value="$store.state.restaurantSelection.request.avgFoodPrice" v-model.number="$store.state.restaurantSelection.request.avgFoodPrice" row>
+                <v-radio label="$0 - $10" :value="1"></v-radio>
+                <v-radio label="$10 - $50" :value="2"></v-radio>
+                <v-radio label="$50+" :value="3"></v-radio>
               </v-radio-group>
             </v-flex>
             <v-spacer/>
-            <v-subheader>Select the average food price</v-subheader>
-            <v-flex xs6>
-              <v-radio-group v-model="$store.state.restaurantSelection.request.avgFoodPrice" row required>
-                <v-radio label="$" value="1"></v-radio>
-                <v-radio label="$$" value="2"></v-radio>
-                <v-radio label="$$$" value="3"></v-radio>
+            <v-subheader>DISTANCE* (miles)</v-subheader>
+            <v-flex xs5>
+              <v-radio-group :value="$store.state.restaurantSelection.request.avgFoodPrice" v-model.number="$store.state.restaurantSelection.request.distance" row>
+                <v-radio label="1" :value="1"></v-radio>
+                <v-radio label="5" :value="5"></v-radio>
+                <v-radio label="10" :value="10"></v-radio>
+                <v-radio label="15" :value="15"></v-radio>
               </v-radio-group>
+              <!-- <v-btn-toggle mandatory v-model="$store.state.restaurantSelection.request.distance">
+                  <font color="black" flat><b>Distance</b></font>
+                <v-btn flat>
+                  1
+                </v-btn>
+                <v-btn flat>
+                  5
+                </v-btn>
+                <v-btn flat>
+                  10
+                </v-btn>
+                <v-btn flat>
+                  15
+                </v-btn>
+                <font color="black" flat><b>mi</b></font>
+              </v-btn-toggle> -->
             </v-flex>
           </v-layout>
           <v-btn
@@ -118,7 +132,7 @@ export default {
     submit () {
       this.valid = !this.valid
       this.loader = 'loading'
-      this.loader()
+      // this.loader()
       axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
         params: {
           foodType: this.$store.state.restaurantSelection.request.foodType.type,
@@ -129,19 +143,27 @@ export default {
         }
       }).then(response => {
         if (response.data != null) {
-          this.showAlert = !this.showAlert
-          this.showSelectionPage = !this.showSelectionPage
+          this.showAlert = true
+          this.showSelectionPage = false
           this.$store.dispatch('setSelectedRestaurant', response.data)
         }
-        this.showAlert = !this.showAlert
         this.valid = !this.valid
+        console.log(response.data)
       }).catch(error => {
-        this.valid = !this.valid
         // TODO: @Jenn Figure out how to handle the error [-Jenn]
         console.log(error.reponse)
-        // this.$router.push('GeneralError')
+        this.$router.push('GeneralError')
       })
     }
   }
 }
 </script>
+
+<style>
+#selectRestaurantTitleBar {
+  background-color: #6F81AD !important
+}
+#unableToFindRestaurantAlert {
+  background-color: #b75959 !important
+}
+</style>

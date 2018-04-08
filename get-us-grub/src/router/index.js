@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import 'vuetify/dist/vuetify.min.css'
-import ResourceNotFound from '@/components/ResourceNotFound.vue'
-import GeneralError from '@/components/GeneralError.vue'
+import ResourceNotFound from '@/components/Errors/ResourceNotFound.vue'
+import GeneralError from '@/components/Errors/GeneralError.vue'
 import Home from '@/components/Home.vue'
 import Registration from '@/components/Registration/Registration.vue'
 import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
@@ -19,19 +19,23 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: 'ResourceNotFound',
+      path: '/ResourceNotFound',
       name: 'ResourceNotFound',
       component: ResourceNotFound
     },
     {
-      path: 'GeneralError',
+      path: '/GeneralError',
       name: 'GeneralError',
       component: GeneralError
     },
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Search A Restaurant'
+        next()
+      }
     },
     {
       path: '/Registration',

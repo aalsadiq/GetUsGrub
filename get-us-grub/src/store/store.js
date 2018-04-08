@@ -34,6 +34,8 @@ export const store = new Vuex.Store({
           latitude: null,
           longitude: null
         },
+        // TODO: @Jenn Please add in the restaurant ID [-Jenn]
+        restaurantId: null,
         displayName: '',
         address: {
           street1: '',

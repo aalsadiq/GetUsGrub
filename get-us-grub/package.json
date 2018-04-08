@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "v-money": "^0.8.1",
     "vue": "^2.5.2",
-    "vue-axios": "^2.0.2",
     "vue-router": "^3.0.1",
     "vuedraggable": "^2.16.0",
     "vuetify": "^1.0.5",

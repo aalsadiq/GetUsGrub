@@ -5,6 +5,9 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    originAddress: 'Los Angeles, CA',
+    destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
+    googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
     restaurantDisplayName: 'displayName26',
     restaurantLatitude: '34.047041',
     restaurantLongitude: '-118.256578',
@@ -233,6 +236,15 @@ export const store = new Vuex.Store({
     }
   },
   getters: {
+    mapUrl: state => {
+      var origin = state.originAddress
+      var destination = state.destinationAddress
+      var url = state.googleMapsBaseUrl
+      url += '&origin=' + origin.replace(' ', '+')
+      url += '&destination=' + destination.replace(' ', '+')
+
+      return url
+    },
     totalPrice: state => {
       var temp = 0
       state.BillItems.forEach(function (element) {
@@ -243,6 +255,16 @@ export const store = new Vuex.Store({
   },
   // @Ryan Methods should be lowercase in javascript [-Jenn]
   mutations: {
+    setOriginAddress: (state, payload) => {
+      state.originAddress.push({
+        originAddress: payload
+      })
+    },
+    setDestinationAddress: (state, payload) => {
+      state.destinationAddress.push({
+        destinationAddress: payload
+      })
+    },
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
         name: payload[0],
@@ -298,6 +320,16 @@ export const store = new Vuex.Store({
   },
   // Actions are necessary when performing asynchronous methods.
   actions: {
+    setOriginAddress: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setOriginAddress', payload)
+      }, 250)
+    },
+    setDestinationAddress: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setDestinationAddress', payload)
+      }, 250)
+    },
     AddToDictionary: (context, payload) => {
       setTimeout(function () {
         console.log('Added Food Item Name: ' + payload[0])

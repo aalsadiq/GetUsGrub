@@ -103,7 +103,7 @@ export default new Router({
       path: '/EditFoodPreferences',
       name: 'EditFoodPreferences',
       component: EditFoodPreferences
-    },    
+    },
     {
       path: '*'
     }

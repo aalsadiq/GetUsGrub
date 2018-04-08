@@ -50,7 +50,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
 
             // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.CreateIndividualClaims());
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.INDIVIDUAL));
 
             // Hash password
             var passwordSalt = new PasswordSalt
@@ -152,7 +152,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims()
             {
-                Claims = claimsFactory.CreateRestaurantClaims()
+                Claims = claimsFactory.Create(AccountType.RESTAURANT)
             };
 
             // Hash password
@@ -295,7 +295,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
 
             // Set user claims to be stored in UserClaims table as administrator
-            var userClaims = new UserClaims(claimsFactory.CreateAdminClaims());
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.ADMIN));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));

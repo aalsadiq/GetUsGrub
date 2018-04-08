@@ -1,6 +1,8 @@
 ﻿using CSULB.GetUsGrub.Models;
 using FluentValidation;
 
+// TODO: @Jenn Comment BusinessHourValidator [-Jenn]
+// TODO: @Jenn Unit Test the two methods below [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>

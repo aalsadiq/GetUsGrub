@@ -234,7 +234,7 @@ export const store = new Vuex.Store({
     totalPrice: state => {
       var temp = 0
       state.BillItems.forEach(function (element) {
-        temp = temp + element.price
+        temp += element.menuItemPrice
       })
       return temp
     }
@@ -301,22 +301,6 @@ export const store = new Vuex.Store({
         console.log('Added Food Item Name: ' + payload[0])
         console.log('Added Food Item Price: ' + payload[1])
         context.commit('AddToDictionary', payload)
-      }, 250)
-    },
-    AddBillUser: (context, payload) => {
-      setTimeout(function () {
-        console.log('Added New Bill User: ' + payload)
-        context.commit('AddBillUser', payload)
-      }, 250)
-    },
-    EditDictionaryItem: (context, payload) => {
-      setTimeout(function () {
-        context.commit('EditDictionaryItem', payload)
-      }, 250)
-    },
-    EditBillItem: (context, payload) => {
-      setTimeout(function () {
-        context.commit('EditBillItem', payload)
       }, 250)
     },
     RemoveFromDictionary: (context, payload) => {

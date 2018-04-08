@@ -51,7 +51,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 new ValidationWrapper<UserProfileDto>(_registerUserDto.UserProfileDto, "CreateUser", new UserProfileDtoValidator())
 
             };
-            
+
             foreach (var securityQuestionDto in _registerUserDto.SecurityQuestionDtos)
             {
                 validationWrappers.Add(new ValidationWrapper<SecurityQuestionDto>(securityQuestionDto, "CreateUser", _securityQuestionDtoValidator));

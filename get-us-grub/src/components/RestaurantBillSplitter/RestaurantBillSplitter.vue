@@ -1,6 +1,6 @@
 <template>
-  <div id="restaurant-bill-splitter">
-    <app-header />
+  <div>
+    <app-header></app-header>
     <div class="wrapper">
       <restaurantBillSplitter-userTable />
       <restaurantBillSplitter-billTable />
@@ -11,6 +11,7 @@
     </div>
     <app-footer />
   </div>
+
 </template>
 
 <script>
@@ -111,16 +112,38 @@ export default {
 </script>
 
 <style scoped>
-  #restaurant-bill-splitter{
-    margin: 0 0 100px 0;
-  }
-
   .wrapper {
+    margin: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
     grid-auto-rows: minmax(100px, auto);
   }
+
+  .one {
+    grid-column: 1 / 3;
+    grid-row: 1 / 4;
+    outline: dashed;
+  }
+
+  .one > h1 {
+    text-align: center;
+  }
+
+  div.bill {
+    margin: 20px;
+    min-height: 20px;
+    outline: dashed;
+    background-color: grey;
+  }
+
+    div.bill > div.bill-item {
+      margin: 10px;
+      padding: 10px;
+      background-color: aquamarine;
+      border-radius: 10px;
+      text-align: center;
+    }
 
   h2.total {
     padding: 10px 1.2em 0px 0px;

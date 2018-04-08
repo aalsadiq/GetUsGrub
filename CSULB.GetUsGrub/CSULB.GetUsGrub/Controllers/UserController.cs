@@ -37,7 +37,6 @@ namespace CSULB.GetUsGrub.Controllers
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
-                // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
                 return BadRequest(ModelState);
             }
             try
@@ -48,8 +47,9 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                // Sending HTTP response 201 Status
-                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
+                //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
+                return Ok(registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
             catch (Exception)
@@ -89,14 +89,15 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                // HTTP 201 Status
-                return Created("Restaurant user has been created: ", registerRestaurantDto.UserAccountDto.Username);
+                //return Ok(registerUserDto.UserAccount.Username);
+                // TODO: @Jenn Change to Created [-Jenn]
+                return Ok(registerRestaurantDto.UserAccountDto.Username);
             }
             // Catch exceptions
-            catch (Exception)
+            catch (Exception ex)
             {
-                // HTTP 400 Status
-                return BadRequest("Something went wrong. Please try again later.");
+                //return BadRequest(ErrorHandler.GetGeneralError());
+                return BadRequest(ex.Message);
             }
         }
 

@@ -18,16 +18,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserManager
     {
-        /// <summary>
-        /// The CreateIndividualUser method.
-        /// Contains business logic to create an individual user.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="registerUserDto"></param>
-        /// <returns>ResponseDto</returns>
+        //TODO: @Jenn Unit test and comment CreateIndividualUser [-Angelica]
         public ResponseDto<RegisterUserDto> CreateIndividualUser(RegisterUserDto registerUserDto)
         {
             var createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerUserDto);
@@ -38,6 +29,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             
             // Validate data transfer object
             var result = createIndividualPreLogicValidationStrategy.ExecuteStrategy();
+            System.Diagnostics.Debug.WriteLine("UserManager2");
             if (result.Error != null)
             {
                 return new ResponseDto<RegisterUserDto>
@@ -47,6 +39,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
+            System.Diagnostics.Debug.WriteLine("UserManager3");
             // Map data transfer object to domain models
             var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
@@ -60,13 +53,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userClaims = new UserClaims(claimsFactory.CreateIndividualClaims());
 
             // Hash password
-            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
+            var passwordSalt = new PasswordSalt
+            {
+                Salt = saltGenerator.GenerateSalt(128)
+            };
             userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
             // Hash security answers
             for (var i = 0; i < securityQuestions.Count; i++)
             {
-                securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
+                securityAnswerSalts.Add(new SecurityAnswerSalt {Salt = saltGenerator.GenerateSalt(128)});
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
 
@@ -102,16 +98,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        /// <summary>
-        /// The CreateRestaurantUser method.
-        /// Contains business logic for creating a restaurant user.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
-        /// </para>
-        /// </summary>
-        /// <param name="registerRestaurantDto"></param>
-        /// <returns>ResponseDto</returns>
+        // TODO: @Jenn Comment and unit test the CreateRestaurantUser [-Jenn]
         public ResponseDto<RegisterRestaurantDto> CreateRestaurantUser(RegisterRestaurantDto registerRestaurantDto)
         {
             var createRestaurantPreLogicValidationStrategy = new CreateRestaurantPreLogicValidationStrategy(registerRestaurantDto);
@@ -169,7 +156,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
 
             // Hash password
-            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
+            var passwordSalt = new PasswordSalt
+            {
+                Salt = saltGenerator.GenerateSalt(128)
+            };
             userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
 
             // Hash security answers

@@ -55,15 +55,13 @@
     <Compile Include="Filters\GlobalSecurityExceptionFilter.cs" />
     <Compile Include="Managers\AuthorizationManager.cs" />
     <Compile Include="Managers\ClaimsTransformer.cs" />
-    <Compile Include="Models\ActionConstant.cs" />
-    <Compile Include="Models\ResourceConstant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\CSULB.GetUsGrub.DataAccess\CSULB.GetUsGrub.DataAccess.csproj">
+      <Project>{f19c4df1-91c3-46de-9b27-bd3b91d2294a}</Project>
+      <Name>CSULB.GetUsGrub.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CSULB.GetUsGrub.Models\CSULB.GetUsGrub.Models.csproj">
       <Project>{c93e53a0-06b5-484e-abeb-1cbcdeb40de5}</Project>
       <Name>CSULB.GetUsGrub.Models</Name>

@@ -51,7 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AccountType.cs" />
+    <Compile Include="Models\AdminClaims.cs" />
+    <Compile Include="Models\IndividualClaims.cs" />
+    <Compile Include="Models\RestaurantClaims.cs" />
     <Compile Include="Factories\ClaimsFactory.cs" />
+    <Compile Include="Models\Interfaces\IClaims.cs" />
+    <Compile Include="Factories\Interfaces\IFactory.cs" />
     <Compile Include="Filters\GlobalSecurityExceptionFilter.cs" />
     <Compile Include="Managers\AuthorizationManager.cs" />
     <Compile Include="Managers\ClaimsTransformer.cs" />

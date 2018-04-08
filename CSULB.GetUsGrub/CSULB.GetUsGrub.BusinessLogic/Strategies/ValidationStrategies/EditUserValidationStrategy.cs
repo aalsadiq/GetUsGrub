@@ -41,14 +41,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
             }
            
-            //Checks if that user exists
+            //Checks if that user exists, if it doesn't exit out...
             var userValidator = new UserValidator();//Creating a user validator to check if user exists
-            if (userValidator.CheckIfUserExists(_editUserDto.Username).Data == true)//If user exists exit out
+            if (userValidator.CheckIfUserExists(_editUserDto.Username).Data == false)//If user exists exit out
             {
                 return new ResponseDto<bool>
                 {
                     Data = false,
-                    Error = "Username already exists, please try again."
+                    Error = "Invalid username."
                 };
             }
 

@@ -37,6 +37,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
+                // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
                 return BadRequest(ModelState);
             }
             try
@@ -47,9 +48,8 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                //return Ok(registerUserDto.UserAccount.Username);
-                // TODO: @Jenn Change to Created [-Jenn]
-                return Ok(registerUserDto.UserAccountDto.Username);
+                // Sending HTTP response 201 Status
+                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
             }
             // Catch exceptions
             catch (Exception)
@@ -89,15 +89,14 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                //return Ok(registerUserDto.UserAccount.Username);
-                // TODO: @Jenn Change to Created [-Jenn]
-                return Ok(registerRestaurantDto.UserAccountDto.Username);
+                // HTTP 201 Status
+                return Created("Restaurant user has been created: ", registerRestaurantDto.UserAccountDto.Username);
             }
             // Catch exceptions
-            catch (Exception ex)
+            catch (Exception)
             {
-                //return BadRequest(ErrorHandler.GetGeneralError());
-                return BadRequest(ex.Message);
+                // HTTP 400 Status
+                return BadRequest("Something went wrong. Please try again later.");
             }
         }
 
@@ -111,8 +110,6 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// <param name="registerUserDto">The user information that will be stored in the database.</param>
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
-        // POST User/Admin/Create
-
         // Opts authentication
         [Route("CreateAdmin")]
         // TODO: @Angelica Change methods to POST [-Jenn]
@@ -155,13 +152,12 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// @author: Angelica Salas Tovar
         /// @updated: 03/20/2018
-        /// <param name="username">The expected user to be deleted.</param>
+        /// <param name="user">The expected user to be deleted.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
-        // DELETE User/Admin/DeleteUser
         [Route("DeleteUser")]
         // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
-       // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
+        // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpDelete]
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
         {
@@ -184,7 +180,7 @@ namespace CSULB.GetUsGrub.Controllers
                 //Checks the response from DeleteUser. If Error is null, then it was successful!
                 if (response.Error != null)
                 {
-                //Will return a bad request if error occured in manager.
+                    //Will return a bad request if error occured in manager.
                     return BadRequest(response.Error);
                 }
                 //If DeleteUser was successful return HTTP response with a successful message.
@@ -203,17 +199,16 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// @author: Angelica Salas Tovar
         /// @updated: 03/20/2018
-        /// <param name="username">The expected user to be reactivated.</param>
+        /// <param name="user">The expected user to be reactivated.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
-        // POST User/Admin/DeactivateUser
         [Route("DeactivateUser")]
         // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
         [HttpPut]
-            //TODO: Add claims here
-            public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
-            {
+        //TODO: Add claims here
+        public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
+        {
             //System.Diagnostics.Debug.WriteLine("The user name is "+ user.Username);
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
@@ -222,26 +217,26 @@ namespace CSULB.GetUsGrub.Controllers
                 return BadRequest("The username " + user.Username);
             }
             try
+            {
+                //Creating a manger to then call Deactivateuser
+                var manager = new UserManager();
+                //Calling ReactivateUser method to reactivate the username that was recieved.
+                var response = manager.DeactivateUser(user.Username);
+                //Checks the response from ReactivateUser. If Error is null, then it was successful.
+                if (response.Error != null)
                 {
-                    //Creating a manger to then call Deactivateuser
-                    var manager = new UserManager();
-                    //Calling ReactivateUser method to reactivate the username that was recieved.
-                    var response = manager.DeactivateUser(user.Username);
-                    //Checks the response from ReactivateUser. If Error is null, then it was successful.
-                    if (response.Error != null)
-                    {
-                        //Will return a bad request if error occured in manager.
-                        return BadRequest(response.Error);
-                    }
-                    //IF ReactivateUser was successful return HTTP response with a successful message.
-                    return Ok("User has been deactivated:" + user.Username);
+                    //Will return a bad request if error occured in manager.
+                    return BadRequest(response.Error);
                 }
-                catch (Exception)
-                {
-                    //If any exceptions occur, send an HTTP response 400 status.
-                    return BadRequest("Something went wrong. Please try again later.");
-                }
+                //IF ReactivateUser was successful return HTTP response with a successful message.
+                return Ok("User has been deactivated:" + user.Username);
             }
+            catch (Exception)
+            {
+                //If any exceptions occur, send an HTTP response 400 status.
+                return BadRequest("Something went wrong. Please try again later.");
+            }
+        }
 
 
         /// <summary>
@@ -249,9 +244,8 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// @author: Angelica Salas Tovar
         /// @updated: 03/20/2018
-        /// <param name="username">The expected user to be reactivated.</param>
+        /// <param name="user">The expected user to be reactivated.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
-        // POST User/Admin/ReactivateUser
         [Route("ReactivateUser")]
         // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
@@ -292,7 +286,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// @author: Angelica Salas Tovar
         /// @updated: 03/20/2018
-        /// <param name="username">The expected user to be edited.</param>
+        /// <param name="user">The expected user to be edited.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/Admin/EditUser
         [Route("EditUser")]

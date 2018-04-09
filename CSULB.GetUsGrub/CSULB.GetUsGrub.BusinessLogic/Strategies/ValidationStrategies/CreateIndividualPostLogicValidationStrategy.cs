@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
 
-// TODO: @Jenn Unit test for Validation strategy [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>

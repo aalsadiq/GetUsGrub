@@ -229,8 +229,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                             },
                             Details = new RestaurantDetail()
                             {
-                                // 0 = $0 to $10, 1 = $10.01 to $50, 2 = $50.01+
-                                AvgFoodPrice = randomizer.Next(0, 2 + 1),
+                                // 1 = $0 to $10, 2 = $10.01 to $50, 3 = $50.01+
+                                AvgFoodPrice = randomizer.Next(1, 3 + 1),
                                 FoodType = validFoodTypes[randomizer.Next(0, validFoodTypes.Count)],
                                 HasReservations = true,
                                 HasDelivery = true,

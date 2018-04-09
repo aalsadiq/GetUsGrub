@@ -34,7 +34,6 @@ export const store = new Vuex.Store({
           latitude: null,
           longitude: null
         },
-        // TODO: @Jenn Please add in the restaurant ID [-Jenn]
         restaurantId: null,
         displayName: '',
         address: {
@@ -46,7 +45,8 @@ export const store = new Vuex.Store({
         },
         phoneNumber: '',
         businessHours: []
-      }
+      },
+      showRestaurantSelectionSection: true
     },
     rules: {
       usernameRules: [
@@ -213,14 +213,15 @@ export const store = new Vuex.Store({
         id: 14,
         type: 'Caribbean Food'
       }],
-      foodPreferences: [{
-        id: 1,
-        foodPreference: 'Food preference 1'
-      },
-      {
-        id: 2,
-        foodPreference: 'Food preference 2'
-      }],
+      foodPreferences: [
+        'Gluten-free',
+        'Halal',
+        'Kosher',
+        'Lacto-vegetarian',
+        'Pescetarian',
+        'Vegan',
+        'Vegetarian'
+      ],
       states: [{
         id: 1,
         name: 'California',
@@ -290,12 +291,16 @@ export const store = new Vuex.Store({
       };
     },
     setSelectedRestaurant: (state, payload) => {
+      state.restaurantSelection.selectedRestaurant.restaurantId = payload.restaurantId
       state.restaurantSelection.selectedRestaurant.restaurantGeoCoordinates = payload.restaurantGeoCoordinates
       state.restaurantSelection.selectedRestaurant.clientUserGeoCoordinates = payload.clientUserGeoCoordinates
       state.restaurantSelection.selectedRestaurant.displayName = payload.displayName
       state.restaurantSelection.selectedRestaurant.address = payload.address
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
+    },
+    updateShowSelectedRestaurant: (state, payload) => {
+      state.restaurantSelection.showRestaurantSelectionSection = payload
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -325,6 +330,11 @@ export const store = new Vuex.Store({
     setSelectedRestaurant: (context, payload) => {
       setTimeout(function () {
         context.commit('setSelectedRestaurant', payload)
+      }, 250)
+    },
+    updateShowSelectedRestaurant: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateShowSelectedRestaurant', payload)
       }, 250)
     }
   }

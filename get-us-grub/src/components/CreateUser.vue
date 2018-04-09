@@ -236,7 +236,7 @@
                         :items="$store.state.constants.foodTypes"
                         item-text="type"
                         item-value="type"
-                        v-model="restaurantProfile.details.category"
+                        v-model="restaurantProfile.details.foodType"
                         label="Select a food type associated with your restaurant"
                         single-line
                         auto
@@ -264,10 +264,8 @@
                     <v-flex xs12 sm6>
                       <v-select
                         label="Select a food preference"
-                        item-text="foodPreference"
-                        item-value="id"
                         :items="$store.state.constants.foodPreferences"
-                        v-model="restaurantProfile.foodPreferences"
+                        v-model="foodPreferences"
                         multiple
                         chips
                         prepend-icon=""
@@ -482,12 +480,11 @@ export default {
       },
       phoneNumber: '',
       details: {
-        category: '',
+        foodType: '',
         avgFoodPrice: null
-      },
-      foodPreferences: [
-      ]
+      }
     },
+    foodPreferences: [],
     businessHours: [],
     businessHour: {
       day: '',
@@ -530,6 +527,7 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
         restaurantProfileDto: this.restaurantProfile,
+        foodPreferences: this.foodPreferences,
         timeZone: this.timeZone,
         businessHourDtos: this.businessHours
       }).then(response => {

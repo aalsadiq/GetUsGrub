@@ -36,7 +36,7 @@ export default new Router({
       name: 'Home',
       component: Home,
       beforeEnter: (to, from, next) => {
-        document.title = 'Search A Restaurant'
+        document.title = 'Search Restaurant'
         next()
       }
     },
@@ -107,7 +107,7 @@ export default new Router({
       path: '/EditFoodPreferences',
       name: 'EditFoodPreferences',
       component: EditFoodPreferences
-    },    
+    },
     {
       path: '*'
     }

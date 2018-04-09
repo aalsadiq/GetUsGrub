@@ -1,5 +1,8 @@
 <template>
   <div id="restaurant-selection-response">
+    <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
+      Unable to find a restaurant that meets your selection criteria
+    </v-alert>
     <h2>Restaurant Name:</h2>
     <p id="display-name">
       {{ restaurant.displayName }}
@@ -21,14 +24,20 @@
       {{ businessHour.closeTime }}
     </p>
     <v-flex xs12>
-      <v-btn @click="submit" color="pink lighten-1" dark>
-        NEW
+      <v-btn @click="showRestaurantSelection" color="yellow darken-3" :disabled="!this.responseValid">
+        <span class="btn-text">
+          NEW
+        </span>
       </v-btn>
-      <v-btn @click="submit" color="primary">
-        RERUN
+      <v-btn @click="submit" color="deep-orange darken-3" :loading="loading" :disabled="!this.responseValid">
+        <span class="btn-text">
+          RERUN
+        </span>
       </v-btn>
-      <v-btn @click="confirmRestaurant" color="green lighten-1" dark>
-        CONFIRM
+      <v-btn @click="confirmRestaurant" color="cyan darken-2" :disabled="!this.responseValid">
+        <span class="btn-text">
+          CONFIRM
+        </span>
       </v-btn>
     </v-flex>
   </div>
@@ -39,12 +48,35 @@ import { mapState } from 'vuex'
 import axios from 'axios'
 
 export default {
+  data () {
+    return {
+      responseValid: true,
+      loader: null,
+      loading: false,
+      showAlert: false
+    }
+  },
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      setTimeout(() => (this[l] = false), 1500)
+
+      this.loader = null
+    }
+  },
   computed: mapState({
     restaurant: state => state.restaurantSelection.selectedRestaurant
   }),
   methods: {
+    showRestaurantSelection () {
+      this.$store.dispatch('updateShowSelectedRestaurant', true)
+    },
     // Submits a GET request to the backend Web API end point
     submit () {
+      this.responseValid = false
+      this.loader = 'loading'
       axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
         params: {
           foodType: this.$store.state.restaurantSelection.request.foodType.type,
@@ -54,16 +86,27 @@ export default {
           avgFoodPrice: this.$store.state.restaurantSelection.request.avgFoodPrice
         }
       }).then(response => {
-        this.$store.dispatch('setSelectedRestaurant', response.data)
+        if (response.data != null) {
+          console.log('here')
+          console.log(response.data)
+          this.showAlert = false
+          this.responseValid = true
+          this.$store.dispatch('setSelectedRestaurant', response.data)
+          this.showRestaurantTitleBar = true
+        } else {
+          this.showAlert = true
+          this.responseValid = true
+          console.log(response.data)
+        }
       }).catch(error => {
+        this.responseValid = true
         console.log(error)
         this.$router.push('GeneralError')
       })
     },
     confirmRestaurant () {
       this.$store.state.restaurantSelection.selectedRestaurant.isConfirmed = true
-      // TODO: @Brian Will need to redirect to your directions page [-Jenn]
-      // this.$router.push('DirectionsPage')
+      this.$router.push('RestaurantBillSplitter')
     }
   }
 }
@@ -73,7 +116,9 @@ export default {
 #restaurant-selection-response {
   margin: 0 0 7em 0;
 }
-
+#unableToFindRestaurantAlert {
+  background-color: #e26161 !important
+}
 #display-name {
   font-size: 1.3em;
 }

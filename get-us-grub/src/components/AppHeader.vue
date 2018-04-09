@@ -5,19 +5,23 @@
         <v-btn flat class="home-btn">
           <v-icon>home</v-icon>
           <v-toolbar-title>
-            GetUsGrub
+            <span id="toolbar-title">
+              GetUsGrub
+            </span>
           </v-toolbar-title>
         </v-btn>
       </router-link>
       </div>
       <v-spacer></v-spacer>
-      <router-link to="/Registration">
-        <v-btn color="grey darken-1"><span class="btn-text">REGISTER</span></v-btn>
-      </router-link>
-        <v-btn color="grey darken-1"><span class="btn-text">LOGIN</span></v-btn>
-      <router-link to="/RestaurantBillSplitter">
-        <v-btn color="grey darken-1"><span class="btn-text">SPLIT BILL</span></v-btn>
-      </router-link>
+      <div class="hidden-sm-and-down">
+        <router-link to="/Registration">
+          <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">REGISTER</span></v-btn>
+        </router-link>
+          <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">LOGIN</span></v-btn>
+        <router-link to="/RestaurantBillSplitter">
+          <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">SPLIT BILL</span></v-btn>
+        </router-link>
+      </div>
     </v-toolbar>
 </template>
 
@@ -31,5 +35,13 @@
 div.btn__content {
   text-transform: none;
 }
+.btn-text {
+  font-weight: bold;
+  font-size: normal;
+  color: white;
+}
+#toolbar-title {
+  font-weight: bold;
+  font-size: x-large;
+}
 </style>
-5caabc

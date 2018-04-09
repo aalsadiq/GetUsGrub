@@ -95,5 +95,8 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
             }
         }
+
+        //ImageUploadGateway for profile
+
     }
 }

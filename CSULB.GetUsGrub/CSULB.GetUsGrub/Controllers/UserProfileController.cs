@@ -72,5 +72,41 @@ namespace CSULB.GetUsGrub.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        // TODO: @Angelica ImageUpload comments
+        // PUT Profile/User/EditUser/ImageUpload
+        [Route("User/Edit/ProfileImageUpload")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        [HttpPut]
+        public IHttpActionResult ProfileImageUpload([FromBody] UserProfileDto user)
+        {
+            //Checks if what was given is a valid model.
+            if (!ModelState.IsValid)
+            {
+                //If model is invalid, return a bad request.
+                return BadRequest("Something went wrong, please try again later");
+            }
+            try
+            {
+                //Creating a manager to then call EditUser.
+                var manager = new UserProfileManager();
+                //Calling EditUser method to edit the given user.
+                //var response = manager.ProfileImageUpload(user.DisplayPicture);
+                //Checks the response from EditUser. If error is null, then it was successful.
+                //if (response.Error != null)
+                //{
+                //    //Will return a bad request if error occured in manager.
+                //    return BadRequest(response.Error);
+                //}
+                //If EditUser was successful return HTTP response with a successful message.
+                return Ok("User has been edited:" + user.Username);
+            }
+            catch (Exception)
+            {
+                //If any exceptions occur, send an HTTP response 400 status.
+                return BadRequest("This is a bad request.");
+            }
+        }
     }
 }

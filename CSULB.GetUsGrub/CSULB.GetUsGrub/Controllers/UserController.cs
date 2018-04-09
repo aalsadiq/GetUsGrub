@@ -260,7 +260,7 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                return BadRequest("Invalid Model! (modelstate)");
             }
             try
             {
@@ -298,9 +298,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
-            Debug.WriteLine("username" + user.Username);
-            Debug.WriteLine("new username" + user.NewUsername);
-            Debug.WriteLine("new displayname" + user.NewDisplayName);
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {
@@ -320,7 +317,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
                 //If EditUser was successful return HTTP response with a successful message.
-                return Ok("User has been edited:" + user.Username);
+                return Ok("User has been edited: " + user.Username);
             }
             catch (Exception)
             {

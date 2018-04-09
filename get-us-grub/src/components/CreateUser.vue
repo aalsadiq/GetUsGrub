@@ -236,7 +236,7 @@
                         :items="$store.state.constants.foodTypes"
                         item-text="type"
                         item-value="type"
-                        v-model="restaurantProfile.details.category"
+                        v-model="restaurantProfile.details.foodType"
                         label="Select a food type associated with your restaurant"
                         single-line
                         auto
@@ -483,7 +483,7 @@ export default {
       },
       phoneNumber: '',
       details: {
-        category: '',
+        foodType: '',
         avgFoodPrice: null
       },
       foodPreferences: [

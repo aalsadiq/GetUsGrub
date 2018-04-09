@@ -54,6 +54,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
+            // TODO: @Jenn Const Image path [-Angelica]
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
 
@@ -378,7 +379,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             using (var gateway = new UserGateway())
             {
                 var check = new UserProfileDtoValidator(); //Check this...
-               //
    
                 //Gateway calls DeactivateUser and passes in the username to be deactivated.
                 var gatewayResult = gateway.DeactivateUser(user.Username);

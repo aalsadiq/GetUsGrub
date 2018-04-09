@@ -1,10 +1,11 @@
 <template>
     <div id="app">
+      {{ responseDataStatus }} {{ responseData }}
       <v-flex xs6 sm3 offset-sm5>
         <v-form v-model="validIdentificationInput">
-          <v-text-field label="Enter user to edit" v-model="userAccount.username" :rules="usernameRules"></v-text-field>
-          <v-text-field label="Enter new username" v-model="userAccount.newUsername" :rules="newUsernameRules"></v-text-field>
-          <v-text-field label="Enter new display name" v-model="userProfile.newDisplayName"></v-text-field>
+          <v-text-field label="Enter user to edit" v-model="username" :rules="$store.state.rules.usernameRules"></v-text-field>
+          <v-text-field label="Enter new username" v-model="newUsername" :rules="$store.state.rules.usernameNotRequiredRule"></v-text-field>
+          <v-text-field label="Enter new display name" v-model="newDisplayName"></v-text-field>
           <!-- @Andrews Password reset vue -->
         </v-form>
         <v-btn id ="submit-button" color="info" v-on:click="userSubmit(viewType)">Submit</v-btn>
@@ -29,26 +30,17 @@ export default {
     validSecurityInput: false,
     responseData: '',
     responseDataStatus: '',
-    userAccount: {
-      username: '',
-      newUsername: ''
-    },
-    userProfile: {
-      newDisplayName: ''
-    },
-    newUsernameRules: [
-      newUsername => /^[A-Za-z\d]+$/.test(newUsername) || 'Username must contain only letters and numbers'
-    ],
-    usernameRules: [
-      username => !!username || 'Username is required'
-    ]
+    username: '',
+    newUsername: '',
+    newDisplayName: ''
   }),
   methods: {
     userSubmit (viewType) {
       if (viewType === 'EditUser') {
         axios.put('http://localhost:8081/User/EditUser', {
-          userAccountDto: this.userAccount,
-          userProfileDto: this.userProfile
+          username: this.username,
+          newUsername: this.newUsername,
+          newDisplayName: this.newDisplayName
         }).then(response => {
           this.responseDataStatus = 'Success! User has been edited: '
           this.responseData = response.data
@@ -56,7 +48,7 @@ export default {
         }).catch(error => {
           this.responseDataStatus = 'An error has edited: '
           this.responseData = error.response.data
-          console.log(this.responseData)
+          console.log(error.response.data)
         })
       }
     }

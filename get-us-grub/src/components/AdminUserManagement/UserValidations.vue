@@ -1,20 +1,21 @@
 <template>
     <div id="app">
+      {{ responseDataStatus }} {{ responseData }}
       <v-flex xs6 sm3 offset-sm5>
         <v-form v-model="validIdentificationInput">
-          <v-text-field label="Enter new username" v-model="userAccount.username" :rules="usernameRules" required></v-text-field>
-          <v-text-field label="Enter new display name" v-model="userProfile.displayname" :rules="displayNameRules" required></v-text-field>
-          <v-text-field label="Enter new password" v-model="userAccount.password" :rules="passwordRules" :min="8" :counter="64" :append-icon="visibile ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (visibile = !visibile)" :type=" visibile ? 'text' : 'password'" required></v-text-field>
+          <v-text-field label="Enter new username" v-model="userAccount.username" :rules="$store.state.rules.usernameRules" required></v-text-field>
+          <v-text-field label="Enter new display name" v-model="userProfile.displayname" :rules="$store.state.rules.displayName" required></v-text-field>
+          <v-text-field label="Enter new password" v-model="userAccount.password" :rules="$store.state.rules.password" :min="8" :counter="64" :append-icon="visibile ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (visibile = !visibile)" :type=" visibile ? 'text' : 'password'" required></v-text-field>
         </v-form>
         <v-form v-model="validSecurityInput">
           <v-layout row wrap>
             <v-flex xs12>
-              <v-select :items="securityQuestionsSet1" item-text="question" item-value="id" v-model="securityQuestions[0].question" label="Select a security question" single-line auto append-icon="https" hide-details required></v-select>
-              <v-text-field label="Enter an answer to the above security question" v-model="securityQuestions[0].answer" :rules="securityAnswerRules" required></v-text-field>
-              <v-select :items="securityQuestionsSet2" item-text="question" item-value="id" v-model="securityQuestions[1].question" label="Select a security question" single-line auto append-icon="https" hide-details required></v-select>
-              <v-text-field label="Enter an answer to the above security question" v-model="securityQuestions[1].answer" :rules="securityAnswerRules" required></v-text-field>
-              <v-select :items="securityQuestionsSet3" item-text="question" item-value="id" v-model="securityQuestions[2].question" label="Select a security question" single-line auto append-icon="https" hide-details required></v-select>
-              <v-text-field label="Enter an answer to the above security question" v-model="securityQuestions[2].answer" :rules="securityAnswerRules" required></v-text-field>
+              <v-select :items="$store.state.constants.securityQuestionsSet1" item-text="question" item-value="id" v-model="securityQuestions[0].question" label="Select a security question" single-line auto append-icon="https" hide-details required></v-select>
+              <v-text-field label="Enter an answer to the above security question" v-model="securityQuestions[0].answer" :rules="$store.state.rules.securityAnswerRules" required></v-text-field>
+              <v-select :items="$store.state.constants.securityQuestionsSet2" item-text="question" item-value="id" v-model="securityQuestions[1].question" label="Select a security question" single-line auto append-icon="https" hide-details required></v-select>
+              <v-text-field label="Enter an answer to the above security question" v-model="securityQuestions[1].answer" :rules="$store.state.rules.securityAnswerRules" required></v-text-field>
+              <v-select :items="$store.state.constants.securityQuestionsSet3" item-text="question" item-value="id" v-model="securityQuestions[2].question" label="Select a security question" single-line auto append-icon="https" hide-details required></v-select>
+              <v-text-field label="Enter an answer to the above security question" v-model="securityQuestions[2].answer" :rules="$store.state.rules.securityAnswerRules" required></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -38,8 +39,6 @@ export default {
     check: false,
     validIdentificationInput: false,
     validSecurityInput: false,
-    responseDataStatus: '',
-    responseData: '',
     userAccount: {
       username: '',
       password: ''
@@ -59,57 +58,30 @@ export default {
     userProfile: {
       displayName: ''
     },
-    usernameRules: [
-      username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-    ],
-    displayNameRules: [
-      displayName => !!displayName || 'Display name is required'
-    ],
-    passwordRules: [
-      password => !!password || 'Password is required',
-      password => password.length >= 8 || 'Password must be at least 8 characters',
-      password => password.length < 64 || 'Password must be at most 64 characters'
-    ],
-    securityAnswerRules: [
-      securityAnswer => !!securityAnswer || 'Security answer is required'
-    ],
-    securityQuestionsSet1: [{
-      id: 1,
-      question: 'Who was the company you first worked for?'
+    restaurantProfile: {
+      address: {
+        street1: '',
+        street2: '',
+        city: '',
+        state: '',
+        zip: null
+      },
+      phoneNumber: '',
+      details: {
+        category: '',
+        avgFoodPrice: null
+      },
+      foodPreferences: [
+      ]
     },
-    {
-      id: 2,
-      question: 'Where did you go to highschool or college?'
+    businessHours: [],
+    businessHour: {
+      day: '',
+      openTime: null,
+      closeTime: null
     },
-    {
-      id: 3,
-      question: 'What was the name of the teacher who gave you your first failing grade?'
-    }],
-    securityQuestionsSet2: [{
-      id: 4,
-      question: 'What is your favorite song?'
-    },
-    {
-      id: 5,
-      question: 'What is your mother\'s maiden name?'
-    },
-    {
-      id: 6,
-      question: 'What is your favorite sports team?'
-    }],
-    securityQuestionsSet3: [{
-      id: 7,
-      question: 'What was the name of your first crush?'
-    },
-    {
-      id: 8,
-      question: 'What is the name of your hometown?'
-    },
-    {
-      id: 9,
-      question: 'What was the name of your first pet?'
-    }]
+    responseDataStatus: '',
+    responseData: ''
   }),
   methods: {
     userSubmit (viewType) {

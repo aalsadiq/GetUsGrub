@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ErrorMessages\RestaurantSelectionErrorMessages.cs" />
+    <Compile Include="Constants\ImagePaths.cs" />
     <Compile Include="Constants\RoleTypes.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadKeys.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadValues.cs" />

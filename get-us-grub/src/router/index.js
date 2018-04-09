@@ -14,8 +14,8 @@ import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
 import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap.vue'
-import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
-import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
+// import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
+// import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
 Vue.use(Router)
 
@@ -94,16 +94,16 @@ export default new Router({
         next()
       }
     },
-    {
-      path: '/FoodPreferences',
-      name: 'FoodPreferences',
-      component: FoodPreferences
-    },
-    {
-      path: '/EditFoodPreferences',
-      name: 'EditFoodPreferences',
-      component: EditFoodPreferences
-    },
+    // {
+    //   path: '/FoodPreferences',
+    //   name: 'FoodPreferences',
+    //   component: FoodPreferences
+    // },
+    // {
+    //   path: '/EditFoodPreferences',
+    //   name: 'EditFoodPreferences',
+    //   component: EditFoodPreferences
+    // },    
     {
       path: '*'
     }

@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var securityKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt));
             var signingCredentials = new SigningCredentials(securityKey, "Sha256");
 
-            // @TODO @Ahmed Add Claims getter : get Claims from Rachel's feature.
+            // TODO @Ahmed Add Claims getter : get Claims from Rachel's feature. [-Ahmed]
 
             // Assigning the Username to the Token
             authenticationToken.Username = loginDto.Username;

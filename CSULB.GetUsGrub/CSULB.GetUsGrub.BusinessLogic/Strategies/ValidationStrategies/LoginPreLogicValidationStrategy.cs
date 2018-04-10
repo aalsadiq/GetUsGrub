@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CSULB.GetUsGrub.Models;
-using FluentValidation;
-using Newtonsoft.Json;
+﻿using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -16,25 +12,35 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _loginDto = loginDto;
         }
 
-        //private ValidationWrapper<LoginDto> loginDtoValidationWrapper = new ValidationWrapper<LoginDto>(loginDto,"UsernameAndPassword",loginDtoValidator);
-
         public ResponseDto<LoginDto> ExecuteStrategy()
         {
             // TODO @Ahmed Put the Wrapper here @Ahmed
-            var validationResult = _loginDtoValidator.Validate(_loginDto, ruleSet: "UsernameAndPassword");
+            var validationWrapper =
+                new ValidationWrapper<LoginDto>(_loginDto, "UsernameAndPassword", new LoginDtoValidator());
+            var validationResult = validationWrapper.ExecuteValidator();
 
-            if (!validationResult.IsValid)
+            // Checking if there is an error in the validation
+            if (!validationResult.Data)
             {
-                var errorsList = new List<string>();
-                validationResult.Errors.ToList().ForEach(e => errorsList.Add(e.ErrorMessage));
-                var errors = JsonConvert.SerializeObject(errorsList);
+                // Return an error if validation fails
+                return new ResponseDto<LoginDto>()
+               {
+                   Error = GeneralErrorMessages.GENERAL_ERROR
+               };
+            }
+
+            // Checking if user Exists
+            var userExistanceValidator = new UserValidator();
+            var validateUserExistanceResult = userExistanceValidator.CheckIfUserExists(_loginDto.Username);
+            if (validateUserExistanceResult.Data)
+            {
                 return new ResponseDto<LoginDto>
                 {
-                    Data = _loginDto,
-                    Error = JsonConvert.SerializeObject(errors)
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
-           
+            
+            // Returning the Dto Back if after it has been validated
             return new ResponseDto<LoginDto>
             {
                 Data = _loginDto

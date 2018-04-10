@@ -19,6 +19,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var loginPreLogicValidationStrategy = new LoginPreLogicValidationStrategy(loginDto);
             UserAccount dataBaseUserAccount;
             FailedAttempts userAttempts;
+            ResponseDto<LoginDto> returnDto;
 
             // Checking if the Dto has all the information it needs
             var validateLoginDtoResult = loginPreLogicValidationStrategy.ExecuteStrategy();
@@ -30,37 +31,36 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = validateLoginDtoResult.Error
                 };
             }
-            // TODO @Ahmed This goes inside the preValidator Logic @Ahmed 
-            // Checking if user Exists
-            var userExistanceValidator = new UserValidator();
-            var validateUserExistanceResult = userExistanceValidator.CheckIfUserExists(loginDto.Username);
-            if (validateUserExistanceResult.Data)
-            {
-                return new ResponseDto<LoginDto>
-                {
-                    Data = loginDto,
-                    Error = "Something went wrong Check UserName and Password!"
-                };
-            }
 
             // Turn the Dto into a Model
             var incomingLoginModel = new UserAuthenticationDto(loginDto.Username,loginDto.Password);
             var loginPostLogicValidationStrategy = new LoginPostLogicValidation(incomingLoginModel);
             var validateLoginModelResult = loginPostLogicValidationStrategy.ExcuteStrategy();
 
-            if (!validateLoginModelResult)
+            if (!validateLoginModelResult.Data)
             {
                 return new ResponseDto<LoginDto>
                 {
                     Data = loginDto,
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
             // Pulling attempts from DB
             using (AuthenticationGateway gateway = new AuthenticationGateway())
             {
-                userAttempts = gateway.GetFailedAttempt(incomingLoginModel).Data;
+                var userAttemptsDto = gateway.GetFailedAttempt(incomingLoginModel.Username);
+                // Checking if the gateway returns a false
+                if (userAttemptsDto.Error != null)
+                {
+                    // Return response dto with the error
+                    return new ResponseDto<LoginDto>()
+                    {
+                        Error = userAttemptsDto.Error
+                    };
+                }
+                // If there is no Error then take the data out
+                userAttempts = userAttemptsDto.Data;
             }
 
             // Checking if they already have 5 failed attempts 20 mins ago 
@@ -71,7 +71,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<LoginDto>
                     {
                         Data = loginDto,
-                        Error = "This Account is locked try again later."
+                        Error = AuthenticationErrorMessages.LOCKED_ACCOUNT
                     };
                 }
                 else
@@ -84,9 +84,31 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Pull the User From DB
             using (AuthenticationGateway gateway = new AuthenticationGateway())
             {
-                dataBaseUserAccount = gateway.GetUserAccount(incomingLoginModel).Data;
-                // TODO @Ahmed Check if this has an error before you do this or pull the whole PasswordSaltmodel -Ahmed 
-                incomingLoginModel.Salt = gateway.GetUserPasswordSalt(dataBaseUserAccount).Data.Salt;
+                // Getting the user's ID
+                var gatewayResult = gateway.GetUserAccount(incomingLoginModel.Username);
+                if (gatewayResult.Error != null)
+                {
+                    return new ResponseDto<LoginDto>()
+                    {
+                        Error = gatewayResult.Error
+                    };
+                }
+
+                // If there are no Errors from the gateway assign the data to an object
+                dataBaseUserAccount = gatewayResult.Data;
+
+                // Getting the Salt associated with the ID
+                var gatewaySaltResult = gateway.GetUserPasswordSalt(dataBaseUserAccount.Id);
+                if (gatewaySaltResult.Error != null)
+                {
+                    return new ResponseDto<LoginDto>()
+                    {
+                        Error = gatewayResult.Error
+                    };
+                }
+
+                // If there are no Errors from the gateway assign the salt to the LoginModel
+                incomingLoginModel.Salt = gatewaySaltResult.Data.Salt;
             }
 
             // Check if user is Active
@@ -95,7 +117,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<LoginDto>
                 {
                     Data = loginDto,
-                    Error = "Something went wrong. User is Inactive."
+                    Error = AuthenticationErrorMessages.INACTIVE_USER
                 };
             }
 
@@ -123,29 +145,34 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     userAttempts.LastAttemptTime = DateTime.Now;
                 }
 
-                using (AuthenticationGateway gateway = new AuthenticationGateway())
-                {
-                    gateway.UpdateFailedAttempt(userAttempts);
-                }
-
-                return new ResponseDto<LoginDto>
+                returnDto = new ResponseDto<LoginDto>
                 {
                     Data = loginDto,
                     Error = "Something went wrong check UserName and Password!!"
                 };
             }
-
-            userAttempts.Count = 0;
-
+            else
+            {
+                userAttempts.Count = 0;
+            
+                returnDto = new ResponseDto<LoginDto>
+                {
+                    Data = loginDto
+                };
+            }
+            
             using (AuthenticationGateway gateway = new AuthenticationGateway())
             {
-                gateway.UpdateFailedAttempt(userAttempts);
+                var result = gateway.UpdateFailedAttempt(userAttempts);
+
+                if (result.Data == false)
+                {
+                    returnDto.Error = result.Error;
+                }
             }
 
-            return new ResponseDto<LoginDto>
-            {
-                Data = loginDto
-            };
+            return returnDto;
+
         }
     }
 }

@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ActionConstant.cs" />
+    <Compile Include="Constants\ErrorMessages\AuthenticationErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\RestaurantSelectionErrorMessages.cs" />
     <Compile Include="Constants\ResourceConstant.cs" />
     <Compile Include="Constants\RoleTypes.cs" />

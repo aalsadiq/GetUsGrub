@@ -14,17 +14,24 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _userAuthenticationDtoValidator = new UserAuthenticationDtoValidator();
         }
 
-        public bool ExcuteStrategy()
+        public ResponseDto<bool> ExcuteStrategy()
         {
-            var validationResult = _userAuthenticationDtoValidator
-                .Validate(_userAuthenticationDto, ruleSet: "UsernameAndPassword");
+            var validationWrapper = new ValidationWrapper<UserAuthenticationDto>(_userAuthenticationDto, "UsernameAndPassword", _userAuthenticationDtoValidator);
+            var validationResult = validationWrapper.ExecuteValidator();
 
-            if (!validationResult.IsValid)
+            if (!validationResult.Data)
             {
-                return false;
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
             }
 
-            return true;
+            return new ResponseDto<bool>()
+            {
+                Data = true
+            };
         }
     }
 }

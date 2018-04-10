@@ -69,14 +69,12 @@ export default {
       axios({
         method: 'POST',
         url: 'http://localhost:8081/Login',
-        data: { 'Username': this.username, 'Password': this.password},
-        header:{ 
+        data: {'Username': this.username, 'Password': this.password},
+        header: {
           'Access-Control-Allow-Origin': 'http://localhost:8080/#/Login'
         }
       })
-        .then(function (response){
-
-        })
+      //  .then(function (response) {})
     }
   }
 }

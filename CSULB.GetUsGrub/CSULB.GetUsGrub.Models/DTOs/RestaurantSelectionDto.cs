@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Spatial;
 
 namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Jenn Comment this yo [-Jenn]
+    /// <summary>
+    /// The <c>RestaurantSelectionDto</c> class.
+    /// Defines properties pertaining to a data transfer object for a restaurant selection.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 04/09/2018
+    /// </para>
+    /// </summary>
     public class RestaurantSelectionDto
     {
         // Automatic Properties
@@ -37,8 +45,7 @@ namespace CSULB.GetUsGrub.Models
             }
         }
 
-        // TODO: @Rachel Need FoodPrefences list for comment below [-Jenn]
-        //public IList<FoodPreferences> FoodPreferences { get; set; }
+        public ICollection<FoodPreferences> FoodPreferences { get; set; }
 
         // Constructors
         public RestaurantSelectionDto() { }

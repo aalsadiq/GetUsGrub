@@ -1,25 +1,43 @@
 ﻿using CSULB.GetUsGrub.Models;
 using FluentValidation;
 using System;
-// TODO: @Jenn Comment this yo and unit test [-Jenn]
+
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>RestaurantDetailValidator</c> class.
+    /// Defines rules to validate a RestaurantDetail.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 04/09/2018
+    /// </para>
+    /// </summary>
     public class RestaurantDetailValidator : AbstractValidator<RestaurantDetail>
     {
         public RestaurantDetailValidator()
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.FoodType)
-                    .NotEmpty().WithMessage("Restaurant food type is required.")
-                    .NotNull().WithMessage("Restaurant food type is required.");
+                RuleFor(restaurantDetail => restaurantDetail.FoodType)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.FOOD_TYPE_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.FOOD_TYPE_REQUIRED);
 
-                RuleFor(x => x.AvgFoodPrice)
-                    .NotNull().WithMessage("Average food price is required.")
-                    .Must(x => (x >= 1 && x <= 3)).WithMessage("Average food price is invalid.");
+                RuleFor(restaurantDetail => restaurantDetail.AvgFoodPrice)
+                    .NotNull().WithMessage(ValidationErrorMessages.AVG_FOOD_PRICE_REQUIRED)
+                    .Must(avgFoodPrice => (avgFoodPrice >= 1 && avgFoodPrice <= 3)).WithMessage(ValidationErrorMessages.NOT_VALID_AVG_FOOD_PRICE);
             });
         }
-        // TODO: @Jenn Validate Category is not empty, not null and in enum [-Jenn]
+        
+        /// <summary>
+        /// The CheckIfFoodTypeIsARestaurantFoodType method.
+        /// Checks if the food type is in the enum RestaurantFoodTypes.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/09/2018
+        /// </para>
+        /// </summary>
+        /// <param name="foodType"></param>
+        /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> CheckIfFoodTypeIsRestaurantFoodType(string foodType)
         {
             // True if day is in RestaurantCategories enum

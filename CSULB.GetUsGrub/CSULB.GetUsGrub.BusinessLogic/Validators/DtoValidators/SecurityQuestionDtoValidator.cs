@@ -17,13 +17,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Question)
-                    .NotEmpty().WithMessage("Must answer 3 security questions.")
-                    .GreaterThan(0).WithMessage("Something went wrong. Please try again later.");
+                RuleFor(securityQuestionDto => securityQuestionDto.Question)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.SECURITY_QUESTION_REQUIRED)
+                    // Validation will fail if Question is less than 0
+                    .GreaterThan(0).WithMessage(GeneralErrorMessages.GENERAL_ERROR);
 
-                RuleFor(x => x.Answer)
-                    .NotEmpty().WithMessage("Must answer 3 security questions.")
-                    .NotNull().WithMessage("Must answer 3 security questions.");
+                RuleFor(securityQuestionDto => securityQuestionDto.Answer)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.SECURITY_QUESTION_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.SECURITY_QUESTION_REQUIRED);
             });
         }
     }

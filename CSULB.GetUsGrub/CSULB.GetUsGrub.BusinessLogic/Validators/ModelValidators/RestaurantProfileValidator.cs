@@ -17,24 +17,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.PhoneNumber)
+                RuleFor(restaurantProfile => restaurantProfile.PhoneNumber)
                     .NotEmpty()
                     .NotNull()
-                    .Matches(@"^\([2-9]\d{2}\)\d{3}\-\d{4}$");
+                    .Matches(RegularExpressions.PHONE_NUMBER_FORMAT);
 
-                RuleFor(x => x.Address)
+                RuleFor(restaurantProfile => restaurantProfile.Address)
                     .NotEmpty()
                     .NotNull();
 
-                // TODO: @Brian Need Google Map integration for the following [-Jenn]
-                // TODO: @Jenn Add regex rule to match Google Map's output type [-Jenn]
-                //RuleFor(x => x.Longitude)
-                //    .NotEmpty();
+                RuleFor(restaurantProfile => restaurantProfile.GeoCoordinates.Latitude)
+                    .NotEmpty();
 
-                // TODO: @Brian Need Google Map integration for the following [-Jenn]
-                // TODO: @Jenn Add regex rule to match Google Map's output type [-Jenn]
-                //RuleFor(x => x.Latitude)
-                //    .NotEmpty();
+                RuleFor(restaurantProfile => restaurantProfile.GeoCoordinates.Longitude)
+                    .NotEmpty();
             });
         }
     }

@@ -9,7 +9,7 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>RestaurantProfile</c> class.
     /// Defines properties pertaining to user account.
     /// <para>
-    /// @author: Andrew Kao, Jennifer Nguyen
+    /// @author: Andrew Kao, Brian Fann
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>

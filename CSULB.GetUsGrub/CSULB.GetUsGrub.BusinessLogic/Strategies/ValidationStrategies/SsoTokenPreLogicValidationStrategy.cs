@@ -31,6 +31,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _tokenValidator = new TokenValidator();
         }
 
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate a token string.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/04/2018
+        /// </para>
+        /// </summary>
+        /// <returns>ResponseDto</returns>
         public ResponseDto<bool> ExecuteStrategy()
         {
             // Check if the token has a valid Json Web Token (JWT) structure

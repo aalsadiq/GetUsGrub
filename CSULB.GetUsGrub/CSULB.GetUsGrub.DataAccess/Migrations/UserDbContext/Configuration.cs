@@ -91,8 +91,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
 
             // maxNumberOfUsers must be an even number
             const int maxUsers = 50;
-            // maxNumberOfSecurityQuestions must be 3
-            const int maxClaimsPerUserClaims = 3;
             const int maxBusinessHours = 3;
             const int maxRestaurantMenus = 2;
             const int maxRestaurantMenuItems = 5;
@@ -178,18 +176,9 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                 // Creating a list of claims
                 var claims = new List<Claim>();
 
-                // Adding 3 claims to the list of claims
-                for (var j = 1; j <= maxClaimsPerUserClaims; j++)
-                {
-                    claims.Add(new Claim($"claimType{j}", $"claimValue{j}"));
-                }
-
-                // Create list of updated claims to updated seed data
-                var updatedClaims = claims;
                 claims.Add(new Claim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True"));
                 claims.Add(new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"));
                 claims.Add(new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True"));
-
 
                 // AddorUpdate to UserClaims table
                 context.UserClaims.AddOrUpdate
@@ -199,13 +188,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                     {
                         Id = i,
                         Claims = claims
-                    },
-
-                    // Updated seed data
-                    new UserClaims()
-                    {
-                        Id = i,
-                        Claims = updatedClaims
                     }
                 );
 

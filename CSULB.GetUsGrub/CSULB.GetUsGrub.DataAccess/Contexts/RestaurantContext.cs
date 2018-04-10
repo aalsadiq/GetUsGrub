@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<RestaurantMenu> RestaurantMenus { get; set; }
         public DbSet<BusinessHour> BusinessHours { get; set; }
         public DbSet<RestaurantMenuItem> RestaurantMenuItems { get; set; }
-        public DbSet<FoodPreferences> FoodPreferences { get; set; }
+        public DbSet<FoodPreference> FoodPreferences { get; set; }
         public RestaurantContext() : base("GetUsGrub") { }
     }
 

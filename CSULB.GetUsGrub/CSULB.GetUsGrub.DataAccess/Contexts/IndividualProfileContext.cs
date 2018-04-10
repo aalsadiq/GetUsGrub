@@ -7,12 +7,12 @@ namespace CSULB.GetUsGrub.DataAccess
     /// Context containing all tables for user management.
     /// 
     /// @Created by: Brian Fann
-    /// @Last Updated: 4/07/18
+    /// @Last Updated: 4/10/18
     /// </summary>
     public class IndividualProfileContext : DbContext
     {
         public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<FoodPreferences> FoodPreferences { get; set; }
+        public DbSet<FoodPreference> FoodPreferences { get; set; }
         public IndividualProfileContext() : base("GetUsGrub") { }
     }
 }

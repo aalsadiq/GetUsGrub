@@ -91,8 +91,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
 
             // maxNumberOfUsers must be an even number
             const int maxUsers = 50;
-            // maxNumberOfSecurityQuestions must be 3
-            const int maxClaimsPerUserClaims = 3;
             const int maxBusinessHours = 3;
             const int maxRestaurantMenus = 2;
             const int maxRestaurantMenuItems = 5;

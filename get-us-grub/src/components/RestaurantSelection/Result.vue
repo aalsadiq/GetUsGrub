@@ -3,26 +3,35 @@
     <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
       Unable to find a restaurant that meets your selection criteria
     </v-alert>
-    <h2>Restaurant Name:</h2>
-    <p id="display-name">
-      {{ restaurant.displayName }}
-    </p>
-    <h3>Phone Number:</h3>
-    <p>
-      {{ restaurant.phoneNumber }}
-    </p>
-    <h3>Address:</h3>
-    <p>
-      {{ restaurant.address.street1 }},
-      {{ restaurant.address.street2 }}
-      {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
-    </p>
-    <h3>BusinessHours:</h3>
-    <p v-for="businessHour in restaurant.businessHours" :key="businessHour.day">
-      {{ businessHour.day }}:
-      {{ businessHour.openTime }} -
-      {{ businessHour.closeTime }}
-    </p>
+    <v-card id="card-result">
+      <v-layout row justify-space-between>
+        <v-flex xs12>
+          <h2>Restaurant Name:</h2>
+          <p id="display-name">
+            {{ restaurant.displayName }}
+          </p>
+          <h3>Phone Number:</h3>
+          <p>
+            {{ restaurant.phoneNumber }}
+          </p>
+          <h3>Address:</h3>
+          <p>
+            {{ restaurant.address.street1 }},
+            {{ restaurant.address.street2 }}
+            {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
+          </p>
+          <h3>BusinessHours:</h3>
+          <p v-for="businessHour in restaurant.businessHours" :key="businessHour.day">
+            {{ businessHour.day }}:
+            {{ businessHour.openTime }} -
+            {{ businessHour.closeTime }}
+          </p>
+        </v-flex>
+        <v-flex xs6>
+          <google-embed-map/>
+        </v-flex>
+      </v-layout>
+    </v-card>
     <v-flex xs12>
       <v-btn @click="showRestaurantSelection" color="yellow darken-3" :disabled="!this.responseValid">
         <span class="btn-text">
@@ -46,8 +55,12 @@
 <script>
 import { mapState } from 'vuex'
 import axios from 'axios'
+import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap'
 
 export default {
+  components: {
+    GoogleEmbedMap
+  },
   data () {
     return {
       responseValid: true,
@@ -87,8 +100,6 @@ export default {
         }
       }).then(response => {
         if (response.data != null) {
-          console.log('here')
-          console.log(response.data)
           this.showAlert = false
           this.responseValid = true
           this.$store.dispatch('setSelectedRestaurant', response.data)
@@ -96,11 +107,10 @@ export default {
         } else {
           this.showAlert = true
           this.responseValid = true
-          console.log(response.data)
         }
       }).catch(error => {
         this.responseValid = true
-        console.log(error)
+        Promise.reject(error)
         this.$router.push('GeneralError')
       })
     },
@@ -121,5 +131,9 @@ export default {
 }
 #display-name {
   font-size: 1.3em;
+}
+#card-result {
+  padding: 1em 1em 0.5em 1em;
+  margin: 0 0 1em 0;
 }
 </style>

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import AppCreateUser from '@/components/CreateUser'
+import AppCreateUser from '@/components/Registration/CreateUser'
 import AdminHeader from '@/components/AdminUserManagement/AdminHeader'
 import UserValidations from '@/components/AdminUserManagement/UserValidations'
 import AppFooter from '@/components/AppFooter'

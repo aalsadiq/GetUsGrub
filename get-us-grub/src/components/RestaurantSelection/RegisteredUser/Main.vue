@@ -9,7 +9,7 @@
 import SelectRestaurant from '@/components/RestaurantSelection/SelectRestaurant'
 
 export default {
-  name: 'RestaurantSelectionUnregisteredUserMain',
+  name: 'RestaurantSelectionMain',
   // Adding other Vue components dependencies
   components: {
     SelectRestaurant

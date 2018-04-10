@@ -2,18 +2,18 @@
   <div>
     <div>
       <v-container fluid>
-        <div>
-          <div v-show="showSection">
-            <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
-              Unable to find a restaurant that meets your selection criteria
-            </v-alert>
-            <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
-              "With great power comes great responsibility" - Uncle Ben
-            </v-alert>
-          </div>
+        <div v-show="showSection">
+          <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
+            Unable to find a restaurant that meets your selection criteria
+          </v-alert>
+          <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
+            <span id="quote">
+            "With great power comes great responsibility" - Uncle Ben
+            </span>
+          </v-alert>
         </div>
         <div v-show="!showSection">
-          <restaurant-selection-result/>
+          <result/>
         </div>
         <div v-show="showSection">
           <v-card id="card">
@@ -97,11 +97,11 @@
 <script>
 import { mapState } from 'vuex'
 import axios from 'axios'
-import RestaurantSelectionResult from './RestaurantSelectionResult'
+import Result from './Result'
 
 export default {
   components: {
-    RestaurantSelectionResult
+    Result
   },
   data () {
     return {
@@ -129,7 +129,6 @@ export default {
     submit () {
       this.valid = false
       this.loader = 'loading'
-      // this.loader()
       axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
         params: {
           foodType: this.$store.state.restaurantSelection.request.foodType.type,
@@ -152,9 +151,8 @@ export default {
           console.log(response.data)
         }
       }).catch(error => {
-        // TODO: @Jenn Figure out how to handle the error [-Jenn]
-        console.log(error.reponse)
         this.$router.push('GeneralError')
+        Promise.reject(error)
       })
     }
   }
@@ -174,5 +172,9 @@ export default {
 #card {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;
+}
+#quote {
+  color: rgb(255, 255, 255);
+  font-size: normal;
 }
 </style>

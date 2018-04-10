@@ -4,6 +4,7 @@ import 'vuetify/dist/vuetify.min.css'
 import ResourceNotFound from '@/components/Errors/ResourceNotFound.vue'
 import GeneralError from '@/components/Errors/GeneralError.vue'
 import Home from '@/components/Home.vue'
+import RestaurantSelectionRegisteredUser from '@/components/RestaurantSelection/RegisteredUser/Main.vue'
 import Registration from '@/components/Registration/Registration.vue'
 import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
 import CreateUser from '@/components/AdminUserManagement/AdminCreate.vue'
@@ -41,9 +42,22 @@ export default new Router({
       }
     },
     {
+      path: '/RestaurantSelection/Registered',
+      name: 'RestaurantSelectionRegisteredUser',
+      component: RestaurantSelectionRegisteredUser,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Search Restaurant'
+        next()
+      }
+    },
+    {
       path: '/Registration',
       name: 'Registration',
-      component: Registration
+      component: Registration,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Register'
+        next()
+      }
     },
     {
       path: '/User/Admin',

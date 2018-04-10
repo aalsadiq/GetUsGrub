@@ -4,10 +4,10 @@ using FluentValidation;
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
-    /// The <c>UserAccountValidator</c> class.
+    /// The <c>UserAuthenticationModelValidator</c> class.
     /// Defines rules to validate a UserAuthenticationModel.
     /// <para>
-    /// @author: Jennifer Nguyen
+    /// @author: Ahmed AlSadiq
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>

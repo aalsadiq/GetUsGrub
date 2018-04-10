@@ -3,7 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Jenn Comment this  [-Jenn]
+    /// <summary>
+    /// The <c>SsoToken</c> class.
+    /// Contains properties pertaining to a SSO Token.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 04/09/2018
+    /// </para>
+    /// </summary>
     public class SsoToken : IEntity
     {
         // Automatic Properties

@@ -28,7 +28,7 @@ namespace CSULB.GetUsGrub.Models
             set
             {
                 _odt = DateTime.Today.AddDays((int)Enum.Parse(typeof(DayOfWeek), Day) * 1 - 1) + value.ToLocalTime().TimeOfDay;
-                OpenTime = value.ToLocalTime().TimeOfDay.ToString();
+                OpenTime = value.ToLocalTime().ToString("HH:mm");
             }
         }
         public DateTime CloseDateTime
@@ -37,7 +37,7 @@ namespace CSULB.GetUsGrub.Models
             set
             {
                 _cdt = DateTime.Today.AddDays((int)Enum.Parse(typeof(DayOfWeek), Day) * 1 - 1) + value.ToLocalTime().TimeOfDay;
-                CloseTime = value.ToLocalTime().TimeOfDay.ToString();
+                CloseTime = value.ToLocalTime().ToString("HH:mm");
             }
         }
 

@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Spatial;
 
 namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Jenn Comment this yo [-Jenn]
+    /// <summary>
+    /// The <c>RestaurantSelectionDto</c> class.
+    /// Defines properties pertaining to a data transfer object for a restaurant selection.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 04/09/2018
+    /// </para>
+    /// </summary>
     public class RestaurantSelectionDto
     {
         // Automatic Properties
@@ -32,21 +40,17 @@ namespace CSULB.GetUsGrub.Models
             }
             set
             {
-                if (value == null) return;
-
-                ClientUserGeoCoordinates.Latitude = value.Latitude.Value;
-                ClientUserGeoCoordinates.Longitude = value.Longitude.Value;
+                ClientUserGeoCoordinates.Latitude = value.Latitude ?? 0;
+                ClientUserGeoCoordinates.Latitude = value.Longitude ?? 0;
             }
         }
 
-        // TODO: @Rachel Need FoodPrefences list for comment below [-Jenn]
-        //public IList<FoodPreferences> FoodPreferences { get; set; }
+        public ICollection<FoodPreferences> FoodPreferences { get; set; }
 
         // Constructors
         public RestaurantSelectionDto() { }
         public RestaurantSelectionDto(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
-            ClientUserGeoCoordinates = new GeoCoordinates(0,0);
             City = city;
             State = state;
             FoodType = foodType;

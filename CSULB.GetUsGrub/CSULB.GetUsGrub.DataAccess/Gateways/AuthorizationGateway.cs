@@ -33,7 +33,6 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     return new ResponseDto<ICollection<Claim>>
                     {
-                        Data = new List<Claim> { },
                         Error = "User is invalid."
                     };
                 }

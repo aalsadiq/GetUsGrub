@@ -49,10 +49,10 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 // Instantiating dependencies
                 var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distanceInMiles: distanceInMiles, avgFoodPrice: avgFoodPrice);
-                var restaurantSelectionManager = new RestaurantSelectionManager();
+                var restaurantSelectionManager = new UnregisteredUserRestaurantSelectionManager(restaurantSelectionDto);
 
-                // Routing RestaurantSelectionDto to the RestaurantSelectionManager
-                var response = restaurantSelectionManager.SelectRestaurantForUnregisteredUser(restaurantSelectionDto);
+                // Select a restaurant
+                var response = restaurantSelectionManager.SelectRestaurant();
                 if (response.Error != null)
                 {
                     // Sending HTTP response 400 Status
@@ -99,10 +99,10 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 // Instantiating dependencies
                 var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distanceInMiles: distanceInMiles, avgFoodPrice: avgFoodPrice);
-                var restaurantSelectionManager = new RestaurantSelectionManager();
+                var restaurantSelectionManager = new RegisteredUserRestaurantSelectionManager(restaurantSelectionDto);
 
-                // Routing RestaurantSelectionDto to the RestaurantSelectionManager
-                var response = restaurantSelectionManager.SelectRestaurantForRegisteredUser(restaurantSelectionDto);
+                // Select a restaurant
+                var response = restaurantSelectionManager.SelectRestaurant();
                 if (response.Error != null)
                 {
                     // Sending HTTP response 400 Status

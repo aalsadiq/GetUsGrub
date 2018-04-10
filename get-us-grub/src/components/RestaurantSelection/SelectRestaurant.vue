@@ -3,9 +3,11 @@
     <div>
       <v-container fluid>
         <div v-show="showSection">
+          <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
             Unable to find a restaurant that meets your selection criteria
           </v-alert>
+          <!-- Title bar for the restaurant selection -->
           <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
             <span id="quote">
             "With great power comes great responsibility" - Uncle Ben
@@ -13,12 +15,14 @@
           </v-alert>
         </div>
         <div v-show="!showSection">
+          <!-- Restaurant selection results Vue component -->
           <result/>
         </div>
         <div v-show="showSection">
           <v-card id="card">
           <v-form v-model="valid" ref="form">
             <v-layout row justify-space-between>
+              <!-- Food types drop down menu -->
               <v-flex xs6 sm6>
                 <v-select
                   :items="$store.state.constants.foodTypes"
@@ -30,6 +34,7 @@
                   required
                 ></v-select>
               </v-flex>
+              <!-- City text field -->
               <v-flex xs4>
               <v-text-field
                 label="Enter a city"
@@ -40,6 +45,7 @@
                 required
               ></v-text-field>
               </v-flex>
+              <!-- States drop down menu -->
               <v-flex xs1>
                 <v-select
                   :items="$store.state.constants.states"
@@ -55,6 +61,7 @@
               </v-flex>
             </v-layout>
             <v-layout row justify-space-between>
+              <!-- Prices radio buttons -->
               <v-subheader>PRICE*</v-subheader>
               <v-flex xs6>
                 <v-radio-group :value="$store.state.restaurantSelection.request.avgFoodPrice" v-model.number="$store.state.restaurantSelection.request.avgFoodPrice" row>
@@ -64,6 +71,7 @@
                 </v-radio-group>
               </v-flex>
               <v-spacer/>
+              <!-- Distance radio buttons -->
               <v-subheader>DISTANCE* (miles)</v-subheader>
               <v-flex xs5>
                 <v-radio-group :value="$store.state.restaurantSelection.request.avgFoodPrice" v-model.number="$store.state.restaurantSelection.request.distance" row>
@@ -76,6 +84,7 @@
             </v-layout>
             </v-form>
           </v-card>
+          <!-- Submit button -->
           <v-tooltip bottom>
             <v-btn
               id="search-btn"
@@ -100,9 +109,11 @@ import axios from 'axios'
 import Result from './Result'
 
 export default {
+  // Vue component dependencies
   components: {
     Result
   },
+  // Local variable data
   data () {
     return {
       valid: false,
@@ -113,6 +124,7 @@ export default {
     }
   },
   watch: {
+    // Loading animation on buttons
     loader () {
       const l = this.loader
       this[l] = !this[l]
@@ -122,14 +134,18 @@ export default {
       this.loader = null
     }
   },
+  // Mapping states to local variables from the Vuex store
   computed: mapState({
     showSection: state => state.restaurantSelection.showRestaurantSelectionSection
   }),
   methods: {
+    // Submitting information to the backend
     submit () {
       this.valid = false
       this.loader = 'loading'
+      // Sending GET Request
       axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
+        // Paramaters for URL queries
         params: {
           foodType: this.$store.state.restaurantSelection.request.foodType.type,
           city: this.$store.state.restaurantSelection.request.city,
@@ -137,20 +153,23 @@ export default {
           distanceInMiles: this.$store.state.restaurantSelection.request.distance,
           avgFoodPrice: this.$store.state.restaurantSelection.request.avgFoodPrice
         }
+      // Receiving successful response
       }).then(response => {
         if (response.data != null) {
-          this.$store.dispatch('updateShowSelectedRestaurant', false)
           this.showAlert = false
           this.valid = true
-          this.$store.dispatch('setSelectedRestaurant', response.data)
           this.showRestaurantTitleBar = true
+          this.$store.dispatch('updateShowSelectedRestaurant', false)
+          this.$store.dispatch('setSelectedRestaurant', response.data)
         } else {
           this.showAlert = true
           this.showRestaurantTitleBar = false
-          this.valid = !this.valid
-          console.log(response.data)
+          this.valid = true
         }
+      // Receiving an unsuccessful response
       }).catch(error => {
+        this.valid = true
+        // Route to the General Error page
         this.$router.push('GeneralError')
         Promise.reject(error)
       })

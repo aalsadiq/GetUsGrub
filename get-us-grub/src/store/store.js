@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
+  // A state is a global variable that every Vue component can reference
   state: {
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
@@ -19,6 +20,7 @@ export const store = new Vuex.Store({
     BillUsers: [
     ],
     isAuthenticated: true,
+    // States pertaining to restaurant selection
     restaurantSelection: {
       request: {
         foodType: '',
@@ -51,6 +53,7 @@ export const store = new Vuex.Store({
       },
       showRestaurantSelectionSection: true
     },
+    // Rules for validations
     rules: {
       usernameRules: [
         username => !!username || 'Username is required',
@@ -94,6 +97,7 @@ export const store = new Vuex.Store({
         foodPreference => !!foodPreference || 'Food preference is required'
       ]
     },
+    // Constants are data that are non-changing
     constants: {
       securityQuestionsSet1: [{
         id: 1,
@@ -256,7 +260,7 @@ export const store = new Vuex.Store({
       return temp
     }
   },
-  // @Ryan Methods should be lowercase in javascript [-Jenn]
+  // Mutations are called to change the states in the store
   mutations: {
     setOriginAddress: (state, payload) => {
       state.originAddress.push({
@@ -268,6 +272,7 @@ export const store = new Vuex.Store({
         destinationAddress: payload
       })
     },
+    // TODO: @Ryan Please lowercase the first letter of your methods [-Jenn]
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
         name: payload[0],

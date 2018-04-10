@@ -9,7 +9,8 @@
 <script>
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
-import AppCreateUser from '@/components/CreateUser'
+import AppCreateUser from './CreateUser'
+
 export default {
   name: 'AdminHome',
   components: {

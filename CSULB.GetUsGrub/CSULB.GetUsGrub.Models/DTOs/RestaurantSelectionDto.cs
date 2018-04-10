@@ -45,7 +45,7 @@ namespace CSULB.GetUsGrub.Models
             }
         }
 
-        public ICollection<FoodPreferences> FoodPreferences { get; set; }
+        public ICollection<FoodPreference> FoodPreferences { get; set; }
 
         // Constructors
         public RestaurantSelectionDto() { }

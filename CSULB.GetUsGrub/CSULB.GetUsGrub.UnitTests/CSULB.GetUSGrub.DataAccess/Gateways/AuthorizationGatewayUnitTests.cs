@@ -42,7 +42,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var result = gateway.GetClaimsByUsername(username);
 
             // Assert
-            result.Should().BeOfType(expected);
+            result.Data.Should().BeNull();
             result.Error.Should().NotBeNull();
         }
     }

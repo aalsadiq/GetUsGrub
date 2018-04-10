@@ -4,7 +4,7 @@
 //namespace CSULB.GetUsGrub.UnitTests
 //{
 //    // TODO: @Jenn Fix this token validator unit test [-Jenn]
-//    public class TokenValidator
+//    public class TokenValidatorUnitTests
 //    {
 //        TokenValidator tokenValidator = new TokenValidator();
 

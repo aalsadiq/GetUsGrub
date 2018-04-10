@@ -17,9 +17,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(UserProfile => UserProfile.DisplayName)
-                    .NotEmpty().WithMessage("Display name is required.")
-                    .NotNull().WithMessage("Display name is required.");
+                RuleFor(userProfileDto => userProfileDto.DisplayName)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.DISPLAY_NAME_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.DISPLAY_NAME_REQUIRED);
             });
         }
     }

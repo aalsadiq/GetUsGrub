@@ -67,6 +67,9 @@
   <ItemGroup>
     <Compile Include="Constants\ActionConstant.cs" />
     <Compile Include="Constants\ErrorMessages\RestaurantSelectionErrorMessages.cs" />
+    <Compile Include="Constants\ErrorMessages\UserManagementErrorMessages.cs" />
+    <Compile Include="Constants\ErrorMessages\ValidationErrorMessages.cs" />
+    <Compile Include="Constants\RegularExpressions.cs" />
     <Compile Include="Constants\ImagePaths.cs" />
     <Compile Include="Constants\ResourceConstant.cs" />
     <Compile Include="Constants\RoleTypes.cs" />
@@ -82,9 +85,10 @@
     <Compile Include="DTOs\SelectedRestaurantDto.cs" />
     <Compile Include="Constants\ErrorMessages\GeneralErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\SsoErrorMessages.cs" />
+    <Compile Include="Enums\RestaurantFoodTypes.cs" />
     <Compile Include="Enums\States.cs" />
     <Compile Include="Models\BaseModels\SsoToken.cs" />
-    <Compile Include="Models\FoodPreferences.cs" />
+    <Compile Include="Models\FoodPreference.cs" />
     <Compile Include="Models\GeoCoordinates.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
@@ -103,6 +107,7 @@
     <Compile Include="Models\BusinessHour.cs" />
     <Compile Include="Models\Interfaces\IBusinessHour.cs" />
     <Compile Include="Models\Interfaces\IPreference.cs" />
+    <Compile Include="Models\Interfaces\ISalt.cs" />
     <Compile Include="Models\Interfaces\IUserProfile.cs" />
     <Compile Include="DTOs\RestaurantMenuWithItems.cs" />
     <Compile Include="Models\InvalidSsoToken.cs" />
@@ -114,7 +119,6 @@
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />
-    <Compile Include="Models\Interfaces\IException.cs" />
     <Compile Include="Models\Interfaces\IMenuItem.cs" />
     <Compile Include="Models\Interfaces\IProfile.cs" />
     <Compile Include="Models\Interfaces\IRestaurantDetail.cs" />
@@ -122,7 +126,6 @@
     <Compile Include="Models\FailedAttempts.cs" />
     <Compile Include="Models\Interfaces\IRestaurantProfile.cs" />
     <Compile Include="Models\Interfaces\ISecurityQuestion.cs" />
-    <Compile Include="Models\Interfaces\ISecurityQuestionsList.cs" />
     <Compile Include="Models\Interfaces\IToken.cs" />
     <Compile Include="Models\Interfaces\IUserAccount.cs" />
     <Compile Include="Models\PasswordSalt.cs" />

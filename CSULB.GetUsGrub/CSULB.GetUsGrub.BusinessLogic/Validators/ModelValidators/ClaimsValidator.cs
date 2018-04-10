@@ -15,7 +15,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public ClaimsValidator()
         {
-            RuleFor(x => x.Claims)
+            RuleFor(userClaims => userClaims.Claims)
                 .NotEmpty()
                 .NotNull();
         }

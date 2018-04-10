@@ -1,8 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using FluentValidation;
 
-// TODO: @Jenn Comment BusinessHourValidator [-Jenn]
-// TODO: @Jenn Unit Test the two methods below [-Jenn]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -19,15 +17,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Day)
+                RuleFor(businessHour => businessHour.Day)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.OpenTime)
+                RuleFor(businessHour => businessHour.OpenTime)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.CloseTime)
+                RuleFor(businessHour => businessHour.CloseTime)
                     .NotEmpty()
                     .NotNull();
             });

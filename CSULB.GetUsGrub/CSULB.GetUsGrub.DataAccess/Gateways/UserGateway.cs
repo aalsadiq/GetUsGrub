@@ -16,7 +16,6 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class UserGateway : IDisposable
     {
-        // TODO: @Jenn How to best handle this error [-Jenn]
         /// <summary>
         /// The GetUserByUsername method.
         /// Gets a user by username.
@@ -173,7 +172,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
             IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours,
-            IList<FoodPreferences> foodPreferences)
+            IList<FoodPreference> foodPreferences)
         {
             using (var userContext = new UserContext())
             {

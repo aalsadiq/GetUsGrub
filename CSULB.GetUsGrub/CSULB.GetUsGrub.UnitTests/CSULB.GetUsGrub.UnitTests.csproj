@@ -143,7 +143,7 @@
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\AuthorizationManagerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsFactoryUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsTransformerUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\TokenValidator.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\TokenValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\UserValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.Gateways\UserManagementTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

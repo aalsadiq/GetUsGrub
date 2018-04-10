@@ -17,12 +17,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Question)
+                RuleFor(securityQuestion => securityQuestion.Question)
                     .NotEmpty()
                     .NotNull()
                     .GreaterThan(0);
 
-                RuleFor(x => x.Answer)
+                RuleFor(securityQuestion => securityQuestion.Answer)
                     .NotEmpty()
                     .NotNull();
             });

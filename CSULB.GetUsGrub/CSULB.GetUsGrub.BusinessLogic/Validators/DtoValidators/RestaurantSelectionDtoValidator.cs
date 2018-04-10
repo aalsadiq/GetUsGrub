@@ -18,80 +18,80 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("PreLogic", () =>
             {
-                RuleFor(RestaurantSelection => RestaurantSelection.City)
-                    .NotEmpty().WithMessage("City is required.")
-                    .NotNull().WithMessage("City is required.");
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.City)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.CITY_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.CITY_REQUIRED);
 
-                RuleFor(RestaurantSelection => RestaurantSelection.State)
-                    .NotEmpty().WithMessage("State is required.")
-                    .NotNull().WithMessage("State is required.");
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.State)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.STATE_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.STATE_REQUIRED);
 
-                RuleFor(RestaurantSelection => RestaurantSelection.FoodType)
-                    .NotEmpty().WithMessage("Food type is required.")
-                    .NotNull().WithMessage("Food type is required.");
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.FoodType)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.FOOD_TYPE_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.FOOD_TYPE_REQUIRED);
 
-                RuleFor(RestaurantSelection => RestaurantSelection.DistanceInMiles)
-                    .NotEmpty().WithMessage("Distance is required.")
-                    .NotNull().WithMessage("Distance is required.")
-                    .Must(distance => distance.Equals(1) | distance.Equals(5) | distance.Equals(10) | distance.Equals(15));
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.DistanceInMiles)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.DISTANCE_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.DISTANCE_REQUIRED)
+                    .Must(distance => distance.Equals(1) | distance.Equals(5) | distance.Equals(10) | distance.Equals(15)).WithMessage(ValidationErrorMessages.NOT_VALID_DISTANCE);
 
-                RuleFor(RestaurantSelection => RestaurantSelection.AvgFoodPrice)
-                    .NotNull().WithMessage("Average food price is required");
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.AvgFoodPrice)
+                    .NotNull().WithMessage(ValidationErrorMessages.AVG_FOOD_PRICE_REQUIRED)
+                    .Must(avgFoodPrice => (avgFoodPrice >= 1 && avgFoodPrice <= 3)).WithMessage(ValidationErrorMessages.NOT_VALID_AVG_FOOD_PRICE);
             });
 
             RuleSet("UnregisteredUserPostLogic", () =>
             {
-                RuleFor(RestaurantSelection => RestaurantSelection.City)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.City)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.State)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.State)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.FoodType)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.FoodType)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.DistanceInMiles)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.DistanceInMiles)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.AvgFoodPrice)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.AvgFoodPrice)
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.CurrentUtcDateTime)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.CurrentUtcDateTime)
                     .NotEmpty()
                     .NotNull();
             });
 
             RuleSet("RegisteredUserPostLogic", () =>
             {
-                RuleFor(RestaurantSelection => RestaurantSelection.City)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.City)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.State)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.State)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.FoodType)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.FoodType)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.DistanceInMiles)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.DistanceInMiles)
                     .NotEmpty()
                     .NotNull();
-                
-                // TODO: @Rachel Need food preferences to uncomment rules below [-Jenn]
-                //RuleFor(x => x.FoodPreferences)
-                //    .NotEmpty()
-                //    .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.AvgFoodPrice)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.FoodPreferences)
+                    .NotEmpty()
                     .NotNull();
 
-                RuleFor(RestaurantSelection => RestaurantSelection.CurrentUtcDateTime)
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.AvgFoodPrice)
+                    .NotNull();
+
+                RuleFor(restaurantSelectionDto => restaurantSelectionDto.CurrentUtcDateTime)
                     .NotEmpty()
                     .NotNull();
             });

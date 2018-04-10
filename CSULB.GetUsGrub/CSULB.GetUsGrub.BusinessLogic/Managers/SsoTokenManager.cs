@@ -104,7 +104,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             Debug.WriteLine("Here5");
-            // TODO: @Jenn should I do this? [-Jenn]
             // Send back a new UserAccountDto
             return new ResponseDto<UserAccountDto>()
             {
@@ -128,7 +127,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return signingKey;
         }
 
-        // TODO: @Jenn Comment this  [-Jenn]
+        /// <summary>
+        /// The MapRequestJwtPayloadToSsoJwtPayload method.
+        /// Maps the information inside a SSO JWT payload to the SsoJwtPayload model.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/09/2018
+        /// </para>
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns>ResponseDto with a SsoTokenPayload</returns>
         public ResponseDto<SsoTokenPayload> MapRequestJwtPayloadToSsoJwtPayload(JwtPayload payload)
         {
             var ssoTokenPayload = new SsoTokenPayload();

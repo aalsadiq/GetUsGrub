@@ -17,32 +17,33 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(UserAccount => UserAccount.Username)
-                    .NotEmpty().WithMessage("Username is required.")
-                    .NotNull().WithMessage("Username is required.")
-                    .Matches(@"^[A-Za-z\d]+$").WithMessage("Username must not contain spaces and special characters.");
+                RuleFor(userAccountDto => userAccountDto.Username)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
+                    .Matches(RegularExpressions.USERNAME_FORMAT).WithMessage(ValidationErrorMessages.USERNAME_FORMAT);
 
-                RuleFor(UserAccount => UserAccount.Password)
-                    .NotEmpty().WithMessage("Password is required.")
-                    .NotNull().WithMessage("Password is required.")
-                    .Length(8, 64).WithMessage("Password must be at least 8 characters and less than or equal to 64.")
-                    .Matches(@"^[^\s]+$").WithMessage("Password must not be empty or contain spaces.");
+                RuleFor(userAccountDto => userAccountDto.Password)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.PASSWORD_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.PASSWORD_REQUIRED)
+                    .Length(8, 64).WithMessage(ValidationErrorMessages.PASSWORD_LENGTH)
+                    .Matches(RegularExpressions.STRING_CONTAINS_NO_SPACES).WithMessage(ValidationErrorMessages.PASSWORD_FORMAT);
             });
 
+            // TODO: @Jenn May not need this [-Jenn]
             RuleSet("SsoRegistration", () =>
             {
-                RuleFor(UserAccount => UserAccount.Username)
-                    .NotEmpty().WithMessage("Username is required.")
-                    .NotNull().WithMessage("Username is required.")
-                    .Matches(@"^[A-Za-z\d]+$").WithMessage("Username must not contain spaces and special characters.");
+                RuleFor(userAccountDto => userAccountDto.Username)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
+                    .Matches(RegularExpressions.USERNAME_FORMAT).WithMessage(ValidationErrorMessages.USERNAME_FORMAT);
 
-                RuleFor(UserAccount => UserAccount.Password)
-                    .NotEmpty().WithMessage("Password is required.")
-                    .NotNull().WithMessage("Password is required.")
-                    .Length(8, 64).WithMessage("Password must be at least 8 characters and less than or equal to 64.")
-                    .Matches(@"^[^\s]+$").WithMessage("Password must not be empty or contain spaces.");
+                RuleFor(userAccountDto => userAccountDto.Password)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.PASSWORD_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.PASSWORD_REQUIRED)
+                    .Length(8, 64).WithMessage(ValidationErrorMessages.PASSWORD_LENGTH)
+                    .Matches(RegularExpressions.STRING_CONTAINS_NO_SPACES).WithMessage(ValidationErrorMessages.PASSWORD_FORMAT);
 
-                RuleFor(UserAccount => UserAccount.RoleType)
+                RuleFor(userAccountDto => userAccountDto.RoleType)
                     .NotEmpty()
                     .NotNull()
                     .Matches(@"^((public)|(private))$").WithMessage("Must be 'public' or 'private' role type.");

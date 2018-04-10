@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @updated: 03/30/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("User")] //default route
+    [RoutePrefix("User")]
     public class UserController : ApiController
     {
         /// <summary>
@@ -36,8 +36,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
-                // TODO: @Jenn Parse the ModelState BadRequest to something better [-Jenn]
-                return BadRequest(ModelState);
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
             }
             try
             {
@@ -54,7 +53,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 // Sending HTTP response 400 Status
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
 
@@ -78,7 +77,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Model Binding Validation
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
             }
             try
             {
@@ -95,7 +94,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 // HTTP 400 Status
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
 

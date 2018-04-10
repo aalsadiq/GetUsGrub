@@ -147,10 +147,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
                     closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
                 .ToList();
-            var foodPreferences = new List<FoodPreferences>();
+            var foodPreferences = new List<FoodPreference>();
             if (registerRestaurantDto.FoodPreferences != null)
             {
-                foodPreferences = registerRestaurantDto.FoodPreferences.Select(foodPreference => new FoodPreferences(foodPreference)).ToList();
+                foodPreferences = registerRestaurantDto.FoodPreferences.Select(foodPreference => new FoodPreference(foodPreference)).ToList();
             }
 
             // Set user claims to be stored in UserClaims table
@@ -212,7 +212,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        // TODO: @Jenn Comment this method [-Jenn]
+        /// <summary>
+        /// The CreateFirstTimeSsoUser method.
+        /// Creates a first time user registered from the SSO.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/09/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccountDto"></param>
+        /// <returns></returns>
         public ResponseDto<bool> CreateFirstTimeSsoUser(UserAccountDto userAccountDto)
         {
             var createFirstTimeSsoUserPreLogicStrategy = new CreateFirstTimeSsoUserPreLogicValidationStrategy(userAccountDto);

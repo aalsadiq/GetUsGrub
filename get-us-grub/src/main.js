@@ -6,6 +6,7 @@ import router from './router'
 import { store } from './store/store.js'
 import Vuetify from 'vuetify'
 import axios from 'axios'
+import Notifications from 'vue-notification'
 import 'es6-promise/auto'
 // Ensure you are using css-loader
 
@@ -14,6 +15,7 @@ import 'es6-promise/auto'
 // };
 Vue.use(axios)
 Vue.use(Vuetify)
+Vue.use(Notifications)
 Vue.config.productionTip = false
 
 export const bus = new Vue()

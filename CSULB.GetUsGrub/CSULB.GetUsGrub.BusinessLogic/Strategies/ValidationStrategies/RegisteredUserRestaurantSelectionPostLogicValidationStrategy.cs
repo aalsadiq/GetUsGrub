@@ -39,7 +39,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return result;
             }
 
-
             return new ResponseDto<bool>()
             {
                 Data = true

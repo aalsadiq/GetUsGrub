@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>UserAccount</c> class.
     /// Defines properties pertaining to a user's account.
     /// <para>
-    /// @author: Jennifer Nguyen
+    /// @author: Brian Fann
     /// @updated: 03/12/2018
     /// </para>
     /// </summary>

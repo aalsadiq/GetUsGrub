@@ -58,14 +58,19 @@
     <Compile Include="Contexts\UserContext.cs" />
     <Compile Include="Gateways\RestaurantBillSplitterGateway.cs" />
     <Compile Include="Gateways\AuthenticationGateway.cs" />
+    <Compile Include="Gateways\AuthorizationGateway.cs" />
     <Compile Include="Gateways\RestaurantGateway.cs" />
     <Compile Include="Gateways\RestaurantProfileGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Gateways\UserProfileGateway.cs" />
+    <Compile Include="Migrations\SsoDbContext\201804102130036_InitialDbCreation.cs" />
+    <Compile Include="Migrations\SsoDbContext\201804102130036_InitialDbCreation.Designer.cs">
+      <DependentUpon>201804102130036_InitialDbCreation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserDbContext\201804100456024_seed.cs" />
-    <Compile Include="Migrations\UserDbContext\201804100456024_seed.Designer.cs">
-      <DependentUpon>201804100456024_seed.cs</DependentUpon>
+    <Compile Include="Migrations\UserDbContext\201804102129044_InitialDbCreation.cs" />
+    <Compile Include="Migrations\UserDbContext\201804102129044_InitialDbCreation.Designer.cs">
+      <DependentUpon>201804102129044_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,8 +91,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\UserDbContext\201804100456024_seed.resx">
-      <DependentUpon>201804100456024_seed.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\SsoDbContext\201804102130036_InitialDbCreation.resx">
+      <DependentUpon>201804102130036_InitialDbCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\UserDbContext\201804102129044_InitialDbCreation.resx">
+      <DependentUpon>201804102129044_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -39,7 +39,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Extract DTO contents and map DTO to domain model
-   
+
             var username = restaurantProfileDto.Username;
 
             // Extract restaurant profile domain

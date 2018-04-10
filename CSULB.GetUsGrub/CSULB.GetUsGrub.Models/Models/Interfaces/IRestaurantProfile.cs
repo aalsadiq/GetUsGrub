@@ -1,4 +1,6 @@
-﻿namespace CSULB.GetUsGrub.Models
+﻿using System.Collections.Generic;
+
+namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
     /// Restaurant profile interface

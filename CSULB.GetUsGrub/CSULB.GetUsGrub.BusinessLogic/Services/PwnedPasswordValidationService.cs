@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using CSULB.GetUsGrub.Models;
@@ -50,6 +51,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 passwordHash = BitConverter.ToString(hasher.ComputeHash(Encoding.UTF8.GetBytes(password)));
                 passwordHash = passwordHash.Replace("-", "");
             }
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             // Get first 5 characters of hash and send it as part of the url for a get request.
             var prefixHash = passwordHash.Substring(0, 5);

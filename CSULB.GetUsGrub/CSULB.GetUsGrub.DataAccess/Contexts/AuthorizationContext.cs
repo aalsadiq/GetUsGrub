@@ -1,5 +1,5 @@
-﻿using System.Data.Entity;
-using CSULB.GetUsGrub.Models;
+﻿using CSULB.GetUsGrub.Models;
+using System.Data.Entity;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
@@ -7,12 +7,12 @@ namespace CSULB.GetUsGrub.DataAccess
     /// Context containing all tables for user management.
     /// 
     /// @Created by: Brian Fann
-    /// @Last Updated: 3/9/18
+    /// @Created: 3/9/18
+    /// @Last Updated: 03/21/2018
     /// </summary>
     public class AuthorizationContext : DbContext
     {
-        DbSet<UserClaims> UserClaims { get; set; }
-
+        public DbSet<UserClaims> Claims { get; set; }
         public AuthorizationContext() : base("GetUsGrub") { }
     }
 

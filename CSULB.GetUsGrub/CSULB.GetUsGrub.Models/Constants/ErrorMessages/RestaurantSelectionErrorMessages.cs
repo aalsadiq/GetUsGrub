@@ -1,4 +1,4 @@
-﻿namespace CSULB.GetUsGrub.Models.Constants.ErrorMessages
+﻿namespace CSULB.GetUsGrub.Models
 {
     public class RestaurantSelectionErrorMessages
     {

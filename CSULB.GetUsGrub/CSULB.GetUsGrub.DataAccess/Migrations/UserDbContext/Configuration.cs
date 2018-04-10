@@ -98,8 +98,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
             const int maxRestaurantMenuItems = 5;
 
             // Directory Paths
-            const string directoryPathToUserProfileDisplayPicture = @"C:\Users\Angelica\Documents\GetUsGrub\get-us-grub\src\assets\ProfileImages\DefaultProfileImage.png";
-            const string directoryPathToMenuItemPicture = @"C:\Users\Angelica\Documents\GetUsGrub\get-us-grub\src\assets\RestaurantImages\DefaultMenuItemImage.png";
+            const string directoryPathToUserProfileDisplayPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\ProfileImages\\";
+            const string directoryPathToMenuItemPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\";
 
             // Instantiate Randomizer
             var randomizer = new Random();
@@ -158,7 +158,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                             Id = j,
                             UserId = i,
                             // Total of 9 security questions to choose from
-                            Question = randomizer.Next(1, 9+1),
+                            Question = randomizer.Next(1, 9 + 1),
                             Answer = $"answer{j}"
                         }
                     );
@@ -178,15 +178,14 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                 // Creating a list of claims
                 var claims = new List<Claim>();
 
-                // Adding claims to the list of claims
-                for (var j = 1; j <= maxClaimsPerUserClaims; j++)
-                {
-                    claims.Add(new Claim($"claimType{j}", $"claimValue{j}"));
-                }
+                claims.Add(new Claim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True"));
+                claims.Add(new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"));
+                claims.Add(new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True"));
 
                 // AddorUpdate to UserClaims table
                 context.UserClaims.AddOrUpdate
                 (
+                    // Original seed data
                     new UserClaims()
                     {
                         Id = i,
@@ -224,13 +223,13 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                                 Street1 = $"{i} Street1",
                                 Street2 = $"{i} Street2",
                                 City = $"city{i}",
-                                State = "CA",
+                                State = $"CA",
                                 Zip = 90711 + i
                             },
                             Details = new RestaurantDetail()
                             {
                                 // 1 = $0 to $10, 2 = $10.01 to $50, 3 = $50.01+
-                                AvgFoodPrice = randomizer.Next(1, 3+1),
+                                AvgFoodPrice = randomizer.Next(1, 3 + 1),
                                 FoodType = validFoodTypes[randomizer.Next(0, validFoodTypes.Count)],
                                 HasReservations = true,
                                 HasDelivery = true,
@@ -244,7 +243,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                                 Caters = true,
                                 AllowsPets = true
                             },
-                            GeoCoordinates = new GeoCoordinates()
+                            GeoCoordinates = new GeoCoordinates
                             {
                                 Latitude = geoCoordinates[rand].Latitude,
                                 Longitude = geoCoordinates[rand].Longitude
@@ -253,7 +252,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                     );
                     context.SaveChanges();
 
-                    for (var j = 1 + maxBusinessHours*(restaurantCounter-1); j <= maxBusinessHours + maxBusinessHours*(restaurantCounter-1); j++)
+                    for (var j = 1 + maxBusinessHours * (restaurantCounter - 1); j <= maxBusinessHours + maxBusinessHours * (restaurantCounter - 1); j++)
                     {
                         // AddorUpdate to BusinessHour table
                         context.BusinessHours.AddOrUpdate
@@ -270,7 +269,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                         context.SaveChanges();
                     }
 
-                    for (var j = 1 + maxRestaurantMenus*(restaurantCounter-1); j <= maxRestaurantMenus + maxRestaurantMenus*(restaurantCounter-1); j++)
+                    for (var j = 1 + maxRestaurantMenus * (restaurantCounter - 1); j <= maxRestaurantMenus + maxRestaurantMenus * (restaurantCounter - 1); j++)
                     {
                         // AddorUpdate to RestaurantMenu table
                         context.RestaurantMenus.AddOrUpdate
@@ -284,7 +283,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                             }
                         );
 
-                        for (var k = 1 + maxRestaurantMenuItems*(j-1); k <= maxRestaurantMenuItems + maxRestaurantMenuItems*(j-1); k++)
+                        for (var k = 1 + maxRestaurantMenuItems * (j - 1); k <= maxRestaurantMenuItems + maxRestaurantMenuItems * (j - 1); k++)
                         {
                             // AddorUpdate to RestaurantMenuItem table
                             context.RestaurantMenuItems.AddOrUpdate

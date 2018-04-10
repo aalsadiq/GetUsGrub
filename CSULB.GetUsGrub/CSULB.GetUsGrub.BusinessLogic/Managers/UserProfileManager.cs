@@ -52,5 +52,23 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         //ImageUploadManager
         // TODO: @Angelica Add image profile upload here
+        public ResponseDto<bool> ProfileImageUpload(UserProfileDto image)
+        {
+
+            //var profileImageUploadPreLogicValidationStrategy = new ProfileImageUploadPreLogicValidationStrategy(image);
+            //Imagename will be based on user
+            //var result = profileImageUploadPreLogicvalidationStrategy.ExecuteStrategy();
+
+
+            //if (result.Error != null)
+            //{
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error = "Something went wrong. Please try again later."
+                };
+            //}
+
+        }
     }
 }

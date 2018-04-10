@@ -73,6 +73,7 @@
     <Compile Include="Converters\ClaimConverter.cs" />
     <Compile Include="DTOs\AuthenticationTokenDto.cs" />
     <Compile Include="DTOs\EditUserDto.cs" />
+    <Compile Include="DTOs\ImageUploadDto.cs" />
     <Compile Include="DTOs\LoginDto.cs" />
     <Compile Include="DTOs\BusinessHourDto.cs" />
     <Compile Include="DTOs\SelectedRestaurantDto.cs" />

@@ -1,6 +1,8 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.IO;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -89,18 +91,31 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
-                //Creating a manager to then call EditUser.
-                var manager = new UserProfileManager();
-                //Calling EditUser method to edit the given user.
-                //var response = manager.ProfileImageUpload(user.DisplayPicture);
-                //Checks the response from EditUser. If error is null, then it was successful.
+
+                
+                // full path to file in temp location
+                var filePath = Path.GetTempFileName();
+                Console.WriteLine(filePath);
+       
+                
+     
+
+                //string filePath = Path.Combine(HttpRuntime.AppDomainAppPath);
+                //Console.WriteLine("This is the image path" + filePath);
+                //var filePath = HttpContext.Current.Server.MapPath("~/Userimage/" + user.DisplayPicture);
+                //Userimage myfolder name where i want to save my image
+                //postedFile.SaveAs(filePath);
+                ////Creating a manager to then call ProfileImageUpload.
+                //var manager = new UserProfileManager();
+                ////Calling ProfileImageUpload method to edit the given user.
+                //var response = manager.ProfileImageUpload(user);
+                ////Checks the response from ProfileImageUpload. If error is null, then it was successful.
                 //if (response.Error != null)
                 //{
                 //    //Will return a bad request if error occured in manager.
                 //    return BadRequest(response.Error);
                 //}
-                //If EditUser was successful return HTTP response with a successful message.
-                return Ok("User has been edited:" + user.Username);
+                return Ok("Image has been updated");
             }
             catch (Exception)
             {

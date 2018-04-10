@@ -91,7 +91,7 @@ namespace CSULB.GetUsGrub.Controllers
             try
             {
                 //Creating a manager to then call EditUser.
-                var manager = new RestaurantProfileDto();
+                //var manager = new RestaurantProfileDto();
                 //Calling EditUser method to edit the given user.
                 //var response = manager.ProfileImageUpload(user.DisplayPicture);
                 //Checks the response from EditUser. If error is null, then it was successful.

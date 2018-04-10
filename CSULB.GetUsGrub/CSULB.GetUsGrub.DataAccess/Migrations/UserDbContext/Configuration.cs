@@ -98,8 +98,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
             const int maxRestaurantMenuItems = 5;
 
             // Directory Paths
-            const string directoryPathToUserProfileDisplayPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\ProfileImages\\";
-            const string directoryPathToMenuItemPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\";
+            const string directoryPathToUserProfileDisplayPicture = @"C:\Users\Angelica\Documents\GetUsGrub\get-us-grub\src\assets\ProfileImages\DefaultProfileImage.png";
+            const string directoryPathToMenuItemPicture = @"C:\Users\Angelica\Documents\GetUsGrub\get-us-grub\src\assets\RestaurantImages\DefaultMenuItemImage.png";
 
             // Instantiate Randomizer
             var randomizer = new Random();

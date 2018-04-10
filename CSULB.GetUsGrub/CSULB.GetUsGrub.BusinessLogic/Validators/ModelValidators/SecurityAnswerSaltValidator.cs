@@ -15,7 +15,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public SecurityAnswerSaltValidator()
         {
-            RuleFor(x => x.Salt)
+            RuleFor(securityAnswerSalt => securityAnswerSalt.Salt)
                 .NotEmpty()
                 .NotNull();
         }

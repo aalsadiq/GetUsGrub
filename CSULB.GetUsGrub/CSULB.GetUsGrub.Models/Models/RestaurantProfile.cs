@@ -9,7 +9,7 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>RestaurantProfile</c> class.
     /// Defines properties pertaining to user account.
     /// <para>
-    /// @author: Andrew Kao, Jennifer Nguyen
+    /// @author: Andrew Kao, Brian Fann
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>
@@ -34,10 +34,8 @@ namespace CSULB.GetUsGrub.Models
             }
             set
             {
-                if (value == null) return;
-
-                GeoCoordinates.Latitude = value.Latitude.Value;
-                GeoCoordinates.Longitude = value.Longitude.Value;
+                GeoCoordinates.Latitude = value.Latitude ?? 0;
+                GeoCoordinates.Latitude = value.Longitude ?? 0;
             }
         }
         [NotMapped]
@@ -74,7 +72,6 @@ namespace CSULB.GetUsGrub.Models
 
         public RestaurantProfile(string phoneNumber, Address address, RestaurantDetail details)
         {
-            GeoCoordinates = new GeoCoordinates(0,0);
             PhoneNumber = phoneNumber;
             Address = address;
             Details = details;

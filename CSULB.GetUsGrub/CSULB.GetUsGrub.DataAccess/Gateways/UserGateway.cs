@@ -16,7 +16,6 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class UserGateway : IDisposable
     {
-        // TODO: @Jenn How to best handle this error [-Jenn]
         /// <summary>
         /// The GetUserByUsername method.
         /// Gets a user by username.
@@ -146,7 +145,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         return new ResponseDto<bool>()
                         {
                             Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Error = GeneralErrorMessages.GENERAL_ERROR
                         };
                     }
                 }
@@ -169,9 +168,11 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="userProfile"></param>
         /// <param name="restaurantProfile"></param>
         /// <param name="businessHours"></param>
+        /// <param name="foodPreferences"></param>
         /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
-            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours)
+            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours,
+            IList<FoodPreference> foodPreferences)
         {
             using (var userContext = new UserContext())
             {
@@ -193,6 +194,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         claims.Id = userId;
                         userProfile.Id = userId;
                         restaurantProfile.Id = userId;
+
+                        // Add FoodPreferences
+                        foreach (var foodPreference in foodPreferences)
+                        {
+                            foodPreference.UserId = userId;
+                            userContext.FoodPreferences.Add(foodPreference);
+                            userContext.SaveChanges();
+                        }
 
                         // Add SecurityQuestions
                         foreach (var securityQuestion in securityQuestions)
@@ -260,7 +269,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         return new ResponseDto<bool>()
                         {
                             Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Error = GeneralErrorMessages.GENERAL_ERROR
                         };
                     }
                 }
@@ -319,7 +328,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         return new ResponseDto<bool>()
                         {
                             Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Error = GeneralErrorMessages.GENERAL_ERROR
                         };
                     }
                 }

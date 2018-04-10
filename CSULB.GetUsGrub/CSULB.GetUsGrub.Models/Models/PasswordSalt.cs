@@ -7,12 +7,12 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>PasswordSalt</c> class.
     /// Defines a property of a salt for a password.
     /// <para>
-    /// @author: Jennifer Nguyen, Brian Fann
+    /// @author: Brian Fann
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>
     [Table("GetUsGrub.PasswordSalt")]
-    public class PasswordSalt : IEntity
+    public class PasswordSalt : ISalt, IEntity
     {
         // Automatic Properties
         [Key]

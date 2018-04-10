@@ -1,6 +1,4 @@
-﻿// TODO: @Jenn Finish Claims Validator with Unit Test [-Jenn]
-
-using CSULB.GetUsGrub.Models;
+﻿using CSULB.GetUsGrub.Models;
 using FluentValidation;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -17,7 +15,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public ClaimsValidator()
         {
-            RuleFor(x => x.Claims)
+            RuleFor(userClaims => userClaims.Claims)
                 .NotEmpty()
                 .NotNull();
         }

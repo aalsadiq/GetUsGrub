@@ -24,7 +24,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var claimsFactory = new ClaimsFactory();
             var claims = new UserClaims()
             {
-                Claims = claimsFactory.CreateIndividualClaims()
+                Claims = claimsFactory.Create(AccountType.INDIVIDUAL)
             };
 
             // Act

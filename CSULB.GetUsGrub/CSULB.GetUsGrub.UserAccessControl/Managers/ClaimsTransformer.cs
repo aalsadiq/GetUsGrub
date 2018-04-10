@@ -24,7 +24,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
         {
             // Get the username claim for the ClaimsPrincipal
             ClaimsPrincipal principal = incomingPrincipal;
-            string username = principal.FindFirst("username").Value;
+            string username = principal.FindFirst("Username").Value;
 
             // Create the new ClaimsPrincipal
             principal = CreatePrincipal(resourceName, principal);
@@ -43,7 +43,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
         private ClaimsPrincipal CreatePrincipal(string resourceName, ClaimsPrincipal incomingPrincipal)
         {
             // Take the claims from the incoming principal
-            var username = incomingPrincipal.FindFirst("username").Value;
+            var username = incomingPrincipal.FindFirst("Username").Value;
             List<Claim> claims = new List<Claim> { };
 
             // Add to list with user's list of claims from database
@@ -72,7 +72,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             }
 
             // Add original username claim
-            claims.Add(new Claim("username", username));
+            claims.Add(new Claim("Username", username));
 
             // Create ClaimsIdentity with the list of claims
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, resourceName);

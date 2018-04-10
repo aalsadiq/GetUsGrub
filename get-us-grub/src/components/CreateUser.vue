@@ -2,7 +2,7 @@
     <div id="create-user">
       {{ responseDataStatus }} {{ responseData }}
       <v-toolbar dark tabs flat>
-        <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-3">
+        <v-tabs v-model="tabs" icons-and-text centered dark color="blue-grey darken-2">
           <v-spacer/>
           <v-tab href="#user">User
             <v-icon>face</v-icon>
@@ -46,9 +46,11 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
+                        @change="validate"
                         :append-icon="visibile ? 'visibility' : 'visibility_off'"
                         :append-icon-cb="() => (visibile = !visibile)"
                         :type=" visibile ? 'text' : 'password'"
+                        :error-messages="passwordErrorMessages"
                         required
                       ></v-text-field>
                     </v-form>
@@ -157,9 +159,11 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
+                        @change="validate"
                         :append-icon="visibile ? 'visibility' : 'visibility_off'"
                         :append-icon-cb="() => (visibile = !visibile)"
                         :type=" visibile ? 'text' : 'password'"
+                        :error-messages="passwordErrorMessages"
                         required
                       ></v-text-field>
                     </v-form>
@@ -236,7 +240,7 @@
                         :items="$store.state.constants.foodTypes"
                         item-text="type"
                         item-value="type"
-                        v-model="restaurantProfile.details.category"
+                        v-model="restaurantProfile.details.foodType"
                         label="Select a food type associated with your restaurant"
                         single-line
                         auto
@@ -264,10 +268,8 @@
                     <v-flex xs12 sm6>
                       <v-select
                         label="Select a food preference"
-                        item-text="foodPreference"
-                        item-value="id"
                         :items="$store.state.constants.foodPreferences"
-                        v-model="restaurantProfile.foodPreferences"
+                        v-model="foodPreferences"
                         multiple
                         chips
                         prepend-icon=""
@@ -447,7 +449,7 @@ export default {
     validRestaurantDetailsInput: false,
     validAddBusinessHour: false,
     validContactInput: false,
-    visibile: false,
+    visible: false,
     openMenu: false,
     closeMenu: false,
     openTimeSync: false,
@@ -482,18 +484,18 @@ export default {
       },
       phoneNumber: '',
       details: {
-        category: '',
+        foodType: '',
         avgFoodPrice: null
-      },
-      foodPreferences: [
-      ]
+      }
     },
+    foodPreferences: [],
     businessHours: [],
     businessHour: {
       day: '',
       openTime: null,
       closeTime: null
     },
+    passwordErrorMessages: [],
     responseDataStatus: '',
     responseData: ''
   }),
@@ -508,6 +510,57 @@ export default {
       if (this.counter > 0) {
         this.validBusinessHourInput = true
       }
+    },
+    validate () {
+      if (this.userAccount.password.length < 8) {
+        return
+      }
+
+      var sha1 = require('sha1')
+      var hash = sha1(this.userAccount.password)
+      var anonHash = hash.substring(0, 5)
+
+      axios.get('https://api.pwnedpasswords.com/range/' + anonHash
+      ).then(response => {
+        var data = response.data
+        var lines = data.split('\n')
+        var errorFlag = false
+
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].split(':')
+
+          if ((anonHash + line[0]).toLowerCase() !== hash) {
+            continue
+          }
+
+          var count = line[1]
+
+          if (count >= 100) {
+            this.$notify({
+              group: 'notifications',
+              type: 'error',
+              duration: 2000,
+              title: 'WARNING',
+              text: 'Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com'
+            })
+
+            errorFlag = true
+            this.passwordErrorMessages = ['Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com']
+          } else if (count !== 0) {
+            this.$notify({
+              group: 'notifications',
+              type: 'warning',
+              duration: 2000,
+              title: 'WARNING',
+              text: 'Your password has previously been found in a breach. We highly recommend you change your password. For more information, visit HaveIBeenPwned.com'
+            })
+          }
+        }
+
+        if (!errorFlag) {
+          this.passwordErrorMessages = []
+        }
+      })
     },
     userSubmit () {
       axios.post('http://localhost:8081/User/Registration/Individual', {
@@ -530,6 +583,7 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
         restaurantProfileDto: this.restaurantProfile,
+        foodPreferences: this.foodPreferences,
         timeZone: this.timeZone,
         businessHourDtos: this.businessHours
       }).then(response => {

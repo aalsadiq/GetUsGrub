@@ -5,23 +5,26 @@ using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
 {
-    public class RestaurantBillSplitterGateway : IDisposable
+		/// <summary>
+		/// @author Ryan Luong
+		/// @updated 4/4/18
+		/// </summary>
+		public class RestaurantBillSplitterGateway : IDisposable
 		{
 				RestaurantContext context = new RestaurantContext();
-				public ResponseDto<List<RestaurantMenuWithItems>> GetRestaurantMenus(string displayName, double latitude, double longitude)
+				public ResponseDto<List<RestaurantMenuWithItems>> GetRestaurantMenus(int restaurantID)
 				{
 						try
 						{
 								var userProfile = (from profile in context.UserProfiles
-																	 where profile.DisplayName == displayName
+																	 where profile.RestaurantProfile.Id == restaurantID
 																	 select profile).SingleOrDefault();
 
 								// Find restaurant by Display Name, Latitude, Longitude
 								var restaurantProfile = (from restaurant in context.RestaurantProfiles
 																				 where restaurant.Id == userProfile.Id
-																				 where restaurant.GeoCoordinates.Latitude == latitude
-																				 where restaurant.GeoCoordinates.Longitude == longitude
 																				 select restaurant).SingleOrDefault();
+
 								//TODO: @Ryan TEST ALL SCENARIOS [-Ryan]
 								// Then, find all active menus associated with this restaurant and turn it into a List
 								var restaurantMenus = (from menus in context.RestaurantMenus

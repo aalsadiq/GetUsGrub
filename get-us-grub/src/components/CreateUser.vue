@@ -2,7 +2,7 @@
     <div id="create-user">
       {{ responseDataStatus }} {{ responseData }}
       <v-toolbar dark tabs flat>
-        <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-3">
+        <v-tabs v-model="tabs" icons-and-text centered dark color="blue-grey darken-2">
           <v-spacer/>
           <v-tab href="#user">User
             <v-icon>face</v-icon>
@@ -46,9 +46,9 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
-                        :append-icon="visibile ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (visibile = !visibile)"
-                        :type=" visibile ? 'text' : 'password'"
+                        :append-icon="visible ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (visiile = !visible)"
+                        :type=" visible ? 'text' : 'password'"
                         required
                       ></v-text-field>
                     </v-form>
@@ -157,9 +157,9 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
-                        :append-icon="visibile ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (visibile = !visibile)"
-                        :type=" visibile ? 'text' : 'password'"
+                        :append-icon="visible ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (visible = !visible)"
+                        :type=" visible ? 'text' : 'password'"
                         required
                       ></v-text-field>
                     </v-form>
@@ -236,7 +236,7 @@
                         :items="$store.state.constants.foodTypes"
                         item-text="type"
                         item-value="type"
-                        v-model="restaurantProfile.details.category"
+                        v-model="restaurantProfile.details.foodType"
                         label="Select a food type associated with your restaurant"
                         single-line
                         auto
@@ -264,10 +264,8 @@
                     <v-flex xs12 sm6>
                       <v-select
                         label="Select a food preference"
-                        item-text="foodPreference"
-                        item-value="id"
                         :items="$store.state.constants.foodPreferences"
-                        v-model="restaurantProfile.foodPreferences"
+                        v-model="foodPreferences"
                         multiple
                         chips
                         prepend-icon=""
@@ -447,7 +445,7 @@ export default {
     validRestaurantDetailsInput: false,
     validAddBusinessHour: false,
     validContactInput: false,
-    visibile: false,
+    visible: false,
     openMenu: false,
     closeMenu: false,
     openTimeSync: false,
@@ -482,12 +480,11 @@ export default {
       },
       phoneNumber: '',
       details: {
-        category: '',
+        foodType: '',
         avgFoodPrice: null
-      },
-      foodPreferences: [
-      ]
+      }
     },
+    foodPreferences: [],
     businessHours: [],
     businessHour: {
       day: '',
@@ -530,6 +527,7 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
         restaurantProfileDto: this.restaurantProfile,
+        foodPreferences: this.foodPreferences,
         timeZone: this.timeZone,
         businessHourDtos: this.businessHours
       }).then(response => {

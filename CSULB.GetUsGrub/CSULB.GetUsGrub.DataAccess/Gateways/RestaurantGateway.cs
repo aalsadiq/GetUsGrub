@@ -47,6 +47,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         where restaurantProfile.Id == selectedRestaurantProfileId
                         select new SelectedRestaurantDto()
                         {
+                            RestaurantId = restaurantProfile.Id,
                             DisplayName = userProfile.DisplayName,
                             RestaurantGeoCoordinates = new GeoCoordinates
                             {
@@ -81,6 +82,14 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
             }
         }
+
+        // TODO: @Jenn Figure out best way to handle how to get food prferences [-Jenn]
+        //public ResponseDto<SelectedRestaurantDto> GetRestaurantWithFoodPreferences(string city, string state, string foodType, 
+        //    double distanceInMeters, int avgFoodPrice, TimeSpan currentUtcTimeOfDay, string currentLocalDayOfWeek, DbGeography location,
+        //    IList<string> foodPreferences)
+        //{
+
+        //}
 
         public void Dispose() { }
     }

@@ -13,6 +13,7 @@ namespace CSULB.GetUsGrub.Models
     public class SelectedRestaurantDto
     {
         // Automatic Properties
+        public int? RestaurantId { get; set; }
         public GeoCoordinates RestaurantGeoCoordinates { get; set; }
         public GeoCoordinates ClientUserGeoCoordinates { get; set; }
         public string DisplayName { get; set; }

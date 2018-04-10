@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+// TODO: @Rachel Should FoodPreferences be changed to FoodPreference since it is only holding one preference? [-Jenn]
 namespace CSULB.GetUsGrub.Models
 {
     /// <summary>

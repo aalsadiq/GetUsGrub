@@ -46,9 +46,11 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
+                        @change="validate"
                         :append-icon="visibile ? 'visibility' : 'visibility_off'"
                         :append-icon-cb="() => (visibile = !visibile)"
                         :type=" visibile ? 'text' : 'password'"
+                        :error-messages="passwordErrorMessages"
                         required
                       ></v-text-field>
                     </v-form>
@@ -157,9 +159,11 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
+                        @change="validate"
                         :append-icon="visibile ? 'visibility' : 'visibility_off'"
                         :append-icon-cb="() => (visibile = !visibile)"
                         :type=" visibile ? 'text' : 'password'"
+                        :error-messages="passwordErrorMessages"
                         required
                       ></v-text-field>
                     </v-form>
@@ -494,6 +498,7 @@ export default {
       openTime: null,
       closeTime: null
     },
+    passwordErrorMessages: [],
     responseDataStatus: '',
     responseData: ''
   }),
@@ -508,6 +513,57 @@ export default {
       if (this.counter > 0) {
         this.validBusinessHourInput = true
       }
+    },
+    validate () {
+      if (this.userAccount.password.length < 8) {
+        return
+      }
+
+      var sha1 = require('sha1')
+      var hash = sha1(this.userAccount.password)
+      var anonHash = hash.substring(0, 5)
+
+      axios.get('https://api.pwnedpasswords.com/range/' + anonHash
+      ).then(response => {
+        var data = response.data
+        var lines = data.split('\n')
+        var errorFlag = false
+
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].split(':')
+
+          if ((anonHash + line[0]).toLowerCase() !== hash) {
+            continue
+          }
+
+          var count = line[1]
+
+          if (count >= 100) {
+            this.$notify({
+              group: 'notifications',
+              type: 'error',
+              duration: 2000,
+              title: 'WARNING',
+              text: 'Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com'
+            })
+
+            errorFlag = true
+            this.passwordErrorMessages = ['Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com']
+          } else if (count !== 0) {
+            this.$notify({
+              group: 'notifications',
+              type: 'warning',
+              duration: 2000,
+              title: 'WARNING',
+              text: 'Your password has previously been found in a breach. We highly recommend you change your password. For more information, visit HaveIBeenPwned.com'
+            })
+          }
+        }
+
+        if (!errorFlag) {
+          this.passwordErrorMessages = []
+        }
+      })
     },
     userSubmit () {
       axios.post('http://localhost:8081/User/Registration/Individual', {

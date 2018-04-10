@@ -3,7 +3,7 @@
     <app-header/>
     <h1>{{ title }}</h1>
     <h2>{{ msg }}</h2>
-    <li v-for="pref in prefList">{{ pref }}</li>
+    <!--li v-for="pref in prefList">{{ pref }}</li>
 
     <br/>
     <br/>
@@ -13,7 +13,7 @@
     <li v-for="pref in allPref">
         <input type="checkbox" id="pref" :value="pref" v-model="prefList">
         <label>{{ pref }}</label>
-    </li>
+    </li-->
 
     <app-footer/>
   </div>
@@ -21,7 +21,7 @@
 
 <script>
 import AppHeader from '@/components/AppHeader'
-import AppFooter from '@/components/AppFooter'  
+import AppFooter from '@/components/AppFooter'
 export default {
   name: 'EditPreferences',
   components: {
@@ -33,7 +33,7 @@ export default {
       title: 'Edit Food Preferences',
       msg: 'Your current food preferences:',
       prefList: ['Pescatarian', 'Lacto-Vegetarian'],
-      allPref: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-Vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
+      allPref: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-Vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian']
     }
   }
 }

@@ -1,23 +1,27 @@
 <template>
     <v-toolbar id="header-toolbar" dark fixed>
-      <v-toolbar-side-icon></v-toolbar-side-icon>
-        <img src="@/assets/GetUsGrub-icon.png">
-      <v-toolbar-title>
-        GetUsGrub
-      </v-toolbar-title>
+      <div>
+        <router-link to="/">
+        <v-btn flat class="home-btn">
+          <v-icon>home</v-icon>
+          <v-toolbar-title>
+            <span id="toolbar-title">
+              GetUsGrub
+            </span>
+          </v-toolbar-title>
+        </v-btn>
+      </router-link>
+      </div>
       <v-spacer></v-spacer>
-          <router-link to="/">
-            <v-btn icon><v-icon>home</v-icon></v-btn>
-          </router-link>
-          <router-link to="/Registration">
-            <v-btn color="teal">Register</v-btn>
-          </router-link>
-          <v-btn color="teal">Login</v-btn>
-          <router-link to="/RestaurantBillSplitter">
-            <v-btn color="teal">Split Bill</v-btn>
-          </router-link>
-
-          <v-btn icon><v-icon>email</v-icon></v-btn>
+      <div class="hidden-sm-and-down">
+        <router-link to="/Registration">
+          <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">REGISTER</span></v-btn>
+        </router-link>
+          <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">LOGIN</span></v-btn>
+        <router-link to="/RestaurantBillSplitter">
+          <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">SPLIT BILL</span></v-btn>
+        </router-link>
+      </div>
     </v-toolbar>
 </template>
 
@@ -26,6 +30,18 @@
   margin: auto;
 }
 #header-toolbar {
-  background-color: #660000;
+  background-color: #5caabc;
+}
+div.btn__content {
+  text-transform: none;
+}
+.btn-text {
+  font-weight: bold;
+  font-size: normal;
+  color: white;
+}
+#toolbar-title {
+  font-weight: bold;
+  font-size: x-large;
 }
 </style>

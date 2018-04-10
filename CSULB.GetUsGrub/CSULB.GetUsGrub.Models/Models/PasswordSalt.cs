@@ -18,6 +18,7 @@ namespace CSULB.GetUsGrub.Models
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
+
         public string Salt { get; set; }
 
         // Navigation Property

@@ -49,7 +49,7 @@ export default {
       valid: true,
       rules: {
         required: (value) => (!!value) || 'Required.',
-        nonzero: (value) => value != 0 || 'Price must not be 0.',
+        nonzero: (value) => value !== 0 || 'Price must not be 0.',
         // TODO: make max rule more extensible. -Ryan Luong
         max: (value) => value < 1000.00 || ('Price must be less than 1000.')
       },

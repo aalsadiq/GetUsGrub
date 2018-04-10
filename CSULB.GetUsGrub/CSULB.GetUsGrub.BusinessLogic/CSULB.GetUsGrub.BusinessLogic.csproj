@@ -51,10 +51,6 @@
       <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.ComponentModel.Primitives">
-      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -76,7 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
+    <Compile Include="Managers\RegisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantProfileManager.cs" />
+    <Compile Include="Managers\UnregisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Services\BackoffRequest.cs" />
     <Compile Include="Services\DateTimeService.cs" />
@@ -86,7 +84,7 @@
     <Compile Include="Services\GoogleTimeZoneService.cs" />
     <Compile Include="Services\Interfaces\IBackoff.cs" />
     <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
-    <Compile Include="Managers\RestaurantSelectionManager.cs" />
+    <Compile Include="Managers\BaseManagers\RestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantBillSplitterManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\AuthenticationTokenManager.cs" />
@@ -119,10 +117,11 @@
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantSelectionDtoValidator.cs" />
@@ -132,6 +131,7 @@
     <Compile Include="Validators\ModelValidators\AuthenticationTokenValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
+    <Compile Include="Validators\ModelValidators\SsoTokenPayloadValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAuthenticationModelValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
@@ -143,7 +143,6 @@
     <Compile Include="Validators\ModelValidators\SecurityQuestionValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserAccountValidator.cs" />
     <Compile Include="Validators\ModelValidators\UserProfileValidator.cs" />
-    <Compile Include="Validators\SsoTokenValidator.cs" />
     <Compile Include="Validators\TokenValidator.cs" />
     <Compile Include="Validators\UserValidator.cs" />
   </ItemGroup>

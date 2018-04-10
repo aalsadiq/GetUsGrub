@@ -20,5 +20,7 @@ namespace CSULB.GetUsGrub.Models
         public RestaurantProfileDto RestaurantProfileDto { get; set; }
         [Required]
         public IList<BusinessHourDto> BusinessHourDtos { get; set; }
+
+        public IList<string> FoodPreferences { get; set; }
     }
 }

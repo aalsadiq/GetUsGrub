@@ -34,10 +34,8 @@ namespace CSULB.GetUsGrub.Models
             }
             set
             {
-                if (value == null) return;
-
-                GeoCoordinates.Latitude = value.Latitude.Value;
-                GeoCoordinates.Longitude = value.Longitude.Value;
+                GeoCoordinates.Latitude = value.Latitude ?? 0;
+                GeoCoordinates.Latitude = value.Longitude ?? 0;
             }
         }
         [NotMapped]

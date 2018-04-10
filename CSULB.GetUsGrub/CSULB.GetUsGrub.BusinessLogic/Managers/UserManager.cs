@@ -1,11 +1,9 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-
+// TODO: @Jenn Need to add in default display picture string. Angelica will have this set as a constant. [-Jennifer]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -55,9 +53,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .ToList();
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
 
-
             // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.CreateIndividualClaims());
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.INDIVIDUAL));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
@@ -78,7 +75,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -91,7 +88,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -121,7 +118,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var claimsFactory = new ClaimsFactory();
             var dateTimeService = new DateTimeService();
             var geocodeService = new GoogleGeocodeService();
-
+            // TODO: @Jenn Make a call to Rachel's Food Preference Validator [-Jenn]
             // Validate data transfer object
             var restaurantResult = createRestaurantPreLogicValidationStrategy.ExecuteStrategy();
             if (restaurantResult.Error != null)
@@ -145,9 +142,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var businessHours = registerRestaurantDto.BusinessHourDtos
                 .Select(businessHourDto => new BusinessHour(
                     day: businessHourDto.Day, 
-                    openTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
-                    closeTime: dateTimeService.ConvertLocalMeanTimeToCoordinateUniversalTime(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
+                    openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
+                    closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
                 .ToList();
+            var foodPreferences = new List<FoodPreferences>();
+            if (registerRestaurantDto.FoodPreferences != null)
+            {
+                foodPreferences = registerRestaurantDto.FoodPreferences.Select(foodPreference => new FoodPreferences(foodPreference)).ToList();
+            }
+
+            // Set user claims to be stored in UserClaims table
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.RESTAURANT));
 
             // Call GeocodeService to get geocoordinates of the restaurant
             var geocodeResponse = geocodeService.Geocode(restaurantProfile.Address);
@@ -156,18 +161,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
-            restaurantProfile.GeoCoordinates.Latitude = geocodeResponse.Data.Latitude;
-            restaurantProfile.GeoCoordinates.Longitude = geocodeResponse.Data.Longitude;
-
-            // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims()
-            {
-                Claims = claimsFactory.CreateRestaurantClaims()
-            };
+            restaurantProfile.GeoCoordinates = new GeoCoordinates(latitude: geocodeResponse.Data.Latitude, longitude: geocodeResponse.Data.Longitude);
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
@@ -179,7 +177,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
-
+            // TODO: @Jenn Make a call to Rachel's Food Preference Validator [-Jenn]
             // Validate domain models
             var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);
             var validateResult = createRestaurantPostLogicValdiationStrategy.ExecuteStrategy();
@@ -188,20 +186,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterRestaurantDto>
                 {
                     Data = registerRestaurantDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
             // Store user in database
             using (var userGateway = new UserGateway())
             {
-                var gatewayResult = userGateway.StoreRestaurantUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, userClaims, userProfile, restaurantProfile, businessHours);
+                var gatewayResult = userGateway.StoreRestaurantUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, userClaims, userProfile, restaurantProfile, businessHours, foodPreferences);
                 if (gatewayResult.Data == false)
                 {
                     return new ResponseDto<RegisterRestaurantDto>()
                     {
                         Data = registerRestaurantDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -247,7 +245,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Store user in database
+            // Store a user from Single Sign On registration request
             using (var userGateway = new UserGateway())
             {
                 var gatewayResult = userGateway.StoreSsoUser(userAccount, passwordSalt);
@@ -256,7 +254,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<bool>()
                     {
                         Data = gatewayResult.Data,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -297,7 +295,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "private");//changed this to private
+            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "private");
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
@@ -306,7 +304,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
 
             // Set user claims to be stored in UserClaims table as administrator
-            var userClaims = new UserClaims(claimsFactory.CreateAdminClaims());
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.ADMIN));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
@@ -327,7 +325,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<RegisterUserDto>
                 {
                     Data = registerUserDto,
-                    Error = ErrorMessages.GENERAL_ERROR
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 
@@ -340,7 +338,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<RegisterUserDto>()
                     {
                         Data = registerUserDto,
-                        Error = ErrorMessages.GENERAL_ERROR
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }

@@ -13,7 +13,8 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class SsoContext : DbContext
     {
-        public DbSet<SsoToken> SsoTokens { get; set; }
+        public DbSet<InvalidSsoToken> InvalidSsoTokens { get; set; }
+        public DbSet<ValidSsoToken> ValidSsoTokens { get; set; }
         public SsoContext() : base("GetUsGrub") { }
     }
 }

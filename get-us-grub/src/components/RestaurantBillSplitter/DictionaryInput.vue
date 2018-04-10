@@ -31,8 +31,6 @@
 
 <script>
 import axios from 'axios'
-import { VMoney } from 'v-money'
-
 export default {
   name: 'DictionaryInput',
   components: {
@@ -47,7 +45,7 @@ export default {
       price: null,
       rules: {
         required: (value) => (!!value) || 'Required.',
-        nonzero: (value) => value != 0 || 'Price must not be 0.',
+        nonzero: (value) => value !== 0 || 'Price must not be 0.',
         // TODO: make max rule more extensible. -Ryan Luong
         max: (value) => value < 1000.00 || ('Price must be less than 1000.')
       },
@@ -61,19 +59,33 @@ export default {
       }
     }
   },
-  directives: { money: VMoney },
   methods: {
-    AddToDictionary: function (name, price) {
-      if (this.$refs.dictionaryInputForm.validate()) {
-        console.log('Add Form Validated')
-        this.$store.dispatch('AddToDictionary', [name, price])
+    AddToDictionary: function (menuItemName, menuItemPrice) {
+      if (this.ValidateDictionaryForm(menuItemName, menuItemPrice)) {
+        this.$store.dispatch('AddToDictionary', [menuItemName, menuItemPrice])
+      }
+    },
+    ValidateDictionaryForm: function (menuItemName, menuItemPrice) {
+      if (!menuItemName || !menuItemPrice) {
+        return false
+      } else if (menuItemPrice <= this.$store.state.MINIMUM_MENU_ITEM_PRICE || menuItemPrice > this.$store.state.MAX_MENU_ITEM_PRICE) {
+        return false
+      } else {
+        return true
       }
     },
     ValidatePrice: function () {
       return true
     },
     log: function () {
-      console.log(this.$refs.dictionaryInputForm)
+      axios.get('https://jsonplaceholder.typicode.com/posts/1')
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      console.log(this.$refs)
     }
   },
   computed: {
@@ -88,7 +100,7 @@ export default {
   .dictionaryInput {
     grid-column: 3;
     grid-row: 1;
-    outline: solid;
-    padding: 0 20px 0 20px;
+    outline: dashed;
+    padding: 5px;
   }
 </style>

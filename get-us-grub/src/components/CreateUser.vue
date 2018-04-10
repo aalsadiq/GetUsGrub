@@ -2,7 +2,7 @@
     <div id="create-user">
       {{ responseDataStatus }} {{ responseData }}
       <v-toolbar dark tabs flat>
-        <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-3">
+        <v-tabs v-model="tabs" icons-and-text centered dark color="blue-grey darken-2">
           <v-spacer/>
           <v-tab href="#user">User
             <v-icon>face</v-icon>
@@ -20,46 +20,46 @@
             <v-stepper v-model="userStep" vertical>
               <v-stepper-header>
                 <v-divider></v-divider>
-                <v-stepper-step step="1" :complete="userStep > 1" editable>Identification</v-stepper-step>
+                <v-stepper-step step="1" :complete="userStep > 1">Identification</v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step step="2" :complete="userStep > 2">Security Questions</v-stepper-step>
                 <v-divider></v-divider>
               </v-stepper-header>
               <v-stepper-items>
                 <v-stepper-content step="1">
-                    <v-form ref="form" v-model="validIdentificationInput">
+                    <v-form v-model="validIdentificationInput">
                       <v-text-field
                         label="Enter a username"
                         v-model="userAccount.username"
-                        :rules="usernameRules"
+                        :rules="$store.state.rules.usernameRules"
                         required
                       ></v-text-field>
                       <v-text-field
                         label="Enter a display name"
                         v-model="userProfile.displayName"
-                        :rules="displayNameRules"
+                        :rules="$store.state.rules.displayNameRules"
                         required
                       ></v-text-field>
                       <v-text-field
                         label="Enter a password"
                         v-model="userAccount.password"
-                        :rules="passwordRules"
+                        :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
-                        :append-icon="visibile ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (visibile = !visibile)"
-                        :type=" visibile ? 'text' : 'password'"
+                        :append-icon="visible ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (visiile = !visible)"
+                        :type=" visible ? 'text' : 'password'"
                         required
                       ></v-text-field>
                     </v-form>
                   <v-btn color="primary" @click="userStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="2">
-                  <v-form v-model="validSecurityInput" ref="form">
+                  <v-form v-model="validSecurityInput">
                   <v-layout row wrap>
                     <v-flex xs12>
                       <v-select
-                        :items="securityQuestionsSet1"
+                        :items="$store.state.constants.securityQuestionsSet1"
                         item-text="question"
                         item-value="id"
                         v-model="securityQuestions[0].question"
@@ -73,11 +73,11 @@
                       <v-text-field
                         label="Enter an answer to the above security question"
                         v-model="securityQuestions[0].answer"
-                        :rules="securityAnswerRules"
+                        :rules="$store.state.rules.securityAnswerRules"
                         required
                       ></v-text-field>
                       <v-select
-                        :items="securityQuestionsSet2"
+                        :items="$store.state.constants.securityQuestionsSet2"
                         item-text="question"
                         item-value="id"
                         v-model="securityQuestions[1].question"
@@ -91,11 +91,11 @@
                       <v-text-field
                       label="Enter an answer to the above security question"
                       v-model="securityQuestions[1].answer"
-                      :rules="securityAnswerRules"
+                      :rules="$store.state.rules.securityAnswerRules"
                       required
                     ></v-text-field>
                     <v-select
-                        :items="securityQuestionsSet3"
+                        :items="$store.state.constants.securityQuestionsSet3"
                         item-text="question"
                         item-value="id"
                         v-model="securityQuestions[2].question"
@@ -109,14 +109,14 @@
                       <v-text-field
                       label="Enter an answer to the above security question"
                       v-model="securityQuestions[2].answer"
-                      :rules="securityAnswerRules"
+                      :rules="$store.state.rules.securityAnswerRules"
                       required
                     ></v-text-field>
                     </v-flex>
                   </v-layout>
                   </v-form>
                   <v-btn color="grey lighten-5" @click="userStep = 1">Previous</v-btn>
-                  <v-btn color="primary" @click="userSubmit" :disabled="!validSecurityInput">Submit</v-btn>
+                  <v-btn color="primary" @submit.prevent="userSubmit" :disabled="!validSecurityInput">Submit</v-btn>
                 </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
@@ -142,24 +142,24 @@
                       <v-text-field
                         label="Enter a username"
                         v-model="userAccount.username"
-                        :rules="usernameRules"
+                        :rules="$store.state.rules.usernameRules"
                         required
                       ></v-text-field>
                       <v-text-field
                         label="Enter a display name"
                         v-model="userProfile.displayName"
-                        :rules="displayNameRules"
+                        :rules="$store.state.rules.displayNameRules"
                         required
                       ></v-text-field>
                       <v-text-field
                         label="Enter a password"
                         v-model="userAccount.password"
-                        :rules="passwordRules"
+                        :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
-                        :append-icon="visibile ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (visibile = !visibile)"
-                        :type=" visibile ? 'text' : 'password'"
+                        :append-icon="visible ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (visible = !visible)"
+                        :type=" visible ? 'text' : 'password'"
                         required
                       ></v-text-field>
                     </v-form>
@@ -170,7 +170,7 @@
                   <v-layout row wrap>
                     <v-flex xs12>
                       <v-select
-                        :items="securityQuestionsSet1"
+                        :items="$store.state.constants.securityQuestionsSet1"
                         item-text="question"
                         item-value="id"
                         v-model="securityQuestions[0].question"
@@ -184,11 +184,11 @@
                       <v-text-field
                         label="Enter an answer to the above security question"
                         v-model="securityQuestions[0].answer"
-                        :rules="securityAnswerRules"
+                        :rules="$store.state.rules.securityAnswerRules"
                         required
                       ></v-text-field>
                       <v-select
-                        :items="securityQuestionsSet2"
+                        :items="$store.state.constants.securityQuestionsSet2"
                         item-text="question"
                         item-value="id"
                         v-model="securityQuestions[1].question"
@@ -202,11 +202,11 @@
                       <v-text-field
                       label="Enter an answer to the above security question"
                       v-model="securityQuestions[1].answer"
-                      :rules="securityAnswerRules"
+                      :rules="$store.state.rules.securityAnswerRules"
                       required
                     ></v-text-field>
                     <v-select
-                        :items="securityQuestionsSet3"
+                        :items="$store.state.constants.securityQuestionsSet3"
                         item-text="question"
                         item-value="id"
                         v-model="securityQuestions[2].question"
@@ -220,7 +220,7 @@
                       <v-text-field
                       label="Enter an answer to the above security question"
                       v-model="securityQuestions[2].answer"
-                      :rules="securityAnswerRules"
+                      :rules="$store.state.rules.securityAnswerRules"
                       required
                     ></v-text-field>
                     </v-flex>
@@ -233,22 +233,22 @@
                   <v-form v-model="validRestaurantDetailsInput">
                     <v-flex xs12>
                       <v-select
-                        :items="foodCategories"
-                        item-text="category"
-                        item-value="category"
-                        v-model="restaurantProfile.details.category"
-                        label="Select a food category"
+                        :items="$store.state.constants.foodTypes"
+                        item-text="type"
+                        item-value="type"
+                        v-model="restaurantProfile.details.foodType"
+                        label="Select a food type associated with your restaurant"
                         single-line
                         auto
                         prepend-icon="restaurant"
                         hide-details
-                        :rules="foodCategoryRules"
+                        :rules="$store.state.rules.foodTypeRules"
                         required
                       ></v-select>
                     </v-flex>
                     <v-flex xs12>
                       <v-select
-                        :items="avgFoodPrices"
+                        :items="$store.state.constants.avgFoodPrices"
                         item-text="price"
                         item-value="id"
                         v-model="restaurantProfile.details.avgFoodPrice"
@@ -257,22 +257,20 @@
                         auto
                         prepend-icon="money"
                         hide-details
-                        :rules="avgFoodPriceRules"
+                        :rules="$store.state.rules.avgFoodPriceRules"
                         required
                       ></v-select>
                     </v-flex>
                     <v-flex xs12 sm6>
                       <v-select
                         label="Select a food preference"
-                        item-text="foodPreference"
-                        item-value="id"
-                        :items="foodPreferences"
-                        v-model="restaurantProfile.foodPreferences"
+                        :items="$store.state.constants.foodPreferences"
+                        v-model="foodPreferences"
                         multiple
                         chips
-                        prepend-icon="restaurant"
+                        prepend-icon=""
                         persistent-hint
-                        :rules="foodPreferenceRules"
+                        :rules="$store.state.rules.foodPreferenceRules"
                         required
                       ></v-select>
                     </v-flex>
@@ -283,7 +281,7 @@
                 <v-stepper-content step="4">
                   <v-form v-model="validAddBusinessHour">
                     <v-select
-                      :items="timeZones"
+                      :items="$store.state.constants.timeZones"
                       item-text="displayString"
                       item-value="timeZoneName"
                       v-model="timeZone"
@@ -291,17 +289,17 @@
                       single-line
                       auto
                       hide-details
-                      :rules="timeZoneRules"
+                      :rules="$store.state.rules.timeZoneRules"
                       required
                     ></v-select>
                     <v-select
-                      :items="dayOfWeek"
+                      :items="$store.state.constants.dayOfWeek"
                       v-model="businessHour.day"
                       label="Select a day"
                       single-line
                       auto
                       hide-details
-                      :rules="businessDayRules"
+                      :rules="$store.state.rules.businessDayRules"
                       required
                     ></v-select>
                     <v-menu
@@ -322,7 +320,7 @@
                         label="Select opening time (24hr format)"
                         v-model="businessHour.openTime"
                         prepend-icon="access_time"
-                        :rules="openTimeRules"
+                        :rules="$store.state.rules.openTimeRules"
                         readonly
                         required
                       ></v-text-field>
@@ -346,7 +344,7 @@
                         label="Select closing time (24hr format)"
                         v-model="businessHour.closeTime"
                         prepend-icon="access_time"
-                        :rules="closeTimeRules"
+                        :rules="$store.state.rules.closeTimeRules"
                         readonly
                         required
                       ></v-text-field>
@@ -371,7 +369,7 @@
                       label="Street 1"
                       placeholder="1111 Snowy Rock Pl"
                       v-model="restaurantProfile.address.street1"
-                      :rules="addressStreet1Rules"
+                      :rules="$store.state.rules.addressStreet1Rules"
                       required
                     ></v-text-field>
                     <v-text-field
@@ -383,12 +381,16 @@
                       label="City"
                       placeholder="Long Beach"
                       v-model="restaurantProfile.address.city"
+                      :rules="$store.state.constants.addressCityRules"
                       required
                     ></v-text-field>
                     <v-select
-                      :items="states"
+                      :items="$store.state.constants.states"
                       v-model="restaurantProfile.address.state"
+                      item-text="name"
+                      item-value="abbreviation"
                       label="Select a state"
+                      :rules="$store.state.rules.addressStateRules"
                       single-line
                       auto
                       append-icon="map"
@@ -398,7 +400,7 @@
                       <v-text-field
                       label="Zip"
                       placeholder="92812"
-                      :rules="addressZipRules"
+                      :rules="$store.state.rules.addressZipRules"
                       type="number"
                       v-model.number="restaurantProfile.address.zip"
                       required
@@ -411,7 +413,7 @@
                         v-model="restaurantProfile.phoneNumber"
                         placeholder="(562)111-5555"
                         prepend-icon="phone"
-                        :rules="phoneNumberRules"
+                        :rules="$store.state.rules.phoneNumberRules"
                         single-line
                       ></v-text-field>
                     </v-flex>
@@ -437,14 +439,13 @@ export default {
     tabs: null,
     userStep: 0,
     restaurantStep: 0,
-    time: null,
     validIdentificationInput: false,
     validSecurityInput: false,
     validBusinessHourInput: false,
     validRestaurantDetailsInput: false,
     validAddBusinessHour: false,
     validContactInput: false,
-    visibile: false,
+    visible: false,
     openMenu: false,
     closeMenu: false,
     openTimeSync: false,
@@ -479,185 +480,17 @@ export default {
       },
       phoneNumber: '',
       details: {
-        category: '',
+        foodType: '',
         avgFoodPrice: null
-      },
-      foodPreferences: [
-      ]
+      }
     },
+    foodPreferences: [],
     businessHours: [],
     businessHour: {
       day: '',
       openTime: null,
       closeTime: null
     },
-    usernameRules: [
-      username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-    ],
-    displayNameRules: [
-      displayName => !!displayName || 'Display name is required'
-    ],
-    passwordRules: [
-      password => !!password || 'Password is required',
-      password => password.length >= 8 || 'Password must be at least 8 characters',
-      password => password.length < 64 || 'Password must be at most 64 characters'
-    ],
-    securityAnswerRules: [
-      securityAnswer => !!securityAnswer || 'Security answer is required'
-    ],
-    addressStreet1Rules: [
-      street1 => !!street1 || 'Street 1 is required'
-    ],
-    addressZipRules: [
-      zip => !!zip || 'Zip code is required',
-      zip => /^\d{5}$/.test(zip) || 'Zip code must contain 5 numbers'
-    ],
-    phoneNumberRules: [
-      phone => !!phone || 'Phone number is required',
-      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
-    ],
-    foodCategoryRules: [
-      category => !!category || 'Food category is required'
-    ],
-    avgFoodPriceRules: [
-      price => !!price || 'Food price is required'
-    ],
-    foodPreferenceRules: [
-      foodPreference => !!foodPreference || 'Food preference is required'
-    ],
-    securityQuestionsSet1: [{
-      id: 1,
-      question: 'Who was the company you first worked for?'
-    },
-    {
-      id: 2,
-      question: 'Where did you go to highschool or college?'
-    },
-    {
-      id: 3,
-      question: 'What was the name of the teacher who gave you your first failing grade?'
-    }],
-    securityQuestionsSet2: [{
-      id: 4,
-      question: 'What is your favorite song?'
-    },
-    {
-      id: 5,
-      question: 'What is your mother\'s maiden name?'
-    },
-    {
-      id: 6,
-      question: 'What is your favorite sports team?'
-    }],
-    securityQuestionsSet3: [{
-      id: 7,
-      question: 'What was the name of your first crush?'
-    },
-    {
-      id: 8,
-      question: 'What is the name of your hometown?'
-    },
-    {
-      id: 9,
-      question: 'What was the name of your first pet?'
-    }],
-    timeZones: [{
-      displayString: '(UTC-08:00) Pacific Standard Time',
-      timeZoneName: 'Pacific Standard Time'
-    }],
-    dayOfWeek: [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'
-    ],
-    avgFoodPrices: [{
-      id: 1,
-      price: '$0.00 to $10.00'
-    },
-    {
-      id: 2,
-      price: '$10.01 to $50.00'
-    },
-    {
-      id: 3,
-      price: '$50.01+'
-    }],
-    foodCategories: [{
-      id: 0,
-      category: 'Mexican Food'
-    },
-    {
-      id: 1,
-      category: 'Italian Cuisine'
-    },
-    {
-      id: 2,
-      category: 'Thai Food'
-    },
-    {
-      id: 3,
-      category: 'Greek Cuisine'
-    },
-    {
-      id: 4,
-      category: 'Chinese Food'
-    },
-    {
-      id: 5,
-      category: 'Japanese Cuisine'
-    },
-    {
-      id: 6,
-      category: 'American Food'
-    },
-    {
-      id: 7,
-      category: 'Mediterranean Cuisine'
-    },
-    {
-      id: 8,
-      category: 'French Food'
-    },
-    {
-      id: 9,
-      category: 'Spanish Cuisine'
-    },
-    {
-      id: 10,
-      category: 'German Food'
-    },
-    {
-      id: 11,
-      category: 'Korean Food'
-    },
-    {
-      id: 12,
-      category: 'Vietnamese Food'
-    },
-    {
-      id: 13,
-      category: 'Turkish Cuisine'
-    },
-    {
-      id: 14,
-      category: 'Caribbean Food'
-    }],
-    foodPreferences: [{
-      id: 1,
-      foodPreference: 'Food preference 1'
-    },
-    {
-      id: 2,
-      foodPreference: 'Food preference 2'
-    }],
-    states: [
-      'CA'
-    ],
     responseDataStatus: '',
     responseData: ''
   }),
@@ -694,6 +527,7 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
         restaurantProfileDto: this.restaurantProfile,
+        foodPreferences: this.foodPreferences,
         timeZone: this.timeZone,
         businessHourDtos: this.businessHours
       }).then(response => {

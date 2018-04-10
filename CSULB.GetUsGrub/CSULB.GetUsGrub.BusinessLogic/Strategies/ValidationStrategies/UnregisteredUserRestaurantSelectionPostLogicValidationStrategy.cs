@@ -1,5 +1,4 @@
 ﻿using CSULB.GetUsGrub.Models;
-using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -33,18 +32,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> ExecuteStrategy()
         {
-            var validationWrappers = new List<IValidationWrapper>()
+            var validationWrapper = new ValidationWrapper<RestaurantSelectionDto>(_restaurantSelectionDto, "UnregisteredUserPostLogic", _restaurantSelectionDtoValidator);
+            var result = validationWrapper.ExecuteValidator();
+            if (!result.Data)
             {
-                new ValidationWrapper<RestaurantSelectionDto>(_restaurantSelectionDto, "UnregisteredUserPostLogic", _restaurantSelectionDtoValidator)
-            };
-
-            foreach (var validationWrapper in validationWrappers)
-            {
-                var result = validationWrapper.ExecuteValidator();
-                if (!result.Data)
-                {
-                    return result;
-                }
+                return result;
             }
 
             return new ResponseDto<bool>()

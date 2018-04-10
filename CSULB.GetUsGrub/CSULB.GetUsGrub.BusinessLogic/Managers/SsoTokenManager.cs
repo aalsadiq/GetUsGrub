@@ -2,6 +2,9 @@
 using CSULB.GetUsGrub.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Configuration;
+using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -18,13 +21,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         private readonly string _token;
         private readonly TokenService _tokenService;
-        private readonly SsoTokenValidationStrategy _ssoTokenValidationStrategy;
+        private readonly SsoTokenPreLogicValidationStrategy _ssoTokenPreLogicValidationStrategy;
 
         public SsoTokenManager(string token)
         {
             _token = token;
             _tokenService = new TokenService();
-            _ssoTokenValidationStrategy = new SsoTokenValidationStrategy(_token, GetSigningKey());
+            _ssoTokenPreLogicValidationStrategy = new SsoTokenPreLogicValidationStrategy(_token, GetSigningKey());
         }
 
         /// <summary>
@@ -38,13 +41,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>ResponseDto with a UserAccountDto</returns>
         public ResponseDto<UserAccountDto> ManageToken()
         {
-            string username = "";
-            string password = "";
-            string roleType = "";
+            
+            // Instantiating SSO token model
+            var ssoToken = new SsoToken()
+            {
+                Token = _token
+            };
 
-            // TODO: @Jenn Validation Strategy to check if all the required things are there?
-            // Call validation strategy
-            var result = _ssoTokenValidationStrategy.ExecuteStrategy();
+            // Validate token before applying business logic
+            var result = _ssoTokenPreLogicValidationStrategy.ExecuteStrategy();
             if (!result.Data)
             {
                 return new ResponseDto<UserAccountDto>()
@@ -53,10 +58,42 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Stores token into database
+            Debug.WriteLine("Here2");
+            // Convert string token to Json Web Security Token (JwtSecurityToken)
+            var jwt = _tokenService.GetJwtSecurityToken(_token);
+            // Extract payload from JwtSecurityToken
+            var payload = jwt.Payload;
+
+            // Map payload keys to SsoPayload model
+            var mappingResult = MapRequestJwtPayloadToSsoJwtPayload(payload);
+            if (mappingResult.Error != null)
+            {
+                return new ResponseDto<UserAccountDto>()
+                {
+                    Error = mappingResult.Error
+                };
+            }
+            Debug.WriteLine("Here3");
+            ssoToken.SsoTokenPayload = mappingResult.Data;
+            Debug.WriteLine("Here4");
+            // Validate token after applying business logic
+            var ssoTokenPostLogicValidationStrategy = new SsoTokenPostLogicValidationStrategy(ssoToken);
+            result = ssoTokenPostLogicValidationStrategy.ExecuteStrategy();
+            if (!result.Data)
+            {
+                return new ResponseDto<UserAccountDto>()
+                {
+                    Error = result.Error
+                };
+            }
+
+            // Creating valid SSO token
+            var validSsoToken = new ValidSsoToken(ssoToken.Token);
+
+            // Stores valid token into database
             using (var authenticationGateway = new AuthenticationGateway())
             {
-                var gatewayResult = authenticationGateway.StoreSsoToken(new SsoToken(_token));
+                var gatewayResult = authenticationGateway.StoreValidSsoToken(validSsoToken);
                 if (gatewayResult.Error != null)
                 {
                     return new ResponseDto<UserAccountDto>()
@@ -66,12 +103,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
             }
 
-            var jwt = _tokenService.GetJwtSecurityToken(_token);
-            var payload = jwt.Payload;
-
+            Debug.WriteLine("Here5");
+            // TODO: @Jenn should I do this? [-Jenn]
+            // Send back a new UserAccountDto
             return new ResponseDto<UserAccountDto>()
             {
-                Data = new UserAccountDto(username: username, password: password, roleType: roleType)
+                Data = new UserAccountDto(username: ssoToken.SsoTokenPayload.Username, password: ssoToken.SsoTokenPayload.Password, roleType: ssoToken.SsoTokenPayload.RoleType)
             };
         }
 
@@ -84,12 +121,51 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </para>
         /// </summary>
         /// <returns>SymmetricSecurityKey</returns>
-        private static SymmetricSecurityKey GetSigningKey()
+        private SymmetricSecurityKey GetSigningKey()
         {
-            // TODO: @Jenn Where to hide this secret key? Also will need a new secret key [-Jenn]
-            const string secretKey = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+            var secretKey = ConfigurationManager.AppSettings["SsoKey"];
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             return signingKey;
+        }
+
+        // TODO: @Jenn Comment this  [-Jenn]
+        public ResponseDto<SsoTokenPayload> MapRequestJwtPayloadToSsoJwtPayload(JwtPayload payload)
+        {
+            var ssoTokenPayload = new SsoTokenPayload();
+            
+            // Check if required information is in the payload
+            foreach (var keyValuePair in payload)
+            {
+                switch (keyValuePair.Key)
+                {
+                    case SsoTokenPayloadKeys.USERNAME:
+                        ssoTokenPayload.Username = keyValuePair.Value.ToString();
+                        break;
+                    case SsoTokenPayloadKeys.PASSWORD:
+                        ssoTokenPayload.Password = keyValuePair.Value.ToString();
+                        break;
+                    case SsoTokenPayloadKeys.ROLE_TYPE:
+                        ssoTokenPayload.RoleType = keyValuePair.Value.ToString().ToLower();
+                        break;
+                    case SsoTokenPayloadKeys.APPLICATION:
+                        ssoTokenPayload.Application = keyValuePair.Value.ToString().ToLower();
+                        break;
+                    case SsoTokenPayloadKeys.IAT:
+                        ssoTokenPayload.IssuedAt = keyValuePair.Value.ToString();
+                        break;
+                    default:
+                        return new ResponseDto<SsoTokenPayload>()
+                        {
+                            Data = null,
+                            Error = SsoErrorMessages.INVALID_TOKEN_PAYLOAD
+                        };
+                }
+            }
+
+            return new ResponseDto<SsoTokenPayload>()
+            {
+                Data = ssoTokenPayload
+            };
         }
 
         public void Dispose() {}

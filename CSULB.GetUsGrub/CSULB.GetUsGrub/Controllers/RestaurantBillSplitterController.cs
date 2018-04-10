@@ -12,6 +12,12 @@ using Newtonsoft.Json;
 
 namespace CSULB.GetUsGrub.Controllers
 {
+		/// <summary>
+		/// Retreives information from a restaurant by its public restaurant ID
+		/// and returns the Menus and MenuItems of each Menu that specific restaurant has.
+		/// @author Ryan Luong
+		/// @updated 4/4/18
+		/// </summary>
 		[RoutePrefix("RestaurantBillSplitter")]
 		public class RestaurantBillSplitterController : ApiController
 		{
@@ -19,9 +25,9 @@ namespace CSULB.GetUsGrub.Controllers
 				[AllowAnonymous] // TODO: Remove for deployment
 				[Route("Restaurant")]
 				[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-				public IHttpActionResult GetRestaurantMenus(string displayName, double latitude, double longitude)
+				public IHttpActionResult GetRestaurantMenus(int restaurantID)
 				{
-						var restaurantDto = new RestaurantDto(displayName, latitude, longitude);
+						var restaurantDto = new RestaurantDto(restaurantID);
 
 						if (!ModelState.IsValid)
 						{
@@ -30,9 +36,7 @@ namespace CSULB.GetUsGrub.Controllers
 						try
 						{
 								var restaurantBillSplitterManager = new RestaurantBillSplitterManager();
-								Debug.WriteLine("Created Manager");
-								Debug.WriteLine("Testing");
-								var response = restaurantBillSplitterManager.GetRestaurantMenus(restaurantDto.DisplayName, restaurantDto.Latitude, restaurantDto.Longitude);
+								var response = restaurantBillSplitterManager.GetRestaurantMenus(restaurantDto.RestaurantID);
 								if (response.Error != null)
 								{
 										return BadRequest(response.Error);

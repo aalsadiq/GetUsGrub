@@ -71,9 +71,7 @@ export default {
   },
   methods: {
     GetRestaurantMenus: function () {
-      console.log(this.$store.state.restaurantDisplayName)
-      console.log(this.$store.state.restaurantLatitude)
-      console.log(this.$store.state.restaurantLongitude)
+      console.log(this.$store.state.restaurantID)
       if (this.$store.state.isAuthenticated) {
         console.log('Authenticated')
         axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
@@ -81,9 +79,7 @@ export default {
             'Access-Control-Allow-Origin': '*'
           },
           params: {
-            DisplayName: this.$store.state.restaurantDisplayName,
-            Latitude: this.$store.state.restaurantLatitude,
-            Longitude: this.$store.state.restaurantLongitude
+            DisplayName: this.$store.state.restaurantID,
           }
         }).then(response => {
           console.log(response)

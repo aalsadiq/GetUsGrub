@@ -32,10 +32,8 @@ namespace CSULB.GetUsGrub.Models
             }
             set
             {
-                if (value == null) return;
-
-                ClientUserGeoCoordinates.Latitude = value.Latitude.Value;
-                ClientUserGeoCoordinates.Longitude = value.Longitude.Value;
+                ClientUserGeoCoordinates.Latitude = value.Latitude ?? 0;
+                ClientUserGeoCoordinates.Latitude = value.Longitude ?? 0;
             }
         }
 
@@ -46,7 +44,6 @@ namespace CSULB.GetUsGrub.Models
         public RestaurantSelectionDto() { }
         public RestaurantSelectionDto(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
-            ClientUserGeoCoordinates = new GeoCoordinates(0,0);
             City = city;
             State = state;
             FoodType = foodType;

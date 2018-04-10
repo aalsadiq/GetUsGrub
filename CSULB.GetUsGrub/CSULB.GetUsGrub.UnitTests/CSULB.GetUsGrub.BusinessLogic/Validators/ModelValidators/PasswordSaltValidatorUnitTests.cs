@@ -20,7 +20,10 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var passwordSaltValidator = new PasswordSaltValidator();
-            var passwordSalt = new PasswordSalt("!Q2w#E4r");
+            var passwordSalt = new PasswordSalt()
+            {
+                Salt = "!Q2w#E4r"
+            };
 
             // Act
             var result = passwordSaltValidator.Validate(passwordSalt);
@@ -35,7 +38,10 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var passwordSaltValidator = new PasswordSaltValidator();
-            var passwordSalt = new PasswordSalt("");
+            var passwordSalt = new PasswordSalt()
+            {
+                Salt = ""
+            };
 
 
             // Act
@@ -51,7 +57,10 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var passwordSaltValidator = new PasswordSaltValidator();
-            var passwordSalt = new PasswordSalt(null);
+            var passwordSalt = new PasswordSalt()
+            {
+                Salt = null
+            };
 
 
             // Act

@@ -72,7 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
+    <Compile Include="Managers\RegisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantProfileManager.cs" />
+    <Compile Include="Managers\UnregisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Services\BackoffRequest.cs" />
@@ -83,7 +85,7 @@
     <Compile Include="Services\GoogleTimeZoneService.cs" />
     <Compile Include="Services\Interfaces\IBackoff.cs" />
     <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
-    <Compile Include="Managers\RestaurantSelectionManager.cs" />
+    <Compile Include="Managers\BaseManagers\RestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantBillSplitterManager.cs" />
     <Compile Include="Managers\AuthenticationTokenManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />

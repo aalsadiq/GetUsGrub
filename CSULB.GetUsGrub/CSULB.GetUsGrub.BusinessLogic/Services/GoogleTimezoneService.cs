@@ -44,57 +44,49 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Offset of time (in seconds) from UTC.</returns>
         public async Task<ResponseDto<int>> GetOffsetAsync(IGeoCoordinates coordinates)
         {
-            try
+            // Get current date in seconds to determine if its DST for Google's API.
+            var baseTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
+            var timeStamp = (int)DateTime.Now.Subtract(baseTime).TotalSeconds;
+
+            // Retrieve key from configuration and build url for get request.
+            var key = ConfigurationManager.AppSettings["GoogleTimezoneApi"];
+            var url = BuildUrl(coordinates, key, timeStamp);
+
+            // Send get request and parse response
+            var request = new GetRequestService(url);
+            var response = await new GoogleBackoffRequest(request).TryExecute();
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var responseObj = JObject.Parse(responseJson);
+
+            // Retrieve status code from response
+            var status = (string)responseObj.SelectToken("status");
+
+            // Exit early if status is not OK.
+            if (!status.Equals("OK"))
             {
-                // Get current date in seconds to determine if its DST for Google's API.
-                var baseTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
-                var timeStamp = (int)DateTime.Now.Subtract(baseTime).TotalSeconds;
-
-                // Retrieve key from configuration and build url for get request.
-                var key = ConfigurationManager.AppSettings["GoogleTimezoneApi"];
-                var url = BuildUrl(coordinates, key, timeStamp);
-
-                // Send get request and parse response
-                var request = new GetRequestService(url);
-                var response = await new GoogleBackoffRequest(request).TryExecute();
-                var responseJson = await response.Content.ReadAsStringAsync();
-                var responseObj = JObject.Parse(responseJson);
-
-                // Retrieve status code from response
-                var status = (string)responseObj.SelectToken("status");
-
-                // Exit early if status is not OK.
-                if (!status.Equals("OK"))
+                if (status.Equals("ZERO_RESULTS"))
                 {
-                    if (status.Equals("ZERO_RESULTS"))
-                    {
-                        status = "Invalid Input";
-                    }
-                    else
-                    {
-                        status = "Unexpected Error";
-                    }
-
-                    return new ResponseDto<int>()
-                    {
-                        Error = status
-                    };
+                    status = "Invalid Input";
                 }
-
-                // Retrieve offsets from response and return the sum of the offsets.
-                var offset = (int)responseObj.SelectToken("rawOffset");
-                var dstOffset = (int)responseObj.SelectToken("dstOffset");
+                else
+                {
+                    status = "Unexpected Error";
+                }
 
                 return new ResponseDto<int>()
                 {
-                    Data = offset + dstOffset
+                    Error = status
                 };
             }
-            // If API Key not found, throw error.
-            catch (ConfigurationErrorsException)
+
+            // Retrieve offsets from response and return the sum of the offsets.
+            var offset = (int)responseObj.SelectToken("rawOffset");
+            var dstOffset = (int)responseObj.SelectToken("dstOffset");
+
+            return new ResponseDto<int>()
             {
-                throw new Exception("Google Timezone API Key not found.");
-            }
+                Data = offset + dstOffset
+            };
         }
     }
 }

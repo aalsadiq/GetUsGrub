@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;

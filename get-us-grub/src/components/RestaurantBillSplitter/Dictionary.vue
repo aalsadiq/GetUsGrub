@@ -8,6 +8,7 @@
         <edit-item :editType="$options.name" :itemIndex="menuItemIndex" :Item="menuItem" />
         <delete-item :deleteType="$options.name" :itemIndex="menuItemIndex" />
       </div>
+
     </draggable>
   </div>
 </template>
@@ -76,7 +77,7 @@ export default {
   .dictionary {
     grid-column: 3;
     grid-row: 2 / 4;
-    outline: solid;
+    outline: dashed;
   }
 
   .dictionary > h2{

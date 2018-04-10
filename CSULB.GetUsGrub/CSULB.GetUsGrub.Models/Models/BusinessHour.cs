@@ -27,7 +27,6 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public DateTime CloseTime { get; set; }
 
-        // Navigation Properties
         public virtual RestaurantProfile RestaurantProfile { get; set; }
 
         // Constructors

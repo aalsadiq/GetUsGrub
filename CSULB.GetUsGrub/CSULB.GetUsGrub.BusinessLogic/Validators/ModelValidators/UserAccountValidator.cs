@@ -27,11 +27,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull();
 
                 RuleFor(x => x.IsActive)
-                    .NotEmpty()
                     .NotNull();
 
                 RuleFor(x => x.IsFirstTimeUser)
-                    .NotEmpty()
                     .NotNull();
 
                 RuleFor(x => x.RoleType)

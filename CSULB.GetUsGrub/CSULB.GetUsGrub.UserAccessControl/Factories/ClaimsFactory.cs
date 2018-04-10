@@ -7,85 +7,33 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// Factory that creates a set of claims for new users
     /// 
     /// Author: Rachel Dang
-    /// Last Updated: 3/08/18
+    /// Last Updated: 4/07/18
     /// </summary>
-    public class ClaimsFactory
+    public class ClaimsFactory : IFactory<ICollection<Claim>>
     {
-        /// <summary>
-        /// Creates the claims for an Individual User
-        /// </summary>
-        /// <returns>Set of claims associated with an Individual Account</returns>
-        public ICollection<Claim> CreateIndividualClaims()
+        public ICollection<Claim> Create(string type)
         {
-            return new List<Claim>
+            switch (type)
             {
-                // For Individual Profie Management
-                new Claim("ReadIndividualProfile", "True"),
-                new Claim("UpdateIndividualProfile", "True"),
+                // Create claims collection for an individual user
+                case AccountType.INDIVIDUAL:
+                    return new IndividualClaims().Claims;
 
-                // For Food Preferences
-                new Claim("ReadPreferences", "True"),
-                new Claim("UpdatePreferences", "True"),
+                // Create claims collection for a restaurant user
+                case AccountType.RESTAURANT:
+                    return new RestaurantClaims().Claims;
 
-                // For Bill Splitter
-                new Claim("ReadBillSplitter", "True"),
-                new Claim("ReadMenu", "True"),
-                new Claim("ReadDictionary", "True"),
-                new Claim("UpdateDictionary", "True")
-            };
-        }
+                // Create claims collection for an admin user
+                case AccountType.ADMIN:
+                    return new AdminClaims().Claims;
 
-        /// <summary>
-        /// Creates the claims for a Restaurant User
-        /// </summary>
-        /// <returns>Set of claims associated with a Restaurant Account</returns>
-        public ICollection<Claim> CreateRestaurantClaims()
-        {
-            return new List<Claim>
-            {
-                // For Restaurant Profie Management
-                new Claim("ReadRestsaurantProfile", "True"),
-                new Claim("UpdateRestaurantProfile", "True"),
-
-                // For Bill Splitter
-                new Claim("ReadBillSplitter", "True"),
-                new Claim("ReadMenu", "True")
-            };
-        }
-
-        /// <summary>
-        /// Creates the claims for an Administrative User
-        /// </summary>
-        /// <returns>Set of claims associated with an Administrative Account</returns>
-        public ICollection<Claim> CreateAdminClaims()
-        {
-            return new List<Claim>
-            {
-                // For User Management
-                new Claim("CreateUser", "True"),
-                new Claim("ReadUser", "True"),//has READ/VUE access
-                new Claim("UpdateUser", "True"),
-                new Claim("DeleteUser", "True"),
-                new Claim("DeactivateUser", "True"),
-                new Claim("ReactivateUser", "True"),
-
-
-                // For Indvidiual and Restaurant Profile Management
-                new Claim("ReadIndividualProfile", "True"),
-                new Claim("UpdateIndividualProfile", "True"),
-                new Claim("ReadRestsaurantProfile", "True"),//has READ/VUE access
-                new Claim("UpdateRestaurantProfile", "True"),
-
-                // For Food Preferences
-                new Claim("CreatePreferences", "True"),
-                new Claim("ReadPreferences", "True"),//has READ/VUE access
-                new Claim("DeletePreferences", "True"),
-
-                // For Bill Splitter
-                new Claim("ReadBillSplitter", "True"),//has READ/VUE access
-                new Claim("ReadMenu", "True"),//has READ/VUE access
-                new Claim("ReadDictionary", "True")//has READ/VUE access
-            };
+                case null:
+                case "":
+                
+                // Return an empty list of claims for default
+                default:
+                    return new List<Claim> { };
+            }
         }
     }
 }

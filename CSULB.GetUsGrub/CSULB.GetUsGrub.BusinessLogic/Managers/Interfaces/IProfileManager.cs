@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {

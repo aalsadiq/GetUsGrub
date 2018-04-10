@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using FluentValidation;
+using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -13,50 +14,52 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserAccountValidator : AbstractValidator<UserAccount>
     {
+        private readonly List<string> _validRoleTypes = new List<string> { RoleTypes.PUBLIC, RoleTypes.PRIVATE };
+
         public UserAccountValidator()
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Username)
+                RuleFor(userAccount => userAccount.Username)
                     .NotEmpty()
                     .NotNull()
-                    .Matches(@"^[A-Za-z\d]+$");
+                    .Matches(RegularExpressions.USERNAME_FORMAT);
 
-                RuleFor(x => x.Password)
+                RuleFor(userAccount => userAccount.Password)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.IsActive)
+                RuleFor(userAccount => userAccount.IsActive)
                     .NotNull();
 
-                RuleFor(x => x.IsFirstTimeUser)
+                RuleFor(userAccount => userAccount.IsFirstTimeUser)
                     .NotNull();
 
-                RuleFor(x => x.RoleType)
+                RuleFor(userAccount => userAccount.RoleType)
                     .NotEmpty()
                     .NotNull()
-                    .Matches(@"^((public)|(private))$");
+                    .Must(roleType => _validRoleTypes.Contains(roleType));
             });
 
             RuleSet("SsoRegistration", () =>
             {
-                RuleFor(x => x.Username)
+                RuleFor(userAccount => userAccount.Username)
                     .NotEmpty()
                     .NotNull()
-                    .Matches(@"^[A-Za-z\d]+$");
+                    .Matches(RegularExpressions.USERNAME_FORMAT);
 
-                RuleFor(x => x.Password)
+                RuleFor(userAccount => userAccount.Password)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.IsFirstTimeUser)
+                RuleFor(userAccount => userAccount.IsFirstTimeUser)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.RoleType)
+                RuleFor(userAccount => userAccount.RoleType)
                     .NotEmpty()
                     .NotNull()
-                    .Matches(@"^((public)|(private))$");
+                    .Must(roleType => _validRoleTypes.Contains(roleType));
             });
         }
     }

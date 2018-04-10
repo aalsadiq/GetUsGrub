@@ -7,12 +7,12 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>SecurityAnswerSalt</c> class.
     /// Defines properties pertaining to a salt for a security answer.
     /// <para>
-    /// @author: Jennifer Nguyen
+    /// @author: Brian Fann
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>
     [Table("GetUsGrub.SecurityAnswerSalt")]
-    public class SecurityAnswerSalt : IEntity
+    public class SecurityAnswerSalt : ISalt, IEntity
     {
         // Automatic Properties
         [Key]

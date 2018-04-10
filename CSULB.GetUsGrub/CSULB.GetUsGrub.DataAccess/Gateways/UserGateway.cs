@@ -16,7 +16,6 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class UserGateway : IDisposable
     {
-        // TODO: @Jenn How to best handle this error [-Jenn]
         /// <summary>
         /// The GetUserByUsername method.
         /// Gets a user by username.

@@ -18,19 +18,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Day)
-                    .NotEmpty().WithMessage("Business day is required.")
-                    .NotNull().WithMessage("Business day is required.");
+                RuleFor(businessHourDto => businessHourDto.Day)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.BUSINESS_DAY_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.BUSINESS_DAY_REQUIRED);
 
-                RuleFor(x => x.OpenTime)
-                    .NotEmpty().WithMessage("Open time is required.")
-                    .NotNull().WithMessage("Open time is required.")
-                    .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");
+                RuleFor(businessHourDto => businessHourDto.OpenTime)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.OPEN_TIME_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.OPEN_TIME_REQUIRED)
+                    .Matches(RegularExpressions.MILITARY_TIME_FORMAT).WithMessage(ValidationErrorMessages.MILITARY_TIME_FORMAT);
 
-                RuleFor(x => x.CloseTime)
-                    .NotEmpty().WithMessage("Close time is required.")
-                    .NotNull().WithMessage("Close time is required.")
-                    .Matches(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$").WithMessage("Time must be from 0:00 to 23:59.");
+                RuleFor(businessHourDto => businessHourDto.CloseTime)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.CLOSE_TIME_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.CLOSE_TIME_REQUIRED)
+                    .Matches(RegularExpressions.MILITARY_TIME_FORMAT).WithMessage(ValidationErrorMessages.MILITARY_TIME_FORMAT);
             });
         }
 

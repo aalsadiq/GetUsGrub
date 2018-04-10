@@ -15,7 +15,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public PasswordSaltValidator()
         {
-            RuleFor(x => x.Salt)
+            RuleFor(passwordSalt => passwordSalt.Salt)
                 .NotEmpty()
                 .NotNull();
         }

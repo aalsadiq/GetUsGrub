@@ -184,13 +184,28 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                     claims.Add(new Claim($"claimType{j}", $"claimValue{j}"));
                 }
 
+                // Create list of updated claims to updated seed data
+                var updatedClaims = claims;
+                claims.Add(new Claim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True"));
+                claims.Add(new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"));
+                claims.Add(new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True"));
+
+
                 // AddorUpdate to UserClaims table
                 context.UserClaims.AddOrUpdate
                 (
+                    // Original seed data
                     new UserClaims()
                     {
                         Id = i,
                         Claims = claims
+                    },
+
+                    // Updated seed data
+                    new UserClaims()
+                    {
+                        Id = i,
+                        Claims = updatedClaims
                     }
                 );
 

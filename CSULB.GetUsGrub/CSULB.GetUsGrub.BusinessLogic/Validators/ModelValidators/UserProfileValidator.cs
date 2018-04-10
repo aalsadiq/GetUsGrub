@@ -17,7 +17,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.DisplayName)
+                RuleFor(userProfile => userProfile.DisplayName)
                     .NotEmpty()
                     .NotNull();
             });

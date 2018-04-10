@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.Claims;
 using Xunit;
-// TODO: @Jenn Unit test Gateways [-Jenn]
+
 namespace CSULB.GetUsGrub.UnitTests
 {
     /// <summary>

@@ -20,6 +20,5 @@ namespace CSULB.GetUsGrub.Models
         public Address Address { get; set; }
         public string PhoneNumber { get; set; }
         public IList<BusinessHourDto> BusinessHourDtos { get; set; }
-        // TODO: @Andrew Will need to put public id for restaurant here [-Jenn]
     }
 }

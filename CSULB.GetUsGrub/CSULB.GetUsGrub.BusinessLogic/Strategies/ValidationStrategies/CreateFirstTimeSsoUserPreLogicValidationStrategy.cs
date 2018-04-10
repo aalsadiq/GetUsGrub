@@ -1,7 +1,15 @@
 ﻿using CSULB.GetUsGrub.Models;
-// TODO: @Jenn Comment and unit test [-Jenn]
+
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// The <c>CreateFirstTimeSsoUserPreLogicValidationStrategy</c> class.
+    /// Defines a strategy for validating models before processing business logic for creating a first time SSO user.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 04/04/2018
+    /// </para>
+    /// </summary>
     public class CreateFirstTimeSsoUserPreLogicValidationStrategy
     {
         private readonly UserAccountDto _userAccountDto;
@@ -15,6 +23,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _userValidator = new UserValidator();
         }
 
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate a UserAccountDto.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/04/2018
+        /// </para>
+        /// </summary>
+        /// <returns>ResponseDto</returns>
         public ResponseDto<bool> ExecuteStrategy()
         {
             var validationWrapper = new ValidationWrapper<UserAccountDto>(data: _userAccountDto, ruleSet: "SsoRegistration", validator: _userAccountDtoValidator);
@@ -27,7 +44,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             result = _userValidator.CheckIfUserExists(_userAccountDto.Username);
             if (result.Data)
             {
-                result.Error = "Username is already used.";
+                result.Error = UserManagementErrorMessages.User_Exists;
             }
 
             return result;

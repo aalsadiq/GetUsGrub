@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>BusinessHour</c> class.
     /// Defines properties pertaining to a business hour.
     /// <para>
-    /// @author: Jennifer Nguyen
+    /// @author: Brian Fann
     /// @updated: 03/20/2018
     /// </para>
     /// </summary>

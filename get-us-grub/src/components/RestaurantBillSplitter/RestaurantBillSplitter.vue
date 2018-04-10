@@ -79,7 +79,7 @@ export default {
             'Access-Control-Allow-Origin': '*'
           },
           params: {
-            DisplayName: this.$store.state.restaurantID,
+            DisplayName: this.$store.state.restaurantID
           }
         }).then(response => {
           console.log(response)

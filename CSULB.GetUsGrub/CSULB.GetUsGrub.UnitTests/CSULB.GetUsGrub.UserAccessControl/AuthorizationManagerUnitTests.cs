@@ -23,7 +23,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var username = "username1";
-            var claims = new List<Claim> { new Claim("username", username) };
+            var claims = new List<Claim> { new Claim("Username", username) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var username = "username1";
-            var claims = new List<Claim> { new Claim("username", username) };
+            var claims = new List<Claim> { new Claim("Username", username) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
@@ -65,7 +65,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             string username = "";
-            var claims = new List<Claim> { new Claim("username", username) };
+            var claims = new List<Claim> { new Claim("Username", username) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
@@ -87,7 +87,7 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             string username = "blah";
-            var claims = new List<Claim> { new Claim("username", username) };
+            var claims = new List<Claim> { new Claim("Username", username) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 

@@ -47,8 +47,7 @@ export const store = new Vuex.Store({
         },
         phoneNumber: '',
         businessHours: []
-      },
-      showRestaurantSelectionSection: true
+      }
     },
     // Rules for validations
     rules: {
@@ -325,9 +324,6 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.address = payload.address
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
-    },
-    updateShowSelectedRestaurant: (state, payload) => {
-      state.restaurantSelection.showRestaurantSelectionSection = payload
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -383,11 +379,6 @@ export const store = new Vuex.Store({
     setSelectedRestaurant: (context, payload) => {
       setTimeout(function () {
         context.commit('setSelectedRestaurant', payload)
-      }, 250)
-    },
-    updateShowSelectedRestaurant: (context, payload) => {
-      setTimeout(function () {
-        context.commit('updateShowSelectedRestaurant', payload)
       }, 250)
     }
   }

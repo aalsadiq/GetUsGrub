@@ -5,14 +5,12 @@
 </template>
 
 <script>
-
 export default {
   name: 'DeleteItem',
   components: {
   },
   data () {
     return {
-
     }
   },
   props: ['deleteType', 'itemIndex'],
@@ -34,6 +32,5 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>

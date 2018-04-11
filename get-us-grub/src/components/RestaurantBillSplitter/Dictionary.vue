@@ -2,13 +2,12 @@
   <div class="dictionary">
     <h2 v-if="restaurantDisplayName">{{ restaurantDisplayName }}</h2>
     <h2>Dictionary</h2>
-    <draggable class="menu" v-bind:list="MenuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="Clone" @start="drag=true" @end="drag=false">
-      <div class="menu-item" v-for="(menuItem, menuItemIndex) in MenuItems" :key="menuItemIndex">
+    <draggable class="menu" v-bind:list="menuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="Clone" @start="drag=true" @end="drag=false">
+      <div class="menu-item" v-for="(menuItem, menuItemIndex) in menuItems" :key="menuItemIndex">
         {{menuItem.name}} : ${{menuItem.price}}<br />
         <edit-item :editType="$options.name" :itemIndex="menuItemIndex" :Item="menuItem" />
         <delete-item :deleteType="$options.name" :itemIndex="menuItemIndex" />
       </div>
-
     </draggable>
   </div>
 </template>
@@ -19,7 +18,6 @@ import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 import EditItem from './EditItem.vue'
 import DeleteItem from './DeleteItem.vue'
-
 export default {
   name: 'Dictionary',
   components: {
@@ -29,9 +27,7 @@ export default {
   },
   data () {
     return {
-      restaurantDisplayName: '',
-      restaurantLatitude: null,
-      restaurantLongitude: null,
+      restaurantId: null,
       money: {
         decimal: '.',
         thousands: '',
@@ -43,9 +39,7 @@ export default {
     }
   },
   created () {
-    this.restaurantDisplayName = this.$store.restaurantDisplayName
-    this.restaurantLatitude = this.$store.restaurantLatitude
-    this.restaurantLongitude = this.$store.restaurantLongitude
+    this.restaurantId = this.$store.restaurantSelection.selectedRestaurant.restaurantId
   },
   directives: { money: VMoney },
   methods: {
@@ -66,8 +60,8 @@ export default {
     }
   },
   computed: {
-    MenuItems () {
-      return this.$store.state.MenuItems
+    menuItems () {
+      return this.$store.state.menuItems
     }
   }
 }
@@ -77,12 +71,12 @@ export default {
   .dictionary {
     grid-column: 3;
     grid-row: 2 / 4;
-    outline: dashed;
+    outline: solid;
   }
 
-  .dictionary > h2{
-    text-align:center
-  }
+    .dictionary > h2 {
+      text-align: center
+    }
 
   div.menu-item {
     margin: 10px;
@@ -91,5 +85,4 @@ export default {
     border-radius: 10px;
     text-align: center;
   }
-
 </style>

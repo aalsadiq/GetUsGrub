@@ -1,17 +1,16 @@
 <template>
-  <div>
-    <app-header></app-header>
+  <div id="restaurant-bill-splitter">
+    <app-header />
     <div class="wrapper">
       <restaurantBillSplitter-userTable />
       <restaurantBillSplitter-billTable />
       <restaurantBillSplitter-dictionaryInput />
       <restaurantBillSplitter-dictionary />
-      <debug/>
+      <debug />
       <v-btn v-on:click="GetRestaurantMenus(restaurantDisplayName)"> Test Get Request </v-btn>
     </div>
     <app-footer />
   </div>
-
 </template>
 
 <script>
@@ -37,25 +36,19 @@ export default {
   },
   data () {
     return {
-      restaurantDisplayName: '',
-      restaurantLatitude: null,
-      restaurantLongitude: null
+      restaurantId: null
     }
   },
   created () {
-    this.restaurantDisplayName = this.$store.state.restaurantDisplayName
-    this.restaurantLatitude = this.$store.state.restaurantLatitude
-    this.restaurantLongitude = this.$store.state.restaurantLongitude
     if (this.$store.state.isAuthenticated) {
       console.log('Authenticated')
+      this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
       axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
         headers: {
           'Access-Control-Allow-Origin': '*'
         },
         params: {
-          DisplayName: this.restaurantDisplayName,
-          Latitude: this.restaurantLatitude,
-          Longitude: this.restaurantLongitude
+          restaurantId: this.restaurantId
         }
       }).then(response => {
         console.log(response)
@@ -71,15 +64,15 @@ export default {
   },
   methods: {
     GetRestaurantMenus: function () {
-      console.log(this.$store.state.restaurantID)
       if (this.$store.state.isAuthenticated) {
         console.log('Authenticated')
+        this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
         axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
           headers: {
             'Access-Control-Allow-Origin': '*'
           },
           params: {
-            DisplayName: this.$store.state.restaurantID
+            restaurantId: this.restaurantId
           }
         }).then(response => {
           console.log(response)
@@ -95,55 +88,21 @@ export default {
     }
   },
   computed: {
-    MenuItems () {
-      return this.$store.state.MenuItems
-    },
-    BillItems () {
-      return this.$store.state.BillItems
-    },
-    BillUsers () {
-      return this.$store.state.BillUsers
-    },
-    totalPrice () {
-      return this.$store.getters.totalPrice
-    }
   }
 }
 </script>
 
 <style scoped>
+  #restaurant-bill-splitter {
+    margin: 0 0 100px 0;
+  }
+
   .wrapper {
-    margin: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
     grid-auto-rows: minmax(100px, auto);
   }
-
-  .one {
-    grid-column: 1 / 3;
-    grid-row: 1 / 4;
-    outline: dashed;
-  }
-
-  .one > h1 {
-    text-align: center;
-  }
-
-  div.bill {
-    margin: 20px;
-    min-height: 20px;
-    outline: dashed;
-    background-color: grey;
-  }
-
-    div.bill > div.bill-item {
-      margin: 10px;
-      padding: 10px;
-      background-color: aquamarine;
-      border-radius: 10px;
-      text-align: center;
-    }
 
   h2.total {
     padding: 10px 1.2em 0px 0px;

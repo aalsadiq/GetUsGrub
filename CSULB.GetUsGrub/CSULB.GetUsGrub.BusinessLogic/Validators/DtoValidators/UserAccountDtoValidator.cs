@@ -48,6 +48,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull()
                     .Matches(@"^((public)|(private))$").WithMessage("Must be 'public' or 'private' role type.");
             });
+
+            RuleSet("Username", () =>
+            {
+                RuleFor(userAccount => userAccount.Username)
+                    .NotEmpty().WithMessage("Username is required.")
+                    .NotNull().WithMessage("Username is required.")
+                    .Matches(@"^[A-Za-z\d]+$").WithMessage("Username must not contain spaces and special characters.");
+            });
         }
     }
 }

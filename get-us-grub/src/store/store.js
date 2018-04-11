@@ -60,6 +60,9 @@ export const store = new Vuex.Store({
         username => !!username || 'Username is required',
         username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
       ],
+      usernameNotRequiredRule: [
+        username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
+      ],
       displayNameRules: [
         displayName => !!displayName || 'Display name is required'
       ],

@@ -35,7 +35,6 @@
 
 <script>
 import { VMoney } from 'v-money'
-
 export default {
   name: 'EditItem',
   components: {
@@ -49,7 +48,7 @@ export default {
       valid: true,
       rules: {
         required: (value) => (!!value) || 'Required.',
-        nonzero: (value) => value !== 0 || 'Price must not be 0.',
+        nonzero: (value) => value != 0 || 'Price must not be 0.',
         // TODO: make max rule more extensible. -Ryan Luong
         max: (value) => value < 1000.00 || ('Price must be less than 1000.')
       },
@@ -72,10 +71,10 @@ export default {
         console.log('New Price: ' + newItemPrice)
         if (editType === 'Dictionary') {
           console.log('Dictionary Item Editted')
-          this.$store.dispatch('EditDictionaryItem', [itemIndex, newItemName, newItemPrice])
+          this.$store.dispatch('editDictionaryItem', [itemIndex, newItemName, newItemPrice])
         } else if (editType === 'BillTable') {
           console.log('Bill Item Editted')
-          this.$store.dispatch('EditBillItem', [itemIndex, newItemName, newItemPrice])
+          this.$store.dispatch('editBillItem', [itemIndex, newItemName, newItemPrice])
         }
       }
     },
@@ -88,13 +87,9 @@ export default {
     }
   },
   computed: {
-    MenuItems () {
-      return this.$store.state.MenuItems
-    }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>

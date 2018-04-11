@@ -67,5 +67,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             return responseDtoFromGateway;
         }
+
+        //ImageUploadManager
+        // TODO: @Angelica Add image menu item upload here
     }
 }

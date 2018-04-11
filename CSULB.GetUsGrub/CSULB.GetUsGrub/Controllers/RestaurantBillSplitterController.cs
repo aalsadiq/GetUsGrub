@@ -25,9 +25,9 @@ namespace CSULB.GetUsGrub.Controllers
 				[AllowAnonymous] // TODO: Remove for deployment
 				[Route("Restaurant")]
 				[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-				public IHttpActionResult GetRestaurantMenus(int restaurantID)
+				public IHttpActionResult GetRestaurantMenus(int restaurantId)
 				{
-						var restaurantDto = new RestaurantDto(restaurantID);
+						var restaurantDto = new RestaurantDto(restaurantId);
 
 						if (!ModelState.IsValid)
 						{
@@ -36,7 +36,7 @@ namespace CSULB.GetUsGrub.Controllers
 						try
 						{
 								var restaurantBillSplitterManager = new RestaurantBillSplitterManager();
-								var response = restaurantBillSplitterManager.GetRestaurantMenus(restaurantDto.RestaurantID);
+								var response = restaurantBillSplitterManager.GetRestaurantMenus(restaurantDto.RestaurantId);
 								if (response.Error != null)
 								{
 										return BadRequest(response.Error);

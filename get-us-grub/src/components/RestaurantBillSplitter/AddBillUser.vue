@@ -6,7 +6,7 @@
                   v-model="newBillUser"
                   :rules="[rules.required]"
                   required />
-    <v-btn small dark color="blue" v-on:click="AddBillUser(newBillUser)" v-on:keyup.enter="AddBillUser(newBillUser)">Add</v-btn>
+    <v-btn small dark color="blue" v-on:click="addBillUser(newBillUser)" v-on:keyup.enter="addBillUser(newBillUser)">Add</v-btn>
   </v-form>
 </template>
 
@@ -26,29 +26,18 @@ export default {
     }
   },
   methods: {
-    AddBillUser: function (newBillUser) {
+    addBillUser: function (newBillUser) {
       if (this.$refs.addBillUserForm.validate()) {
-        this.$store.dispatch('AddBillUser', [newBillUser, this.$store.state.uniqueUserCounter])
+        this.$store.dispatch('addBillUser', [newBillUser, this.$store.state.uniqueUserCounter])
         this.$store.state.uniqueUserCounter++
       }
-    },
-    RemoveFromBill: function (index) {
-      // Parameters have to be placed into an array because dispatch can only take two. The name and the payload.
-      console.log(index)
-      this.$store.dispatch('RemoveFromBill', index)
     }
   },
   computed: {
-    BillItems () {
-      return this.$store.state.BillItems
-    },
-    BillUsers () {
-      return this.$store.state.BillUsers
-    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

@@ -113,7 +113,7 @@ namespace CSULB.GetUsGrub.DataAccess
         //    double distanceInMeters, int avgFoodPrice, TimeSpan currentUtcTimeOfDay, string currentLocalDayOfWeek, DbGeography location,
         //    IList<string> foodPreferences)
         //{
-
+                
         //}
 
         public void Dispose() { }

@@ -9,10 +9,10 @@
                   v-model="name"
                   required />
     <v-text-field label="Item Price"
-                  :rules="[rules.required, rules.nonzero, rules.max]"
+                  :rules="[rules.required, rules.nonzero, rules.max, rules.nonnegative]"
                   prefix="$"
                   ref="priceField"
-                  v-model.lazy="price"
+                  v-model.number="price"
                   v-money="money"
                   required />
     <v-btn color="teal"
@@ -41,14 +41,15 @@ export default {
   data () {
     return {
       valid: true,
-      maxValue: 1000,
+      maxValue: 1000.00,
       name: '',
       price: null,
       rules: {
         required: (value) => (!!value) || 'Required.',
         nonzero: (value) => value != 0 || 'Price must not be 0.',
         // TODO: make max rule more extensible. -Ryan Luong
-        max: (value) => value < 1000.00 || ('Price must be less than 1000.')
+        max: (value) => value < this.maxValue || ('Price must be less than ' +maxValue +'.'),
+        nonnegative: (value) => !(value < 0) || ('Price must not be less than 0.')
       },
       money: {
         decimal: '.',

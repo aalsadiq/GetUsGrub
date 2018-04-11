@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import AppCreateUser from '@/components/CreateUser'
+import AppCreateUser from '@/components/Registration/CreateUser'
 import AdminHeader from '@/components/AdminUserManagement/AdminHeader'
 import AppFooter from '@/components/AppFooter'
 import UserValidationsNoRequiredFields from '@/components/AdminUserManagement/UserValidationNoRequiredFields'

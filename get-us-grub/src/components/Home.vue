@@ -10,7 +10,7 @@
 <script>
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
-import RestaurantSelectionUnregisteredUserMain from '@/components/RestaurantSelection/RestaurantSelectionUnregisteredUserMain'
+import RestaurantSelectionUnregisteredUserMain from '@/components/RestaurantSelection/UnregisteredUser/Main.vue'
 
 export default {
   name: 'Home',

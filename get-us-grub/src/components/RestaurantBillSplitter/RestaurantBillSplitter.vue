@@ -39,7 +39,7 @@ export default {
       restaurantId: null
     }
   },
-  created() {
+  created () {
     if (this.$store.state.isAuthenticated) {
       console.log('Authenticated')
       this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId

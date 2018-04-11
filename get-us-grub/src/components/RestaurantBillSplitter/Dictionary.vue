@@ -28,6 +28,7 @@ export default {
   data () {
     return {
       restaurantId: null,
+      restaurantDisplayName: '',
       money: {
         decimal: '.',
         thousands: '',
@@ -39,7 +40,6 @@ export default {
     }
   },
   created () {
-    this.restaurantId = this.$store.restaurantSelection.selectedRestaurant.restaurantId
   },
   directives: { money: VMoney },
   methods: {

@@ -30,13 +30,13 @@ namespace CSULB.GetUsGrub.Models
 								int srid = 4326;
 								string wkt = $"POINT({GeoCoordinates.Longitude} {GeoCoordinates.Latitude})";
 
-								return DbGeography.PointFromText(wkt, srid);
-						}
-						set => new GeoCoordinates()
-						{
-								Latitude = value.Latitude ?? 0.0,
-								Longitude = value.Longitude ?? 0.0
-						};
+                return DbGeography.PointFromText(wkt, srid);
+            }
+            set => GeoCoordinates = new GeoCoordinates()
+            {
+                Latitude = value.Latitude ?? 0.0,
+                Longitude = value.Longitude ?? 0.0
+            };
         }
         [NotMapped]
         public GeoCoordinates GeoCoordinates { get; set; }

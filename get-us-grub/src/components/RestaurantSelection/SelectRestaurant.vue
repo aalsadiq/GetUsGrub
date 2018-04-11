@@ -2,7 +2,7 @@
   <div>
     <div>
       <v-container fluid>
-        <div v-show="showSection">
+        <div>
           <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
             Unable to find a restaurant that meets your selection criteria
@@ -14,11 +14,7 @@
             </span>
           </v-alert>
         </div>
-        <div v-show="!showSection">
-          <!-- Restaurant selection results Vue component -->
-          <result/>
-        </div>
-        <div v-show="showSection">
+        <div>
           <v-card id="card">
           <v-form v-model="valid" ref="form">
             <v-layout row justify-space-between>
@@ -100,11 +96,14 @@
         </div>
       </v-container>
     </div>
+    <div v-show="showSection">
+      <!-- Restaurant selection results Vue component -->
+      <result/>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import axios from 'axios'
 import Result from './Result'
 
@@ -120,7 +119,8 @@ export default {
       showAlert: false,
       showRestaurantTitleBar: true,
       loader: null,
-      loading: false
+      loading: false,
+      showSection: false
     }
   },
   watch: {
@@ -134,10 +134,6 @@ export default {
       this.loader = null
     }
   },
-  // Mapping states to local variables from the Vuex store
-  computed: mapState({
-    showSection: state => state.restaurantSelection.showRestaurantSelectionSection
-  }),
   methods: {
     // Submitting information to the backend
     submit () {
@@ -159,7 +155,7 @@ export default {
           this.showAlert = false
           this.valid = true
           this.showRestaurantTitleBar = true
-          this.$store.dispatch('updateShowSelectedRestaurant', false)
+          this.showSection = true
           this.$store.dispatch('setSelectedRestaurant', response.data)
         } else {
           this.showAlert = true

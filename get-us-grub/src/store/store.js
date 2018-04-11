@@ -9,9 +9,6 @@ export const store = new Vuex.Store({
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
-    restaurantDisplayName: 'displayName26',
-    restaurantLatitude: '34.047041',
-    restaurantLongitude: '-118.256578',
     uniqueUserCounter: 0,
     menuItems: [
     ],

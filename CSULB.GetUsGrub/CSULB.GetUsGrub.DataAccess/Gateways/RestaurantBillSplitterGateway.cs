@@ -19,7 +19,7 @@ namespace CSULB.GetUsGrub.DataAccess
 								// Find restaurant by Display Name, Latitude, Longitude
 								var restaurantProfile = (from restaurant in context.RestaurantProfiles
 																				 where restaurant.Id == restaurantId
-																				 select restaurant).SingleOrDefault();
+																				 select restaurant).FirstOrDefault();
 
 								//TODO: @Ryan TEST ALL SCENARIOS [-Ryan]
 								// Then, find all active menus associated with this restaurant and turn it into a List

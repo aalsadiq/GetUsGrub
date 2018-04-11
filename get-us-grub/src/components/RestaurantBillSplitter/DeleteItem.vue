@@ -18,9 +18,9 @@ export default {
     DeleteItem: function (deleteType, itemIndex) {
       console.log(deleteType)
       if (deleteType === 'Dictionary') {
-        this.$store.dispatch('RemoveFromDictionary', itemIndex)
+        this.$store.dispatch('removeFromDictionary', itemIndex)
       } else if (deleteType === 'BillTable') {
-        this.$store.dispatch('RemoveFromBillTable', itemIndex)
+        this.$store.dispatch('removeFromBillTable', itemIndex)
       }
     },
     Log: function () {

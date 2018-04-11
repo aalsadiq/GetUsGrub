@@ -7,7 +7,7 @@
       <restaurantBillSplitter-dictionaryInput />
       <restaurantBillSplitter-dictionary />
       <debug />
-      <v-btn v-on:click="GetRestaurantMenus(restaurantDisplayName)"> Test Get Request </v-btn>
+      <v-btn v-on:click="GetRestaurantMenus"> Test Get Request </v-btn>
     </div>
     <app-footer />
   </div>
@@ -39,7 +39,7 @@ export default {
       restaurantId: null
     }
   },
-  created () {
+  created() {
     if (this.$store.state.isAuthenticated) {
       console.log('Authenticated')
       this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
@@ -67,6 +67,7 @@ export default {
       if (this.$store.state.isAuthenticated) {
         console.log('Authenticated')
         this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
+        console.log(this.restaurantId)
         axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
           headers: {
             'Access-Control-Allow-Origin': '*'

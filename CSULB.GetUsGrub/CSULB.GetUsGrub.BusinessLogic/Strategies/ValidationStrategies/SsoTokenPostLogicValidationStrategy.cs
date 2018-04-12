@@ -4,7 +4,14 @@ using System.Diagnostics;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
-    // TODO: @Jenn Comment this [-Jenn]
+    /// <summary>
+    /// The <c>SsoTokenPostLogicValidationStrategy</c> class.
+    /// Defines a strategy for validating models after processing business logic for validating a token from Single Sign On.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 03/22/2018
+    /// </para>
+    /// </summary>
     public class SsoTokenPostLogicValidationStrategy
     {
         private readonly SsoToken _ssoToken;
@@ -15,6 +22,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             
         }
 
+        /// <summary>
+        /// The ExecuteStrategy method.
+        /// Contains the logic to validate a SsoToken.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/04/2018
+        /// </para>
+        /// </summary>
+        /// <returns>ResponseDto</returns>
         public ResponseDto<bool> ExecuteStrategy()
         {
 

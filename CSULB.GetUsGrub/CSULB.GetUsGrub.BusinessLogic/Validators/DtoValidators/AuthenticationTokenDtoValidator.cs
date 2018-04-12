@@ -10,15 +10,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("TokenRules", () =>
             {
-                RuleFor(x => x.TokenString)
+                RuleFor(authenticationTokenDto => authenticationTokenDto.TokenString)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.ExpiresOn)
+                RuleFor(authenticationTokenDto => authenticationTokenDto.ExpiresOn)
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(x => x.Username)
+                RuleFor(authenticationTokenDto => authenticationTokenDto.Username)
                     .NotEmpty()
                     .NotNull();
             });

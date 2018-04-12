@@ -203,67 +203,95 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        // TODO: @Jenn Comment this method and unit test [-Jenn]
-        public ResponseDto<SsoToken> GetValidSsoToken(string token)
+        /// <summary>
+        /// The GetValidSsoToken method.
+        /// Gets a ValidSsoToken from the database.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/09/2018
+        /// </para>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>ResponseDto containing ValidSsoToken</returns>
+        public ResponseDto<ValidSsoToken> GetValidSsoToken(string token)
         {
             using (var authenticationContext = new AuthenticationContext())
             {
                 try
                 {
-                    var ssoToken = (from validSsoToken in authenticationContext.ValidSsoTokens
-                                    where validSsoToken.Token == token
-                                    select validSsoToken).FirstOrDefault();
-                    // Return a ResponseDto with a UserAccount model
-                    return new ResponseDto<SsoToken>()
+                    var validSsoToken = (from ssoToken in authenticationContext.ValidSsoTokens
+                                    where ssoToken.Token == token
+                                    select ssoToken).FirstOrDefault();
+
+                    return new ResponseDto<ValidSsoToken>()
                     {
-                        Data = ssoToken
+                        Data = validSsoToken
                     };
                 }
                 catch (Exception)
                 {
-                    return new ResponseDto<SsoToken>()
+                    return new ResponseDto<ValidSsoToken>()
                     {
                         Data = new ValidSsoToken(token),
-                        Error = "Something went wrong. Please try again later."
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
         }
 
-        // TODO: @Jenn Comment this method and unit test [-Jenn]
-        public ResponseDto<SsoToken> GetInvalidSsoToken(string token)
+        /// <summary>
+        /// The GetInvalidSsoToken method.
+        /// Gets a InvalidSsoToken from the database.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/09/2018
+        /// </para>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>ResponseDto containing InvalidSsoToken</returns>
+        public ResponseDto<InvalidSsoToken> GetInvalidSsoToken(string token)
         {
             using (var authenticationContext = new AuthenticationContext())
             {
                 try
                 {
-                    var ssoToken = (from invalidSsoToken in authenticationContext.InvalidSsoTokens
-                        where invalidSsoToken.Token == token
-                        select invalidSsoToken).FirstOrDefault();
-                    // Return a ResponseDto with a UserAccount model
-                    return new ResponseDto<SsoToken>()
+                    var invalidSsoToken = (from ssoToken in authenticationContext.InvalidSsoTokens
+                        where ssoToken.Token == token
+                        select ssoToken).FirstOrDefault();
+
+                    return new ResponseDto<InvalidSsoToken>()
                     {
-                        Data = ssoToken
+                        Data = invalidSsoToken
                     };
                 }
                 catch (Exception)
                 {
-                    return new ResponseDto<SsoToken>()
+                    return new ResponseDto<InvalidSsoToken>()
                     {
-                        Data = new ValidSsoToken(token),
-                        Error = "Something went wrong. Please try again later."
+                        Data = new InvalidSsoToken(token),
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
         }
 
-        // TODO: @Jenn Comment this method and unit test [-Jenn]
+        /// <summary>
+        /// The StoreValidSsoToken method.
+        /// Stores a ValidSsoToken to the database.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/09/2018
+        /// </para>
+        /// </summary>
+        /// <param name="validSsoToken"></param>
+        /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> StoreValidSsoToken(ValidSsoToken validSsoToken)
         {
             using (var authenticationContext = new AuthenticationContext())
             {
                 try
                 {
+                    // Add ValidSsoToken to database
                     authenticationContext.ValidSsoTokens.Add(validSsoToken);
                     authenticationContext.SaveChanges();
 
@@ -277,7 +305,43 @@ namespace CSULB.GetUsGrub.DataAccess
                     return new ResponseDto<bool>()
                     {
                         Data = false,
-                        Error = "Something went wrong. Please try again later."
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// The StoreInvalidSsoToken method.
+        /// Stores a InvalidSsoToken to the database.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/09/2018
+        /// </para>
+        /// </summary>
+        /// <param name="invalidSsoToken"></param>
+        /// <returns>ResponseDto with bool data</returns>
+        public ResponseDto<bool> StoreInvalidSsoToken(InvalidSsoToken invalidSsoToken)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+                try
+                {
+                    // Add InvalidSsoToken to database
+                    authenticationContext.InvalidSsoTokens.Add(invalidSsoToken);
+                    authenticationContext.SaveChanges();
+
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
@@ -335,9 +399,6 @@ namespace CSULB.GetUsGrub.DataAccess
 
         // Dispose release unmangaed resources 
         // TODO: @Jenn Add in implementation of Dispose [-Jenn]
-        public void Dispose()
-        {
-            //throw new NotImplementedException();
-        }
+        public void Dispose() {}
     }
 }

@@ -27,9 +27,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         public string Sha256HashWithSalt(string salt, string payload)
         {
-            // TODO: @Jenn do a check for ASCII and non-ASCII. Is there a more generic alternative? [-Jenn]
-            // Concats payload as the prefix and salt as the suffix and encodes ASCII to bytes
-            var payloadAndSalt = Encoding.ASCII.GetBytes(string.Concat(payload, salt));
+            // Concats payload as the prefix and salt as the suffix and encodes UTF8 characters to bytes
+            var payloadAndSalt = Encoding.UTF8.GetBytes(string.Concat(payload, salt));
       
             using (var hashProvider = new SHA256Cng())
             {
@@ -51,8 +50,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         public static string Sha256HashWithNoSalt(string payload)
         {
-            // TODO: @Jenn do a check for ASCII and non-ASCII. Is there a more generic alternative? [-Jenn]
-            var payloadBytes = Encoding.ASCII.GetBytes(payload);
+            var payloadBytes = Encoding.UTF8.GetBytes(payload);
 
             using (var hashProvider = new SHA256Cng())
             {

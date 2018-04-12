@@ -3,22 +3,22 @@
     <div>
       <v-container fluid>
         <div>
-          <div v-show="showSection">
-            <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
-              Unable to find a restaurant that meets your selection criteria
-            </v-alert>
-            <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
-              "With great power comes great responsibility" - Uncle Ben
-            </v-alert>
-          </div>
+          <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
+          <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
+            Unable to find a restaurant that meets your selection criteria
+          </v-alert>
+          <!-- Title bar for the restaurant selection -->
+          <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
+            <span id="quote">
+            "With great power comes great responsibility" - Uncle Ben
+            </span>
+          </v-alert>
         </div>
-        <div v-show="!showSection">
-          <restaurant-selection-result/>
-        </div>
-        <div v-show="showSection">
+        <div>
           <v-card id="card">
           <v-form v-model="valid" ref="form">
             <v-layout row justify-space-between>
+              <!-- Food types drop down menu -->
               <v-flex xs6 sm6>
                 <v-select
                   :items="$store.state.constants.foodTypes"
@@ -30,6 +30,7 @@
                   required
                 ></v-select>
               </v-flex>
+              <!-- City text field -->
               <v-flex xs4>
               <v-text-field
                 label="Enter a city"
@@ -40,6 +41,7 @@
                 required
               ></v-text-field>
               </v-flex>
+              <!-- States drop down menu -->
               <v-flex xs1>
                 <v-select
                   :items="$store.state.constants.states"
@@ -55,6 +57,7 @@
               </v-flex>
             </v-layout>
             <v-layout row justify-space-between>
+              <!-- Prices radio buttons -->
               <v-subheader>PRICE*</v-subheader>
               <v-flex xs6>
                 <v-radio-group :value="$store.state.restaurantSelection.request.avgFoodPrice" v-model.number="$store.state.restaurantSelection.request.avgFoodPrice" row>
@@ -64,6 +67,7 @@
                 </v-radio-group>
               </v-flex>
               <v-spacer/>
+              <!-- Distance radio buttons -->
               <v-subheader>DISTANCE* (miles)</v-subheader>
               <v-flex xs5>
                 <v-radio-group :value="$store.state.restaurantSelection.request.avgFoodPrice" v-model.number="$store.state.restaurantSelection.request.distance" row>
@@ -76,6 +80,7 @@
             </v-layout>
             </v-form>
           </v-card>
+          <!-- Submit button -->
           <v-tooltip bottom>
             <v-btn
               id="search-btn"
@@ -91,28 +96,35 @@
         </div>
       </v-container>
     </div>
+    <div v-show="showSection">
+      <!-- Restaurant selection results Vue component -->
+      <result/>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import axios from 'axios'
-import RestaurantSelectionResult from './RestaurantSelectionResult'
+import Result from './Result'
 
 export default {
+  // Vue component dependencies
   components: {
-    RestaurantSelectionResult
+    Result
   },
+  // Local variable data
   data () {
     return {
       valid: false,
       showAlert: false,
       showRestaurantTitleBar: true,
       loader: null,
-      loading: false
+      loading: false,
+      showSection: false
     }
   },
   watch: {
+    // Loading animation on buttons
     loader () {
       const l = this.loader
       this[l] = !this[l]
@@ -122,15 +134,14 @@ export default {
       this.loader = null
     }
   },
-  computed: mapState({
-    showSection: state => state.restaurantSelection.showRestaurantSelectionSection
-  }),
   methods: {
+    // Submitting information to the backend
     submit () {
       this.valid = false
       this.loader = 'loading'
-      // this.loader()
+      // Sending GET Request
       axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
+        // Paramaters for URL queries
         params: {
           foodType: this.$store.state.restaurantSelection.request.foodType.type,
           city: this.$store.state.restaurantSelection.request.city,
@@ -138,23 +149,25 @@ export default {
           distanceInMiles: this.$store.state.restaurantSelection.request.distance,
           avgFoodPrice: this.$store.state.restaurantSelection.request.avgFoodPrice
         }
+      // Receiving successful response
       }).then(response => {
         if (response.data != null) {
-          this.$store.dispatch('updateShowSelectedRestaurant', false)
           this.showAlert = false
           this.valid = true
-          this.$store.dispatch('setSelectedRestaurant', response.data)
           this.showRestaurantTitleBar = true
+          this.showSection = true
+          this.$store.dispatch('setSelectedRestaurant', response.data)
         } else {
           this.showAlert = true
           this.showRestaurantTitleBar = false
-          this.valid = !this.valid
-          console.log(response.data)
+          this.valid = true
         }
+      // Receiving an unsuccessful response
       }).catch(error => {
-        // TODO: @Jenn Figure out how to handle the error [-Jenn]
-        console.log(error.reponse)
+        this.valid = true
+        // Route to the General Error page
         this.$router.push('GeneralError')
+        Promise.reject(error)
       })
     }
   }
@@ -174,5 +187,9 @@ export default {
 #card {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;
+}
+#quote {
+  color: rgb(255, 255, 255);
+  font-size: normal;
 }
 </style>

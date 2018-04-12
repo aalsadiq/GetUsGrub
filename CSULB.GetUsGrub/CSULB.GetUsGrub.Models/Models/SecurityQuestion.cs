@@ -7,12 +7,12 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>SecurityQuestion</c> class.
     /// Defines properties pertaining to security question with corresponding answer.
     /// <para>
-    /// @author: Jennifer Nguyen
+    /// @author: Brian Fann
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>
     [Table("GetUsGrub.SecurityQuestion")]
-    public class SecurityQuestion : IEntity
+    public class SecurityQuestion : ISecurityQuestion, IEntity
     {
         // Automatic Properties
         [Key]

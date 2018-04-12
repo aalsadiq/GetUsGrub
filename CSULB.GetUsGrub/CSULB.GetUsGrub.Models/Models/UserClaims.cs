@@ -10,7 +10,7 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>UserClaims</c> class.
     /// Defines properties pertaining to a user's claims.
     /// <para>
-    /// @author: Brian Fann, Jennifer Nguyen
+    /// @author: Brian Fann
     /// @updated: 03/20/2018
     /// </para>
     /// </summary>

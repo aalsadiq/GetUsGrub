@@ -9,15 +9,19 @@ using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+		/// <summary>
+		/// @author Ryan Luong
+		/// @updated 4/4/18
+		/// </summary>
 		public class RestaurantBillSplitterManager
 		{
-				public ResponseDto<RestaurantMenusDto> GetRestaurantMenus(string displayName, double latitude, double longitude)
+				public ResponseDto<RestaurantMenusDto> GetRestaurantMenus(int restaurantId)
 				{
 						using (var restaurantBillSplitterGateway = new RestaurantBillSplitterGateway())
 						{
 								Debug.WriteLine("Gateway Created ");
-								Debug.WriteLine(displayName + " " + latitude + " " + longitude);
-								var responseDto = restaurantBillSplitterGateway.GetRestaurantMenus(displayName, latitude, longitude);
+								Debug.WriteLine(restaurantId);
+								var responseDto = restaurantBillSplitterGateway.GetRestaurantMenus(restaurantId);
 								var menus = new List<RestaurantMenuDto>();
 
 								foreach (var menu in responseDto.Data)

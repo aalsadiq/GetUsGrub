@@ -17,34 +17,34 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.PhoneNumber)
-                    .NotEmpty().WithMessage("Phone number is required.")
-                    .NotNull().WithMessage("Phone number is required.")
-                    .Matches(@"^\([2-9]\d{2}\)\d{3}\-\d{4}$").WithMessage("Phone number must be in (XXX)XXX-XXXX format.");
+                RuleFor(restaurantProfileDto => restaurantProfileDto.PhoneNumber)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.PHONE_NUMBER_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.PHONE_NUMBER_REQUIRED)
+                    .Matches(RegularExpressions.PHONE_NUMBER_FORMAT).WithMessage(ValidationErrorMessages.PHONE_NUMBER_FORMAT);
 
-                RuleFor(x => x.Address)
-                    .NotEmpty().WithMessage("Address is required.")
-                    .NotNull().WithMessage("Address is required.");
+                RuleFor(restaurantProfileDto => restaurantProfileDto.Address)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.ADDRESS_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.ADDRESS_REQUIRED);
             });
 
             RuleSet("EditProfile", () =>
             {
-                RuleFor(x => x.Address)
+                RuleFor(RestaurantProfile => RestaurantProfile.Address)
                     .NotEmpty().WithMessage("Address is required.")
                     .NotNull().WithMessage("Address is required.");
 
-                RuleFor(x => x.PhoneNumber.ToString())
+                RuleFor(RestaurantProfile => RestaurantProfile.PhoneNumber.ToString())
                     .NotEmpty().WithMessage("Phone number is required.")
                     .NotNull().WithMessage("Phone number is required.")
                     .Matches(@"^\([2-9]\d{2}\)\d{3}\-\d{4}$").WithMessage("Phone number must be in (XXX)XXX-XXXX format.");
 
-                RuleFor(x => x.RestaurantMenus)
+                RuleFor(RestaurantProfile => RestaurantProfile.RestaurantMenus)
                     .SetCollectionValidator(new RestaurantMenuValidator());
 
-                RuleFor(x => x.BusinessHours)
+                RuleFor(RestaurantProfile => RestaurantProfile.BusinessHours)
                     .SetCollectionValidator(new BusinessHourValidator());
 
-                RuleFor(x => x.RestaurantMenuItems)
+                RuleFor(RestaurantProfile => RestaurantProfile.RestaurantMenuItems)
                     .SetCollectionValidator(new RestaurantMenuItemValidator());
             });
         }

@@ -7,7 +7,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// The <c>CreateIndividualPreLogicValidationStrategy</c> class.
     /// Defines a strategy for validating models before processing business logic for creating an individual user.
     /// <para>
-    /// @author: Jennifer Nguyen
+    /// @author: Jennifer Nguyen, Brian Fann
     /// @updated: 03/12/2018
     /// </para>
     /// </summary>
@@ -91,6 +91,18 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 result.Data = false;
+                return result;
+            }
+
+            // Validate password has not been previously breached.
+            result = _passwordValidator.IsPasswordValid(_registerUserDto.UserAccountDto.Password);
+            if (!result.Data)
+            {
+                if (result.Error == null)
+                {
+                    result.Error = "Your password has been in multiple breaches. You may not use this password.";
+                }
+                
                 return result;
             }
 

@@ -159,15 +159,15 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
-                        @change="validate"
-                        :append-icon="visibile ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (visibile = !visibile)"
-                        :type=" visibile ? 'text' : 'password'"
+                        @input="validate"
+                        :append-icon="visible ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (visible = !visible)"
+                        :type="visible ? 'text' : 'password'"
                         :error-messages="passwordErrorMessages"
                         required
                       ></v-text-field>
                     </v-form>
-                  <v-btn color="primary" @click="restaurantStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
+                  <v-btn color="primary" @click="restaurantStep = 2" :disabled="!isPasswordValid || !validIdentificationInput">Next</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="2">
                   <v-form v-model="validSecurityInput">
@@ -442,9 +442,11 @@ export default {
   components: {},
   data: () => ({
     tabs: null,
+    clickNextCounter: 0,
     userStep: 0,
     restaurantStep: 0,
     passwordErrorMessages: [],
+    isPasswordValid: false,
     validIdentificationInput: false,
     validSecurityInput: false,
     validBusinessHourInput: false,
@@ -513,12 +515,21 @@ export default {
       }
     },
     validate () {
+      if (this.userAccount.password.length < 8) {
+        this.passwordErrorMessages = []
+        return
+      }
       PasswordValidation.methods.validate(this.userAccount.password)
         .then(response => {
-          this.passwordErrorMessages = response
+          this.isPasswordValid = response.isValid
+          this.passwordErrorMessages = response.message
+          if (response === []) {
+            this.isPasswordValid = true
+          }
         })
     },
     userSubmit () {
+      alert('submitting i')
       axios.post('http://localhost:8081/User/Registration/Individual', {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
@@ -534,6 +545,7 @@ export default {
       })
     },
     restaurantSubmit () {
+      alert('submitting r')
       axios.post('http://localhost:8081/User/Registration/Restaurant', {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,

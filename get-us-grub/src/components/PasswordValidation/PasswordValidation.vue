@@ -7,15 +7,10 @@ export default {
   components: {},
   methods: {
     validate (password) {
-      if (password.length < 8) {
-        resolve([])
-      }
-
       var hash = sha1(password)
       var anonHash = hash.substring(0, 5)
       var promise = axios.get('https://api.pwnedpasswords.com/range/' + anonHash
       ).then(response => {
-        var isValid = true
         var data = response.data
         var lines = data.split('\n')
 
@@ -29,17 +24,22 @@ export default {
           var count = line[1]
 
           if (count >= 100) {
-            isValid = false
-            return('Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com')
+            return ({
+              isValid: false,
+              message: 'Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com'
+            })
           } else if (count !== 0) {
-            isValid = false
-            return('Your password was previously found in a breach. We HIGHLY recommend you change your password. For more information, visit HaveIBeenPwned.com')
+            return ({
+              isValid: true,
+              message: 'Your password was previously found in a breach. We HIGHLY recommend you change your password. For more information, visit HaveIBeenPwned.com'
+            })
           }
         }
 
-        if (isValid) {
-          return([])
-        }
+        return ({
+          isValid: true,
+          message: []
+        })
       })
       return promise
     }

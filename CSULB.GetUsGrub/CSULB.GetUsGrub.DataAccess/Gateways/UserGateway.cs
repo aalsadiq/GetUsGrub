@@ -598,14 +598,17 @@ namespace CSULB.GetUsGrub.DataAccess
                             //Delete user claims
                             userContext.UserClaims.Remove(userClaims);
                         }
-//Food Preference
+                        //Food Preference
                         var userPreference = (from preference in userContext.FoodPreferences
                                               where preference.UserId == userAccount.Id
-                                              select preference).FirstOrDefault();
+                                              select preference).ToList();
                         if(userPreference != null)
                         {
                             //Delete user preference
-                            userContext.FoodPreferences.Remove(userPreference);
+                            foreach(var preference in userPreference)
+                            {
+                                userContext.FoodPreferences.Remove(preference);
+                            }   
                         }
 //UserAccount
                         //Delete useraccount

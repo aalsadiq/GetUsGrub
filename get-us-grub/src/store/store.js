@@ -261,15 +261,11 @@ export const store = new Vuex.Store({
   },
   // Mutations are called to change the states in the store
   mutations: {
-    setOriginAddress: (state, payload) => {
-      state.originAddress.push({
-        originAddress: payload
-      })
+    originAddress: (state, payload) => {
+      state.originAddress = payload
     },
-    setDestinationAddress: (state, payload) => {
-      state.destinationAddress.push({
-        destinationAddress: payload
-      })
+    destinationAddress: (state, payload) => {
+      state.destinationAddress = payload
     },
     // TODO: @Ryan Please lowercase the first letter of your methods [-Jenn]
     addToDictionary: (state, payload) => {

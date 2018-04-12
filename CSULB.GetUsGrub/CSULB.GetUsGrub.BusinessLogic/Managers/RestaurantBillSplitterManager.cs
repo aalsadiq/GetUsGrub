@@ -15,13 +15,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
 		/// </summary>
 		public class RestaurantBillSplitterManager
 		{
-				public ResponseDto<RestaurantMenusDto> GetRestaurantMenus(int restaurantID)
+				public ResponseDto<RestaurantMenusDto> GetRestaurantMenus(int restaurantId)
 				{
 						using (var restaurantBillSplitterGateway = new RestaurantBillSplitterGateway())
 						{
 								Debug.WriteLine("Gateway Created ");
-								Debug.WriteLine(restaurantID);
-								var responseDto = restaurantBillSplitterGateway.GetRestaurantMenus(restaurantID);
+								Debug.WriteLine(restaurantId);
+								var responseDto = restaurantBillSplitterGateway.GetRestaurantMenus(restaurantId);
 								var menus = new List<RestaurantMenuDto>();
 
 								foreach (var menu in responseDto.Data)

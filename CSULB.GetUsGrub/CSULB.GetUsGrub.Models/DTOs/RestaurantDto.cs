@@ -16,11 +16,11 @@ namespace CSULB.GetUsGrub.Models
 		[Serializable]
 		public class RestaurantDto
 		{				
-				public int RestaurantID { get; set; }
+				public int RestaurantId { get; set; }
 
-				public RestaurantDto(int restaurantID)
+				public RestaurantDto(int restaurantId)
 				{
-						RestaurantID = restaurantID;
+						RestaurantId = restaurantId;
 				}
 
 				// TODO @Andrew Why do you have these in here? I'm assuming they're navigation properties, but nav props should be strictly in domain models because they are used for entity framework [-Brian]

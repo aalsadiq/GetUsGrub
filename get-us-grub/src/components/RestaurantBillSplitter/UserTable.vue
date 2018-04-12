@@ -1,12 +1,12 @@
 <template>
   <div class="user-table">
     <h1>Users</h1>
-    <div v-for="(billUser, billUserIndex) in BillUsers" :key="billUserIndex">
+    <div v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
       {{ billUser.name }}
       <v-btn v-on:click="RemoveUser(billUser.uID)"><v-icon>clear</v-icon></v-btn>
     </div>
-    <v-divider/>
-    <add-bill-user class="add-bill-user"/>
+    <v-divider />
+    <add-bill-user class="add-bill-user" />
   </div>
 </template>
 <script>
@@ -14,7 +14,6 @@ import AddBillUser from './AddBillUser.vue'
 import ManageUsers from './ManageUsers.vue'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
-
 export default {
   name: 'UserTable',
   components: {
@@ -40,18 +39,12 @@ export default {
   methods: {
     RemoveUser: function (billUserUID) {
       console.log('Deleting ' + billUserUID)
-      this.$store.dispatch('RemoveUser', billUserUID)
+      this.$store.dispatch('removeUser', billUserUID)
     }
   },
   computed: {
-    BillItems () {
-      return this.$store.state.BillItems
-    },
-    BillUsers () {
-      return this.$store.state.BillUsers
-    },
-    TotalPrice () {
-      return this.$store.getters.totalPrice
+    billUsers () {
+      return this.$store.state.billUsers
     }
   }
 }
@@ -64,6 +57,7 @@ export default {
     grid-row: 1 / 4;
     outline: solid;
   }
+
     .user-table > h1 {
       text-align: center;
     }

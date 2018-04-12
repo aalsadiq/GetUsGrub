@@ -159,15 +159,15 @@
                         :rules="$store.state.rules.passwordRules"
                         :min="8"
                         :counter="64"
-                        @change="validate"
-                        :append-icon="visibile ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (visibile = !visibile)"
-                        :type=" visibile ? 'text' : 'password'"
+                        @input="validate"
+                        :append-icon="visible ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (visible = !visible)"
+                        :type="visible ? 'text' : 'password'"
                         :error-messages="passwordErrorMessages"
                         required
                       ></v-text-field>
                     </v-form>
-                  <v-btn color="primary" @click="restaurantStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
+                  <v-btn color="primary" @click="restaurantStep = 2" :disabled="!isPasswordValid || !validIdentificationInput">Next</v-btn>
                 </v-stepper-content>
                 <v-stepper-content step="2">
                   <v-form v-model="validSecurityInput">
@@ -435,14 +435,18 @@
 
 <script>
 import axios from 'axios'
+import PasswordValidation from '@/components/PasswordValidation/PasswordValidation'
 
 export default {
   name: 'CreateUser',
   components: {},
   data: () => ({
     tabs: null,
+    clickNextCounter: 0,
     userStep: 0,
     restaurantStep: 0,
+    passwordErrorMessages: [],
+    isPasswordValid: false,
     validIdentificationInput: false,
     validSecurityInput: false,
     validBusinessHourInput: false,
@@ -495,7 +499,6 @@ export default {
       openTime: null,
       closeTime: null
     },
-    passwordErrorMessages: [],
     responseDataStatus: '',
     responseData: ''
   }),
@@ -513,56 +516,20 @@ export default {
     },
     validate () {
       if (this.userAccount.password.length < 8) {
+        this.passwordErrorMessages = []
         return
       }
-
-      var sha1 = require('sha1')
-      var hash = sha1(this.userAccount.password)
-      var anonHash = hash.substring(0, 5)
-
-      axios.get('https://api.pwnedpasswords.com/range/' + anonHash
-      ).then(response => {
-        var data = response.data
-        var lines = data.split('\n')
-        var errorFlag = false
-
-        for (var i = 0; i < lines.length; i++) {
-          var line = lines[i].split(':')
-
-          if ((anonHash + line[0]).toLowerCase() !== hash) {
-            continue
+      PasswordValidation.methods.validate(this.userAccount.password)
+        .then(response => {
+          this.isPasswordValid = response.isValid
+          this.passwordErrorMessages = response.message
+          if (response === []) {
+            this.isPasswordValid = true
           }
-
-          var count = line[1]
-
-          if (count >= 100) {
-            this.$notify({
-              group: 'notifications',
-              type: 'error',
-              duration: 2000,
-              title: 'WARNING',
-              text: 'Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com'
-            })
-
-            errorFlag = true
-            this.passwordErrorMessages = ['Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com']
-          } else if (count !== 0) {
-            this.$notify({
-              group: 'notifications',
-              type: 'warning',
-              duration: 2000,
-              title: 'WARNING',
-              text: 'Your password has previously been found in a breach. We highly recommend you change your password. For more information, visit HaveIBeenPwned.com'
-            })
-          }
-        }
-
-        if (!errorFlag) {
-          this.passwordErrorMessages = []
-        }
-      })
+        })
     },
     userSubmit () {
+      alert('submitting i')
       axios.post('http://localhost:8081/User/Registration/Individual', {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
@@ -578,6 +545,7 @@ export default {
       })
     },
     restaurantSubmit () {
+      alert('submitting r')
       axios.post('http://localhost:8081/User/Registration/Restaurant', {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,

@@ -6,7 +6,6 @@
           <router-view/>
         </div>
       </v-container>
-      <notifications group="notifications" position='top center' />
     </v-app>
   </div>
 </template>

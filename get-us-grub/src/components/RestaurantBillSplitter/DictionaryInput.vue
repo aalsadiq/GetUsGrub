@@ -48,7 +48,7 @@ export default {
         required: (value) => (!!value) || 'Required.',
         nonzero: (value) => value !== 0 || 'Price must not be 0.',
         // TODO: make max rule more extensible. -Ryan Luong
-        max: (value) => value < this.maxValue || ('Price must be less than ' +maxValue +'.'),
+        max: (value) => value < this.maxValue || ('Price must be less than ' + maxValue + '.'),
         nonnegative: (value) => !(value < 0) || ('Price must not be less than 0.')
       },
       money: {

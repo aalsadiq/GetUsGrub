@@ -10,8 +10,8 @@ namespace CSULB.GetUsGrub.Models
     /// @author: Rachel Dang
     /// @updated: 04/07/18
     /// </summary>
-    [Table("GetUsGrub.FoodPreferences")]
-    public class FoodPreferences : IPreference, IEntity
+    [Table("GetUsGrub.FoodPreference")]
+    public class FoodPreference : IPreference, IEntity
     {
         // Automatic Properties
         [Key]
@@ -27,9 +27,9 @@ namespace CSULB.GetUsGrub.Models
         public virtual UserAccount UserAccount { get; set; }
 
         // Constructors
-        public FoodPreferences() { }
+        public FoodPreference() { }
 
-        public FoodPreferences(string preference)
+        public FoodPreference(string preference)
         {
             Preference = preference;
         }

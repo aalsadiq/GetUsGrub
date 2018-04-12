@@ -23,7 +23,7 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public string FoodType { get; set; }
         [Required]
-        public int DistanceInMiles { get; set; }
+        public double DistanceInMiles { get; set; }
         [Required]
         public int AvgFoodPrice { get; set; }
         public DateTime CurrentUtcDateTime { get; set; }
@@ -45,7 +45,7 @@ namespace CSULB.GetUsGrub.Models
             }
         }
 
-        public ICollection<FoodPreferences> FoodPreferences { get; set; }
+        public ICollection<FoodPreference> FoodPreferences { get; set; }
 
         // Constructors
         public RestaurantSelectionDto() { }

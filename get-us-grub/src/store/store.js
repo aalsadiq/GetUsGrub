@@ -4,21 +4,20 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
+  // A state is a global variable that every Vue component can reference
   state: {
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
-    restaurantDisplayName: 'displayName26',
-    restaurantLatitude: '34.047041',
-    restaurantLongitude: '-118.256578',
     uniqueUserCounter: 0,
-    MenuItems: [
+    menuItems: [
     ],
-    BillItems: [
+    billItems: [
     ],
-    BillUsers: [
+    billUsers: [
     ],
     isAuthenticated: true,
+    // States pertaining to restaurant selection
     restaurantSelection: {
       request: {
         foodType: '',
@@ -37,7 +36,7 @@ export const store = new Vuex.Store({
           latitude: null,
           longitude: null
         },
-        restaurantId: null,
+        restaurantId: 26,
         displayName: '',
         address: {
           street1: '',
@@ -48,12 +47,15 @@ export const store = new Vuex.Store({
         },
         phoneNumber: '',
         businessHours: []
-      },
-      showRestaurantSelectionSection: true
+      }
     },
+    // Rules for validations
     rules: {
       usernameRules: [
         username => !!username || 'Username is required',
+        username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
+      ],
+      usernameNotRequiredRule: [
         username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
       ],
       displayNameRules: [
@@ -94,6 +96,7 @@ export const store = new Vuex.Store({
         foodPreference => !!foodPreference || 'Food preference is required'
       ]
     },
+    // Constants are data that are non-changing
     constants: {
       securityQuestionsSet1: [{
         id: 1,
@@ -250,13 +253,13 @@ export const store = new Vuex.Store({
     },
     totalPrice: state => {
       var temp = 0
-      state.BillItems.forEach(function (element) {
-        temp += element.menuItemPrice
+      state.billItems.forEach(function (element) {
+        temp = temp + element.price
       })
       return temp
     }
   },
-  // @Ryan Methods should be lowercase in javascript [-Jenn]
+  // Mutations are called to change the states in the store
   mutations: {
     originAddress: (state, payload) => {
       state.originAddress = payload
@@ -264,46 +267,47 @@ export const store = new Vuex.Store({
     destinationAddress: (state, payload) => {
       state.destinationAddress = payload
     },
-    AddToDictionary: (state, payload) => {
-      state.MenuItems.push({
+    // TODO: @Ryan Please lowercase the first letter of your methods [-Jenn]
+    addToDictionary: (state, payload) => {
+      state.menuItems.push({
         name: payload[0],
         price: payload[1],
         selected: []
       })
     },
-    AddBillUser: (state, payload) => {
-      state.BillUsers.push({
+    addBillUser: (state, payload) => {
+      state.billUsers.push({
         name: payload[0],
         uID: payload[1]
       })
     },
-    EditDictionaryItem: (state, payload) => {
-      state.MenuItems[payload[0]].name = payload[1]
-      state.MenuItems[payload[0]].price = payload[2]
+    editDictionaryItem: (state, payload) => {
+      state.menuItems[payload[0]].name = payload[1]
+      state.menuItems[payload[0]].price = payload[2]
     },
-    EditBillItem: (state, payload) => {
-      state.BillItems[payload[0]].name = payload[1]
-      state.BillItems[payload[0]].price = payload[2]
+    editBillItem: (state, payload) => {
+      state.billItems[payload[0]].name = payload[1]
+      state.billItems[payload[0]].price = payload[2]
     },
-    RemoveFromDictionary: (state, payload) => {
+    removeFromDictionary: (state, payload) => {
       console.log('Dictionary Store Mutation Index: ' + payload)
-      state.MenuItems.splice(payload, 1)
+      state.menuItems.splice(payload, 1)
     },
-    RemoveFromBillTable: (state, payload) => {
+    removeFromBillTable: (state, payload) => {
       console.log('Bill Store Mutation Index: ' + payload)
-      state.BillItems.splice(payload, 1)
+      state.billItems.splice(payload, 1)
     },
-    RemoveUser: (state, payload) => {
+    removeUser: (state, payload) => {
       console.log('User Store Mutation Index ' + payload)
-      state.BillUsers.forEach(function (element, index) {
+      state.billUsers.forEach(function (element, index) {
         if (element.uID === payload) {
-          state.BillUsers.splice(index, 1)
+          state.billUsers.splice(index, 1)
         }
       })
-      for (var i = 0, len1 = state.BillItems.length; i < len1; i++) {
-        for (var j = 0, len2 = state.BillItems[i].selected.length; j < len2; j++) {
-          if (state.BillItems[i].selected[j] === payload) {
-            state.BillItems[i].selected.splice(j, 1)
+      for (var i = 0, len1 = state.billItems.length; i < len1; i++) {
+        for (var j = 0, len2 = state.billItems[i].selected.length; j < len2; j++) {
+          if (state.billItems[i].selected[j] === payload) {
+            state.billItems[i].selected.splice(j, 1)
           }
         }
       };
@@ -316,43 +320,61 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.address = payload.address
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
-    },
-    updateShowSelectedRestaurant: (state, payload) => {
-      state.restaurantSelection.showRestaurantSelectionSection = payload
     }
   },
   // Actions are necessary when performing asynchronous methods.
   actions: {
-    AddToDictionary: (context, payload) => {
+    setOriginAddress: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setOriginAddress', payload)
+      }, 250)
+    },
+    setDestinationAddress: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setDestinationAddress', payload)
+      }, 250)
+    },
+    addToDictionary: (context, payload) => {
       setTimeout(function () {
         console.log('Added Food Item Name: ' + payload[0])
         console.log('Added Food Item Price: ' + payload[1])
-        context.commit('AddToDictionary', payload)
+        context.commit('addToDictionary', payload)
       }, 250)
     },
-    RemoveFromDictionary: (context, payload) => {
+    addBillUser: (context, payload) => {
       setTimeout(function () {
-        context.commit('RemoveFromDictionary', payload)
+        console.log('Added New Bill User: ' + payload)
+        context.commit('addBillUser', payload)
       }, 250)
     },
-    RemoveFromBillTable: (context, payload) => {
+    editDictionaryItem: (context, payload) => {
       setTimeout(function () {
-        context.commit('RemoveFromBillTable', payload)
+        context.commit('editDictionaryItem', payload)
       }, 250)
     },
-    RemoveUser: (context, payload) => {
+    editBillItem: (context, payload) => {
       setTimeout(function () {
-        context.commit('RemoveUser', payload)
+        context.commit('editBillItem', payload)
+      }, 250)
+    },
+    removeFromDictionary: (context, payload) => {
+      setTimeout(function () {
+        context.commit('removeFromDictionary', payload)
+      }, 250)
+    },
+    removeFromBillTable: (context, payload) => {
+      setTimeout(function () {
+        context.commit('removeFromBillTable', payload)
+      }, 250)
+    },
+    removeUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('removeUser', payload)
       }, 250)
     },
     setSelectedRestaurant: (context, payload) => {
       setTimeout(function () {
         context.commit('setSelectedRestaurant', payload)
-      }, 250)
-    },
-    updateShowSelectedRestaurant: (context, payload) => {
-      setTimeout(function () {
-        context.commit('updateShowSelectedRestaurant', payload)
       }, 250)
     }
   }

@@ -1,6 +1,8 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.IO;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -70,6 +72,55 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception e)
             {
                 return BadRequest(e.Message);
+            }
+        }
+
+        // TODO: @Angelica ImageUpload comments
+        // PUT Profile/User/EditUser/ImageUpload
+        [Route("User/Edit/ProfileImageUpload")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        [HttpPut]
+        public IHttpActionResult ProfileImageUpload([FromBody] UserProfileDto user)
+        {
+            //Checks if what was given is a valid model.
+            if (!ModelState.IsValid)
+            {
+                //If model is invalid, return a bad request.
+                return BadRequest("Something went wrong, please try again later");
+            }
+            try
+            {
+
+                
+                // full path to file in temp location
+                var filePath = Path.GetTempFileName();
+                Console.WriteLine(filePath);
+       
+                
+     
+
+                //string filePath = Path.Combine(HttpRuntime.AppDomainAppPath);
+                //Console.WriteLine("This is the image path" + filePath);
+                //var filePath = HttpContext.Current.Server.MapPath("~/Userimage/" + user.DisplayPicture);
+                //Userimage myfolder name where i want to save my image
+                //postedFile.SaveAs(filePath);
+                ////Creating a manager to then call ProfileImageUpload.
+                //var manager = new UserProfileManager();
+                ////Calling ProfileImageUpload method to edit the given user.
+                //var response = manager.ProfileImageUpload(user);
+                ////Checks the response from ProfileImageUpload. If error is null, then it was successful.
+                //if (response.Error != null)
+                //{
+                //    //Will return a bad request if error occured in manager.
+                //    return BadRequest(response.Error);
+                //}
+                return Ok("Image has been updated");
+            }
+            catch (Exception)
+            {
+                //If any exceptions occur, send an HTTP response 400 status.
+                return BadRequest("This is a bad request.");
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -109,6 +108,8 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// <param name="registerUserDto">The user information that will be stored in the database.</param>
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
+        // POST User/Admin/Create
+
         // Opts authentication
         [Route("CreateAdmin")]
         // TODO: @Angelica Change methods to POST [-Jenn]
@@ -151,8 +152,9 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// @author: Angelica Salas Tovar
         /// @updated: 03/20/2018
-        /// <param name="user">The expected user to be deleted.</param>
+        /// <param name="username">The expected user to be deleted.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
+        // DELETE User/DeleteUser
         [Route("DeleteUser")]
         // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
@@ -175,7 +177,7 @@ namespace CSULB.GetUsGrub.Controllers
                 //Creating a manager to then call DeleteUser
                 var manager = new UserManager();
                 //Calling DeleteUser method to delete the username that was received.
-                var response = manager.DeleteUser(user.Username);
+                var response = manager.DeleteUser(user);
                 //Checks the response from DeleteUser. If Error is null, then it was successful!
                 if (response.Error != null)
                 {
@@ -192,14 +194,14 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(user);
             }
         }
-
         /// <summary>
         /// Deactivate User validates the model state and routes the data transfer object,
         /// </summary>
         /// @author: Angelica Salas Tovar
         /// @updated: 03/20/2018
-        /// <param name="user">The expected user to be reactivated.</param>
+        /// <param name="username">The expected user to be reactivated.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
+        // POST User/DeactivateUser
         [Route("DeactivateUser")]
         // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
@@ -220,7 +222,7 @@ namespace CSULB.GetUsGrub.Controllers
                 //Creating a manger to then call Deactivateuser
                 var manager = new UserManager();
                 //Calling ReactivateUser method to reactivate the username that was recieved.
-                var response = manager.DeactivateUser(user.Username);
+                var response = manager.DeactivateUser(user);
                 //Checks the response from ReactivateUser. If Error is null, then it was successful.
                 if (response.Error != null)
                 {
@@ -237,14 +239,14 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-
         /// <summary>
         /// Reactivate User validates the model state and routes the data transfer object,
         /// </summary>
         /// @author: Angelica Salas Tovar
         /// @updated: 03/20/2018
-        /// <param name="user">The expected user to be reactivated.</param>
+        /// <param name="username">The expected user to be reactivated.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
+        // POST User/ReactivateUser
         [Route("ReactivateUser")]
         // TODO: @Angelica Change methods [-Jenn]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
@@ -256,7 +258,7 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                return BadRequest("Invalid Model! (modelstate)");
             }
             try
             {
@@ -285,24 +287,20 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// @author: Angelica Salas Tovar
         /// @updated: 03/20/2018
-        /// <param name="user">The expected user to be edited.</param>
+        /// <param name="username">The expected user to be edited.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
-        // POST User/Admin/EditUser
+        // POST User/EditUser
         [Route("EditUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
-            Debug.WriteLine("username" + user.Username);
-            Debug.WriteLine("new username" + user.NewUsername);
-            Debug.WriteLine("new displayname" + user.NewDisplayName);
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
                 return BadRequest("Something went wrong, please try again later");
-                //return Ok(user);
             }
             try
             {
@@ -317,7 +315,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
                 //If EditUser was successful return HTTP response with a successful message.
-                return Ok("User has been edited:" + user.Username);
+                return Ok("User has been edited: " + user.Username);
             }
             catch (Exception)
             {

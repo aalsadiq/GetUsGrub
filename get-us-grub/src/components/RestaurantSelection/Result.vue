@@ -1,8 +1,10 @@
 <template>
   <div id="restaurant-selection-response">
-    <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
-    <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
-      Unable to find a restaurant that meets your selection criteria
+    <!-- Title bar for the restaurant selection -->
+    <v-alert id="result-bar" :value=showResultBar>
+      <span id="quote">
+        Results
+      </span>
     </v-alert>
     <v-card id="card-result">
       <v-layout row justify-space-between>
@@ -36,18 +38,6 @@
       </v-layout>
     </v-card>
     <v-flex xs12>
-      <!-- Button to route to search for a restaurant with new selection criteria -->
-      <v-btn @click="showRestaurantSelection" color="yellow darken-3" :disabled="!this.responseValid">
-        <span class="btn-text">
-          NEW
-        </span>
-      </v-btn>
-      <!-- Button to rerun the current search selection criteria -->
-      <v-btn @click="submit" color="deep-orange darken-3" :loading="loading" :disabled="!this.responseValid">
-        <span class="btn-text">
-          RERUN
-        </span>
-      </v-btn>
       <!-- Confirm that user will be going to this restaurant -->
       <v-btn @click="confirmRestaurant" color="cyan darken-2" :disabled="!this.responseValid">
         <span class="btn-text">
@@ -74,7 +64,8 @@ export default {
       responseValid: true,
       loader: null,
       loading: false,
-      showAlert: false
+      showAlert: false,
+      showResultBar: true
     }
   },
   watch: {
@@ -93,10 +84,6 @@ export default {
     restaurant: state => state.restaurantSelection.selectedRestaurant
   }),
   methods: {
-    // Toggles to hide the result div and show the restaurant selection div
-    showRestaurantSelection () {
-      this.$store.dispatch('updateShowSelectedRestaurant', true)
-    },
     // Submitting information to the backend
     submit () {
       this.responseValid = false
@@ -143,8 +130,8 @@ export default {
 #restaurant-selection-response {
   margin: 0 0 7em 0;
 }
-#unableToFindRestaurantAlert {
-  background-color: #e26161 !important
+#result-bar {
+  background-color: #e49f9f !important
 }
 #display-name {
   font-size: 1.3em;

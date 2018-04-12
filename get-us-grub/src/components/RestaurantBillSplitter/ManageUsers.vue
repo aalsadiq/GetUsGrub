@@ -6,7 +6,7 @@
       <v-card-text>{{billItem.name}} {{billItem.price}}</v-card-text>
       <v-divider />
       <v-card-text>
-        <v-checkbox v-for="(billUser, billUserIndex) in BillUsers"
+        <v-checkbox v-for="(billUser, billUserIndex) in billUsers"
                     :key="billUserIndex"
                     :label="billUser.name"
                     :value="billUser.uID"
@@ -26,7 +26,6 @@
 
 <script>
 import AddBillUser from './AddBillUser.vue'
-
 export default {
   name: 'ManageUsers',
   components: {
@@ -39,27 +38,14 @@ export default {
   },
   props: ['billItem'],
   methods: {
-    Log: function () {
-      console.log(this.BillUser)
-    }
   },
   computed: {
-    MenuItems () {
-      return this.$store.state.MenuItems
-    },
-    BillItems () {
-      return this.$store.state.BillItems
-    },
-    BillUsers () {
-      return this.$store.state.BillUsers
-    },
-    TotalPrice () {
-      return this.$store.getters.totalPrice
+    billUsers () {
+      return this.$store.state.billUsers
     }
   }
 }
 </script>
 
 <style>
-
 </style>

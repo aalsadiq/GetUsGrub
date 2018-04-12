@@ -12,6 +12,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public abstract class RestaurantSelectionManager
     {
+        // Constants
+        public const double MilesToMetersMetric = 1609.34;
+
         // Read-only accessors
         public readonly RestaurantSelectionDto RestaurantSelectionDto;
 
@@ -35,7 +38,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         }
 
         public abstract ResponseDto<SelectedRestaurantDto> SelectRestaurant();
-
+        
         /// <summary>
         /// The ConvertDistanceInMilesToMeters method.
         /// Converts a distance in miles to meters.
@@ -48,8 +51,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>A double type that represents the distance in meters.</returns>
         public double ConvertDistanceInMilesToMeters(double distanceInMiles)
         {
-            return distanceInMiles * 1609.34;
+            return distanceInMiles * MilesToMetersMetric;
         }
-
     }
 }

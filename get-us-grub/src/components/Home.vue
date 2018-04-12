@@ -1,7 +1,7 @@
 <template>
     <div id="home">
       <app-header/>
-      <img src="@/assets/GetUsGrub.png">
+      <!-- <img src="@/assets/GetUsGrub.png"> -->
       <restaurant-selection-unregistered-user-main/>
       <app-footer/>
     </div>

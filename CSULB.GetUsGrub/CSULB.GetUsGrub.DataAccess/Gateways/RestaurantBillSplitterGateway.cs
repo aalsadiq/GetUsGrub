@@ -12,18 +12,14 @@ namespace CSULB.GetUsGrub.DataAccess
 		public class RestaurantBillSplitterGateway : IDisposable
 		{
 				RestaurantContext context = new RestaurantContext();
-				public ResponseDto<List<RestaurantMenuWithItems>> GetRestaurantMenus(int restaurantID)
+				public ResponseDto<List<RestaurantMenuWithItems>> GetRestaurantMenus(int restaurantId)
 				{
 						try
 						{
-								var userProfile = (from profile in context.UserProfiles
-																	 where profile.RestaurantProfile.Id == restaurantID
-																	 select profile).SingleOrDefault();
-
 								// Find restaurant by Display Name, Latitude, Longitude
 								var restaurantProfile = (from restaurant in context.RestaurantProfiles
-																				 where restaurant.Id == userProfile.Id
-																				 select restaurant).SingleOrDefault();
+																				 where restaurant.Id == restaurantId
+																				 select restaurant).FirstOrDefault();
 
 								//TODO: @Ryan TEST ALL SCENARIOS [-Ryan]
 								// Then, find all active menus associated with this restaurant and turn it into a List

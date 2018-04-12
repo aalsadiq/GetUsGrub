@@ -438,7 +438,7 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-///@ANgelica Refactor Delete User-----------------------------------------------------------------------------------------------
+        ///@ANgelica Refactor Delete User-----------------------------------------------------------------------------------------------
         public ResponseDto<bool> DeleteUser(string username)
         {
             //Creating user context.
@@ -470,11 +470,11 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userPasswordSalt = (from passwordSalt in userContext.PasswordSalts
                                                 where passwordSalt.Id == userAccount.Id
                                                 select passwordSalt).FirstOrDefault();
-                        if(userPasswordSalt != null)
+                        if (userPasswordSalt != null)
                         {
                             userContext.PasswordSalts.Remove(userPasswordSalt);
                         }
-//userSecurityAnswerSalt
+                        //userSecurityAnswerSalt
                         //Queries for the users security answer salt based on user account id and security answer salt user id.
                         var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
                                                       join securityQuestion in userContext.SecurityQuestions
@@ -491,7 +491,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                 userContext.SecurityAnswerSalts.Remove(answers);
                             }
                         }
-//User Security Question
+                        //User Security Question
                         //Checks if security question result is null, if not then delete from database.
                         var userSecurityQuestion = (from securityQuestion in userContext.SecurityQuestions
                                                     where securityQuestion.UserId == userAccount.Id
@@ -507,7 +507,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                 //save changes to the database
                             }
                         }
-//Authentication Token
+                        //Authentication Token
                         //Queries for the users tokens based on user account id and token user id.
                         var userTokens = (from tokens in userContext.AuthenticationTokens
                                           where tokens.Id == userAccount.Id
@@ -518,7 +518,7 @@ namespace CSULB.GetUsGrub.DataAccess
                             //Delete Tokens
                             userContext.AuthenticationTokens.Remove(userTokens);
                         }
-//RestaurantMenuItems
+                        //RestaurantMenuItems
                         //Queries for the users Restaurant Menu Items based on user account id and restaurant menu items user id.
                         //RestaurantMenuItem Id where MenuId is equal to Restaurant Menu Id
                         var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
@@ -535,8 +535,8 @@ namespace CSULB.GetUsGrub.DataAccess
                                 //Delete security answer salt
                                 userContext.RestaurantMenuItems.Remove(menuItems);
                             }
-                        }                 
-//RestaurantMenus
+                        }
+                        //RestaurantMenus
                         //Queries for the users Restaurant Menu based on user account id and restaurant menu user id.
                         var userRestaurantMenus = (from restaurantMenus in userContext.RestaurantMenus
                                                    where restaurantMenus.RestaurantId == userAccount.Id
@@ -550,7 +550,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                 userContext.RestaurantMenus.Remove(menus);
                             }
                         }
-//BusinessHours
+                        //BusinessHours
                         //Queries for the users business hours based on user account id and business hours user id.
                         var userBusinessHours = (from businessHours in userContext.BusinessHours
                                                  where businessHours.RestaurantId == userAccount.Id
@@ -563,7 +563,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                 userContext.BusinessHours.Remove(businesshours);
                             }
                         }
-//RestaurantProfiles
+                        //RestaurantProfiles
                         //Queries for the users Restaurant Profiles based on user account id and rrestaurant profile user id.
                         var userRestaurantProfiles = (from restaurantProfiles in userContext.RestaurantProfiles
                                                       where restaurantProfiles.Id == userAccount.Id
@@ -575,7 +575,7 @@ namespace CSULB.GetUsGrub.DataAccess
                             userContext.RestaurantProfiles.Remove(userRestaurantProfiles);
                             userContext.SaveChanges();
                         }
-//User Profiles
+                        //User Profiles
                         //Queries for the users Profiles based on user account id and profiles user id.
                         var userProfiles = (from profiles in userContext.UserProfiles
                                             where profiles.Id == userAccount.Id
@@ -587,7 +587,7 @@ namespace CSULB.GetUsGrub.DataAccess
                             userContext.UserProfiles.Remove(userProfiles);
                             userContext.SaveChanges();
                         }
-//User Claims
+                        //User Claims
                         //Queries for the users claims based on user account id and claims user id.
                         var userClaims = (from claims in userContext.UserClaims
                                           where claims.Id == userAccount.Id
@@ -598,7 +598,7 @@ namespace CSULB.GetUsGrub.DataAccess
                             //Delete user claims
                             userContext.UserClaims.Remove(userClaims);
                         }
-//UserAccount
+                        //UserAccount
                         //Delete useraccount
                         userContext.UserAccounts.Remove(userAccount);
                         //save changes to the database
@@ -625,7 +625,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
             }
         }
- 
+
         /// <summary>
         /// Main method that will go through edit user metehods: editUsername, editDisplayName, and reset Password.
         /// </summary>
@@ -642,8 +642,8 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     //Queries for the user account based on the username passed in by the EditUserDto.
                     var userAccount = (from account in userContext.UserAccounts
-                                        where account.Username == user.Username
-                                        select account).SingleOrDefault();
+                                       where account.Username == user.Username
+                                       select account).SingleOrDefault();
 
                     //Create Response Dto.
                     var editDisplayNameResult = new ResponseDto<bool>();
@@ -662,7 +662,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         editUserNameResult = EditUserName(user.Username, user.NewUsername);
                     }
                     //If the ResponseDto.Data is true then return true.
-                    if (editDisplayNameResult.Data == true || editUserNameResult.Data == true) 
+                    if (editDisplayNameResult.Data == true || editUserNameResult.Data == true)
                     {
                         //Return ResponseDto
                         return new ResponseDto<bool>()
@@ -711,7 +711,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).SingleOrDefault();
-                        
+
                         //Select the username from useraccount and give it the new username.
                         userAccount.Username = newUsername;
                         //Save changes to the database
@@ -833,6 +833,47 @@ namespace CSULB.GetUsGrub.DataAccess
                             Error = "Something went wrong. Please try again later."//The error.
                         };
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Return a list of user's food preferences given the username
+        /// 
+        /// @author: Rachel Dang
+        /// @updated: 04/11/18
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>ResponseDto which encapsulates a FoodPreferenceDto</returns>
+        public ResponseDto<FoodPreferencesDto> GetFoodPreferencesByUsername(string username)
+        {
+            using (var context = new UserContext())
+            {
+                try
+                {
+                    // Makes sure user account exists
+                    var userId = (from account in context.UserAccounts
+                                       where account.Username == username
+                                       select account.Id).SingleOrDefault();
+
+                    // Grab list of user's preferences from database
+                    var preferences = (from foodPreferences in context.FoodPreferences
+                                       where foodPreferences.UserId == userId
+                                       select foodPreferences.Preference).ToList();
+
+                    // Return response dto with food preferences dto
+                    return new ResponseDto<FoodPreferencesDto>
+                    {
+                        Data = new FoodPreferencesDto(preferences)
+                    };
+                }
+                catch (Exception)
+                {
+                    // If exception occurs, return response dto with error message
+                    return new ResponseDto<FoodPreferencesDto>
+                    {
+                        Error = "Something went wrong. Please try again later."
+                    };
                 }
             }
         }

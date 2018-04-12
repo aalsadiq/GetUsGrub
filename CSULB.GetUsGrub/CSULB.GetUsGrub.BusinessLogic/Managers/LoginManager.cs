@@ -63,8 +63,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 userAttempts = userAttemptsDto.Data;
             }
 
-            // Checking if they already have 5 failed attempts 20 mins ago 
-            if (userAttempts.Count >= 5)
+            // Checking if they already have 5 failed attempts 20 mins ago
+            if (userAttempts == null)
+            {
+                userAttempts = new FailedAttempts()
+                {
+                    Count = 0
+                };
+            }
+            else if (userAttempts.Count >= 5 )
             {
                 if (!(userAttempts.LastAttemptTime.CompareTo(DateTime.Now.Subtract(TimeSpan.FromMinutes(20))) > 0))
                 {

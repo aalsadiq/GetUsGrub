@@ -42,7 +42,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Creating the Header of the Token
             authenticationToken.Salt = saltGenerator.GenerateSalt(128);
             var securityKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt));
-            var signingCredentials = new SigningCredentials(securityKey, "Sha256");
+            var signingCredentials = new SigningCredentials(securityKey, "HS256");
 
             // TODO @Ahmed Add Claims getter : get Claims from Rachel's feature. [-Ahmed]
 
@@ -59,7 +59,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // @TODO @Ahmed incoporate the Claims from Rachel here
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimValueTypes.String,"(UserName:)",authenticationToken.Username),
+                    new Claim("Username:",authenticationToken.Username),
                 }),
                 Audience = "www.GetUsGrub.com",
                 IssuedAt = issuedOn,

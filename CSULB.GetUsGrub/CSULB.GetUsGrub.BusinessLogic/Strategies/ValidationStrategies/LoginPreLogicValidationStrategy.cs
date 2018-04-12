@@ -32,7 +32,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Checking if user Exists
             var userExistanceValidator = new UserValidator();
             var validateUserExistanceResult = userExistanceValidator.CheckIfUserExists(_loginDto.Username);
-            if (validateUserExistanceResult.Data)
+            if (!validateUserExistanceResult.Data)
             {
                 return new ResponseDto<LoginDto>
                 {

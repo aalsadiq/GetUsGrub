@@ -17,41 +17,33 @@ namespace CSULB.GetUsGrub.Controllers
         [AllowAnonymous]
         [Route("Login/")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public HttpResponseMessage AuthenticateUser([FromBody] LoginDto loginDto)
+        public IHttpActionResult AuthenticateUser([FromBody] LoginDto loginDto)
         {
             try
             {
                 // Model Binding Validation
                 if (!ModelState.IsValid)
                 {
-                    // TODO @Ahmed change to Bad request To @Ahmed
-                    // TODO @Ahmed Ask @Jenn about the Action vs ResponseMessage [-Ahmed]
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized, "Something went very wrong",
-                        Configuration.Formatters.JsonFormatter);
+                   return BadRequest(ModelState);
                 }
                 var loginManager = new LoginManager();
                 var loginResponse = loginManager.LoginUser(loginDto);
                 if (loginResponse.Error != null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized, loginResponse.Error,
-                        Configuration.Formatters.JsonFormatter);
+                    return BadRequest(loginResponse.Error);
                 }
                 var authenticationTokenManager = new AuthenticationTokenManager();
                 var tokenResponse = authenticationTokenManager.CreateToken(loginResponse.Data);
                 if (tokenResponse.Error != null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized, tokenResponse.Error,
-                        Configuration.Formatters.JsonFormatter);
+                    return BadRequest();
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, tokenResponse.Data.TokenString,
-                    Configuration.Formatters.JsonFormatter);
+                return Ok(tokenResponse.Data.TokenString);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, "Something went very wrong",
-                    Configuration.Formatters.JsonFormatter);
+                return BadRequest("Something Went Completely Wrong!");
             }
         }
-
     }
 }

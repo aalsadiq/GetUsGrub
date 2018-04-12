@@ -258,15 +258,11 @@ export const store = new Vuex.Store({
   },
   // @Ryan Methods should be lowercase in javascript [-Jenn]
   mutations: {
-    setOriginAddress: (state, payload) => {
-      state.originAddress.push({
-        originAddress: payload
-      })
+    originAddress: (state, payload) => {
+      state.originAddress = payload
     },
-    setDestinationAddress: (state, payload) => {
-      state.destinationAddress.push({
-        destinationAddress: payload
-      })
+    destinationAddress: (state, payload) => {
+      state.destinationAddress = payload
     },
     AddToDictionary: (state, payload) => {
       state.MenuItems.push({
@@ -327,16 +323,6 @@ export const store = new Vuex.Store({
   },
   // Actions are necessary when performing asynchronous methods.
   actions: {
-    setOriginAddress: (context, payload) => {
-      setTimeout(function () {
-        context.commit('setOriginAddress', payload)
-      }, 250)
-    },
-    setDestinationAddress: (context, payload) => {
-      setTimeout(function () {
-        context.commit('setDestinationAddress', payload)
-      }, 250)
-    },
     AddToDictionary: (context, payload) => {
       setTimeout(function () {
         console.log('Added Food Item Name: ' + payload[0])

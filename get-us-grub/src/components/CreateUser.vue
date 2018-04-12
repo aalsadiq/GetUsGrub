@@ -435,6 +435,7 @@
 
 <script>
 import axios from 'axios'
+import PasswordValidation from '@/components/PasswordValidation/PasswordValidation'
 
 export default {
   name: 'CreateUser',
@@ -443,6 +444,7 @@ export default {
     tabs: null,
     userStep: 0,
     restaurantStep: 0,
+    passwordErrorMessages: [],
     validIdentificationInput: false,
     validSecurityInput: false,
     validBusinessHourInput: false,
@@ -495,7 +497,6 @@ export default {
       openTime: null,
       closeTime: null
     },
-    passwordErrorMessages: [],
     responseDataStatus: '',
     responseData: ''
   }),
@@ -512,55 +513,10 @@ export default {
       }
     },
     validate () {
-      if (this.userAccount.password.length < 8) {
-        return
-      }
-
-      var sha1 = require('sha1')
-      var hash = sha1(this.userAccount.password)
-      var anonHash = hash.substring(0, 5)
-
-      axios.get('https://api.pwnedpasswords.com/range/' + anonHash
-      ).then(response => {
-        var data = response.data
-        var lines = data.split('\n')
-        var errorFlag = false
-
-        for (var i = 0; i < lines.length; i++) {
-          var line = lines[i].split(':')
-
-          if ((anonHash + line[0]).toLowerCase() !== hash) {
-            continue
-          }
-
-          var count = line[1]
-
-          if (count >= 100) {
-            this.$notify({
-              group: 'notifications',
-              type: 'error',
-              duration: 2000,
-              title: 'WARNING',
-              text: 'Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com'
-            })
-
-            errorFlag = true
-            this.passwordErrorMessages = ['Your password has been found in multiple breaches. You may not use this password. For more information, visit HaveIBeenPwned.com']
-          } else if (count !== 0) {
-            this.$notify({
-              group: 'notifications',
-              type: 'warning',
-              duration: 2000,
-              title: 'WARNING',
-              text: 'Your password has previously been found in a breach. We highly recommend you change your password. For more information, visit HaveIBeenPwned.com'
-            })
-          }
-        }
-
-        if (!errorFlag) {
-          this.passwordErrorMessages = []
-        }
-      })
+      PasswordValidation.methods.validate(this.userAccount.password)
+        .then(response => {
+          this.passwordErrorMessages = response
+        })
     },
     userSubmit () {
       axios.post('http://localhost:8081/User/Registration/Individual', {

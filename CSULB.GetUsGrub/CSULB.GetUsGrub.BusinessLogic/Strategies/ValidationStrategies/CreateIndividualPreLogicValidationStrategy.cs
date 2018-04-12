@@ -16,6 +16,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly RegisterUserDto _registerUserDto;
         private readonly SecurityQuestionDtoValidator _securityQuestionDtoValidator;
         private readonly UserValidator _userValidator;
+        private readonly IPasswordValidationService _passwordValidator;
 
         /// <summary>
         /// Constructor for CreateIndividualPreLogicValidationStrategy.
@@ -30,6 +31,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _registerUserDto = registerUserDto;
             _securityQuestionDtoValidator = new SecurityQuestionDtoValidator();
             _userValidator = new UserValidator();
+            _passwordValidator = new PwnedPasswordValidationService();
         }
 
         /// <summary>

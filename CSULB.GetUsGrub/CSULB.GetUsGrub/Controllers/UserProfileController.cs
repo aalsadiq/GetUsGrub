@@ -87,34 +87,24 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                return BadRequest("Something went wrong in controller.");
             }
             try
             {
+                var filePath = user.DisplayPicture;
 
-                
-                // full path to file in temp location
-                var filePath = Path.GetTempFileName();
-                Console.WriteLine(filePath);
-       
-                
-     
-
-                //string filePath = Path.Combine(HttpRuntime.AppDomainAppPath);
-                //Console.WriteLine("This is the image path" + filePath);
-                //var filePath = HttpContext.Current.Server.MapPath("~/Userimage/" + user.DisplayPicture);
-                //Userimage myfolder name where i want to save my image
-                //postedFile.SaveAs(filePath);
-                ////Creating a manager to then call ProfileImageUpload.
-                //var manager = new UserProfileManager();
-                ////Calling ProfileImageUpload method to edit the given user.
-                //var response = manager.ProfileImageUpload(user);
-                ////Checks the response from ProfileImageUpload. If error is null, then it was successful.
-                //if (response.Error != null)
-                //{
-                //    //Will return a bad request if error occured in manager.
-                //    return BadRequest(response.Error);
-                //}
+                Console.WriteLine("This is the image path" + filePath);
+ 
+                //Creating a manager to then call ProfileImageUpload.
+                var manager = new UserProfileManager();
+                //Calling ProfileImageUpload method to edit the given user.
+                var response = manager.ProfileImageUpload(user);
+                //Checks the response from ProfileImageUpload. If error is null, then it was successful.
+                if (response.Error != null)
+                {
+                    //Will return a bad request if error occured in manager.
+                    return BadRequest(response.Error);
+                }
                 return Ok("Image has been updated");
             }
             catch (Exception)

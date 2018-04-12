@@ -20,13 +20,12 @@ namespace CSULB.GetUsGrub.UnitTests
             // Arrange
             var gateway = new AuthorizationGateway();
             var username = "username1";
-            var expected = typeof(ICollection<Claim>);
 
             // Act
             var result = gateway.GetClaimsByUsername(username);
 
             // Assert
-            result.Data.Should().BeOfType(expected);
+            result.Data.Should().NotBeNullOrEmpty();
             result.Error.Should().BeNull();
         }
 

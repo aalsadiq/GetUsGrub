@@ -22,7 +22,7 @@ namespace CSULB.GetUsGrub.DataAccess
         public DbSet<AuthenticationToken> AuthenticationTokens { get; set; }
         public DbSet<UserClaims> UserClaims { get; set; }
         public DbSet<SecurityAnswerSalt> SecurityAnswerSalts { get; set; }
-        public DbSet<FoodPreferences> FoodPreferences { get; set; }
+        public DbSet<FoodPreference> FoodPreferences { get; set; }
         public DbSet<FailedAttempts> FailedAttempts { get; set; }
 
         public UserContext() : base("GetUsGrub") { }

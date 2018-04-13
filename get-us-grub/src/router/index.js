@@ -16,6 +16,7 @@ import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
+import Login from '@/components/Login/Login.vue'
 
 Vue.use(Router)
 
@@ -112,6 +113,15 @@ export default new Router({
     //   name: 'EditFoodPreferences',
     //   component: EditFoodPreferences
     // },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Login Brh!'
+        next()
+      }
+    },
     {
       path: '*'
     }

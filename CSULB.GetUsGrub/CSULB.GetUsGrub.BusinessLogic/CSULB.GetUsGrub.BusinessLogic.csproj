@@ -76,6 +76,7 @@
     <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Managers\UnregisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\UserProfileManager.cs" />
+    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Services\BackoffRequest.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
     <Compile Include="Managers\BaseManagers\RestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantBillSplitterManager.cs" />
-    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\AuthenticationTokenManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,8 +134,8 @@
     <Compile Include="Validators\ModelValidators\AuthenticationTokenValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
+    <Compile Include="Validators\DtoValidators\UserAuthenticationDtoValidator.cs" />
     <Compile Include="Validators\ModelValidators\SsoTokenPayloadValidator.cs" />
-    <Compile Include="Validators\ModelValidators\UserAuthenticationModelValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
     <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />

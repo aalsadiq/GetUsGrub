@@ -209,7 +209,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                     new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True")
                 };
 
-
                 // AddorUpdate to UserClaims table
                 context.UserClaims.AddOrUpdate
                 (

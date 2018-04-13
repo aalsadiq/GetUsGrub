@@ -81,7 +81,7 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
-        public IHttpActionResult ProfileImageUpload([FromBody] UserProfileDto user)
+        public IHttpActionResult ProfileImageUpload([FromBody] HttpPostedFileBase user)//UserProfileDto
         {
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
@@ -91,21 +91,28 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
-                var filePath = user.DisplayPicture;
-
-                Console.WriteLine("This is the image path" + filePath);
- 
-                //Creating a manager to then call ProfileImageUpload.
-                var manager = new UserProfileManager();
-                //Calling ProfileImageUpload method to edit the given user.
-                var response = manager.ProfileImageUpload(user);
-                //Checks the response from ProfileImageUpload. If error is null, then it was successful.
-                if (response.Error != null)
+                //work in progress... (testing...)
+                string directory = @"C:\Users\Angelica\Desktop\TEST\";
+                if(user!= null && user.ContentLength > 0)
                 {
-                    //Will return a bad request if error occured in manager.
-                    return BadRequest(response.Error);
+                    var fileName = Path.GetFileName(user.FileName);
+                    user.SaveAs(Path.Combine(directory, fileName));
                 }
-                return Ok("Image has been updated");
+                
+                //var filePath = user.DisplayPicture;
+                //Console.WriteLine("This is the image path" + filePath);
+                //Creating a manager to then call ProfileImageUpload.
+                //var manager = new UserProfileManager();
+                //Calling ProfileImageUpload method to edit the given user.
+                //var response = manager.ProfileImageUpload(user);
+                //Checks the response from ProfileImageUpload. If error is null, then it was successful.
+                //if (response.Error != null)
+                //{
+                //    //Will return a bad request if error occured in manager.
+                //    return BadRequest(response.Error);
+                //}
+                //return Ok("Image has been updated");
+                return Ok(user);
             }
             catch (Exception)
             {

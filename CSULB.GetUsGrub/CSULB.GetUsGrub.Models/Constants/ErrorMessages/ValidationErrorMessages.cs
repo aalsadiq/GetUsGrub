@@ -47,6 +47,10 @@
         public const string PASSWORD_REQUIRED = "Password is required.";
         public const string PASSWORD_LENGTH = "Password must be at least 8 characters and less than or equal to 64.";
         public const string PASSWORD_FORMAT = "Password must not be empty or contain spaces.";
+        public const string USER_DOES_NOT_EXIST = "User does not exist";
+
+        // Validation error messages for EditUserDto
+        public const string NEWUSERNAME_FORMAT = "New username must not contain spaces and special characters.";
 
         // Validation error messages for UserProfile
         public const string DISPLAY_NAME_REQUIRED = "Display name is required.";

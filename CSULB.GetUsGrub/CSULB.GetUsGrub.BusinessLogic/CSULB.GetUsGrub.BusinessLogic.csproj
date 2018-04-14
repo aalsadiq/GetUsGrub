@@ -102,6 +102,7 @@
     <Compile Include="Services\PwnedPasswordValidationService.cs" />
     <Compile Include="Services\SaltGenerator.cs" />
     <Compile Include="Managers\SsoTokenManager.cs" />
+    <Compile Include="Services\SetPropertiesService.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\ValidationWrapper.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategy.cs" />

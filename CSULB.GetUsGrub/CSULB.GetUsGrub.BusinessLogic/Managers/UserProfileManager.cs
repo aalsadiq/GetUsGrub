@@ -1,5 +1,7 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using System;
+using System.Web;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -57,16 +59,23 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             //var profileImageUploadPreLogicValidationStrategy = new ProfileImageUploadPreLogicValidationStrategy(image);
             //Imagename will be based on user
-            //var result = profileImageUploadPreLogicvalidationStrategy.ExecuteStrategy();
-
+            //var result = profileImageUploadPreLogicvalidationStrategy.ExecuteStrategy();//make sure it is a path
+            //var result = image.DisplayPicture;
+            //Console.WriteLine("Inside profileImageUpload: " + image.DisplayPicture);
+            //byte[] imgbytes = System.IO.File.ReadAllBytes(image.DisplayPicture);
+        
+            return new ResponseDto<bool>
+            {
+                Data = true,
+            };
 
             //if (result.Error != null)
             //{
-                return new ResponseDto<bool>
-                {
-                    Data = false,
-                    Error = "Something went wrong. Please try again later."
-                };
+            //    return new ResponseDto<bool>
+            //    {
+            //        Data = false,
+            //        Error = "Something went wrong. Please try again later."
+            //    };
             //}
 
         }

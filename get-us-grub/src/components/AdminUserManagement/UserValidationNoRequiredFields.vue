@@ -3,9 +3,9 @@
       {{ responseDataStatus }} {{ responseData }}
       <v-flex xs6 sm3 offset-sm5>
         <v-form v-model="validIdentificationInput">
-          <v-text-field label="Enter user to edit" v-model="username" :rules="$store.state.rules.usernameRules"></v-text-field>
-          <v-text-field label="Enter new username" v-model="newUsername" :rules="$store.state.rules.usernameNotRequiredRule"></v-text-field>
-          <v-text-field label="Enter new display name" v-model="newDisplayName"></v-text-field>
+          <v-text-field label="Enter user to edit" v-model="editUser.username" :rules="$store.state.rules.usernameRules"></v-text-field>
+          <v-text-field label="Enter new username" v-model="editUser.newUsername" :rules="$store.state.rules.usernameNotRequiredRule"></v-text-field>
+          <v-text-field label="Enter new display name" v-model="editUser.newDisplayName"></v-text-field>
           <!-- @Andrews Password reset vue -->
         </v-form>
         <v-btn id ="submit-button" color="info" v-on:click="userSubmit(viewType)">Submit</v-btn>
@@ -30,24 +30,30 @@ export default {
     validSecurityInput: false,
     responseData: '',
     responseDataStatus: '',
-    username: '',
-    newUsername: '',
-    newDisplayName: ''
+    editUser: {
+      username: '',
+      newUsername: null,
+      newDisplayName: null
+    }
   }),
   methods: {
     userSubmit (viewType) {
       if (viewType === 'EditUser') {
         axios.put('http://localhost:8081/User/EditUser', {
-          username: this.username,
-          newUsername: this.newUsername,
-          newDisplayName: this.newDisplayName
+          username: this.editUser.username,
+          newUsername: this.editUser.newUsername,
+          newDisplayName: this.editUser.newDisplayName
         }).then(response => {
           this.responseDataStatus = 'Success! User has been edited: '
           this.responseData = response.data
+          this.newUsername = null
+          this.newDisplayname = null
           console.log(response)
         }).catch(error => {
-          this.responseDataStatus = 'An error has edited: '
+          this.responseDataStatus = 'An error has occured.'
           this.responseData = error.response.data
+          this.newUsername = null
+          this.newDisplayName = null
           console.log(error.response.data)
         })
       }

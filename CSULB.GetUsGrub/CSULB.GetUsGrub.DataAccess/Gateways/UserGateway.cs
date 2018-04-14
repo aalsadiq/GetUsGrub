@@ -355,20 +355,17 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).FirstOrDefault();
-                        //Check if IsActive is true
-                        if (userAccount.IsActive == true)
-                        {
-                            //Change IsActive to false if IsActive is true
-                            userAccount.IsActive = false;
-                            //Save changes to the database
-                            userContext.SaveChanges();
-                            //Commit transaction
-                            dbContextTransaction.Commit();
-                        }
+
+                        //Change IsActive to false if IsActive is true
+                        userAccount.IsActive = false;
+                        //Save changes to the database
+                        userContext.SaveChanges();
+                        //Commit transaction
+                        dbContextTransaction.Commit();
                         //Return true if transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = true//Bool
+                            Data = true
                         };
                     }
                     catch (Exception)
@@ -378,8 +375,8 @@ namespace CSULB.GetUsGrub.DataAccess
                         //Will return a false ResponseDto<bool> if dbContextTransaction fails
                         return new ResponseDto<bool>()
                         {
-                            Data = false,//Bool
-                            Error = "Something went wrong. Please try again later."//The error.
+                            Data = false,
+                            Error = GeneralErrorMessages.GENERAL_ERROR
                         };
                     }
                 }
@@ -407,20 +404,17 @@ namespace CSULB.GetUsGrub.DataAccess
                         var activeStatus = (from account in userContext.UserAccounts
                                             where account.Username == username
                                             select account).SingleOrDefault();
-                        //Checks if IsActive is false.
-                        if (activeStatus.IsActive == false)
-                        {
-                            //Change IsActive to true if IsActive is false.
-                            activeStatus.IsActive = true;
-                            //Save changes to the database.
-                            userContext.SaveChanges();
-                            //Commit transaction.
-                            dbContextTransaction.Commit();
-                        }
+
+                        //Change IsActive to true if IsActive is false.
+                        activeStatus.IsActive = true;
+                        //Save changes to the database.
+                        userContext.SaveChanges();
+                        //Commit transaction.
+                        dbContextTransaction.Commit();
                         //Returns true if transaction did not fail.
                         return new ResponseDto<bool>()
                         {
-                            Data = true//Bool
+                            Data = true
                         };
                     }
                     catch (Exception)
@@ -430,15 +424,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         //Will return a false ResponseDto<bool> if dbContextTransaction fails
                         return new ResponseDto<bool>()
                         {
-                            Data = false,//Bool
-                            Error = "Something went wrong. Please try again later."//The error.
+                            Data = false,
+                            Error = GeneralErrorMessages.GENERAL_ERROR
                         };
                     }
                 }
             }
         }
 
-        ///@ANgelica Refactor Delete User-----------------------------------------------------------------------------------------------
         public ResponseDto<bool> DeleteUser(string username)
         {
             //Creating user context.
@@ -449,9 +442,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                        Debug.Write("Insider DELETE USER GATEWAY!" + Environment.NewLine);
                         //Queries for the user account based on username.
-
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == username
                                            select account).FirstOrDefault();
@@ -610,6 +601,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                 userContext.FoodPreferences.Remove(preference);
                             }   
                         }
+// TODO: @Angelica Delete failed attempt user
 //UserAccount
                         //Delete useraccount
                         userContext.UserAccounts.Remove(userAccount);
@@ -679,14 +671,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         //Return ResponseDto
                         return new ResponseDto<bool>()
                         {
-                            Data = true//Bool
+                            Data = true
                         };
                     }
                     //Returns ResponseDto
                     return new ResponseDto<bool>()
                     {
-                        Data = false,//Bool
-                        Error = "Something went wrong. Please try again later."//The error.
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
                 catch (Exception)
@@ -694,8 +686,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     //Returns ReponseDto
                     return new ResponseDto<bool>()
                     {
-                        Data = false,//Bool
-                        Error = "Something went wrong. Please try again later."//The error.
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }

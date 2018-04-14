@@ -5,6 +5,7 @@
       </div>
       <div id ='adminhomevue'>
         <h1> Welcome to home Admin! </h1>
+         <img src="@/assets/GetUsGrub.png">
       </div>
       <div id ="vue-app-footer">
         <app-footer/>

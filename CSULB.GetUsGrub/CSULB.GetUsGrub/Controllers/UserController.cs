@@ -108,12 +108,10 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// <param name="registerUserDto">The user information that will be stored in the database.</param>
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
-        // POST User/Admin/Create
-
-        // Opts authentication
+        // POST User/CreateAdmin
+        // TODO: @Angelica Add Claim
         [Route("CreateAdmin")]
-        // TODO: @Angelica Change methods to POST [-Jenn]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         [HttpPost]
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
@@ -122,7 +120,7 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If mode is invalid, return a bad request.
-                return BadRequest("Invalid input, please try again.");
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
             }
             try
             {
@@ -143,7 +141,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 // Sending HTTP response 400 Status
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
 
@@ -156,8 +154,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // DELETE User/DeleteUser
         [Route("DeleteUser")]
-        // TODO: @Angelica Change methods [-Jenn]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "DELETE")]
         // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpDelete]
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
@@ -170,7 +167,7 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If mode is invalid, return a bad request.
-                return BadRequest("Invalid username.");
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
             }
             try
             {
@@ -191,7 +188,7 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 //If any exceptions occur, send an HTTP response 400 status.
                 //return BadRequest("Something went wrong. Please try again later.");
-                return Ok(user);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
         /// <summary>
@@ -203,11 +200,9 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/DeactivateUser
         [Route("DeactivateUser")]
-        // TODO: @Angelica Change methods [-Jenn]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
         [HttpPut]
-        //TODO: Add claims here
         public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
         {
             //System.Diagnostics.Debug.WriteLine("The user name is "+ user.Username);
@@ -215,7 +210,7 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If mode is invalid, return a bad request.
-                return BadRequest("The username " + user.Username);
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
             }
             try
             {
@@ -235,7 +230,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
 
@@ -248,8 +243,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/ReactivateUser
         [Route("ReactivateUser")]
-        // TODO: @Angelica Change methods [-Jenn]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpPut]
         public IHttpActionResult ReactivateUser([FromBody] UserAccountDto user)
@@ -258,7 +252,7 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                return BadRequest("Invalid Model! (modelstate)");
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
             }
             try
             {
@@ -278,7 +272,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("Something went wrong. Please try again later.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
 
@@ -291,7 +285,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/EditUser
         [Route("EditUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
@@ -300,7 +294,7 @@ namespace CSULB.GetUsGrub.Controllers
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
             }
             try
             {
@@ -320,7 +314,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("This is a bad request.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
     }

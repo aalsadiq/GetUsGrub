@@ -68,9 +68,9 @@
       <DependentUpon>201804120720190_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserDbContext\201804120720003_InitialDbCreation.cs" />
-    <Compile Include="Migrations\UserDbContext\201804120720003_InitialDbCreation.Designer.cs">
-      <DependentUpon>201804120720003_InitialDbCreation.cs</DependentUpon>
+    <Compile Include="Migrations\UserDbContext\201804140059314_InitialDbCreation.cs" />
+    <Compile Include="Migrations\UserDbContext\201804140059314_InitialDbCreation.Designer.cs">
+      <DependentUpon>201804140059314_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,8 +94,8 @@
     <EmbeddedResource Include="Migrations\SsoDbContext\201804120720190_InitialDbCreation.resx">
       <DependentUpon>201804120720190_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserDbContext\201804120720003_InitialDbCreation.resx">
-      <DependentUpon>201804120720003_InitialDbCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserDbContext\201804140059314_InitialDbCreation.resx">
+      <DependentUpon>201804140059314_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

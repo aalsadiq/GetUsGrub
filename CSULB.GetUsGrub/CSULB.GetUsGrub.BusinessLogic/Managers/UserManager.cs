@@ -367,7 +367,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<string> DeactivateUser(UserAccountDto user)//Change this to a DTO... @TODO: Angelica
+        public ResponseDto<bool> DeactivateUser(UserAccountDto user)//Change this to a DTO... @TODO: Angelica
         {
 
             //Validation Strategy
@@ -376,13 +376,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var result = usernameValidation.ExecuteStrategy();
             if (result.Error != null)
             {
-                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                return new ResponseDto<bool>//if I change this then I have to change the response DTO
                 {
-                    Data = user.Username,
+                    Data = false,
                     Error = result.Error
                 };
             }
-
             //Creates a gateway
             using (var gateway = new UserGateway())
             {
@@ -394,16 +393,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 if (gatewayResult.Data == false)
                 {
                     //Return response dto with an error.
-                    return new ResponseDto<string>()
+                    return new ResponseDto<bool>()
                     {
-                        Data = user.Username,//The username
+                        Data = false,//The username
                         Error = gatewayResult.Error//The error
                     };
                 }
                 //If the gateway returns true, return a true dto.
-                return new ResponseDto<string>
+                return new ResponseDto<bool>
                 {
-                    Data = user.Username//The username
+                    Data = true
                 };
             }
         }
@@ -415,7 +414,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be reactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<string> ReactivateUser(UserAccountDto user)
+        public ResponseDto<bool> ReactivateUser(UserAccountDto user)
             {
 
             //Validation Strategy
@@ -424,9 +423,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var result = usernameValidation.ExecuteStrategy();
             if (result.Error != null)
             {
-                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                return new ResponseDto<bool>
                 {
-                    Data = user.Username,
+                    Data = false,
                     Error = result.Error
                 };
             }
@@ -439,16 +438,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     if (gatewayResult.Data == false)
                     {
                         //Return response dto with an error..
-                        return new ResponseDto<string>()
+                        return new ResponseDto<bool>()
                         {
-                            Data = user.Username,//The username
+                            Data = false,//The username
                             Error = gatewayResult.Error//The error
                         };
                     }
                     //If the gateway returns true, return username reactivated
-                    return new ResponseDto<string>
+                    return new ResponseDto<bool>
                     {
-                        Data = user.Username//The username
+                        Data = true //The username
                     };
                 }
             }
@@ -460,7 +459,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deleted.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<string> DeleteUser(UserAccountDto user)
+        public ResponseDto<bool> DeleteUser(UserAccountDto user)
             {
             //Validation Strategy
             var usernameValidation = new UsernameValidationStrategy(user);
@@ -468,31 +467,31 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var result = usernameValidation.ExecuteStrategy();
             if (result.Error != null)
             {
-                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                return new ResponseDto<bool>//if I change this then I have to change the response DTO
                 {
-                    Data = user.Username,
+                    Data = false,
                     Error = result.Error
                 };
             }
             //Creates a gateway
             using (var gateway = new UserGateway())
-                {
-                    //Gateway calls DeleteUser and passes in the username to be deleted.
-                    var gatewayResult = gateway.DeleteUser(user.Username);
+            {
+                //Gateway calls DeleteUser and passes in the username to be deleted.
+                var gatewayResult = gateway.DeleteUser(user.Username);
                 //If they gateway returns false
                 if (gatewayResult.Data == false)
                     {
                         //Return response dto with an error.
-                        return new ResponseDto<string>()
+                        return new ResponseDto<bool>()
                         {
-                            Data = user.Username,//The username
-                            Error = gatewayResult.Error//The error
+                            Data = false,
+                            Error = gatewayResult.Error
                         };
                     }
                     //If the gateway returns true, return username deleted.
-                    return new ResponseDto<string>
+                    return new ResponseDto<bool>
                     {
-                        Data = user.Username//The username
+                        Data = true
                     };
                 }
             }
@@ -503,8 +502,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<string> Edituser(EditUserDto user)//@TODO: Angelica (Add ProfileDtoValidations...)
+        public ResponseDto<bool> Edituser(EditUserDto user)//@TODO: Angelica (Add ProfileDtoValidations...)
         {
+            var setPropertiesService = new SetPropertiesService<EditUserDto>();
+            setPropertiesService.SetEmptyStringToNull(user);
 
             //Validation Strategy will validate if the user meets the requirements
             var editUserValidation = new EditUserValidationStrategy(user);
@@ -512,13 +513,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var result = editUserValidation.ExecuteStrategy();
             if (result.Error != null)
             {
-                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                return new ResponseDto<bool>//if I change this then I have to change the response DTO
                 {
-                    Data = user.Username,
+                    Data = false,
                     Error = result.Error
                 };
             }
-
             //Creates a gateway
             using (var gateway = new UserGateway())
             {
@@ -528,15 +528,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 if (gatewayresult.Data == false)
                 {
                     //Return response dto with an error.
-                    return new ResponseDto<string>()
+                    return new ResponseDto<bool>()
                     {
-                        Data = user.Username,//The user.
+                        Data = false,
                         Error = gatewayresult.Error//The error.
                     };
                 }
-                return new ResponseDto<string>
+                return new ResponseDto<bool>
                 {
-                    Data = user.Username//The user.
+                    Data = true
                 };
             }
         }

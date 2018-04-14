@@ -45,7 +45,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var key = new SymmetricSecurityKey(Encoding.Default.GetBytes(salt));
             var signingCredentials = new SigningCredentials(key, "HS256");
 
-            authenticationToken.Key = key;
+            authenticationToken.Salt = salt;
 
             // Assigning the Username to the Token
             authenticationToken.Username = loginDto.Username;
@@ -56,18 +56,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Getting the ReadClaims for the user
             var claimIdentity = new ClaimsIdentity();
-            var claimPrincable = new ClaimsPrincipal();
+            var claimPrincipal = new ClaimsPrincipal();
             var claimTransformer = new ClaimsTransformer();
-            claimIdentity.AddClaim(new Claim("Username:", authenticationToken.Username));
-            claimPrincable.AddIdentity(claimIdentity);
-            var userClaimsPrincibledto = claimTransformer.Authenticate("Read", claimPrincable);
-            ClaimsIdentity subjectClaimsIdentity = userClaimsPrincibledto.Identity as ClaimsIdentity;
+            claimIdentity.AddClaim(new Claim("Username", authenticationToken.Username));
+            claimPrincipal.AddIdentity(claimIdentity);
+            claimPrincipal = claimTransformer.Authenticate("read", claimPrincipal);
+
+
+            var claims = claimPrincipal.Claims;
 
             // Creating the Body of the token
             var tokenDescription = new SecurityTokenDescriptor
             {
                 // @TODO @Ahmed incoporate the Claims from Rachel here
-                Subject = subjectClaimsIdentity,
+                Subject = new ClaimsIdentity(claims),
                 Audience = "https://www.GetUsGrub.com",
                 IssuedAt = issuedOn,
                 Expires = authenticationToken.ExpiresOn,
@@ -242,7 +244,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 ValidAudience = "https://www.GetUsGrub.com",
                 ValidIssuer = "CSULB.GetUsGrub",
-                IssuerSigningKey = authenticationToken.Key,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt)),
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
@@ -260,71 +262,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<bool> AuthenticateToken(string incomingTokenString)
         {
             
-            // Extract username from  the token
-            var username = GetTokenUsername(incomingTokenString);
-
-            // Checking if the Username is empty or null
-            if (string.IsNullOrEmpty(username))
-            {
-                return new ResponseDto<bool>()
-                {
-                    Data = false,
-                };
-            }
-
-            using (AuthenticationGateway gateway = new AuthenticationGateway())
-            {
-                // Getting the Authentication Token Associated with the username
-                var gatewayResult = gateway.GetAuthenticationToken(username);
-
-                // Checking if there was an error Generated in the 
-                if (gatewayResult.Error != null)
-                {
-                    return new ResponseDto<bool>()
-                    {
-                        Data = false,
-                        Error = gatewayResult.Error
-                    };
-                }
-
-                // Checking if the string is not the same and its experation time has to be later than now
-                if (gatewayResult.Data.TokenString != incomingTokenString || gatewayResult.Data.ExpiresOn.CompareTo(DateTime.Now) > 0)
-                {
-                    return new ResponseDto<bool>()
-                    {
-                        Data = false,
-                    };
-                }
-            }
+            
 
             return new ResponseDto<bool>()
             {
                 Data = true
             };
-        }
-
-        /// <summary>
-        /// Checking if ther Token String has a Username Claim or not 
-        /// </summary>
-        /// <param name="incomingTokenString"></param>
-        /// <returns>
-        /// If there is A Username claim it returns the value of it 
-        /// Else it returns null
-        /// </returns>
-        public string GetTokenUsername(string incomingTokenString)
-        {
-            try
-            {
-                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.ReadJwtToken(incomingTokenString);
-                var username = token.Claims.First(claim => claim.Type == "UserName").Value;
-
-                return username;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
     }
 }

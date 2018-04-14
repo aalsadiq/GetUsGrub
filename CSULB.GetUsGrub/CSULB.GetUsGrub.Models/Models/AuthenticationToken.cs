@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -16,13 +15,14 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.AuthenticationToken")]
     public class AuthenticationToken : IEntity
     {
+        // TODO @Ahmed Put the Key Back here so it will work with the DataBase before Demo [-Ahmed]
         // Automatic properties
         [Key]
         [ForeignKey("UserAccount")]
         public int? Id { get; set; }
         public string Username { get; set; }
         public DateTime ExpiresOn { get; set; }
-        public SymmetricSecurityKey Key { get; set; }
+        public string Salt { get; set; }
         public string TokenString { get; set; }
 
         // Navigation Properties

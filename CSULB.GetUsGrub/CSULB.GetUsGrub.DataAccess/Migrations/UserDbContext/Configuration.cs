@@ -143,7 +143,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                         Id = i,
                         Username = $"username{i}",
                         ExpiresOn = DateTime.UtcNow,
-                        Salt = $"salt{i}",
                         TokenString = $"tokenString{i}"
                     }
                 );

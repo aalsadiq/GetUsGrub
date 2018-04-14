@@ -55,10 +55,12 @@
                             :append-icon="visible ? 'visibility' : 'visibility_off'"
                             :append-icon-cb="() => (visiile = !visible)"
                             :type=" visible ? 'text' : 'password'"
+                            :error-messages="passwordErrorMessages"
+                            @input="validatePassword"
                             required
                           ></v-text-field>
                         </v-form>
-                      <v-btn color="primary" @click="userStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
+                      <v-btn color="primary" @click="userStep = 2" :disabled="!isPasswordValid || !validIdentificationInput">Next</v-btn>
                     </v-stepper-content>
                     <v-stepper-content step="2">
                       <v-form v-model="validSecurityInput">
@@ -166,10 +168,12 @@
                             :append-icon="visible ? 'visibility' : 'visibility_off'"
                             :append-icon-cb="() => (visible = !visible)"
                             :type=" visible ? 'text' : 'password'"
+                            :error-messages="passwordErrorMessages"
+                            @input="validatePassword"
                             required
                           ></v-text-field>
                         </v-form>
-                      <v-btn color="primary" @click="restaurantStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
+                      <v-btn color="primary" @click="restaurantStep = 2" :disabled="!isPasswordValid || !validIdentificationInput">Next</v-btn>
                     </v-stepper-content>
                     <v-stepper-content step="2">
                       <v-form v-model="validSecurityInput">
@@ -439,6 +443,7 @@
 
 <script>
 import axios from 'axios'
+import PasswordValidation from '@/components/PasswordValidation/PasswordValidation'
 
 export default {
   name: 'CreateUser',
@@ -447,6 +452,8 @@ export default {
     tabs: null,
     userStep: 0,
     restaurantStep: 0,
+    passwordErrorMessages: [],
+    isPasswordValid: false,
     validIdentificationInput: false,
     validSecurityInput: false,
     validBusinessHourInput: false,
@@ -506,6 +513,20 @@ export default {
   }),
 
   methods: {
+    validatePassword () {
+      if (this.userAccount.password.length < 8) {
+        this.passwordErrorMessages = []
+        return
+      }
+      PasswordValidation.methods.validate(this.userAccount.password)
+        .then(response => {
+          this.isPasswordValid = response.isValid
+          this.passwordErrorMessages = response.message
+          if (response === []) {
+            this.isPasswordValid = true
+          }
+        })
+    },
     addBusinessHour () {
       this.businessHours.push({day: this.businessHour.day, openTime: this.businessHour.openTime, closeTime: this.businessHour.closeTime})
       this.businessHour.day = ''

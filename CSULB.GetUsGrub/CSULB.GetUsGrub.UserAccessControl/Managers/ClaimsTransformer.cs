@@ -75,7 +75,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             claims.Add(new Claim("Username", username));
 
             // Create ClaimsIdentity with the list of claims
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, resourceName);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims);
 
             // Create ClaimsPrincipal with the ClaimsIdentity
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

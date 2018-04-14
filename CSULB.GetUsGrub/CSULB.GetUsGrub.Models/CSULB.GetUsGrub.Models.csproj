@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ActionConstant.cs" />
+    <Compile Include="Constants\ErrorMessages\AuthenticationErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\RestaurantSelectionErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\UserManagementErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\ValidationErrorMessages.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="Models\GeoCoordinates.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
-    <Compile Include="DTOs\PasswordSaltDto.cs" />
     <Compile Include="DTOs\RegisterRestaurantDto.cs" />
     <Compile Include="DTOs\RegisterUserDto.cs" />
     <Compile Include="DTOs\ResponseDto.cs" />
@@ -113,9 +113,9 @@
     <Compile Include="Models\InvalidSsoToken.cs" />
     <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
-    <Compile Include="Models\ValidSsoToken.cs" />
+    <Compile Include="DTOs\UserAuthenticationDto.cs" />
     <Compile Include="Models\SsoTokenPayload.cs" />
-    <Compile Include="Models\UserAuthenticationModel.cs" />
+    <Compile Include="Models\ValidSsoToken.cs" />
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Interfaces\IEntity.cs" />

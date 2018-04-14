@@ -4,8 +4,10 @@ using CSULB.GetUsGrub.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using CSULB.GetUsGrub.UserAccessControl;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -37,14 +39,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var authenticationToken = new AuthenticationToken();
-            var saltGenerator = new SaltGenerator();
+            var salt = new SaltGenerator().GenerateSalt(128);
             
             // Creating the Header of the Token
-            authenticationToken.Salt = saltGenerator.GenerateSalt(128);
-            var securityKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt));
-            var signingCredentials = new SigningCredentials(securityKey, "HS256");
+            var key = new SymmetricSecurityKey(Encoding.Default.GetBytes(salt));
+            var signingCredentials = new SigningCredentials(key, "HS256");
 
-            // TODO @Ahmed Add Claims getter : get Claims from Rachel's feature. [-Ahmed]
+            authenticationToken.Key = key;
 
             // Assigning the Username to the Token
             authenticationToken.Username = loginDto.Username;
@@ -53,18 +54,24 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var issuedOn = DateTime.UtcNow;
             authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
 
+            // Getting the ReadClaims for the user
+            var claimIdentity = new ClaimsIdentity();
+            var claimPrincable = new ClaimsPrincipal();
+            var claimTransformer = new ClaimsTransformer();
+            claimIdentity.AddClaim(new Claim("Username:", authenticationToken.Username));
+            claimPrincable.AddIdentity(claimIdentity);
+            var userClaimsPrincibledto = claimTransformer.Authenticate("Read", claimPrincable);
+            ClaimsIdentity subjectClaimsIdentity = userClaimsPrincibledto.Identity as ClaimsIdentity;
+
             // Creating the Body of the token
             var tokenDescription = new SecurityTokenDescriptor
             {
                 // @TODO @Ahmed incoporate the Claims from Rachel here
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim("Username:",authenticationToken.Username),
-                }),
-                Audience = "www.GetUsGrub.com",
+                Subject = subjectClaimsIdentity,
+                Audience = "https://www.GetUsGrub.com",
                 IssuedAt = issuedOn,
                 Expires = authenticationToken.ExpiresOn,
-                Issuer = "Ahmed",
+                Issuer = "CSULB.GetUsGrub",
                 SigningCredentials = signingCredentials,
 
             };
@@ -203,10 +210,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>
         /// 
         /// </returns>
-        public Claim GetTokenClaims(AuthenticationToken tokenString, string claimType)
+        public Claim GetTokenClaims(AuthenticationToken token, string claimType)
         {
             SecurityToken validatedToken;
-            var tokenPrincipal = GetTokenPrincipal(tokenString, out validatedToken);
+            var tokenPrincipal = GetTokenPrincipal(token, out validatedToken);
             if (tokenPrincipal != null)
             {
                 foreach (Claim claim in tokenPrincipal.Claims)
@@ -235,11 +242,89 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 ValidAudience = "https://www.GetUsGrub.com",
                 ValidIssuer = "CSULB.GetUsGrub",
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt)),
+                IssuerSigningKey = authenticationToken.Key,
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
             };
+        }
+
+        // TODO @Ahmed Check with @Rachel how this should be modified to help both [-Ahmed]
+        /// <summary>
+        /// 
+        /// This Method checks if the token is Authenticated or not then we extract the princible 
+        /// 
+        /// </summary>
+        /// <param name="incomingTokenString"></param>
+        /// <returns></returns>
+        public ResponseDto<bool> AuthenticateToken(string incomingTokenString)
+        {
+            
+            // Extract username from  the token
+            var username = GetTokenUsername(incomingTokenString);
+
+            // Checking if the Username is empty or null
+            if (string.IsNullOrEmpty(username))
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                };
+            }
+
+            using (AuthenticationGateway gateway = new AuthenticationGateway())
+            {
+                // Getting the Authentication Token Associated with the username
+                var gatewayResult = gateway.GetAuthenticationToken(username);
+
+                // Checking if there was an error Generated in the 
+                if (gatewayResult.Error != null)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = gatewayResult.Error
+                    };
+                }
+
+                // Checking if the string is not the same and its experation time has to be later than now
+                if (gatewayResult.Data.TokenString != incomingTokenString || gatewayResult.Data.ExpiresOn.CompareTo(DateTime.Now) > 0)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                    };
+                }
+            }
+
+            return new ResponseDto<bool>()
+            {
+                Data = true
+            };
+        }
+
+        /// <summary>
+        /// Checking if ther Token String has a Username Claim or not 
+        /// </summary>
+        /// <param name="incomingTokenString"></param>
+        /// <returns>
+        /// If there is A Username claim it returns the value of it 
+        /// Else it returns null
+        /// </returns>
+        public string GetTokenUsername(string incomingTokenString)
+        {
+            try
+            {
+                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.ReadJwtToken(incomingTokenString);
+                var username = token.Claims.First(claim => claim.Type == "UserName").Value;
+
+                return username;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -21,7 +22,7 @@ namespace CSULB.GetUsGrub.Models
         public int? Id { get; set; }
         public string Username { get; set; }
         public DateTime ExpiresOn { get; set; }
-        public string Salt { get; set; }
+        public SymmetricSecurityKey Key { get; set; }
         public string TokenString { get; set; }
 
         // Navigation Properties
@@ -37,12 +38,11 @@ namespace CSULB.GetUsGrub.Models
             TokenString = tokenString;
         }
 
-        public AuthenticationToken(int? id, string username, DateTime expiresOn, string salt, string tokenString)
+        public AuthenticationToken(int? id, string username, DateTime expiresOn, string tokenString)
         {
             Id = id;
             Username = username;
             ExpiresOn = expiresOn;
-            Salt = salt;
             TokenString = tokenString;
         }
     }

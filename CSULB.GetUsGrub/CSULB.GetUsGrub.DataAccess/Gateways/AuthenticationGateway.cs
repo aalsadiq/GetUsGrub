@@ -162,6 +162,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 };
             }
         }
+        
         /// <summary>
         /// 
         /// Updating the failed attempts for the users to update the users attempts

@@ -14,18 +14,12 @@ namespace CSULB.GetUsGrub
         {
             // Web API configuration and services
             config.EnableCors();
-            
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "Authenticate",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional },
                 constraints: null,
@@ -33,6 +27,8 @@ namespace CSULB.GetUsGrub
                     new HttpControllerDispatcher(config),
                     new DelegatingHandler[] { new AuthenticationHandler() })
             );
+
+
 
             // Add GlobalSecurityExceptionFilter for User Access Control
             // Last Updated: 03/14/18 by Rachel Dang

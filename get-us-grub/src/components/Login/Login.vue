@@ -23,8 +23,8 @@
         ></v-text-field>
       <v-btn color="primary" @click="LoginUser" :disabled="validSecurityInput">Submit</v-btn>
       <div class="text-right">
-        <router-link class="md-accent" tag="md-button" to="/recover">Forgot password?</router-link>
-        <router-link class="md-accent" tag="md-button" to="/signup">Don't have an account?</router-link>
+        <router-link class="md-accent" tag="md-button" to="">Forgot password?</router-link>
+        <router-link class="md-accent" tag="md-button" to="/Registration">Don't have an account?</router-link>
       </div>
     </v-form>
     <app-footer/>
@@ -73,8 +73,10 @@ export default {
         header: {
           'Access-Control-Allow-Origin': 'http://localhost:8080/#/Login'
         }
-      })
-      //  .then(function (response) {})
+      }).then(function (response, state) {
+        state.isAuthenticated = true
+        state.authenticationToken = response.data
+      }).error(function (errorResponse) { })
     }
   }
 }

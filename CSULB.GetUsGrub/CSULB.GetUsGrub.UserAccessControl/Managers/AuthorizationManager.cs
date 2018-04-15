@@ -27,7 +27,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             ClaimsPrincipal principal = context.Principal;
 
             // Get the username claim from the principal
-            var username = principal.FindFirst("username").Value;
+            var username = principal.FindFirst("Username").Value;
 
             // Check if username is valid
             if (string.IsNullOrWhiteSpace(username))

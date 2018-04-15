@@ -8,7 +8,7 @@
     /// @updated: 03/12/2018
     /// </para>
     /// </summary>
-    public class UserAuthenticationModel
+    public class UserAuthenticationDto
     {
         // Automatic Properties
         public string Username { get; set; }
@@ -16,7 +16,7 @@
         public string Salt { get; set; }
 
         // Constructors
-        public UserAuthenticationModel(string username, string password)
+        public UserAuthenticationDto(string username, string password)
         {
             Username = username;
             Password = password;

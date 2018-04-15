@@ -143,7 +143,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                         Id = i,
                         Username = $"username{i}",
                         ExpiresOn = DateTime.UtcNow,
-                        Salt = $"salt{i}",
                         TokenString = $"tokenString{i}"
                     }
                 );
@@ -208,7 +207,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                     new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"),
                     new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True")
                 };
-
 
                 // AddorUpdate to UserClaims table
                 context.UserClaims.AddOrUpdate

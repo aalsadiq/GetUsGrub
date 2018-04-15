@@ -97,6 +97,7 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         //ImageUploadGateway for profile
+        //store the path in the database...
 
     }
 }

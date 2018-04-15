@@ -52,6 +52,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // Grab user's list of claims from the database
                 var userClaims = gateway.GetClaimsByUsername(username);
                 
+                // TODO @Rachel SSO user claims will be null so we have to revisit this [-Ahmed]
                 // If user is invalid and an error returns
                 if (userClaims.Error != null)
                 {
@@ -75,7 +76,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             claims.Add(new Claim("Username", username));
 
             // Create ClaimsIdentity with the list of claims
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, resourceName);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims);
 
             // Create ClaimsPrincipal with the ClaimsIdentity
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

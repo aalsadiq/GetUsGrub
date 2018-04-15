@@ -6,7 +6,6 @@
           <router-view/>
         </div>
       </v-container>
-      <notifications group="notifications" position='top center' />
     </v-app>
   </div>
 </template>
@@ -28,5 +27,8 @@ export default {
 }
 #router-container {
   margin-top: 4.5em;
+}
+html {
+  overflow-y: auto;
 }
 </style>

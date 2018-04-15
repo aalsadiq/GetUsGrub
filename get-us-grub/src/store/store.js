@@ -261,15 +261,11 @@ export const store = new Vuex.Store({
   },
   // Mutations are called to change the states in the store
   mutations: {
-    setOriginAddress: (state, payload) => {
-      state.originAddress.push({
-        originAddress: payload
-      })
+    originAddress: (state, payload) => {
+      state.originAddress = payload
     },
-    setDestinationAddress: (state, payload) => {
-      state.destinationAddress.push({
-        destinationAddress: payload
-      })
+    destinationAddress: (state, payload) => {
+      state.destinationAddress = payload
     },
     // TODO: @Ryan Please lowercase the first letter of your methods [-Jenn]
     addToDictionary: (state, payload) => {
@@ -317,6 +313,12 @@ export const store = new Vuex.Store({
       };
     },
     setSelectedRestaurant: (state, payload) => {
+      state.originAddress = payload.clientCity + ',' + payload.clientState
+      if (payload.address.street2 === '') {
+        state.destinationAddress = payload.address.street1 + ',' + payload.address.city + ',' + payload.address.state + ',' + payload.address.zip
+      } else {
+        state.destinationAddress = payload.address.street1 + ',' + payload.address.street2 + ',' + payload.address.city + ',' + payload.address.state + ',' + payload.address.zip
+      }
       state.restaurantSelection.selectedRestaurant.restaurantId = payload.restaurantId
       state.restaurantSelection.selectedRestaurant.restaurantGeoCoordinates = payload.restaurantGeoCoordinates
       state.restaurantSelection.selectedRestaurant.clientUserGeoCoordinates = payload.clientUserGeoCoordinates

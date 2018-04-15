@@ -14,9 +14,9 @@ import DeleteUser from '@/components/AdminUserManagement/AdminDeleteUser.vue'
 import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
 import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
-import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
+import Login from '@/components/Login/Login.vue'
 
 Vue.use(Router)
 
@@ -103,15 +103,6 @@ export default new Router({
         next()
       }
     },
-    {
-      path: '/GoogleEmbedMap',
-      name: 'GoogleEmbedMap',
-      component: GoogleEmbedMap,
-      beforeEnter: (to, from, next) => {
-        document.title = 'Directions to your Restaurant?!?!?!?!'
-        next()
-      }
-    },
     // {
     //   path: '/FoodPreferences',
     //   name: 'FoodPreferences',
@@ -122,6 +113,15 @@ export default new Router({
     //   name: 'EditFoodPreferences',
     //   component: EditFoodPreferences
     // },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Login Brh!'
+        next()
+      }
+    },
     {
       path: '*'
     }

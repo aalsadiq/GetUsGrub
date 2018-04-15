@@ -50,5 +50,8 @@
 
         // Validation error messages for UserProfile
         public const string DISPLAY_NAME_REQUIRED = "Display name is required.";
+
+        // Validation error messages for a Token
+        public const string INVALID_TOKEN = "Token is not valid.";
     }
 }

@@ -17,12 +17,7 @@ namespace CSULB.GetUsGrub.DataAccess
     public class RestaurantGateway : IDisposable
     {
         // Open the Restaurant context
-        private readonly RestaurantContext _restaurantContext;
-
-        public RestaurantGateway()
-        {
-            _restaurantContext = new RestaurantContext();
-        }
+        RestaurantContext context = new RestaurantContext();
 
         /// <summary>
         /// The GetRestaurantWithoutFoodPreferences method.
@@ -47,10 +42,10 @@ namespace CSULB.GetUsGrub.DataAccess
             try
             {
                 // Get the businessHours from the restaurants that meet the criteria
-                var businessHours = (from userProfile in _restaurantContext.UserProfiles
-                                        join restaurantProfile in _restaurantContext.RestaurantProfiles
+                var businessHours = (from userProfile in context.UserProfiles
+                                        join restaurantProfile in context.RestaurantProfiles
                                             on userProfile.Id equals restaurantProfile.Id
-                                        join businessHour in _restaurantContext.BusinessHours
+                                        join businessHour in context.BusinessHours
                                             on restaurantProfile.Id equals businessHour.RestaurantId
                                         where restaurantProfile.Address.City == city
                                             && state == restaurantProfile.Address.State
@@ -69,8 +64,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     .Select(businessHour => businessHour.RestaurantId).OrderBy(businessHour => Guid.NewGuid()).FirstOrDefault();
 
                 // Extract the restaurant information and contain the info in a SelectedRestaurantDto
-                var selectedRestaurant = (from userProfile in _restaurantContext.UserProfiles
-                                            join restaurantProfile in _restaurantContext.RestaurantProfiles
+                var selectedRestaurant = (from userProfile in context.UserProfiles
+                                            join restaurantProfile in context.RestaurantProfiles
                                                 on userProfile.Id equals restaurantProfile.Id
                                             where restaurantProfile.Id == selectedRestaurantProfileId
                                             select new SelectedRestaurantDto()
@@ -81,7 +76,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                                 ClientState = state,
                                                 Address = restaurantProfile.Address,
                                                 PhoneNumber = restaurantProfile.PhoneNumber,
-                                                BusinessHourDtos = (from businessHour in _restaurantContext.BusinessHours
+                                                BusinessHourDtos = (from businessHour in context.BusinessHours
                                                                     where businessHour.RestaurantId == restaurantProfile.Id
                                                                     select new BusinessHourDto()
                                                                     {
@@ -132,12 +127,12 @@ namespace CSULB.GetUsGrub.DataAccess
             try
             {
                 // Get the businessHours from the restaurants that meet the criteria
-                var businessHours = (from userProfile in _restaurantContext.UserProfiles
-                                        join restaurantProfile in _restaurantContext.RestaurantProfiles
+                var businessHours = (from userProfile in context.UserProfiles
+                                        join restaurantProfile in context.RestaurantProfiles
                                             on userProfile.Id equals restaurantProfile.Id
-                                        join businessHour in _restaurantContext.BusinessHours
+                                        join businessHour in context.BusinessHours
                                             on restaurantProfile.Id equals businessHour.RestaurantId
-                                        join preference in _restaurantContext.FoodPreferences
+                                        join preference in context.FoodPreferences
                                             on restaurantProfile.Id equals preference.UserId
                                         where restaurantProfile.Address.City == city
                                             && state == restaurantProfile.Address.State
@@ -157,8 +152,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     .Select(businessHour => businessHour.RestaurantId).OrderBy(businessHour => Guid.NewGuid()).FirstOrDefault();
 
                 // Extract the restaurant information and contain the info in a SelectedRestaurantDto
-                var selectedRestaurant = (from userProfile in _restaurantContext.UserProfiles
-                                            join restaurantProfile in _restaurantContext.RestaurantProfiles
+                var selectedRestaurant = (from userProfile in context.UserProfiles
+                                            join restaurantProfile in context.RestaurantProfiles
                                                 on userProfile.Id equals restaurantProfile.Id
                                             where restaurantProfile.Id == selectedRestaurantProfileId
                                             select new SelectedRestaurantDto()
@@ -169,7 +164,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                                 ClientState = state,
                                                 Address = restaurantProfile.Address,
                                                 PhoneNumber = restaurantProfile.PhoneNumber,
-                                                BusinessHourDtos = (from businessHour in _restaurantContext.BusinessHours
+                                                BusinessHourDtos = (from businessHour in context.BusinessHours
                                                                     where businessHour.RestaurantId == restaurantProfile.Id
                                                                     select new BusinessHourDto()
                                                                     {
@@ -201,7 +196,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         void IDisposable.Dispose()
         {
-            _restaurantContext.Dispose();
+            context.Dispose();
         }
     }
 }

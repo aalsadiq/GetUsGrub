@@ -18,11 +18,13 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
+        
+        // move context up to here
         public ResponseDto<RestaurantProfileDto> GetRestaurantProfileByUsername(string username)
         {
             using (var userContext = new UserContext())
             {
-                // Find account associated with username
+                // Find account associated with username *** have manager open user gateway
                 var userAccount = (from account in userContext.UserAccounts
                                    where account.Username == username
                                    select account).SingleOrDefault();
@@ -106,6 +108,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     // Then, find all menus associated with this restaurant and turn it into a List
                     var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
 
+                    // Find dbRestaurantMenuItems by doing dbRestaurantProfile.RestaurantMenu.Where();
+
                     using (var dbContextTransaction = restaurantContext.Database.BeginTransaction())
                     {
                         try
@@ -114,7 +118,36 @@ namespace CSULB.GetUsGrub.DataAccess
                             dbRestaurantProfile = restaurantProfileDomain;
 
                             // Find the business hours on the database that have the same Ids as the new business hours
-                            
+                            for (var i = 0; i < businessHourDomains.Count; i++)
+                            {
+                                Flag flag = businessHourDomains[i].Flag;
+                                switch(flag)
+                                {
+                                    case Flag.Add:
+                                        dbBusinessHours.Add(businessHourDomains[i]);
+                                        break;
+                                    case Flag.Edit:
+                                        // go through dbBusinessHours to find dbBusinessHour with the same id
+                                        // did not use foreach because it would require assignnment of each property of dbBusinessHours one by one
+                                        for (var j = 0; j < dbBusinessHours.Count; j++)
+                                        {
+                                            if (businessHourDomains[i].Id == dbBusinessHours[i].Id)
+                                            {
+                                                dbBusinessHours[i] = businessHourDomains[i];
+                                            }
+                                        }
+                                        break;
+                                    case Flag.Delete:
+                                        foreach(var dbHour in dbBusinessHours)
+                                        {
+                                            if(businessHourDomains[i].Id == dbHour.Id)
+                                            {
+                                                dbBusinessHours.Remove(dbHour);
+                                            }
+                                        }
+                                        break;
+                                }
+                            }
 
                             //Update menu
                             

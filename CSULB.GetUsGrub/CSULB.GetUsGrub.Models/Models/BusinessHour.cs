@@ -34,6 +34,13 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public BusinessHour() { }
 
+        public BusinessHour(string day, DateTime openTime, DateTime closeTime)
+        {
+            Day = day;
+            OpenTime = openTime;
+            CloseTime = closeTime;
+        }
+
         // For getting
         public BusinessHour(int? id, string day, DateTime openTime, DateTime closeTime)
         {

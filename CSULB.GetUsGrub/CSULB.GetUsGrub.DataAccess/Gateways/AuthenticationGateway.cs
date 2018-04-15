@@ -13,6 +13,13 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class AuthenticationGateway : IDisposable
     {
+        private AuthenticationContext authenticationContext;
+
+        public AuthenticationGateway()
+        {
+            authenticationContext = new AuthenticationContext();
+        }
+
         // TODO @Ahmed Change all the parameter to the data type needed only @Ahmed
         // TODO @ Ahmed Put things in Gateways in Try Catch @Ahmed
         /// <summary>
@@ -26,34 +33,33 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </returns>
         public ResponseDto<FailedAttempts> GetFailedAttempt(string username)
         {
-            using (var authenticationContext = new AuthenticationContext())
+
+            try
             {
-                try
-                {
-                    // Looking for the User matching the incoming Username 
-                    var userId = (from account in authenticationContext.UserAccounts
-                        where account.Username == username
-                        select account.Id).FirstOrDefault();
+                // Looking for the User matching the incoming Username 
+                var userId = (from account in authenticationContext.UserAccounts
+                              where account.Username == username
+                              select account.Id).FirstOrDefault();
 
-                    // Looking for the Users last attempt information
-                    var lastFailedAttempt = (from failedAttempt in authenticationContext.FailedAttempts
-                        where failedAttempt.Id == userId
-                        select failedAttempt).FirstOrDefault();
+                // Looking for the Users last attempt information
+                var lastFailedAttempt = (from failedAttempt in authenticationContext.FailedAttempts
+                                         where failedAttempt.Id == userId
+                                         select failedAttempt).FirstOrDefault();
 
-                    return new ResponseDto<FailedAttempts>
-                    {
-                        Data = lastFailedAttempt
-                    };
-                }
-                catch (Exception)
+                return new ResponseDto<FailedAttempts>
                 {
-                    return new ResponseDto<FailedAttempts>
-                    {
-                        Data = null,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
+                    Data = lastFailedAttempt
+                };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<FailedAttempts>
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -71,28 +77,27 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </returns>
         public ResponseDto<UserAccount> GetUserAccount(string username)
         {
-            using (var authenticationContext = new AuthenticationContext())
+
+            try
             {
-                try
+                // Looking for the User matching the incoming Username 
+                var userFromDataBase = (from user in authenticationContext.UserAccounts
+                                        where user.Username == username
+                                        select user).FirstOrDefault();
+                return new ResponseDto<UserAccount>
                 {
-                    // Looking for the User matching the incoming Username 
-                    var userFromDataBase = (from user in authenticationContext.UserAccounts
-                        where user.Username == username
-                        select user).FirstOrDefault();
-                    return new ResponseDto<UserAccount>
-                    {
-                        Data = userFromDataBase
-                    };
-                }
-                catch (Exception)
-                {
-                    return new ResponseDto<UserAccount>()
-                    {
-                        Data = null,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
+                    Data = userFromDataBase
+                };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<UserAccount>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -106,33 +111,32 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public ResponseDto<AuthenticationToken> GetAuthenticationToken(string username)
         {
-            using (var authenticationContext = new AuthenticationContext())
+
+            try
             {
-                try
-                {
-                    var userId = (from account in authenticationContext.UserAccounts
-                        where account.Username == username
-                        select account.Id).FirstOrDefault();
+                var userId = (from account in authenticationContext.UserAccounts
+                              where account.Username == username
+                              select account.Id).FirstOrDefault();
 
-                    // Looking for the Token that matches the incoming Token
-                    var databaseToken = (from token in authenticationContext.AuthenticationTokens
-                        where token.Id == userId
-                        select token).FirstOrDefault();
+                // Looking for the Token that matches the incoming Token
+                var databaseToken = (from token in authenticationContext.AuthenticationTokens
+                                     where token.Id == userId
+                                     select token).FirstOrDefault();
 
-                    return new ResponseDto<AuthenticationToken>
-                    {
-                        Data = databaseToken
-                    };
-                }
-                catch (Exception)
+                return new ResponseDto<AuthenticationToken>
                 {
-                    return new ResponseDto<AuthenticationToken>()
-                    {
-                        Data = null,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
+                    Data = databaseToken
+                };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<AuthenticationToken>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -147,21 +151,21 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </returns>
         public ResponseDto<PasswordSalt> GetUserPasswordSalt(int? id)
         {
-            using (var userContext = new AuthenticationContext())
+
+            var salt = (from salts in authenticationContext.PasswordSalts
+                        where salts.Id == id
+                        select salts.Salt).FirstOrDefault();
+            var passwordSalt = new PasswordSalt
             {
-                var salt = (from salts in userContext.PasswordSalts
-                            where salts.Id == id
-                            select salts.Salt).FirstOrDefault();
-                var passwordSalt = new PasswordSalt
-                {
-                    Salt = salt
-                };
-                return new ResponseDto<PasswordSalt>
-                {
-                    Data = passwordSalt
-                };
-            }
+                Salt = salt
+            };
+            return new ResponseDto<PasswordSalt>
+            {
+                Data = passwordSalt
+            };
+
         }
+
         /// <summary>
         /// 
         /// Updating the failed attempts for the users to update the users attempts
@@ -171,36 +175,35 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public ResponseDto<bool> UpdateFailedAttempt(FailedAttempts incomingFailedAttempt)
         {
-            using (var authenticationContext = new AuthenticationContext())
+
+            using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        // Updating the failed attempts
-                        authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
+                    // Updating the failed attempts
+                    authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
 
-                        // Commiting the trasaction to the Database
-                        dbContextTransaction.Commit();
+                    // Commiting the trasaction to the Database
+                    dbContextTransaction.Commit();
 
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
+                    return new ResponseDto<bool>()
                     {
-                        // Rolls back the changes saved in the transaction
-                        dbContextTransaction.Rollback();
-                        // Returning a false and Error
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Returning a false and Error
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
+
         }
 
         /// <summary>
@@ -215,28 +218,27 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto containing ValidSsoToken</returns>
         public ResponseDto<ValidSsoToken> GetValidSsoToken(string token)
         {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    var validSsoToken = (from ssoToken in authenticationContext.ValidSsoTokens
-                                    where ssoToken.Token == token
-                                    select ssoToken).FirstOrDefault();
 
-                    return new ResponseDto<ValidSsoToken>()
-                    {
-                        Data = validSsoToken
-                    };
-                }
-                catch (Exception)
+            try
+            {
+                var validSsoToken = (from ssoToken in authenticationContext.ValidSsoTokens
+                                     where ssoToken.Token == token
+                                     select ssoToken).FirstOrDefault();
+
+                return new ResponseDto<ValidSsoToken>()
                 {
-                    return new ResponseDto<ValidSsoToken>()
-                    {
-                        Data = new ValidSsoToken(token),
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
+                    Data = validSsoToken
+                };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<ValidSsoToken>()
+                {
+                    Data = new ValidSsoToken(token),
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -251,28 +253,27 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto containing InvalidSsoToken</returns>
         public ResponseDto<InvalidSsoToken> GetInvalidSsoToken(string token)
         {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    var invalidSsoToken = (from ssoToken in authenticationContext.InvalidSsoTokens
-                        where ssoToken.Token == token
-                        select ssoToken).FirstOrDefault();
 
-                    return new ResponseDto<InvalidSsoToken>()
-                    {
-                        Data = invalidSsoToken
-                    };
-                }
-                catch (Exception)
+            try
+            {
+                var invalidSsoToken = (from ssoToken in authenticationContext.InvalidSsoTokens
+                                       where ssoToken.Token == token
+                                       select ssoToken).FirstOrDefault();
+
+                return new ResponseDto<InvalidSsoToken>()
                 {
-                    return new ResponseDto<InvalidSsoToken>()
-                    {
-                        Data = new InvalidSsoToken(token),
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
+                    Data = invalidSsoToken
+                };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<InvalidSsoToken>()
+                {
+                    Data = new InvalidSsoToken(token),
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -287,28 +288,26 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> StoreValidSsoToken(ValidSsoToken validSsoToken)
         {
-            using (var authenticationContext = new AuthenticationContext())
+            try
             {
-                try
-                {
-                    // Add ValidSsoToken to database
-                    authenticationContext.ValidSsoTokens.Add(validSsoToken);
-                    authenticationContext.SaveChanges();
+                // Add ValidSsoToken to database
+                authenticationContext.ValidSsoTokens.Add(validSsoToken);
+                authenticationContext.SaveChanges();
 
-                    return new ResponseDto<bool>()
-                    {
-                        Data = true
-                    };
-                }
-                catch (Exception)
+                return new ResponseDto<bool>()
                 {
-                    return new ResponseDto<bool>()
-                    {
-                        Data = false,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
+                    Data = true
+                };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -323,28 +322,27 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> StoreInvalidSsoToken(InvalidSsoToken invalidSsoToken)
         {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    // Add InvalidSsoToken to database
-                    authenticationContext.InvalidSsoTokens.Add(invalidSsoToken);
-                    authenticationContext.SaveChanges();
 
-                    return new ResponseDto<bool>()
-                    {
-                        Data = true
-                    };
-                }
-                catch (Exception)
+            try
+            {
+                // Add InvalidSsoToken to database
+                authenticationContext.InvalidSsoTokens.Add(invalidSsoToken);
+                authenticationContext.SaveChanges();
+
+                return new ResponseDto<bool>()
                 {
-                    return new ResponseDto<bool>()
-                    {
-                        Data = false,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
+                    Data = true
+                };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -357,48 +355,50 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </param>
         public ResponseDto<bool> StoreAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
         {
-            using (var authenticationContext = new AuthenticationContext())
+
+            using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
+                try
                 {
-                    try
+                    // Get the UserId using Username
+                    var userId = (from account in authenticationContext.UserAccounts
+                                  where account.Username == incomingAuthenticationToken.Username
+                                  select account.Id).FirstOrDefault();
+
+                    // Adding the Username to the Token as the Token ID
+                    incomingAuthenticationToken.Id = userId;
+
+                    // Adding the Token to the DataBase
+                    authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
+
+                    // Commiting the trasaction to the Database
+                    dbContextTransaction.Commit();
+
+                    return new ResponseDto<bool>()
                     {
-                        // Get the UserId using Username
-                        var userId = (from account in authenticationContext.UserAccounts
-                            where account.Username == incomingAuthenticationToken.Username
-                            select account.Id).FirstOrDefault();
-
-                        // Adding the Username to the Token as the Token ID
-                        incomingAuthenticationToken.Id = userId;
-
-                        // Adding the Token to the DataBase
-                        authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
-
-                        // Commiting the trasaction to the Database
-                        dbContextTransaction.Commit();
-
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Return a false
+                    return new ResponseDto<bool>()
                     {
-                        // Rolls back the changes saved in the transaction
-                        dbContextTransaction.Rollback();
-                        // Return a false
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
+
         }
 
         // Dispose release unmangaed resources 
         // TODO: @Jenn Add in implementation of Dispose [-Jenn]
-        public void Dispose() {}
+        public void Dispose()
+        {
+            authenticationContext.Dispose();
+        }
     }
 }

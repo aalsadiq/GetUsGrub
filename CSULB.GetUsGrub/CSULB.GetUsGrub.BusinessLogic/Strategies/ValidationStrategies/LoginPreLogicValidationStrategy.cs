@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // Return an error if validation fails
                 return new ResponseDto<LoginDto>()
                {
-                   Error = GeneralErrorMessages.GENERAL_ERROR
+                   Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
                };
             }
 
@@ -36,7 +36,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 return new ResponseDto<LoginDto>
                 {
-                    Error = GeneralErrorMessages.GENERAL_ERROR
+                    Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
                 };
             }
             

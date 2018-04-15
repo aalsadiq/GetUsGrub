@@ -33,7 +33,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Turn the Dto into a Model
-            var incomingLoginModel = new UserAuthenticationDto(loginDto.Username,loginDto.Password);
+            var incomingLoginModel = new UserAuthenticationDto(loginDto.Username, loginDto.Password);
             var loginPostLogicValidationStrategy = new LoginPostLogicValidation(incomingLoginModel);
             var validateLoginModelResult = loginPostLogicValidationStrategy.ExcuteStrategy();
 
@@ -47,7 +47,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Pulling attempts from DB
-            using (AuthenticationGateway gateway = new AuthenticationGateway())
+            using (var gateway = new AuthenticationGateway())
             {
                 var userAttemptsDto = gateway.GetFailedAttempt(incomingLoginModel.Username);
                 // Checking if the gateway returns a false
@@ -61,36 +61,33 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
                 // If there is no Error then take the data out
                 userAttempts = userAttemptsDto.Data;
-            }
 
-            // Checking if they already have 5 failed attempts 20 mins ago
-            if (userAttempts == null)
-            {
-                userAttempts = new FailedAttempts()
+                // Checking if they already have 5 failed attempts 20 mins ago
+                if (userAttempts == null)
                 {
-                    Count = 0
-                };
-            }
-            else if (userAttempts.Count >= 5 )
-            {
-                if (!(userAttempts.LastAttemptTime.CompareTo(DateTime.Now.Subtract(TimeSpan.FromMinutes(20))) > 0))
-                {
-                    return new ResponseDto<LoginDto>
+                    userAttempts = new FailedAttempts()
                     {
-                        Data = loginDto,
-                        Error = AuthenticationErrorMessages.LOCKED_ACCOUNT
+                        Count = 0
                     };
                 }
-                else
+                else if (userAttempts.Count >= 5)
                 {
-                    userAttempts.Count = 0;
+                    if (!(userAttempts.LastAttemptTime.CompareTo(DateTime.Now.Subtract(TimeSpan.FromMinutes(20))) > 0))
+                    {
+                        return new ResponseDto<LoginDto>
+                        {
+                            Data = loginDto,
+                            Error = AuthenticationErrorMessages.LOCKED_ACCOUNT
+                        };
+                    }
+                    else
+                    {
+                        userAttempts.Count = 0;
+                    }
                 }
-            }
-            
-            // TODO @Ahmed Make sure that we check for errors Move this above the attempts @Ahmed 
-            // Pull the User From DB
-            using (AuthenticationGateway gateway = new AuthenticationGateway())
-            {
+
+                // TODO @Ahmed Make sure that we check for errors Move this above the attempts @Ahmed 
+                // Pull the User From DB
                 // Getting the user's ID
                 var gatewayResult = gateway.GetUserAccount(incomingLoginModel.Username);
                 if (gatewayResult.Error != null)
@@ -116,60 +113,57 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                 // If there are no Errors from the gateway assign the salt to the LoginModel
                 incomingLoginModel.Salt = gatewaySaltResult.Data.Salt;
-            }
 
-            // Check if user is Active
-            if (dataBaseUserAccount.IsActive == null && dataBaseUserAccount.IsActive == false)
-            {
-                return new ResponseDto<LoginDto>
+
+                // Check if user is Active
+                if (dataBaseUserAccount.IsActive == null && dataBaseUserAccount.IsActive == false)
                 {
-                    Data = loginDto,
-                    Error = AuthenticationErrorMessages.INACTIVE_USER
-                };
-            }
-
-            // Cheking if user is first time
-            if (dataBaseUserAccount.IsFirstTimeUser == null && dataBaseUserAccount.IsFirstTimeUser == true)
-            {
-                // TODO: @Jenn Need your SSO Login Service here [-Ahmed]
-                // Send them to complete registration
-            }
-
-            // Hash and Salting the Password
-            var payloadHasher = new PayloadHasher();
-            incomingLoginModel.Password =
-                payloadHasher.Sha256HashWithSalt(incomingLoginModel.Salt, incomingLoginModel.Password);
-
-            // Checking if the Password is equal to what is in the DataBase
-            var checkPasswordResult = incomingLoginModel.Password == dataBaseUserAccount.Password;
-
-            // If Password does not match log the attempt and send an error back
-            if (!checkPasswordResult)
-            {
-                userAttempts.Count++;
-                if (userAttempts.Count >= 5)
-                {
-                    userAttempts.LastAttemptTime = DateTime.Now;
+                    return new ResponseDto<LoginDto>
+                    {
+                        Data = loginDto,
+                        Error = AuthenticationErrorMessages.INACTIVE_USER
+                    };
                 }
 
-                returnDto = new ResponseDto<LoginDto>
+                // Cheking if user is first time
+                if (dataBaseUserAccount.IsFirstTimeUser == null && dataBaseUserAccount.IsFirstTimeUser == true)
                 {
-                    Data = loginDto,
-                    Error = "Something went wrong check UserName and Password!!"
-                };
-            }
-            else
-            {
-                userAttempts.Count = 0;
-            
-                returnDto = new ResponseDto<LoginDto>
+                    // TODO: @Brian Need your SSO Login Service here [-Ahmed]
+                    // Send them to complete registration
+                }
+
+                // Hash and Salting the Password
+                var payloadHasher = new PayloadHasher();
+                incomingLoginModel.Password =
+                    payloadHasher.Sha256HashWithSalt(incomingLoginModel.Salt, incomingLoginModel.Password);
+
+                // Checking if the Password is equal to what is in the DataBase
+                var checkPasswordResult = incomingLoginModel.Password == dataBaseUserAccount.Password;
+
+                // If Password does not match log the attempt and send an error back
+                if (!checkPasswordResult)
                 {
-                    Data = loginDto
-                };
-            }
-            
-            using (AuthenticationGateway gateway = new AuthenticationGateway())
-            {
+                    userAttempts.Count++;
+                    if (userAttempts.Count >= 5)
+                    {
+                        userAttempts.LastAttemptTime = DateTime.Now;
+                    }
+
+                    returnDto = new ResponseDto<LoginDto>
+                    {
+                        Data = loginDto,
+                        Error = "Something went wrong check UserName and Password!!"
+                    };
+                }
+                else
+                {
+                    userAttempts.Count = 0;
+                    returnDto = new ResponseDto<LoginDto>
+                    {
+                        Data = loginDto
+                    };
+                }
+
                 var result = gateway.UpdateFailedAttempt(userAttempts);
 
                 if (result.Data == false)

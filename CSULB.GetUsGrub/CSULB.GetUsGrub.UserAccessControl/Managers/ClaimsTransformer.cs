@@ -52,6 +52,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // Grab user's list of claims from the database
                 var userClaims = gateway.GetClaimsByUsername(username);
                 
+                // TODO @Rachel SSO user claims will be null so we have to revisit this [-Ahmed]
                 // If user is invalid and an error returns
                 if (userClaims.Error != null)
                 {

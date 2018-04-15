@@ -15,6 +15,7 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.AuthenticationToken")]
     public class AuthenticationToken : IEntity
     {
+        // TODO @Ahmed Put the Key Back here so it will work with the DataBase before Demo [-Ahmed]
         // Automatic properties
         [Key]
         [ForeignKey("UserAccount")]
@@ -37,12 +38,11 @@ namespace CSULB.GetUsGrub.Models
             TokenString = tokenString;
         }
 
-        public AuthenticationToken(int? id, string username, DateTime expiresOn, string salt, string tokenString)
+        public AuthenticationToken(int? id, string username, DateTime expiresOn, string tokenString)
         {
             Id = id;
             Username = username;
             ExpiresOn = expiresOn;
-            Salt = salt;
             TokenString = tokenString;
         }
     }

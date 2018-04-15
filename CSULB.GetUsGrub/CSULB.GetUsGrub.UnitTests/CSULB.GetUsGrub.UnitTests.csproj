@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PwnedPasswordIntegrationTest.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\AuthenticationTokenDtoValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\FoodPreferencesDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\LoginDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleGeocodeIntegrationTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleTimeZoneIntegrationTests.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\TokenServiceUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\ValidationWrapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategyUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\FoodPreferenceValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\AuthorizationGatewayUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantSelectionDtoValidatorUnitTests.cs" />

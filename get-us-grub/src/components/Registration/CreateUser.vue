@@ -456,6 +456,7 @@
 
 <script>
 import axios from 'axios'
+import PasswordValidation from '@/components/PasswordValidation/PasswordValidation'
 
 export default {
   name: 'CreateUser',
@@ -464,6 +465,8 @@ export default {
     tabs: null,
     userStep: 0,
     restaurantStep: 0,
+    passwordErrorMessages: [],
+    isPasswordValid: false,
     validIdentificationInput: false,
     validSecurityInput: false,
     validBusinessHourInput: false,
@@ -523,6 +526,20 @@ export default {
   }),
 
   methods: {
+    validatePassword () {
+      if (this.userAccount.password.length < 8) {
+        this.passwordErrorMessages = []
+        return
+      }
+      PasswordValidation.methods.validate(this.userAccount.password)
+        .then(response => {
+          this.isPasswordValid = response.isValid
+          this.passwordErrorMessages = response.message
+          if (response === []) {
+            this.isPasswordValid = true
+          }
+        })
+    },
     addBusinessHour () {
       this.businessHours.push({day: this.businessHour.day, openTime: this.businessHour.openTime, closeTime: this.businessHour.closeTime})
       this.businessHour.day = ''

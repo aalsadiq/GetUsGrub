@@ -53,6 +53,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.2.1\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
@@ -60,6 +61,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
@@ -76,6 +78,7 @@
     <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Managers\UnregisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\UserProfileManager.cs" />
+    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Services\BackoffRequest.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />
@@ -86,7 +89,6 @@
     <Compile Include="Services\Interfaces\IGeocodeServiceAsync.cs" />
     <Compile Include="Managers\BaseManagers\RestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantBillSplitterManager.cs" />
-    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\AuthenticationTokenManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -135,7 +137,7 @@
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
     <Compile Include="Validators\DtoValidators\SsoTokenPayloadDtoValidator.cs" />
-    <Compile Include="Validators\ModelValidators\UserAuthenticationModelValidator.cs" />
+    <Compile Include="Validators\DtoValidators\UserAuthenticationDtoValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
     <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />

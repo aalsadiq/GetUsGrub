@@ -20,7 +20,7 @@
         </div>
       </draggable>
     </div>
-    <h2 class="total">Total: {{ totalPrice }} </h2>
+    <h2 class="total">Total: {{ this.money.prefix }}{{ totalPrice }} </h2>
   </div>
 </template>
 

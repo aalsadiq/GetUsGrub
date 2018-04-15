@@ -4,16 +4,16 @@ using FluentValidation;
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
-    /// The <c>UserAuthenticationModelValidator</c> class.
-    /// Defines rules to validate a UserAuthenticationModel.
+    /// The <c>UserAccountValidator</c> class.
+    /// Defines rules to validate a UserAuthenticationDto.
     /// <para>
-    /// @author: Ahmed AlSadiq
+    /// @author: Jennifer Nguyen
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>
-    class UserAuthenticationModelValidator : AbstractValidator<UserAuthenticationModel>
+    class UserAuthenticationDtoValidator : AbstractValidator<UserAuthenticationDto>
     {
-        public UserAuthenticationModelValidator()
+        public UserAuthenticationDtoValidator()
         {
             RuleSet("UsernameAndPassword", () =>
             {

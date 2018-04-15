@@ -39,7 +39,8 @@ namespace CSULB.GetUsGrub
                 // Checking if there is an empty or a null value to the token
                 if (string.IsNullOrEmpty(tokenString))
                 {
-                    return UserNotAuthenticated();
+                    // This is done incase the request does not require authentication
+                    return Task.Run(() => SendAsync(request, cancellationToken)).Result;
                 }
 
 

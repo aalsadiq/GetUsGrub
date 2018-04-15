@@ -120,13 +120,13 @@
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenRegistrationValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UsernameValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\EditUserDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantSelectionDtoValidator.cs" />
@@ -136,8 +136,8 @@
     <Compile Include="Validators\ModelValidators\AuthenticationTokenValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
+    <Compile Include="Validators\DtoValidators\SsoTokenPayloadDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserAuthenticationDtoValidator.cs" />
-    <Compile Include="Validators\ModelValidators\SsoTokenPayloadValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
     <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />
@@ -155,9 +155,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

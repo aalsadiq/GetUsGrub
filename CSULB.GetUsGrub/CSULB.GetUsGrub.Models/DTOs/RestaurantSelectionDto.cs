@@ -26,6 +26,7 @@ namespace CSULB.GetUsGrub.Models
         public double DistanceInMiles { get; set; }
         [Required]
         public int AvgFoodPrice { get; set; }
+        public string Username { get; set; }
         public DateTime CurrentUtcDateTime { get; set; }
         public DayOfWeek CurrentLocalDayOfWeek { get; set; }
         public GeoCoordinates ClientUserGeoCoordinates { get; set; }

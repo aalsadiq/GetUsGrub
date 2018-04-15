@@ -185,150 +185,6 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         /// <summary>
-        /// The GetValidSsoToken method.
-        /// Gets a ValidSsoToken from the database.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 04/09/2018
-        /// </para>
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns>ResponseDto containing ValidSsoToken</returns>
-        public ResponseDto<ValidSsoToken> GetValidSsoToken(string token)
-        {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    var validSsoToken = (from ssoToken in authenticationContext.ValidSsoTokens
-                                    where ssoToken.Token == token
-                                    select ssoToken).FirstOrDefault();
-
-                    return new ResponseDto<ValidSsoToken>()
-                    {
-                        Data = validSsoToken
-                    };
-                }
-                catch (Exception)
-                {
-                    return new ResponseDto<ValidSsoToken>()
-                    {
-                        Data = new ValidSsoToken(token),
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
-            }
-        }
-
-        /// <summary>
-        /// The GetInvalidSsoToken method.
-        /// Gets a InvalidSsoToken from the database.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 04/09/2018
-        /// </para>
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns>ResponseDto containing InvalidSsoToken</returns>
-        public ResponseDto<InvalidSsoToken> GetInvalidSsoToken(string token)
-        {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    var invalidSsoToken = (from ssoToken in authenticationContext.InvalidSsoTokens
-                        where ssoToken.Token == token
-                        select ssoToken).FirstOrDefault();
-
-                    return new ResponseDto<InvalidSsoToken>()
-                    {
-                        Data = invalidSsoToken
-                    };
-                }
-                catch (Exception)
-                {
-                    return new ResponseDto<InvalidSsoToken>()
-                    {
-                        Data = new InvalidSsoToken(token),
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
-            }
-        }
-
-        /// <summary>
-        /// The StoreValidSsoToken method.
-        /// Stores a ValidSsoToken to the database.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 04/09/2018
-        /// </para>
-        /// </summary>
-        /// <param name="validSsoToken"></param>
-        /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreValidSsoToken(ValidSsoToken validSsoToken)
-        {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    // Add ValidSsoToken to database
-                    authenticationContext.ValidSsoTokens.Add(validSsoToken);
-                    authenticationContext.SaveChanges();
-
-                    return new ResponseDto<bool>()
-                    {
-                        Data = true
-                    };
-                }
-                catch (Exception)
-                {
-                    return new ResponseDto<bool>()
-                    {
-                        Data = false,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
-            }
-        }
-
-        /// <summary>
-        /// The StoreInvalidSsoToken method.
-        /// Stores a InvalidSsoToken to the database.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 04/09/2018
-        /// </para>
-        /// </summary>
-        /// <param name="invalidSsoToken"></param>
-        /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreInvalidSsoToken(InvalidSsoToken invalidSsoToken)
-        {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    // Add InvalidSsoToken to database
-                    authenticationContext.InvalidSsoTokens.Add(invalidSsoToken);
-                    authenticationContext.SaveChanges();
-
-                    return new ResponseDto<bool>()
-                    {
-                        Data = true
-                    };
-                }
-                catch (Exception)
-                {
-                    return new ResponseDto<bool>()
-                    {
-                        Data = false,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
-            }
-        }
-
-        /// <summary>
         ///
         ///  The StoreAuthenticationToken Method
         ///
@@ -368,8 +224,42 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        // Dispose release unmangaed resources 
-        // TODO: @Jenn Add in implementation of Dispose [-Jenn]
+        /// <summary>
+        /// The GetUsernameByToken method.
+        /// Get a username associated with a given token.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/14/2018
+        /// </para>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>ResponseDto with a string username</returns>
+        public ResponseDto<string> GetUsernameByToken(string token)
+        {
+            using (var authenticationContext = new AuthenticationContext())
+            {
+                try
+                {
+                    var username = (from userAccount in authenticationContext.UserAccounts
+                        where userAccount.AuthenticationToken.TokenString == token
+                        select userAccount.Username).FirstOrDefault();
+
+                    return new ResponseDto<string>
+                    {
+                        Data = username
+                    };
+                }
+                catch (Exception)
+                {
+                    return new ResponseDto<string>
+                    {
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                }
+            }
+        }
+
+        // Dispose release unmangaed resources
         public void Dispose() {}
     }
 }

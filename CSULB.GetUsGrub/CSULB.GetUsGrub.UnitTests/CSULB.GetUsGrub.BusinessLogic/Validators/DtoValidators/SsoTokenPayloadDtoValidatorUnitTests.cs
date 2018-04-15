@@ -5,15 +5,15 @@ using Xunit;
 
 namespace CSULB.GetUsGrub.UnitTests
 {
-    public class SsoTokenPayloadValidatorUnitTests
+    public class SsoTokenPayloadDtoValidatorUnitTests
     {
-        SsoTokenPayloadValidator ssoTokenPayloadValidator = new SsoTokenPayloadValidator();
+        private readonly SsoTokenPayloadDtoValidator _ssoTokenPayloadDtoValidator = new SsoTokenPayloadDtoValidator();
 
         [Fact]
         public void Should_PassValidation_When_AllRulesPass()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -23,7 +23,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -34,7 +34,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_UsernameIsEmpty()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "",
                 Password = "password01",
@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -55,7 +55,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_UsernameIsNull()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = null,
                 Password = "password01",
@@ -65,7 +65,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -76,7 +76,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_PasswordIsEmpty()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "",
@@ -86,7 +86,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -97,7 +97,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_PasswordIsNull()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = null,
@@ -107,7 +107,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -118,7 +118,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_ApplicationIsEmpty()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -128,7 +128,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -139,7 +139,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_ApplicationIsNull()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -149,7 +149,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -160,7 +160,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_ApplicationIsNotForOurApplication()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -170,7 +170,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -181,7 +181,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_RoleTypeIsEmpty()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -191,7 +191,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -202,7 +202,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_RoleTypeIsNull()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -212,7 +212,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -223,7 +223,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_RoleTypeIsNotPublicOrPrivate()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -233,7 +233,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -244,7 +244,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_RoleTypeIsPublicAndAllCapitalized()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -254,7 +254,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -265,7 +265,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_IssuedAtIsEmpty()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -275,7 +275,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert
@@ -286,7 +286,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_FailValidation_When_IssuedAtIsNull()
         {
             // Arrange
-            var ssoTokenPayload = new SsoTokenPayload()
+            var ssoTokenPayload = new SsoTokenPayloadDto()
             {
                 Username = "username01",
                 Password = "password01",
@@ -296,7 +296,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = ssoTokenPayloadValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
             var isValid = result.IsValid;
 
             // Assert

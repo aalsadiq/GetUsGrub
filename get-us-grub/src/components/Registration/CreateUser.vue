@@ -47,16 +47,18 @@
                           required
                         ></v-text-field>
                         <v-text-field
-                          label="Enter a password"
-                          v-model="userAccount.password"
-                          :rules="$store.state.rules.passwordRules"
-                          :min="8"
-                          :counter="64"
-                          :append-icon="visible ? 'visibility' : 'visibility_off'"
-                          :append-icon-cb="() => (visiile = !visible)"
-                          :type=" visible ? 'text' : 'password'"
-                          required
-                        ></v-text-field>
+                            label="Enter a password"
+                            v-model="userAccount.password"
+                            :rules="$store.state.rules.passwordRules"
+                            :min="8"
+                            :counter="64"
+                            :append-icon="visible ? 'visibility' : 'visibility_off'"
+                            :append-icon-cb="() => (visibile = !visible)"
+                            :type=" visible ? 'text' : 'password'"
+                            :error-messages="passwordErrorMessages"
+                            @input="validatePassword"
+                            required
+                          ></v-text-field>
                       </v-form>
                     <v-btn color="primary" @click="userStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
                   </v-stepper-content>
@@ -158,16 +160,18 @@
                           required
                         ></v-text-field>
                         <v-text-field
-                          label="Enter a password"
-                          v-model="userAccount.password"
-                          :rules="$store.state.rules.passwordRules"
-                          :min="8"
-                          :counter="64"
-                          :append-icon="visible ? 'visibility' : 'visibility_off'"
-                          :append-icon-cb="() => (visible = !visible)"
-                          :type=" visible ? 'text' : 'password'"
-                          required
-                        ></v-text-field>
+                            label="Enter a password"
+                            v-model="userAccount.password"
+                            :rules="$store.state.rules.passwordRules"
+                            :min="8"
+                            :counter="64"
+                            :append-icon="visible ? 'visibility' : 'visibility_off'"
+                            :append-icon-cb="() => (visibile = !visible)"
+                            :type=" visible ? 'text' : 'password'"
+                            :error-messages="passwordErrorMessages"
+                            @input="validatePassword"
+                            required
+                          ></v-text-field>
                       </v-form>
                     <v-btn color="primary" @click="restaurantStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
                   </v-stepper-content>

@@ -261,3 +261,7 @@ __pycache__/
 *.pyc
 CSULB.GetUsGrub/CSULB.GetUsGrub.BusinessLogic/Api.config
 CSULB.GetUsGrub/CSULB.GetUsGrub.DataAccess/Migrations
+
+CSULB\.GetUsGrub/CSULB\.GetUsGrub/keys\.config
+
+CSULB\.GetUsGrub/CSULB\.GetUsGrub\.UnitTests/keys\.config

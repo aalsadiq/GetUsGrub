@@ -37,22 +37,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>SelectedRestaurantDto</returns>
         public override ResponseDto<SelectedRestaurantDto> SelectRestaurant()
         {
+            // TODO: @JEnn Get the username from the token [-Jenn]
             // Get username associated with request authorization token
-            using (var authenticationGateway = new AuthenticationGateway())
-            {
-                var response = authenticationGateway.GetUsernameByToken(_token);
-                // response.Data contains the username
-                if (response.Data == null)
-                {
-                    return new ResponseDto<SelectedRestaurantDto>
-                    {
-                        Data = null,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
-
-                RestaurantSelectionDto.Username = response.Data;
-            }
 
             // Validate RestaurantSelection data transfer object
             var result = _restaurantSelectionPreLogicValidationStrategy.ExecuteStrategy();

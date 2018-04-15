@@ -10,7 +10,9 @@
     /// </summary>
     public class RoleTypes
     {
+        // For Individual and Restaurant user
         public const string PUBLIC = "public";
+        // For Admin user
         public const string PRIVATE = "private";
     }
 }

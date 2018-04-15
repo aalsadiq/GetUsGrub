@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     public abstract class RestaurantSelectionManager
     {
         // Constants
-        public const double MilesToMetersMetric = 1609.34;
+        public const double MilesToMetersUnitConversion = 1609.34;
 
         // Read-only accessors
         public readonly RestaurantSelectionDto RestaurantSelectionDto;
@@ -51,7 +51,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>A double type that represents the distance in meters.</returns>
         public double ConvertDistanceInMilesToMeters(double distanceInMiles)
         {
-            return distanceInMiles * MilesToMetersMetric;
+            return distanceInMiles * MilesToMetersUnitConversion;
         }
     }
 }

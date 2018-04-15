@@ -114,7 +114,7 @@
     <Compile Include="Models\RestaurantDetail.cs" />
     <Compile Include="Models\SecurityAnswerSalt.cs" />
     <Compile Include="Models\ValidSsoToken.cs" />
-    <Compile Include="Models\SsoTokenPayload.cs" />
+    <Compile Include="DTOs\SsoTokenPayloadDto.cs" />
     <Compile Include="Models\UserAuthenticationModel.cs" />
     <Compile Include="Models\UserClaims.cs" />
     <Compile Include="Models\UserProfile.cs" />

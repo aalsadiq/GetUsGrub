@@ -17,10 +17,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         // Read-only accessors
         private readonly RegisteredUserRestaurantSelectionPostLogicValidationStrategy _registeredUserRestaurantSelectionPostLogicValidationStrategy;
+        private readonly string _token;
 
-        public RegisteredUserRestaurantSelectionManager(RestaurantSelectionDto restaurantSelectionDto) : base(restaurantSelectionDto)
+        public RegisteredUserRestaurantSelectionManager(RestaurantSelectionDto restaurantSelectionDto, string token) : base(restaurantSelectionDto)
         {
             _registeredUserRestaurantSelectionPostLogicValidationStrategy = new RegisteredUserRestaurantSelectionPostLogicValidationStrategy(restaurantSelectionDto);
+            _token = token;
         }
 
         /// <summary>
@@ -35,6 +37,23 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>SelectedRestaurantDto</returns>
         public override ResponseDto<SelectedRestaurantDto> SelectRestaurant()
         {
+            // Get username associated with request authorization token
+            using (var authenticationGateway = new AuthenticationGateway())
+            {
+                var response = authenticationGateway.GetUsernameByToken(_token);
+                // response.Data contains the username
+                if (response.Data == null)
+                {
+                    return new ResponseDto<SelectedRestaurantDto>
+                    {
+                        Data = null,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                }
+
+                RestaurantSelectionDto.Username = response.Data;
+            }
+
             // Validate RestaurantSelection data transfer object
             var result = _restaurantSelectionPreLogicValidationStrategy.ExecuteStrategy();
             if (result.Error != null)
@@ -127,9 +146,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // Set the result of the gateway query to the SelectedRestaurant data transfer object
                 SelectedRestaurantDto = gatewayResult.Data;
             }
-
-            // Setting client user geocoordinates to the SelectedRestaurantDto
-            SelectedRestaurantDto.ClientUserGeoCoordinates = RestaurantSelectionDto.ClientUserGeoCoordinates;
 
             // Sort the list of business hour data transfer objects by day using the DayOfWeek enum property
             SelectedRestaurantDto.BusinessHourDtos = SelectedRestaurantDto.BusinessHourDtos

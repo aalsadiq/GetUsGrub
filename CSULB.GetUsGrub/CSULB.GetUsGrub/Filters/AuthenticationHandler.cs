@@ -17,7 +17,6 @@ namespace CSULB.GetUsGrub
     public class AuthenticationHandler : DelegatingHandler
     {
         
-        // TODO @Ahmed Rachel needs the Resource princible and the Cont
         /// <summary>
         /// 
         /// </summary>

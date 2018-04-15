@@ -1,8 +1,10 @@
 ﻿using CSULB.GetUsGrub.UserAccessControl;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 
 namespace CSULB.GetUsGrub
 {
@@ -12,7 +14,7 @@ namespace CSULB.GetUsGrub
         {
             // Web API configuration and services
             config.EnableCors();
-
+            
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -20,6 +22,16 @@ namespace CSULB.GetUsGrub
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "Authenticate",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional },
+                constraints: null,
+                handler: HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config),
+                    new DelegatingHandler[] { new AuthenticationHandler() })
             );
 
             // Add GlobalSecurityExceptionFilter for User Access Control

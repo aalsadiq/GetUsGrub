@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -55,6 +56,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
 
                     // Find restaurant's menu items
+                    // Find dbRestaurantMenuItems by doing dbRestaurantProfile.RestaurantMenu.Where();
+
                     Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary = new Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>();
 
                     foreach (var menu in restaurantMenus)
@@ -83,7 +86,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="restaurantProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditRestaurantProfile(string username, RestaurantProfile restaurantProfileDomain, IList<BusinessHour> businessHourDomains, IList<RestaurantMenu> restaurantMenuDomains, IList<RestaurantMenuItem> restaurantMenuItemDomains)
+        public ResponseDto<bool> EditRestaurantProfile(string username, RestaurantProfile restaurantProfileDomain, IList<BusinessHour> businessHourDomains, Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary)
         {
             using (var userContext = new UserContext())
             {
@@ -108,8 +111,16 @@ namespace CSULB.GetUsGrub.DataAccess
                     // Then, find all menus associated with this restaurant and turn it into a List
                     var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
 
-                    // Find dbRestaurantMenuItems by doing dbRestaurantProfile.RestaurantMenu.Where();
-
+                    // Finally, find all menu items associated with this restaurant and return it as a list
+                    ICollection<RestaurantMenuItem> dbMenuItems = new Collection<RestaurantMenuItem>();
+                    foreach (var menu in dbRestaurantMenus)
+                    {
+                        foreach (var item in menu.RestaurantMenuItems)
+                        {
+                            dbMenuItems.Add(item);
+                        }
+                    }
+                    
                     using (var dbContextTransaction = restaurantContext.Database.BeginTransaction())
                     {
                         try
@@ -150,13 +161,32 @@ namespace CSULB.GetUsGrub.DataAccess
                             }
 
                             //Update menu
-                            
+                            /*for (var i = 0; i < restaurantMenuDomains.Count; i++)
+                            {
+                                Flag flag = restaurantMenuDomains[i].Flag;
+                                switch(flag)
+                                {
+                                    case Flag.Add:
+                                        // Add the menu
+                                        dbRestaurantMenus.Add(restaurantMenuDomains[i]);
+
+                                        // Add the items
+                                        //dbMenuItems.Add(restaurantMenuDomains[i].RestaurantMenuItems);
+                                        break;
+                                    case Flag.Edit:
+                                        break;
+                                    case Flag.Delete:
+                                        // Delete menu items associated with this menu
+                                        break;
+                                }
+                            }*/
 
                             // Update menu items
                             // Find restaurant's menu items
 
-                                // Then, find all menu items associated with each menu and turn that into a list
-                            
+
+                            // Then, find all menu items associated with each menu and turn that into a list
+
 
                             restaurantContext.SaveChanges();
 

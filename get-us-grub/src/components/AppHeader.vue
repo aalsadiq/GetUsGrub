@@ -20,6 +20,9 @@
         <router-link to="/Login">
           <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">LOGIN</span></v-btn>
         </router-link>
+        <router-link to="/Profile">
+          <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">PROFILE</span></v-btn>
+        </router-link>
         <router-link to="/RestaurantBillSplitter">
           <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">SPLIT BILL</span></v-btn>
         </router-link>

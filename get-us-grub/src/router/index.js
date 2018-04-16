@@ -15,6 +15,7 @@ import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
 import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 import Login from '@/components/Login/Login.vue'
+import Testing from '@/components/Login/DecodeTestingGround.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
@@ -119,6 +120,15 @@ export default new Router({
       component: Login,
       beforeEnter: (to, from, next) => {
         document.title = 'Login Brh!'
+        next()
+      }
+    },
+    {
+      path: '/Testing',
+      name: 'Testing',
+      component: Testing,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Testing!'
         next()
       }
     },

@@ -6,6 +6,10 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   // A state is a global variable that every Vue component can reference
   state: {
+    isAuthenticated: true,
+    authenticationToken: 'null',
+    username: 'null',
+    timer: null,
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
@@ -16,8 +20,6 @@ export const store = new Vuex.Store({
     ],
     billUsers: [
     ],
-    isAuthenticated: true,
-    authenticationToken: null,
     // States pertaining to restaurant selection
     restaurantSelection: {
       request: {
@@ -327,6 +329,10 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.address = payload.address
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
+    },
+    loginUser: (state, payload) => {
+      state.isAuthenticated = true
+      state.authenticationToken = payload.auth
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -382,6 +388,11 @@ export const store = new Vuex.Store({
     setSelectedRestaurant: (context, payload) => {
       setTimeout(function () {
         context.commit('setSelectedRestaurant', payload)
+      }, 250)
+    },
+    loginUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('loginUser', payload)
       }, 250)
     }
   }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -58,6 +59,24 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// This method returns the token from the request header if there is one
+        /// else it returns a null
+        /// </summary>
+        public string ExtractToken(HttpRequestMessage incomingRequest)
+        {
+            var requestHeaders = incomingRequest.Headers;
+            string token = requestHeaders.Authorization.Parameter;
+
+            // Cheacking if the Autherization Header is of type Bearer and that there is info in it before returning it
+            if (requestHeaders.Authorization.Scheme == "Bearer" && !string.IsNullOrEmpty(token))
+            {
+                return token;
+            }
+
+            return null;
         }
     }
 }

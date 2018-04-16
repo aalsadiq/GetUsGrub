@@ -6,7 +6,7 @@
         prepend-icon="pets"
         label="Enter a username"
         name = "username"
-        :rules="usernameRules"
+        :rules="$store.state.rules.usernameRules"
         required
       ></v-text-field>
       <v-text-field v-model="password"
@@ -14,7 +14,7 @@
         name="password"
         label="Password"
         id="password"
-        :rules="rules.passwordRules"
+        :rules="$store.state.rules.passwordRules"
         :min="8"
         :append-icon="visibile ? 'visibility' : 'visibility_off'"
         :append-icon-cb="() => (visibile = !visibile)"
@@ -23,8 +23,8 @@
         ></v-text-field>
       <v-btn color="primary" @click="LoginUser" :disabled="validSecurityInput">Submit</v-btn>
       <div class="text-right">
-        <router-link class="md-accent" tag="md-button" to="">Forgot password?</router-link>
-        <router-link class="md-accent" tag="md-button" to="/Registration">Don't have an account?</router-link>
+        <router-link class="md-accent" tag="md-button" to="/recover">Forgot password?</router-link>
+        <router-link class="md-accent" tag="md-button" to="/signup">Don't have an account?</router-link>
       </div>
     </v-form>
     <app-footer/>
@@ -45,17 +45,6 @@ export default {
   data () {
     return {
       validIdentificationInput: false,
-      rules: {
-        usernameRules: [
-          username => !!username || 'Username is required',
-          username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-        ],
-        passwordRules: [
-          password => !!password || 'Password is required',
-          password => password.length >= 8 || 'Password must be at least 8 characters',
-          password => password.length < 64 || 'Password must be at most 64 characters'
-        ]
-      },
       username: '',
       password: '',
       state: {
@@ -65,7 +54,6 @@ export default {
   },
   methods: {
     LoginUser: function (username, password) {
-      console.log('you in son')
       axios({
         method: 'POST',
         url: 'http://localhost:8081/Login',
@@ -73,10 +61,12 @@ export default {
         header: {
           'Access-Control-Allow-Origin': 'http://localhost:8080/#/Login'
         }
-      }).then(function (response, state) {
-        state.isAuthenticated = true
-        state.authenticationToken = response.data
-      }).error(function (errorResponse) { })
+      }).then(function (response) {
+        console.log('you in son')
+        this.$store.state.isAuthenticated = true
+        this.$store.state.authenticationToken = response.data
+        this.$store.state.username = response.data['Username']
+      })
     }
   }
 }

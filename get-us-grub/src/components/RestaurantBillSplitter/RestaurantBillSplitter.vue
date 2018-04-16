@@ -4,7 +4,6 @@
     <div class="wrapper">
       <restaurantBillSplitter-userTable />
       <restaurantBillSplitter-billTable />
-      <restaurantBillSplitter-dictionaryInput />
       <restaurantBillSplitter-dictionary />
       <debug />
       <v-btn v-on:click="GetRestaurantMenus"> Test Get Request </v-btn>
@@ -20,7 +19,6 @@ import AppFooter from '../AppFooter.vue'
 import UserTable from './UserTable.vue'
 import BillTable from './BillTable.vue'
 import Dictionary from './Dictionary.vue'
-import DictionaryInput from './DictionaryInput.vue'
 import Debug from './Debug.vue'
 
 export default {
@@ -30,7 +28,6 @@ export default {
     'app-footer': AppFooter,
     'restaurantBillSplitter-userTable': UserTable,
     'restaurantBillSplitter-billTable': BillTable,
-    'restaurantBillSplitter-dictionaryInput': DictionaryInput,
     'restaurantBillSplitter-dictionary': Dictionary,
     'debug': Debug
   },
@@ -100,7 +97,7 @@ export default {
 
   .wrapper {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 2fr 1fr;
     grid-gap: 10px;
     grid-auto-rows: minmax(100px, auto);
   }

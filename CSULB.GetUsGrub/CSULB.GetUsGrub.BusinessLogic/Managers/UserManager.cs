@@ -1,5 +1,4 @@
-﻿using CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies;
-using CSULB.GetUsGrub.DataAccess;
+﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
 using System.Collections.Generic;
@@ -47,13 +46,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: RoleTypes.PUBLIC);
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
-            // TODO: @Jenn Const Image path [-Angelica]
-            var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
+            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims(claimsFactory.Create(AccountType.INDIVIDUAL));
@@ -133,12 +132,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: RoleTypes.PUBLIC);
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
-            var userProfile = new UserProfile(displayPicture: registerRestaurantDto.UserProfileDto.DisplayPicture, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
+            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
             var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, 
                 address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details);
             var businessHours = registerRestaurantDto.BusinessHourDtos

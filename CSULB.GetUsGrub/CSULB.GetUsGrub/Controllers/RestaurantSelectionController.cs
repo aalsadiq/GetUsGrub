@@ -99,7 +99,7 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 // Instantiating dependencies
                 var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distanceInMiles: distanceInMiles, avgFoodPrice: avgFoodPrice);
-                var restaurantSelectionManager = new RegisteredUserRestaurantSelectionManager(restaurantSelectionDto);
+                var restaurantSelectionManager = new RegisteredUserRestaurantSelectionManager(restaurantSelectionDto: restaurantSelectionDto, token: Request.Headers.Authorization.Parameter);
 
                 // Select a restaurant
                 var response = restaurantSelectionManager.SelectRestaurant();

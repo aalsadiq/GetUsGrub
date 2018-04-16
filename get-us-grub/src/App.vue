@@ -28,4 +28,7 @@ export default {
 #router-container {
   margin-top: 4.5em;
 }
+html {
+  overflow-y: auto;
+}
 </style>

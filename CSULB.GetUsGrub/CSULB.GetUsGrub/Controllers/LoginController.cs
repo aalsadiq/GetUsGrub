@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Cors;
@@ -40,8 +41,9 @@ namespace CSULB.GetUsGrub.Controllers
                 }
                 return Ok(tokenResponse.Data.TokenString);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return BadRequest("Something Went Completely Wrong!");
             }
         }

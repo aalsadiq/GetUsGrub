@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Cors;
@@ -16,34 +17,35 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Login/")]
-
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-
-        public HttpResponseMessage AuthenticatingUser([FromBody] LoginDto loginDto)
+        public IHttpActionResult AuthenticateUser([FromBody] LoginDto loginDto)
         {
-            // Model Binding Validation
-            if (!ModelState.IsValid)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, "Something went very wrong", Configuration.Formatters.JsonFormatter);
+                // Model Binding Validation
+                if (!ModelState.IsValid)
+                {
+                   return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
+                }
+                var loginManager = new LoginManager();
+                var loginResponse = loginManager.LoginUser(loginDto);
+                if (loginResponse.Error != null)
+                {
+                    return BadRequest(loginResponse.Error);
+                }
+                var authenticationTokenManager = new AuthenticationTokenManager();
+                var tokenResponse = authenticationTokenManager.CreateToken(loginResponse.Data);
+                if (tokenResponse.Error != null)
+                {
+                    return BadRequest();
+                }
+                return Ok(tokenResponse.Data.TokenString);
             }
-
-            
-            var loginManager = new LoginManager();
-            var loginResponse = loginManager.LoginUser( loginDto) ;
-            if (loginResponse.Error != null)
+            catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, loginResponse.Error, Configuration.Formatters.JsonFormatter);
+                Debug.WriteLine(ex);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
-
-            var authenticationTokenManager = new AuthenticationTokenManager();
-            var creatTokenResponse = authenticationTokenManager.CreateToken(loginResponse.Data);
-            if (creatTokenResponse.Error != null)
-            {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, creatTokenResponse.Error, Configuration.Formatters.JsonFormatter);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, creatTokenResponse.Data.TokenString, Configuration.Formatters.JsonFormatter);           
         }
-
     }
 }

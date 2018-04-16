@@ -16,68 +16,79 @@
         </div>
         <div>
           <v-card id="card">
-          <v-form v-model="valid" ref="form">
-            <v-layout row justify-space-between>
-              <!-- Food types drop down menu -->
-              <v-flex xs6 sm6>
-                <v-select
-                  :items="$store.state.constants.foodTypes"
-                  v-model="$store.state.restaurantSelection.request.foodType"
-                  item-text="type"
-                  label="Select a food type"
-                  :rules="$store.state.rules.foodTypeRules"
-                  autocomplete
-                  required
-                ></v-select>
-              </v-flex>
-              <!-- City text field -->
-              <v-flex xs4>
-              <v-text-field
-                label="Enter a city"
-                v-model="$store.state.restaurantSelection.request.city"
-                hint="City"
-                persistent-hint
-                :rules="$store.state.rules.addressCityRules"
-                required
-              ></v-text-field>
-              </v-flex>
-              <!-- States drop down menu -->
-              <v-flex xs1>
-                <v-select
-                  :items="$store.state.constants.states"
-                  v-model="$store.state.restaurantSelection.request.state"
-                  item-text="abbreviation"
-                  label="State"
-                  hint="State"
+            <p id="required">*Required</p>
+            <v-form v-model="valid" ref="form">
+              <v-layout row justify-space-between>
+                <!-- Food types drop down menu -->
+                <v-flex xs6 sm6>
+                  <v-select
+                    :items="$store.state.constants.foodTypes"
+                    v-model="$store.state.restaurantSelection.request.foodType"
+                    item-text="type"
+                    label="Select a food type"
+                    :rules="$store.state.rules.foodTypeRules"
+                    autocomplete
+                    required
+                    :disabled=disable
+                  ></v-select>
+                </v-flex>
+                <!-- City text field -->
+                <v-flex xs4>
+                <v-text-field
+                  label="Enter a city"
+                  v-model="$store.state.restaurantSelection.request.city"
+                  hint="City"
                   persistent-hint
-                  :rules="$store.state.rules.addressStateRules"
-                  autocomplete
+                  :rules="$store.state.rules.addressCityRules"
                   required
-                ></v-select>
-              </v-flex>
-            </v-layout>
-            <v-layout row justify-space-between>
-              <!-- Prices radio buttons -->
-              <v-subheader>PRICE*</v-subheader>
-              <v-flex xs6>
-                <v-radio-group :value="$store.state.restaurantSelection.request.avgFoodPrice" v-model.number="$store.state.restaurantSelection.request.avgFoodPrice" row>
-                  <v-radio label="$0 - $10" :value="1"></v-radio>
-                  <v-radio label="$10 - $50" :value="2"></v-radio>
-                  <v-radio label="$50+" :value="3"></v-radio>
-                </v-radio-group>
-              </v-flex>
-              <v-spacer/>
-              <!-- Distance radio buttons -->
-              <v-subheader>DISTANCE* (miles)</v-subheader>
-              <v-flex xs5>
-                <v-radio-group :value="$store.state.restaurantSelection.request.avgFoodPrice" v-model.number="$store.state.restaurantSelection.request.distance" row>
-                  <v-radio label="1" :value="1"></v-radio>
-                  <v-radio label="5" :value="5"></v-radio>
-                  <v-radio label="10" :value="10"></v-radio>
-                  <v-radio label="15" :value="15"></v-radio>
-                </v-radio-group>
-              </v-flex>
-            </v-layout>
+                  :disabled=disable
+                ></v-text-field>
+                </v-flex>
+                <!-- States drop down menu -->
+                <v-flex xs1>
+                  <v-select
+                    :items="$store.state.constants.states"
+                    v-model="$store.state.restaurantSelection.request.state"
+                    item-text="abbreviation"
+                    label="State"
+                    hint="State"
+                    persistent-hint
+                    :rules="$store.state.rules.addressStateRules"
+                    autocomplete
+                    required
+                    :disabled=disable
+                  ></v-select>
+                </v-flex>
+              </v-layout>
+              <v-layout row justify-space-between>
+                <!-- Prices radio buttons -->
+                <v-subheader>PRICE*</v-subheader>
+                <v-flex xs6>
+                  <v-radio-group
+                    :value="$store.state.restaurantSelection.request.avgFoodPrice"
+                    v-model.number="$store.state.restaurantSelection.request.avgFoodPrice"
+                    row>
+                    <v-radio label="$0 - $10" :value="1" :disabled=disable></v-radio>
+                    <v-radio label="$10 - $50" :value="2" :disabled=disable></v-radio>
+                    <v-radio label="$50+" :value="3" :disabled=disable></v-radio>
+                  </v-radio-group>
+                </v-flex>
+                <v-spacer/>
+                <!-- Distance radio buttons -->
+                <v-subheader>MAX DISTANCE* (miles)</v-subheader>
+                <v-flex xs5>
+                  <v-radio-group
+                    :value="$store.state.restaurantSelection.request.avgFoodPrice"
+                    v-model.number="$store.state.restaurantSelection.request.distance"
+                    :disabled=disable
+                    row>
+                    <v-radio label="1" :value="1" :disabled=disable></v-radio>
+                    <v-radio label="5" :value="5" :disabled=disable></v-radio>
+                    <v-radio label="10" :value="10" :disabled=disable></v-radio>
+                    <v-radio label="15" :value="15" :disabled=disable></v-radio>
+                  </v-radio-group>
+                </v-flex>
+              </v-layout>
             </v-form>
           </v-card>
           <!-- Submit button -->
@@ -120,7 +131,8 @@ export default {
       showRestaurantTitleBar: true,
       loader: null,
       loading: false,
-      showSection: false
+      showSection: false,
+      disable: false
     }
   },
   watch: {
@@ -129,7 +141,7 @@ export default {
       const l = this.loader
       this[l] = !this[l]
 
-      setTimeout(() => (this[l] = false), 2000)
+      setTimeout(() => (this[l] = false), 1000)
 
       this.loader = null
     }
@@ -138,6 +150,7 @@ export default {
     // Submitting information to the backend
     submit () {
       this.valid = false
+      this.disable = true
       this.loader = 'loading'
       // Sending GET Request
       axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
@@ -156,15 +169,18 @@ export default {
           this.valid = true
           this.showRestaurantTitleBar = true
           this.showSection = true
+          this.disable = false
           this.$store.dispatch('setSelectedRestaurant', response.data)
         } else {
           this.showAlert = true
+          this.disable = false
           this.showRestaurantTitleBar = false
           this.valid = true
         }
       // Receiving an unsuccessful response
       }).catch(error => {
         this.valid = true
+        this.disable = false
         // Route to the General Error page
         this.$router.push('GeneralError')
         Promise.reject(error)
@@ -191,5 +207,12 @@ export default {
 #quote {
   color: rgb(255, 255, 255);
   font-size: normal;
+}
+#required {
+  margin-bottom: 0.4em;
+  padding: 0;
+  font-size: x-small;
+  text-align: left;
+  color: rgb(139, 139, 139);
 }
 </style>

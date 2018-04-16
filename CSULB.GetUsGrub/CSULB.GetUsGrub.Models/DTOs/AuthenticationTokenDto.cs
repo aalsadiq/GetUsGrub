@@ -25,5 +25,11 @@ namespace CSULB.GetUsGrub.Models
             ExpiresOn = expiresOn;
             TokenString = tokenString;
         }
+
+        public AuthenticationTokenDto(string username, string tokenString)
+        {
+            Username = username;
+            TokenString = tokenString;
+        }
     }
 }

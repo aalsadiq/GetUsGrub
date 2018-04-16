@@ -19,13 +19,13 @@ namespace CSULB.GetUsGrub.Models
         public GeoCoordinates GeoCoordinates { get; set; }
         public Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> MenuDictionary { get; set; }
         public IList<BusinessHour> BusinessHours { get; set; }
-        public IList<RestaurantMenu> RestaurantMenus { get; set; }
-        public IList<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+        //public IList<RestaurantMenu> RestaurantMenus { get; set; }
+        //public IList<RestaurantMenuItem> RestaurantMenuItems { get; set; }
 
         // Constructors
         public RestaurantProfileDto() { }
 
-        public RestaurantProfileDto(RestaurantProfile restaurantProfile, double? latitude, double? longitude, IList<BusinessHour> businessHours, IList<RestaurantMenu> restaurantMenus, IList<RestaurantMenuItem> restaurantMenuItems)
+        /*public RestaurantProfileDto(RestaurantProfile restaurantProfile, double? latitude, double? longitude, IList<BusinessHour> businessHours, IList<RestaurantMenu> restaurantMenus, IList<RestaurantMenuItem> restaurantMenuItems)
         {
             PhoneNumber = restaurantProfile.PhoneNumber;
             Address = restaurantProfile.Address;
@@ -35,7 +35,7 @@ namespace CSULB.GetUsGrub.Models
             BusinessHours = businessHours;
             RestaurantMenus = restaurantMenus;
             RestaurantMenuItems = restaurantMenuItems;
-        }
+        }*/
 
         public RestaurantProfileDto(RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours, Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary)
         {

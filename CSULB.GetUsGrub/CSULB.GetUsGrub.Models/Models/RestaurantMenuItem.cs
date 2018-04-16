@@ -7,8 +7,17 @@ namespace CSULB.GetUsGrub.Models
     /// Restaurant menu item class
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/20/18
+    /// @updated: 4/5/18
     /// </summary>
+    
+    public enum Flag
+    {
+        NotSet = 0,
+        Add = 1,
+        Edit = 2,
+        Delete = 3
+    }
+
     [Table("GetUsGrub.RestaurantMenuItem")]
     public class RestaurantMenuItem : IMenuItem
     {
@@ -19,12 +28,15 @@ namespace CSULB.GetUsGrub.Models
         public int? MenuId { get; set; }
         [Required]
         public string ItemName { get; set; }
+        [Required]
         public decimal ItemPrice { get; set; }
         public string ItemPicture { get; set; }
         [Required]
         public string Tag { get; set; }
         public string Description { get; set; }
+        [Required]
         public bool IsActive { get; set; }
+        public Flag Flag { get; set; }
 
         // Navigation Properties
         public virtual RestaurantMenu RestaurantMenu { get; set; }
@@ -32,14 +44,29 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public RestaurantMenuItem() { }
 
-        public RestaurantMenuItem(string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive)
+        // For getting
+        public RestaurantMenuItem(int? id, string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive)
         {
+            Id = Id;
             ItemName = itemName;
             ItemPrice = itemPrice;
             ItemPicture = itemPicture;
             Tag = tag;
             Description = description;
             IsActive = isActive;
+        }
+
+        // For editing
+        public RestaurantMenuItem(int? id, string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive, Flag flag)
+        {
+            Id = Id;
+            ItemName = itemName;
+            ItemPrice = itemPrice;
+            ItemPicture = itemPicture;
+            Tag = tag;
+            Description = description;
+            IsActive = isActive;
+            Flag = flag;
         }
 
         public RestaurantMenuItem(int? id, int? menuId, string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive)

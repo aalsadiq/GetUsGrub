@@ -3,7 +3,7 @@
     <!-- Title bar for the restaurant selection -->
     <v-alert id="result-bar" :value=showResultBar>
       <span id="quote">
-        Results
+        Result
       </span>
     </v-alert>
     <v-card id="card-result">
@@ -66,17 +66,6 @@ export default {
       loading: false,
       showAlert: false,
       showResultBar: true
-    }
-  },
-  watch: {
-    // Loading animation on buttons
-    loader () {
-      const l = this.loader
-      this[l] = !this[l]
-
-      setTimeout(() => (this[l] = false), 1500)
-
-      this.loader = null
     }
   },
   computed: mapState({

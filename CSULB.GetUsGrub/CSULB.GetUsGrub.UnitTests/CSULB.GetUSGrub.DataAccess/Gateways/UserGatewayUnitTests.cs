@@ -13,8 +13,8 @@ namespace CSULB.GetUsGrub.UnitTests
     /// The <c>UserGatewayUnitTests</c> class.
     /// Contains unit tests for the UserGateway.
     /// <para>
-    /// @author: Jennifer Nguyen
-    /// @updated: 03/12/2018
+    /// @author: Jennifer Nguyen, Rachel Dang
+    /// @updated: 04/11/2018
     /// </para>
     /// </summary>
     public class UserGatewayUnitTests
@@ -93,6 +93,21 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Assert
             act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void Should_ReturnPreferences_When_UsernameIsPassedIn()
+        {
+            // Arrange
+            string username = "username1";
+            UserGateway gateway = new UserGateway();
+
+            // Act
+            var result = gateway.GetFoodPreferencesByUsername(username);
+
+            // Assert
+            result.Data.Should().NotBeNull();
+            result.Error.Should().BeNull();
         }
     }
 }

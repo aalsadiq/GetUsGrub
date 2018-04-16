@@ -26,9 +26,6 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // Create claims collection for an admin user
                 case AccountType.ADMIN:
                     return new AdminClaims().Claims;
-
-                case null:
-                case "":
                 
                 // Return an empty list of claims for default
                 default:

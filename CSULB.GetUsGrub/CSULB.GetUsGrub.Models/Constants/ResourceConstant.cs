@@ -21,5 +21,8 @@
         // Resource Types for Bill Splitter
         public const string MENU = "Menu";
         public const string DICTIONARY = "Dictionary";
+
+        // Resource Types for Restaurant Selection
+        public const string RESTAURANTSELECTION = "RestaurantSelection";
     }
 }

@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var result = gateway.GetClaimsByUsername(username);
 
             // Assert
-            result.Data.Should().NotBeNullOrEmpty();
+            result.Data.Should().NotBeEmpty();
             result.Error.Should().BeNull();
         }
 

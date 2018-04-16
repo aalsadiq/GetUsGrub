@@ -17,6 +17,10 @@ import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/Restaura
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 import Login from '@/components/Login/Login.vue'
+import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap.vue'
+import Profile from '@/components/Profile/Profile.vue'
+// import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
+// import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
 Vue.use(Router)
 
@@ -103,6 +107,34 @@ export default new Router({
         next()
       }
     },
+    {
+      path: '/GoogleEmbedMap',
+      name: 'GoogleEmbedMap',
+      component: GoogleEmbedMap,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Directions to your Restaurant?!?!?!?!'
+        next()
+      }
+    },
+    {
+      path: '/Profile',
+      name: 'Profile',
+      component: Profile,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Your profile'
+        next()
+      }
+    },
+    // {
+    //   path: '/FoodPreferences',
+    //   name: 'FoodPreferences',
+    //   component: FoodPreferences
+    // },
+    // {
+    //   path: '/EditFoodPreferences',
+    //   name: 'EditFoodPreferences',
+    //   component: EditFoodPreferences
+    // },
     {
       path: '/FoodPreferences',
       name: 'FoodPreferences',

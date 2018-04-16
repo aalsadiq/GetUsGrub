@@ -26,7 +26,7 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public UserProfile() { }
 
-        public UserProfile(string displayPicture, string displayName)
+        public UserProfile(string displayName, string displayPicture)
         {
             DisplayPicture = displayPicture;
             DisplayName = displayName;

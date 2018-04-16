@@ -6,7 +6,7 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>Address</c> class.
     /// Defines properties pertaining to an address.
     /// <para>
-    /// @author: Jennifer Nguyen
+    /// @author: Brian Fann
     /// @updated: 03/10/2018
     /// </para>
     /// </summary>

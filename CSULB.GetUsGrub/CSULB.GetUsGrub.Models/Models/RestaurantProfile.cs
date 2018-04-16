@@ -9,12 +9,12 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>RestaurantProfile</c> class.
     /// Defines properties pertaining to user account.
     /// <para>
-    /// @author: Andrew Kao, Jennifer Nguyen
+    /// @author: Andrew Kao, Brian Fann
     /// @updated: 03/11/2018
     /// </para>
     /// </summary>
     [Table("GetUsGrub.RestaurantProfile")]
-    public class RestaurantProfile : IRestaurantProfile, IEntity//Maybe Remove Profile...
+    public class RestaurantProfile : IRestaurantProfile, IEntity //Maybe Remove Profile...
     {
         // Automatic Properties
         [Key]
@@ -27,16 +27,16 @@ namespace CSULB.GetUsGrub.Models
         {
             get
             {
-                int srid = 4326;
-                string wkt = $"POINT({GeoCoordinates.Longitude} {GeoCoordinates.Latitude})";
+								int srid = 4326;
+								string wkt = $"POINT({GeoCoordinates.Longitude} {GeoCoordinates.Latitude})";
 
                 return DbGeography.PointFromText(wkt, srid);
             }
-            set
+            set => GeoCoordinates = new GeoCoordinates()
             {
-                GeoCoordinates.Latitude = value.Latitude ?? 0;
-                GeoCoordinates.Latitude = value.Longitude ?? 0;
-            }
+                Latitude = value.Latitude ?? 0.0,
+                Longitude = value.Longitude ?? 0.0
+            };
         }
         [NotMapped]
         public GeoCoordinates GeoCoordinates { get; set; }

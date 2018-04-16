@@ -20,13 +20,12 @@ namespace CSULB.GetUsGrub.UnitTests
             // Arrange
             var gateway = new AuthorizationGateway();
             var username = "username1";
-            var expected = typeof(ResponseDto<ICollection<Claim>>);
 
             // Act
             var result = gateway.GetClaimsByUsername(username);
 
             // Assert
-            result.Should().BeOfType(expected);
+            result.Data.Should().NotBeNullOrEmpty();
             result.Error.Should().BeNull();
         }
 
@@ -36,13 +35,12 @@ namespace CSULB.GetUsGrub.UnitTests
             // Arrange
             var gateway = new AuthorizationGateway();
             var username = "FailUser";
-            var expected = typeof(ResponseDto<ICollection<Claim>>);
 
             // Act
             var result = gateway.GetClaimsByUsername(username);
 
             // Assert
-            result.Should().BeOfType(expected);
+            result.Data.Should().BeNull();
             result.Error.Should().NotBeNull();
         }
     }

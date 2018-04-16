@@ -61,6 +61,7 @@
     <Compile Include="Gateways\AuthorizationGateway.cs" />
     <Compile Include="Gateways\RestaurantGateway.cs" />
     <Compile Include="Gateways\RestaurantProfileGateway.cs" />
+    <Compile Include="Gateways\SsoGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Gateways\UserProfileGateway.cs" />
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />

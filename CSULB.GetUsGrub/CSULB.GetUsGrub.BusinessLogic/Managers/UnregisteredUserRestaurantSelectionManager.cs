@@ -116,9 +116,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 SelectedRestaurantDto = gatewayResult.Data;
             }
 
-            // Setting client user geocoordinates to the SelectedRestaurantDto
-            SelectedRestaurantDto.ClientUserGeoCoordinates = RestaurantSelectionDto.ClientUserGeoCoordinates;
-
             // Sort the list of business hour data transfer objects by day using the DayOfWeek enum property
             SelectedRestaurantDto.BusinessHourDtos = SelectedRestaurantDto.BusinessHourDtos.OrderBy(businessHourDto => (int)Enum.Parse(typeof(DayOfWeek), businessHourDto.Day)).ToList();
 

@@ -136,14 +136,14 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\RestaurantProfileValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SecurityAnswerSaltValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SecurityQuestionValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\SsoTokenPayloadValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\SsoTokenPayloadDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserAccountValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserProfileValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\UserGatewayUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\AuthorizationManagerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsFactoryUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsTransformerUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\TokenValidator.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\TokenValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\UserValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.Gateways\UserManagementTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

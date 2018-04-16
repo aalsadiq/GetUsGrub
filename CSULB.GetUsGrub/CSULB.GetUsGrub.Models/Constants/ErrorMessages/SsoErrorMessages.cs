@@ -9,9 +9,7 @@
         public static string INVALID_TOKEN_PAYLOAD = "Token payload contains invalid information.";
 
         // Error messages for SsoTokenPreLogicValidationStrategy
-        public static string TOKEN_EXISTS_ERROR = "Token already exists.";
-
-         
+        public static string TOKEN_EXISTS_ERROR = "Token already exists."; 
 
     }
 }

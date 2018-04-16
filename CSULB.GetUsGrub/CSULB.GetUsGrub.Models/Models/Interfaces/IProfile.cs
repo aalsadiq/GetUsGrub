@@ -1,6 +1,5 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Andrew There is already an IUserProfile. Do you want it to be just IProfile? [-Jenn]
     /// <summary>
     /// Interface representing basic profile information
     /// 

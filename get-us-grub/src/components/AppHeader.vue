@@ -13,11 +13,13 @@
       </router-link>
       </div>
       <v-spacer></v-spacer>
-      <div class="hidden-sm-and-down">
+      <div>
         <router-link to="/Registration">
           <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">REGISTER</span></v-btn>
         </router-link>
+        <router-link to="/Login">
           <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">LOGIN</span></v-btn>
+        </router-link>
         <router-link to="/RestaurantBillSplitter">
           <v-btn color="red lighten-3" class="nav-btn"><span class="btn-text">SPLIT BILL</span></v-btn>
         </router-link>
@@ -38,7 +40,7 @@ div.btn__content {
 .btn-text {
   font-weight: bold;
   font-size: normal;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 #toolbar-title {
   font-weight: bold;

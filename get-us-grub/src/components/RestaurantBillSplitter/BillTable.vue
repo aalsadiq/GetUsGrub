@@ -2,15 +2,15 @@
   <div class="bill-table">
     <h1>Your Bill</h1>
     <div>
-      <h1 v-if="!BillItems.length"> Drag Items Here!</h1>
-      <draggable class="bill" v-bind:list="BillItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
-        <div class="bill-item" v-for="(billItem, billItemIndex) in BillItems" :key="billItemIndex">
+      <h1 v-if="!billItems.length"> Drag Items Here!</h1>
+      <draggable class="bill" v-bind:list="billItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
+        <div class="bill-item" v-for="(billItem, billItemIndex) in billItems" :key="billItemIndex">
           {{billItem.name}} : ${{billItem.price}}<br />
           <edit-item :editType="editType" :itemIndex="billItemIndex" :Item="billItem" />
           <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
-          <manage-users :billItem="billItem"/>
-          <v-divider/>
-          <div v-for="billUser in BillUsers" :key="billUser">
+          <manage-users :billItem="billItem" />
+          <v-divider />
+          <div v-for="billUser in billUsers" :key="billUser">
             <div v-for="uniqueID in billItem.selected" :key="uniqueID">
               <div v-if="billUser.uID === uniqueID">
                 <p> {{ billUser.name }} </p>
@@ -20,7 +20,7 @@
         </div>
       </draggable>
     </div>
-    <h2 class="total">Total: {{ TotalPrice }} </h2>
+    <h2 class="total">Total: {{ this.money.prefix }}{{ totalPrice }} </h2>
   </div>
 </template>
 
@@ -59,16 +59,13 @@ export default {
   methods: {
   },
   computed: {
-    MenuItems () {
-      return this.$store.state.MenuItems
+    billItems () {
+      return this.$store.state.billItems
     },
-    BillItems () {
-      return this.$store.state.BillItems
+    billUsers () {
+      return this.$store.state.billUsers
     },
-    BillUsers () {
-      return this.$store.state.BillUsers
-    },
-    TotalPrice () {
+    totalPrice () {
       return this.$store.getters.totalPrice
     }
   }
@@ -103,4 +100,8 @@ export default {
       border-radius: 10px;
       text-align: center;
     }
+
+  .total {
+    margin-bottom: 10px;
+  }
 </style>

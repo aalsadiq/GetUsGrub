@@ -14,12 +14,11 @@ namespace CSULB.GetUsGrub.Models
     {
         // Automatic Properties
         public int? RestaurantId { get; set; }
-        public GeoCoordinates RestaurantGeoCoordinates { get; set; }
-        public GeoCoordinates ClientUserGeoCoordinates { get; set; }
+        public string ClientCity { get; set; }
+        public string ClientState { get; set; }
         public string DisplayName { get; set; }
         public Address Address { get; set; }
         public string PhoneNumber { get; set; }
         public IList<BusinessHourDto> BusinessHourDtos { get; set; }
-        // TODO: @Andrew Will need to put public id for restaurant here [-Jenn]
     }
 }

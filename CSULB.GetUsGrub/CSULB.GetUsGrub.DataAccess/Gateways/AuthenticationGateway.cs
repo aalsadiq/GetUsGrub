@@ -13,35 +13,53 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class AuthenticationGateway : IDisposable
     {
+        private AuthenticationContext authenticationContext;
+
+        public AuthenticationGateway()
+        {
+            authenticationContext = new AuthenticationContext();
+        }
+
+        // TODO @Ahmed Change all the parameter to the data type needed only @Ahmed
+        // TODO @ Ahmed Put things in Gateways in Try Catch @Ahmed
         /// <summary>
         /// 
         /// Gets the Failed attempt information from the DataBase
         /// 
         /// </summary>
-        /// <param name="incomingUser"></param>
+        /// <param name="username"></param>
         /// <returns>
         /// FailedAttemptobject
         /// </returns>
-        public ResponseDto<FailedAttempts> GetFailedAttempt(UserAuthenticationModel incomingUser)
+        public ResponseDto<FailedAttempts> GetFailedAttempt(string username)
         {
-            using (var authenticationContext = new AuthenticationContext())
-            {
 
+            try
+            {
                 // Looking for the User matching the incoming Username 
                 var userId = (from account in authenticationContext.UserAccounts
-                              where account.Username == incomingUser.Username
-                              select account.Id).SingleOrDefault();
+                              where account.Username == username
+                              select account.Id).FirstOrDefault();
 
                 // Looking for the Users last attempt information
-                var lastFailedAttempt = (from dates in authenticationContext.FailedAttempts
-                                         where dates.Id == userId
-                                         select dates).SingleOrDefault();
+                var lastFailedAttempt = (from failedAttempt in authenticationContext.FailedAttempts
+                                         where failedAttempt.Id == userId
+                                         select failedAttempt).FirstOrDefault();
 
                 return new ResponseDto<FailedAttempts>
                 {
                     Data = lastFailedAttempt
                 };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<FailedAttempts>
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -52,53 +70,73 @@ namespace CSULB.GetUsGrub.DataAccess
         /// to the UserAccount.UserName in the DataBase
         /// 
         /// </summary>
-        /// <param name="incomingUser"></param>
+        /// <param name="username"></param>
         /// <returns> 
         /// UserAccount object to the Manager
         /// 
         /// </returns>
-        public ResponseDto<UserAccount> GetUserAccount(UserAuthenticationModel incomingUser)
+        public ResponseDto<UserAccount> GetUserAccount(string username)
         {
-            using (var authenticationContext = new AuthenticationContext())
+
+            try
             {
                 // Looking for the User matching the incoming Username 
                 var userFromDataBase = (from user in authenticationContext.UserAccounts
-                                        where user.Username == incomingUser.Username
-                                        select user).SingleOrDefault();
+                                        where user.Username == username
+                                        select user).FirstOrDefault();
                 return new ResponseDto<UserAccount>
                 {
                     Data = userFromDataBase
                 };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<UserAccount>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
         ///  
         /// GetAuthenticationToken
         /// 
-        /// Gets the AuthenticationToken using the incoming TokenString to map 
+        /// Gets the AuthenticationToken using the incoming TokenString username to map 
         /// to the Token String in the DataBas
         /// </summary>
-        /// <param name="incomingAuthenticationToken"></param>
+        /// <param name="username"></param>
         /// <returns></returns>
-        public ResponseDto<AuthenticationToken> GetAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
+        public ResponseDto<AuthenticationToken> GetAuthenticationToken(string username)
         {
-            using (var authenticationContext = new AuthenticationContext())
+
+            try
             {
                 var userId = (from account in authenticationContext.UserAccounts
-                              where account.Username == incomingAuthenticationToken.Username
-                              select account.Id).SingleOrDefault();
+                              where account.Username == username
+                              select account.Id).FirstOrDefault();
 
-                // Looking for the a Token that matches the incoming Token
+                // Looking for the Token that matches the incoming Token
                 var databaseToken = (from token in authenticationContext.AuthenticationTokens
                                      where token.Id == userId
-                                     select token).SingleOrDefault();
+                                     select token).FirstOrDefault();
 
                 return new ResponseDto<AuthenticationToken>
                 {
                     Data = databaseToken
                 };
             }
+            catch (Exception)
+            {
+                return new ResponseDto<AuthenticationToken>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
         }
 
         /// <summary>
@@ -111,142 +149,42 @@ namespace CSULB.GetUsGrub.DataAccess
         /// string with the value of the salt associated with the user to the Manager
         /// 
         /// </returns>
-        public ResponseDto<PasswordSaltDto> GetUserPasswordSalt(UserAccount userFromDataBase)
+        public ResponseDto<PasswordSalt> GetUserPasswordSalt(int? id)
         {
-            using (var userContext = new AuthenticationContext())
+
+            var salt = (from salts in authenticationContext.PasswordSalts
+                        where salts.Id == id
+                        select salts.Salt).FirstOrDefault();
+            var passwordSalt = new PasswordSalt
             {
-                var salt = (from salts in userContext.PasswordSalts
-                            where salts.Id == userFromDataBase.Id
-                            select salts.Salt).SingleOrDefault();
-                var passwordSaltDto = new PasswordSaltDto();
-                passwordSaltDto.Salt = salt;
-                return new ResponseDto<PasswordSaltDto>
-                {
-                    Data = passwordSaltDto
-                };
-            }
+                Salt = salt
+            };
+            return new ResponseDto<PasswordSalt>
+            {
+                Data = passwordSalt
+            };
+
         }
 
-        // TODO: @Ahmed Need to return a ResponseDto<AuthenticationToken> in the logic [-Jenn]
-        //public ResponseDto<AuthenticationToken> GetExpirationTime(AuthenticationToken incomingAuthenticationToken)
-        //{
-        //    using (var authenticationContext = new AuthenticationContext())
-        //    {
-        //        using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
-        //        {
-        //            try
-        //            {
-        //                // Get the UserId using Username
-        //                var userId = (from account in authenticationContext.UserAccounts
-        //                              where account.Username == incomingAuthenticationToken.Username
-        //                              select account.Id).SingleOrDefault();
-
-        //                // Adding the Username to the Token as the Token ID
-        //                incomingAuthenticationToken.Id = userId;
-
-        //                // Adding the Token to the DataBase
-        //                authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
-
-        //                // Commiting the trasaction to the Database
-        //                dbContextTransaction.Commit();
-        //            }
-        //            catch (Exception)
-        //            {
-        //                // Rolls back the changes saved in the transaction
-        //                dbContextTransaction.Rollback();
-        //                throw;
-        //            }
-        //        }
-        //    }
-        //}
-
-        public void UpdateFailedAttempt(FailedAttempts incomingFailedAttempt)
+        /// <summary>
+        /// 
+        /// Updating the failed attempts for the users to update the users attempts
+        /// 
+        /// </summary>
+        /// <param name="incomingFailedAttempt"></param>
+        /// <returns></returns>
+        public ResponseDto<bool> UpdateFailedAttempt(FailedAttempts incomingFailedAttempt)
         {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        // Updating the failed attempts
-                        authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
 
-                        // Commiting the trasaction to the Database
-                        dbContextTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        // Rolls back the changes saved in the transaction
-                        dbContextTransaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
-
-        // TODO: @Jenn Comment this method and unit test [-Jenn]
-        public ResponseDto<SsoToken> GetValidSsoToken(string token)
-        {
-            using (var authenticationContext = new AuthenticationContext())
+            using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
             {
                 try
                 {
-                    var ssoToken = (from validSsoToken in authenticationContext.ValidSsoTokens
-                                    where validSsoToken.Token == token
-                                    select validSsoToken).FirstOrDefault();
-                    // Return a ResponseDto with a UserAccount model
-                    return new ResponseDto<SsoToken>()
-                    {
-                        Data = ssoToken
-                    };
-                }
-                catch (Exception)
-                {
-                    return new ResponseDto<SsoToken>()
-                    {
-                        Data = new ValidSsoToken(token),
-                        Error = "Something went wrong. Please try again later."
-                    };
-                }
-            }
-        }
+                    // Updating the failed attempts
+                    authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
 
-        // TODO: @Jenn Comment this method and unit test [-Jenn]
-        public ResponseDto<SsoToken> GetInvalidSsoToken(string token)
-        {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    var ssoToken = (from invalidSsoToken in authenticationContext.InvalidSsoTokens
-                        where invalidSsoToken.Token == token
-                        select invalidSsoToken).FirstOrDefault();
-                    // Return a ResponseDto with a UserAccount model
-                    return new ResponseDto<SsoToken>()
-                    {
-                        Data = ssoToken
-                    };
-                }
-                catch (Exception)
-                {
-                    return new ResponseDto<SsoToken>()
-                    {
-                        Data = new ValidSsoToken(token),
-                        Error = "Something went wrong. Please try again later."
-                    };
-                }
-            }
-        }
-
-        // TODO: @Jenn Comment this method and unit test [-Jenn]
-        public ResponseDto<bool> StoreValidSsoToken(ValidSsoToken validSsoToken)
-        {
-            using (var authenticationContext = new AuthenticationContext())
-            {
-                try
-                {
-                    authenticationContext.ValidSsoTokens.Add(validSsoToken);
-                    authenticationContext.SaveChanges();
+                    // Commiting the trasaction to the Database
+                    dbContextTransaction.Commit();
 
                     return new ResponseDto<bool>()
                     {
@@ -255,13 +193,17 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
                 catch (Exception)
                 {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Returning a false and Error
                     return new ResponseDto<bool>()
                     {
                         Data = false,
-                        Error = "Something went wrong. Please try again later."
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }
+
         }
 
         /// <summary>
@@ -272,43 +214,52 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="incomingAuthenticationToken">
         /// </param>
-        public void StoreAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
+        public ResponseDto<bool> StoreAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
         {
-            using (var authenticationContext = new AuthenticationContext())
+
+            using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
+                try
                 {
-                    try
+                    // Get the UserId using Username
+                    var userId = (from account in authenticationContext.UserAccounts
+                                  where account.Username == incomingAuthenticationToken.Username
+                                  select account.Id).FirstOrDefault();
+
+                    // Adding the Username to the Token as the Token ID
+                    incomingAuthenticationToken.Id = userId;
+
+                    // Adding the Token to the DataBase
+                    authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
+
+                    // Commiting the trasaction to the Database
+                    dbContextTransaction.Commit();
+
+                    return new ResponseDto<bool>()
                     {
-                        // Get the UserId using Username
-                        var userId = (from account in authenticationContext.UserAccounts
-                            where account.Username == incomingAuthenticationToken.Username
-                            select account.Id).SingleOrDefault();
-
-                        // Adding the Username to the Token as the Token ID
-                        incomingAuthenticationToken.Id = userId;
-
-                        // Adding the Token to the DataBase
-                        authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
-
-                        // Commiting the trasaction to the Database
-                        dbContextTransaction.Commit();
-                    }
-                    catch (Exception)
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Return a false
+                    return new ResponseDto<bool>()
                     {
-                        // Rolls back the changes saved in the transaction
-                        dbContextTransaction.Rollback();
-                        throw;
-                    }
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
+
         }
 
         // Dispose release unmangaed resources 
         // TODO: @Jenn Add in implementation of Dispose [-Jenn]
         public void Dispose()
         {
-            //throw new NotImplementedException();
+            authenticationContext.Dispose();
         }
     }
 }

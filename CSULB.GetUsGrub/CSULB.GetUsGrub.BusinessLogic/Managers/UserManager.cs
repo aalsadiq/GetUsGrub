@@ -46,12 +46,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerUserDto.UserAccountDto.Username, password: registerUserDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: RoleTypes.PUBLIC);
             var securityQuestions = registerUserDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
-            var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
+            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table
             var userClaims = new UserClaims(claimsFactory.Create(AccountType.INDIVIDUAL));
@@ -131,12 +132,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: "public");
+            var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: RoleTypes.PUBLIC);
             var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
-            var userProfile = new UserProfile(displayPicture: registerRestaurantDto.UserProfileDto.DisplayPicture, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
+            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
             var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, 
                 address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details);
             var businessHours = registerRestaurantDto.BusinessHourDtos
@@ -145,10 +147,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
                     closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
                 .ToList();
-            var foodPreferences = new List<FoodPreferences>();
+            var foodPreferences = new List<FoodPreference>();
             if (registerRestaurantDto.FoodPreferences != null)
             {
-                foodPreferences = registerRestaurantDto.FoodPreferences.Select(foodPreference => new FoodPreferences(foodPreference)).ToList();
+                foodPreferences = registerRestaurantDto.FoodPreferences.Select(foodPreference => new FoodPreference(foodPreference)).ToList();
             }
 
             // Set user claims to be stored in UserClaims table
@@ -210,7 +212,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        // TODO: @Jenn Comment this method [-Jenn]
+        /// <summary>
+        /// The CreateFirstTimeSsoUser method.
+        /// Creates a first time user registered from the SSO.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/09/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccountDto"></param>
+        /// <returns></returns>
         public ResponseDto<bool> CreateFirstTimeSsoUser(UserAccountDto userAccountDto)
         {
             var createFirstTimeSsoUserPreLogicStrategy = new CreateFirstTimeSsoUserPreLogicValidationStrategy(userAccountDto);
@@ -356,30 +367,43 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<string> DeactivateUser(string username)
+        public ResponseDto<string> DeactivateUser(UserAccountDto user)//Change this to a DTO... @TODO: Angelica
         {
+
+            //Validation Strategy
+            var usernameValidation = new UsernameValidationStrategy(user);
+            // Validate data transfer object
+            var result = usernameValidation.ExecuteStrategy();
+            if (result.Error != null)
+            {
+                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                {
+                    Data = user.Username,
+                    Error = result.Error
+                };
+            }
+
             //Creates a gateway
             using (var gateway = new UserGateway())
             {
                 var check = new UserProfileDtoValidator(); //Check this...
-               //
    
                 //Gateway calls DeactivateUser and passes in the username to be deactivated.
-                var gatewayResult = gateway.DeactivateUser(username);
+                var gatewayResult = gateway.DeactivateUser(user.Username);
                 //If the gateway returns false
                 if (gatewayResult.Data == false)
                 {
                     //Return response dto with an error.
                     return new ResponseDto<string>()
                     {
-                        Data = username,//The username
+                        Data = user.Username,//The username
                         Error = gatewayResult.Error//The error
                     };
                 }
                 //If the gateway returns true, return a true dto.
                 return new ResponseDto<string>
                 {
-                    Data = username//The username
+                    Data = user.Username//The username
                 };
             }
         }
@@ -393,8 +417,21 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<string> ReactivateUser(UserAccountDto user)
             {
-                //Creates a gateway
-                using (var gateway = new UserGateway())
+
+            //Validation Strategy
+            var usernameValidation = new UsernameValidationStrategy(user);
+            // Validate data transfer object
+            var result = usernameValidation.ExecuteStrategy();
+            if (result.Error != null)
+            {
+                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                {
+                    Data = user.Username,
+                    Error = result.Error
+                };
+            }
+            //Creates a gateway
+            using (var gateway = new UserGateway())
                 {
                     //Gateway calls ReactivateUser and passes in the username to be reactivated.
                     var gatewayResult = gateway.ReactivateUser(user.Username);
@@ -423,27 +460,39 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deleted.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<string> DeleteUser(string username)
+        public ResponseDto<string> DeleteUser(UserAccountDto user)
             {
+            //Validation Strategy
+            var usernameValidation = new UsernameValidationStrategy(user);
+            // Validate data transfer object
+            var result = usernameValidation.ExecuteStrategy();
+            if (result.Error != null)
+            {
+                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                {
+                    Data = user.Username,
+                    Error = result.Error
+                };
+            }
             //Creates a gateway
             using (var gateway = new UserGateway())
                 {
                     //Gateway calls DeleteUser and passes in the username to be deleted.
-                    var gatewayResult = gateway.DeleteUser(username);
+                    var gatewayResult = gateway.DeleteUser(user.Username);
                 //If they gateway returns false
                 if (gatewayResult.Data == false)
                     {
                         //Return response dto with an error.
                         return new ResponseDto<string>()
                         {
-                            Data = username,//The username
+                            Data = user.Username,//The username
                             Error = gatewayResult.Error//The error
                         };
                     }
                     //If the gateway returns true, return username deleted.
                     return new ResponseDto<string>
                     {
-                        Data = username//The username
+                        Data = user.Username//The username
                     };
                 }
             }
@@ -454,8 +503,22 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<string> Edituser(EditUserDto user)
+        public ResponseDto<string> Edituser(EditUserDto user)//@TODO: Angelica (Add ProfileDtoValidations...)
         {
+
+            //Validation Strategy will validate if the user meets the requirements
+            var editUserValidation = new EditUserValidationStrategy(user);
+            // Validate data transfer object
+            var result = editUserValidation.ExecuteStrategy();
+            if (result.Error != null)
+            {
+                return new ResponseDto<string>//if I change this then I have to change the response DTO
+                {
+                    Data = user.Username,
+                    Error = result.Error
+                };
+            }
+
             //Creates a gateway
             using (var gateway = new UserGateway())
             {

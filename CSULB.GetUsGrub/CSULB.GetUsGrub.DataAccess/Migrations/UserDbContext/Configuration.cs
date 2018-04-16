@@ -55,6 +55,17 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                 "Caribbean Food"
             };
 
+            var validFoodPreferences = new Collection<string>
+            {
+                "Gluten-free",
+                "Halal",
+                "Kosher",
+                "Lacto-vegetarian",
+                "Pescetarian",
+                "Vegan",
+                "Vegetarian"
+            };
+
             // Los Angeles city's geocoordinates are (34.0522,-118.2437)
             var geoCoordinates = new Collection<GeoCoordinates>
             {
@@ -91,11 +102,10 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
 
             // maxNumberOfUsers must be an even number
             const int maxUsers = 50;
-            // maxNumberOfSecurityQuestions must be 3
-            const int maxClaimsPerUserClaims = 3;
             const int maxBusinessHours = 3;
             const int maxRestaurantMenus = 2;
             const int maxRestaurantMenuItems = 5;
+            const int maxFoodPreferences = 3;
 
             // Directory Paths
             const string directoryPathToUserProfileDisplayPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\ProfileImages\\";
@@ -133,7 +143,6 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                         Id = i,
                         Username = $"username{i}",
                         ExpiresOn = DateTime.UtcNow,
-                        Salt = $"salt{i}",
                         TokenString = $"tokenString{i}"
                     }
                 );
@@ -175,18 +184,34 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                 }
                 context.SaveChanges();
 
-                // Creating a list of claims
-                var claims = new List<Claim>();
-
-                // Adding 3 claims to the list of claims
-                for (var j = 1; j <= maxClaimsPerUserClaims; j++)
+                for (var j = 1 + maxFoodPreferences * (i - 1); j <= maxFoodPreferences + maxFoodPreferences * (i - 1); j++)
                 {
-                    claims.Add(new Claim($"claimType{j}", $"claimValue{j}"));
+                    // AddorUpdate to FoodPreference table
+                    context.FoodPreferences.AddOrUpdate
+                    (
+                        new FoodPreference()
+                        {
+                            Id = j,
+                            UserId = i,
+                            // Total of 9 security questions to choose from
+                            Preference = validFoodPreferences[randomizer.Next(0, validFoodPreferences.Count)]
+                        }
+                    );
                 }
+                context.SaveChanges();
+
+                // Creating a list of claims
+                var claims = new List<Claim>
+                {
+                    new Claim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True"),
+                    new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"),
+                    new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True")
+                };
 
                 // AddorUpdate to UserClaims table
                 context.UserClaims.AddOrUpdate
                 (
+                    // Original seed data
                     new UserClaims()
                     {
                         Id = i,

@@ -1,12 +1,19 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Jenn Comment this [-Jenn]
+    /// <summary>
+    /// The <c>GeneralErrorMessages</c> class.
+    /// Contains general error constants for the project.
+    /// <para>
+    /// @author: Jennifer Nguyen
+    /// @updated: 04/09/2018
+    /// </para>
+    /// </summary>
     public class GeneralErrorMessages
     {
         // Error messages for general errors
-        public static string GENERAL_ERROR = "Something went wrong. Please try again later.";
+        public const string GENERAL_ERROR = "Something went wrong. Please try again later.";
 
         // Error messages for controllers
-        public static string MODEL_STATE_ERROR = "A required input is missing.";
+        public const string MODEL_STATE_ERROR = "A required input is missing.";
     }
 }

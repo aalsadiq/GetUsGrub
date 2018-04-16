@@ -18,29 +18,29 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("CreateUser", () =>
             {
-                RuleFor(x => x.Street1)
-                    .NotEmpty().WithMessage("Address needs a street1.")
-                    .NotNull().WithMessage("Address needs a street1.");
+                RuleFor(address => address.Street1)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.STREET_1_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.STREET_1_REQUIRED);
 
-                RuleFor(x => x.City)
-                    .NotEmpty().WithMessage("Address needs a city.")
-                    .NotNull().WithMessage("Address needs a city.");
+                RuleFor(address => address.City)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.CITY_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.CITY_REQUIRED);
 
-                RuleFor(x => x.State)
-                    .NotEmpty().WithMessage("Address needs a state.")
-                    .NotNull().WithMessage("Address needs a state.")
-                    .Must(x => Enum.IsDefined(typeof(States), x)).WithMessage("Address must be a valid state.");
+                RuleFor(address => address.State)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.STATE_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.STATE_REQUIRED)
+                    .Must(x => Enum.IsDefined(typeof(States), x)).WithMessage(ValidationErrorMessages.NOT_VALID_STATE);
 
-                RuleFor(x => x.Zip)
-                    .NotEmpty().WithMessage("Address needs a zip code.")
-                    .GreaterThanOrEqualTo(10000).WithMessage("Zip code must contain 5 numbers.")
-                    .LessThanOrEqualTo(99999).WithMessage("Zip code must contain 5 numbers.");
+                RuleFor(address => address.Zip)
+                    .NotEmpty().WithMessage(ValidationErrorMessages.ZIP_REQUIRED)
+                    // Zip code must contain 5 numbers
+                    .GreaterThanOrEqualTo(10000).WithMessage(ValidationErrorMessages.ZIP_FORMAT)
+                    // Zip code must contain 5 numbers
+                    .LessThanOrEqualTo(99999).WithMessage(ValidationErrorMessages.ZIP_FORMAT);
             });
         }
 
         // TODO: @Brian Need to integrate with Google Maps API for the following [-Jenn]
         // Call Google Maps API to check if the address is a valid address in Los Angeles, CA and Orange County, CA
-
-        // TODO: @Jenn Validate enum for states? [-Jenn]
     }
 }

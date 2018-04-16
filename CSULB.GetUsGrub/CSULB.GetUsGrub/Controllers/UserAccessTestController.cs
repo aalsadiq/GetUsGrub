@@ -27,7 +27,7 @@ namespace CSULB.GetUsGrub
             List<Claim> claims = factory.Create(AccountType.INDIVIDUAL).ToList();
 
             // Add "username" claim
-            claims.Add(new Claim("username", "Individual"));
+            claims.Add(new Claim("Username", "username1"));
 
             // Create claims principal
             ClaimsIdentity identity = new ClaimsIdentity(claims);
@@ -69,7 +69,7 @@ namespace CSULB.GetUsGrub
         /// <returns></returns>
         [Route("api/UAC/Individual")]
         [HttpGet]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.DICTIONARY, Operation = ActionConstant.UPDATE)]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.UPDATE)]
         public IHttpActionResult GetTest()
         {
             return Ok();
@@ -80,7 +80,7 @@ namespace CSULB.GetUsGrub
         /// </summary>
         /// <returns></returns>
         [Route("api/UAC/Individual2")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         public IHttpActionResult GetIndividual()
         {
             return Ok();

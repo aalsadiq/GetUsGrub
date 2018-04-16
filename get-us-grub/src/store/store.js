@@ -19,6 +19,9 @@ export const store = new Vuex.Store({
     ],
     isAuthenticated: true,
     authenticationToken: null,
+
+    username: '',
+
     // States pertaining to restaurant selection
     restaurantSelection: {
       request: {

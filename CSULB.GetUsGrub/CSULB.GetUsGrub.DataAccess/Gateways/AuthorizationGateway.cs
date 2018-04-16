@@ -23,25 +23,27 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>User's collection of claims</returns>
         public ResponseDto<ICollection<Claim>> GetClaimsByUsername(string username)
         {
-            // Get the claims from the database
-            var claims = (from userClaims in context.Claims
-                          where userClaims.UserAccount.Username == username
-                          select userClaims).FirstOrDefault();
-
-            // If no claims are found, return an error
-            if (claims == null)
+            try
             {
+                // Get the claims from the database 
+                var claims = (from userClaims in context.Claims
+                              where userClaims.UserAccount.Username == username
+                              select userClaims).FirstOrDefault();
+
+                // If claims are found, return the claims from the database 
+                return new ResponseDto<ICollection<Claim>>
+                {
+                    Data = claims.Claims
+                };
+            }
+            catch (Exception)
+            {
+                // If an error occurs, return DTO with error
                 return new ResponseDto<ICollection<Claim>>
                 {
                     Error = "User is invalid."
                 };
-            }
-
-            // If claims are found, return the claims from the database
-            return new ResponseDto<ICollection<Claim>>
-            {
-                Data = claims.Claims
-            };
+            } 
         }
 
         /// <summary>

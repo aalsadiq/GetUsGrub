@@ -45,6 +45,8 @@ namespace CSULB.GetUsGrub
                     })
             );
 
+
+
             // Add GlobalSecurityExceptionFilter for User Access Control
             // Last Updated: 03/14/18 by Rachel Dang
             config.Filters.Add(new GlobalSecurityExceptionFilter());

@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @updated: 03/30/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("RestaurantSelection")]
+    //[RoutePrefix("RestaurantSelection")]
     public class RestaurantSelectionController : ApiController
     {
         /// <summary>
@@ -36,9 +36,8 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpGet]
         // Opts authentication
         [AllowAnonymous]
-        [Route("Unregistered")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult UnregisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
+        public IHttpActionResult Unregistered(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
             // Model Binding Validation
             if (!ModelState.IsValid)
@@ -86,9 +85,9 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="avgFoodPrice"></param>
         /// <returns>Ok HTTP response or Bad Request HTTP response</returns>
         [HttpGet]
-        [Route("Registered")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult RegisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.ACCESS)]
+        public IHttpActionResult Registered(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
             // Model Binding Validation
             if (!ModelState.IsValid)

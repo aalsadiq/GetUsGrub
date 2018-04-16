@@ -8,7 +8,7 @@ export const store = new Vuex.Store({
   state: {
     isAuthenticated: true,
     authenticationToken: 'null',
-    username: 'null',
+    username: '',
     timer: null,
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',

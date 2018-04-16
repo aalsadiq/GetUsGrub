@@ -24,13 +24,21 @@ export default {
   data () {
     return {
       title: 'Your Food Preferences',
-      foodPreferences: ['Pescetarian', 'Lacto-Vegetarian'],
+      foodPreferences: [],
       errors: []
     }
   },
 
   created () {
-    axios.get('http://localhost:8081/FoodPreferences').then(response => {
+    axios.get('http://localhost:8081/FoodPreferences', {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      params: {
+        username: 'username27'
+      }
+    }).then(response => {
+      console.log(response.data)
       this.foodPreferences = response.data
     }).catch(e => {
       this.errors.push(e)

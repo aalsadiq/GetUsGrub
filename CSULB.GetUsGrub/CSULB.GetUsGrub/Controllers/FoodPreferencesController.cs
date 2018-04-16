@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -21,8 +18,9 @@ namespace CSULB.GetUsGrub.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
-        public IHttpActionResult GetPreferences([FromBody] string username)
+        [Route("GetPreferences")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        public IHttpActionResult GetPreferences(string username)
         {
             // Check if model is valid for the database
             if (!ModelState.IsValid)

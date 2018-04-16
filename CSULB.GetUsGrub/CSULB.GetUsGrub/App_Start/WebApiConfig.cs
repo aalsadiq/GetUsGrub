@@ -20,9 +20,9 @@ namespace CSULB.GetUsGrub
             // Web API convention-based routing
             config.Routes.MapHttpRoute(
                 name: "SsoRoute",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { controller="Sso", id = RouteParameter.Optional },
-                constraints: null,
+                routeTemplate: "{version}/{controller}/{action}/{id}",
+                defaults: new { version = "v1", controller="Sso", id = RouteParameter.Optional },
+                constraints: new { controller = "Sso" },
                 handler: HttpClientFactory.CreatePipeline(
                     new HttpControllerDispatcher(config),
                     new DelegatingHandler[]
@@ -31,10 +31,18 @@ namespace CSULB.GetUsGrub
                     })
             );
 
+            // Web API convention-based routing
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new {id = RouteParameter.Optional}
+                routeTemplate: "v1/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional },
+                constraints: null,
+                handler: HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config),
+                    new DelegatingHandler[]
+                    {
+                        new AuthenticationHandler()
+                    })
             );
 
             // Add GlobalSecurityExceptionFilter for User Access Control

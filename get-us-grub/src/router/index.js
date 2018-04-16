@@ -17,6 +17,7 @@ import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/Restaura
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 import Login from '@/components/Login/Login.vue'
+import Testing from '@/components/Login/DecodeTestingGround.vue'
 import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap.vue'
 import Profile from '@/components/Profile/Profile.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
@@ -151,6 +152,15 @@ export default new Router({
       component: Login,
       beforeEnter: (to, from, next) => {
         document.title = 'Login Brh!'
+        next()
+      }
+    },
+    {
+      path: '/Testing',
+      name: 'Testing',
+      component: Testing,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Testing!'
         next()
       }
     },

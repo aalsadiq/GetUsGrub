@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -17,11 +18,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         // Read-only accessors
         private readonly RegisteredUserRestaurantSelectionPostLogicValidationStrategy _registeredUserRestaurantSelectionPostLogicValidationStrategy;
+        private readonly TokenService _tokenService;
         private readonly string _token;
 
         public RegisteredUserRestaurantSelectionManager(RestaurantSelectionDto restaurantSelectionDto, string token) : base(restaurantSelectionDto)
         {
             _registeredUserRestaurantSelectionPostLogicValidationStrategy = new RegisteredUserRestaurantSelectionPostLogicValidationStrategy(restaurantSelectionDto);
+            _tokenService = new TokenService();
             _token = token;
         }
 
@@ -37,8 +40,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>SelectedRestaurantDto</returns>
         public override ResponseDto<SelectedRestaurantDto> SelectRestaurant()
         {
-            // TODO: @JEnn Get the username from the token [-Jenn]
-            // Get username associated with request authorization token
+            var username = _tokenService.GetTokenUsername(_token);
+            if (username == null)
+            {
+                return new ResponseDto<SelectedRestaurantDto>
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+            Debug.WriteLine(username);
 
             // Validate RestaurantSelection data transfer object
             var result = _restaurantSelectionPreLogicValidationStrategy.ExecuteStrategy();
@@ -86,9 +97,21 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Get current day of week local to the client user and set to RestaurantSelection data transfer object
             RestaurantSelectionDto.CurrentLocalDayOfWeek = _dateTimeService.GetCurrentLocalDayOfWeekFromUtc(timeZoneResponse.Data, RestaurantSelectionDto.CurrentUtcDateTime);
 
-            // TODO: @Rachel Will need your food preferences feature here [-Jenn]
             // Get the user's food preferences from the database
-            // Make a call to the Rachel's get food preferences gateway method
+            using (var userGateway = new UserGateway())
+            {
+                var gatewayResult = userGateway.GetFoodPreferencesByUsername(username);
+                if (gatewayResult.Error != null)
+                {
+                    return new ResponseDto<SelectedRestaurantDto>()
+                    {
+                        Data = null,
+                        Error = gatewayResult.Error
+                    };
+                }
+
+                RestaurantSelectionDto.FoodPreferences = gatewayResult.Data.FoodPreferences;
+            }
 
             // Validate data transfer object before querying to select restaurant in the database
             result = _registeredUserRestaurantSelectionPostLogicValidationStrategy.ExecuteStrategy();
@@ -104,13 +127,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Select a restaurant in the database
             using (var restaurantGateway = new RestaurantGateway())
             {
-                var gatewayResult = restaurantGateway.GetRestaurantWithoutFoodPreferences(
+                var gatewayResult = restaurantGateway.GetRestaurantWithFoodPreferences(
                     city: RestaurantSelectionDto.City, state: RestaurantSelectionDto.State,
-                    foodType: RestaurantSelectionDto.FoodType, distanceInMeters: ConvertDistanceInMilesToMeters(RestaurantSelectionDto.DistanceInMiles),
+                    foodType: RestaurantSelectionDto.FoodType, distanceInMeters: (double)ConvertDistanceInMilesToMeters(RestaurantSelectionDto.DistanceInMiles),
                     avgFoodPrice: RestaurantSelectionDto.AvgFoodPrice,
                     currentUtcTimeOfDay: RestaurantSelectionDto.CurrentUtcDateTime.TimeOfDay,
                     currentLocalDayOfWeek: RestaurantSelectionDto.CurrentLocalDayOfWeek.ToString(),
-                    location: RestaurantSelectionDto.Location);
+                    location: RestaurantSelectionDto.Location, foodPreferences: RestaurantSelectionDto.FoodPreferences);
 
                 if (gatewayResult.Error != null)
                 {
@@ -136,6 +159,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Sort the list of business hour data transfer objects by day using the DayOfWeek enum property
             SelectedRestaurantDto.BusinessHourDtos = SelectedRestaurantDto.BusinessHourDtos
                 .OrderBy(businessHourDto => (int)Enum.Parse(typeof(DayOfWeek), businessHourDto.Day))
+                .ThenBy(businessHourDto => businessHourDto.OpenTime)
                 .ToList();
 
             // Return the selected restaurant

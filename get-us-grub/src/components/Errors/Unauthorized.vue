@@ -1,15 +1,15 @@
 <template>
-    <div id="home">
-      <app-header/>
-      <img src="@/assets/GetUsGrub.png">
-      <p>General Error</p>
-      <v-btn @click="goBack" color="cyan darken-2">
-      <span class="btn-text">
-        Go Back
-      </span>
-      </v-btn>
-      <app-footer/>
-    </div>
+  <div id="home">
+    <app-header/>
+    <img src="@/assets/GetUsGrub.png">
+    <p>Unauthorized</p>
+    <v-btn @click="goBack" color="cyan darken-2">
+    <span class="btn-text">
+      Go Back
+    </span>
+    </v-btn>
+    <app-footer/>
+  </div>
 </template>
 
 <script>

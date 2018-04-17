@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -31,7 +32,7 @@ namespace CSULB.GetUsGrub
         [Route("FirstTimeUser")]
         // TODO: @Jenn Update origins to reflect SSO request when demoing [-Jenn]
         //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult RegisterFirstTimeSsoUser(HttpRequestMessage request)
+        public IHttpActionResult Registration(HttpRequestMessage request)
         {
             try
             {
@@ -51,8 +52,9 @@ namespace CSULB.GetUsGrub
 
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }

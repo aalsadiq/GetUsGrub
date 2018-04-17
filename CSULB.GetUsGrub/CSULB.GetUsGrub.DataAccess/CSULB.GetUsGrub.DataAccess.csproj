@@ -65,9 +65,9 @@
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Gateways\UserProfileGateway.cs" />
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserDbContext\201804160216050_InitialDbCreation.cs" />
-    <Compile Include="Migrations\UserDbContext\201804160216050_InitialDbCreation.Designer.cs">
-      <DependentUpon>201804160216050_InitialDbCreation.cs</DependentUpon>
+    <Compile Include="Migrations\UserDbContext\201804170034453_InitialDbCreation.cs" />
+    <Compile Include="Migrations\UserDbContext\201804170034453_InitialDbCreation.Designer.cs">
+      <DependentUpon>201804170034453_InitialDbCreation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,8 +88,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\UserDbContext\201804160216050_InitialDbCreation.resx">
-      <DependentUpon>201804160216050_InitialDbCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserDbContext\201804170034453_InitialDbCreation.resx">
+      <DependentUpon>201804170034453_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

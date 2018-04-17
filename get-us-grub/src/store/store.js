@@ -155,42 +155,6 @@ export const store = new Vuex.Store({
           }
         ]
       }],
-      securityQuestionsSet1: [{
-        id: 1,
-        question: 'Who was the company you first worked for?'
-      },
-      {
-        id: 2,
-        question: 'Where did you go to highschool or college?'
-      },
-      {
-        id: 3,
-        question: 'What was the name of the teacher who gave you your first failing grade?'
-      }],
-      securityQuestionsSet2: [{
-        id: 4,
-        question: 'What is your favorite song?'
-      },
-      {
-        id: 5,
-        question: 'What is your mother\'s maiden name?'
-      },
-      {
-        id: 6,
-        question: 'What is your favorite sports team?'
-      }],
-      securityQuestionsSet3: [{
-        id: 7,
-        question: 'What was the name of your first crush?'
-      },
-      {
-        id: 8,
-        question: 'What is the name of your hometown?'
-      },
-      {
-        id: 9,
-        question: 'What was the name of your first pet?'
-      }],
       timeZones: [{
         displayString: 'Pacific Standard Time',
         timeZoneName: 'Pacific Standard Time'

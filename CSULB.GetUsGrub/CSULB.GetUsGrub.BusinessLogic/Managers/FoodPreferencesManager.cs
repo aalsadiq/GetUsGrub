@@ -21,12 +21,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             using (var gateway = new UserGateway())
             {
                 // Call the user gateway to use the method to get food preferences by username
-                var preferences = gateway.GetFoodPreferencesByUsername(username);
+                var responseDto = gateway.GetFoodPreferencesByUsername(username);
 
                 // If no error occurs, return the DTO
-                if (preferences.Error != null)
+                if (responseDto.Error == null)
                 {
-                    return preferences;
+                    return new ResponseDto<FoodPreferencesDto>
+                    {
+                        Data = responseDto.Data
+                    };
                 }
             }
 

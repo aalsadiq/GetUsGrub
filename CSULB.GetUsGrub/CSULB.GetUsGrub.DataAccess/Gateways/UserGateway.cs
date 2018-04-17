@@ -851,34 +851,31 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto which encapsulates a FoodPreferenceDto</returns>
         public ResponseDto<FoodPreferencesDto> GetFoodPreferencesByUsername(string username)
         {
-            using (var context = new UserContext())
+            try
             {
-                try
-                {
-                    // Makes sure user account exists
-                    var userId = (from account in context.UserAccounts
-                                  where account.Username == username
-                                  select account.Id).SingleOrDefault();
+                // Makes sure user account exists
+                var userId = (from account in context.UserAccounts
+                                   where account.Username == username
+                                   select account.Id).FirstOrDefault();
 
-                    // Grab list of user's preferences from database
-                    var preferences = (from foodPreferences in context.FoodPreferences
-                                       where foodPreferences.UserId == userId
-                                       select foodPreferences.Preference).ToList();
+                // Get list of preferences pertaining to user
+                var preferences = (from foodPreferences in context.FoodPreferences
+                                   where foodPreferences.UserId == userId
+                                   select foodPreferences.Preference).ToList();
 
-                    // Return response dto with food preferences dto
-                    return new ResponseDto<FoodPreferencesDto>
-                    {
-                        Data = new FoodPreferencesDto(preferences)
-                    };
-                }
-                catch (Exception)
+                // Return response dto with food preferences dto
+                return new ResponseDto<FoodPreferencesDto>
                 {
-                    // If exception occurs, return response dto with error message
-                    return new ResponseDto<FoodPreferencesDto>
-                    {
-                        Error = "Something went wrong. Please try again later."
-                    };
-                }
+                    Data = new FoodPreferencesDto(preferences)
+                };
+            }
+            catch (Exception)
+            {
+                // If exception occurs, return response dto with error message
+                return new ResponseDto<FoodPreferencesDto>
+                {
+                    Error = "Something went wrong. Please try again later."
+                };
             }
         }
 

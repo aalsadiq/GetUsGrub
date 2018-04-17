@@ -11,7 +11,7 @@
         <!-- <v-list class="pa-0"> -->
           <v-list-tile avatar> <!--avatar: used to set minimum tile height on a single-line list item -->
             <v-list-tile-avatar>
-              <img src="@/assets/ProfileImages/DefaultProfileImage.png"><!--Grab image from the store... -->
+              <img src="C:\Users\Angelica\Documents\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub\Images\DisplayProfileImages\betterbreakfastmo.jpg"><!--Grab image from the store... -->
               <!-- <v-btn absolute dark fab top right color="pink"> -->
             </v-list-tile-avatar>
             <v-list-tile-content>

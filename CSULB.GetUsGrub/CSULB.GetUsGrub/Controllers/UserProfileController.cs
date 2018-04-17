@@ -1,7 +1,11 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.Diagnostics;
+using System.Drawing;//For Images
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -78,47 +82,60 @@ namespace CSULB.GetUsGrub.Controllers
         // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/EditUser/ImageUpload
         [Route("User/Edit/ProfileImageUpload")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
-        public IHttpActionResult ProfileImageUpload([FromBody] HttpPostedFileBase user)//UserProfileDto
+        public IHttpActionResult ProfileImageUpload()//UserProfileDto //HttpPostedFileBase HttpRequestMessage
         {
-            //Checks if what was given is a valid model.
-            if (!ModelState.IsValid)
-            {
-                //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong in controller.");
-            }
             try
             {
-                //work in progress... (testing...)
-                string directory = @"C:\Users\Angelica\Desktop\TEST\";
-                if(user!= null && user.ContentLength > 0)
-                {
-                    var fileName = Path.GetFileName(user.FileName);
-                    user.SaveAs(Path.Combine(directory, fileName));
-                }
-                
-                //var filePath = user.DisplayPicture;
-                //Console.WriteLine("This is the image path" + filePath);
-                //Creating a manager to then call ProfileImageUpload.
-                //var manager = new UserProfileManager();
-                //Calling ProfileImageUpload method to edit the given user.
-                //var response = manager.ProfileImageUpload(user);
-                //Checks the response from ProfileImageUpload. If error is null, then it was successful.
-                //if (response.Error != null)
-                //{
-                //    //Will return a bad request if error occured in manager.
-                //    return BadRequest(response.Error);
-                //}
-                //return Ok("Image has been updated");
-                return Ok(user);
+                var file = HttpContext.Current.Request.Files[0];
+                var filePath = HttpContext.Current.Server.MapPath(@"~/Images/DisplayProfileImages/" + file.FileName);
+                file.SaveAs(filePath);
+                return Created("Created", $"Created {filePath}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 //If any exceptions occur, send an HTTP response 400 status.
                 return BadRequest("This is a bad request.");
             }
         }
+
+        //// TODO: @Angelica ImageUpload comments
+        //// PUT Profile/User/EditUser/ImageUpload
+        //[Route("User/Get/ProfileImage")]
+        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
+        ////[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        //[HttpGet]
+        //public IHttpActionResult GetProfileImage() //IHttpActionResult
+        //{
+        //    try
+        //    {
+        //        // Validate that is is an image (extensions)
+
+
+
+
+        //        // var filePath = HttpContext.Current.Server.MapPath(@"~/Images/DisplayProfileImages/DefaultProfileImage.png");
+        //        //var filePath = @"~/Images/DisplayProfileImages/DefaultProfileImage.png";
+        //        //using (FileStream fs = new FileStream(filePath, FileMode.Open))
+        //        //{
+        //        //    IHttpActionResult response = new IHttpActionResult();
+             
+        //        //    response.ContentType = new MediaTypeHeaderValue("image/jpeg");
+        //        //    return response;
+        //        //}
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex);
+        //        //If any exceptions occur, send an HTTP response 400 status.
+        //        return BadRequest("This is a bad request.");
+        //    }
+        //}
+
+
     }
 }

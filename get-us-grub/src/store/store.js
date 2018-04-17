@@ -7,7 +7,7 @@ export const store = new Vuex.Store({
   // A state is a global variable that every Vue component can reference
   state: {
     isAuthenticated: true,
-    authenticationToken: 'null',
+    authenticationToken: null,
     username: '',
     timer: null,
     originAddress: 'Los Angeles, CA',

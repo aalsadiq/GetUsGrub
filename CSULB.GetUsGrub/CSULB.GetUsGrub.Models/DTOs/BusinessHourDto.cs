@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -20,6 +21,8 @@ namespace CSULB.GetUsGrub.Models
         public string OpenTime { get; set; }
         [Required]
         public string CloseTime { get; set; }
+        public string TwelveHourFormatOpenTime { get; set; }
+        public string TwelveHourFormatCloseTime { get; set; }
         private DateTime _odt;
         private DateTime _cdt;
         public DateTime OpenDateTime
@@ -29,6 +32,7 @@ namespace CSULB.GetUsGrub.Models
             {
                 _odt = DateTime.Today.AddDays((int)Enum.Parse(typeof(DayOfWeek), Day) * 1 - 1) + value.ToLocalTime().TimeOfDay;
                 OpenTime = value.ToLocalTime().ToString("HH:mm");
+                TwelveHourFormatOpenTime = value.ToLocalTime().ToString("hh:mm tt", CultureInfo.InvariantCulture);
             }
         }
         public DateTime CloseDateTime
@@ -38,6 +42,7 @@ namespace CSULB.GetUsGrub.Models
             {
                 _cdt = DateTime.Today.AddDays((int)Enum.Parse(typeof(DayOfWeek), Day) * 1 - 1) + value.ToLocalTime().TimeOfDay;
                 CloseTime = value.ToLocalTime().ToString("HH:mm");
+                TwelveHourFormatCloseTime = value.ToLocalTime().ToString("hh:mm tt", CultureInfo.InvariantCulture);
             }
         }
 

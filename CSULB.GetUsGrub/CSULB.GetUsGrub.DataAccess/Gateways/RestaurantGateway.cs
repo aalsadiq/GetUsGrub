@@ -122,7 +122,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="foodPreferences"></param>
         /// <returns>ResponseDto containing a SelectedRestaurantDto</returns>
         public ResponseDto<SelectedRestaurantDto> GetRestaurantWithFoodPreferences(string city, string state, string foodType, double distanceInMeters, 
-            int avgFoodPrice, TimeSpan currentUtcTimeOfDay, string currentLocalDayOfWeek, DbGeography location, IList<string> foodPreferences)
+            int avgFoodPrice, TimeSpan currentUtcTimeOfDay, string currentLocalDayOfWeek, DbGeography location, ICollection<string> foodPreferences)
         {
             try
             {
@@ -140,8 +140,8 @@ namespace CSULB.GetUsGrub.DataAccess
                                             && avgFoodPrice == restaurantProfile.Details.AvgFoodPrice
                                             && distanceInMeters >= location.Distance(restaurantProfile.Location)
                                             && currentLocalDayOfWeek == businessHour.Day
-                                            && foodPreferences.Contains(preference.Preference)
-                                        select businessHour).ToList();
+                                            && !foodPreferences.Where(foodPref => !userProfile.UserAccount.FoodPreferences.Select(pref => pref.Preference).Contains(foodPref)).Select(pref => pref).ToList().Any()
+                                     select businessHour).ToList();
 
                 // Select one restaurant profile id from a randomized list of qualified restaurants where the restaurants' business hours are open now
                 var selectedRestaurantProfileId = businessHours.Where(businessHour

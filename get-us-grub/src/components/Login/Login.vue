@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import jwt from 'jsonwebtoken'
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
 import axios from 'axios'
@@ -61,11 +62,13 @@ export default {
         header: {
           'Access-Control-Allow-Origin': 'http://localhost:8080/#/Login'
         }
-      }).then(function (response) {
+      }).then(response => {
         console.log('you in son')
         this.$store.state.isAuthenticated = true
         this.$store.state.authenticationToken = response.data
-        this.$store.state.username = response.data['Username']
+        this.$store.state.username = jwt.decode(response.data)['Username']
+      }).catch(error => {
+        console.log(error.response.data)
       })
     }
   }

@@ -52,14 +52,20 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // Grab user's list of claims from the database
                 var userClaims = gateway.GetClaimsByUsername(username);
                 
-                // TODO @Rachel SSO user claims will be null so we have to revisit this [-Ahmed]
                 // If user is invalid and an error returns
                 if (userClaims.Error != null)
                 {
                     throw new SecurityException(userClaims.Error);
                 }
 
-                // If user is valid, proceed to add claims
+                // If user is valid, but claims are null; add first time user claims
+                if (userClaims.Data == null)
+                {
+                    var factory = new ClaimsFactory();
+                    userClaims.Data = factory.Create(AccountType.FIRSTTIMEUSER);
+                }
+
+                // Proceed to add database claims into list for the principal
                 foreach (var claim in userClaims.Data)
                 {
                     claims.Add(claim);

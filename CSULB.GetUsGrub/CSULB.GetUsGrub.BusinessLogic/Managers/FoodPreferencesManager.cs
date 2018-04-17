@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -7,7 +8,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Business logic for pages pertaining to food preferences
     /// 
     /// @author: Rachel Dang
-    /// @updated: 04/14/18
+    /// @updated: 04/17/18
     /// </summary>
     public class FoodPreferencesManager
     {
@@ -16,7 +17,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username"></param>
         /// <returns>Food Preferences DTO within the Response DTO</returns>
-        public ResponseDto<FoodPreferencesDto> GetFoodPreferences(string username)
+        public ResponseDto<ICollection<string>> GetFoodPreferences(string username)
         {
             using (var gateway = new UserGateway())
             {
@@ -26,15 +27,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // If no error occurs, return the DTO
                 if (responseDto.Error == null)
                 {
-                    return new ResponseDto<FoodPreferencesDto>
+                    return new ResponseDto<ICollection<string>>
                     {
-                        Data = responseDto.Data
+                        Data = responseDto.Data.FoodPreferences
                     };
                 }
             }
 
             // Otherwise, return a DTO with error message
-            return new ResponseDto<FoodPreferencesDto>
+            return new ResponseDto<ICollection<string>>
             {
                 Error = "Something went wrong."
             };

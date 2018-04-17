@@ -152,6 +152,7 @@ export default {
       this.valid = false
       this.disable = true
       this.loader = 'loading'
+      this.showSection = false
       // Sending GET Request
       axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
         // Paramaters for URL queries

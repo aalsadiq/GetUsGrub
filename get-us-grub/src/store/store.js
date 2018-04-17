@@ -7,7 +7,7 @@ export const store = new Vuex.Store({
   // A state is a global variable that every Vue component can reference
   state: {
     isAuthenticated: true,
-    authenticationToken: 'null',
+    authenticationToken: null,
     username: '',
     timer: null,
     originAddress: 'Los Angeles, CA',
@@ -68,6 +68,9 @@ export const store = new Vuex.Store({
         password => !!password || 'Password is required',
         password => password.length >= 8 || 'Password must be at least 8 characters',
         password => password.length < 64 || 'Password must be at most 64 characters'
+      ],
+      securityQuestionRules: [
+        securityQuestion => !!securityQuestion || 'Security question is required'
       ],
       securityAnswerRules: [
         securityAnswer => !!securityAnswer || 'Security answer is required'
@@ -260,6 +263,8 @@ export const store = new Vuex.Store({
         temp = temp + element.price
       })
       return temp
+    },
+    getClaim: state => {
     }
   },
   // Mutations are called to change the states in the store

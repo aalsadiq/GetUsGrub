@@ -23,7 +23,7 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public string FoodType { get; set; }
         [Required]
-        public double DistanceInMiles { get; set; }
+        public int DistanceInMiles { get; set; }
         [Required]
         public int AvgFoodPrice { get; set; }
         public string Username { get; set; }
@@ -46,7 +46,7 @@ namespace CSULB.GetUsGrub.Models
             }
         }
 
-        public ICollection<FoodPreference> FoodPreferences { get; set; }
+        public ICollection<string> FoodPreferences { get; set; }
 
         // Constructors
         public RestaurantSelectionDto() { }

@@ -85,7 +85,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull();
 
                 RuleFor(restaurantSelectionDto => restaurantSelectionDto.FoodPreferences)
-                    .NotEmpty()
                     .NotNull();
 
                 RuleFor(restaurantSelectionDto => restaurantSelectionDto.AvgFoodPrice)

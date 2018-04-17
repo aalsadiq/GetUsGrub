@@ -32,9 +32,10 @@ namespace CSULB.GetUsGrub
             {
                 AuthenticationTokenManager tokenManager = new AuthenticationTokenManager();
                 AuthenticationToken authenticationToken;
+                TokenService tokenService = new TokenService();
 
                 // Extracting the tokenString from the Header
-                var tokenString = ExtractToken(request);
+                var tokenString = tokenService.ExtractToken(request);
 
                 // Checking if there is an empty or a null value to the token
                 if (string.IsNullOrEmpty(tokenString))
@@ -45,7 +46,7 @@ namespace CSULB.GetUsGrub
 
 
                 // Extract username from  the token
-                var username = tokenManager.GetTokenUsername(tokenString);
+                var username = tokenService.GetTokenUsername(tokenString);
 
                 // Checking if the Username is empty or null
                 if (string.IsNullOrEmpty(username))
@@ -97,22 +98,5 @@ namespace CSULB.GetUsGrub
             return response;
         }
 
-        /// <summary>
-        /// This method returns the token from the request header if there is one
-        /// else it returns a null
-        /// </summary>
-        private string ExtractToken(HttpRequestMessage incomingRequest)
-        {
-            var requestHeaders = incomingRequest.Headers;
-            string token = requestHeaders.Authorization.Parameter;
-
-            // Cheacking if the Autherization Header is of type Bearer and that there is info in it before returning it
-            if (requestHeaders.Authorization.Scheme == "Bearer" && !string.IsNullOrEmpty(token))
-            {
-                return token;
-            }
-
-            return null;
-        }
     }
 }

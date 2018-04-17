@@ -54,16 +54,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var businessHourDomains = restaurantProfileDto.BusinessHours;
 
 
-            // Extract restaurant menu
-            var restaurantMenuDomains = restaurantProfileDto.RestaurantMenus;
+            // Extract restaurant menu dictionary
+            var restaurantMenuDomains = restaurantProfileDto.MenuDictionary;
 
             // Extract menu items
-            var restaurantMenuItemDomains = restaurantProfileDto.RestaurantMenuItems;
 
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(username, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains, restaurantMenuItemDomains);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(username, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
 
             return responseDtoFromGateway;
         }

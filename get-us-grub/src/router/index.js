@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import 'vuetify/dist/vuetify.min.css'
 import ResourceNotFound from '@/components/Errors/ResourceNotFound.vue'
 import GeneralError from '@/components/Errors/GeneralError.vue'
+import Unauthorized from '@/components/Errors/Unauthorized.vue'
+import Forbidden from '@/components/Errors/Forbidden.vue'
 import Home from '@/components/Home.vue'
 import RestaurantSelectionRegisteredUser from '@/components/RestaurantSelection/RegisteredUser/Main.vue'
 import Registration from '@/components/Registration/Registration.vue'
@@ -25,19 +27,45 @@ export default new Router({
     {
       path: '/ResourceNotFound',
       name: 'ResourceNotFound',
-      component: ResourceNotFound
+      component: ResourceNotFound,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Resource Not Found'
+        next()
+      }
     },
     {
       path: '/GeneralError',
       name: 'GeneralError',
-      component: GeneralError
+      component: GeneralError,
+      beforeEnter: (to, from, next) => {
+        document.title = 'General Error'
+        next()
+      }
+    },
+    {
+      path: '/Unauthorized',
+      name: 'Unauthorized',
+      component: Unauthorized,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Unauthorized'
+        next()
+      }
+    },
+    {
+      path: '/Forbidden',
+      name: 'Forbidden',
+      component: Forbidden,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Forbidden'
+        next()
+      }
     },
     {
       path: '/',
       name: 'Home',
       component: Home,
       beforeEnter: (to, from, next) => {
-        document.title = 'Search Restaurant'
+        document.title = 'Home'
         next()
       }
     },

@@ -67,6 +67,9 @@ export const store = new Vuex.Store({
         password => password.length >= 8 || 'Password must be at least 8 characters',
         password => password.length < 64 || 'Password must be at most 64 characters'
       ],
+      securityQuestionRules: [
+        securityQuestion => !!securityQuestion || 'Security question is required'
+      ],
       securityAnswerRules: [
         securityAnswer => !!securityAnswer || 'Security answer is required'
       ],

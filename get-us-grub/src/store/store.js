@@ -260,6 +260,8 @@ export const store = new Vuex.Store({
         temp = temp + element.price
       })
       return temp
+    },
+    getClaim: state => {
     }
   },
   // Mutations are called to change the states in the store

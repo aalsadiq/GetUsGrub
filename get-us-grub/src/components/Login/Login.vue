@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-header/>
+    <app-header />
     <v-form ref="form" v-model="validIdentificationInput" >
       <v-text-field v-model="username"
         prepend-icon="pets"

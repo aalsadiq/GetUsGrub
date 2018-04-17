@@ -25,7 +25,6 @@ namespace CSULB.GetUsGrub
         private const string AuthorizationScheme = "Bearer";
 
         /// <summary>
-        /// The CheckIfTokenExists method.
         /// Checks request header if Authorization key exists.
         /// <para>
         /// @author: Jennifer Nguyen
@@ -34,7 +33,7 @@ namespace CSULB.GetUsGrub
         /// </summary>
         /// <param name="request"></param>
         /// <returns>Boolean</returns>
-        private bool CheckIfTokenExists(HttpRequestMessage request)
+        private bool HasToken(HttpRequestMessage request)
         {
             if (request.Headers.Authorization != null)
             {
@@ -55,7 +54,7 @@ namespace CSULB.GetUsGrub
         /// <param name="request"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        private bool GetToken(HttpRequestMessage request, out string token)
+        private bool TryGetToken(HttpRequestMessage request, out string token)
         {
             token = null;
 
@@ -89,14 +88,14 @@ namespace CSULB.GetUsGrub
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // Check if there is a token in the request
-            if (!CheckIfTokenExists(request))
+            if (!HasToken(request))
             {
                 // If token does not exist return back an unauthorized HttpResponseMessage with a 401 status code
                 return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(HttpStatusCode.Unauthorized), cancellationToken);
             }
 
             // Get token from request
-            if (!GetToken(request, out var token))
+            if (!TryGetToken(request, out var token))
             {
                 // If unable to fetch token with valid Authorization scheme, then return back an unauthorized HttpResponseMessage with a 401 status code
                 return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(HttpStatusCode.Unauthorized), cancellationToken);

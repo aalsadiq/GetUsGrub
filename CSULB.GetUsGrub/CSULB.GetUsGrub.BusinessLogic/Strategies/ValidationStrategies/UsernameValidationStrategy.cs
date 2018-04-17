@@ -5,7 +5,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class UsernameValidationStrategy
     {
-        private readonly UserAccountDto _userAccountDto; //Private read only userAccountDto
+        private readonly UserAccountDto _userAccountDto; 
         private readonly UserAccountDtoValidator _userAccountDtoValidator;
         private readonly UserValidator _userValidator;
 
@@ -23,14 +23,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _userValidator = new UserValidator();
         }
         
-        //Executes the username strategy
+        // Executes the username strategy
         public ResponseDto<bool> ExecuteStrategy()
         {
             var validationWrapper = new ValidationWrapper<UserAccountDto>(_userAccountDto, "Username", _userAccountDtoValidator);
             var result = validationWrapper.ExecuteValidator();
             if (!result.Data)
             {
-                result.Error = "Invalid username, please try again.";
+                result.Error = ValidationErrorMessages.INVALID_USERNAME;
                 return result;
             }
  

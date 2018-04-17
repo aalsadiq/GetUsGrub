@@ -311,8 +311,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
+            // TODO: @Jen Can I still leave the display picture here? Or should I just delete this whole user profile line?
+            //If I comment userProfile, I would have to create something else in the user gateway called StoreAdmin? (I think this would probably be best)
             var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
-
 
             // Set user claims to be stored in UserClaims table as administrator
             var userClaims = new UserClaims(claimsFactory.Create(AccountType.ADMIN));
@@ -369,37 +370,33 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<bool> DeactivateUser(UserAccountDto user)//Change this to a DTO... @TODO: Angelica
         {
-
-            //Validation Strategy
+            // Validation Strategy
             var usernameValidation = new UsernameValidationStrategy(user);
+
             // Validate data transfer object
             var result = usernameValidation.ExecuteStrategy();
             if (result.Error != null)
             {
-                return new ResponseDto<bool>//if I change this then I have to change the response DTO
+                return new ResponseDto<bool>
                 {
                     Data = false,
                     Error = result.Error
                 };
             }
-            //Creates a gateway
+
+            // Gateway
             using (var gateway = new UserGateway())
             {
-                var check = new UserProfileDtoValidator(); //Check this...
-   
-                //Gateway calls DeactivateUser and passes in the username to be deactivated.
                 var gatewayResult = gateway.DeactivateUser(user.Username);
-                //If the gateway returns false
+
                 if (gatewayResult.Data == false)
                 {
-                    //Return response dto with an error.
                     return new ResponseDto<bool>()
                     {
-                        Data = false,//The username
-                        Error = gatewayResult.Error//The error
+                        Data = false,
+                        Error = gatewayResult.Error
                     };
                 }
-                //If the gateway returns true, return a true dto.
                 return new ResponseDto<bool>
                 {
                     Data = true
@@ -417,8 +414,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<bool> ReactivateUser(UserAccountDto user)
             {
 
-            //Validation Strategy
+            // Validation Strategy
             var usernameValidation = new UsernameValidationStrategy(user);
+
             // Validate data transfer object
             var result = usernameValidation.ExecuteStrategy();
             if (result.Error != null)
@@ -429,25 +427,21 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = result.Error
                 };
             }
-            //Creates a gateway
+            // Gateway
             using (var gateway = new UserGateway())
                 {
-                    //Gateway calls ReactivateUser and passes in the username to be reactivated.
                     var gatewayResult = gateway.ReactivateUser(user.Username);
-                    //If the gateway returns false
                     if (gatewayResult.Data == false)
                     {
-                        //Return response dto with an error..
                         return new ResponseDto<bool>()
                         {
-                            Data = false,//The username
-                            Error = gatewayResult.Error//The error
+                            Data = false,
+                            Error = gatewayResult.Error
                         };
                     }
-                    //If the gateway returns true, return username reactivated
                     return new ResponseDto<bool>
                     {
-                        Data = true //The username
+                        Data = true
                     };
                 }
             }
@@ -461,34 +455,33 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response Dto</returns>
         public ResponseDto<bool> DeleteUser(UserAccountDto user)
             {
-            //Validation Strategy
+            // Validation Strategy
             var usernameValidation = new UsernameValidationStrategy(user);
+
             // Validate data transfer object
             var result = usernameValidation.ExecuteStrategy();
             if (result.Error != null)
             {
-                return new ResponseDto<bool>//if I change this then I have to change the response DTO
+                return new ResponseDto<bool>
                 {
                     Data = false,
                     Error = result.Error
                 };
             }
-            //Creates a gateway
+
+            // Gateway
             using (var gateway = new UserGateway())
             {
-                //Gateway calls DeleteUser and passes in the username to be deleted.
                 var gatewayResult = gateway.DeleteUser(user.Username);
-                //If they gateway returns false
+
                 if (gatewayResult.Data == false)
                     {
-                        //Return response dto with an error.
                         return new ResponseDto<bool>()
                         {
                             Data = false,
                             Error = gatewayResult.Error
                         };
                     }
-                    //If the gateway returns true, return username deleted.
                     return new ResponseDto<bool>
                     {
                         Data = true
@@ -502,36 +495,38 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<bool> Edituser(EditUserDto user)//@TODO: Angelica (Add ProfileDtoValidations...)
+        public ResponseDto<bool> Edituser(EditUserDto user)
         {
+            // Service that will set the properties to null if it is an empty string. This is used
+            // since not all of the edited items are required. This is to avoid erasing objects that
+            // are stored in our database.
             var setPropertiesService = new SetPropertiesService<EditUserDto>();
             setPropertiesService.SetEmptyStringToNull(user);
 
-            //Validation Strategy will validate if the user meets the requirements
+            // Validation Strategy will validate if the user meets the requirements
             var editUserValidation = new EditUserValidationStrategy(user);
+
             // Validate data transfer object
             var result = editUserValidation.ExecuteStrategy();
             if (result.Error != null)
             {
-                return new ResponseDto<bool>//if I change this then I have to change the response DTO
+                return new ResponseDto<bool>
                 {
                     Data = false,
                     Error = result.Error
                 };
             }
+
             //Creates a gateway
             using (var gateway = new UserGateway())
             {
-                //Gateway calls EditUser and passes in the EditUserDto.
                 var gatewayresult = gateway.EditUser(user);
-                //If the gateway returns false
                 if (gatewayresult.Data == false)
                 {
-                    //Return response dto with an error.
                     return new ResponseDto<bool>()
                     {
                         Data = false,
-                        Error = gatewayresult.Error//The error.
+                        Error = gatewayresult.Error
                     };
                 }
                 return new ResponseDto<bool>

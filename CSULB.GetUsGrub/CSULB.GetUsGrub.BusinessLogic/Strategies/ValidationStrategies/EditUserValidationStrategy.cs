@@ -5,7 +5,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class EditUserValidationStrategy
     {
-        private readonly EditUserDto _editUserDto; //Private read only userAccountDto
+        private readonly EditUserDto _editUserDto; 
         private readonly EditUserDtoValidator _editUserDtoValidator;
 
         /// <summary>
@@ -23,14 +23,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public ResponseDto<bool> ExecuteStrategy()
         {
-            //Will validate the username and new username
+            // Will validate the username and new username
             var validationWrappers = new List<IValidationWrapper>()
             {
                 new ValidationWrapper<EditUserDto>(_editUserDto, "EditUsername", _editUserDtoValidator),
                 new ValidationWrapper<EditUserDto>(_editUserDto, "EditNewDisplayName", _editUserDtoValidator)
             };
 
-            //Goes through each validation in the validation wrapper.
+            // Goes through each validation in the validation wrapper.
             foreach (var validationWrapper in validationWrappers)
             {
                 var result = validationWrapper.ExecuteValidator();
@@ -39,8 +39,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return result;
                 }
             }
-            
-            var userValidator = new UserValidator();//Creating a user validator to check if user exists
+            // Validator to check if user exists
+            var userValidator = new UserValidator();
             if (userValidator.CheckIfUserExists(_editUserDto.Username).Data == false)
             {
                 return new ResponseDto<bool>

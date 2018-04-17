@@ -18,8 +18,8 @@ import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 import Login from '@/components/Login/Login.vue'
 import Testing from '@/components/Login/DecodeTestingGround.vue'
-import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap.vue'
 import Profile from '@/components/Profile/Profile.vue'
+import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
@@ -109,15 +109,6 @@ export default new Router({
       }
     },
     {
-      path: '/GoogleEmbedMap',
-      name: 'GoogleEmbedMap',
-      component: GoogleEmbedMap,
-      beforeEnter: (to, from, next) => {
-        document.title = 'Directions to your Restaurant?!?!?!?!'
-        next()
-      }
-    },
-    {
       path: '/Profile',
       name: 'Profile',
       component: Profile,
@@ -161,6 +152,15 @@ export default new Router({
       component: Testing,
       beforeEnter: (to, from, next) => {
         document.title = 'Testing!'
+        next()
+      }
+    },
+    {
+      path: '/FirstTimeRegistration',
+      name: 'FirstTimeRegistration',
+      component: FirstTimeRegistration,
+      beforeEnter: (to, from, next) => {
+        document.title = 'First Time Registration'
         next()
       }
     },

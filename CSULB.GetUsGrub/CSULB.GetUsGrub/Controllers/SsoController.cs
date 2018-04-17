@@ -14,6 +14,7 @@ namespace CSULB.GetUsGrub
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
+    [RoutePrefix("Sso")]
     public class SsoController : ApiController
     {
         /// <summary>
@@ -27,6 +28,7 @@ namespace CSULB.GetUsGrub
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [Route("FirstTimeUser")]
         // TODO: @Jenn Update origins to reflect SSO request when demoing [-Jenn]
         //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RegisterFirstTimeSsoUser(HttpRequestMessage request)
@@ -53,6 +55,14 @@ namespace CSULB.GetUsGrub
             {
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
+        }
+        
+        [HttpPost]
+        [Route("Login")]
+        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult Login(HttpRequestMessage request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

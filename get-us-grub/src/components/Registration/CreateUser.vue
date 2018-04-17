@@ -39,12 +39,14 @@
                           v-model="userAccount.username"
                           :rules="$store.state.rules.usernameRules"
                           required
+                          :disabled=disable
                         ></v-text-field>
                         <v-text-field
                           label="Enter a display name"
                           v-model="userProfile.displayName"
                           :rules="$store.state.rules.displayNameRules"
                           required
+                          :disabled=disable
                         ></v-text-field>
                         <v-text-field
                             label="Enter a password"
@@ -58,9 +60,10 @@
                             :error-messages="passwordErrorMessages"
                             @input="validatePassword"
                             required
+                            :disabled=disable
                           ></v-text-field>
                       </v-form>
-                    <v-btn color="primary" @click="userStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
+                    <v-btn color="primary" @click="userStep = 2" :disabled="!isPasswordValid || !validIdentificationInput || disable">Next</v-btn>
                   </v-stepper-content>
                   <v-stepper-content step="2">
                     <v-form v-model="validSecurityInput">
@@ -76,13 +79,16 @@
                           auto
                           append-icon="https"
                           hide-details
+                          :rules="$store.state.rules.securityQuestionRules"
                           required
+                          :disabled=disable
                         ></v-select>
                         <v-text-field
                           label="Enter an answer to the above security question"
                           v-model="securityQuestions[0].answer"
                           :rules="$store.state.rules.securityAnswerRules"
                           required
+                          :disabled=disable
                         ></v-text-field>
                         <v-select
                           :items="$store.state.constants.securityQuestionsSet2"
@@ -94,37 +100,43 @@
                           auto
                           append-icon="https"
                           hide-details
+                          :rules="$store.state.rules.securityQuestionRules"
                           required
+                          :disabled=disable
                         ></v-select>
                         <v-text-field
                         label="Enter an answer to the above security question"
                         v-model="securityQuestions[1].answer"
                         :rules="$store.state.rules.securityAnswerRules"
                         required
+                        :disabled=disable
                       ></v-text-field>
                       <v-select
-                          :items="$store.state.constants.securityQuestionsSet3"
-                          item-text="question"
-                          item-value="id"
-                          v-model="securityQuestions[2].question"
-                          label="Select a security question"
-                          single-line
-                          auto
-                          append-icon="https"
-                          hide-details
-                          required
+                        :items="$store.state.constants.securityQuestionsSet3"
+                        item-text="question"
+                        item-value="id"
+                        v-model="securityQuestions[2].question"
+                        label="Select a security question"
+                        single-line
+                        auto
+                        append-icon="https"
+                        hide-details
+                        :rules="$store.state.rules.securityQuestionRules"
+                        required
+                        :disabled=disable
                         ></v-select>
-                        <v-text-field
+                      <v-text-field
                         label="Enter an answer to the above security question"
                         v-model="securityQuestions[2].answer"
                         :rules="$store.state.rules.securityAnswerRules"
                         required
+                        :disabled=disable
                       ></v-text-field>
                       </v-flex>
                     </v-layout>
                     </v-form>
-                    <v-btn color="grey lighten-5" @click="userStep = 1">Previous</v-btn>
-                    <v-btn color="primary" @click="userSubmit" :disabled="!validSecurityInput">Submit</v-btn>
+                    <v-btn color="grey lighten-5" @click="userStep = 1" :disabled=disable>Previous</v-btn>
+                    <v-btn color="primary" @click="userSubmit" :disabled="!validSecurityInput" :loading="loading">Submit</v-btn>
                   </v-stepper-content>
                 </v-stepper-items>
               </v-stepper>
@@ -152,12 +164,14 @@
                           v-model="userAccount.username"
                           :rules="$store.state.rules.usernameRules"
                           required
+                          :disabled=disable
                         ></v-text-field>
                         <v-text-field
                           label="Enter a display name"
                           v-model="userProfile.displayName"
                           :rules="$store.state.rules.displayNameRules"
                           required
+                          :disabled=disable
                         ></v-text-field>
                         <v-text-field
                             label="Enter a password"
@@ -171,9 +185,10 @@
                             :error-messages="passwordErrorMessages"
                             @input="validatePassword"
                             required
+                            :disabled=disable
                           ></v-text-field>
                       </v-form>
-                    <v-btn color="primary" @click="restaurantStep = 2" :disabled="!validIdentificationInput">Next</v-btn>
+                    <v-btn color="primary" @click="restaurantStep = 2" :disabled="!isPasswordValid || !validIdentificationInput || disable">Next</v-btn>
                   </v-stepper-content>
                   <v-stepper-content step="2">
                     <v-form v-model="validSecurityInput">
@@ -189,13 +204,16 @@
                           auto
                           append-icon="https"
                           hide-details
+                          :rules="$store.state.rules.securityQuestionRules"
                           required
+                          :disabled=disable
                         ></v-select>
                         <v-text-field
                           label="Enter an answer to the above security question"
                           v-model="securityQuestions[0].answer"
                           :rules="$store.state.rules.securityAnswerRules"
                           required
+                          :disabled=disable
                         ></v-text-field>
                         <v-select
                           :items="$store.state.constants.securityQuestionsSet2"
@@ -207,15 +225,18 @@
                           auto
                           append-icon="https"
                           hide-details
+                          :rules="$store.state.rules.securityQuestionRules"
                           required
+                          :disabled=disable
                         ></v-select>
                         <v-text-field
-                        label="Enter an answer to the above security question"
-                        v-model="securityQuestions[1].answer"
-                        :rules="$store.state.rules.securityAnswerRules"
-                        required
-                      ></v-text-field>
-                      <v-select
+                          label="Enter an answer to the above security question"
+                          v-model="securityQuestions[1].answer"
+                          :rules="$store.state.rules.securityAnswerRules"
+                          required
+                          :disabled=disable
+                        ></v-text-field>
+                        <v-select
                           :items="$store.state.constants.securityQuestionsSet3"
                           item-text="question"
                           item-value="id"
@@ -225,19 +246,22 @@
                           auto
                           append-icon="https"
                           hide-details
+                          :rules="$store.state.rules.securityQuestionRules"
                           required
+                          :disabled=disable
                         ></v-select>
                         <v-text-field
                         label="Enter an answer to the above security question"
                         v-model="securityQuestions[2].answer"
                         :rules="$store.state.rules.securityAnswerRules"
                         required
+                        :disabled=disable
                       ></v-text-field>
                       </v-flex>
                     </v-layout>
                     </v-form>
-                    <v-btn color="grey lighten-5" @click="restaurantStep = 1">Previous</v-btn>
-                    <v-btn color="primary" :disabled="!validSecurityInput" @click="restaurantStep = 3">Next</v-btn>
+                    <v-btn color="grey lighten-5" @click="restaurantStep = 1" :disabled=disable>Previous</v-btn>
+                    <v-btn color="primary" :disabled="!validSecurityInput || disable" @click="restaurantStep = 3">Next</v-btn>
                   </v-stepper-content>
                   <v-stepper-content step="3">
                     <v-form v-model="validRestaurantDetailsInput">
@@ -254,6 +278,7 @@
                           hide-details
                           :rules="$store.state.rules.foodTypeRules"
                           required
+                          :disabled=disable
                         ></v-select>
                       </v-flex>
                       <v-flex xs12>
@@ -269,6 +294,7 @@
                           hide-details
                           :rules="$store.state.rules.avgFoodPriceRules"
                           required
+                          :disabled=disable
                         ></v-select>
                       </v-flex>
                       <v-flex xs12>
@@ -282,11 +308,12 @@
                           persistent-hint
                           :rules="$store.state.rules.foodPreferenceRules"
                           required
+                          :disabled=disable
                         ></v-select>
                       </v-flex>
                     </v-form>
-                    <v-btn color="grey lighten-5" @click="restaurantStep = 2">Previous</v-btn>
-                    <v-btn color="primary" :disabled="!validRestaurantDetailsInput" @click="restaurantStep = 4">Next</v-btn>
+                    <v-btn color="grey lighten-5" @click="restaurantStep = 2" :disabled=disable>Previous</v-btn>
+                    <v-btn color="primary" :disabled="!validRestaurantDetailsInput || disable" @click="restaurantStep = 4">Next</v-btn>
                   </v-stepper-content>
                   <v-stepper-content step="4">
                     <v-form v-model="validAddBusinessHour">
@@ -301,6 +328,7 @@
                         hide-details
                         :rules="$store.state.rules.timeZoneRules"
                         required
+                        :disabled=disable
                       ></v-select>
                       <v-select
                         :items="$store.state.constants.dayOfWeek"
@@ -311,6 +339,7 @@
                         hide-details
                         :rules="$store.state.rules.businessDayRules"
                         required
+                        :disabled=disable
                       ></v-select>
                       <v-menu
                         ref="openMenu"
@@ -333,6 +362,7 @@
                           :rules="$store.state.rules.openTimeRules"
                           readonly
                           required
+                          :disabled=disable
                         ></v-text-field>
                         <v-time-picker
                           format="24hr"
@@ -363,6 +393,7 @@
                           :rules="$store.state.rules.closeTimeRules"
                           readonly
                           required
+                          :disabled=disable
                         ></v-text-field>
                         <v-time-picker
                           format="24hr"
@@ -374,14 +405,14 @@
                         </v-time-picker>
                       </v-menu>
                     </v-form>
-                    <v-btn @click.prevent="addBusinessHour" :disabled="!validAddBusinessHour">Add</v-btn>
+                    <v-btn @click.prevent="addBusinessHour" :disabled="!validAddBusinessHour || disable">Add</v-btn>
                     <ul class="list-group">
                         <li v-for="storeHour in businessHours" :key="storeHour" class="list-group-item">
                             {{ storeHour.day }}: {{ storeHour.openTime }} - {{ storeHour.closeTime }}
                         </li>
                     </ul>
-                    <v-btn color="grey lighten-5" @click="restaurantStep = 3">Previous</v-btn>
-                    <v-btn color="primary" :disabled="!validBusinessHourInput" @click="restaurantStep = 5">Next</v-btn>
+                    <v-btn color="grey lighten-5" @click="restaurantStep = 3" :disabled=disable>Previous</v-btn>
+                    <v-btn color="primary" :disabled="!validBusinessHourInput || disable" @click="restaurantStep = 5">Next</v-btn>
                   </v-stepper-content>
                   <v-stepper-content step="5">
                     <v-form v-model="validContactInput">
@@ -396,11 +427,13 @@
                             v-model="restaurantProfile.address.street1"
                             :rules="$store.state.rules.addressStreet1Rules"
                             required
+                            :disabled=disable
                           ></v-text-field>
                           <v-text-field
                             label="Street 2"
                             placeholder="Unit 2"
                             v-model="restaurantProfile.address.street2"
+                            :disabled=disable
                           ></v-text-field>
                           <v-text-field
                             label="City"
@@ -408,6 +441,7 @@
                             v-model="restaurantProfile.address.city"
                             :rules="$store.state.constants.addressCityRules"
                             required
+                            :disabled=disable
                           ></v-text-field>
                           <v-select
                             :items="$store.state.constants.states"
@@ -421,6 +455,7 @@
                             append-icon="map"
                             hide-details
                             required
+                            :disabled=disable
                           ></v-select>
                             <v-text-field
                             label="Zip"
@@ -429,6 +464,7 @@
                             type="number"
                             v-model.number="restaurantProfile.address.zip"
                             required
+                            :disabled=disable
                           ></v-text-field>
                         </v-flex>
                       </v-layout>
@@ -442,11 +478,12 @@
                           prepend-icon="phone"
                           :rules="$store.state.rules.phoneNumberRules"
                           single-line
+                          :disabled=disable
                         ></v-text-field>
                       </v-flex>
                     </v-form>
-                    <v-btn color="grey lighten-5" @click="restaurantStep = 4">Previous</v-btn>
-                    <v-btn color="primary" @click="restaurantSubmit" :disabled="!validContactInput">Submit</v-btn>
+                    <v-btn color="grey lighten-5" @click="restaurantStep = 4" :disabled=disable>Previous</v-btn>
+                    <v-btn color="primary" @click="restaurantSubmit" :disabled="!validContactInput || disable" :loading="loading">Submit</v-btn>
                   </v-stepper-content>
                 </v-stepper-items>
               </v-stepper>
@@ -482,6 +519,9 @@ export default {
     closeMenu: false,
     openTimeSync: false,
     closeTimeSync: false,
+    disable: false,
+    loader: null,
+    loading: false,
     counter: 0,
     timeZone: '',
     time: '',
@@ -528,7 +568,17 @@ export default {
     responseDataStatus: '',
     responseData: ''
   }),
+  watch: {
+    // Loading animation on buttons
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
 
+      setTimeout(() => (this[l] = false), 1000)
+
+      this.loader = null
+    }
+  },
   methods: {
     validatePassword () {
       if (this.userAccount.password.length < 8) {
@@ -555,21 +605,29 @@ export default {
       }
     },
     userSubmit () {
+      this.validSecurityInput = false
+      this.disable = true
+      this.loader = 'loading'
       axios.post('http://localhost:8081/User/Registration/Individual', {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile
       }).then(response => {
+        this.validSecurityInput = true
+        this.disable = false
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
-        console.log(response)
       }).catch(error => {
+        this.validSecurityInput = true
+        this.disable = false
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
-        console.log(error.response.data)
       })
     },
     restaurantSubmit () {
+      this.validContactInput = false
+      this.disable = true
+      this.loader = 'loading'
       axios.post('http://localhost:8081/User/Registration/Restaurant', {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
@@ -579,13 +637,15 @@ export default {
         timeZone: this.timeZone,
         businessHourDtos: this.businessHours
       }).then(response => {
+        this.validContactInput = true
+        this.disable = false
         this.responseDataStatus = 'Success! User has been created: '
         this.responseData = response.data
-        console.log(response)
       }).catch(error => {
+        this.validContactInput = true
+        this.disable = false
         this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
-        console.log(error.response.data)
       })
     }
   }

@@ -27,8 +27,8 @@ namespace CSULB.GetUsGrub.Models
         {
             get
             {
-								int srid = 4326;
-								string wkt = $"POINT({GeoCoordinates.Longitude} {GeoCoordinates.Latitude})";
+				int srid = 4326;
+				string wkt = $"POINT({GeoCoordinates.Longitude} {GeoCoordinates.Latitude})";
 
                 return DbGeography.PointFromText(wkt, srid);
             }
@@ -40,8 +40,6 @@ namespace CSULB.GetUsGrub.Models
         }
         [NotMapped]
         public GeoCoordinates GeoCoordinates { get; set; }
-
-        // TODO: @Rachel Need to include Food Preference List in RestaurantProfile [-Jenn]
 
         // Navigation Properties
         public virtual UserProfile UserProfile { get; set; }

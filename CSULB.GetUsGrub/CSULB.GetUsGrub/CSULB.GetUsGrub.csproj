@@ -120,6 +120,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\FoodPreferencesController.cs" />
+    <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\RestaurantBillSplitterController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RestaurantProfileController.cs" />
@@ -129,7 +130,7 @@
     <Compile Include="Filters\AuthenticationFilter.cs" />
     <Compile Include="Controllers\SsoController.cs" />
     <Compile Include="Controllers\UserAccessTestController.cs" />
-    <Compile Include="Filters\AuthenticationHandler.cs" />
+    <Compile Include="Handlers\AuthenticationHandler.cs" />
     <Compile Include="Filters\GlobalSecurityExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -140,7 +141,6 @@
   <ItemGroup>
     <Content Include="keys.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>

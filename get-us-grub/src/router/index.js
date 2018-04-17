@@ -16,7 +16,12 @@ import DeleteUser from '@/components/AdminUserManagement/AdminDeleteUser.vue'
 import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
 import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
+import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
+import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 import Login from '@/components/Login/Login.vue'
+import Testing from '@/components/Login/DecodeTestingGround.vue'
+import Profile from '@/components/Profile/Profile.vue'
+import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
@@ -131,6 +136,15 @@ export default new Router({
         next()
       }
     },
+    {
+      path: '/Profile',
+      name: 'Profile',
+      component: Profile,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Your profile'
+        next()
+      }
+    },
     // {
     //   path: '/FoodPreferences',
     //   name: 'FoodPreferences',
@@ -142,11 +156,39 @@ export default new Router({
     //   component: EditFoodPreferences
     // },
     {
+      path: '/FoodPreferences',
+      name: 'FoodPreferences',
+      component: FoodPreferences
+    },
+    {
+      path: '/FoodPreferences/Edit',
+      name: 'EditFoodPreferences',
+      component: EditFoodPreferences
+    },
+    {
       path: '/Login',
       name: 'Login',
       component: Login,
       beforeEnter: (to, from, next) => {
         document.title = 'Login Brh!'
+        next()
+      }
+    },
+    {
+      path: '/Testing',
+      name: 'Testing',
+      component: Testing,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Testing!'
+        next()
+      }
+    },
+    {
+      path: '/FirstTimeRegistration',
+      name: 'FirstTimeRegistration',
+      component: FirstTimeRegistration,
+      beforeEnter: (to, from, next) => {
+        document.title = 'First Time Registration'
         next()
       }
     },

@@ -38,14 +38,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull().WithMessage("Phone number is required.")
                     .Matches(@"^\([2-9]\d{2}\)\d{3}\-\d{4}$").WithMessage("Phone number must be in (XXX)XXX-XXXX format.");
 
-                RuleFor(RestaurantProfile => RestaurantProfile.RestaurantMenus)
-                    .SetCollectionValidator(new RestaurantMenuValidator());
+                //RuleFor(RestaurantProfile => RestaurantProfile.MenuDictionary).SetCollectionValidator(new RestaurantMenuValidator());
 
                 RuleFor(RestaurantProfile => RestaurantProfile.BusinessHours)
                     .SetCollectionValidator(new BusinessHourValidator());
-
-                RuleFor(RestaurantProfile => RestaurantProfile.RestaurantMenuItems)
-                    .SetCollectionValidator(new RestaurantMenuItemValidator());
             });
         }
     }

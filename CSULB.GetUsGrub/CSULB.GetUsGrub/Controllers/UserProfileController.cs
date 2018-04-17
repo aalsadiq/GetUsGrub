@@ -18,10 +18,10 @@ namespace CSULB.GetUsGrub.Controllers
     public class UserProfileController : ApiController
     {
         [HttpGet]
-        [AllowAnonymous] // TODO: Remove for deployment
+        [AllowAnonymous] // TODO: remember to change localhosts to 8080
         [Route("User")]
-        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
-        public IHttpActionResult GetProfile([FromBody] string username)
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        public IHttpActionResult GetProfile(string username)
         {
             if (!ModelState.IsValid)
             {
@@ -37,7 +37,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
 
-                return Ok(response);
+                return Ok(response.Data); //TODO: make sure to have responses as response.Data
             }
 
             catch (Exception e)

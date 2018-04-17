@@ -6,6 +6,10 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   // A state is a global variable that every Vue component can reference
   state: {
+    isAuthenticated: true,
+    authenticationToken: null,
+    username: '',
+    timer: null,
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
@@ -16,7 +20,6 @@ export const store = new Vuex.Store({
     ],
     billUsers: [
     ],
-    isAuthenticated: true,
     // States pertaining to restaurant selection
     restaurantSelection: {
       request: {
@@ -65,6 +68,9 @@ export const store = new Vuex.Store({
         password => !!password || 'Password is required',
         password => password.length >= 8 || 'Password must be at least 8 characters',
         password => password.length < 64 || 'Password must be at most 64 characters'
+      ],
+      securityQuestionRules: [
+        securityQuestion => !!securityQuestion || 'Security question is required'
       ],
       securityAnswerRules: [
         securityAnswer => !!securityAnswer || 'Security answer is required'
@@ -257,6 +263,8 @@ export const store = new Vuex.Store({
         temp = temp + element.price
       })
       return temp
+    },
+    getClaim: state => {
     }
   },
   // Mutations are called to change the states in the store
@@ -313,6 +321,12 @@ export const store = new Vuex.Store({
       };
     },
     setSelectedRestaurant: (state, payload) => {
+      state.originAddress = payload.clientCity + ',' + payload.clientState
+      if (payload.address.street2 === '') {
+        state.destinationAddress = payload.address.street1 + ',' + payload.address.city + ',' + payload.address.state + ',' + payload.address.zip
+      } else {
+        state.destinationAddress = payload.address.street1 + ',' + payload.address.street2 + ',' + payload.address.city + ',' + payload.address.state + ',' + payload.address.zip
+      }
       state.restaurantSelection.selectedRestaurant.restaurantId = payload.restaurantId
       state.restaurantSelection.selectedRestaurant.restaurantGeoCoordinates = payload.restaurantGeoCoordinates
       state.restaurantSelection.selectedRestaurant.clientUserGeoCoordinates = payload.clientUserGeoCoordinates
@@ -320,6 +334,10 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.address = payload.address
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
+    },
+    loginUser: (state, payload) => {
+      state.isAuthenticated = true
+      state.authenticationToken = payload.auth
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -375,6 +393,11 @@ export const store = new Vuex.Store({
     setSelectedRestaurant: (context, payload) => {
       setTimeout(function () {
         context.commit('setSelectedRestaurant', payload)
+      }, 250)
+    },
+    loginUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('loginUser', payload)
       }, 250)
     }
   }

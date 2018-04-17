@@ -53,6 +53,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.2.1\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
@@ -72,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\FoodPreferencesManager.cs" />
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
     <Compile Include="Managers\RegisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantProfileManager.cs" />
@@ -120,13 +122,14 @@
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenRegistrationValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UsernameValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\EditUserDtoValidator.cs" />
+    <Compile Include="Validators\DtoValidators\FoodPreferencesDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\LoginDtoValidator.cs" />
-    <Compile Include="Strategies\ValidationStrategies\SsoTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\SsoTokenValidationStrategy.cs" />
     <Compile Include="Validators\DtoValidators\BusinessHourDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantProfileDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\RestaurantSelectionDtoValidator.cs" />
@@ -134,10 +137,11 @@
     <Compile Include="Validators\DtoValidators\UserAccountDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserProfileDtoValidator.cs" />
     <Compile Include="Validators\ModelValidators\AuthenticationTokenValidator.cs" />
+    <Compile Include="Validators\ModelValidators\FoodPreferenceValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuItemValidator.cs" />
     <Compile Include="Validators\ModelValidators\RestaurantMenuValidator.cs" />
+    <Compile Include="Validators\DtoValidators\SsoTokenPayloadDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\UserAuthenticationDtoValidator.cs" />
-    <Compile Include="Validators\ModelValidators\SsoTokenPayloadValidator.cs" />
     <Compile Include="Validators\ModelValidators\AddressValidator.cs" />
     <Compile Include="Validators\ModelValidators\BusinessHourValidator.cs" />
     <Compile Include="Validators\ModelValidators\ClaimsValidator.cs" />
@@ -155,9 +159,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

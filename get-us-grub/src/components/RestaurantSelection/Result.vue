@@ -3,7 +3,7 @@
     <!-- Title bar for the restaurant selection -->
     <v-alert id="result-bar" :value=showResultBar>
       <span id="quote">
-        Results
+        Result
       </span>
     </v-alert>
     <v-card id="card-result">
@@ -19,16 +19,20 @@
             {{ restaurant.phoneNumber }}
           </p>
           <h3>Address:</h3>
-          <p>
+          <p v-if='restaurant.address.street2 === ""'>
             {{ restaurant.address.street1 }},
-            {{ restaurant.address.street2 }}
+            {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
+          </p>
+          <p v-if='restaurant.address.street2 !== ""'>
+            {{ restaurant.address.street1 }},
+            {{ restaurant.address.street2 }},
             {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
           </p>
           <h3>BusinessHours:</h3>
           <p v-for="businessHour in restaurant.businessHours" :key="businessHour.day">
             {{ businessHour.day }}:
-            {{ businessHour.openTime }} -
-            {{ businessHour.closeTime }}
+            {{ businessHour.twelveHourFormatOpenTime }} -
+            {{ businessHour.twelveHourFormatCloseTime }}
           </p>
         </v-flex>
         <!-- Google embedded map displayed here -->
@@ -66,17 +70,6 @@ export default {
       loading: false,
       showAlert: false,
       showResultBar: true
-    }
-  },
-  watch: {
-    // Loading animation on buttons
-    loader () {
-      const l = this.loader
-      this[l] = !this[l]
-
-      setTimeout(() => (this[l] = false), 1500)
-
-      this.loader = null
     }
   },
   computed: mapState({

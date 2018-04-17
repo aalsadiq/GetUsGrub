@@ -29,7 +29,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             new Claim(ActionConstant.ACCESS + ResourceConstant.MENU, "True"),
 
             // For Restaurant Selector
-            new Claim(ActionConstant.ACCESS + ResourceConstant.PREFERENCES, "True")
+            new Claim(ActionConstant.READ + ResourceConstant.RESTAURANTSELECTION, "True")
         };
 
     }

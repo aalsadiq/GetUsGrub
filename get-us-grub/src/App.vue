@@ -28,4 +28,16 @@ export default {
 #router-container {
   margin-top: 4.5em;
 }
+/* Removing scrollbar on page */
+html {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+/* Omit text underlines to router-links */
+a {
+  text-decoration: none;
+}
+.container {
+  max-width: 100%;
+}
 </style>

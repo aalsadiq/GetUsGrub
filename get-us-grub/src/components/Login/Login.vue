@@ -1,12 +1,12 @@
 <template>
   <div>
-    <app-header/>
+    <app-header />
     <v-form ref="form" v-model="validIdentificationInput" >
       <v-text-field v-model="username"
         prepend-icon="pets"
         label="Enter a username"
         name = "username"
-        :rules="usernameRules"
+        :rules="$store.state.rules.usernameRules"
         required
       ></v-text-field>
       <v-text-field v-model="password"
@@ -14,7 +14,7 @@
         name="password"
         label="Password"
         id="password"
-        :rules="rules.passwordRules"
+        :rules="$store.state.rules.passwordRules"
         :min="8"
         :append-icon="visibile ? 'visibility' : 'visibility_off'"
         :append-icon-cb="() => (visibile = !visibile)"
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import jwt from 'jsonwebtoken'
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
 import axios from 'axios'
@@ -45,17 +46,6 @@ export default {
   data () {
     return {
       validIdentificationInput: false,
-      rules: {
-        usernameRules: [
-          username => !!username || 'Username is required',
-          username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-        ],
-        passwordRules: [
-          password => !!password || 'Password is required',
-          password => password.length >= 8 || 'Password must be at least 8 characters',
-          password => password.length < 64 || 'Password must be at most 64 characters'
-        ]
-      },
       username: '',
       password: '',
       state: {
@@ -65,7 +55,6 @@ export default {
   },
   methods: {
     LoginUser: function (username, password) {
-      console.log('you in son')
       axios({
         method: 'POST',
         url: 'http://localhost:8081/Login',
@@ -73,8 +62,14 @@ export default {
         header: {
           'Access-Control-Allow-Origin': 'http://localhost:8080/#/Login'
         }
+      }).then(response => {
+        console.log('you in son')
+        this.$store.state.isAuthenticated = true
+        this.$store.state.authenticationToken = response.data
+        this.$store.state.username = jwt.decode(response.data)['Username']
+      }).catch(error => {
+        console.log(error.response.data)
       })
-      //  .then(function (response) {})
     }
   }
 }

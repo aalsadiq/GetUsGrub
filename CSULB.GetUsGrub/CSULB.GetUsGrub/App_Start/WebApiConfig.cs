@@ -1,9 +1,10 @@
-﻿using CSULB.GetUsGrub.UserAccessControl;
-using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json.Serialization;
 using System;
+using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 
 namespace CSULB.GetUsGrub
 {
@@ -14,13 +15,28 @@ namespace CSULB.GetUsGrub
             // Web API configuration and services
             config.EnableCors();
 
-            // Web API routes
+            // Web API attribute routing
             config.MapHttpAttributeRoutes();
+
+            // Web API convention-based routing
+            config.Routes.MapHttpRoute(
+                name: "SsoRoute",
+                routeTemplate: "{controller}/{action}/{id}",
+                defaults: new { controller = "Sso", id = RouteParameter.Optional },
+                constraints: new { controller = "Sso" },
+                handler: HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config),
+                    new DelegatingHandler[]
+                    {
+                        new SsoTokenHandler()
+                    })
+            );
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional },
+                constraints: null
             );
 
             // Add GlobalSecurityExceptionFilter for User Access Control

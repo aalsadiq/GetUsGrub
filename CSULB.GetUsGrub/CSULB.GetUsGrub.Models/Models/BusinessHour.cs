@@ -8,10 +8,11 @@ namespace CSULB.GetUsGrub.Models
     /// The <c>BusinessHour</c> class.
     /// Defines properties pertaining to a business hour.
     /// <para>
-    /// @author: Brian Fann
-    /// @updated: 03/20/2018
+    /// @author: Jennifer Nguyen, Andrew Kao
+    /// @updated: 4/5/2018
     /// </para>
     /// </summary>
+
     [Table("GetUsGrub.BusinessHour")]
     public class BusinessHour : IBusinessHour, IEntity
     {
@@ -26,6 +27,7 @@ namespace CSULB.GetUsGrub.Models
         public DateTime OpenTime { get; set; }
         [Required]
         public DateTime CloseTime { get; set; }
+        public Flag Flag { get; set; }
 
         public virtual RestaurantProfile RestaurantProfile { get; set; }
 
@@ -37,6 +39,25 @@ namespace CSULB.GetUsGrub.Models
             Day = day;
             OpenTime = openTime;
             CloseTime = closeTime;
+        }
+
+        // For getting
+        public BusinessHour(int? id, string day, DateTime openTime, DateTime closeTime)
+        {
+            Id = id;
+            Day = day;
+            OpenTime = openTime;
+            CloseTime = closeTime;
+        }
+
+        // For editing
+        public BusinessHour(int? id, string day, DateTime openTime, DateTime closeTime, Flag flag)
+        {
+            Id = id;
+            Day = day;
+            OpenTime = openTime;
+            CloseTime = closeTime;
+            Flag = flag;
         }
 
         public BusinessHour(int? id, int? restaurantId, string day, DateTime openTime, DateTime closeTime)

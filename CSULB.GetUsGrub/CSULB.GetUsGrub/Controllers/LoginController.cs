@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Cors;
@@ -24,7 +25,7 @@ namespace CSULB.GetUsGrub.Controllers
                 // Model Binding Validation
                 if (!ModelState.IsValid)
                 {
-                   return BadRequest(ModelState);
+                   return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
                 }
                 var loginManager = new LoginManager();
                 var loginResponse = loginManager.LoginUser(loginDto);
@@ -40,9 +41,10 @@ namespace CSULB.GetUsGrub.Controllers
                 }
                 return Ok(tokenResponse.Data.TokenString);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Something Went Completely Wrong!");
+                Debug.WriteLine(ex);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
     }

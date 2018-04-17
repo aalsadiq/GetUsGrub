@@ -88,6 +88,7 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpGet]
         [Route("Registered")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANTSELECTION, Operation = ActionConstant.READ)]
         public IHttpActionResult RegisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
             // Model Binding Validation
@@ -99,8 +100,8 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 // Instantiating dependencies
                 var restaurantSelectionDto = new RestaurantSelectionDto(city: city, state: state, foodType: foodType, distanceInMiles: distanceInMiles, avgFoodPrice: avgFoodPrice);
-                var restaurantSelectionManager = new RegisteredUserRestaurantSelectionManager(restaurantSelectionDto);
-
+                var restaurantSelectionManager = new RegisteredUserRestaurantSelectionManager(restaurantSelectionDto: restaurantSelectionDto, token: Request.Headers.Authorization.Parameter);
+ 
                 // Select a restaurant
                 var response = restaurantSelectionManager.SelectRestaurant();
                 if (response.Error != null)

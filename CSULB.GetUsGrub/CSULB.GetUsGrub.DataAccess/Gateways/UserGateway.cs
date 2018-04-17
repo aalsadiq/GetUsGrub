@@ -16,6 +16,9 @@ namespace CSULB.GetUsGrub.DataAccess
     /// </summary>
     public class UserGateway : IDisposable
     {
+        // Open the User context
+        UserContext context = new UserContext();
+
         /// <summary>
         /// The GetUserByUsername method.
         /// Gets a user by username.
@@ -28,28 +31,25 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto with UserAccount model</returns>
         public ResponseDto<UserAccount> GetUserByUsername(string username)
         {
-            using (var userContext = new UserContext())
+            try
             {
-                try
-                {
-                    var userAccount = (from account in userContext.UserAccounts
-                                       where account.Username == username
-                                       select account).FirstOrDefault();
+                var userAccount = (from account in context.UserAccounts
+                                    where account.Username == username
+                                    select account).FirstOrDefault();
 
-                    // Return a ResponseDto with a UserAccount model
-                    return new ResponseDto<UserAccount>()
-                    {
-                        Data = userAccount
-                    };
-                }
-                catch (Exception)
+                // Return a ResponseDto with a UserAccount model
+                return new ResponseDto<UserAccount>()
                 {
-                    return new ResponseDto<UserAccount>()
-                    {
-                        Data = new UserAccount(username),
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
-                }
+                    Data = userAccount
+                };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<UserAccount>()
+                {
+                    Data = new UserAccount(username),
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
             }
         }
 
@@ -71,87 +71,84 @@ namespace CSULB.GetUsGrub.DataAccess
         public ResponseDto<bool> StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
             IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile)
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
+                // Add UserAccount
+                    context.UserAccounts.Add(userAccount);
+                    context.SaveChanges();
+
+                    // Get Id from UserAccount
+                    var userId = (from account in context.UserAccounts
+                                    where account.Username == userAccount.Username
+                                    select account.Id).SingleOrDefault();
+
+                    // Set UserId to dependencies
+                    passwordSalt.Id = userId;
+                    claims.Id = userId;
+                    userProfile.Id = userId;
+
+                    // Add SecurityQuestions
+                    foreach (var securityQuestion in securityQuestions)
                     {
-                        // Add UserAccount
-                        userContext.UserAccounts.Add(userAccount);
-                        userContext.SaveChanges();
-
-                        // Get Id from UserAccount
-                        var userId = (from account in userContext.UserAccounts
-                                      where account.Username == userAccount.Username
-                                      select account.Id).SingleOrDefault();
-
-                        // Set UserId to dependencies
-                        passwordSalt.Id = userId;
-                        claims.Id = userId;
-                        userProfile.Id = userId;
-
-                        // Add SecurityQuestions
-                        foreach (var securityQuestion in securityQuestions)
-                        {
-                            securityQuestion.UserId = userId;
-                            userContext.SecurityQuestions.Add(securityQuestion);
-                            userContext.SaveChanges();
-                        }
-
-                        // Get SecurityQuestions in database
-                        var updatedSecurityQuestions = (from question in userContext.SecurityQuestions
-                                                        where question.UserId == userId
-                                                        select question).ToList();
-
-                        // Add SecurityAnswerSalts
-                        for (var i = 0; i < securityQuestions.Count; i++)
-                        {
-                            // Get SecurityQuestionId for each securityAnswerSalt
-                            var securityQuestionId = (from query in updatedSecurityQuestions
-                                                      where query.Question == securityQuestions[i].Question
-                                                      select query.Id).SingleOrDefault();
-
-                            // Set SecurityQuestionId for SecurityAnswerSalt
-                            securityAnswerSalts[i].Id = securityQuestionId;
-                            // Add SecurityAnswerSalt
-                            userContext.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
-                            userContext.SaveChanges();
-                        }
-                        // Add PasswordSalt
-                        userContext.PasswordSalts.Add(passwordSalt);
-
-                        // Add UserClaims
-                        userContext.UserClaims.Add(claims);
-
-                        // Add UserProfile
-                        userContext.UserProfiles.Add(userProfile);
-                        userContext.SaveChanges();
-
-                        // Commit transaction to database
-                        dbContextTransaction.Commit();
-
-                        // Return a true ResponseDto
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
+                        securityQuestion.UserId = userId;
+                        context.SecurityQuestions.Add(securityQuestion);
+                        context.SaveChanges();
                     }
-                    catch (Exception)
+
+                    // Get SecurityQuestions in database
+                    var updatedSecurityQuestions = (from question in context.SecurityQuestions
+                                                    where question.UserId == userId
+                                                    select question).ToList();
+
+                    // Add SecurityAnswerSalts
+                    for (var i = 0; i < securityQuestions.Count; i++)
                     {
-                        // Rolls back the changes saved in the transaction
-                        dbContextTransaction.Rollback();
-                        // Returns a false ResponseDto
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
+                        // Get SecurityQuestionId for each securityAnswerSalt
+                        var securityQuestionId = (from query in updatedSecurityQuestions
+                                                    where query.Question == securityQuestions[i].Question
+                                                    select query.Id).SingleOrDefault();
+
+                        // Set SecurityQuestionId for SecurityAnswerSalt
+                        securityAnswerSalts[i].Id = securityQuestionId;
+                        // Add SecurityAnswerSalt
+                        context.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
+                        context.SaveChanges();
                     }
+                    // Add PasswordSalt
+                    context.PasswordSalts.Add(passwordSalt);
+
+                    // Add UserClaims
+                    context.UserClaims.Add(claims);
+
+                    // Add UserProfile
+                    context.UserProfiles.Add(userProfile);
+                    context.SaveChanges();
+
+                    // Commit transaction to database
+                    dbContextTransaction.Commit();
+
+                    // Return a true ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Returns a false ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
         }
-
+        
         /// <summary>
         /// The StoreRestaurantUser method.
         /// Contains logic to store a restaurant user to the database.
@@ -174,104 +171,101 @@ namespace CSULB.GetUsGrub.DataAccess
             IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours,
             IList<FoodPreference> foodPreferences)
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
+                    // Add UserAccount
+                    context.UserAccounts.Add(userAccount);
+                    context.SaveChanges();
+
+                    // Get Id from UserAccount
+                    var userId = (from account in context.UserAccounts
+                                    where account.Username == userAccount.Username
+                                    select account.Id).SingleOrDefault();
+
+                    // Set UserId to dependencies
+                    passwordSalt.Id = userId;
+                    claims.Id = userId;
+                    userProfile.Id = userId;
+                    restaurantProfile.Id = userId;
+
+                    // Add FoodPreferences
+                    foreach (var foodPreference in foodPreferences)
                     {
-                        // Add UserAccount
-                        userContext.UserAccounts.Add(userAccount);
-                        userContext.SaveChanges();
-
-                        // Get Id from UserAccount
-                        var userId = (from account in userContext.UserAccounts
-                                      where account.Username == userAccount.Username
-                                      select account.Id).SingleOrDefault();
-
-                        // Set UserId to dependencies
-                        passwordSalt.Id = userId;
-                        claims.Id = userId;
-                        userProfile.Id = userId;
-                        restaurantProfile.Id = userId;
-
-                        // Add FoodPreferences
-                        foreach (var foodPreference in foodPreferences)
-                        {
-                            foodPreference.UserId = userId;
-                            userContext.FoodPreferences.Add(foodPreference);
-                            userContext.SaveChanges();
-                        }
-
-                        // Add SecurityQuestions
-                        foreach (var securityQuestion in securityQuestions)
-                        {
-                            securityQuestion.UserId = userId;
-                            userContext.SecurityQuestions.Add(securityQuestion);
-                            userContext.SaveChanges();
-                        }
-
-                        // Get SecurityQuestions in database
-                        var queryable = (from question in userContext.SecurityQuestions
-                                         where question.UserId == userId
-                                         select question).ToList();
-
-                        // Add SecurityAnswerSalts
-                        for (var i = 0; i < securityQuestions.Count; i++)
-                        {
-                            // Get SecurityQuestionId for each securityAnswerSalt
-                            var securityQuestionId = (from query in queryable
-                                                      where query.Question == securityQuestions[i].Question
-                                                      select query.Id).SingleOrDefault();
-
-                            // Set SecurityQuestionId for SecurityAnswerSalt
-                            securityAnswerSalts[i].Id = securityQuestionId;
-                            // Add SecurityAnswerSalt
-                            userContext.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
-                            userContext.SaveChanges();
-                        }
-
-                        // Add PasswordSalt
-                        userContext.PasswordSalts.Add(passwordSalt);
-
-                        // Add UserClaims
-                        userContext.UserClaims.Add(claims);
-
-                        // Add UserProfile
-                        userContext.UserProfiles.Add(userProfile);
-
-                        // Add RestaurantProfile
-                        userContext.RestaurantProfiles.Add(restaurantProfile);
-                        userContext.SaveChanges();
-
-                        // Add BusinessHours
-                        foreach (var businessHour in businessHours)
-                        {
-                            businessHour.RestaurantId = userId;
-                            userContext.BusinessHours.Add(businessHour);
-                            userContext.SaveChanges();
-                        }
-
-                        // Commit transaction to database
-                        dbContextTransaction.Commit();
-
-                        // Return a true ResponseDto
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
+                        foodPreference.UserId = userId;
+                        context.FoodPreferences.Add(foodPreference);
+                        context.SaveChanges();
                     }
-                    catch (Exception)
+
+                    // Add SecurityQuestions
+                    foreach (var securityQuestion in securityQuestions)
                     {
-                        // Rolls back the changes saved in the transaction
-                        dbContextTransaction.Rollback();
-                        // Return a false ResponseDto
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
+                        securityQuestion.UserId = userId;
+                        context.SecurityQuestions.Add(securityQuestion);
+                        context.SaveChanges();
                     }
+
+                    // Get SecurityQuestions in database
+                    var queryable = (from question in context.SecurityQuestions
+                                        where question.UserId == userId
+                                        select question).ToList();
+
+                    // Add SecurityAnswerSalts
+                    for (var i = 0; i < securityQuestions.Count; i++)
+                    {
+                        // Get SecurityQuestionId for each securityAnswerSalt
+                        var securityQuestionId = (from query in queryable
+                                                    where query.Question == securityQuestions[i].Question
+                                                    select query.Id).SingleOrDefault();
+
+                        // Set SecurityQuestionId for SecurityAnswerSalt
+                        securityAnswerSalts[i].Id = securityQuestionId;
+                        // Add SecurityAnswerSalt
+                        context.SecurityAnswerSalts.Add(securityAnswerSalts[i]);
+                        context.SaveChanges();
+                    }
+
+                    // Add PasswordSalt
+                    context.PasswordSalts.Add(passwordSalt);
+
+                    // Add UserClaims
+                    context.UserClaims.Add(claims);
+
+                    // Add UserProfile
+                    context.UserProfiles.Add(userProfile);
+
+                    // Add RestaurantProfile
+                    context.RestaurantProfiles.Add(restaurantProfile);
+                    context.SaveChanges();
+
+                    // Add BusinessHours
+                    foreach (var businessHour in businessHours)
+                    {
+                        businessHour.RestaurantId = userId;
+                        context.BusinessHours.Add(businessHour);
+                        context.SaveChanges();
+                    }
+
+                    // Commit transaction to database
+                    dbContextTransaction.Commit();
+
+                    // Return a true ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Return a false ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
         }
@@ -289,51 +283,49 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto with bool data</returns>
         public ResponseDto<bool> StoreSsoUser(UserAccount userAccount, PasswordSalt passwordSalt)
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
+                    // Add UserAccount
+                    context.UserAccounts.Add(userAccount);
+                    context.SaveChanges();
+
+                    // Get Id from UserAccount
+                    var userId = (from account in context.UserAccounts
+                                    where account.Username == userAccount.Username
+                                    select account.Id).SingleOrDefault();
+
+                    // Set UserId to dependencies
+                    passwordSalt.Id = userId;
+
+                    // Add PasswordSalt
+                    context.PasswordSalts.Add(passwordSalt);
+                    context.SaveChanges();
+
+                    // Commit transaction to database
+                    dbContextTransaction.Commit();
+
+                    // Return true ResponseDto
+                    return new ResponseDto<bool>()
                     {
-                        // Add UserAccount
-                        userContext.UserAccounts.Add(userAccount);
-                        userContext.SaveChanges();
-
-                        // Get Id from UserAccount
-                        var userId = (from account in userContext.UserAccounts
-                                      where account.Username == userAccount.Username
-                                      select account.Id).SingleOrDefault();
-
-                        // Set UserId to dependencies
-                        passwordSalt.Id = userId;
-
-                        // Add PasswordSalt
-                        userContext.PasswordSalts.Add(passwordSalt);
-                        userContext.SaveChanges();
-
-                        // Commit transaction to database
-                        dbContextTransaction.Commit();
-
-                        // Return true ResponseDto
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Return false ResponseDto
+                    return new ResponseDto<bool>()
                     {
-                        // Rolls back the changes saved in the transaction
-                        dbContextTransaction.Rollback();
-                        // Return false ResponseDto
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
         }
+
         /// <summary>
         /// Will deactivate user by username by changing IsActive to false.
         /// </summary>
@@ -592,7 +584,7 @@ namespace CSULB.GetUsGrub.DataAccess
                             foreach(var preference in userPreference)
                             {
                                 userContext.FoodPreferences.Remove(preference);
-                            }   
+                            }
                         }
                         //  Queries for the failed attempts based on user account id.
                         var failedAttempt = (from attempt in userContext.FailedAttempts
@@ -810,40 +802,40 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto which encapsulates a FoodPreferenceDto</returns>
         public ResponseDto<FoodPreferencesDto> GetFoodPreferencesByUsername(string username)
         {
-            using (var context = new UserContext())
+            try
             {
-                try
-                {
-                    // Makes sure user account exists
-                    var userId = (from account in context.UserAccounts
-                                       where account.Username == username
-                                       select account.Id).SingleOrDefault();
+                // Makes sure user account exists
+                var userId = (from account in context.UserAccounts
+                                   where account.Username == username
+                                   select account.Id).FirstOrDefault();
 
-                    // Grab list of user's preferences from database
-                    var preferences = (from foodPreferences in context.FoodPreferences
-                                       where foodPreferences.UserId == userId
-                                       select foodPreferences.Preference).ToList();
+                // Get list of preferences pertaining to user
+                var preferences = (from foodPreferences in context.FoodPreferences
+                                   where foodPreferences.UserId == userId
+                                   select foodPreferences.Preference).ToList();
 
-                    // Return response dto with food preferences dto
-                    return new ResponseDto<FoodPreferencesDto>
-                    {
-                        Data = new FoodPreferencesDto(preferences)
-                    };
-                }
-                catch (Exception)
+                // Return response dto with food preferences dto
+                return new ResponseDto<FoodPreferencesDto>
                 {
-                    // If exception occurs, return response dto with error message
-                    return new ResponseDto<FoodPreferencesDto>
-                    {
-                        Error = "Something went wrong. Please try again later."
-                    };
-                }
+                    Data = new FoodPreferencesDto(preferences)
+                };
+            }
+            catch (Exception)
+            {
+                // If exception occurs, return response dto with error message
+                return new ResponseDto<FoodPreferencesDto>
+                {
+                    Error = "Something went wrong. Please try again later."
+                };
             }
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Dispose of the context
+        /// </summary>
+        void IDisposable.Dispose()
         {
-            //throw new NotImplementedException();
+            context.Dispose();
         }
     }
 }

@@ -19,16 +19,20 @@
             {{ restaurant.phoneNumber }}
           </p>
           <h3>Address:</h3>
-          <p>
+          <p v-if='restaurant.address.street2 === ""'>
             {{ restaurant.address.street1 }},
-            {{ restaurant.address.street2 }}
+            {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
+          </p>
+          <p v-if='restaurant.address.street2 !== ""'>
+            {{ restaurant.address.street1 }},
+            {{ restaurant.address.street2 }},
             {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
           </p>
           <h3>BusinessHours:</h3>
           <p v-for="businessHour in restaurant.businessHours" :key="businessHour.day">
             {{ businessHour.day }}:
-            {{ businessHour.openTime }} -
-            {{ businessHour.closeTime }}
+            {{ businessHour.twelveHourFormatOpenTime }} -
+            {{ businessHour.twelveHourFormatCloseTime }}
           </p>
         </v-flex>
         <!-- Google embedded map displayed here -->

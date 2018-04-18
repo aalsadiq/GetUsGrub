@@ -51,8 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\AccountType.cs" />
+    <Compile Include="Models\Constants\AccountType.cs" />
     <Compile Include="Models\AdminClaims.cs" />
+    <Compile Include="Models\FirstTimeUserClaims.cs" />
     <Compile Include="Models\IndividualClaims.cs" />
     <Compile Include="Models\RestaurantClaims.cs" />
     <Compile Include="Factories\ClaimsFactory.cs" />

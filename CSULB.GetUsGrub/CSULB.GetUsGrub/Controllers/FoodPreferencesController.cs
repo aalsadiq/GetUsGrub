@@ -42,7 +42,7 @@ namespace CSULB.GetUsGrub.Controllers
                 }
 
                 // Otherwise, return the preferences
-                return Ok(preferences);
+                return Ok(preferences.Data);
             }
             catch (Exception exception)
             {

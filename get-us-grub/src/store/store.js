@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
 
 Vue.use(Vuex)
 
@@ -288,10 +288,10 @@ export const store = new Vuex.Store({
       })
     },
     populateRestaurantMenus: (state, payload) => {
-      for (var i = 0; i < payload.length; i++) {
-        console.log(payload[i])
-        state.restaurantMenus[i].restaurantMenu = payload[i]
-      }
+      payload.forEach(function (element, index) {
+        console.log(element)
+        this.$set(state.restaurantMenus[index], restaurantMenus, payload)
+      })
     },
     editDictionaryItem: (state, payload) => {
       state.menuItems[payload[0]].name = payload[1]

@@ -15,8 +15,8 @@
             Test
           </v-toolbar-title>
         </v-toolbar>
-        <v-btn v-on:click="GetRestaurantMenus"></v-btn>
-        <v-btn v-for="element in restaurantMenus">Test</v-btn>
+        <v-btn v-on:click="GetRestaurantMenus">GET</v-btn>
+        <div v-for="(element, index) in restaurantMenus" :key="index"><p>Test</p></div>
       </v-list>
     </v-navigation-drawer>
   </v-layout>
@@ -30,28 +30,12 @@ export default {
   data () {
     return {
       drawer: false,
-      restaurantId: null,
-      restaurantMenus: [],
-      menus: [
-        {
-          menu: [
-            {
-              item: {
-                itemName: '',
-                itemPrice: null,
-                itemPicture: '',
-                tag: '',
-                description: ''
-              }
-            }
-          ]
-        }
-      ]
+      restaurantId: null
     }
   },
-  updated () {
-    this.restaurantMenus = this.$store.state.restaurantMenus
-  },
+  // updated () {
+  //   this.restaurantMenus = this.$store.state.restaurantMenus
+  // },
   methods: {
     GetRestaurantMenus: function () {
       if (this.$store.state.isAuthenticated) {
@@ -73,11 +57,14 @@ export default {
           // this.menus[i] = response.data.data.menus[i]
           // }
         }).catch(error => {
-          this.responseDataStatus = 'An error has occurred: '
-          this.responseData = error.response.data
           console.log(error.response.data)
         })
       }
+    }
+  },
+  computed: {
+    restaurantMenus () {
+      return this.$store.state.restaurantMenus
     }
   }
 }

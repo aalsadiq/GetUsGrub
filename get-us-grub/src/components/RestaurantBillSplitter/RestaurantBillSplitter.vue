@@ -6,7 +6,6 @@
       <restaurantBillSplitter-billTable />
       <restaurantBillSplitter-dictionary />
       <debug />
-      <v-btn v-on:click="GetRestaurantMenus"> Test Get Request </v-btn>
     </div>
     <app-footer />
   </div>
@@ -60,30 +59,6 @@ export default {
     }
   },
   methods: {
-    GetRestaurantMenus: function () {
-      if (this.$store.state.isAuthenticated) {
-        console.log('Authenticated')
-        this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
-        console.log(this.restaurantId)
-        axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
-          headers: {
-            'Access-Control-Allow-Origin': '*'
-          },
-          params: {
-            restaurantId: this.restaurantId
-          }
-        }).then(response => {
-          console.log(response)
-          // this.responseDataStatus = 'Success! Restaurant Menus have been get: '
-          // this.responseData = response.data
-          // console.log(response)
-        }).catch(error => {
-          this.responseDataStatus = 'An error has occurred: '
-          this.responseData = error.response.data
-          console.log(error.response.data)
-        })
-      }
-    }
   },
   computed: {
   }

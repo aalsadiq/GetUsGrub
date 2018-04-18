@@ -23,7 +23,7 @@
     <h2> Restaurant Menus</h2>
     <ul>
       <h3>{{restaurantMenus.length}}</h3>
-      <li v-for="element in restaurantMenus" :key="element">
+      <li v-for="(element, index) in restaurantMenus" :key="index">
         {{element}}
       </li>
     </ul>
@@ -33,6 +33,8 @@
 <script>
 export default {
   name: 'Debug',
+  updated () {
+  },
   computed: {
     menuItems () {
       return this.$store.state.menuItems
@@ -43,7 +45,7 @@ export default {
     billUsers () {
       return this.$store.state.billUsers
     },
-    restaurantMenus() {
+    restaurantMenus () {
       return this.$store.state.restaurantMenus
     }
   }

@@ -29,9 +29,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 using (var profileContext = new IndividualProfileContext())
                 {
                     // Find profile associated with account
-                    var userProfile = (from profile in profileContext.UserProfiles
-                                       where profile.Id == userAccount.Id
-                                       select profile).SingleOrDefault();
+                    var userProfile = userAccount.UserProfile;
 
                     ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
                     {
@@ -97,6 +95,7 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         //ImageUploadGateway for profile
+        //store the path in the database...
 
     }
 }

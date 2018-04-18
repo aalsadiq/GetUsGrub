@@ -58,7 +58,14 @@ namespace CSULB.GetUsGrub.UserAccessControl
                     throw new SecurityException(userClaims.Error);
                 }
 
-                // If user is valid, proceed to add claims
+                // If user is valid, but claims are null; add first time user claims
+                if (userClaims.Data == null)
+                {
+                    var factory = new ClaimsFactory();
+                    userClaims.Data = factory.Create(AccountType.FIRSTTIMEUSER);
+                }
+
+                // Proceed to add database claims into list for the principal
                 foreach (var claim in userClaims.Data)
                 {
                     claims.Add(claim);
@@ -75,7 +82,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             claims.Add(new Claim("Username", username));
 
             // Create ClaimsIdentity with the list of claims
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, resourceName);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims);
 
             // Create ClaimsPrincipal with the ClaimsIdentity
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

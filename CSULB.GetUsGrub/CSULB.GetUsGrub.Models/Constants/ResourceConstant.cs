@@ -8,6 +8,9 @@
     /// </summary>
     public class ResourceConstant
     {
+        // Resource Types for First Time Users
+        public const string FIRSTTIMEUSER = "IsFirstTimeUser";
+
         // Resource Types for User Management
         public const string USER = "User";
 
@@ -21,5 +24,8 @@
         // Resource Types for Bill Splitter
         public const string MENU = "Menu";
         public const string DICTIONARY = "Dictionary";
+
+        // Resource Types for Restaurant Selection
+        public const string RESTAURANTSELECTION = "RestaurantSelection";
     }
 }

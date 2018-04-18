@@ -1,7 +1,9 @@
 <template>
 <div>
-  <!-- <v-card height="350px"> -->
-    <v-navigation-drawer permanent absolute v-model="drawer" mini-variant-width=50><!-- used to navigate through application to work with or without vue-router outside the box-->
+    <!-- <v-card height="350px"> -->
+    <!-- <v-navigation-drawer id="menu" stateless hide-overlay :mini-variant.sync="mini" v-model="drawer"> -->
+    <v-navigation-drawer id="nav-drawer" permanent absolute v-model="drawer" >
+      <!-- used to navigate through application to work with or without vue-router outside the box-->
       <!--permanent: remains visible regardless of screensize absolute: Position the element absolutely is false v-model= drawer-->
       <!--v-toolbar:flat: removes the toolbar box-shadow-->
       <v-toolbar flat class="transparent"> <!-- the square to the left -->
@@ -39,21 +41,17 @@ export default {
   data () {
     return {
       drawer: true,
+      // mini:true,
+      // right:null,
       items: [
         { title: 'Home', icon: 'home', path: '/User/Admin' },
         { title: 'Create User', icon: 'face', path: '/User/CreateUser' },
         { title: 'Edit User', icon: 'edit', path: '/User/EditUser' },
-        { title: 'Deactivate User', icon: 'clear', path: '/User/DeactivateUser' },
-        { title: 'Reactivate User', icon: 'add', method: 'reactivateUser', path: '/User/ReactivateUser' },
-        { title: 'Delete User', icon: 'delete_forever', path: '/User/DeleteUser' }
+        { title: 'Deactivate User', icon: 'block', path: '/User/DeactivateUser' },
+        { title: 'Reactivate User', icon: 'check', method: 'reactivateUser', path: '/User/ReactivateUser' },
+        { title: 'Delete User', icon: 'delete', path: '/User/DeleteUser' }
       ],
       right: null
-    }
-  },
-  method: {
-    imageupload: function () {
-      this.showImageUpload = true
-      console.log('Yay!')
     }
   }
 }
@@ -61,6 +59,14 @@ export default {
 
 <style>
 .navigation{
-  position: relative;;
+  position: relative;
+}
+.menu{
+margin-left:0px;
+margin-right:0px;
+margin-top:0px;
+width:0px;
+height:0px;
+padding:0px;
 }
 </style>

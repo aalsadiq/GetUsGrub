@@ -1,19 +1,25 @@
 <template>
   <div>
     <app-admin-header/>
-    <v-flex xs15order-lg2>
-      <h1>Select your user!</h1>
-      <v-btn v-on:click="normalUser" id ="NormalUser-button" color="info">Regular Registration</v-btn>
-      <v-btn v-on:click="adminUser" id ="AdminUserr-button" color="info">Admin Registration</v-btn>
-      <div v-if="check===false">
-        <v-flex xs3 sm10 offset-sm2>
-          <app-create-user/>
-        </v-flex>
-      </div>
-      <div v-else>
-        <app-user-validations-required :viewType="submitType"/>
-        </div>
-      </v-flex>
+    <v-container class="scroll-y" id="scroll-target">
+    <v-container id="create-user-container">
+      <v-layout>
+        <v-flex xs15order-lg2>
+          <h1>Select your user!</h1>
+          <v-btn v-on:click="normalUser" id ="NormalUser-button" color="info">Regular Registration</v-btn>
+          <v-btn v-on:click="adminUser" id ="AdminUserr-button" color="info">Admin Registration</v-btn>
+          <div v-if="check===false">
+            <v-flex xs3 sm10 offset-sm2>
+              <app-create-user/>
+            </v-flex>
+          </div>
+          <div v-else>
+            <app-user-validations-required :viewType="submitType"/>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-container>
+      </v-container>
     <app-footer/>
   </div>
 </template>
@@ -45,3 +51,12 @@ export default {
   }
 }
 </script>
+
+<style>
+#create-user-container {
+  padding: 2em 0em 0em 8em;
+}
+#router-container {
+  margin-top: 0em;
+}
+</style>

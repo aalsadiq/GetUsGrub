@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
+    "jsonwebtoken": "^8.2.1",
     "sha1": "^1.1.1",
     "v-money": "^0.8.1",
     "vue": "^2.5.2",
@@ -105,5 +106,6 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "optionalDependencies": {}
 }

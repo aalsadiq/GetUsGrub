@@ -89,7 +89,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 var gatewayResult = restaurantGateway.GetRestaurantWithoutFoodPreferences(
                     city: RestaurantSelectionDto.City, state: RestaurantSelectionDto.State,
-                    foodType:RestaurantSelectionDto.FoodType, distanceInMeters: ConvertDistanceInMilesToMeters(RestaurantSelectionDto.DistanceInMiles),
+                    foodType:RestaurantSelectionDto.FoodType, distanceInMeters: (double)ConvertDistanceInMilesToMeters(RestaurantSelectionDto.DistanceInMiles),
                     avgFoodPrice: RestaurantSelectionDto.AvgFoodPrice,
                     currentUtcTimeOfDay: RestaurantSelectionDto.CurrentUtcDateTime.TimeOfDay,
                     currentLocalDayOfWeek: RestaurantSelectionDto.CurrentLocalDayOfWeek.ToString(),
@@ -116,11 +116,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 SelectedRestaurantDto = gatewayResult.Data;
             }
 
-            // Setting client user geocoordinates to the SelectedRestaurantDto
-            SelectedRestaurantDto.ClientUserGeoCoordinates = RestaurantSelectionDto.ClientUserGeoCoordinates;
-
             // Sort the list of business hour data transfer objects by day using the DayOfWeek enum property
-            SelectedRestaurantDto.BusinessHourDtos = SelectedRestaurantDto.BusinessHourDtos.OrderBy(businessHourDto => (int)Enum.Parse(typeof(DayOfWeek), businessHourDto.Day)).ToList();
+            SelectedRestaurantDto.BusinessHourDtos = SelectedRestaurantDto.BusinessHourDtos
+                .OrderBy(businessHourDto => (int)Enum.Parse(typeof(DayOfWeek), businessHourDto.Day))
+                .ThenBy(businessHourDto => businessHourDto.OpenTime)
+                .ToList();
 
             // Return the selected restaurant
             return new ResponseDto<SelectedRestaurantDto>()

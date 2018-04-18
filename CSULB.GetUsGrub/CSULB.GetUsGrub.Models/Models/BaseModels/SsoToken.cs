@@ -18,6 +18,6 @@ namespace CSULB.GetUsGrub.Models
         public int? Id { get; set; }
         public string Token { get; set; }
         [NotMapped]
-        public SsoTokenPayload SsoTokenPayload { get; set; }
+        public SsoTokenPayloadDto SsoTokenPayloadDto { get; set; }
     }
 }

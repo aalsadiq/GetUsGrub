@@ -4,7 +4,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
     /// The abstract <c>RestaurantSelectionManager</c> class.
-    /// Contains all methods annd properties in regards to selecting a restaurant for a user.
+    /// Created an abstract base class to reduce code redundancy.
+    /// Contains all methods and properties in regards to selecting a restaurant for a user.
     /// <para>
     /// @author: Jennifer Nguyen
     /// @updated: 04/08/2018
@@ -13,7 +14,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     public abstract class RestaurantSelectionManager
     {
         // Constants
-        public const double MilesToMetersMetric = 1609.34;
+        public const decimal MilesToMetersUnitConversion = 1609.344M;
 
         // Read-only accessors
         public readonly RestaurantSelectionDto RestaurantSelectionDto;
@@ -49,9 +50,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="distanceInMiles"></param>
         /// <returns>A double type that represents the distance in meters.</returns>
-        public double ConvertDistanceInMilesToMeters(double distanceInMiles)
+        public decimal ConvertDistanceInMilesToMeters(decimal distanceInMiles)
         {
-            return distanceInMiles * MilesToMetersMetric;
+            return distanceInMiles * MilesToMetersUnitConversion;
         }
     }
 }

@@ -25,30 +25,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         }
 
         /// <summary>
-        /// The CheckIfSsoTokenExists method.
-        /// Checks if there is an SSO token in the database.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/22/2018
-        /// </para>
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public ResponseDto<bool> CheckIfSsoTokenExists(string token)
-        {
-            using (var authenticationGateway = new AuthenticationGateway())
-            {
-                var gatewayResult = authenticationGateway.GetValidSsoToken(token);
-                return new ResponseDto<bool>()
-                {
-                    // Returns true if SsoToken exists
-                    Data = gatewayResult.Data != null,
-                    Error = gatewayResult.Error
-                };
-            }
-        }
-
-        /// <summary>
         /// The CheckIfTokenIsJsonWebToken method.
         /// Checks if the token is a valid Json web Token.
         /// <para>
@@ -65,7 +41,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<bool>()
                 {
                     Data = false,
-                    Error = "Token is not a well formed Json Web Token (JWT)."
+                    Error = ValidationErrorMessages.INVALID_TOKEN
                 };
             }
 
@@ -73,6 +49,30 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 Data = true
             };
+        }
+
+        /// <summary>
+        /// The CheckIfSsoTokenExists method.
+        /// Checks if there is an SSO token in the database.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 03/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public ResponseDto<bool> CheckIfSsoTokenExists(string token)
+        {
+            using (var ssoGateway = new SsoGateway())
+            {
+                var gatewayResult = ssoGateway.GetValidSsoToken(token);
+                return new ResponseDto<bool>()
+                {
+                    // Returns true if SsoToken exists
+                    Data = gatewayResult.Data != null,
+                    Error = gatewayResult.Error
+                };
+            }
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<bool>()
                 {
                     Data = false,
-                    Error = "Token is not valid."
+                    Error = ValidationErrorMessages.INVALID_TOKEN
                 };
             }
 

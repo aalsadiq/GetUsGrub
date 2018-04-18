@@ -1,14 +1,14 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
     /// <summary>
-    /// The <c>SsoTokenPayload</c> class.
+    /// The <c>SsoTokenPayloadDto</c> class.
     /// Contains properties associated with the keys in a SSO Token Payload.
     /// <para>
     /// @author: Jennifer Nguyen
     /// @updated: 04/09/2018
     /// </para>
     /// </summary>
-    public class SsoTokenPayload
+    public class SsoTokenPayloadDto
     {
         // Automatic properties
         public string Username { get; set; }

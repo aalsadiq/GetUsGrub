@@ -18,10 +18,10 @@ namespace CSULB.GetUsGrub.Controllers
     public class UserProfileController : ApiController
     {
         [HttpGet]
-        [AllowAnonymous] // TODO: Remove for deployment
+        [AllowAnonymous] // TODO: remember to change localhosts to 8080
         [Route("User")]
-        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
-        public IHttpActionResult GetProfile([FromBody] string username)
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        public IHttpActionResult GetProfile(string username)
         {
             if (!ModelState.IsValid)
             {
@@ -37,7 +37,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
 
-                return Ok(response);
+                return Ok(response.Data); //TODO: make sure to have responses as response.Data
             }
 
             catch (Exception e)
@@ -81,41 +81,38 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
-        public IHttpActionResult ProfileImageUpload([FromBody] UserProfileDto user)
+        public IHttpActionResult ProfileImageUpload([FromBody] HttpPostedFileBase user)//UserProfileDto
         {
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {
                 //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
+                return BadRequest("Something went wrong in controller.");
             }
             try
             {
-
+                //work in progress... (testing...)
+                string directory = @"C:\Users\Angelica\Desktop\TEST\";
+                if(user!= null && user.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(user.FileName);
+                    user.SaveAs(Path.Combine(directory, fileName));
+                }
                 
-                // full path to file in temp location
-                var filePath = Path.GetTempFileName();
-                Console.WriteLine(filePath);
-       
-                
-     
-
-                //string filePath = Path.Combine(HttpRuntime.AppDomainAppPath);
+                //var filePath = user.DisplayPicture;
                 //Console.WriteLine("This is the image path" + filePath);
-                //var filePath = HttpContext.Current.Server.MapPath("~/Userimage/" + user.DisplayPicture);
-                //Userimage myfolder name where i want to save my image
-                //postedFile.SaveAs(filePath);
-                ////Creating a manager to then call ProfileImageUpload.
+                //Creating a manager to then call ProfileImageUpload.
                 //var manager = new UserProfileManager();
-                ////Calling ProfileImageUpload method to edit the given user.
+                //Calling ProfileImageUpload method to edit the given user.
                 //var response = manager.ProfileImageUpload(user);
-                ////Checks the response from ProfileImageUpload. If error is null, then it was successful.
+                //Checks the response from ProfileImageUpload. If error is null, then it was successful.
                 //if (response.Error != null)
                 //{
                 //    //Will return a bad request if error occured in manager.
                 //    return BadRequest(response.Error);
                 //}
-                return Ok("Image has been updated");
+                //return Ok("Image has been updated");
+                return Ok(user);
             }
             catch (Exception)
             {

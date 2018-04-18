@@ -1,19 +1,7 @@
 <template>
     <v-toolbar id="header-toolbar" dark fixed>
-      <div v-show="!showRestaurantSelection()">
+      <div>
         <router-link to="/">
-          <v-btn flat class="home-btn">
-            <v-icon>home</v-icon>
-            <v-toolbar-title>
-              <span id="toolbar-title">
-                GetUsGrub
-              </span>
-            </v-toolbar-title>
-          </v-btn>
-        </router-link>
-      </div>
-      <div v-show="showRestaurantSelection()">
-        <router-link to="/RestaurantSelection/Registered">
           <v-btn flat class="home-btn">
             <v-icon>home</v-icon>
             <v-toolbar-title>
@@ -75,8 +63,6 @@
 </template>
 
 <script>
-import jwt from 'jsonwebtoken'
-
 export default {
   data () {
     return {
@@ -84,17 +70,6 @@ export default {
     }
   },
   methods: {
-    showRestaurantSelection () {
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
-          return true
-        } else {
-          return false
-        }
-      } catch (ex) {
-        return false
-      }
-    },
     showWithoutAuthentication () {
       try {
         if (this.$store.state.authenticationToken === null) {

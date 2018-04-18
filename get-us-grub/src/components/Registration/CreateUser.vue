@@ -25,7 +25,6 @@
         </v-layout>
         <v-layout>
           <v-flex xs12>
-            <!-- v-for="error in errors" :key=error -->
             <v-card id="error-card">
               <p v-for="error in errors" :key="error">
                 {{ error }}

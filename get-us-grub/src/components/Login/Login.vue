@@ -31,8 +31,8 @@
           ></v-text-field>
         <v-btn color="primary" @click="LoginUser" :disabled="!valid" :loading="loading">Sign In</v-btn>
         <div class="text-right">
-          <router-link class="md-accent" tag="md-button" to="/recover">Forgot password?</router-link>
-          <router-link class="md-accent" tag="md-button" to="/Registration">Don't have an account?</router-link>
+          <router-link class="md-accent" to="/recover">Forgot password?</router-link>
+          <router-link class="md-accent" to="/Registration">Don't have an account?</router-link>
         </div>
       </v-form>
     </v-container>

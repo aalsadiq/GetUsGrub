@@ -19,20 +19,12 @@
 
 <script>
 import SelectRestaurant from './SelectRestaurant'
-import jwt from 'jsonwebtoken'
 
 export default {
   name: 'RestaurantSelectionUnregisteredUserMain',
   // Adding Vue components dependencies
   components: {
     SelectRestaurant
-  },
-  beforeCreate () {
-    try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
-        this.$router.push({path: '/RestaurantSelection/Registered'})
-      }
-    } catch (ex) {}
   }
 }
 </script>

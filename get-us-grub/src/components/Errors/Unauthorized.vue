@@ -1,6 +1,5 @@
 <template>
   <div id="home">
-    <app-header/>
     <img src="@/assets/GetUsGrub.png">
     <p>Unauthorized</p>
     <v-btn @click="goBack" color="cyan darken-2">
@@ -13,13 +12,11 @@
 </template>
 
 <script>
-import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
 
 export default {
-  name: 'Home',
+  name: 'Unauthorized',
   components: {
-    AppHeader,
     AppFooter
   },
   methods: {

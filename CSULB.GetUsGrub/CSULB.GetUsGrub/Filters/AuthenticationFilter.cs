@@ -1,16 +1,27 @@
-﻿using System.Net;
+﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using CSULB.GetUsGrub.BusinessLogic;
-using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub
 {
-    public class AuthenticationTokenFilter :  AuthorizationFilterAttribute
+    public class AuthenticationFilter :  AuthorizationFilterAttribute
     {
+        private readonly bool _isActive = true;
+
+        public AuthenticationFilter() { }
+
+        public AuthenticationFilter(bool isActive)
+        {
+            _isActive = isActive;
+        }
+
         public override void OnAuthorization(HttpActionContext filterContext)
         {
+            // If not active, then skip this authentication filter
+            if (!_isActive) return;
 
             if (!IsUserAuthorized(filterContext))
             {

@@ -38,6 +38,8 @@ namespace CSULB.GetUsGrub
                 constraints: null
             );
 
+            // Registering Authentication Filter in the pipeline
+            config.Filters.Add(new AuthenticationFilter());
             // Add GlobalSecurityExceptionFilter for User Access Control
             // Last Updated: 03/14/18 by Rachel Dang
             config.Filters.Add(new GlobalSecurityExceptionFilter());

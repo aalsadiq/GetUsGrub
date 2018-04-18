@@ -18,7 +18,7 @@
           <v-btn
             color="red lighten-3"
             class="nav-btn"
-            v-show="showWithoutAuthentication()"
+            v-if="showWithoutAuthentication()"
           >
             <span class="btn-text">REGISTER</span>
           </v-btn>
@@ -27,7 +27,7 @@
           <v-btn
             color="red lighten-3"
             class="nav-btn"
-            v-show="showWithoutAuthentication()"
+            v-if="showWithoutAuthentication()"
           >
             <span class="btn-text">LOGIN</span>
           </v-btn>
@@ -53,7 +53,7 @@
           <v-btn
             color="grey"
             class="nav-btn"
-            v-show="!showWithoutAuthentication()"
+            v-if="!showWithoutAuthentication()"
             @click="logout"
           >
             <span class="btn-text">LOGOUT</span>

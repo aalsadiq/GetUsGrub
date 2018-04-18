@@ -62,15 +62,14 @@
             <span class="btn-text">PROFILE</span>
           </v-btn>
         </router-link>
-        <router-link to="/Logout">
           <v-btn
             color="grey"
             class="nav-btn"
             v-show="!showWithoutAuthentication()"
+            @click="logout"
           >
             <span class="btn-text">LOGOUT</span>
           </v-btn>
-        </router-link>
       </div>
     </v-toolbar>
 </template>
@@ -106,6 +105,11 @@ export default {
       } catch (ex) {
         return false
       }
+    },
+    logout () {
+      this.$store.dispatch('setAuthenticationToken', null)
+      location.reload()
+      this.$router.push({path: '/'})
     }
   }
 }

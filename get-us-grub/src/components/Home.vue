@@ -8,8 +8,8 @@
         <img src="@/assets/GetUsGrub.png">
         <p>Welcome!</p>
       </div>
-      <app-footer/>
-    </div>
+    <app-footer/>
+  </div>
 </template>
 
 <script>

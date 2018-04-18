@@ -1,10 +1,12 @@
 <template>
   <div>
     <v-container class="scroll-y" id="scroll-target">
-      <v-container id="main">
+      <v-container id="restaurant-selection-registered-user">
         <app-header/>
-        <!-- Main page of the restaurant selector -->
-        <select-restaurant/>
+        <v-container id="select-restaurant">
+          <!-- Main page of the restaurant selector -->
+          <select-restaurant/>
+        </v-container>
         <app-footer/>
       </v-container>
     </v-container>
@@ -12,13 +14,13 @@
 </template>
 
 <script>
-import SelectRestaurant from '@/components/RestaurantSelection/SelectRestaurant'
+import SelectRestaurant from './SelectRestaurant'
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
 import jwt from 'jsonwebtoken'
 
 export default {
-  name: 'RestaurantSelectionMain',
+  name: 'RestaurantSelectionRegisteredUserMain',
   // Adding Vue components dependencies
   components: {
     AppHeader,
@@ -43,10 +45,12 @@ export default {
 
 <style>
 #scroll-target {
-  max-height: 50.5em;
-  margin: -0.8em 1em 0em 1em;
+  max-height: 56.5em;
+  position: absolute;
+  overflow-x: hidden;
 }
-#main {
+#restaurant-selection-registered-user {
   max-width: 1200px;
+  margin: auto;
 }
 </style>

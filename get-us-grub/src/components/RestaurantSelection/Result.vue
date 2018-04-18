@@ -43,7 +43,7 @@
     </v-card>
     <v-flex xs12>
       <!-- Confirm that user will be going to this restaurant -->
-      <v-btn @click="confirmRestaurant" color="cyan darken-2" :disabled="!this.responseValid">
+      <v-btn @click="confirmRestaurant" color="teal lighten-2" :disabled="!this.responseValid">
         <span class="btn-text">
           CONFIRM
         </span>
@@ -54,7 +54,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import axios from 'axios'
 import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap'
 
 export default {
@@ -77,43 +76,10 @@ export default {
     restaurant: state => state.restaurantSelection.selectedRestaurant
   }),
   methods: {
-    // Submitting information to the backend
-    submit () {
-      this.responseValid = false
-      this.loader = 'loading'
-      // Sending GET Request
-      axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
-        // Paramaters for URL queries
-        params: {
-          foodType: this.$store.state.restaurantSelection.request.foodType.type,
-          city: this.$store.state.restaurantSelection.request.city,
-          state: this.$store.state.restaurantSelection.request.state.abbreviation,
-          distanceInMiles: this.$store.state.restaurantSelection.request.distance,
-          avgFoodPrice: this.$store.state.restaurantSelection.request.avgFoodPrice
-        }
-      // Receiving successful response
-      }).then(response => {
-        if (response.data != null) {
-          this.showAlert = false
-          this.responseValid = true
-          this.$store.dispatch('setSelectedRestaurant', response.data)
-          this.showRestaurantTitleBar = true
-        } else {
-          this.showAlert = true
-          this.responseValid = true
-        }
-      // Receiving an unsuccessful response
-      }).catch(error => {
-        this.responseValid = true
-        // Route to the General Error page
-        this.$router.push('GeneralError')
-        Promise.reject(error)
-      })
-    },
     // Route to bill splitter and set isConfirmed variable in store to true
     confirmRestaurant () {
       this.$store.state.restaurantSelection.selectedRestaurant.isConfirmed = true
-      this.$router.push('RestaurantBillSplitter')
+      this.$router.push({path: '/RestaurantBillSplitter'})
     }
   }
 }
@@ -121,7 +87,7 @@ export default {
 
 <style>
 #restaurant-selection-response {
-  margin: 0 0 7em 0;
+  margin: 1em 0.7em 7em 0em;
 }
 #result-bar {
   background-color: #e49f9f !important

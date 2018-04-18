@@ -5,7 +5,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
@@ -256,7 +255,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
-        // TODO @Ahmed Check with @Rachel how this should be modified to help both [-Ahmed]
         /// <summary>
         /// 
         /// This Method checks if the token is Authenticated or not then we extract the princible 

@@ -1,8 +1,7 @@
-﻿using System;
+﻿using CSULB.GetUsGrub.BusinessLogic;
+using System;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using CSULB.GetUsGrub.BusinessLogic;
-using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -42,7 +41,7 @@ namespace CSULB.GetUsGrub.Controllers
                 }
 
                 // Otherwise, return the preferences
-                return Ok(preferences);
+                return Ok(preferences.Data);
             }
             catch (Exception exception)
             {

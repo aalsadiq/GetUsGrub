@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.Controllers
                 // Model Binding Validation
                 if (!ModelState.IsValid)
                 {
-                   return BadRequest(ModelState);
+                   return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
                 }
                 var loginManager = new LoginManager();
                 var loginResponse = loginManager.LoginUser(loginDto);
@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                return BadRequest("Something Went Completely Wrong!");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
     }

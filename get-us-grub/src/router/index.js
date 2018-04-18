@@ -3,8 +3,10 @@ import Router from 'vue-router'
 import 'vuetify/dist/vuetify.min.css'
 import ResourceNotFound from '@/components/Errors/ResourceNotFound.vue'
 import GeneralError from '@/components/Errors/GeneralError.vue'
+import Unauthorized from '@/components/Errors/Unauthorized.vue'
+import Forbidden from '@/components/Errors/Forbidden.vue'
+import InternalServerError from '@/components/Errors/InternalServerError.vue'
 import Home from '@/components/Home.vue'
-import RestaurantSelectionRegisteredUser from '@/components/RestaurantSelection/RegisteredUser/Main.vue'
 import Registration from '@/components/Registration/Registration.vue'
 import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
 import CreateUser from '@/components/AdminUserManagement/AdminCreate.vue'
@@ -17,8 +19,9 @@ import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/Restaura
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 import Login from '@/components/Login/Login.vue'
-import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap.vue'
+import Testing from '@/components/Login/DecodeTestingGround.vue'
 import Profile from '@/components/Profile/Profile.vue'
+import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
@@ -29,28 +32,54 @@ export default new Router({
     {
       path: '/ResourceNotFound',
       name: 'ResourceNotFound',
-      component: ResourceNotFound
+      component: ResourceNotFound,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Resource Not Found'
+        next()
+      }
     },
     {
       path: '/GeneralError',
       name: 'GeneralError',
-      component: GeneralError
+      component: GeneralError,
+      beforeEnter: (to, from, next) => {
+        document.title = 'General Error'
+        next()
+      }
+    },
+    {
+      path: '/Unauthorized',
+      name: 'Unauthorized',
+      component: Unauthorized,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Unauthorized'
+        next()
+      }
+    },
+    {
+      path: '/Forbidden',
+      name: 'Forbidden',
+      component: Forbidden,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Forbidden'
+        next()
+      }
+    },
+    {
+      path: '/InternalServerError',
+      name: 'InternalServerError',
+      component: InternalServerError,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Internal Server Error'
+        next()
+      }
     },
     {
       path: '/',
       name: 'Home',
       component: Home,
       beforeEnter: (to, from, next) => {
-        document.title = 'Search Restaurant'
-        next()
-      }
-    },
-    {
-      path: '/RestaurantSelection/Registered',
-      name: 'RestaurantSelectionRegisteredUser',
-      component: RestaurantSelectionRegisteredUser,
-      beforeEnter: (to, from, next) => {
-        document.title = 'Search Restaurant'
+        document.title = 'Home'
         next()
       }
     },
@@ -108,15 +137,6 @@ export default new Router({
       }
     },
     {
-      path: '/GoogleEmbedMap',
-      name: 'GoogleEmbedMap',
-      component: GoogleEmbedMap,
-      beforeEnter: (to, from, next) => {
-        document.title = 'Directions to your Restaurant?!?!?!?!'
-        next()
-      }
-    },
-    {
       path: '/Profile',
       name: 'Profile',
       component: Profile,
@@ -151,6 +171,24 @@ export default new Router({
       component: Login,
       beforeEnter: (to, from, next) => {
         document.title = 'Login Brh!'
+        next()
+      }
+    },
+    {
+      path: '/Testing',
+      name: 'Testing',
+      component: Testing,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Testing!'
+        next()
+      }
+    },
+    {
+      path: '/FirstTimeRegistration',
+      name: 'FirstTimeRegistration',
+      component: FirstTimeRegistration,
+      beforeEnter: (to, from, next) => {
+        document.title = 'First Time Registration'
         next()
       }
     },

@@ -2,66 +2,40 @@
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using CSULB.GetUsGrub.BusinessLogic;
-using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub
 {
-    public class AuthenticationTokenFilter :  AuthorizationFilterAttribute
+    public class AuthenticationFilter :  AuthorizationFilterAttribute
     {
+        private readonly bool _isActive = true;
+
+        public AuthenticationFilter() { }
+
+        public AuthenticationFilter(bool isActive)
+        {
+            _isActive = isActive;
+        }
+
         public override void OnAuthorization(HttpActionContext filterContext)
         {
-
-            if (!IsUserAuthorized(filterContext))
-            {
-                ShowAuthenticationError(filterContext);
-                return;
-            }
-            base.OnAuthorization(filterContext);
+            // If not active, then skip this authentication filter
+            if (!_isActive) return;
         }
 
-        // Message shown if there is an error
-        private static void ShowAuthenticationError(HttpActionContext filterContext)
+        /// <summary>
+        /// 
+        /// This method would throw an un authorized message if any expeption is thrown
+        /// 
+        /// </summary>
+        /// <returns>
+        /// Task with the response of 401 that the user is unauthenticated
+        /// </returns>
+        private HttpResponseMessage UserNotAuthenticated()
         {
-            var responseDTO = new ResponseDto<HttpResponseMessage>
-            {
-                Error =  "Code : 401"+ "Message : Unable to access, Please login again"
-            };
-            filterContext.Response =
-                filterContext.Request.CreateResponse(HttpStatusCode.Unauthorized, responseDTO);
-        }
+            // Setting the message code to be a 401 
+            var response = new HttpResponseMessage() { StatusCode = HttpStatusCode.Unauthorized };
 
-        // Checking if the user is Authenticated and Authorized to make the requests
-        public bool IsUserAuthorized(HttpActionContext actionContext)
-        {
-            //fetch authorization token from header
-            var authHeader = FetchFromHeader(actionContext);
-
-
-            if (authHeader != null)
-            {
-                var authenticationTokenManager = new AuthenticationTokenManager();
-                AuthenticationToken userPayloadToken = null;
-
-                if (userPayloadToken != null)
-                {
-                    //@TODO: I need to finish the filter and the Controler
-                    
-                }
-
-            }
-            return false;
-        }
-
-        private string FetchFromHeader(HttpActionContext actionContext)
-        {
-            string requestToken = null;
-            var authRequest = actionContext.Request.Headers.Authorization;
-            if (authRequest != null)
-            {
-                requestToken = authRequest.Parameter;
-            }
-            return requestToken;
+            return response;
         }
     }
 }

@@ -11,5 +11,6 @@
         public const string INDIVIDUAL = "Individual";
         public const string RESTAURANT = "Restaurant";
         public const string ADMIN = "Admin";
+        public const string FIRSTTIMEUSER = "FirstTimeUser";
     }
 }

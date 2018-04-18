@@ -6,17 +6,16 @@
 
 <script>
 
-  export default {
-    name: 'ProfileHeader',
-    components: {
-      
-    },
-    props: ['displayName'],
-    data () {
-      return {
-      }
+export default {
+  name: 'ProfileHeader',
+  components: {
+  },
+  props: ['displayName'],
+  data () {
+    return {
     }
   }
+}
 </script>
 
 <style scoped>

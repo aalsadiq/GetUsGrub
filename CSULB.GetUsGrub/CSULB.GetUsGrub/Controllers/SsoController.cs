@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -14,6 +15,7 @@ namespace CSULB.GetUsGrub
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
+    [RoutePrefix("Sso")]
     public class SsoController : ApiController
     {
         /// <summary>
@@ -27,9 +29,10 @@ namespace CSULB.GetUsGrub
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [Route("FirstTimeUser")]
         // TODO: @Jenn Update origins to reflect SSO request when demoing [-Jenn]
         //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult RegisterFirstTimeSsoUser(HttpRequestMessage request)
+        public IHttpActionResult Registration(HttpRequestMessage request)
         {
             try
             {
@@ -49,10 +52,19 @@ namespace CSULB.GetUsGrub
 
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
+        }
+        
+        [HttpPost]
+        [Route("Login")]
+        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult Login(HttpRequestMessage request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

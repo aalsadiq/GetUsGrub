@@ -30,6 +30,7 @@ namespace CSULB.GetUsGrub.Models
         public virtual AuthenticationToken AuthenticationToken { get; set; }
         public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
         public virtual UserClaims UserClaims { get; set; }
+        public virtual ICollection<FoodPreference> FoodPreferences { get; set; }
 
         // Constructors
         public UserAccount() { }

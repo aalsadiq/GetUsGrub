@@ -1,27 +1,28 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { setTimeout } from 'timers'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   // A state is a global variable that every Vue component can reference
   state: {
-    username: 'username1',
+    isAuthenticated: true,
+    authenticationToken: null,
+    username: '',
+    timer: null,
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
     uniqueUserCounter: 0,
     menuItems: [
     ],
+    restaurantMenus: [
+    ],
     billItems: [
     ],
     billUsers: [
     ],
-    isAuthenticated: true,
-    authenticationToken: null,
-
-    username: '',
-
     // States pertaining to restaurant selection
     restaurantSelection: {
       request: {
@@ -70,6 +71,9 @@ export const store = new Vuex.Store({
         password => !!password || 'Password is required',
         password => password.length >= 8 || 'Password must be at least 8 characters',
         password => password.length < 64 || 'Password must be at most 64 characters'
+      ],
+      securityQuestionRules: [
+        securityQuestion => !!securityQuestion || 'Security question is required'
       ],
       securityAnswerRules: [
         securityAnswer => !!securityAnswer || 'Security answer is required'
@@ -262,6 +266,8 @@ export const store = new Vuex.Store({
         temp = temp + element.price
       })
       return temp
+    },
+    getClaim: state => {
     }
   },
   // Mutations are called to change the states in the store
@@ -272,7 +278,6 @@ export const store = new Vuex.Store({
     destinationAddress: (state, payload) => {
       state.destinationAddress = payload
     },
-    // TODO: @Ryan Please lowercase the first letter of your methods [-Jenn]
     addToDictionary: (state, payload) => {
       state.menuItems.push({
         name: payload[0],
@@ -284,6 +289,12 @@ export const store = new Vuex.Store({
       state.billUsers.push({
         name: payload[0],
         uID: payload[1]
+      })
+    },
+    populateRestaurantMenus: (state, payload) => {
+      payload.forEach(function (element, index) {
+        console.log(element)
+        this.$set(state.restaurantMenus[index], restaurantMenus, payload)
       })
     },
     editDictionaryItem: (state, payload) => {
@@ -331,6 +342,15 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.address = payload.address
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
+    },
+    // TODO: @Ahmed It is better to make it a generic mutation to a state than naming it a "loginUser" mutation [-Jenn]
+    // Look at setAuthenticationToken (I am using this to set token to null when user clicks on the logout button)
+    loginUser: (state, payload) => {
+      state.isAuthenticated = true
+      state.authenticationToken = payload.auth
+    },
+    setAuthenticationToken: (state, payload) => {
+      state.authenticationToken = payload
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -356,6 +376,11 @@ export const store = new Vuex.Store({
       setTimeout(function () {
         console.log('Added New Bill User: ' + payload)
         context.commit('addBillUser', payload)
+      }, 250)
+    },
+    populateRestaurantMenus: (context, payload) => {
+      setTimeout(function () {
+        context.commit('populateRestaurantMenus', payload)
       }, 250)
     },
     editDictionaryItem: (context, payload) => {
@@ -386,6 +411,17 @@ export const store = new Vuex.Store({
     setSelectedRestaurant: (context, payload) => {
       setTimeout(function () {
         context.commit('setSelectedRestaurant', payload)
+      }, 250)
+    },
+    // TODO: @Ahmed same with this one. [-Jenn]
+    loginUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('loginUser', payload)
+      }, 250)
+    },
+    setAuthenticationToken: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setAuthenticationToken', payload)
       }, 250)
     }
   }

@@ -1,10 +1,20 @@
 <template>
   <div>
     <app-header/>
-    <h1>{{ title }}</h1>
-    <ul>
+    <div>
+      <h1>{{ title }}</h1>
+    </div>
+    <div class="list">
       <li v-for='preference in foodPreferences' :key='preference'>{{ preference }}</li>
-    </ul>
+    </div>
+    <div>
+      <router-link to="/Profile">
+        <v-btn dark="true">Back</v-btn>
+      </router-link>
+      <router-link to=/FoodPreferences/Edit>
+        <v-btn dark="true">Edit</v-btn>
+      </router-link>
+    </div>
     <app-footer/>
   </div>
 </template>
@@ -30,16 +40,16 @@ export default {
   },
 
   created () {
-    axios.get('http://localhost:8081/FoodPreferences', {
+    axios.get('http://localhost:8081/FoodPreferences/GetPreferences', {
       headers: {
         'Access-Control-Allow-Origin': '*'
       },
       params: {
-        username: 'username27'
+        username: 'username17'
       }
     }).then(response => {
-      console.log(response.data)
-      this.foodPreferences = response.data
+      console.log(response.data.data)
+      this.foodPreferences = response.data.data
     }).catch(e => {
       this.errors.push(e)
     })
@@ -53,8 +63,9 @@ export default {
 h1, h2 {
   font-weight: normal;
 }
-ul {
+.list {
     display: inline-block;
+    background-color: transparent;
 }
 li {
   list-style-type: circle;

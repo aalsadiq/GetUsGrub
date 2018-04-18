@@ -8,6 +8,9 @@
     /// </summary>
     public class ResourceConstant
     {
+        // Resource Types for First Time Users
+        public const string FIRSTTIMEUSER = "IsFirstTimeUser";
+
         // Resource Types for User Management
         public const string USER = "User";
 

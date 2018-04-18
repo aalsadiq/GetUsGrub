@@ -45,8 +45,8 @@ export default {
         username: 'username17'
       }
     }).then(response => {
-      console.log(response.data.data)
-      this.foodPreferences = response.data.data
+      console.log(response.data)
+      this.foodPreferences = response.data
     }).catch(e => {
       this.errors.push(e)
     })

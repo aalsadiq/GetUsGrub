@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { setTimeout } from 'timers'
 
 Vue.use(Vuex)
 
@@ -15,6 +16,8 @@ export const store = new Vuex.Store({
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
     uniqueUserCounter: 0,
     menuItems: [
+    ],
+    restaurantMenus: [
     ],
     billItems: [
     ],
@@ -275,7 +278,6 @@ export const store = new Vuex.Store({
     destinationAddress: (state, payload) => {
       state.destinationAddress = payload
     },
-    // TODO: @Ryan Please lowercase the first letter of your methods [-Jenn]
     addToDictionary: (state, payload) => {
       state.menuItems.push({
         name: payload[0],
@@ -287,6 +289,12 @@ export const store = new Vuex.Store({
       state.billUsers.push({
         name: payload[0],
         uID: payload[1]
+      })
+    },
+    populateRestaurantMenus: (state, payload) => {
+      payload.forEach(function (element, index) {
+        console.log(element)
+        this.$set(state.restaurantMenus[index], restaurantMenus, payload)
       })
     },
     editDictionaryItem: (state, payload) => {
@@ -368,6 +376,11 @@ export const store = new Vuex.Store({
       setTimeout(function () {
         console.log('Added New Bill User: ' + payload)
         context.commit('addBillUser', payload)
+      }, 250)
+    },
+    populateRestaurantMenus: (context, payload) => {
+      setTimeout(function () {
+        context.commit('populateRestaurantMenus', payload)
       }, 250)
     },
     editDictionaryItem: (context, payload) => {

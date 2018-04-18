@@ -43,6 +43,6 @@ export default {
 #registration {
   max-width: 1200px;
   padding-top: -2em;
-  margin: -2em 0em 0em 7%;
+  margin: 4em 0em 0em 7%;
 }
 </style>

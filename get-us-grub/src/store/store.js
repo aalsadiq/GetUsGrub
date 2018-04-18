@@ -335,9 +335,14 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
     },
+    // TODO: @Ahmed It is better to make it a generic mutation to a state than naming it a "loginUser" mutation [-Jenn]
+    // Look at setAuthenticationToken (I am using this to set token to null when user clicks on the logout button)
     loginUser: (state, payload) => {
       state.isAuthenticated = true
       state.authenticationToken = payload.auth
+    },
+    setAuthenticationToken: (state, payload) => {
+      state.authenticationToken = payload
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -395,9 +400,15 @@ export const store = new Vuex.Store({
         context.commit('setSelectedRestaurant', payload)
       }, 250)
     },
+    // TODO: @Ahmed same with this one. [-Jenn]
     loginUser: (context, payload) => {
       setTimeout(function () {
         context.commit('loginUser', payload)
+      }, 250)
+    },
+    setAuthenticationToken: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setAuthenticationToken', payload)
       }, 250)
     }
   }

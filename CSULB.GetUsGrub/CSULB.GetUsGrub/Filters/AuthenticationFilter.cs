@@ -1,23 +1,29 @@
-﻿using System;
-using System.Diagnostics;
+﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using CSULB.GetUsGrub.BusinessLogic;
-using CSULB.GetUsGrub.DataAccess;
-using CSULB.GetUsGrub.Models;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
 namespace CSULB.GetUsGrub
 {
-    public class AuthenticationTokenFilter :  DelegatingHandler
+    public class AuthenticationFilter :  AuthorizationFilterAttribute
     {
-        protected HttpResponseMessage Send(HttpRequestMessage request,
-           CancellationToken cancellationToken)
+        private readonly bool _isActive = true;
+
+        public AuthenticationFilter() { }
+
+        public AuthenticationFilter(bool isActive)
         {
-            Microsoft.IdentityModel.Tokens.SecurityToken validatedToken;
-            Debug.WriteLine("Here");
-            try
+            _isActive = isActive;
+        }
+
+        public override void OnAuthorization(HttpActionContext filterContext)
+        {
+            // If not active, then skip this authentication filter
+            if (!_isActive) return;
+
+            if (!IsUserAuthorized(filterContext))
             {
                 AuthenticationTokenManager tokenManager = new AuthenticationTokenManager();
                 AuthenticationToken authenticationToken;

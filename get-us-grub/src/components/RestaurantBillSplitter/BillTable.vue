@@ -1,15 +1,27 @@
 <template>
   <div class="bill-table">
     <h1>Your Bill</h1>
+    <v-divider/>
     <div>
       <h1 v-if="!billItems.length"> Drag Items Here!</h1>
       <draggable class="bill" v-bind:list="billItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
         <div class="bill-item" v-for="(billItem, billItemIndex) in billItems" :key="billItemIndex">
-          {{billItem.name}} : ${{billItem.price}}<br />
-          <edit-item :editType="editType" :itemIndex="billItemIndex" :Item="billItem" />
-          <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
-          <manage-users :billItem="billItem" />
-          <v-divider />
+          <bill-table-pie-chart :billItem="billItem" :width="100" :height="100"></bill-table-pie-chart>
+          <div class="bill-item-controls">
+            {{billItem.name}} : ${{billItem.price}}
+            <br />
+            <ul style="list-style-type: none">
+              <li>
+                <edit-item :editType="editType" :itemIndex="billItemIndex" :Item="billItem" />
+              </li>
+              <li>
+                <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
+              </li>
+              <li>
+                <manage-users :billItem="billItem" />
+              </li>
+            </ul>
+          </div>
           <div v-for="billUser in billUsers" :key="billUser">
             <div v-for="uniqueID in billItem.selected" :key="uniqueID">
               <div v-if="billUser.uID === uniqueID">
@@ -31,6 +43,7 @@ import AddBillUser from './AddBillUser.vue'
 import ManageUsers from './ManageUsers.vue'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
+import BillTablePieChart from './BillTablePieChart'
 
 export default {
   name: 'BillTable',
@@ -39,6 +52,7 @@ export default {
     'delete-item': DeleteItem,
     'add-bill-user': AddBillUser,
     'manage-users': ManageUsers,
+    'bill-table-pie-chart': BillTablePieChart,
     draggable
   },
   directives: { money: VMoney },
@@ -73,6 +87,15 @@ export default {
 </script>
 
 <style>
+  bill-table-pie-chart {
+    max-height: 100px;
+    grid-column: 0;
+  }
+
+  bill-item-controls {
+    grid-column: 1;
+  }
+
   .bill-table {
     grid-column: 2 / 3;
     grid-row: 1 / 4;
@@ -90,15 +113,18 @@ export default {
     }
 
   .bill {
+    display: grid;
+    grid-template-columns: auto auto;
     min-height: 20px;
   }
 
     .bill > .bill-item {
+      display: grid;
+      grid-template-columns: 50% 50%;
       margin: 10px;
       padding: 10px;
       background-color: aquamarine;
       border-radius: 10px;
-      text-align: center;
     }
 
   .total {

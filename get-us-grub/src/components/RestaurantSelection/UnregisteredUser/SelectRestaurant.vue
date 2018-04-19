@@ -116,7 +116,7 @@
 
 <script>
 import axios from 'axios'
-import Result from './Result'
+import Result from '@/components/RestaurantSelection/Result'
 
 export default {
   // Vue component dependencies
@@ -182,9 +182,32 @@ export default {
       }).catch(error => {
         this.valid = true
         this.disable = false
-        // Route to the General Error page
-        this.$router.push('GeneralError')
-        Promise.reject(error)
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({path: '/Unauthorized'})
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({path: '/Forbidden'})
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({path: '/ResourceNotFound'})
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({path: '/InternalServerError'})
+          } else {
+            // Route to the General Error page
+            this.$router.push({path: '/GeneralError'})
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          // Route to the General Error page
+          this.$router.push({path: '/GeneralError'})
+          Promise.reject(error)
+        }
       })
     }
   }

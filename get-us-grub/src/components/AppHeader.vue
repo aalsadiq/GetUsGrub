@@ -1,19 +1,7 @@
 <template>
     <v-toolbar id="header-toolbar" dark fixed>
-      <div v-show="!showRestaurantSelection()">
+      <div>
         <router-link to="/">
-          <v-btn flat class="home-btn">
-            <v-icon>home</v-icon>
-            <v-toolbar-title>
-              <span id="toolbar-title">
-                GetUsGrub
-              </span>
-            </v-toolbar-title>
-          </v-btn>
-        </router-link>
-      </div>
-      <div v-show="showRestaurantSelection()">
-        <router-link to="/RestaurantSelection/Registered">
           <v-btn flat class="home-btn">
             <v-icon>home</v-icon>
             <v-toolbar-title>
@@ -30,7 +18,7 @@
           <v-btn
             color="red lighten-3"
             class="nav-btn"
-            v-show="showWithoutAuthentication()"
+            v-if="showWithoutAuthentication()"
           >
             <span class="btn-text">REGISTER</span>
           </v-btn>
@@ -39,7 +27,7 @@
           <v-btn
             color="red lighten-3"
             class="nav-btn"
-            v-show="showWithoutAuthentication()"
+            v-if="showWithoutAuthentication()"
           >
             <span class="btn-text">LOGIN</span>
           </v-btn>
@@ -62,22 +50,19 @@
             <span class="btn-text">PROFILE</span>
           </v-btn>
         </router-link>
-        <router-link to="/Logout">
           <v-btn
             color="grey"
             class="nav-btn"
-            v-show="!showWithoutAuthentication()"
+            v-if="!showWithoutAuthentication()"
+            @click="logout"
           >
             <span class="btn-text">LOGOUT</span>
           </v-btn>
-        </router-link>
       </div>
     </v-toolbar>
 </template>
 
 <script>
-import jwt from 'jsonwebtoken'
-
 export default {
   data () {
     return {
@@ -85,17 +70,6 @@ export default {
     }
   },
   methods: {
-    showRestaurantSelection () {
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
-          return true
-        } else {
-          return false
-        }
-      } catch (ex) {
-        return false
-      }
-    },
     showWithoutAuthentication () {
       try {
         if (this.$store.state.authenticationToken === null) {
@@ -106,6 +80,11 @@ export default {
       } catch (ex) {
         return false
       }
+    },
+    logout () {
+      this.$store.dispatch('setAuthenticationToken', null)
+      location.reload()
+      this.$router.push({path: '/'})
     }
   }
 }

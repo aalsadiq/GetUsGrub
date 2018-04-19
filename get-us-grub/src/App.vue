@@ -23,10 +23,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin-top: 60px; */
 }
 #router-container {
-  margin-top: 4.5em;
+  margin-top: 3.3em;
 }
 /* Removing scrollbar on page */
 html {
@@ -39,5 +38,6 @@ a {
 }
 .container {
   max-width: 100%;
+  padding: 0px 35px 0px 16px;
 }
 </style>

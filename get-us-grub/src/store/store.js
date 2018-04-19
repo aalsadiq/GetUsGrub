@@ -31,14 +31,6 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantGeoCoordinates: {
-          latitude: null,
-          longitude: null
-        },
-        clientUserGeoCoordinates: {
-          latitude: null,
-          longitude: null
-        },
         restaurantId: 26,
         displayName: '',
         address: {
@@ -275,7 +267,6 @@ export const store = new Vuex.Store({
     destinationAddress: (state, payload) => {
       state.destinationAddress = payload
     },
-    // TODO: @Ryan Please lowercase the first letter of your methods [-Jenn]
     addToDictionary: (state, payload) => {
       state.menuItems.push({
         name: payload[0],

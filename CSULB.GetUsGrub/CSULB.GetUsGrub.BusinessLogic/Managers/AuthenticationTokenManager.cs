@@ -1,17 +1,12 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies;
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.UserAccessControl;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
-using CSULB.GetUsGrub.UserAccessControl;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -19,7 +14,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// AuthenticationTokenManager
     /// holds all the functions that pretains to the Authentication tokens in our system
     /// </summary>
-    public class AuthenticationTokenManager : DelegatingHandler
+    public class AuthenticationTokenManager
     {
         private readonly TokenService _tokenService;
         public AuthenticationTokenManager()
@@ -270,86 +265,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 Data = true
             };
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        protected HttpResponseMessage Send(HttpRequestMessage request,
-            CancellationToken cancellationToken)
-        {
-            Microsoft.IdentityModel.Tokens.SecurityToken validatedToken;
-            Debug.WriteLine("Here");
-            try
-            {
-                
-                AuthenticationToken authenticationToken;
-
-                // Extracting the tokenString from the Header
-                var tokenString = _tokenService.ExtractToken(request);
-
-                // Checking if there is an empty or a null value to the token
-                if (string.IsNullOrEmpty(tokenString))
-                {
-                    // This is done incase the request does not require authentication
-                    return Task.Run(() => SendAsync(request, cancellationToken)).Result;
-                }
-
-
-                // Extract username from  the token
-                var username = _tokenService.GetTokenUsername(tokenString);
-
-                // Checking if the Username is empty or null
-                if (string.IsNullOrEmpty(username))
-                {
-                    return UserNotAuthenticated();
-                }
-
-                using (AuthenticationGateway gateway = new AuthenticationGateway())
-                {
-                    // Getting the Authentication Token Associated with the username
-                    var gatewayResult = gateway.GetAuthenticationToken(username);
-
-                    // Checking if there was an error Generated in the gateway if the string is not the same and its experation time has to be later than now
-                    if (gatewayResult.Error != null || gatewayResult.Data.TokenString != tokenString ||
-                        gatewayResult.Data.ExpiresOn.CompareTo(DateTime.Now) > 0)
-                    {
-                        return UserNotAuthenticated();
-                    }
-
-                    authenticationToken = gatewayResult.Data;
-                }
-
-
-                var tokenPrincible = GetTokenPrincipal(authenticationToken, out validatedToken);
-
-                Thread.CurrentPrincipal = tokenPrincible;
-
-                return Task.Run(() => SendAsync(request, cancellationToken)).Result;
-            }
-            catch (Exception)
-            {
-                return UserNotAuthenticated();
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// This method would throw an un authorized message if any expeption is thrown
-        /// 
-        /// </summary>
-        /// <returns>
-        /// Task with the response of 401 that the user is unauthenticated
-        /// </returns>
-        private HttpResponseMessage UserNotAuthenticated()
-        {
-            // Setting the message code to be a 401 
-            var response = new HttpResponseMessage() { StatusCode = HttpStatusCode.Unauthorized };
-
-            return response;
         }
     }
 }

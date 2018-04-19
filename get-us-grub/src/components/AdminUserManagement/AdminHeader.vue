@@ -1,24 +1,15 @@
 <template>
 <div>
-  <!-- <v-card height="350px"> -->
-        <!-- <v-navigation-drawer id="menu" stateless hide-overlay :mini-variant.sync="mini" v-model="drawer"> -->
+    <!-- <v-navigation-drawer id="menu" stateless hide-overlay :mini-variant.sync="mini" v-model="drawer"> -->
     <v-navigation-drawer permanent absolute v-model="drawer" >
-      <!-- used to navigate through application to work with or without vue-router outside the box-->
-      <!--permanent: remains visible regardless of screensize absolute: Position the element absolutely is false v-model= drawer-->
-      <!--v-toolbar:flat: removes the toolbar box-shadow-->
-      <v-toolbar flat class="transparent"> <!-- the square to the left -->
-      <!--v-list: where our items are held..-->
-        <!-- <v-list class="pa-0"> -->
-          <v-list-tile avatar> <!--avatar: used to set minimum tile height on a single-line list item -->
-            <v-list-tile-avatar>
-              <img src="C:\Users\Angelica\Documents\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub\Images\DisplayProfileImages\betterbreakfastmo.jpg"><!--Grab image from the store... -->
-              <!-- <v-btn absolute dark fab top right color="pink"> -->
-            </v-list-tile-avatar>
+      <v-toolbar flat class="transparent">
+        <v-list class="pa-0">
+          <v-list-tile avatar>
             <v-list-tile-content>
-              <v-list-tile-title>Admin admin</v-list-tile-title><!-- Grab username when logged in?-->
+              <v-list-tile-title>Admin admin</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-        <!-- </v-list> -->
+        </v-list>
       </v-toolbar>
       <v-list class="header-admin" dense>
         <v-list-tile v-for="item in items" :key="item.title" @click="item" :to="item.path">
@@ -56,18 +47,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.navigation{
-  position: relative;
-}
-.menu{
-margin-left:0px;
-margin-right:0px;
-margin-top:0px;
-width:0px;
-height:0px;
-style:0px;
-padding:0px;
-}
-</style>

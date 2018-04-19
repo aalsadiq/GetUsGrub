@@ -64,10 +64,14 @@
     <Compile Include="Gateways\SsoGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Gateways\UserProfileGateway.cs" />
+    <Compile Include="Migrations\SsoDbContext\201804180155214_InitialDbCreation.cs" />
+    <Compile Include="Migrations\SsoDbContext\201804180155214_InitialDbCreation.Designer.cs">
+      <DependentUpon>201804180155214_InitialDbCreation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserDbContext\201804140059314_InitialDbCreation.cs" />
-    <Compile Include="Migrations\UserDbContext\201804140059314_InitialDbCreation.Designer.cs">
-      <DependentUpon>201804140059314_InitialDbCreation.cs</DependentUpon>
+    <Compile Include="Migrations\UserDbContext\201804180154009_UserDbContext.cs" />
+    <Compile Include="Migrations\UserDbContext\201804180154009_UserDbContext.Designer.cs">
+      <DependentUpon>201804180154009_UserDbContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,11 +92,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\SsoDbContext\201804120720190_InitialDbCreation.resx">
-      <DependentUpon>201804120720190_InitialDbCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\SsoDbContext\201804180155214_InitialDbCreation.resx">
+      <DependentUpon>201804180155214_InitialDbCreation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserDbContext\201804140059314_InitialDbCreation.resx">
-      <DependentUpon>201804140059314_InitialDbCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\UserDbContext\201804180154009_UserDbContext.resx">
+      <DependentUpon>201804180154009_UserDbContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -67,7 +67,42 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return responseDtoFromGateway;
         }
 
-        //ImageUploadManager
-        // TODO: @Angelica Add image menu item upload here
+        //public ResponseDto<bool> ImageUpload(UserProfileDto userProfileDto)//Image upload for profile
+        //{
+        //    // Validation Strategy
+        //   // Image validation Strategy
+
+        //    // Validate data transfer object
+        //    // Execute the strategy
+
+        //    //if (result.Error != null)
+        //    //{
+        //    //    return new ResponseDto<bool>
+        //    //    {
+        //    //        Data = false,
+        //    //        Error = result.Error
+        //    //    };
+        //    //}
+
+        //    // Gateway
+        //    // call gateway to store path
+        //    //using (var gateway = new UserGateway())
+        //    //{
+        //    //    var gatewayResult = gateway.DeleteUser(user.Username);
+
+        //    //    if (gatewayResult.Data == false)
+        //    //    {
+        //    //        return new ResponseDto<bool>()
+        //    //        {
+        //    //            Data = false,
+        //    //            Error = gatewayResult.Error
+        //    //        };
+        //    //    }
+        //    //    return new ResponseDto<bool>
+        //    //    {
+        //    //        Data = true
+        //    //    };
+        //    //}
+        //}
     }
 }

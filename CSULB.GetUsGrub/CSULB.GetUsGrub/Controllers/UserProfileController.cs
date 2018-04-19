@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;//For Images
 using System.IO;
@@ -82,18 +83,21 @@ namespace CSULB.GetUsGrub.Controllers
         // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/EditUser/ImageUpload
         [Route("User/Edit/ProfileImageUpload")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
-        [HttpPut]
-        public IHttpActionResult ProfileImageUpload()//UserProfileDto //HttpPostedFileBase HttpRequestMessage
+        [HttpPost]
+        public IHttpActionResult ProfileImageUpload()
         {
             try
             {
                 var file = HttpContext.Current.Request.Files[0];
-                var filePath = HttpContext.Current.Server.MapPath(@"~/Images/DisplayProfileImages/" + file.FileName);
-                file.SaveAs(filePath);
-                return Created("Created", $"Created {filePath}");
+                string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
+
+                string filename = Path.GetFileName(file.FileName);
+                file.SaveAs(savePath + filename);
+                return Created("Created", $"Created {savePath + filename}");
             }
+
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
@@ -102,40 +106,25 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-        //// TODO: @Angelica ImageUpload comments
-        //// PUT Profile/User/EditUser/ImageUpload
-        //[Route("User/Get/ProfileImage")]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
-        ////[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
-        //[HttpGet]
-        //public IHttpActionResult GetProfileImage() //IHttpActionResult
-        //{
-        //    try
-        //    {
-        //        // Validate that is is an image (extensions)
-
-
-
-
-        //        // var filePath = HttpContext.Current.Server.MapPath(@"~/Images/DisplayProfileImages/DefaultProfileImage.png");
-        //        //var filePath = @"~/Images/DisplayProfileImages/DefaultProfileImage.png";
-        //        //using (FileStream fs = new FileStream(filePath, FileMode.Open))
-        //        //{
-        //        //    IHttpActionResult response = new IHttpActionResult();
-             
-        //        //    response.ContentType = new MediaTypeHeaderValue("image/jpeg");
-        //        //    return response;
-        //        //}
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex);
-        //        //If any exceptions occur, send an HTTP response 400 status.
-        //        return BadRequest("This is a bad request.");
-        //    }
-        //}
-
+        // TODO: @Angelica ImageUpload comments
+        // PUT Profile/User/EditUser/ImageUpload
+        [Route("User/Get/ProfileImage")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        [HttpGet]
+        public IHttpActionResult GetProfileImage(UserProfileDto user) //Need to pass this in to get the username
+        {
+            try
+            {
+                return Ok("path");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                //If any exceptions occur, send an HTTP response 400 status.
+                return BadRequest("This is a bad request.");
+            }
+        }
 
     }
 }

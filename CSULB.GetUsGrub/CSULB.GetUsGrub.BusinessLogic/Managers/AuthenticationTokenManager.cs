@@ -72,7 +72,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Creating the Body of the token
             var tokenDescription = new SecurityTokenDescriptor
             {
-                // @TODO @Ahmed incoporate the Claims from Rachel here
                 Subject = new ClaimsIdentity(claims),
                 Audience = "https://www.GetUsGrub.com",
                 IssuedAt = issuedOn,

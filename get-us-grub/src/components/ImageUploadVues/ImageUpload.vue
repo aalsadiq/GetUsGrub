@@ -1,6 +1,8 @@
 <template>
   <div id="image-upload">
+    <v-container>
       <v-flex xs5 sm5 offset-sm3>
+        {{ responseDataStatus }}
         {{ responseData }}
         <h1> Image Upload </h1>
           <v-card dark>
@@ -12,6 +14,7 @@
           </v-card>
           <br/>
       </v-flex>
+    </v-container>
   </div>
 </template>
 
@@ -22,8 +25,10 @@ export default {
   components: {
   },
   data: () => ({
-    username: '',
-    selectedFile: null
+    username: 'Angelica',
+    selectedFile: null,
+    responseDataStatus: '',
+    test: null
   }),
   methods: {
     StoreSelectedFile: function (event) {
@@ -31,15 +36,9 @@ export default {
     },
     SubmitImageUpload: function () {
       var formData = new FormData()
-      formData.append('myfile', this.selectedFile, this.selectedFile.name)
-      axios.post('http://localhost:8081/Profile/User/Edit/ProfileImageUpload', formData, { // formData,
-        // headers: {
-        //   'content-type': 'multipart/form-data'
-        // },
-        // data: {
-        //   profileImage: this.$refs.dataform
-        //   profileImage: file
-        // }
+      formData.append('username', this.username)
+      formData.append('filename', this.selectedFile, this.selectedFile.name)
+      axios.post('http://localhost:8081/Profile/User/Edit/ProfileImageUpload', formData, {
       }).then(response => {
         this.responseDataStatus = 'Success! Image has been uploaded.'
         this.responseData = response.data

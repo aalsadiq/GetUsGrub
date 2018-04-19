@@ -3,10 +3,7 @@ using CSULB.GetUsGrub.Models;
 using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.Drawing;//For Images
 using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -86,15 +83,21 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPost]
-        public IHttpActionResult ProfileImageUpload()
+        public IHttpActionResult ProfileImageUpload() 
         {
             try
             {
                 var file = HttpContext.Current.Request.Files[0];
+                //var file2 = HttpContext.Current.Request.Params["file"];
+                //return Ok("file: " + file + " file2: " + file2);
+                var username = HttpContext.Current.Request.Params["username"];
+     
+                Console.WriteLine(username);
                 string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
 
-                string filename = Path.GetFileName(file.FileName);
+                string filename = Path.GetFileName(file.FileName);//need to extract the filename
                 file.SaveAs(savePath + filename);
+
                 return Created("Created", $"Created {savePath + filename}");
             }
 

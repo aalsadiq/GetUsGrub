@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.IO;
+using System.Web;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -8,6 +8,6 @@ namespace CSULB.GetUsGrub.Models
         // Automatic Properties
         [Required]
         public string Username { get; set; }
-       // public File Image { get; set; }
+
     }
 }

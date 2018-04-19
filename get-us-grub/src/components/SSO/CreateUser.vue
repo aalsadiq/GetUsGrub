@@ -1,10 +1,16 @@
 <template>
   <div id='create-user'>
-    <v-layout id='response'>
-      <v-flex xs12>
-        {{ responseDataStatus }} {{ responseData }}
-      </v-flex>
-    </v-layout>
+    <div id="success">
+      <v-layout>
+        <v-flex xs12>
+          <v-alert type="success" :value="showSuccess">
+            <span>
+              Success! User <code>{{ username }}</code> has been created.
+            </span>
+          </v-alert>
+        </v-flex>
+      </v-layout>
+    </div>
     <v-layout>
       <v-flex xs12>
         <v-toolbar dark tabs flat>
@@ -178,7 +184,6 @@ export default {
       if (++this.formStep > totalSteps) {
         this.formStep = totalSteps
       }
-      console.log(this.formStep)
     },
     submitUser () {
       var dto = {
@@ -226,7 +231,6 @@ export default {
       }
     },
     switchAccountType (type) {
-      console.log('switched: ' + type)
       if (type === 'user') {
         this.lastRestaurantStep = this.step
         this.step = this.step % 3

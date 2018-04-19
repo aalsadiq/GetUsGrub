@@ -1,83 +1,61 @@
 <template>
-    <v-toolbar id="header-toolbar" dark fixed>
-      <div v-show="!showRestaurantSelection()">
-        <router-link to="/">
-          <v-btn flat class="home-btn">
-            <v-icon>home</v-icon>
-            <v-toolbar-title>
-              <span id="toolbar-title">
-                GetUsGrub
-              </span>
-            </v-toolbar-title>
-          </v-btn>
-        </router-link>
-      </div>
-      <div v-show="showRestaurantSelection()">
-        <router-link to="/RestaurantSelection/Registered">
-          <v-btn flat class="home-btn">
-            <v-icon>home</v-icon>
-            <v-toolbar-title>
-              <span id="toolbar-title">
-                GetUsGrub
-              </span>
-            </v-toolbar-title>
-          </v-btn>
-        </router-link>
-      </div>
-      <v-spacer></v-spacer>
-      <div>
-        <router-link to="/Registration">
-          <v-btn
-            color="red lighten-3"
-            class="nav-btn"
-            v-show="showWithoutAuthentication()"
-          >
-            <span class="btn-text">REGISTER</span>
-          </v-btn>
-        </router-link>
-        <router-link to="/Login">
-          <v-btn
-            color="red lighten-3"
-            class="nav-btn"
-            v-show="showWithoutAuthentication()"
-          >
-            <span class="btn-text">LOGIN</span>
-          </v-btn>
-        </router-link>
-        <router-link to="/RestaurantBillSplitter">
-          <v-btn
-            color="red lighten-3"
-            class="nav-btn"
-          >
-            <span class="btn-text">SPLIT BILL</span>
-          </v-btn>
-        </router-link>
-        <router-link to="/Profile">
-        <!-- Highly suggest not to do a v-if like this. You should check by claims in token instead -->
-          <v-btn
-            color="red lighten-3"
-            class="nav-btn"
-            v-if="this.$store.state.isAuthenticated"
-          >
-            <span class="btn-text">PROFILE</span>
-          </v-btn>
-        </router-link>
-        <router-link to="/Logout">
-          <v-btn
-            color="grey"
-            class="nav-btn"
-            v-show="!showWithoutAuthentication()"
-          >
-            <span class="btn-text">LOGOUT</span>
-          </v-btn>
-        </router-link>
-      </div>
-    </v-toolbar>
+  <v-toolbar id="header-toolbar" dark fixed>
+    <v-toolbar-items>
+      <v-btn flat id="home-btn" to="/">
+        <v-avatar :size="52" tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>
+        <v-toolbar-title>
+          <span id="toolbar-title">
+            GetUsGrub
+          </span>
+        </v-toolbar-title>
+      </v-btn>
+    </v-toolbar-items>
+    <v-spacer></v-spacer>
+    <v-toolbar-items>
+      <v-btn
+        flat
+        class="nav-btn"
+        to="/Registration"
+        v-if="showWithoutAuthentication()"
+      >
+        <span class="nav-btn-text">REGISTER</span>
+      </v-btn>
+      <v-btn
+        flat
+        class="nav-btn"
+        to="/Login"
+        v-if="showWithoutAuthentication()"
+      >
+        <span class="nav-btn-text">LOGIN</span>
+      </v-btn>
+      <v-btn
+        flat
+        class="nav-btn"
+        to="/RestaurantBillSplitter"
+      >
+        <span class="nav-btn-text">SPLIT BILL</span>
+      </v-btn>
+       <v-btn
+        flat
+        class="nav-btn"
+        to="/Profile"
+        v-if="this.$store.state.isAuthenticated"
+      >
+        <span class="nav-btn-text">PROFILE</span>
+      </v-btn>
+      <v-btn
+        flat
+        class="nav-btn"
+        v-if="!showWithoutAuthentication()"
+        @click="logout"
+      >
+        <span class="nav-btn-text">LOGOUT</span>
+      </v-btn>
+    </v-toolbar-items>
+  </v-toolbar>
 </template>
 
 <script>
-import jwt from 'jsonwebtoken'
-
 export default {
   data () {
     return {
@@ -85,17 +63,6 @@ export default {
     }
   },
   methods: {
-    showRestaurantSelection () {
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
-          return true
-        } else {
-          return false
-        }
-      } catch (ex) {
-        return false
-      }
-    },
     showWithoutAuthentication () {
       try {
         if (this.$store.state.authenticationToken === null) {
@@ -106,6 +73,11 @@ export default {
       } catch (ex) {
         return false
       }
+    },
+    logout () {
+      this.$store.dispatch('setAuthenticationToken', null)
+      location.reload()
+      this.$router.push({path: '/'})
     }
   }
 }
@@ -116,7 +88,7 @@ export default {
   margin: auto;
 }
 #header-toolbar {
-  background-color: #5caabc;
+  background-color: #329fa3;
 }
 div.btn__content {
   text-transform: none;
@@ -129,5 +101,17 @@ div.btn__content {
 #toolbar-title {
   font-weight: bold;
   font-size: x-large;
+}
+.btn__content:before {
+  opacity: 0.20;
+  color: rgb(255, 255, 255);
+}
+.nav-btn-text {
+  font-weight: bold;
+  font-size: normal;
+  color: rgb(255, 255, 255);
+}
+#home-btn > .btn__content:before {
+  opacity: 0;
 }
 </style>

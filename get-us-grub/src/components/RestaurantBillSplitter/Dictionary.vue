@@ -1,7 +1,16 @@
 <template>
   <div class="dictionary">
-    <h2 v-if="restaurantDisplayName">{{ restaurantDisplayName }}</h2>
-    <h2>Dictionary</h2>
+    <h1 v-if="restaurantDisplayName">{{ restaurantDisplayName }}</h1>
+    <h1 id="customDictionaryHeader" v-if="!restaurantDisplayName"> Dictionary</h1>
+    <v-divider/>
+    <ul style="list-style: none; display: inline-flex;">
+      <li>
+        <dictionary-input />
+      </li>
+      <li>
+        <get-restaurant-menus />
+      </li>
+    </ul>
     <draggable class="menu" v-bind:list="menuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="Clone" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(menuItem, menuItemIndex) in menuItems" :key="menuItemIndex">
         {{menuItem.name}} : ${{menuItem.price}}<br />
@@ -16,11 +25,16 @@
 import axios from 'axios'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
+import DictionaryInput from './DictionaryInput'
+import GetRestaurantMenus from './GetRestaurantMenus.vue'
 import EditItem from './EditItem.vue'
 import DeleteItem from './DeleteItem.vue'
+
 export default {
   name: 'Dictionary',
   components: {
+    'dictionary-input': DictionaryInput,
+    'get-restaurant-menus': GetRestaurantMenus,
     'edit-item': EditItem,
     'delete-item': DeleteItem,
     draggable
@@ -70,11 +84,11 @@ export default {
 <style>
   .dictionary {
     grid-column: 3;
-    grid-row: 2 / 4;
+    grid-row: 1 / 4;
     outline: solid;
   }
 
-    .dictionary > h2 {
+    .dictionary > h1 {
       text-align: center
     }
 
@@ -84,5 +98,9 @@ export default {
     background-color: aquamarine;
     border-radius: 10px;
     text-align: center;
+  }
+
+  #customDictionaryHeader {
+
   }
 </style>

@@ -5,7 +5,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
     public class LoginPreLogicValidationStrategy
     {
         private readonly LoginDto _loginDto;
-        
+        private readonly LoginDtoValidator _loginDtoValidator = new LoginDtoValidator();
+
         public LoginPreLogicValidationStrategy(LoginDto loginDto)
         {
             _loginDto = loginDto;

@@ -1,20 +1,22 @@
-﻿using CSULB.GetUsGrub.BusinessLogic;
-using CSULB.GetUsGrub.Models;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Web.Http;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http.Cors;
+using System.Web.Http;
+using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.Controllers
 {
-
+    
     public class LoginController : ApiController
     {
         // POST Login/User
         [HttpPost]
         // Opts authentication
         [AllowAnonymous]
-        [Route("Login")]
+        [Route("Login/")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult AuthenticateUser([FromBody] LoginDto loginDto)
         {

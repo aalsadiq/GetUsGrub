@@ -1,7 +1,5 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
-using System.Data.Entity.Migrations;
-using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -42,7 +40,7 @@ namespace CSULB.GetUsGrub.DataAccess
                               select account.Id).FirstOrDefault();
 
                 // Looking for the Users last attempt information
-                FailedAttempts lastFailedAttempt = (from failedAttempt in authenticationContext.FailedAttempts
+                var lastFailedAttempt = (from failedAttempt in authenticationContext.FailedAttempts
                                          where failedAttempt.Id == userId
                                          select failedAttempt).FirstOrDefault();
 
@@ -186,7 +184,6 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     // Updating the failed attempts
                     authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
-                    authenticationContext.SaveChanges();
 
                     // Commiting the trasaction to the Database
                     dbContextTransaction.Commit();
@@ -196,9 +193,8 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Debug.WriteLine(ex);
                     // Rolls back the changes saved in the transaction
                     dbContextTransaction.Rollback();
                     // Returning a false and Error
@@ -235,7 +231,6 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Adding the Token to the DataBase
                     authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
-                    authenticationContext.SaveChanges();
 
                     // Commiting the trasaction to the Database
                     dbContextTransaction.Commit();
@@ -260,6 +255,7 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         // Dispose release unmangaed resources 
+        // TODO: @Jenn Add in implementation of Dispose [-Jenn]
         public void Dispose()
         {
             authenticationContext.Dispose();

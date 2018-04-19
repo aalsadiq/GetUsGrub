@@ -1,6 +1,6 @@
-﻿using CSULB.GetUsGrub.DataAccess;
+﻿using System;
+using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System;
 
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -67,7 +67,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 {
                     userAttempts = new FailedAttempts()
                     {
-                        LastAttemptTime = DateTime.UtcNow,
                         Count = 0
                     };
                 }
@@ -100,16 +99,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                 // If there are no Errors from the gateway assign the data to an object
                 dataBaseUserAccount = gatewayResult.Data;
-                // Set UserAttempts Id with the UserAccount Id
-                userAttempts.Id = dataBaseUserAccount.Id;
-
-                // Checking if theere are no failed attempts for the user yet
-                if (userAttemptsDto.Data == null)
-                {
-                    // Assigning the UserId to the FailedAttempt
-                    userAttempts.Id = dataBaseUserAccount.Id;
-                    userAttempts.LastAttemptTime = DateTime.Now;
-                }
 
                 // Getting the Salt associated with the ID
                 var gatewaySaltResult = gateway.GetUserPasswordSalt(dataBaseUserAccount.Id);
@@ -126,6 +115,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
 
                 // Check if user is Active
+                if (dataBaseUserAccount.IsActive == null && dataBaseUserAccount.IsActive == false)
                 {
                     return new ResponseDto<LoginDto>
                     {
@@ -135,7 +125,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 // Cheking if user is first time
-                if (dataBaseUserAccount.IsFirstTimeUser == null || dataBaseUserAccount.IsFirstTimeUser == true)
+                if (dataBaseUserAccount.IsFirstTimeUser == null && dataBaseUserAccount.IsFirstTimeUser == true)
                 {
                     // TODO: @Brian Need your SSO Login Service here [-Ahmed]
                     // Send them to complete registration
@@ -153,8 +143,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 if (!checkPasswordResult)
                 {
                     userAttempts.Count++;
+                    if (userAttempts.Count >= 5)
                     {
-                        userAttempts.LastAttemptTime = DateTime.UtcNow;
+                        userAttempts.LastAttemptTime = DateTime.Now;
                     }
 
                     returnDto = new ResponseDto<LoginDto>

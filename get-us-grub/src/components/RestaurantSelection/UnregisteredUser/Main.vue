@@ -33,9 +33,8 @@ export default {
 #login-redirect {
   margin: 4em 2.6em -0.3em 1.2em;
   font-size: small;
-  padding: 0.1em 0em 0.1em 1em;
+  padding: 0.1em 1em 0.1em 1em;
   color: rgb(82, 159, 247) !important;
-  background-color: rgb(255, 255, 255) !important;
 }
 #scroll-target {
   max-height: 56.5em;

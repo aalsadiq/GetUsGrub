@@ -1,61 +1,39 @@
-﻿using CSULB.GetUsGrub.BusinessLogic;
-using CSULB.GetUsGrub.DataAccess;
-using CSULB.GetUsGrub.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.IdentityModel.Tokens;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.IdentityModel.Tokens;
+using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.DataAccess;
+using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub
 {
     // This Handler is checking if the User is Authenticated
     public class AuthenticationHandler : DelegatingHandler
     {
-        private readonly IEnumerable<string> _urisToSkip;
-
-        public AuthenticationHandler()
-        {
-            _urisToSkip = new UniformResourceIdentifiers().UrisToSkipAuthn;
-        }
         
         /// <summary>
-        /// The CheckIfSkippedUri method.
-        /// Checks if the Uniform Resource Identifier is in the skip Authentication list.
-        /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 04/17/2018
-        /// </para>
+        /// 
         /// </summary>
-        /// <param name="uri"></param>
-        /// <returns>A true or false boolean type</returns>
-        public bool CheckIfSkippedUri(string uri)
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        protected HttpResponseMessage Send(HttpRequestMessage request,
+            CancellationToken cancellationToken)
         {
-            return _urisToSkip.Contains(uri);
-        }
-
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
+            Microsoft.IdentityModel.Tokens.SecurityToken validatedToken;
+            Debug.WriteLine("Here");
             try
             {
                 AuthenticationTokenManager tokenManager = new AuthenticationTokenManager();
                 AuthenticationToken authenticationToken;
                 TokenService tokenService = new TokenService();
 
-                // Check if the request URI absolute path should skip authentication
-                if (CheckIfSkippedUri(request.RequestUri.AbsolutePath.ToLower()))
-                {
-                    return await base.SendAsync(request, cancellationToken);
-                }
-
-                // Send request when request has no token
-                if (request.Headers.Authorization == null)
-                {
-                    return await base.SendAsync(request, cancellationToken);
-                }
-                
                 // Extracting the tokenString from the Header
                 var tokenString = tokenService.ExtractToken(request);
 
@@ -63,7 +41,7 @@ namespace CSULB.GetUsGrub
                 if (string.IsNullOrEmpty(tokenString))
                 {
                     // This is done incase the request does not require authentication
-                    return await base.SendAsync(request, cancellationToken);
+                    return Task.Run(() => SendAsync(request, cancellationToken)).Result;
                 }
 
 
@@ -73,7 +51,7 @@ namespace CSULB.GetUsGrub
                 // Checking if the Username is empty or null
                 if (string.IsNullOrEmpty(username))
                 {
-                    return await Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(HttpStatusCode.Unauthorized), cancellationToken);
+                    return UserNotAuthenticated();
                 }
 
                 using (AuthenticationGateway gateway = new AuthenticationGateway())
@@ -81,24 +59,44 @@ namespace CSULB.GetUsGrub
                     // Getting the Authentication Token Associated with the username
                     var gatewayResult = gateway.GetAuthenticationToken(username);
 
-                    if (gatewayResult.Error != null || gatewayResult.Data.TokenString != tokenString || gatewayResult.Data.ExpiresOn.CompareTo(DateTime.Now) < 0)
+                    // Checking if there was an error Generated in the gateway if the string is not the same and its experation time has to be later than now
+                    if (gatewayResult.Error != null|| gatewayResult.Data.TokenString != tokenString ||
+                        gatewayResult.Data.ExpiresOn.CompareTo(DateTime.Now) > 0)
                     {
-                        return await Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(HttpStatusCode.Unauthorized), cancellationToken);
+                        return UserNotAuthenticated();
                     }
-
+   
                     authenticationToken = gatewayResult.Data;
                 }
 
-                var tokenPrincipal = tokenManager.GetTokenPrincipal(authenticationToken, out _);
+                
+                var tokenPrincible = tokenManager.GetTokenPrincipal(authenticationToken, out validatedToken);
 
-                Thread.CurrentPrincipal = tokenPrincipal;
+                Thread.CurrentPrincipal = tokenPrincible;
 
-                return await base.SendAsync(request, cancellationToken);
+                return Task.Run(() => SendAsync(request, cancellationToken)).Result;
             }
             catch (Exception)
             {
-                return await Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(HttpStatusCode.Unauthorized), cancellationToken);
+                return UserNotAuthenticated();
             }
         }
+
+       /// <summary>
+       /// 
+       /// This method would throw an un authorized message if any expeption is thrown
+       /// 
+       /// </summary>
+       /// <returns>
+       /// Task with the response of 401 that the user is unauthenticated
+       /// </returns>
+        private HttpResponseMessage UserNotAuthenticated()
+        {
+            // Setting the message code to be a 401 
+            var response = new HttpResponseMessage() { StatusCode = HttpStatusCode.Unauthorized };
+            
+            return response;
+        }
+
     }
 }

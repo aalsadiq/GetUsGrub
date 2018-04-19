@@ -3,15 +3,11 @@
     <!-- <v-card height="350px"> -->
     <!-- <v-navigation-drawer id="menu" stateless hide-overlay :mini-variant.sync="mini" v-model="drawer"> -->
     <v-navigation-drawer id="nav-drawer" permanent absolute v-model="drawer" >
-      <!-- used to navigate through application to work with or without vue-router outside the box-->
-      <!--permanent: remains visible regardless of screensize absolute: Position the element absolutely is false v-model= drawer-->
-      <!--v-toolbar:flat: removes the toolbar box-shadow-->
       <v-toolbar flat class="transparent"> <!-- the square to the left -->
-      <!--v-list: where our items are held..-->
         <v-list class="pa-0">
           <v-list-tile avatar> <!--avatar: used to set minimum tile height on a single-line list item -->
             <v-list-tile-avatar>
-              <img src="@/assets/ProfileImages/DefaultProfileImage.png"><!--Grab image from the store... -->
+              <img src="../../../../Images/DefaultImages/DefaultProfileImage.png">
               <!-- <v-btn absolute dark fab top right color="pink"> -->
             </v-list-tile-avatar>
             <v-list-tile-content>

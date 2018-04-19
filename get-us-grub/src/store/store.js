@@ -294,7 +294,7 @@ export const store = new Vuex.Store({
     populateRestaurantMenus: (state, payload) => {
       payload.forEach(function (element, index) {
         console.log(element)
-        this.$set(state.restaurantMenus[index], restaurantMenus, payload)
+        this.$set(state.restaurantMenus[index], state.restaurantMenus, payload)
       })
     },
     editDictionaryItem: (state, payload) => {

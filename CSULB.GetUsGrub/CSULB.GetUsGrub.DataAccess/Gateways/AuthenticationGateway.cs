@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -195,8 +196,9 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Debug.WriteLine(ex);
                     // Rolls back the changes saved in the transaction
                     dbContextTransaction.Rollback();
                     // Returning a false and Error
@@ -258,7 +260,6 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         // Dispose release unmangaed resources 
-        // TODO: @Jenn Add in implementation of Dispose [-Jenn]
         public void Dispose()
         {
             authenticationContext.Dispose();

@@ -79,6 +79,7 @@
     <Compile Include="Constants\RoleTypes.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadKeys.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadValues.cs" />
+    <Compile Include="Constants\UniformResourceIdentifiers.cs" />
     <Compile Include="Converters\ClaimConverter.cs" />
     <Compile Include="DTOs\AuthenticationTokenDto.cs" />
     <Compile Include="DTOs\FoodPreferencesDto.cs" />

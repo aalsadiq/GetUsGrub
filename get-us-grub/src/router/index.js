@@ -5,8 +5,8 @@ import ResourceNotFound from '@/components/Errors/ResourceNotFound.vue'
 import GeneralError from '@/components/Errors/GeneralError.vue'
 import Unauthorized from '@/components/Errors/Unauthorized.vue'
 import Forbidden from '@/components/Errors/Forbidden.vue'
+import InternalServerError from '@/components/Errors/InternalServerError.vue'
 import Home from '@/components/Home.vue'
-import RestaurantSelectionRegisteredUser from '@/components/RestaurantSelection/RegisteredUser/Main.vue'
 import Registration from '@/components/Registration/Registration.vue'
 import AdminHome from '@/components/AdminUserManagement/AdminHome.vue'
 import CreateUser from '@/components/AdminUserManagement/AdminCreate.vue'
@@ -66,20 +66,20 @@ export default new Router({
       }
     },
     {
+      path: '/InternalServerError',
+      name: 'InternalServerError',
+      component: InternalServerError,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Internal Server Error'
+        next()
+      }
+    },
+    {
       path: '/',
       name: 'Home',
       component: Home,
       beforeEnter: (to, from, next) => {
         document.title = 'Home'
-        next()
-      }
-    },
-    {
-      path: '/RestaurantSelection/Registered',
-      name: 'RestaurantSelectionRegisteredUser',
-      component: RestaurantSelectionRegisteredUser,
-      beforeEnter: (to, from, next) => {
-        document.title = 'Search Restaurant'
         next()
       }
     },

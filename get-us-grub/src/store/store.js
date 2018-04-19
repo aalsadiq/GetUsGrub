@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { setTimeout } from 'timers'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,8 @@ export const store = new Vuex.Store({
     uniqueUserCounter: 0,
     menuItems: [
     ],
+    restaurantMenus: [
+    ],
     billItems: [
     ],
     billUsers: [
@@ -31,14 +34,6 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantGeoCoordinates: {
-          latitude: null,
-          longitude: null
-        },
-        clientUserGeoCoordinates: {
-          latitude: null,
-          longitude: null
-        },
         restaurantId: 26,
         displayName: '',
         address: {
@@ -275,7 +270,6 @@ export const store = new Vuex.Store({
     destinationAddress: (state, payload) => {
       state.destinationAddress = payload
     },
-    // TODO: @Ryan Please lowercase the first letter of your methods [-Jenn]
     addToDictionary: (state, payload) => {
       state.menuItems.push({
         name: payload[0],
@@ -287,6 +281,12 @@ export const store = new Vuex.Store({
       state.billUsers.push({
         name: payload[0],
         uID: payload[1]
+      })
+    },
+    populateRestaurantMenus: (state, payload) => {
+      payload.forEach(function (element, index) {
+        console.log(element)
+        this.$set(state.restaurantMenus[index], state.restaurantMenus, payload)
       })
     },
     editDictionaryItem: (state, payload) => {
@@ -335,9 +335,14 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
     },
+    // TODO: @Ahmed It is better to make it a generic mutation to a state than naming it a "loginUser" mutation [-Jenn]
+    // Look at setAuthenticationToken (I am using this to set token to null when user clicks on the logout button)
     loginUser: (state, payload) => {
       state.isAuthenticated = true
       state.authenticationToken = payload.auth
+    },
+    setAuthenticationToken: (state, payload) => {
+      state.authenticationToken = payload
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -363,6 +368,11 @@ export const store = new Vuex.Store({
       setTimeout(function () {
         console.log('Added New Bill User: ' + payload)
         context.commit('addBillUser', payload)
+      }, 250)
+    },
+    populateRestaurantMenus: (context, payload) => {
+      setTimeout(function () {
+        context.commit('populateRestaurantMenus', payload)
       }, 250)
     },
     editDictionaryItem: (context, payload) => {
@@ -395,9 +405,15 @@ export const store = new Vuex.Store({
         context.commit('setSelectedRestaurant', payload)
       }, 250)
     },
+    // TODO: @Ahmed same with this one. [-Jenn]
     loginUser: (context, payload) => {
       setTimeout(function () {
         context.commit('loginUser', payload)
+      }, 250)
+    },
+    setAuthenticationToken: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setAuthenticationToken', payload)
       }, 250)
     }
   }

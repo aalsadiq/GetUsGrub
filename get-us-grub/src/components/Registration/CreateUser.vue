@@ -1,10 +1,37 @@
 <template>
   <div id="create-user">
-    <v-layout id="response">
-    <v-flex xs12>
-      {{ responseDataStatus }} {{ responseData }}
-    </v-flex>
-    </v-layout>
+    <div id="success">
+      <v-layout>
+        <v-flex xs12>
+          <v-alert type="success" :value="showSuccess">
+            <span>
+              Success! User <code>{{ username }}</code> has been created.
+            </span>
+          </v-alert>
+        </v-flex>
+      </v-layout>
+    </div>
+    <div v-show="showError" id="error-div">
+      <v-layout>
+      <v-flex xs12>
+        <!-- Title bar for the restaurant selection -->
+        <v-alert id="registration-error" :value=true icon='warning'>
+          <span id="error-title">
+            An error has occurred
+          </span>
+        </v-alert>
+      </v-flex>
+      </v-layout>
+      <v-layout>
+        <v-flex xs12>
+          <v-card id="error-card">
+            <p v-for="error in errors" :key="error">
+              {{ error }}
+            </p>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </div>
     <v-layout>
     <v-flex xs12>
         <v-toolbar dark tabs flat>
@@ -55,7 +82,7 @@
                             :min="8"
                             :counter="64"
                             :append-icon="visible ? 'visibility' : 'visibility_off'"
-                            :append-icon-cb="() => (visibile = !visible)"
+                            :append-icon-cb="() => (visible = !visible)"
                             :type=" visible ? 'text' : 'password'"
                             :error-messages="passwordErrorMessages"
                             @input="validatePassword"
@@ -180,7 +207,7 @@
                             :min="8"
                             :counter="64"
                             :append-icon="visible ? 'visibility' : 'visibility_off'"
-                            :append-icon-cb="() => (visibile = !visible)"
+                            :append-icon-cb="() => (visible = !visible)"
                             :type=" visible ? 'text' : 'password'"
                             :error-messages="passwordErrorMessages"
                             @input="validatePassword"
@@ -522,9 +549,13 @@ export default {
     disable: false,
     loader: null,
     loading: false,
+    showError: false,
+    showSuccess: false,
+    errors: null,
     counter: 0,
     timeZone: '',
     time: '',
+    username: '',
     userAccount: {
       username: '',
       password: ''
@@ -564,9 +595,7 @@ export default {
       day: '',
       openTime: null,
       closeTime: null
-    },
-    responseDataStatus: '',
-    responseData: ''
+    }
   }),
   watch: {
     // Loading animation on buttons
@@ -605,6 +634,7 @@ export default {
       }
     },
     userSubmit () {
+      this.showError = false
       this.validSecurityInput = false
       this.disable = true
       this.loader = 'loading'
@@ -615,16 +645,41 @@ export default {
       }).then(response => {
         this.validSecurityInput = true
         this.disable = false
-        this.responseDataStatus = 'Success! User has been created: '
-        this.responseData = response.data
+        this.username = response.data
+        this.showSuccess = true
       }).catch(error => {
+        this.showSuccess = false
+        this.showError = true
         this.validSecurityInput = true
         this.disable = false
-        this.responseDataStatus = 'An error has occurred: '
-        this.responseData = error.response.data
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({path: '/Unauthorized'})
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({path: '/Forbidden'})
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({path: '/ResourceNotFound'})
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({path: '/InternalServerError'})
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response.data
+          Promise.reject(error)
+        }
       })
     },
     restaurantSubmit () {
+      this.showError = false
       this.validContactInput = false
       this.disable = true
       this.loader = 'loading'
@@ -639,13 +694,37 @@ export default {
       }).then(response => {
         this.validContactInput = true
         this.disable = false
-        this.responseDataStatus = 'Success! User has been created: '
-        this.responseData = response.data
+        this.username = response.data
+        this.showSuccess = true
       }).catch(error => {
+        this.showSuccess = false
+        this.showError = true
         this.validContactInput = true
         this.disable = false
-        this.responseDataStatus = 'An error has occurred: '
-        this.responseData = error.response.data
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({path: '/Unauthorized'})
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({path: '/Forbidden'})
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({path: '/ResourceNotFound'})
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({path: '/InternalServerError'})
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response.data
+          Promise.reject(error)
+        }
       })
     }
   }
@@ -653,13 +732,25 @@ export default {
 </script>
 
 <style>
-  #create-user {
-    margin: 0 0 7em 0;
-  }
-  #response {
-    padding: 1em 1em 1em 1em;
-  }
-  #contact-layout {
-    margin: 0em 0em 0em 1.1em;
-  }
+#create-user {
+  margin: 1em 0 7em -2em;
+}
+#contact-layout {
+  margin: 0em 0em 0em 1.1em;
+}
+#error-title {
+  margin: 0em 3.1em 0em 0em;
+}
+#error-card {
+  margin: 0em 0em 2em 0em;
+}
+p {
+  margin-bottom: 0em;
+}
+#error-div {
+  margin-top: -1em;
+}
+#success {
+  margin-bottom: 1em;
+}
 </style>

@@ -20,12 +20,21 @@
         {{element}}
       </li>
     </ul>
+    <h2> Restaurant Menus</h2>
+    <ul>
+      <h3>{{restaurantMenus.length}}</h3>
+      <li v-for="(element, index) in restaurantMenus" :key="index">
+        {{element}}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Debug',
+  updated () {
+  },
   computed: {
     menuItems () {
       return this.$store.state.menuItems
@@ -35,6 +44,9 @@ export default {
     },
     billUsers () {
       return this.$store.state.billUsers
+    },
+    restaurantMenus () {
+      return this.$store.state.restaurantMenus
     }
   }
 }

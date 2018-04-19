@@ -2,7 +2,7 @@
   <div class="user-table">
     <h1>Users</h1>
     <div v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
-      {{ billUser.name }}
+      {{ billUser.name }} <p> $0.00</p>
       <v-btn v-on:click="RemoveUser(billUser.uID)"><v-icon>clear</v-icon></v-btn>
     </div>
     <v-divider />

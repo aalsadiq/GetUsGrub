@@ -94,7 +94,7 @@
           <!-- Submit button -->
           <v-tooltip bottom>
             <v-btn
-              id="search-btn"
+              class="search-btn"
               @click="submit"
               :disabled="!valid"
               :loading="loading"
@@ -107,7 +107,7 @@
         </div>
       </v-container>
     </div>
-    <div v-show="showSection">
+    <div v-if="showSection">
       <!-- Restaurant selection results Vue component -->
       <result/>
     </div>
@@ -116,7 +116,7 @@
 
 <script>
 import axios from 'axios'
-import Result from './Result'
+import Result from '@/components/RestaurantSelection/Result'
 
 export default {
   // Vue component dependencies
@@ -182,9 +182,32 @@ export default {
       }).catch(error => {
         this.valid = true
         this.disable = false
-        // Route to the General Error page
-        this.$router.push('GeneralError')
         Promise.reject(error)
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({path: '/Unauthorized'})
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({path: '/Forbidden'})
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({path: '/ResourceNotFound'})
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({path: '/InternalServerError'})
+          } else {
+            // Route to the General Error page
+            this.$router.push({path: '/GeneralError'})
+          }
+        } catch (ex) {
+          Promise.reject(error)
+          // Route to the General Error page
+          this.$router.push({path: '/GeneralError'})
+        }
       })
     }
   }
@@ -193,13 +216,14 @@ export default {
 
 <style>
 #selectRestaurantTitleBar {
-  background-color: #6F81AD !important
+  background-color: rgb(87, 115, 185) !important
 }
 #unableToFindRestaurantAlert {
   background-color: #e26161 !important
 }
-#search-btn {
+.search-btn {
   background-color: rgb(255, 255, 255);
+  margin: 1em 2.9em 0em 1em;
 }
 #card {
   padding: 0 0.7em 0 0.7em;

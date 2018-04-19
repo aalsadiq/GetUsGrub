@@ -28,12 +28,12 @@ namespace CSULB.GetUsGrub.DataAccess
                 // Get the claims from the database 
                 var claims = (from userClaims in context.Claims
                               where userClaims.UserAccount.Username == username
-                              select userClaims).FirstOrDefault();
+                              select userClaims).FirstOrDefault().Claims;
 
                 // If claims are found, return the claims from the database 
                 return new ResponseDto<ICollection<Claim>>
                 {
-                    Data = claims.Claims
+                    Data = claims
                 };
             }
             catch (Exception)

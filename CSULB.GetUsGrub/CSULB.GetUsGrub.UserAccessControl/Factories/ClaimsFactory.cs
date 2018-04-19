@@ -7,7 +7,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// Factory that creates a set of claims for new users
     /// 
     /// Author: Rachel Dang
-    /// Last Updated: 4/07/18
+    /// Last Updated: 4/17/18
     /// </summary>
     public class ClaimsFactory : IFactory<ICollection<Claim>>
     {
@@ -26,6 +26,10 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // Create claims collection for an admin user
                 case AccountType.ADMIN:
                     return new AdminClaims().Claims;
+
+                // Create claims collection for first time user
+                case AccountType.FIRSTTIMEUSER:
+                    return new FirstTimeUserClaims().Claims;
                 
                 // Return an empty list of claims for default
                 default:

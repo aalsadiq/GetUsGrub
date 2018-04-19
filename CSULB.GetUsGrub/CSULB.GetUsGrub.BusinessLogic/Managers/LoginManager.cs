@@ -103,6 +103,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // Set UserAttempts Id with the UserAccount Id
                 userAttempts.Id = dataBaseUserAccount.Id;
 
+                // Checking if theere are no failed attempts for the user yet
+                if (userAttemptsDto.Data == null)
+                {
+                    // Assigning the UserId to the FailedAttempt
+                    userAttempts.Id = dataBaseUserAccount.Id;
+                    userAttempts.LastAttemptTime = DateTime.Now;
+                }
+
                 // Getting the Salt associated with the ID
                 var gatewaySaltResult = gateway.GetUserPasswordSalt(dataBaseUserAccount.Id);
                 if (gatewaySaltResult.Error != null)
@@ -118,7 +126,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
 
                 // Check if user is Active
-                if (dataBaseUserAccount.IsActive == null && dataBaseUserAccount.IsActive == false)
                 {
                     return new ResponseDto<LoginDto>
                     {
@@ -146,7 +153,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 if (!checkPasswordResult)
                 {
                     userAttempts.Count++;
-                    if (userAttempts.Count >= 5)
                     {
                         userAttempts.LastAttemptTime = DateTime.UtcNow;
                     }

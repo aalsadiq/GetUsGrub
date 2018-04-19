@@ -42,7 +42,7 @@ namespace CSULB.GetUsGrub.DataAccess
                               select account.Id).FirstOrDefault();
 
                 // Looking for the Users last attempt information
-                var lastFailedAttempt = (from failedAttempt in authenticationContext.FailedAttempts
+                FailedAttempts lastFailedAttempt = (from failedAttempt in authenticationContext.FailedAttempts
                                          where failedAttempt.Id == userId
                                          select failedAttempt).FirstOrDefault();
 
@@ -185,7 +185,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 try
                 {
                     // Updating the failed attempts
-                    authenticationContext.FailedAttempts.AddOrUpdate(incomingFailedAttempt);
+                    authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
                     authenticationContext.SaveChanges();
 
                     // Commiting the trasaction to the Database
@@ -234,7 +234,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     incomingAuthenticationToken.Id = userId;
 
                     // Adding the Token to the DataBase
-                    authenticationContext.AuthenticationTokens.AddOrUpdate(incomingAuthenticationToken);
+                    authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
                     authenticationContext.SaveChanges();
 
                     // Commiting the trasaction to the Database

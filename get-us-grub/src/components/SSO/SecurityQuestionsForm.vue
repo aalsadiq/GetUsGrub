@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <v-form v-model="value.isValid" v-on:input="$emit('input', value)">
     <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
       <v-select
         :items="set.questions"
         item-text="question"
         item-value="id"
-        v-model="securityQuestions[set.id].question"
+        v-model="value.questions[set.id].question"
         label="Select a security question"
         single-line
         auto
@@ -13,25 +13,23 @@
         hide-details
         :rules="$store.state.rules.securityQuestionRules"
         required
-        :disabled=disable
+        v-on:input="$emit('input', value)"
         ></v-select>
       <v-text-field
         label="Enter an answer to the above security question"
-        v-model="securityQuestions[set.id].answer"
+        v-model="value.questions[set.id].answer"
         :rules="$store.state.rules.securityAnswerRules"
         required
-        :disabled=disable
+        v-on:input="$emit('input', value)"
         ></v-text-field>
-    </div>
-  </div>
+      </div>
+  </v-form>
 </template>
 
 <script>
 export default {
-  name: 'SecurityQuestionsForm',
+  name: 'security-questions',
   components: { },
-  props: [
-    'securityQuestions'
-  ]
+  props: ['value']
 }
 </script>

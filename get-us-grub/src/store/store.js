@@ -34,14 +34,6 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantGeoCoordinates: {
-          latitude: null,
-          longitude: null
-        },
-        clientUserGeoCoordinates: {
-          latitude: null,
-          longitude: null
-        },
         restaurantId: 26,
         displayName: '',
         address: {

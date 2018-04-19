@@ -70,7 +70,8 @@ export default {
   created () {
     axios.get('http://localhost:8081/FoodPreferences/GetPreferences', {
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'http://localhost:8080',
+        'Authorization': `Bearer ${this.$store.state.authenticationToken}`
       },
       params: {
         username: jwt.decode(this.$store.state.authenticationToken).Username

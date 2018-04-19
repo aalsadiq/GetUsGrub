@@ -14,11 +14,11 @@ namespace CSULB.GetUsGrub.Controllers
     [RoutePrefix("FoodPreferences")]
     public class FoodPreferencesController : ApiController
     {
-
+        // TODO: @Rachel Please add in your claims attribute here. The authentication works now! [-Jenn]
         [HttpGet]
         [AllowAnonymous]
         [Route("GetPreferences")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult GetPreferences(string username)
         {
             // Check if model is valid for the database

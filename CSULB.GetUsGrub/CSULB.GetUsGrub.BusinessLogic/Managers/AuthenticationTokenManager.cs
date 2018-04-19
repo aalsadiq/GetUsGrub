@@ -1,15 +1,15 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies;
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.UserAccessControl;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
-using CSULB.GetUsGrub.UserAccessControl;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 

@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -181,7 +182,8 @@ namespace CSULB.GetUsGrub.DataAccess
                 try
                 {
                     // Updating the failed attempts
-                    authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
+                    authenticationContext.FailedAttempts.AddOrUpdate(incomingFailedAttempt);
+                    authenticationContext.SaveChanges();
 
                     // Commiting the trasaction to the Database
                     dbContextTransaction.Commit();
@@ -230,7 +232,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     incomingAuthenticationToken.Id = userId;
 
                     // Adding the Token to the DataBase
-                    authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
+                    authenticationContext.AuthenticationTokens.AddOrUpdate(incomingAuthenticationToken);
+                    authenticationContext.SaveChanges();
 
                     // Commiting the trasaction to the Database
                     dbContextTransaction.Commit();

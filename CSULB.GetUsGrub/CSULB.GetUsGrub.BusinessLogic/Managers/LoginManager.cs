@@ -86,7 +86,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     }
                 }
 
-                // TODO @Ahmed Make sure that we check for errors Move this above the attempts @Ahmed 
                 // Pull the User From DB
                 // Getting the user's ID
                 var gatewayResult = gateway.GetUserAccount(incomingLoginModel.Username);

@@ -1,7 +1,7 @@
 <template>
   <div>
     <app-header />
-    <v-container id="login-container">
+    <div id="login-div">
       <v-alert id="login-error" :value=showError icon="warning">
           <span>
             You have entered an invalid username or password
@@ -35,7 +35,7 @@
           <router-link class="md-accent" to="/Registration">Don't have an account?</router-link>
         </div>
       </v-form>
-    </v-container>
+    </div>
     <app-footer/>
   </div>
 </template>
@@ -117,8 +117,9 @@ export default {
 </script>
 
 <style>
-#login-container {
-  margin-top: 2em;
+#login-div {
+  padding: 2.5em 0 0 0;
+  margin: 2em 2em 0em 2em;
 }
 
 </style>

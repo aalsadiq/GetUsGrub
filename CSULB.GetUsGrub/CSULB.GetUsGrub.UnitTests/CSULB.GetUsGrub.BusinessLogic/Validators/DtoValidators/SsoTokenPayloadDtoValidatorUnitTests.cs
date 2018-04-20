@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using FluentAssertions;
+using FluentValidation;
 using Xunit;
 
 namespace CSULB.GetUsGrub.UnitTests
@@ -23,7 +24,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -44,7 +45,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -65,7 +66,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -86,7 +87,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -107,7 +108,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -128,7 +129,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -149,7 +150,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -170,7 +171,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -191,7 +192,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -212,7 +213,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -233,7 +234,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -254,7 +255,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -275,7 +276,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert
@@ -296,7 +297,7 @@ namespace CSULB.GetUsGrub.UnitTests
             };
 
             // Act
-            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload);
+            var result = _ssoTokenPayloadDtoValidator.Validate(ssoTokenPayload, ruleSet: "SsoRegistration");
             var isValid = result.IsValid;
 
             // Assert

@@ -233,10 +233,6 @@ export default {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;
 }
-#quote {
-  color: rgb(255, 255, 255);
-  font-size: normal;
-}
 #required {
   margin-bottom: 0.4em;
   padding: 0;

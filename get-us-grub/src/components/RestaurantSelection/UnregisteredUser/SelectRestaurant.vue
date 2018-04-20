@@ -32,7 +32,7 @@
                     :disabled=disable
                   ></v-select>
                 </v-flex>
-                <!-- City text field -->
+               <!-- City text field -->
                 <v-flex xs4>
                 <v-text-field
                   label="Enter a city"
@@ -148,7 +148,7 @@ export default {
       this.loader = null
     }
   },
-  methods: {
+    methods: {
     // Submitting information to the backend
     submit () {
       this.valid = false

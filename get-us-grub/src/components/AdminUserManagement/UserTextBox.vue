@@ -1,8 +1,8 @@
 <template>
     <div>
       {{ responseData }}
-      <v-app id="inputUser">
-          <v-container fluid>
+      <div id="inputUser">
+          <div fluid>
             <v-spacer/>
               <v-flex  xs5 sm2 offset-sm5>
                 <h2>Input User Name </h2>
@@ -11,8 +11,8 @@
                 </v-form>
               </v-flex>
               <v-btn id ="submit-button" color="warning" v-on:click="userSubmit(viewType)">Submit</v-btn>
-          </v-container>
-        </v-app>
+          </div>
+        </div>
     </div>
 </template>
 

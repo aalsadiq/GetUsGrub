@@ -83,7 +83,7 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(1);
-            errors[0].ToString().Should().Be("Address needs a city.");
+            errors[0].ToString().Should().Be("City is required.");
         }
 
         [Fact]
@@ -101,8 +101,8 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(2);
-            errors[0].ToString().Should().Be("Address needs a city.");
-            errors[1].ToString().Should().Be("Address needs a city.");
+            errors[0].ToString().Should().Be("City is required.");
+            errors[1].ToString().Should().Be("City is required.");
         }
 
         [Fact]
@@ -120,8 +120,8 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(2);
-            errors[0].ToString().Should().Be("Address needs a state.");
-            errors[1].ToString().Should().Be("Address must be a valid state.");
+            errors[0].ToString().Should().Be("State is required." );
+            errors[1].ToString().Should().Be("State be a valid state.");
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(1);
-            errors[0].ToString().Should().Be("Address must be a valid state.");
+            errors[0].ToString().Should().Be("State be a valid state.");
         }
 
         [Fact]
@@ -156,7 +156,7 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(1);
-            errors[0].ToString().Should().Be("Zip code must contain 5 numbers.");
+            errors[0].ToString().Should().Be("Zip code is not a valid format.");
         }
 
         [Fact]
@@ -174,7 +174,7 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(1);
-            errors[0].ToString().Should().Be("Zip code must contain 5 numbers.");
+            errors[0].ToString().Should().Be("Zip code is not a valid format.");
         }
     }
 }

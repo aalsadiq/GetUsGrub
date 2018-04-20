@@ -1,77 +1,67 @@
 <template>
-  <div id='profile'>
-    <app-header/>
-    <profile-header :displayName='displayName'/>
-    <app-footer/>
+  <div>
+    <v-container class="scroll-y" id="scroll-target">
+      <app-header/>
+      <v-container id="profile">
+        <template v-if="profileType === 'individual'">
+          <user-profile/>
+        </template>
+        <template v-if="profileType === 'restaurant'">
+          <restaurant-profile/>
+        </template>
+      </v-container>
+      <app-footer/>
+    </v-container>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import UserProfile from './User/UserProfile'
+import RestaurantProfile from './Restaurant/RestaurantProfile'
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
-import ProfileHeader from '@/components/Profile/ProfileHeader'
+import jwt from 'jsonwebtoken'
 export default {
   name: 'Profile',
   components: {
     AppHeader,
-    ProfileHeader,
-    AppFooter
+    AppFooter,
+    UserProfile,
+    RestaurantProfile
   },
   data () {
     return {
-      username: '',
-      displayName: null
+      profileType: 'restaurant'
     }
+  },
+  beforeCreate () {
+    if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
+      this.profileType = 'individual'
+    } else if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
+      this.profileType = 'restaurant'
+    } else {
+      this.$router.push({ path: '/Forbidden' })
+    }
+    /*
+    if (this.$store.state.authenticationToken === null) {
+      this.$router.push({ path: '/Unauthorized' })
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
+      } else {
+        this.$router.push({ path: '/Forbidden' })
+      }
+    } catch (ex) {
+      this.$router.push({ path: '/Forbidden' })
+    }
+    */
   },
   created () {
-    // retrieve claim to check if they can view a user profile or a restaurant profile
-    // if the claim is view user profile
-    // make the username the store's username
-    this.username = this.$store.state.username
-    axios
-      .get('http://localhost:8081/Profile/User', {
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        },
-        params: {
-          username: this.username
-        }
-      })
-      .then(response => {
-        console.log(response)
-        this.displayName = response.data.displayName
-      })
-      .catch(error => {
-        console.log('An error has occurred')
-        throw error
-      })
-  },
-  methods: {
-    GetProfile: function () {
-      // retrieve claim to check if they can view a user profile or a restaurant profile
-      // if the claim is view user profile
-      // make the username the store's username
-      this.username = this.$store.state.username
-      axios
-        .get('http://localhost:8081/Profile/User', {
-          params: {
-            username: this.username
-          }
-        })
-        .then(response => {
-          console.log(response)
-          this.profile = response
-        })
-        .catch(error => {
-          console.log('An error has occurred')
-          throw error
-        })
-    }
   }
 }
 </script>
 
-<style scoped>
+<style scoped> {
 
+}
 </style>

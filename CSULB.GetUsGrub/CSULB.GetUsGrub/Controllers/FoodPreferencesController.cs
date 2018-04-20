@@ -14,7 +14,6 @@ namespace CSULB.GetUsGrub.Controllers
     [RoutePrefix("FoodPreferences")]
     public class FoodPreferencesController : ApiController
     {
-
         [HttpGet]
         [AllowAnonymous]
         [Route("GetPreferences")]

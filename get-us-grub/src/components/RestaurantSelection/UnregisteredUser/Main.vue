@@ -1,7 +1,6 @@
 <template>
   <div>
-    <v-container class="scroll-y" id="scroll-target">
-      <v-container id="unregistered-restaurant-selection">
+      <div id="unregistered-restaurant-selection">
         <v-alert id='login-redirect' outline icon="info" :value="true">
           Attention individual users:
           <router-link to="/Login">
@@ -12,8 +11,7 @@
           <!-- Main page of the restaurant selector -->
           <select-restaurant/>
         </div>
-      </v-container>
-    </v-container>
+      </div>
   </div>
 </template>
 
@@ -31,17 +29,14 @@ export default {
 
 <style>
 #login-redirect {
-  margin: 4em 2.6em -0.3em 1.2em;
+  margin: 3.5em 0em -0.3em 0em;
+  font-weight: bold;
   font-size: small;
   padding: 0.1em 1em 0.1em 1em;
   color: rgb(82, 159, 247) !important;
 }
-#scroll-target {
-  max-height: 56.5em;
-  position: absolute;
-  overflow-x: hidden;
-}
 #unregistered-restaurant-selection {
+  padding: 2.5em 0 0 0;
   max-width: 1200px;
   margin: auto;
 }

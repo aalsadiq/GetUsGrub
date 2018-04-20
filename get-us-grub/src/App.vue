@@ -1,18 +1,99 @@
 <template>
   <div id="app">
     <v-app>
-      <v-container id="router-container">
-        <div>
-          <router-view/>
-        </div>
-      </v-container>
+      <div id="router-div">
+        <router-view id="router"/>
+        <!-- Popup for refreshing session -->
+        <v-snackbar
+          :timeout="timeout"
+          :top="verticalPosition === 'top'"
+          :bottom="verticalPosition === 'bottom'"
+          :right="horizontalPosition === 'right'"
+          :left="horizontalPosition === 'left'"
+          :multi-line="mode === 'multi-line'"
+          :vertical="mode === 'vertical'"
+          v-model="popUp"
+          :color="'error'"
+        >
+          Your session will expire in {{ expMinutes }}
+          <v-btn id='refresh-btn' light color="white" @click.native="refresh">Refresh</v-btn>
+        </v-snackbar>
+      </div>
     </v-app>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      datenow: null,
+      exp: null,
+      expMinutes: '5 minutes',
+      popUp: false,
+      verticalPosition: 'top',
+      horizontalPosition: '',
+      mode: 'mult-line',
+      timeout: 10000000
+    }
+  },
+  methods: {
+    time () {
+      // Set dateTimeNow as a moment object in unix format
+      this.dateTimeNow = moment.unix(moment().unix())
+    },
+    logoutUser () {
+      this.$store.dispatch('setAuthenticationToken', null)
+      // Force reload to clear cache
+      location.reload()
+      this.$router.push({path: '/'})
+    },
+    // Compare expiration time with the current date time and triggers the popup
+    compareTime () {
+      try {
+        if (this.$store.state.authenticationToken == null) {
+          this.popUp = false
+        } else if (this.exp.diff(this.dateTimeNow, 'seconds') <= 10) {
+          this.popUp = false
+          this.logoutUser()
+        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') < 1 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
+          this.expMinutes = '1 minute'
+          this.popUp = true
+        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') < 5 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
+          this.expMinutes = '5 minutes'
+          this.popUp = true
+        }
+      } catch (ex) {}
+    },
+    // Set the exp variable if there is a token in the Vuex store
+    setExpiration () {
+      try {
+        if (this.$store.state.authenticationToken != null) {
+          // Set exp as a moment object in unix format
+          this.exp = moment.unix(jwt.decode(this.$store.state.authenticationToken).exp)
+        }
+      } catch (ex) {}
+    },
+    // Refresh the user's session by calling creation of new token
+    refresh () {
+      console.log('refresh')
+      // this.popUp = false
+    }
+  },
+  // Set time intervals throughout user's session
+  mounted () {
+    // Call function every 5000 milliseconds (5 seconds)
+    this.timeInterval = setInterval(this.time, 5000)
+    this.setExpirationInterval = setInterval(this.setExpiration, 50000)
+    this.compareInterval = setInterval(this.compareTime, 5000)
+  },
+  // Clear all intervals set
+  beforeDestroy () {
+    clearInterval(this.timeInterval)
+    clearInterval(this.setExpirationInterval)
+    clearInterval(this.compareInterval)
+  }
 }
 </script>
 
@@ -23,14 +104,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-#router-container {
-  margin-top: 3.3em;
+  background-color: rgb(243, 243, 243);
 }
 /* Removing scrollbar on page */
 html {
-  overflow-y: hidden;
+  background-color: rgb(243, 243, 243);
   overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 /* Omit text underlines to router-links */
 a {
@@ -38,6 +121,14 @@ a {
 }
 .container {
   max-width: 100%;
-  padding: 0px 35px 0px 16px;
+}
+#refresh-btn {
+  color: rgb(177, 13, 13);
+  font-weight: bold;
+  padding: 0.3em;
+}
+#router {
+  width: 100%;
+  padding: 0 0 3em 0;
 }
 </style>

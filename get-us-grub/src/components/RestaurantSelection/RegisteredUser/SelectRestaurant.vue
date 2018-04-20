@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <v-container fluid>
+      <div fluid>
         <div>
           <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
@@ -9,7 +9,7 @@
           </v-alert>
           <!-- Title bar for the restaurant selection -->
           <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
-            <span id="quote">
+            <span class="quote">
             "With great power comes great responsibility" - Uncle Ben
             </span>
           </v-alert>
@@ -92,20 +92,23 @@
             </v-form>
           </v-card>
           <!-- Submit button -->
-          <v-tooltip bottom>
-            <v-btn
-              id="search-btn"
-              @click="submit"
-              :disabled="!valid"
-              :loading="loading"
-              slot="activator"
-              >
-              <v-icon>search</v-icon>
-            </v-btn>
-            <span>Search</span>
-          </v-tooltip>
+          <!-- Submit button -->
+          <div class="search-btn-div">
+            <v-tooltip bottom>
+              <v-btn
+                class="search-btn"
+                @click="submit"
+                :disabled="!valid"
+                :loading="loading"
+                slot="activator"
+                >
+                <v-icon>search</v-icon>
+              </v-btn>
+              <span>Search</span>
+            </v-tooltip>
+          </div>
         </div>
-      </v-container>
+      </div>
     </div>
     <div v-show="showSection">
       <!-- Restaurant selection results Vue component -->
@@ -219,7 +222,7 @@ export default {
 
 <style>
 #selectRestaurantTitleBar {
-  background-color: #6F81AD !important
+  background-color: rgb(87, 115, 185) !important
 }
 #unableToFindRestaurantAlert {
   background-color: #e26161 !important
@@ -230,10 +233,6 @@ export default {
 #card {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;
-}
-#quote {
-  color: rgb(255, 255, 255);
-  font-size: normal;
 }
 #required {
   margin-bottom: 0.4em;

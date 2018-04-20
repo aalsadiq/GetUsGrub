@@ -41,7 +41,16 @@
         to="/Profile"
         v-if="this.$store.state.isAuthenticated"
       >
-        <span class="nav-btn-text">PROFILE</span>
+
+      <span class="nav-btn-text">PROFILE</span>
+      </v-btn>
+       <v-btn
+        flat
+        class="nav-btn"
+        to="/SsoTestingHub"
+      >
+
+        <span class="nav-btn-text">SSO</span>
       </v-btn>
       <v-btn
         flat

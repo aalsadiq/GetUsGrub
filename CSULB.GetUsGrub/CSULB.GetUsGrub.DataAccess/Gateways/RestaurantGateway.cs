@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @updated: 04/09/2018
     /// </para>
     /// </summary>
-    public class RestaurantGateway : IDisposable
+    public class RestaurantGateway: IDisposable
     {
         // Open the Restaurant context
         RestaurantContext context = new RestaurantContext();
@@ -191,51 +191,9 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        //ImageUploadGateway for profile
-        //store the path in the database...
-        public ResponseDto<bool> UploadImage(RestaurantDto restaurantDto, List<string> MenuPath)
+        public void Dispose()
         {
-            using (var userContext = new UserContext())
-            {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        //Queries for the user account based on username.
-                        var restaurant = (from account in userContext.UserAccounts
-                                           where account.Id == restaurantDto.RestaurantId
-                                           
-                                           select account).FirstOrDefault();
-
-                        // restaurant.UserProfile.RestaurantProfile.RestaurantMenu. = 
-                        userContext.SaveChanges();
-                        dbContextTransaction.Commit();
-
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
-                    {
-                        dbContextTransaction.Rollback();
-
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Dispose of the context
-        /// </summary>
-        void IDisposable.Dispose()
-        {
-            context.Dispose();
+            throw new NotImplementedException();
         }
     }
 }

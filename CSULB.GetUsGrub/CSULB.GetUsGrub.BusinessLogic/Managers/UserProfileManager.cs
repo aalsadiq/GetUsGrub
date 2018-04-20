@@ -62,13 +62,23 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
             var result = ImageUploadValidationStrategy.ExecuteStrategy();
 
+            if (result.Data == false)
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = result.Error
+                };
+            }
+
             var renameImage = Path.GetExtension(image.FileName);
             var newImagename = username + renameImage;
 
             // Save image to path
             string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
-            string filename = Path.GetFileName(image.FileName);// file name should be username.png
-            user.DisplayPicture = savePath + filename; // Store image path to DTO
+
+            // Set Diplay Picture Path
+            user.DisplayPicture = savePath + newImagename; 
 
             // Call gateway to save path to database
             using (var gateway = new UserProfileGateway())
@@ -83,7 +93,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
 
-                image.SaveAs(savePath + filename);
+                // Save the image to the path
+                image.SaveAs(savePath + newImagename);
 
                 return new ResponseDto<bool>
                 {

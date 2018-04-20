@@ -2,6 +2,7 @@
 using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Web;
 
@@ -72,25 +73,35 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         //ImageUploadManager
         // TODO: @Angelica Add image profile upload here
-        public ResponseDto<bool> MenuItemImageUpload(HttpPostedFile image, string username)
+        public ResponseDto<bool> MenuItemImageUpload(HttpPostedFile image, string username, string menuItem, string ItemName)
         {
             var user = new UserProfileDto() { Username = username };
 
             var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
             var result = ImageUploadValidationStrategy.ExecuteStrategy();
 
+            if (result.Data == false)
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = result.Error
+                };
+            }
+
             var renameImage = Path.GetExtension(image.FileName);
-            var newImagename = username + renameImage;
+            var newImagename = username + "_" + menuItem + "_" + ItemName  + renameImage;
 
             // Save image to path
             string savePath = ConfigurationManager.AppSettings["MenuImagePath"];
-            string filename = Path.GetFileName(image.FileName);// file name should be username.png
-            user.DisplayPicture = savePath + filename; // Store image path to DTO
+            //string fileName = Path.GetFileName(image.FileName);// file name should be username.png
+            //Debug.WriteLine(fileName);
+            var menuPath = savePath +  newImagename; // Store image path to DTO
 
             // Call gateway to save path to database
-            using (var gateway = new UserProfileGateway())
+            using (var gateway = new RestaurantProfileGateway())
             {
-                var gatewayresult = gateway.UploadImage(user);
+                var gatewayresult = gateway.UploadImage(user, menuPath, menuItem, ItemName);
                 if (gatewayresult.Data == false)
                 {
                     return new ResponseDto<bool>()
@@ -100,7 +111,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
 
-                image.SaveAs(savePath + filename);
+                image.SaveAs(menuPath);
 
                 return new ResponseDto<bool>
                 {

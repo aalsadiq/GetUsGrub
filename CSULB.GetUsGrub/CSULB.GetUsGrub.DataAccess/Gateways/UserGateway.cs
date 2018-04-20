@@ -388,7 +388,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         var activeStatus = (from account in userContext.UserAccounts
                                             where account.Username == username
                                             select account).SingleOrDefault();
-s
+
                         activeStatus.IsActive = true;
                         userContext.SaveChanges();
                         dbContextTransaction.Commit();

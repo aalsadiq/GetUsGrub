@@ -123,8 +123,13 @@ export default new Router({
       component: EditUser
     },
     {
-      path: '/User/Profile/ImageUpload',
-      name: 'ImageUpload',
+      path: '/User/Profile/ProfileImageUpload',
+      name: 'ProfileImageUpload',
+      component: ImageUpload
+    },
+    {
+      path: '/User/Profile/MenuItemImageUpload',
+      name: 'MenuItemImageUpload',
       component: ImageUpload
     },
     {

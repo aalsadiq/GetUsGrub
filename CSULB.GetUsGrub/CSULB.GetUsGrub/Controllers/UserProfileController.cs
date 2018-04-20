@@ -110,26 +110,5 @@ namespace CSULB.GetUsGrub.Controllers
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
-
-        // TODO: @Angelica ImageUpload comments
-        // PUT Profile/User/EditUser/ImageUpload
-        [Route("User/Get/ProfileImage")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
-        [HttpGet]
-        public IHttpActionResult GetProfileImage(UserProfileDto user)
-        {
-            try
-            {
-                return Ok("path");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
-            }
-        }
-
     }
 }

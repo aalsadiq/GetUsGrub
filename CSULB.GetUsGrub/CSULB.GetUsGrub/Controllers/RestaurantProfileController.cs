@@ -1,6 +1,8 @@
 using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.Diagnostics;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -76,37 +78,39 @@ namespace CSULB.GetUsGrub.Controllers
 
         // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/Edit/MenuItemImageUpload
-        [Route("Edit/MenuItemImageUpload")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [Route("Restaurant/Edit/MenuItemImageUpload")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         // TODO: @Angelica Check what claims are needed here [Angelica!]
-        [HttpPut]
-        public IHttpActionResult MenuItemImageUpload([FromBody] RestaurantProfileDto user)
+        [HttpPost]
+        public IHttpActionResult MenuItemImageUpload()
         {
-            //Checks if what was given is a valid model.
-            if (!ModelState.IsValid)
-            {
-                //If model is invalid, return a bad request.
-                return BadRequest("Something went wrong, please try again later");
-            }
             try
             {
-                //Creating a manager to then call EditUser.
-                //var manager = new RestaurantProfileDto();
-                //Calling EditUser method to edit the given user.
-                //var response = manager.ProfileImageUpload(user.DisplayPicture);
-                //Checks the response from EditUser. If error is null, then it was successful.
-                //if (response.Error != null)
-                //{
-                //    //Will return a bad request if error occured in manager.
-                //    return BadRequest(response.Error);
-                //}
-                //If EditUser was successful return HTTP response with a successful message.
-                return Ok("Image has been updated.");
+                var image = HttpContext.Current.Request.Files[0];
+                var username = HttpContext.Current.Request.Params["username"];
+                var menuItem = HttpContext.Current.Request.Params["menuItem"];
+                var itemName = HttpContext.Current.Request.Params["itemName"];
+
+                if (username == null || username == "")
+                {
+                    return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                }
+
+                var manager = new RestaurantProfileManager();
+                var response = manager.MenuItemImageUpload(image, username, menuItem, itemName);
+
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                return Ok("Image Upload complete!");
             }
-            catch (Exception)
+
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("This is a bad request.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
     }

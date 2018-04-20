@@ -92,7 +92,6 @@
             </v-form>
           </v-card>
           <!-- Submit button -->
-          <!-- Submit button -->
           <div class="search-btn-div">
             <v-tooltip bottom>
               <v-btn

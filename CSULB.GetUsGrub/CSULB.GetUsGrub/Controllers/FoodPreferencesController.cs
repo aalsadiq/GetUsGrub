@@ -14,7 +14,6 @@ namespace CSULB.GetUsGrub.Controllers
     [RoutePrefix("FoodPreferences")]
     public class FoodPreferencesController : ApiController
     {
-        // TODO: @Rachel Please add in your claims attribute here. The authentication works now! [-Jenn]
         [HttpGet]
         [AllowAnonymous]
         [Route("GetPreferences")]

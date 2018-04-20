@@ -3,6 +3,7 @@ using CSULB.GetUsGrub.Models;
 using FluentAssertions;
 using FluentValidation;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace CSULB.GetUsGrub.UnitTests
@@ -393,6 +394,11 @@ namespace CSULB.GetUsGrub.UnitTests
                 State = "CA",
                 FoodType = "American Food",
                 DistanceInMiles = 10,
+                FoodPreferences = new List<string>
+                {
+                    "Halal",
+                    "Vegetarian"
+                },
                 AvgFoodPrice = 1,
                 CurrentUtcDateTime = DateTime.UtcNow
             };

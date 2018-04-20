@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -20,8 +21,6 @@ namespace CSULB.GetUsGrub.DataAccess
             authenticationContext = new AuthenticationContext();
         }
 
-        // TODO @Ahmed Change all the parameter to the data type needed only @Ahmed
-        // TODO @ Ahmed Put things in Gateways in Try Catch @Ahmed
         /// <summary>
         /// 
         /// Gets the Failed attempt information from the DataBase
@@ -77,7 +76,6 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </returns>
         public ResponseDto<UserAccount> GetUserAccount(string username)
         {
-
             try
             {
                 // Looking for the User matching the incoming Username 
@@ -97,7 +95,6 @@ namespace CSULB.GetUsGrub.DataAccess
                     Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
-
         }
 
         /// <summary>
@@ -111,7 +108,6 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public ResponseDto<AuthenticationToken> GetAuthenticationToken(string username)
         {
-
             try
             {
                 var userId = (from account in authenticationContext.UserAccounts
@@ -136,7 +132,6 @@ namespace CSULB.GetUsGrub.DataAccess
                     Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
-
         }
 
         /// <summary>
@@ -151,19 +146,28 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </returns>
         public ResponseDto<PasswordSalt> GetUserPasswordSalt(int? id)
         {
-
-            var salt = (from salts in authenticationContext.PasswordSalts
-                        where salts.Id == id
-                        select salts.Salt).FirstOrDefault();
-            var passwordSalt = new PasswordSalt
+            try
             {
-                Salt = salt
-            };
-            return new ResponseDto<PasswordSalt>
+                var salt = (from salts in authenticationContext.PasswordSalts
+                    where salts.Id == id
+                    select salts.Salt).FirstOrDefault();
+                var passwordSalt = new PasswordSalt
+                {
+                    Salt = salt
+                };
+                return new ResponseDto<PasswordSalt>
+                {
+                    Data = passwordSalt
+                };
+            }
+            catch (Exception)
             {
-                Data = passwordSalt
-            };
-
+                return new ResponseDto<PasswordSalt>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
         }
 
         /// <summary>
@@ -175,13 +179,13 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public ResponseDto<bool> UpdateFailedAttempt(FailedAttempts incomingFailedAttempt)
         {
-
             using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
             {
                 try
                 {
                     // Updating the failed attempts
-                    authenticationContext.FailedAttempts.Add(incomingFailedAttempt);
+                    authenticationContext.FailedAttempts.AddOrUpdate(incomingFailedAttempt);
+                    authenticationContext.SaveChanges();
 
                     // Commiting the trasaction to the Database
                     dbContextTransaction.Commit();
@@ -203,7 +207,6 @@ namespace CSULB.GetUsGrub.DataAccess
                     };
                 }
             }
-
         }
 
         /// <summary>
@@ -216,7 +219,6 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </param>
         public ResponseDto<bool> StoreAuthenticationToken(AuthenticationToken incomingAuthenticationToken)
         {
-
             using (var dbContextTransaction = authenticationContext.Database.BeginTransaction())
             {
                 try
@@ -230,7 +232,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     incomingAuthenticationToken.Id = userId;
 
                     // Adding the Token to the DataBase
-                    authenticationContext.AuthenticationTokens.Add(incomingAuthenticationToken);
+                    authenticationContext.AuthenticationTokens.AddOrUpdate(incomingAuthenticationToken);
+                    authenticationContext.SaveChanges();
 
                     // Commiting the trasaction to the Database
                     dbContextTransaction.Commit();
@@ -252,11 +255,9 @@ namespace CSULB.GetUsGrub.DataAccess
                     };
                 }
             }
-
         }
 
         // Dispose release unmangaed resources 
-        // TODO: @Jenn Add in implementation of Dispose [-Jenn]
         public void Dispose()
         {
             authenticationContext.Dispose();

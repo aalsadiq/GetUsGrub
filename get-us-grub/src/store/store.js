@@ -34,14 +34,6 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantGeoCoordinates: {
-          latitude: null,
-          longitude: null
-        },
-        clientUserGeoCoordinates: {
-          latitude: null,
-          longitude: null
-        },
         restaurantId: 26,
         displayName: '',
         address: {
@@ -107,41 +99,56 @@ export const store = new Vuex.Store({
     },
     // Constants are data that are non-changing
     constants: {
-      securityQuestionsSet1: [{
+      securityQuestions: [{
+        id: 0,
+        questions: [
+          {
+            id: 1,
+            question: 'Who was the company you first worked for?'
+          },
+          {
+            id: 2,
+            question: 'Where did you go to highschool or college?'
+          },
+          {
+            id: 3,
+            question: 'What was the name of the teacher who gave you your first failing grade?'
+          }
+        ]
+      },
+      {
         id: 1,
-        question: 'Who was the company you first worked for?'
+        questions: [
+          {
+            id: 4,
+            question: 'What is your favorite song?'
+          },
+          {
+            id: 5,
+            question: 'What is your mother\'s maiden name?'
+          },
+          {
+            id: 6,
+            question: 'What is your favorite spots team?'
+          }
+        ]
       },
       {
         id: 2,
-        question: 'Where did you go to highschool or college?'
-      },
-      {
-        id: 3,
-        question: 'What was the name of the teacher who gave you your first failing grade?'
-      }],
-      securityQuestionsSet2: [{
-        id: 4,
-        question: 'What is your favorite song?'
-      },
-      {
-        id: 5,
-        question: 'What is your mother\'s maiden name?'
-      },
-      {
-        id: 6,
-        question: 'What is your favorite sports team?'
-      }],
-      securityQuestionsSet3: [{
-        id: 7,
-        question: 'What was the name of your first crush?'
-      },
-      {
-        id: 8,
-        question: 'What is the name of your hometown?'
-      },
-      {
-        id: 9,
-        question: 'What was the name of your first pet?'
+        questions: [
+          {
+            id: 7,
+            question: 'What was the name of your first crush?'
+          },
+          {
+            id: 8,
+            question: 'What is the name of your hometown?'
+          },
+          {
+            id: 9,
+            question: 'What is the name of yur first pet?'
+          }
+        ]
       }],
       timeZones: [{
         displayString: 'Pacific Standard Time',
@@ -294,7 +301,7 @@ export const store = new Vuex.Store({
     populateRestaurantMenus: (state, payload) => {
       payload.forEach(function (element, index) {
         console.log(element)
-        this.$set(state.restaurantMenus[index], restaurantMenus, payload)
+        this.$set(state.restaurantMenus[index], state.restaurantMenus, payload)
       })
     },
     editDictionaryItem: (state, payload) => {

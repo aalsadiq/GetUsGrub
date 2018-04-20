@@ -1,6 +1,5 @@
 <template>
   <div>
-    <app-header/>
     <div>
       <h1>{{ title }}</h1>
     </div>
@@ -15,7 +14,6 @@
         <v-btn dark="true">Edit</v-btn>
       </router-link>
     </div>
-    <app-footer/>
   </div>
 </template>
 

@@ -11,13 +11,13 @@ namespace CSULB.GetUsGrub
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
+            // Enable Cors
             config.EnableCors();
 
-            // Web API attribute routing
-            config.MapHttpAttributeRoutes();
+            // Registering global handlers
+            config.MessageHandlers.Add(new AuthenticationHandler());
 
-            // Web API convention-based routing
+            // Mapping message handler to SSO Controller
             config.Routes.MapHttpRoute(
                 name: "SsoRoute",
                 routeTemplate: "{controller}/{action}/{id}",
@@ -31,6 +31,10 @@ namespace CSULB.GetUsGrub
                     })
             );
 
+            // Web API attribute routing
+            config.MapHttpAttributeRoutes();
+
+            // Web API convention-based routing
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}/{id}",
@@ -38,8 +42,6 @@ namespace CSULB.GetUsGrub
                 constraints: null
             );
 
-            // Registering Authentication Filter in the pipeline
-            config.Filters.Add(new AuthenticationFilter());
             // Add GlobalSecurityExceptionFilter for User Access Control
             // Last Updated: 03/14/18 by Rachel Dang
             config.Filters.Add(new GlobalSecurityExceptionFilter());

@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public ResponseDto<LoginDto> ExecuteStrategy()
         {
-            // TODO @Ahmed Put the Wrapper here @Ahmed
+            
             var validationWrapper =
                 new ValidationWrapper<LoginDto>(_loginDto, "UsernameAndPassword", new LoginDtoValidator());
             var validationResult = validationWrapper.ExecuteValidator();

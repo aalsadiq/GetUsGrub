@@ -1,6 +1,6 @@
-﻿using System;
-using CSULB.GetUsGrub.DataAccess;
+﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using System;
 
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -67,6 +67,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 {
                     userAttempts = new FailedAttempts()
                     {
+                        LastAttemptTime = DateTime.UtcNow,
                         Count = 0
                     };
                 }
@@ -86,7 +87,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     }
                 }
 
-                // TODO @Ahmed Make sure that we check for errors Move this above the attempts @Ahmed 
                 // Pull the User From DB
                 // Getting the user's ID
                 var gatewayResult = gateway.GetUserAccount(incomingLoginModel.Username);
@@ -100,6 +100,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                 // If there are no Errors from the gateway assign the data to an object
                 dataBaseUserAccount = gatewayResult.Data;
+                // Set UserAttempts Id with the UserAccount Id
+                userAttempts.Id = dataBaseUserAccount.Id;
 
                 // Getting the Salt associated with the ID
                 var gatewaySaltResult = gateway.GetUserPasswordSalt(dataBaseUserAccount.Id);
@@ -126,7 +128,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 // Cheking if user is first time
-                if (dataBaseUserAccount.IsFirstTimeUser == null && dataBaseUserAccount.IsFirstTimeUser == true)
+                if (dataBaseUserAccount.IsFirstTimeUser == null || dataBaseUserAccount.IsFirstTimeUser == true)
                 {
                     // TODO: @Brian Need your SSO Login Service here [-Ahmed]
                     // Send them to complete registration
@@ -146,7 +148,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     userAttempts.Count++;
                     if (userAttempts.Count >= 5)
                     {
-                        userAttempts.LastAttemptTime = DateTime.Now;
+                        userAttempts.LastAttemptTime = DateTime.UtcNow;
                     }
 
                     returnDto = new ResponseDto<LoginDto>

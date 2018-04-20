@@ -13,21 +13,21 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class LoginDtoValidator : AbstractValidator<LoginDto>
     {
-        // TODO @Ahmed put RegX and Error Mesages in the Constant in the Model Layer @Ahmed 
+        
         public LoginDtoValidator()
         {
             RuleSet("UsernameAndPassword", () =>
             {
                 RuleFor(loginDto => loginDto.Username)
-                    .NotEmpty().WithMessage("Username is required.")
-                    .NotNull().WithMessage("Username is required.")
-                    .Matches(@"^[A-Za-z\d]+$").WithMessage("Username must not contain spaces and special characters.");
+                    .NotEmpty().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
+                    .Matches(RegularExpressions.USERNAME_FORMAT).WithMessage(ValidationErrorMessages.USERNAME_FORMAT);
 
                 RuleFor(loginDto => loginDto.Password)
-                    .NotEmpty().WithMessage("Password is required.")
-                    .NotNull().WithMessage("Password is required.")
-                    .Length(8, 64).WithMessage("Password must be at least 8 characters and less than or equal to 64.")
-                    .Matches(@"^[^\s]+$").WithMessage("Password must not be empty or contain spaces.");
+                    .NotEmpty().WithMessage(ValidationErrorMessages.PASSWORD_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.PASSWORD_REQUIRED)
+                    .Length(8, 64).WithMessage(ValidationErrorMessages.PASSWORD_LENGTH)
+                    .Matches(RegularExpressions.STRING_CONTAINS_NO_SPACES).WithMessage(ValidationErrorMessages.PASSWORD_FORMAT);
             });
         }
     }

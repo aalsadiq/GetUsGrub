@@ -90,7 +90,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpGet]
         [Route("Registered")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        [AuthenticationFilter(true)]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANTSELECTION, Operation = ActionConstant.READ)]
         public IHttpActionResult RegisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {

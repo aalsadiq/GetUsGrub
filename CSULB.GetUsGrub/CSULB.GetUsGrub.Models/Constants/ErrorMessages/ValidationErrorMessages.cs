@@ -58,5 +58,9 @@
 
         // Validation error messages for a Token
         public const string INVALID_TOKEN = "Token is not valid.";
+
+        // Validation error messages for Images
+        public const string INVALID_IMAGE_TYPE = "Invalid image type.";
+        public const string INVALID_IMAGE_SIZE = "Invalid image size.";
     }
 }

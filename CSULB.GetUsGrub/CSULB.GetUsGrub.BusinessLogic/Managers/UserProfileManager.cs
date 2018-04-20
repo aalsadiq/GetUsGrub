@@ -1,6 +1,7 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System;
+using System.Configuration;
+using System.IO;
 using System.Web;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -54,30 +55,41 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         //ImageUploadManager
         // TODO: @Angelica Add image profile upload here
-        public ResponseDto<bool> ProfileImageUpload(UserProfileDto image)
+        public ResponseDto<bool> ProfileImageUpload(HttpPostedFile image,  string username)
         {
+            var user = new UserProfileDto() { Username = username};
+  
+            var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
+            var result = ImageUploadValidationStrategy.ExecuteStrategy();
 
-            //var profileImageUploadPreLogicValidationStrategy = new ProfileImageUploadPreLogicValidationStrategy(image);
-            //Imagename will be based on user
-            //var result = profileImageUploadPreLogicvalidationStrategy.ExecuteStrategy();//make sure it is a path
-            //var result = image.DisplayPicture;
-            //Console.WriteLine("Inside profileImageUpload: " + image.DisplayPicture);
-            //byte[] imgbytes = System.IO.File.ReadAllBytes(image.DisplayPicture);
-        
-            return new ResponseDto<bool>
+            var renameImage = Path.GetExtension(image.FileName);
+            var newImagename = username + renameImage;
+
+            // Save image to path
+            string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
+            string filename = Path.GetFileName(image.FileName);// file name should be username.png
+            user.DisplayPicture = savePath + filename; // Store image path to DTO
+
+            // Call gateway to save path to database
+            using (var gateway = new UserProfileGateway())
             {
-                Data = true,
-            };
+                var gatewayresult = gateway.UploadImage(user);
+                if (gatewayresult.Data == false)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = gatewayresult.Error
+                    };
+                }
 
-            //if (result.Error != null)
-            //{
-            //    return new ResponseDto<bool>
-            //    {
-            //        Data = false,
-            //        Error = "Something went wrong. Please try again later."
-            //    };
-            //}
+                image.SaveAs(savePath + filename);
 
+                return new ResponseDto<bool>
+                {
+                    Data = true
+                };
+            }
         }
     }
 }

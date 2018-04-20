@@ -1,9 +1,7 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Configuration;
 using System.Diagnostics;
-using System.IO;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -87,25 +85,29 @@ namespace CSULB.GetUsGrub.Controllers
         {
             try
             {
-                var file = HttpContext.Current.Request.Files[0];
-                //var file2 = HttpContext.Current.Request.Params["file"];
-                //return Ok("file: " + file + " file2: " + file2);
+                var image = HttpContext.Current.Request.Files[0];
                 var username = HttpContext.Current.Request.Params["username"];
-     
-                Console.WriteLine(username);
-                string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
 
-                string filename = Path.GetFileName(file.FileName);//need to extract the filename
-                file.SaveAs(savePath + filename);
+                if (username == null || username == "")
+                {
+                    return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                }
 
-                return Created("Created", $"Created {savePath + filename}");
+                var manager = new UserProfileManager();
+                var response = manager.ProfileImageUpload(image, username);
+
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                return Ok( "Image Upload complete!");
             }
 
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("This is a bad request.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
 
@@ -115,7 +117,7 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpGet]
-        public IHttpActionResult GetProfileImage(UserProfileDto user) //Need to pass this in to get the username
+        public IHttpActionResult GetProfileImage(UserProfileDto user)
         {
             try
             {
@@ -125,7 +127,7 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 Debug.WriteLine(ex);
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest("This is a bad request.");
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
 

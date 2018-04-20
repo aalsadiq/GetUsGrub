@@ -1,6 +1,9 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Web;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -67,42 +70,43 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return responseDtoFromGateway;
         }
 
-        //public ResponseDto<bool> ImageUpload(UserProfileDto userProfileDto)//Image upload for profile
-        //{
-        //    // Validation Strategy
-        //   // Image validation Strategy
+        //ImageUploadManager
+        // TODO: @Angelica Add image profile upload here
+        public ResponseDto<bool> MenuItemImageUpload(HttpPostedFile image, string username)
+        {
+            var user = new UserProfileDto() { Username = username };
 
-        //    // Validate data transfer object
-        //    // Execute the strategy
+            var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
+            var result = ImageUploadValidationStrategy.ExecuteStrategy();
 
-        //    //if (result.Error != null)
-        //    //{
-        //    //    return new ResponseDto<bool>
-        //    //    {
-        //    //        Data = false,
-        //    //        Error = result.Error
-        //    //    };
-        //    //}
+            var renameImage = Path.GetExtension(image.FileName);
+            var newImagename = username + renameImage;
 
-        //    // Gateway
-        //    // call gateway to store path
-        //    //using (var gateway = new UserGateway())
-        //    //{
-        //    //    var gatewayResult = gateway.DeleteUser(user.Username);
+            // Save image to path
+            string savePath = ConfigurationManager.AppSettings["MenuImagePath"];
+            string filename = Path.GetFileName(image.FileName);// file name should be username.png
+            user.DisplayPicture = savePath + filename; // Store image path to DTO
 
-        //    //    if (gatewayResult.Data == false)
-        //    //    {
-        //    //        return new ResponseDto<bool>()
-        //    //        {
-        //    //            Data = false,
-        //    //            Error = gatewayResult.Error
-        //    //        };
-        //    //    }
-        //    //    return new ResponseDto<bool>
-        //    //    {
-        //    //        Data = true
-        //    //    };
-        //    //}
-        //}
+            // Call gateway to save path to database
+            using (var gateway = new UserProfileGateway())
+            {
+                var gatewayresult = gateway.UploadImage(user);
+                if (gatewayresult.Data == false)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = gatewayresult.Error
+                    };
+                }
+
+                image.SaveAs(savePath + filename);
+
+                return new ResponseDto<bool>
+                {
+                    Data = true
+                };
+            }
+        }
     }
 }

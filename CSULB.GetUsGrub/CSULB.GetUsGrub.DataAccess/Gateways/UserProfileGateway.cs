@@ -10,13 +10,16 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary>
-    public class UserProfileGateway
+    public class UserProfileGateway: IDisposable
     {
-       /// <summary>
-       /// Returns user profile dto inside response dto
-       /// </summary>
-       /// <param name="username"></param>
-       /// <returns></returns>
+        // Open the User context
+        UserContext context = new UserContext();
+
+        /// <summary>
+        /// Returns user profile dto inside response dto
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public ResponseDto<UserProfileDto> GetUserProfileByUsername(string username)
         {
             using (var userContext = new UserContext())
@@ -96,6 +99,49 @@ namespace CSULB.GetUsGrub.DataAccess
 
         //ImageUploadGateway for profile
         //store the path in the database...
+        public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto)
+        {
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == userProfileDto.Username
+                                           select account).FirstOrDefault();
+
+                        userAccount.UserProfile.DisplayPicture = userProfileDto.DisplayPicture;
+                        userContext.SaveChanges();
+                        dbContextTransaction.Commit();
+
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = GeneralErrorMessages.GENERAL_ERROR
+                        };
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Dispose of the context
+        /// </summary>
+        void IDisposable.Dispose()
+        {
+            context.Dispose();
+        }
 
     }
 }

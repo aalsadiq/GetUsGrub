@@ -35,37 +35,78 @@
       </div>
       <v-layout>
       <v-flex xs12>
-          <v-toolbar dark tabs flat>
-            <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange accent-2">
-              <v-spacer/>
-              <v-tab href="#user">User
-                <v-icon>face</v-icon>
-              </v-tab>
-              <v-spacer/>
-              <v-tab href="#restaurant">Restaurant
-                <v-icon>store</v-icon>
-              </v-tab>
-              <v-spacer/>
-            </v-tabs>
-          </v-toolbar>
-          <v-tabs-items v-model="tabs">
-            <v-tab-item v-for="content in ['user', 'restaurant']" :key="content" :id="content">
-              <div v-if="content === 'user'">
-                <v-stepper v-model="userStep" vertical>
-                  <v-stepper-header>
-                    <v-divider></v-divider>
-                    <v-stepper-step step="1" :complete="userStep > 1">Identification</v-stepper-step>
-                    <v-divider></v-divider>
-                    <v-stepper-step step="2" :complete="userStep > 2">Security Questions</v-stepper-step>
-                    <v-divider></v-divider>
-                  </v-stepper-header>
-                  <v-stepper-items>
-                    <v-stepper-content step="1">
-                        <v-form v-model="validIdentificationInput">
-                          <v-text-field
-                            label="Enter a username"
-                            v-model="userAccount.username"
-                            :rules="$store.state.rules.usernameRules"
+        <!-- Title bar for the restaurant selection -->
+        <v-alert id="registration-error" :value=true icon='warning'>
+          <span id="error-title">
+            An error has occurred
+          </span>
+        </v-alert>
+      </v-flex>
+      </v-layout>
+      <v-layout>
+        <v-flex xs12>
+          <v-card id="error-card">
+            <p v-for="error in errors" :key="error">
+              {{ error }}
+            </p>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </div>
+    <v-layout>
+    <v-flex xs12>
+        <v-toolbar dark tabs flat>
+          <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-1">
+            <v-spacer/>
+            <v-tab href="#user">User
+              <v-icon>face</v-icon>
+            </v-tab>
+            <v-spacer/>
+            <v-tab href="#restaurant">Restaurant
+              <v-icon>store</v-icon>
+            </v-tab>
+            <v-spacer/>
+          </v-tabs>
+        </v-toolbar>
+        <v-tabs-items v-model="tabs">
+          <v-tab-item v-for="content in ['user', 'restaurant']" :key="content" :id="content">
+            <div v-if="content === 'user'">
+              <v-stepper v-model="userStep" vertical>
+                <v-stepper-header>
+                  <v-divider></v-divider>
+                  <v-stepper-step step="1" :complete="userStep > 1">Identification</v-stepper-step>
+                  <v-divider></v-divider>
+                  <v-stepper-step step="2" :complete="userStep > 2">Security Questions</v-stepper-step>
+                  <v-divider></v-divider>
+                </v-stepper-header>
+                <v-stepper-items>
+                  <v-stepper-content step="1">
+                      <v-form v-model="validIdentificationInput">
+                        <v-text-field
+                          label="Enter a username"
+                          v-model="userAccount.username"
+                          :rules="$store.state.rules.usernameRules"
+                          required
+                          :disabled=disable
+                        ></v-text-field>
+                        <v-text-field
+                          label="Enter a display name"
+                          v-model="userProfile.displayName"
+                          :rules="$store.state.rules.displayNameRules"
+                          required
+                          :disabled=disable
+                        ></v-text-field>
+                        <v-text-field
+                            label="Enter a password"
+                            v-model="userAccount.password"
+                            :rules="$store.state.rules.passwordRules"
+                            :min="8"
+                            :counter="64"
+                            :append-icon="visible ? 'visibility' : 'visibility_off'"
+                            :append-icon-cb="() => (visible = !visible)"
+                            :type=" visible ? 'text' : 'password'"
+                            :error-messages="passwordErrorMessages"
+                            @input="validatePassword"
                             required
                             :disabled=disable
                           ></v-text-field>
@@ -675,9 +716,15 @@ p {
   margin-bottom: 0em;
 }
 #error-div {
-  margin-top: -1em;
+  margin: -0.9em 0em -0.5em 0em;
 }
 #success {
   margin-bottom: 1em;
+}
+.application .theme--light.stepper--vertical
+.stepper__content:not(:last-child),
+.theme--light .stepper--vertical
+.stepper__content:not(:last-child) {
+  border: none;
 }
 </style>

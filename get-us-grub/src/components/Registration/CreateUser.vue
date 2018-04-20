@@ -35,7 +35,7 @@
     <v-layout>
     <v-flex xs12>
         <v-toolbar dark tabs flat>
-          <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange accent-2">
+          <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-1">
             <v-spacer/>
             <v-tab href="#user">User
               <v-icon>face</v-icon>
@@ -748,9 +748,15 @@ p {
   margin-bottom: 0em;
 }
 #error-div {
-  margin-top: -1em;
+  margin: -0.9em 0em -0.5em 0em;
 }
 #success {
   margin-bottom: 1em;
+}
+.application .theme--light.stepper--vertical
+.stepper__content:not(:last-child),
+.theme--light .stepper--vertical
+.stepper__content:not(:last-child) {
+  border: none;
 }
 </style>

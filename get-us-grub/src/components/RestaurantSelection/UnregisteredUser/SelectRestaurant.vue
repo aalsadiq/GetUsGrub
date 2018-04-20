@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <v-container fluid>
+      <div fluid>
         <div>
           <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
@@ -9,7 +9,7 @@
           </v-alert>
           <!-- Title bar for the restaurant selection -->
           <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
-            <span id="quote">
+            <span class="quote">
             "With great power comes great responsibility" - Uncle Ben
             </span>
           </v-alert>
@@ -92,20 +92,22 @@
             </v-form>
           </v-card>
           <!-- Submit button -->
-          <v-tooltip bottom>
-            <v-btn
-              class="search-btn"
-              @click="submit"
-              :disabled="!valid"
-              :loading="loading"
-              slot="activator"
-              >
-              <v-icon>search</v-icon>
-            </v-btn>
-            <span>Search</span>
-          </v-tooltip>
+          <div class="search-btn-div">
+            <v-tooltip bottom>
+              <v-btn
+                class="search-btn"
+                @click="submit"
+                :disabled="!valid"
+                :loading="loading"
+                slot="activator"
+                >
+                <v-icon>search</v-icon>
+              </v-btn>
+              <span>Search</span>
+            </v-tooltip>
+          </div>
         </div>
-      </v-container>
+      </div>
     </div>
     <div v-if="showSection">
       <!-- Restaurant selection results Vue component -->
@@ -223,15 +225,15 @@ export default {
 }
 .search-btn {
   background-color: rgb(255, 255, 255);
-  margin: 1em 2.9em 0em 1em;
 }
 #card {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;
 }
-#quote {
+.quote {
   color: rgb(255, 255, 255);
-  font-size: normal;
+  font-size: 1.1em;
+  font-weight: bold;
 }
 #required {
   margin-bottom: 0.4em;

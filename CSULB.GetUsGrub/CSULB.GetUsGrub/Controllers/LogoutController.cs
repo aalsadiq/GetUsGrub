@@ -12,7 +12,8 @@ namespace CSULB.GetUsGrub.Controllers
     {
         // POST Logout/User
         [HttpPost]
-        [Route("Logout/")]
+        [AllowAnonymous]
+        [Route("Logout")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult LogoutUserUser(HttpRequestMessage request)
         {

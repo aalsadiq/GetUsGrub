@@ -158,7 +158,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return new ResponseDto<AuthenticationTokenDto>
             {
                 Data = authenticationTokenDto,
-                Error = "Session Ended"
             };
         }
 

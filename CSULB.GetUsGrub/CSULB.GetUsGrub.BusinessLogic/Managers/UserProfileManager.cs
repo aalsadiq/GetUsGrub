@@ -47,11 +47,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             string username = userProfileDto.Username;
             var userProfileDomain = new UserProfile(userProfileDto.DisplayName, userProfileDto.DisplayPicture);
 
+            // Retrieve userID from db
+            var userGateway = new UserGateway();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(username);
 
             // Execute update of database
             var profileGateway = new UserProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditUserProfileByUserProfileDomain(username, userProfileDomain);
+            var responseDtoFromGateway = profileGateway.EditUserProfileById(userAccountResponseDto.Data.Id, userProfileDomain);
 
             return responseDtoFromGateway;
         }

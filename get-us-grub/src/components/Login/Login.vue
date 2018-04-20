@@ -4,7 +4,7 @@
     <div id="login-div">
       <v-alert id="login-error" :value=showError icon="warning">
           <span>
-            You have entered an invalid username or password
+            {{errors}}
           </span>
       </v-alert>
       <v-form ref="form" v-model="valid" >
@@ -61,7 +61,8 @@ export default {
       loading: false,
       disable: false,
       showError: false,
-      visible: false
+      visible: false,
+      errors: ''
     }
   },
   beforeCreate () {
@@ -103,13 +104,15 @@ export default {
         this.disable = false
         this.$store.state.isAuthenticated = true
         this.$store.state.authenticationToken = response.data
+        console.log(this.$store.state.authenticationToken)
         this.$store.state.username = jwt.decode(response.data)['Username']
         this.$router.push({path: '/'})
       }).catch(error => {
         this.showError = true
         this.valid = true
         this.disable = false
-        Promise.reject(error)
+        this.errors = error.response.data['message']
+        Promise.reject(this.errors)
       })
     }
   }

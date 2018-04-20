@@ -34,6 +34,14 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
+        restaurantGeoCoordinates: {
+          latitude: null,
+          longitude: null
+        },
+        clientUserGeoCoordinates: {
+          latitude: null,
+          longitude: null
+        },
         restaurantId: 26,
         displayName: '',
         address: {
@@ -301,7 +309,7 @@ export const store = new Vuex.Store({
     populateRestaurantMenus: (state, payload) => {
       payload.forEach(function (element, index) {
         console.log(element)
-        this.$set(state.restaurantMenus[index], state.restaurantMenus, payload)
+        this.$set(state.restaurantMenus[index], restaurantMenus, payload)
       })
     },
     editDictionaryItem: (state, payload) => {

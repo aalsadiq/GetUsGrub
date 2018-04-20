@@ -24,9 +24,6 @@
 </template>
 
 <script>
-import jwt from 'jsonwebtoken'
-import moment from 'moment'
-
 export default {
   name: 'App',
   data () {

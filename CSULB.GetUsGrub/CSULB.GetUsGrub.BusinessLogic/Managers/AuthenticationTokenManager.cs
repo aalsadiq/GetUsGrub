@@ -39,7 +39,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var tokenHandler = new JwtSecurityTokenHandler();
             var authenticationToken = new AuthenticationToken();
             var salt = new SaltGenerator().GenerateSalt(128);
-            
+
             // Creating the Header of the Token
             var key = new SymmetricSecurityKey(Encoding.Default.GetBytes(salt));
             var signingCredentials = new SigningCredentials(key, "HS256");
@@ -92,7 +92,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var authenticationTokenDto = new AuthenticationTokenDto(authenticationToken.Username,
                 authenticationToken.ExpiresOn, authenticationToken.TokenString);
 
-            
+
             // Returning the Token to the Controler
             return new ResponseDto<AuthenticationTokenDto>
             {
@@ -115,7 +115,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<AuthenticationTokenDto> RevokeToken(AuthenticationTokenDto authenticationTokenDto)
         {
 
-            var authenticationTokenPreLogicValidationStrategy = 
+            var authenticationTokenPreLogicValidationStrategy =
                 new AuthenticationTokenPreLogicValidationStrategy(authenticationTokenDto);
 
             // Checking if the Dto has all the information it needs
@@ -147,7 +147,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = "Something went wrong with : ATRT"
                 };
             }
-
 
             // Updating the Token on the Database
             using (var authenticationGateway = new AuthenticationGateway())
@@ -258,8 +257,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns></returns>
         public ResponseDto<bool> AuthenticateToken(string incomingTokenString)
         {
-            
-            
 
             return new ResponseDto<bool>()
             {

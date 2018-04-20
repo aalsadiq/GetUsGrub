@@ -1,17 +1,38 @@
 <template>
-  <div id="create-user">
-    <div id="success">
-      <v-layout>
+  <div>
+    <div id="create-user">
+      <div id="success">
+        <v-layout>
+          <v-flex xs12>
+            <v-alert type="success" :value="showSuccess">
+              <span>
+                Success! User <code>{{ username }}</code> has been created.
+              </span>
+            </v-alert>
+          </v-flex>
+        </v-layout>
+      </div>
+      <div v-show="showError" id="error-div">
+        <v-layout>
         <v-flex xs12>
-          <v-alert type="success" :value="showSuccess">
-            <span>
-              Success! User <code>{{ username }}</code> has been created.
+          <!-- Title bar for the restaurant selection -->
+          <v-alert id="registration-error" :value=true icon='warning'>
+            <span id="error-title">
+              An error has occurred
             </span>
           </v-alert>
         </v-flex>
-      </v-layout>
-    </div>
-    <div v-show="showError" id="error-div">
+        </v-layout>
+        <v-layout>
+          <v-flex xs12>
+            <v-card id="error-card">
+              <p v-for="error in errors" :key="error">
+                {{ error }}
+              </p>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </div>
       <v-layout>
       <v-flex xs12>
         <!-- Title bar for the restaurant selection -->
@@ -153,24 +174,37 @@
                           required
                           :disabled=disable
                         ></v-text-field>
-                        <v-text-field
-                          label="Enter a display name"
-                          v-model="userProfile.displayName"
-                          :rules="$store.state.rules.displayNameRules"
-                          required
-                          :disabled=disable
-                        ></v-text-field>
-                        <v-text-field
-                            label="Enter a password"
-                            v-model="userAccount.password"
-                            :rules="$store.state.rules.passwordRules"
-                            :min="8"
-                            :counter="64"
-                            :append-icon="visible ? 'visibility' : 'visibility_off'"
-                            :append-icon-cb="() => (visible = !visible)"
-                            :type=" visible ? 'text' : 'password'"
-                            :error-messages="passwordErrorMessages"
-                            @input="validatePassword"
+                        </v-flex>
+                      </v-layout>
+                      </v-form>
+                      <v-btn color="grey lighten-5" @click="userStep = 1" :disabled=disable>Previous</v-btn>
+                      <v-btn color="primary" @click="userSubmit" :disabled="!validSecurityInput" :loading="loading">Submit</v-btn>
+                    </v-stepper-content>
+                  </v-stepper-items>
+                </v-stepper>
+              </div>
+              <div v-if="content === 'restaurant'">
+                <v-stepper v-model="restaurantStep" vertical>
+                  <v-stepper-header>
+                    <v-divider></v-divider>
+                    <v-stepper-step step="1" :complete="restaurantStep > 1">Identification</v-stepper-step>
+                    <v-divider></v-divider>
+                    <v-stepper-step step="2" :complete="restaurantStep > 2">Security Questions</v-stepper-step>
+                    <v-divider></v-divider>
+                    <v-stepper-step step="3" :complete="restaurantStep > 3">Restaurant Details</v-stepper-step>
+                    <v-divider></v-divider>
+                    <v-stepper-step step="4" :complete="restaurantStep > 4">Business Hours</v-stepper-step>
+                    <v-divider></v-divider>
+                    <v-stepper-step step="5" :complete="restaurantStep > 5">Contact Information</v-stepper-step>
+                    <v-divider></v-divider>
+                  </v-stepper-header>
+                  <v-stepper-items>
+                    <v-stepper-content step="1">
+                        <v-form v-model="validIdentificationInput">
+                          <v-text-field
+                            label="Enter a username"
+                            v-model="userAccount.username"
+                            :rules="$store.state.rules.usernameRules"
                             required
                             :disabled=disable
                           ></v-text-field>
@@ -317,128 +351,145 @@
                           @change="$refs.openMenu.save(time)"
                           :max="businessHour.closeTime"
                         >
-                        </v-time-picker>
-                      </v-menu>
-                      <v-menu
-                        ref="closeMenu"
-                        lazy
-                        :close-on-content-click="false"
-                        v-model="closeTimeSync"
-                        transition="scale-transition"
-                        offset-y
-                        full-width
-                        :nudge-right="40"
-                        max-width="290px"
-                        min-width="290px"
-                        :return-value.sync="time"
-                      >
-                        <v-text-field
-                          slot="activator"
-                          label="Select closing time (24hr format)"
-                          v-model="businessHour.closeTime"
-                          prepend-icon="access_time"
-                          :rules="$store.state.rules.closeTimeRules"
-                          readonly
-                          required
-                          :disabled=disable
-                        ></v-text-field>
-                        <v-time-picker
-                          format="24hr"
-                          scrollable
-                          v-model="businessHour.closeTime"
-                          @change="$refs.closeMenu.save(time)"
-                          :min="businessHour.openTime"
+                          <v-text-field
+                            slot="activator"
+                            label="Select opening time (24hr format)"
+                            v-model="businessHour.openTime"
+                            prepend-icon="access_time"
+                            :rules="$store.state.rules.openTimeRules"
+                            readonly
+                            required
+                            :disabled=disable
+                          ></v-text-field>
+                          <v-time-picker
+                            format="24hr"
+                            v-model="businessHour.openTime"
+                            @change="$refs.openMenu.save(time)"
+                            :max="businessHour.closeTime"
+                          >
+                          </v-time-picker>
+                        </v-menu>
+                        <v-menu
+                          ref="closeMenu"
+                          lazy
+                          :close-on-content-click="false"
+                          v-model="closeTimeSync"
+                          transition="scale-transition"
+                          offset-y
+                          full-width
+                          :nudge-right="40"
+                          max-width="290px"
+                          min-width="290px"
+                          :return-value.sync="time"
                         >
-                        </v-time-picker>
-                      </v-menu>
-                    </v-form>
-                    <v-btn @click.prevent="addBusinessHour" :disabled="!validAddBusinessHour || disable">Add</v-btn>
-                    <ul class="list-group">
-                        <li v-for="storeHour in businessHours" :key="storeHour" class="list-group-item">
-                            {{ storeHour.day }}: {{ storeHour.openTime }} - {{ storeHour.closeTime }}
-                        </li>
-                    </ul>
-                    <v-btn color="grey lighten-5" @click="restaurantStep = 3" :disabled=disable>Previous</v-btn>
-                    <v-btn color="primary" :disabled="!validBusinessHourInput || disable" @click="restaurantStep = 5">Next</v-btn>
-                  </v-stepper-content>
-                  <v-stepper-content step="5">
-                    <v-form v-model="validContactInput">
-                      <v-flex xs12>
-                        <v-subheader>Enter the address of your restaurant</v-subheader>
-                      </v-flex>
-                      <v-layout id="contact-layout" row justify-space-between>
+                          <v-text-field
+                            slot="activator"
+                            label="Select closing time (24hr format)"
+                            v-model="businessHour.closeTime"
+                            prepend-icon="access_time"
+                            :rules="$store.state.rules.closeTimeRules"
+                            readonly
+                            required
+                            :disabled=disable
+                          ></v-text-field>
+                          <v-time-picker
+                            format="24hr"
+                            scrollable
+                            v-model="businessHour.closeTime"
+                            @change="$refs.closeMenu.save(time)"
+                            :min="businessHour.openTime"
+                          >
+                          </v-time-picker>
+                        </v-menu>
+                      </v-form>
+                      <v-btn @click.prevent="addBusinessHour" :disabled="!validAddBusinessHour || disable">Add</v-btn>
+                      <ul class="list-group">
+                          <li v-for="storeHour in businessHours" :key="storeHour" class="list-group-item">
+                              {{ storeHour.day }}: {{ storeHour.openTime }} - {{ storeHour.closeTime }}
+                          </li>
+                      </ul>
+                      <v-btn color="grey lighten-5" @click="restaurantStep = 3" :disabled=disable>Previous</v-btn>
+                      <v-btn color="primary" :disabled="!validBusinessHourInput || disable" @click="restaurantStep = 5">Next</v-btn>
+                    </v-stepper-content>
+                    <v-stepper-content step="5">
+                      <v-form v-model="validContactInput">
                         <v-flex xs12>
-                          <v-text-field
-                            label="Street 1"
-                            placeholder="1111 Snowy Rock Pl"
-                            v-model="restaurantProfile.address.street1"
-                            :rules="$store.state.rules.addressStreet1Rules"
-                            required
-                            :disabled=disable
-                          ></v-text-field>
-                          <v-text-field
-                            label="Street 2"
-                            placeholder="Unit 2"
-                            v-model="restaurantProfile.address.street2"
-                            :disabled=disable
-                          ></v-text-field>
-                          <v-text-field
-                            label="City"
-                            placeholder="Long Beach"
-                            v-model="restaurantProfile.address.city"
-                            :rules="$store.state.constants.addressCityRules"
-                            required
-                            :disabled=disable
-                          ></v-text-field>
-                          <v-select
-                            :items="$store.state.constants.states"
-                            v-model="restaurantProfile.address.state"
-                            item-text="name"
-                            item-value="abbreviation"
-                            label="Select a state"
-                            :rules="$store.state.rules.addressStateRules"
-                            single-line
-                            auto
-                            append-icon="map"
-                            hide-details
-                            required
-                            :disabled=disable
-                          ></v-select>
+                          <v-subheader>Enter the address of your restaurant</v-subheader>
+                        </v-flex>
+                        <v-layout id="contact-layout" row justify-space-between>
+                          <v-flex xs12>
                             <v-text-field
-                            label="Zip"
-                            placeholder="92812"
-                            :rules="$store.state.rules.addressZipRules"
-                            type="number"
-                            v-model.number="restaurantProfile.address.zip"
-                            required
+                              label="Street 1"
+                              placeholder="1111 Snowy Rock Pl"
+                              v-model="restaurantProfile.address.street1"
+                              :rules="$store.state.rules.addressStreet1Rules"
+                              required
+                              :disabled=disable
+                            ></v-text-field>
+                            <v-text-field
+                              label="Street 2"
+                              placeholder="Unit 2"
+                              v-model="restaurantProfile.address.street2"
+                              :disabled=disable
+                            ></v-text-field>
+                            <v-text-field
+                              label="City"
+                              placeholder="Long Beach"
+                              v-model="restaurantProfile.address.city"
+                              :rules="$store.state.constants.addressCityRules"
+                              required
+                              :disabled=disable
+                            ></v-text-field>
+                            <v-select
+                              :items="$store.state.constants.states"
+                              v-model="restaurantProfile.address.state"
+                              item-text="name"
+                              item-value="abbreviation"
+                              label="Select a state"
+                              :rules="$store.state.rules.addressStateRules"
+                              single-line
+                              auto
+                              append-icon="map"
+                              hide-details
+                              required
+                              :disabled=disable
+                            ></v-select>
+                              <v-text-field
+                              label="Zip"
+                              placeholder="92812"
+                              :rules="$store.state.rules.addressZipRules"
+                              type="number"
+                              v-model.number="restaurantProfile.address.zip"
+                              required
+                              :disabled=disable
+                            ></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                        <v-flex xs4>
+                          <v-subheader>Enter a phone number</v-subheader>
+                        </v-flex>
+                        <v-flex xs12 sm2>
+                          <v-text-field
+                            v-model="restaurantProfile.phoneNumber"
+                            placeholder="(562)111-5555"
+                            prepend-icon="phone"
+                            :rules="$store.state.rules.phoneNumberRules"
+                            single-line
                             :disabled=disable
                           ></v-text-field>
                         </v-flex>
-                      </v-layout>
-                      <v-flex xs4>
-                        <v-subheader>Enter a phone number</v-subheader>
-                      </v-flex>
-                      <v-flex xs12 sm2>
-                        <v-text-field
-                          v-model="restaurantProfile.phoneNumber"
-                          placeholder="(562)111-5555"
-                          prepend-icon="phone"
-                          :rules="$store.state.rules.phoneNumberRules"
-                          single-line
-                          :disabled=disable
-                        ></v-text-field>
-                      </v-flex>
-                    </v-form>
-                    <v-btn color="grey lighten-5" @click="restaurantStep = 4" :disabled=disable>Previous</v-btn>
-                    <v-btn color="primary" @click="restaurantSubmit" :disabled="!validContactInput || disable" :loading="loading">Submit</v-btn>
-                  </v-stepper-content>
-                </v-stepper-items>
-              </v-stepper>
-            </div>
-          </v-tab-item>
-        </v-tabs-items>
-      </v-flex>
-    </v-layout>
+                      </v-form>
+                      <v-btn color="grey lighten-5" @click="restaurantStep = 4" :disabled=disable>Previous</v-btn>
+                      <v-btn color="primary" @click="restaurantSubmit" :disabled="!validContactInput || disable" :loading="loading">Submit</v-btn>
+                    </v-stepper-content>
+                  </v-stepper-items>
+                </v-stepper>
+              </div>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-flex>
+      </v-layout>
+    </div>
   </div>
 </template>
 

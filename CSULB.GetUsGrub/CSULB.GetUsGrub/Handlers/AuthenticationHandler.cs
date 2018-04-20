@@ -20,7 +20,7 @@ namespace CSULB.GetUsGrub
         {
             _urisToSkip = new UniformResourceIdentifiers().UrisToSkipAuthn;
         }
-        
+
         /// <summary>
         /// The CheckIfSkippedUri method.
         /// Checks if the Uniform Resource Identifier is in the skip Authentication list.
@@ -55,7 +55,7 @@ namespace CSULB.GetUsGrub
                 {
                     return await base.SendAsync(request, cancellationToken);
                 }
-                
+
                 // Extracting the tokenString from the Header
                 var tokenString = tokenService.ExtractToken(request);
 

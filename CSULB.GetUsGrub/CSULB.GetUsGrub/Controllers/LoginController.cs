@@ -23,7 +23,7 @@ namespace CSULB.GetUsGrub.Controllers
                 // Model Binding Validation
                 if (!ModelState.IsValid)
                 {
-                   return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
+                    return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
                 }
                 var loginManager = new LoginManager();
                 var loginResponse = loginManager.LoginUser(loginDto);

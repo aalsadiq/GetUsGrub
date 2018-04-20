@@ -98,7 +98,7 @@ export default {
   margin: auto;
 }
 #header-toolbar {
-  background-color: #329fa3;
+  background-color: #5caabc;
 }
 div.btn__content {
   text-transform: none;

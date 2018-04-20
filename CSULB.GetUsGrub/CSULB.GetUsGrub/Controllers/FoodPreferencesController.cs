@@ -1,5 +1,9 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
 using System;
+using System.IdentityModel.Services;
+using System.Security.Claims;
+using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -14,12 +18,12 @@ namespace CSULB.GetUsGrub.Controllers
     [RoutePrefix("FoodPreferences")]
     public class FoodPreferencesController : ApiController
     {
-        // TODO: @Rachel Please add in your claims attribute here. The authentication works now! [-Jenn]
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         [Route("GetPreferences")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult GetPreferences(string username)
+        public IHttpActionResult GetPreferences()
         {
             // Check if model is valid for the database
             if (!ModelState.IsValid)
@@ -31,6 +35,8 @@ namespace CSULB.GetUsGrub.Controllers
             try
             {
                 // If model is valid, call manager to get preferences
+                var claimsPrincipal = ClaimsPrincipal.Current;
+                var username = claimsPrincipal.FindFirst("Username").Value;
                 var manager = new FoodPreferencesManager();
                 var preferences = manager.GetFoodPreferences(username);
 

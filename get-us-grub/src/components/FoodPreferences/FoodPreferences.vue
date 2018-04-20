@@ -1,10 +1,9 @@
 <template>
   <div>
     <app-header/>
-    <div>
-      <h1>{{ title }}</h1>
-    </div>
-    <div class="list">
+    <h1>{{ title }}</h1>
+    <h3>{{ message }}</h3>
+    <div class="text-container">
       <li v-for='preference in foodPreferences' :key='preference'>{{ preference }}</li>
     </div>
     <div>
@@ -34,6 +33,7 @@ export default {
   data () {
     return {
       title: 'Your Food Preferences',
+      message: 'Here contains your list of dietary needs.',
       foodPreferences: [],
       errors: []
     }
@@ -60,15 +60,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-.list {
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+  h1, h3 {
+    font-weight: normal;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .text-container {
     display: inline-block;
-    background-color: transparent;
-}
-li {
-  list-style-type: circle;
-  text-align: left;
-}
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+  }
+  li {
+    font-family: 'Open Sans', sans-serif;
+    text-align: left;
+    list-style-type: circle;
+  }
 </style>

@@ -35,7 +35,7 @@ export default {
   components: {
   },
   data: () => ({
-    username: 'username27', // Grab from store
+    username: '26user', // Grab from store
     menuItem: '', // User input // menuName1
     itemName: '', // User input // itemName1
     selectedFile: null,

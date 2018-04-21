@@ -36,7 +36,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img src="../../../../Images/DefaultImages/DefaultProfileImage.png">
+              <!-- <img src="../../../../Images/DefaultImages/DefaultProfileImage.png"> -->
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title> </v-list-tile-title>

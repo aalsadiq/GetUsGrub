@@ -52,6 +52,6 @@ export default {
 
 <style>
 #create-user-div {
-  padding: 2em 0em 0em 8em;
+  padding: 2em 6em 0em 10em;
 }
 </style>

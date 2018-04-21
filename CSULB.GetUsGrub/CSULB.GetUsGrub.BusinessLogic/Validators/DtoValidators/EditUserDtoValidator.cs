@@ -7,18 +7,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public EditUserDtoValidator()
         {
-            RuleSet("Username", () =>
+            RuleSet("EditUsername", () =>
             {
                 RuleFor(userAccount => userAccount.Username)
-                    .NotEmpty().WithMessage("Username is required.")
-                    .NotNull().WithMessage("Username is required.")
-                    .Matches(@"^[A-Za-z\d]+$").WithMessage("Username must not contain spaces and special characters.");
+                    .NotEmpty().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
+                    .Matches(RegularExpressions.USERNAME_FORMAT).WithMessage(ValidationErrorMessages.USERNAME_FORMAT);
             });
-
-            RuleSet("NewUserName", () =>
+            RuleSet("EditNewDisplayName", () =>
             {
                 RuleFor(userAccount => userAccount.NewUsername)
-                    .Matches(@"^[A-Za-z\d]+$").WithMessage("Username must not contain spaces and special characters.");
+                    .Matches(RegularExpressions.USERNAME_FORMAT).WithMessage(ValidationErrorMessages.NEWUSERNAME_FORMAT);
             });
         }
     }

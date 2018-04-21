@@ -5,8 +5,8 @@
       </div>
       <div id ='adminhomevue'>
         <h1> Welcome to home Admin! </h1>
-         <!-- <img src="@/assets/GetUsGrub.png"> -->
-         <img src="../../../../Images/bdaycake.jpg" />
+         <img src="@/assets/GetUsGrub.png">
+         <!-- <img src="../../../../Images/bdaycake.jpg" /> -->
         <!-- <img src= ""/> -->
       </div>
       <div id ="vue-app-footer">
@@ -28,3 +28,9 @@ export default {
   }
 }
 </script>
+
+<style>
+body{
+  background-color: black;
+}
+</style>

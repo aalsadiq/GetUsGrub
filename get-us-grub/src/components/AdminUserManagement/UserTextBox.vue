@@ -44,6 +44,30 @@ export default {
           this.responseDataStatus = 'An error has occurred: '
           this.responseData = error.response.data
           console.log(error.response.data)
+          try {
+            if (error.response.status === 401) {
+              // Route to Unauthorized page
+              this.$router.push({path: '/Unauthorized'})
+            }
+            if (error.response.status === 403) {
+              // Route to Forbidden page
+              this.$router.push({path: '/Forbidden'})
+            }
+            if (error.response.status === 404) {
+              // Route to ResourceNotFound page
+              this.$router.push({path: '/ResourceNotFound'})
+            }
+            if (error.response.status === 500) {
+              // Route to InternalServerError page
+              this.$router.push({path: '/InternalServerError'})
+            } else {
+              this.errors = JSON.parse(JSON.parse(error.response.data.message))
+            }
+            Promise.reject(error)
+          } catch (ex) {
+            this.errors = error.response.data
+            Promise.reject(error)
+          }
         })
       }
       if (viewType === 'ReactivateUser') {
@@ -57,6 +81,30 @@ export default {
           this.responseDataStatus = 'An error has occurred: '
           this.responseData = error.response.data
           console.log(error.response.data)
+          try {
+            if (error.response.status === 401) {
+              // Route to Unauthorized page
+              this.$router.push({path: '/Unauthorized'})
+            }
+            if (error.response.status === 403) {
+              // Route to Forbidden page
+              this.$router.push({path: '/Forbidden'})
+            }
+            if (error.response.status === 404) {
+              // Route to ResourceNotFound page
+              this.$router.push({path: '/ResourceNotFound'})
+            }
+            if (error.response.status === 500) {
+              // Route to InternalServerError page
+              this.$router.push({path: '/InternalServerError'})
+            } else {
+              this.errors = JSON.parse(JSON.parse(error.response.data.message))
+            }
+            Promise.reject(error)
+          } catch (ex) {
+            this.errors = error.response.data
+            Promise.reject(error)
+          }
         })
       }
       if (viewType === 'DeleteUser') {
@@ -70,6 +118,30 @@ export default {
           this.responseDataStatus = 'An error has occurred: '
           this.responseData = error.response.data
           console.log(error.response.data)
+          try {
+            if (error.response.status === 401) {
+              // Route to Unauthorized page
+              this.$router.push({path: '/Unauthorized'})
+            }
+            if (error.response.status === 403) {
+              // Route to Forbidden page
+              this.$router.push({path: '/Forbidden'})
+            }
+            if (error.response.status === 404) {
+              // Route to ResourceNotFound page
+              this.$router.push({path: '/ResourceNotFound'})
+            }
+            if (error.response.status === 500) {
+              // Route to InternalServerError page
+              this.$router.push({path: '/InternalServerError'})
+            } else {
+              this.errors = JSON.parse(JSON.parse(error.response.data.message))
+            }
+            Promise.reject(error)
+          } catch (ex) {
+            this.errors = error.response.data
+            Promise.reject(error)
+          }
         })
       }
     }

@@ -1,7 +1,9 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -335,36 +337,33 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public ResponseDto<bool> DeactivateUser(string username)
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
+                    //Queries for the user account based on username.
+                    var userAccount = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).FirstOrDefault();
+
+                    userAccount.IsActive = false;
+                    context.SaveChanges();
+                    dbContextTransaction.Commit();
+
+                    return new ResponseDto<bool>()
                     {
-                        //Queries for the user account based on username.
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == username
-                                           select account).FirstOrDefault();
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
 
-                        userAccount.IsActive = false;
-                        userContext.SaveChanges();
-                        dbContextTransaction.Commit();
-
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
+                    return new ResponseDto<bool>()
                     {
-                        dbContextTransaction.Rollback();
-
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
         }
@@ -378,244 +377,238 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public ResponseDto<bool> ReactivateUser(string username)
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
+                    //Queries for the user account based on username.
+                    var activeStatus = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).SingleOrDefault();
+
+                    activeStatus.IsActive = true;
+                    context.SaveChanges();
+                    dbContextTransaction.Commit();
+
+                    return new ResponseDto<bool>()
                     {
-                        //Queries for the user account based on username.
-                        var activeStatus = (from account in userContext.UserAccounts
-                                            where account.Username == username
-                                            select account).SingleOrDefault();
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
 
-                        activeStatus.IsActive = true;
-                        userContext.SaveChanges();
-                        dbContextTransaction.Commit();
-
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
+                    return new ResponseDto<bool>()
                     {
-                        dbContextTransaction.Rollback();
-
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
         }
 
         public ResponseDto<bool> DeleteUser(string username)
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
+                    // Queries for the user account based on username.
+                    var userAccount = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).FirstOrDefault();
+
+                    // Checking if user account is null.
+                    if (userAccount == null)
                     {
-                        // Queries for the user account based on username.
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == username
-                                           select account).FirstOrDefault();
-
-                        // Checking if user account is null.
-                        if (userAccount == null)
-                        {
-                            return new ResponseDto<bool>()
-                            {
-                                Data = false,
-                                Error = GeneralErrorMessages.GENERAL_ERROR
-                            };
-                        }
-
-                        // PasswordSalt
-                        // Queries for the password salt based on user account id.
-                        var userPasswordSalt = (from passwordSalt in userContext.PasswordSalts
-                                                where passwordSalt.Id == userAccount.Id
-                                                select passwordSalt).FirstOrDefault();
-
-                        // Checks if user password salt is null, if not then delete from database.
-                        if (userPasswordSalt != null)
-                        {
-                            userContext.PasswordSalts.Remove(userPasswordSalt);
-                        }
-
-                        // Security Answer Salt
-                        // Queries for the users security answer salt based on user account id and security answer salt user id.
-                        var userSecurityAnswerSalt = (from securityAnswerSalt in userContext.SecurityAnswerSalts
-                                                      join securityQuestion in userContext.SecurityQuestions
-                                                      on securityAnswerSalt.Id equals securityQuestion.Id
-                                                      where securityQuestion.UserId == userAccount.Id
-                                                      select securityAnswerSalt);
-
-                        // Checks if security answer salt result is null, if not then delete from database.
-                        if (userSecurityAnswerSalt != null)
-                        {
-                            foreach (var answers in userSecurityAnswerSalt)
-                            {
-                                userContext.SecurityAnswerSalts.Remove(answers);
-                            }
-                        }
-
-                        // User Security Question
-                        // Queries for security question based on user account id.
-                        var userSecurityQuestion = (from securityQuestion in userContext.SecurityQuestions
-                                                    where securityQuestion.UserId == userAccount.Id
-                                                    select securityQuestion).ToList();
-
-                        // Checks if security question result is null, if not then delete from database.
-                        if (userSecurityQuestion != null)
-                        {
-                            foreach (var question in userSecurityQuestion)
-                            {
-                                userContext.SecurityQuestions.Remove(question);
-                            }
-                        }
-
-                        // Authentication Token
-                        // Queries for the users tokens based on user account id and token user id.
-                        var userTokens = (from tokens in userContext.AuthenticationTokens
-                                          where tokens.Id == userAccount.Id
-                                          select tokens).FirstOrDefault();
-
-                        if (userTokens != null)
-                        {
-                            userContext.AuthenticationTokens.Remove(userTokens);
-                        }
-
-                        // RestaurantMenuItems
-                        // Queries for the users Restaurant Menu Items based on user account id and restaurant menu items user id.
-                        // RestaurantMenuItem Id where MenuId is equal to Restaurant Menu Id
-                        var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
-                                                       join restaurantMenu in userContext.RestaurantMenus
-                                                       on restaurantMenuItems.MenuId equals restaurantMenu.Id
-                                                       where restaurantMenu.Id == restaurantMenuItems.MenuId
-                                                       && restaurantMenu.RestaurantId == userAccount.Id
-                                                       select restaurantMenuItems).ToList();
-
-                        // Checks if restaurant menu items result is null, if not then delete from database.
-                        if (userRestaurantMenuItems != null)
-                        {
-                            foreach (var menuItems in userRestaurantMenuItems)
-                            {
-                                userContext.RestaurantMenuItems.Remove(menuItems);
-                            }
-                        }
-                        // RestaurantMenus
-                        // Queries for the users Restaurant Menu based on user account id and restaurant menu user id.
-                        var userRestaurantMenus = (from restaurantMenus in userContext.RestaurantMenus
-                                                   where restaurantMenus.RestaurantId == userAccount.Id
-                                                   select restaurantMenus).ToList();
-                        // Checks if restaurant menus result is null, if not then delete from database.
-                        if (userRestaurantMenus != null)
-                        {
-                            foreach (var menus in userRestaurantMenus)
-                            {
-                                userContext.RestaurantMenus.Remove(menus);
-                            }
-                        }
-
-                        // BusinessHours
-                        // Queries for the users business hours based on user account id and business hours user id.
-                        var userBusinessHours = (from businessHours in userContext.BusinessHours
-                                                 where businessHours.RestaurantId == userAccount.Id
-                                                 select businessHours).ToList();
-                        // Checks if business hours result is null, if not then delete from database.
-                        if (userBusinessHours != null)
-                        {
-                            foreach (var businesshours in userBusinessHours)
-                            {
-                                userContext.BusinessHours.Remove(businesshours);
-                            }
-                        }
-
-                        // RestaurantProfiles
-                        // Queries for the users Restaurant Profiles based on user account id and rrestaurant profile user id.
-                        var userRestaurantProfiles = (from restaurantProfiles in userContext.RestaurantProfiles
-                                                      where restaurantProfiles.Id == userAccount.Id
-                                                      select restaurantProfiles).FirstOrDefault();
-
-                        // Checks if restaurant profiles result is null, if not then delete from database.
-                        if (userRestaurantProfiles != null)
-                        {
-                            userContext.RestaurantProfiles.Remove(userRestaurantProfiles);
-                        }
-
-                        // User Profiles
-                        // Queries for the users Profiles based on user account id and profiles user id.
-                        var userProfiles = (from profiles in userContext.UserProfiles
-                                            where profiles.Id == userAccount.Id
-                                            select profiles).FirstOrDefault();
-
-                        // Checks if profiles result is null, if not then delete from database.
-                        if (userProfiles != null)
-                        {
-                            userContext.UserProfiles.Remove(userProfiles);
-                        }
-
-                        // User Claims
-                        // Queries for the users claims based on user account id and claims user id.
-                        var userClaims = (from claims in userContext.UserClaims
-                                          where claims.Id == userAccount.Id
-                                          select claims).FirstOrDefault();
-
-                        // Checks if claims result is null, if not then delete from database.
-                        if (userClaims != null)
-                        {
-                            userContext.UserClaims.Remove(userClaims);
-                        }
-                        // Food Preference
-                        // Queries for the user food preferences based on user account id.
-                        var userPreference = (from preference in userContext.FoodPreferences
-                                              where preference.UserId == userAccount.Id
-                                              select preference).ToList();
-
-                        // Checks if food preference is null, if not then delete from database
-                        if(userPreference != null)
-                        {
-                            foreach(var preference in userPreference)
-                            {
-                                userContext.FoodPreferences.Remove(preference);
-                            }
-                        }
-                        //  Queries for the failed attempts based on user account id.
-                        var failedAttempt = (from attempt in userContext.FailedAttempts
-                                              where attempt.UserAccount.Id == userAccount.Id
-                                              select attempt).FirstOrDefault();
-
-                        // Checks if failed attempt is null, if not then delete from database.
-                        if (failedAttempt != null)
-                        {
-                            userContext.FailedAttempts.Remove(failedAttempt);
-                        }
-
-                        //Delete useraccount
-                        userContext.UserAccounts.Remove(userAccount);
-                        userContext.SaveChanges(); 
-                        dbContextTransaction.Commit();
-
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
-                    {
-                        dbContextTransaction.Rollback();
                         return new ResponseDto<bool>()
                         {
                             Data = false,
                             Error = GeneralErrorMessages.GENERAL_ERROR
                         };
+                    }
+
+                    // PasswordSalt
+                    // Queries for the password salt based on user account id.
+                    var userPasswordSalt = (from passwordSalt in context.PasswordSalts
+                                            where passwordSalt.Id == userAccount.Id
+                                            select passwordSalt).FirstOrDefault();
+
+                    // Checks if user password salt is null, if not then delete from database.
+                    if (userPasswordSalt != null)
+                    {
+                        context.PasswordSalts.Remove(userPasswordSalt);
+                    }
+
+                    // Security Answer Salt
+                    // Queries for the users security answer salt based on user account id and security answer salt user id.
+                    var userSecurityAnswerSalt = (from securityAnswerSalt in context.SecurityAnswerSalts
+                                                    join securityQuestion in context.SecurityQuestions
+                                                    on securityAnswerSalt.Id equals securityQuestion.Id
+                                                    where securityQuestion.UserId == userAccount.Id
+                                                    select securityAnswerSalt);
+
+                    // Checks if security answer salt result is null, if not then delete from database.
+                    if (userSecurityAnswerSalt != null)
+                    {
+                        foreach (var answers in userSecurityAnswerSalt)
+                        {
+                            context.SecurityAnswerSalts.Remove(answers);
+                        }
+                    }
+
+                    // User Security Question
+                    // Queries for security question based on user account id.
+                    var userSecurityQuestion = (from securityQuestion in context.SecurityQuestions
+                                                where securityQuestion.UserId == userAccount.Id
+                                                select securityQuestion).ToList();
+
+                    // Checks if security question result is null, if not then delete from database.
+                    if (userSecurityQuestion != null)
+                    {
+                        foreach (var question in userSecurityQuestion)
+                        {
+                            context.SecurityQuestions.Remove(question);
+                        }
+                    }
+
+                    // Authentication Token
+                    // Queries for the users tokens based on user account id and token user id.
+                    var userTokens = (from tokens in context.AuthenticationTokens
+                                        where tokens.Id == userAccount.Id
+                                        select tokens).FirstOrDefault();
+
+                    if (userTokens != null)
+                    {
+                        context.AuthenticationTokens.Remove(userTokens);
+                    }
+
+                    // RestaurantMenuItems
+                    // Queries for the users Restaurant Menu Items based on user account id and restaurant menu items user id.
+                    // RestaurantMenuItem Id where MenuId is equal to Restaurant Menu Id
+                    var userRestaurantMenuItems = (from restaurantMenuItems in context.RestaurantMenuItems
+                                                    join restaurantMenu in context.RestaurantMenus
+                                                    on restaurantMenuItems.MenuId equals restaurantMenu.Id
+                                                    where restaurantMenu.Id == restaurantMenuItems.MenuId
+                                                    && restaurantMenu.RestaurantId == userAccount.Id
+                                                    select restaurantMenuItems).ToList();
+
+                    // Checks if restaurant menu items result is null, if not then delete from database.
+                    if (userRestaurantMenuItems != null)
+                    {
+                        foreach (var menuItems in userRestaurantMenuItems)
+                        {
+                            context.RestaurantMenuItems.Remove(menuItems);
+                        }
+                    }
+                    // RestaurantMenus
+                    // Queries for the users Restaurant Menu based on user account id and restaurant menu user id.
+                    var userRestaurantMenus = (from restaurantMenus in context.RestaurantMenus
+                                                where restaurantMenus.RestaurantId == userAccount.Id
+                                                select restaurantMenus).ToList();
+                    // Checks if restaurant menus result is null, if not then delete from database.
+                    if (userRestaurantMenus != null)
+                    {
+                        foreach (var menus in userRestaurantMenus)
+                        {
+                            context.RestaurantMenus.Remove(menus);
+                        }
+                    }
+
+                    // BusinessHours
+                    // Queries for the users business hours based on user account id and business hours user id.
+                    var userBusinessHours = (from businessHours in context.BusinessHours
+                                                where businessHours.RestaurantId == userAccount.Id
+                                                select businessHours).ToList();
+                    // Checks if business hours result is null, if not then delete from database.
+                    if (userBusinessHours != null)
+                    {
+                        foreach (var businesshours in userBusinessHours)
+                        {
+                            context.BusinessHours.Remove(businesshours);
+                        }
+                    }
+
+                    // RestaurantProfiles
+                    // Queries for the users Restaurant Profiles based on user account id and rrestaurant profile user id.
+                    var userRestaurantProfiles = (from restaurantProfiles in context.RestaurantProfiles
+                                                    where restaurantProfiles.Id == userAccount.Id
+                                                    select restaurantProfiles).FirstOrDefault();
+
+                    // Checks if restaurant profiles result is null, if not then delete from database.
+                    if (userRestaurantProfiles != null)
+                    {
+                        context.RestaurantProfiles.Remove(userRestaurantProfiles);
+                    }
+
+                    // User Profiles
+                    // Queries for the users Profiles based on user account id and profiles user id.
+                    var userProfiles = (from profiles in context.UserProfiles
+                                        where profiles.Id == userAccount.Id
+                                        select profiles).FirstOrDefault();
+
+                    // Checks if profiles result is null, if not then delete from database.
+                    if (userProfiles != null)
+                    {
+                        context.UserProfiles.Remove(userProfiles);
+                    }
+
+                    // User Claims
+                    // Queries for the users claims based on user account id and claims user id.
+                    var userClaims = (from claims in context.UserClaims
+                                        where claims.Id == userAccount.Id
+                                        select claims).FirstOrDefault();
+
+                    // Checks if claims result is null, if not then delete from database.
+                    if (userClaims != null)
+                    {
+                        context.UserClaims.Remove(userClaims);
+                    }
+                    // Food Preference
+                    // Queries for the user food preferences based on user account id.
+                    var userPreference = (from preference in context.FoodPreferences
+                                            where preference.UserId == userAccount.Id
+                                            select preference).ToList();
+
+                    // Checks if food preference is null, if not then delete from database
+                    if(userPreference != null)
+                    {
+                        foreach(var preference in userPreference)
+                        {
+                            context.FoodPreferences.Remove(preference);
+                        }
+                    }
+                    //  Queries for the failed attempts based on user account id.
+                    var failedAttempt = (from attempt in context.FailedAttempts
+                                            where attempt.UserAccount.Id == userAccount.Id
+                                            select attempt).FirstOrDefault();
+
+                    // Checks if failed attempt is null, if not then delete from database.
+                    if (failedAttempt != null)
+                    {
+                        context.FailedAttempts.Remove(failedAttempt);
+                    }
+
+                    //Delete useraccount
+                    context.UserAccounts.Remove(userAccount);
+                    context.SaveChanges(); 
+                    dbContextTransaction.Commit();
+
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
                     };
                 }
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                };
             }
         }
 
@@ -628,48 +621,41 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> EditUser(EditUserDto user)
         {
-            //Creating user context.
-            using (var userContext = new UserContext())
+            try
             {
-                try
+                //Queries for the user account based on the username passed in by the EditUserDto.
+                var userAccount = (from account in context.UserAccounts
+                                    where account.Username == user.Username
+                                    select account).SingleOrDefault();
+
+                //Set ResponseDto equal to the ResponseDto from EditDisplayName.
+                if (user.NewDisplayName != null) // TODO: @Jen Added because what Jen and I did is not working?!  [-Angelica]
                 {
-                    //Queries for the user account based on the username passed in by the EditUserDto.
-                    var userAccount = (from account in userContext.UserAccounts
-                                       where account.Username == user.Username
-                                       select account).SingleOrDefault();
-
-                    //Set ResponseDto equal to the ResponseDto from EditDisplayName.
-                    if (user.NewDisplayName != null) // TODO: @Jen Added because what Jen and I did is not working?!  [-Angelica]
-                    {
-                        EditDisplayName(user.Username, user.NewDisplayName);
-                    }
-
-                    if (user.NewUsername != null) //Added
-                    {
-                        // Set ResponseDto equal to the ResponseDto from EditUserName.
-                        EditUserName(user.Username, user.NewUsername);
-
-                        // Change image name (only admins can edit users)
-                        // userAccount.UserProfile.DisplayPicture
-                    }
-                    return new ResponseDto<bool>
-                    {
-                        Data = true
-                    };
-                    //return new ResponseDto<bool>()
-                    //{
-                    //    Data = false,
-                    //    Error = GeneralErrorMessages.GENERAL_ERROR
-                    //};
+                    EditDisplayName(user.Username, user.NewDisplayName);
                 }
-                catch (Exception)
+
+                if (user.NewUsername != null) //Added
                 {
-                    return new ResponseDto<bool>()
-                    {
-                        Data = false,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
-                    };
+                    // Set ResponseDto equal to the ResponseDto from EditUserName.
+                    EditUserName(user.Username, user.NewUsername);
                 }
+                return new ResponseDto<bool>
+                {
+                    Data = true
+                };
+                //return new ResponseDto<bool>()
+                //{
+                //    Data = false,
+                //    Error = GeneralErrorMessages.GENERAL_ERROR
+                //};
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
             }
         }
 
@@ -683,35 +669,53 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> EditUserName(string username, string newUsername)
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        //Queries for the user account based on the username passed in.
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == username
-                                           select account).SingleOrDefault();
+                    // Queries for the user account based on the username passed in.
+                    var userAccount = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).SingleOrDefault();
 
-                        //Select the username from useraccount and give it the new username.
-                        userAccount.Username = newUsername;
-                        userContext.SaveChanges();
-                        dbContextTransaction.Commit();
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
+                    //var renameImage = Path.GetExtension(image.FileName);
+                    // var newImagename = username + renameImage;
+
+                    // Save image to path
+                    string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
+
+                    // Set Diplay Picture Path
+                    //userAccount.Username.DisplayPicture = savePath + newImagename;
+
+                    // Testing --
+                    var oldPath = userAccount.UserProfile.DisplayPicture;
+                    Debug.WriteLine(oldPath);
+                    var newPath = savePath + newUsername + ".png";
+                    Debug.WriteLine(newPath);
+
+                    // Rename profile image
+                    File.Move(oldPath, newPath);
+
+                    // End of testing --
+
+                    // Select the username from useraccount and give it the new username.
+                    userAccount.Username = newUsername;
+
+                    context.SaveChanges();
+                    dbContextTransaction.Commit();
+                    return new ResponseDto<bool>()
                     {
-                        dbContextTransaction.Rollback();
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
         }
@@ -726,35 +730,32 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> EditDisplayName(string username, string newDisplayName)
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        //Queries for the user account based on the username passed in.
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == username
-                                           select account).SingleOrDefault();
+                    //Queries for the user account based on the username passed in.
+                    var userAccount = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).SingleOrDefault();
 
-                        //Select displayname from useraccount and give it the new display name.
-                        userAccount.UserProfile.DisplayName = newDisplayName;
-                        userContext.SaveChanges();
-                        dbContextTransaction.Commit();
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
+                    //Select displayname from useraccount and give it the new display name.
+                    userAccount.UserProfile.DisplayName = newDisplayName;
+                    context.SaveChanges();
+                    dbContextTransaction.Commit();
+                    return new ResponseDto<bool>()
                     {
-                        dbContextTransaction.Rollback();
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error = GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
         }
@@ -769,36 +770,33 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> ResetPassword(string username, string newPassword)//EditPassword
         {
-            using (var userContext = new UserContext())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
-                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        //Queries for the user account based on the username passed in.
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == username
-                                           select account).SingleOrDefault();
+                    //Queries for the user account based on the username passed in.
+                    var userAccount = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).SingleOrDefault();
 
-                        //Select the password from useraccount and give it the new username.
-                        userAccount.Password = newPassword;
-                        userContext.SaveChanges();
-                        dbContextTransaction.Commit();
+                    //Select the password from useraccount and give it the new username.
+                    userAccount.Password = newPassword;
+                    context.SaveChanges();
+                    dbContextTransaction.Commit();
 
-                        return new ResponseDto<bool>()
-                        {
-                            Data = true
-                        };
-                    }
-                    catch (Exception)
+                    return new ResponseDto<bool>()
                     {
-                        dbContextTransaction.Rollback();
-                        return new ResponseDto<bool>()
-                        {
-                            Data = false,
-                            Error =  GeneralErrorMessages.GENERAL_ERROR
-                        };
-                    }
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error =  GeneralErrorMessages.GENERAL_ERROR
+                    };
                 }
             }
         }
@@ -836,7 +834,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 // If exception occurs, return response dto with error message
                 return new ResponseDto<FoodPreferencesDto>
                 {
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
         }

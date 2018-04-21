@@ -35,14 +35,14 @@ export default {
   components: {
   },
   data: () => ({
-    username: 'username26', // Grab from store
+    username: 'username27', // Grab from store
     menuItem: '', // User input // menuName1
     itemName: '', // User input // itemName1
     selectedFile: null,
     responseDataStatus: '',
     responseData: '',
     test: null,
-    show: true // true for Restaurant and false for Profile
+    show: false // true for Restaurant and false for Profile
   }),
   methods: {
     beforeCreate () {

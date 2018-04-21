@@ -14,7 +14,6 @@
         <v-btn dark="true">Edit</v-btn>
       </router-link>
     </div>
-    <app-footer/>
   </div>
 </template>
 

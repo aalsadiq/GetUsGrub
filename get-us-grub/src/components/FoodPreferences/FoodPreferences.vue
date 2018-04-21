@@ -21,6 +21,7 @@
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
 import axios from 'axios'
+import jwt from 'jsonwebtoken'
 
 export default {
   name: 'FoodPreferences',
@@ -38,13 +39,27 @@ export default {
     }
   },
 
+  beforeCreate () {
+    if (this.$store.state.authenticationToken === null) {
+      this.$router.push({path: '/Unauthorized'})
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
+      } else {
+        this.$router.push({path: '/Forbidden'})
+      }
+    } catch (ex) {
+      this.$router.push({path: '/Forbidden'})
+    }
+  },
+
   created () {
     axios.get('http://localhost:8081/FoodPreferences/GetPreferences', {
       headers: {
         'Access-Control-Allow-Origin': '*'
       },
       params: {
-        username: 'username17'
+        username: jwt.decode(this.$store.state.authenticationToken).Username
       }
     }).then(response => {
       console.log(response.data)

@@ -33,7 +33,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>
         /// Response with the AuthenticationTokenDto
         /// </returns>
-        public ResponseDto<AuthenticationTokenDto> CreateToken(LoginDto loginDto)
+        public ResponseDto<AuthenticationTokenDto> CreateToken(string username)
         {
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -47,7 +47,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             authenticationToken.Salt = salt;
 
             // Assigning the Username to the Token
-            authenticationToken.Username = loginDto.Username;
+            authenticationToken.Username = username;
 
             // Time Stamping the Token
             var issuedOn = DateTime.UtcNow;

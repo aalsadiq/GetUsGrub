@@ -30,7 +30,7 @@ namespace CSULB.GetUsGrub.Controllers
                 }
 
                 var username = tokenService.GetTokenUsername(tokenString);
-                if (string.IsNullOrEmpty(tokenString))
+                if (string.IsNullOrEmpty(username))
                 {
                     return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
                 }

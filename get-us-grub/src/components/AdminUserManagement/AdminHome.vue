@@ -1,17 +1,11 @@
 <template>
     <div>
-      <div id ="vue-app-admin-header" >
         <app-admin-header/>
-      </div>
-      <div id ='adminhomevue'>
         <h1> Welcome to home Admin! </h1>
          <img src="@/assets/GetUsGrub.png">
          <!-- <img src="../../../../Images/bdaycake.jpg" /> -->
         <!-- <img src= ""/> -->
-      </div>
-      <div id ="vue-app-footer">
         <app-footer/>
-      </div>
     </div>
 </template>
 
@@ -30,7 +24,10 @@ export default {
 </script>
 
 <style>
-body{
-  background-color: black;
-}
+/* .application--wrap{
+  padding: 0em;
+} */
+/* .theme--light{
+  margin:0em;
+} */
 </style>

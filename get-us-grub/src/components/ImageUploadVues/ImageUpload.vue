@@ -1,14 +1,16 @@
 <template>
   <div id="image-upload">
       <!-- <v-flex xs5 sm5 offset-sm3> -->
-        {{ responseDataStatus }}
-        {{ responseData }}
         <v-dialog  v-model="dialog">
           <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
           <v-card dark>
+            {{ responseDataStatus }}
+            {{ responseData }}
             <br/>
               <input id="uploadImage" name="imaageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
-              <v-btn id="subtmitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload(viewType)">Upload Image</v-btn> <!-- formData -->
+              <!-- <v-btn id="subtmitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload(viewType)">Upload Image</v-btn>  -->
+              <v-btn id="subtmitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">Upload Image</v-btn>
+              <!-- formData -->
               <!-- <img id="uploadPreview" :src="imageData" alt="ProfileImage"/> -->
             <br/>
           </v-card>
@@ -22,7 +24,7 @@
 import axios from 'axios'
 export default {
   name: 'ImageHome',
-  props: ['viewType'],
+  // props: ['viewType'],
   dialog: false,
   components: {
   },
@@ -35,12 +37,29 @@ export default {
     test: null
   }),
   methods: {
+    beforeCreate () {
+      if (this.$store.state.authenticationToken === null) {
+        this.$router.push({path: '/Unauthorized'})
+      }
+      try {
+        jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True'
+        jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True'
+        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' ||
+          jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+        } else {
+          this.$router.push({path: '/Forbidden'})
+        }
+      } catch (ex) {
+        this.$router.push({path: '/Forbidden'})
+      }
+    },
     StoreSelectedFile: function (event) {
       this.selectedFile = event.target.files[0]
     },
-    SubmitImageUpload: function (viewType) {
+    SubmitImageUpload: function () {
+      // ReadRestaurantProfile
       var formData = new FormData()
-      if (viewType === 'profileImageupload') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
         formData.append('username', this.username)
         formData.append('filename', this.selectedFile, this.selectedFile.name)
         axios.post('http://localhost:8081/Profile/User/Edit/ProfileImageUpload', formData, {
@@ -53,7 +72,7 @@ export default {
           console.log(error.response.data)
         })
       }
-      if (viewType === 'menuItemImageUpload') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
         formData.append('username', this.username)
         formData.append('menuItem', this.menuItem)
         formData.append('itemName', this.itemName)

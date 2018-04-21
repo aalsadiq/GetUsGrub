@@ -1,6 +1,5 @@
 <template>
-  <div>
-      {{ responseData }}
+  <div id="edit-user-div">
     <app-admin-header/>
     <v-flex xs15order-lg2>
       <h1>Select your user!</h1>
@@ -13,6 +12,9 @@
             {{ 'Call Profile vue... '}}
           </div>
     </v-flex>
+    <v-alert id="edit-user-aler" icon="new_releases" class="text-xs-center" :value=showAlert>
+      {{ responseData }}
+    </v-alert>
     <app-footer/>
   </div>
 </template>
@@ -44,3 +46,12 @@ export default {
   }
 }
 </script>
+
+<style>
+/* #edit-user-div {
+  padding: 2em 6em 0em 10em;
+}
+#edit-user-alert {
+  background-color: #e26161 !important
+} */
+</style>

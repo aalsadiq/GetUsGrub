@@ -13,6 +13,9 @@
               <v-btn id ="submit-button" color="warning" v-on:click="userSubmit(viewType)">Submit</v-btn>
           </div>
         </div>
+      <!-- <v-alert id="user-text-box-alert" icon="new_releases" class="text-xs-center" :value=showAlert>
+        {{this.response}}
+      </v-alert> -->
     </div>
 </template>
 
@@ -23,6 +26,7 @@ export default {
   props: ['viewType'],
   data: () => ({
     validIdentificationInput: false,
+    // showAlert: false,
     userAccount: {
       username: '',
       password: ''
@@ -33,10 +37,10 @@ export default {
   methods: {
     userSubmit: function (viewType) {
       if (viewType === 'DeactivateUser') {
-        console.log(this.username)
         axios.put('http://localhost:8081/User/DeactivateUser', {
           username: this.userAccount.username
         }).then(response => {
+          // showAlert = true
           this.responseDataStatus = 'Success! User has been deactivated: '
           this.responseData = response.data
           console.log(response)
@@ -148,3 +152,16 @@ export default {
   }
 }
 </script>
+
+<style>
+#create-user-div {
+  padding: 2em 6em 0em 10em;
+}
+#card {
+  padding: 0 0.7em 0 0.7em;
+  margin: 0 0 1em 0;
+}
+#user-text-box-alert{
+  background-color: #e26161 !important
+}
+</style>

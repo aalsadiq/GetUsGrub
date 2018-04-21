@@ -1,6 +1,7 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Web;
 
@@ -86,8 +87,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
 
             // Set Diplay Picture Path
-            user.DisplayPicture = savePath + newImagename; 
-
+            user.DisplayPicture = savePath + newImagename;
+  s
             // Call gateway to save path to database
             using (var gateway = new UserProfileGateway())
             {

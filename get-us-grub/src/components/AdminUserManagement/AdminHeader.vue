@@ -1,7 +1,7 @@
 <template>
 <div>
-  <v-app>
-    <v-navigation-drawer stateless hide-overlay :mini-variant.sync="mini" v-model="drawer">
+  <!-- <v-app>
+    <v-navigation-drawer id="nav-drawer" stateless hide-overlay :mini-variant.sync="mini" v-model="drawer">
     <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
@@ -30,8 +30,8 @@
         </v-list-tile>
       </v-list>
   </v-navigation-drawer>
-  </v-app>
-    <!-- <v-navigation-drawer id="nav-drawer" permanent absolute v-model="drawer" >
+  </v-app> -->
+    <v-navigation-drawer id="nav-drawer" permanent absolute v-model="drawer" >
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
@@ -54,7 +54,7 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>
   </div>
 </template>
 
@@ -126,3 +126,21 @@ export default {
   // }
 }
 </script>
+
+<style>
+/* .application--wrap {
+  height: 300px;
+  width:  943px;
+} */
+/* .theme--light{
+  width: 300px;
+  height:  943px;
+}
+#nav-drawer{
+  padding: 0em;
+}
+.body{
+  width: 300px;
+  height:  943px;
+} */
+</style>

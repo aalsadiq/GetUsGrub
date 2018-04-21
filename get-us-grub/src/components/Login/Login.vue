@@ -104,7 +104,6 @@ export default {
         this.disable = false
         this.$store.state.isAuthenticated = true
         this.$store.state.authenticationToken = response.data
-        console.log(this.$store.state.authenticationToken)
         this.$store.state.username = jwt.decode(response.data)['Username']
         this.$router.push({path: '/'})
       }).catch(error => {

@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      profileType: 'restaurant'
+      profileType: 'individual'
     }
   },
   beforeCreate () {
@@ -62,6 +62,6 @@ export default {
 </script>
 
 <style scoped> {
-
+  
 }
 </style>

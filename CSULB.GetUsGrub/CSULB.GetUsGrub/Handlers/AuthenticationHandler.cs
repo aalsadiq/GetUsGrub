@@ -2,6 +2,7 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -32,7 +33,7 @@ namespace CSULB.GetUsGrub
         /// <returns>A true or false boolean type</returns>
         public bool CheckIfSkippedUri(string uri)
         {
-            return UniformResourceIdentifiers.UrisToSkipAuthn.Contains(uri);
+            return _urisToSkip.Contains(uri);
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

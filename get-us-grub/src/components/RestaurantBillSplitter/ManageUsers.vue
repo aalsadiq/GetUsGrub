@@ -9,7 +9,7 @@
         <v-checkbox v-for="(billUser, billUserIndex) in billUsers"
                     :key="billUserIndex"
                     :label="billUser.name"
-                    :value="billUser.uID"
+                    :value="[billUser.uID, billUser.name]"
                     v-model="billItem.selected"></v-checkbox>
       </v-card-text>
       <v-divider />

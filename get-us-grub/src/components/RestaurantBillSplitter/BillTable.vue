@@ -14,7 +14,7 @@
             }
           ] }" :width="100" :height="100"></bill-table-pie-chart>
           <div class="bill-item-controls">
-            {{billItem.name}} : ${{billItem.price}}
+            {{billItem.name}} : ${{billItem.price}} {{billItemIndexb}}
             <br />
             <ul style="list-style-type: none">
               <li>

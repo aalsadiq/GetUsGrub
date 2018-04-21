@@ -71,6 +71,7 @@ export default {
   }
 
   .wrapper {
+    margin: 100px;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     grid-gap: 10px;

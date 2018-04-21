@@ -31,14 +31,14 @@ export default {
   },
   data () {
     return {
-      profileType: 'restaurant'
+      profileType: 'individual'
     }
   },
   beforeCreate () {
     if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
       this.profileType = 'individual'
     } else if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
-      this.profileType = 'individual'
+      this.profileType = 'restaurant'
     } else {
       this.$router.push({ path: '/Forbidden' })
     }
@@ -62,6 +62,6 @@ export default {
 </script>
 
 <style scoped> {
-
+  
 }
 </style>

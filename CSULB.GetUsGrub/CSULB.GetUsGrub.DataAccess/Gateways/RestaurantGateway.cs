@@ -175,7 +175,10 @@ namespace CSULB.GetUsGrub.DataAccess
                                                                         Day = businessHour.Day,
                                                                         OpenDateTime = businessHour.OpenTime,
                                                                         CloseDateTime = businessHour.CloseTime
-                                                                    }).ToList()
+                                                                    }).ToList(),
+                                                FoodPreferences = (from foodPreference in context.FoodPreferences
+                                                                   where foodPreference.UserId == restaurantProfile.Id
+                                                                   select foodPreference.Preference).ToList()
                                             }).FirstOrDefault();
 
                 // Return the SelectedRestaurantDto

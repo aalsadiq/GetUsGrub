@@ -20,5 +20,6 @@ namespace CSULB.GetUsGrub.Models
         public Address Address { get; set; }
         public string PhoneNumber { get; set; }
         public IList<BusinessHourDto> BusinessHourDtos { get; set; }
+        public IList<string> FoodPreferences { get; set; }
     }
 }

@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -75,10 +76,18 @@ export default {
       }
     },
     logout () {
-      this.$store.dispatch('setAuthenticationToken', null)
-      // Force reload to clear cache
-      location.reload()
-      this.$router.push({path: '/'})
+      axios.post('http://localhost:8081/Logout', {}, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.$store.dispatch('setAuthenticationToken', null)
+        // Force reload to clear cache
+        location.reload()
+        this.$router.push({path: '/'})
+      }).catch(error => {
+        console.log(error.response)
+      })
     }
   }
 }

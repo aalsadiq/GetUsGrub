@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      profileType: 'individual'
+      profileType: 'restaurant'
     }
   },
   beforeCreate () {

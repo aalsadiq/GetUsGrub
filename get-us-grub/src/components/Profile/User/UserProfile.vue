@@ -16,50 +16,11 @@
                   <h1>{{ displayName }}</h1>
                 </v-flex>
               </div>
-              <template>
-                <div>
-                  <v-layout row justify-center>
-                    <template>
-                      <v-dialog v-model="dialog" persistent max-width="1000">
-                        <v-btn color="primary" dark slot="activator">Edit Profile Image</v-btn>
-                        <v-card>
-                          <v-layout wrap>
-                            <image-upload />
-                          </v-layout>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="green darken-1" flat @click.native="dialog = false">Close</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                    </template>
-                    <v-dialog v-model="dialog2" persistent max-width="500px">
-                      <v-btn color="primary" dark slot="activator">Edit Display Name</v-btn>
-                      <v-card>
-                        <v-card-title>
-                          <span>Edit Display Name</span>
-                          <v-spacer></v-spacer>
-                        </v-card-title>
-                        <v-card-text>
-                          <v-container grid-list-md>
-                            <v-layout wrap>
-                              <v-flex xs12>
-                                <v-text-field label="Display Name" required></v-text-field>
-                              </v-flex>
-                            </v-layout>
-                          </v-container>
-                          <small>*indicates required field</small>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="primary" flat>Save</v-btn>
-                          <v-btn color="primary" flat @click.native="dialog2=false">Close</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </v-layout>
-                </div>
-              </template>
+              <v-btn flat color="blue"
+                     class="nav-btn"
+                     :to="{name: profile-user-edit}">
+                Edit Profile
+              </v-btn>
             </v-card>
           </v-flex>
         </div>
@@ -90,10 +51,7 @@ export default {
     return {
       username: '',
       displayName: 'User Profile',
-      profile: null,
-      errors: null,
-      dialog: false,
-      dialog2: false
+      profile: null
     }
   },
   /*
@@ -128,30 +86,7 @@ export default {
         this.profile = response.data
       })
       .catch(error => {
-        try {
-          if (error.response.status === 401) {
-            // Route to Unauthorized page
-            this.$router.push({ path: '/Unauthorized' })
-          }
-          if (error.response.status === 403) {
-            // Route to Forbidden page
-            this.$router.push({ path: '/Forbidden' })
-          }
-          if (error.response.status === 404) {
-            // Route to ResourceNotFound page
-            this.$router.push({ path: '/ResourceNotFound' })
-          }
-          if (error.response.status === 500) {
-            // Route to InternalServerError page
-            this.$router.push({ path: '/InternalServerError' })
-          } else {
-            this.errors = JSON.parse(JSON.parse(error.response.data.message))
-          }
-          Promise.reject(error)
-        } catch (ex) {
-          this.errors = error.response.data
-          Promise.reject(error)
-        }
+        Promise.reject(error)
       })
   },
   methods: {

@@ -22,26 +22,21 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         public ResponseDto<UserProfileDto> GetUserProfileByUsername(string username)
         {
-            using (var userContext = new UserContext())
+
+            using (var profileContext = new IndividualProfileContext())
             {
-                // Find account associated with username
-                var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
+                // Find profile associated with account
+                var userProfile = (from profile in profileContext.UserProfiles
+                                   where profile.Id == userAccountId
+                                   select profile).SingleOrDefault();
 
-                using (var profileContext = new IndividualProfileContext())
+                ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
                 {
-                    // Find profile associated with account
-                    var userProfile = userAccount.UserProfile;
+                    Data = new UserProfileDto(userProfile),
+                    Error = null
+                };
 
-                    ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
-                    {
-                        Data = new UserProfileDto(userProfile),
-                        Error = null
-                    };
-
-                    return responseDto;
-                }
+                return responseDto;
             }
         }
 
@@ -50,48 +45,40 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="userProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditUserProfileByUserProfileDomain(string username, UserProfile userProfileDomain)
+        public ResponseDto<bool> EditUserProfileById(int? userAccountId, UserProfile userProfileDomain)
         {
-            using (var userContext = new UserContext())
+            using (var profileContext = new IndividualProfileContext())
             {
-                var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
+                var userProfile = (from profile in profileContext.UserProfiles
+                                    where profile.Id == userAccountId
+                                    select profile).SingleOrDefault();
 
-                using (var profileContext = new IndividualProfileContext())
+                using (var dbContextTransaction = profileContext.Database.BeginTransaction())
                 {
-                    var userProfile = (from profile in profileContext.UserProfiles
-                                       where profile.Id == userAccount.Id
-                                       select profile).SingleOrDefault();
-
-                    using (var dbContextTransaction = profileContext.Database.BeginTransaction())
+                    try
                     {
-                        try
+                        // Apply and save changes
+                        userProfile = userProfileDomain;
+                        profileContext.SaveChanges();
+
+                        ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
-                            // Apply and save changes
-                            userProfile.DisplayName = userProfileDomain.DisplayName;
-                            userProfile.DisplayPicture = userProfileDomain.DisplayPicture;
-                            userContext.SaveChanges();
+                            Data = true,
+                            Error = null
+                        };
+                        return responseDto;
+                    }
 
-                            ResponseDto<bool> responseDto = new ResponseDto<bool>
-                            {
-                                Data = true,
-                                Error = null
-                            };
-                            return responseDto;
-                        }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
 
-                        catch (Exception)
+                        ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
-                            dbContextTransaction.Rollback();
-
-                            ResponseDto<bool> responseDto = new ResponseDto<bool>
-                            {
-                                Data = false,
-                                Error = "Something went wrong. Please try again later."
-                            };
-                            return responseDto;
-                        }
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
+                        return responseDto;
                     }
                 }
             }

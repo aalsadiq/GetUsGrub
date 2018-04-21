@@ -140,7 +140,11 @@ namespace CSULB.GetUsGrub.DataAccess
                                             && avgFoodPrice == restaurantProfile.Details.AvgFoodPrice
                                             && distanceInMeters >= location.Distance(restaurantProfile.Location)
                                             && currentLocalDayOfWeek == businessHour.Day
-                                            && !foodPreferences.Where(foodPref => !userProfile.UserAccount.FoodPreferences.Select(pref => pref.Preference).Contains(foodPref)).Select(pref => pref).ToList().Any()
+                                            // If restaurant does not contain user's food preference, then omit restaurant from select
+                                            && !foodPreferences.Where(clientFoodPref => !userProfile.UserAccount.FoodPreferences
+                                                  .Select(restaurantFoodPref => restaurantFoodPref.Preference)
+                                                  .Contains(clientFoodPref))
+                                                  .ToList().Any()
                                      select businessHour).ToList();
 
                 // Select one restaurant profile id from a randomized list of qualified restaurants where the restaurants' business hours are open now

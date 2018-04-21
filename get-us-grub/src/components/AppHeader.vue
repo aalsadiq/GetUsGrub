@@ -2,7 +2,7 @@
   <v-toolbar id="header-toolbar" dark fixed>
     <v-toolbar-items>
       <v-btn flat id="home-btn" to="/">
-        <v-avatar :size="52" tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>
+        <v-avatar :size="52" :tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>
         <v-toolbar-title>
           <span id="toolbar-title">
             GetUsGrub
@@ -76,6 +76,7 @@ export default {
     },
     logout () {
       this.$store.dispatch('setAuthenticationToken', null)
+      // Force reload to clear cache
       location.reload()
       this.$router.push({path: '/'})
     }
@@ -100,15 +101,15 @@ div.btn__content {
 }
 #toolbar-title {
   font-weight: bold;
-  font-size: x-large;
+  font-size: 1.4em;
 }
 .btn__content:before {
-  opacity: 0.20;
+  opacity: 0.23;
   color: rgb(255, 255, 255);
 }
 .nav-btn-text {
   font-weight: bold;
-  font-size: normal;
+  font-size: 1.2em;
   color: rgb(255, 255, 255);
 }
 #home-btn > .btn__content:before {

@@ -1,10 +1,10 @@
-﻿using Xunit;
+﻿using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.UserAccessControl;
 using FluentAssertions;
+using System.Collections.Generic;
 using System.Security;
 using System.Security.Claims;
-using CSULB.GetUsGrub.UserAccessControl;
-using CSULB.GetUsGrub.Models;
-using System.Collections.Generic;
+using Xunit;
 
 namespace CSULB.GetUsGrub.UnitTests
 {
@@ -76,7 +76,7 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Act
             var result = Assert.Throws<SecurityException>(() => manager.CheckAccess(context)).Message;
-            var expected = "Username is invalid.";
+            var expected = "User is invalid.";
 
             // Assert
             result.Should().Be(expected);

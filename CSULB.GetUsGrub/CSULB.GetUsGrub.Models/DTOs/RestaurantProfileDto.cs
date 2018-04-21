@@ -13,6 +13,7 @@ namespace CSULB.GetUsGrub.Models
         
         // Automatic properties
         public string Username { get; set; }
+        public string DisplayName { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
         public RestaurantDetail Details { get; set; }

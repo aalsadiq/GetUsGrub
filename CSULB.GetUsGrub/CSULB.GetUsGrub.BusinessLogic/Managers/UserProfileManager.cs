@@ -16,12 +16,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public ResponseDto<UserProfileDto> GetProfile(string username)
         {
+            // Retrieve userID from db
+            var userGateway = new UserGateway();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(username);
             // Retrieve profile from database
             var profileGateway = new UserProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.GetUserProfileByUsername(username);
+            var userProfileResponseDto = profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id);
 
-            return responseDtoFromGateway;
+            return userProfileResponseDto;
         }
 
         public ResponseDto<bool> EditProfile(UserProfileDto userProfileDto)
@@ -44,11 +48,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             string username = userProfileDto.Username;
             var userProfileDomain = new UserProfile(userProfileDto.DisplayName, userProfileDto.DisplayPicture);
 
+            // Retrieve userID from db
+            var userGateway = new UserGateway();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(username);
 
             // Execute update of database
             var profileGateway = new UserProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditUserProfileByUserProfileDomain(username, userProfileDomain);
+            var responseDtoFromGateway = profileGateway.EditUserProfileById(userAccountResponseDto.Data.Id, userProfileDomain);
 
             return responseDtoFromGateway;
         }

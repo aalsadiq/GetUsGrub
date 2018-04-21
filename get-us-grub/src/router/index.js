@@ -170,7 +170,7 @@ export default new Router({
       name: 'Login',
       component: Login,
       beforeEnter: (to, from, next) => {
-        document.title = 'Login Brh!'
+        document.title = 'Login'
         next()
       }
     },

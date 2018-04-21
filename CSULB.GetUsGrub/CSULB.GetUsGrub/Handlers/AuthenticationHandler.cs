@@ -2,7 +2,6 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,13 +13,7 @@ namespace CSULB.GetUsGrub
     // This Handler is checking if the User is Authenticated
     public class AuthenticationHandler : DelegatingHandler
     {
-        private readonly IEnumerable<string> _urisToSkip;
-
-        public AuthenticationHandler()
-        {
-            _urisToSkip = new UniformResourceIdentifiers().UrisToSkipAuthn;
-        }
-        
+        // TODO: @Brian Talk to you later [-Jenn]   
         /// <summary>
         /// The CheckIfSkippedUri method.
         /// Checks if the Uniform Resource Identifier is in the skip Authentication list.
@@ -33,7 +26,7 @@ namespace CSULB.GetUsGrub
         /// <returns>A true or false boolean type</returns>
         public bool CheckIfSkippedUri(string uri)
         {
-            return _urisToSkip.Contains(uri);
+            return UniformResourceIdentifiers.UrisToSkipAuthn.Contains(uri);
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

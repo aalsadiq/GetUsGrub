@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -18,15 +17,6 @@ namespace CSULB.GetUsGrub.Models
         public const string SSO_REGISTRATION = "/sso/registration";
         public const string SSO_LOGIN = "/sso/login";
 
-        public readonly IEnumerable<string> UrisToSkipAuthn;
-
-        public UniformResourceIdentifiers()
-        {
-            UrisToSkipAuthn = new Collection<string>()
-            {
-                SSO_REGISTRATION,
-                SSO_LOGIN
-            };
-        }
+        public static readonly IEnumerable<string> UrisToSkipAuthn = new[] { SSO_REGISTRATION, SSO_LOGIN };
     }
 }

@@ -43,7 +43,7 @@ export default {
       timeout: 10000000
     }
   },
-  watch: {
+  methods: {
   // Compare expiration time with the current date time and triggers the popup
     compareTime () {
       try {
@@ -62,9 +62,7 @@ export default {
           this.popUp = true
         }
       } catch (ex) {}
-    }
-  },
-  methods: {
+    },
     time () {
       // Set dateTimeNow as a moment object in unix format
       this.dateTimeNow = moment.unix(moment().unix())

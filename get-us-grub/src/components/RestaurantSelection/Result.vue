@@ -30,7 +30,7 @@
             {{ businessHour.twelveHourFormatCloseTime }}
           </p>
           <div v-if="restaurant.foodPreferences !== null">
-            <h3>Food Preferences:</h3>
+            <h3>Accommodations</h3>
               <p class="paragraph" v-for="foodPreference in restaurant.foodPreferences" :key="foodPreference">
                 {{ foodPreference }}
               </p>

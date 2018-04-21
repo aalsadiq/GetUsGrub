@@ -160,6 +160,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .ThenBy(businessHourDto => businessHourDto.OpenTime)
                 .ToList();
 
+            // Sort the food preferences by ascending order
+            SelectedRestaurantDto.FoodPreferences = SelectedRestaurantDto.FoodPreferences
+                .OrderBy(foodPreferences => foodPreferences).ToList();
+
             // Return the selected restaurant
             return new ResponseDto<SelectedRestaurantDto>()
             {

@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @updated: 04/09/2018
     /// </para>
     /// </summary>
-    public class RestaurantGateway : IDisposable
+    public class RestaurantGateway: IDisposable
     {
         // Open the Restaurant context
         RestaurantContext context = new RestaurantContext();
@@ -195,12 +195,9 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        /// <summary>
-        /// Dispose of the context
-        /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
-            context.Dispose();
+            throw new NotImplementedException();
         }
     }
 }

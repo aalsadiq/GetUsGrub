@@ -148,7 +148,7 @@ export default {
       this.loader = null
     }
   },
-    methods: {
+  methods: {
     // Submitting information to the backend
     submit () {
       this.valid = false

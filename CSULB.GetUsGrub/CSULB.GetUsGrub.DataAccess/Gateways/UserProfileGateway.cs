@@ -42,7 +42,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="userProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditUserProfileByDomain(int? userAccountId, UserProfile userProfileDomain)
+        public ResponseDto<bool> EditUserProfileById(int? userAccountId, UserProfile userProfileDomain)
         {
             using (var profileContext = new IndividualProfileContext())
             {

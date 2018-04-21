@@ -92,18 +92,21 @@
             </v-form>
           </v-card>
           <!-- Submit button -->
-          <v-tooltip bottom>
-            <v-btn
-              class="search-btn"
-              @click="submit"
-              :disabled="!valid"
-              :loading="loading"
-              slot="activator"
-              >
-              <v-icon>search</v-icon>
-            </v-btn>
-            <span>Search</span>
-          </v-tooltip>
+          <div class="search-btn-div">
+            <v-tooltip bottom>
+              <v-btn
+                class="search-btn"
+                @click="submit"
+                :disabled="!valid"
+                :loading="loading"
+                slot="activator"
+                >
+                <v-icon>search</v-icon>
+              </v-btn>
+              <span>Search</span>
+            </v-tooltip>
+          </div>
+          <result-bar/>
         </div>
       </v-container>
     </div>
@@ -117,11 +120,13 @@
 <script>
 import axios from 'axios'
 import Result from '@/components/RestaurantSelection/Result'
+import ResultBar from '@/components/RestaurantSelection/ResultBar'
 
 export default {
   // Vue component dependencies
   components: {
-    Result
+    Result,
+    ResultBar
   },
   // Local variable data
   data () {
@@ -154,7 +159,7 @@ export default {
       this.loader = 'loading'
       this.showSection = false
       // Sending GET Request
-      axios.get('http://localhost:8081/RestaurantSelection/Registered/', {
+      axios.get(this.$store.state.urls.restaurantSelection.registeredUser, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         },
@@ -168,7 +173,7 @@ export default {
         }
       // Receiving successful response
       }).then(response => {
-        if (response.data != null) {
+        if (response.data !== null) {
           this.showAlert = false
           this.valid = true
           this.showRestaurantTitleBar = true
@@ -189,27 +194,27 @@ export default {
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page
-            this.$router.push({path: '/Unauthorized'})
+            this.$router.push('Unauthorized')
           }
           if (error.response.status === 403) {
             // Route to Forbidden page
-            this.$router.push({path: '/Forbidden'})
+            this.$router.push('Forbidden')
           }
           if (error.response.status === 404) {
             // Route to ResourceNotFound page
-            this.$router.push({path: '/ResourceNotFound'})
+            this.$router.push('ResourceNotFound')
           }
           if (error.response.status === 500) {
             // Route to InternalServerError page
-            this.$router.push({path: '/InternalServerError'})
+            this.$router.push('InternalServerError')
           } else {
             // Route to the General Error page
-            this.$router.push({path: '/GeneralError'})
+            this.$router.push('GeneralError')
           }
         } catch (ex) {
           Promise.reject(error)
           // Route to the General Error page
-          this.$router.push({path: '/GeneralError'})
+          this.$router.push('GeneralError')
         }
       })
     }

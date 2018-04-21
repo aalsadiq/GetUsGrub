@@ -13,9 +13,10 @@
           :multi-line="mode === 'multi-line'"
           :vertical="mode === 'vertical'"
           v-model="popUp"
-          :color="'error'"
+          :color="popUpColor"
         >
-          Your session will expire in {{ expMinutes }}
+          <v-icon>warning</v-icon>
+          <span id="session-expire-text"> Your session will expire in {{ expMinutes }} </span>
           <v-btn id='refresh-btn' light color="white" @click.native="refresh">Refresh</v-btn>
         </v-snackbar>
       </div>
@@ -35,13 +36,33 @@ export default {
       exp: null,
       expMinutes: '5 minutes',
       popUp: false,
-      verticalPosition: 'top',
-      horizontalPosition: '',
+      verticalPosition: 'bottom',
+      horizontalPosition: 'left',
       mode: 'mult-line',
+      popUpColor: 'warning',
       timeout: 10000000
     }
   },
   methods: {
+  // Compare expiration time with the current date time and triggers the popup
+    compareTime () {
+      try {
+        if (this.$store.state.authenticationToken == null) {
+          this.popUp = false
+        } else if (this.exp.diff(this.dateTimeNow, 'seconds') <= 10) {
+          this.popUp = false
+          this.logoutUser()
+        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') <= 1 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
+          this.expMinutes = '1 minute'
+          this.popUpColor = 'error'
+          this.popUp = true
+        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') <= 5 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
+          this.expMinutes = '5 minutes'
+          this.popUpColor = 'warning'
+          this.popUp = true
+        }
+      } catch (ex) {}
+    },
     time () {
       // Set dateTimeNow as a moment object in unix format
       this.dateTimeNow = moment.unix(moment().unix())
@@ -51,23 +72,6 @@ export default {
       // Force reload to clear cache
       location.reload()
       this.$router.push({path: '/'})
-    },
-    // Compare expiration time with the current date time and triggers the popup
-    compareTime () {
-      try {
-        if (this.$store.state.authenticationToken == null) {
-          this.popUp = false
-        } else if (this.exp.diff(this.dateTimeNow, 'seconds') <= 10) {
-          this.popUp = false
-          this.logoutUser()
-        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') < 1 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
-          this.expMinutes = '1 minute'
-          this.popUp = true
-        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') < 5 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
-          this.expMinutes = '5 minutes'
-          this.popUp = true
-        }
-      } catch (ex) {}
     },
     // Set the exp variable if there is a token in the Vuex store
     setExpiration () {
@@ -121,9 +125,10 @@ html {
   background-color: rgb(243, 243, 243);
   overflow-x: hidden;
 }
+/* Make scrollbar transparent */
 ::-webkit-scrollbar {
     width: 0px;
-    background: transparent; /* make scrollbar transparent */
+    background: transparent;
 }
 /* Omit text underlines to router-links */
 a {
@@ -140,5 +145,9 @@ a {
 #router {
   width: 100%;
   padding: 0 0 3em 0;
+}
+#session-expire-text {
+  margin: 0em -1.5em 0em 0.7em;
+  font-weight: bold;
 }
 </style>

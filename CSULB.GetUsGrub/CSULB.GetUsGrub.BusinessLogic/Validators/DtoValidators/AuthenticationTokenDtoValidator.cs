@@ -14,10 +14,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty()
                     .NotNull();
 
-                RuleFor(authenticationTokenDto => authenticationTokenDto.ExpiresOn)
-                    .NotEmpty()
-                    .NotNull();
-
                 RuleFor(authenticationTokenDto => authenticationTokenDto.Username)
                     .NotEmpty()
                     .NotNull();

@@ -4,7 +4,7 @@
       <div v-if="showUnauthenticated()">
         <restaurant-selection-unregistered-user-main/>
       </div>
-      <div v-if="showGenericHome">
+      <div v-if="showRestaurantHome()">
         <img src="@/assets/GetUsGrub.png">
         <p>Welcome!</p>
       </div>
@@ -30,11 +30,6 @@ export default {
     RestaurantSelectionRegisteredUserMain,
     AppFooter
   },
-  data () {
-    return {
-      showGenericHome: true
-    }
-  },
   beforeCreate () {
     try {
       if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
@@ -46,7 +41,15 @@ export default {
     showRegisteredRestaurantSelection () {
       try {
         if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
-          this.showGenericHome = false
+          return true
+        }
+      } catch (ex) {
+        return false
+      }
+    },
+    showRestaurantHome () {
+      try {
+        if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurant === 'True') {
           return true
         }
       } catch (ex) {
@@ -55,7 +58,6 @@ export default {
     },
     showUnauthenticated () {
       if (this.$store.state.authenticationToken === null) {
-        this.showGenericHome = false
         return true
       } else {
         return false

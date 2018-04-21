@@ -23,7 +23,6 @@ import RestaurantSelectionRegisteredUserMain from '@/components/RestaurantSelect
 import jwt from 'jsonwebtoken'
 
 export default {
-  name: 'Home',
   components: {
     AppHeader,
     RestaurantSelectionUnregisteredUserMain,
@@ -38,7 +37,7 @@ export default {
   beforeCreate () {
     try {
       if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
-        this.$router.push({path: '/User/Admin'})
+        this.$router.push('User')
       }
     } catch (ex) {}
   },

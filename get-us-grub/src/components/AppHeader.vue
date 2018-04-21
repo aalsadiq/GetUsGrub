@@ -15,7 +15,7 @@
       <v-btn
         flat
         class="nav-btn"
-        to="/Registration"
+        to="Registration"
         v-if="showWithoutAuthentication()"
       >
         <span class="nav-btn-text">REGISTER</span>
@@ -23,7 +23,7 @@
       <v-btn
         flat
         class="nav-btn"
-        to="/Login"
+        to="Login"
         v-if="showWithoutAuthentication()"
       >
         <span class="nav-btn-text">LOGIN</span>
@@ -31,14 +31,14 @@
       <v-btn
         flat
         class="nav-btn"
-        to="/RestaurantBillSplitter"
+        to="RestaurantBillSplitter"
       >
         <span class="nav-btn-text">SPLIT BILL</span>
       </v-btn>
        <v-btn
         flat
         class="nav-btn"
-        to="/Profile"
+        to="Profile"
         v-if="this.$store.state.isAuthenticated"
       >
         <span class="nav-btn-text">PROFILE</span>
@@ -76,7 +76,7 @@ export default {
     },
     logout () {
       this.$store.dispatch('setAuthenticationToken', null)
-      // Force reload to clear cache
+      // Force reload to set store back to default initial state
       location.reload()
       this.$router.push({path: '/'})
     }

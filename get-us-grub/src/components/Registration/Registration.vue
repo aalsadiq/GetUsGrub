@@ -36,6 +36,6 @@ export default {
 <style>
 #registration {
   padding: 2.5em 0 0 0;
-  margin: 2em 10em 10em 11.5em;
+  margin: 3.5em 10em 10em 11.5em;
 }
 </style>

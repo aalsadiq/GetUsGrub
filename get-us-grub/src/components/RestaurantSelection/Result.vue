@@ -1,11 +1,6 @@
 <template>
+<div>
   <div id="restaurant-selection-response">
-    <!-- Title bar for the restaurant selection -->
-    <v-alert id="result-bar" :value=showResultBar>
-      <span id="result-text">
-        Result
-      </span>
-    </v-alert>
     <v-card id="card-result">
       <v-layout row justify-space-between>
         <!-- Selected restaurant information displayed here -->
@@ -29,11 +24,17 @@
             {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
           </p>
           <h3>BusinessHours:</h3>
-          <p class="paragraph" v-for="businessHour in restaurant.businessHours" :key="businessHour.day">
+          <p class="paragraph" v-for="(businessHour, index) in restaurant.businessHours" :key="index">
             {{ businessHour.day }}:
             {{ businessHour.twelveHourFormatOpenTime }} -
             {{ businessHour.twelveHourFormatCloseTime }}
           </p>
+          <div v-if="restaurant.foodPreferences !== null">
+            <h3>Food Preferences:</h3>
+              <p class="paragraph" v-for="foodPreference in restaurant.foodPreferences" :key="foodPreference">
+                {{ foodPreference }}
+              </p>
+          </div>
         </v-flex>
         <!-- Google embedded map displayed here -->
         <v-flex xs6>
@@ -50,6 +51,7 @@
       </v-btn>
     </v-flex>
   </div>
+</div>
 </template>
 
 <script>
@@ -67,8 +69,7 @@ export default {
       responseValid: true,
       loader: null,
       loading: false,
-      showAlert: false,
-      showResultBar: true
+      showAlert: false
     }
   },
   computed: mapState({
@@ -79,19 +80,13 @@ export default {
     // Route to bill splitter and set isConfirmed variable in store to true
     confirmRestaurant () {
       this.$store.state.restaurantSelection.selectedRestaurant.isConfirmed = true
-      this.$router.push({path: '/RestaurantBillSplitter'})
+      this.$router.push('RestaurantBillSplitter')
     }
   }
 }
 </script>
 
 <style>
-#restaurant-selection-response {
-  margin: 2em 0em 0em 0em;
-}
-#result-bar {
-  background-color: #e08a8a !important;
-}
 #display-name {
   font-size: 1.3em;
 }
@@ -104,14 +99,10 @@ export default {
   background-color: #20b39a !important;
 }
 .paragraph {
-  padding: 0em 0em 0.3em 0em;
+  margin: 0em 0em 0em 0em;
+  padding: 0em 0em 0.2em 0em;
 }
 h3 {
-  padding: 0.3em;
-}
-#result-text {
-  color: rgb(255, 255, 255);
-  font-weight: bold;
-  font-size: 1.5em;
+  padding: 0.2em 0 0.3em 0;
 }
 </style>

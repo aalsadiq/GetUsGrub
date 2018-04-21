@@ -88,7 +88,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Set Diplay Picture Path
             user.DisplayPicture = savePath + newImagename;
-  s
+  
             // Call gateway to save path to database
             using (var gateway = new UserProfileGateway())
             {

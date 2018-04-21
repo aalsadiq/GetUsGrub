@@ -1,40 +1,48 @@
 <template>
   <div id="image-upload">
-      <!-- <v-flex xs5 sm5 offset-sm3> -->
         <v-dialog  v-model="dialog">
           <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
           <v-card dark>
             {{ responseDataStatus }}
             {{ responseData }}
             <br/>
+            <v-flex xs1 sm4 offset-sm1>
+              <v-flex sm2>
               <input id="uploadImage" name="imaageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
-              <!-- <v-btn id="subtmitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload(viewType)">Upload Image</v-btn>  -->
+              </v-flex>
+              <div v-if="show===true">
+                 <v-text-field label="Menu Name" v-model="menuItem" required />
+                 <v-text-field label="Menu Item" v-model="itemName" required />
+            </div>
               <v-btn id="subtmitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">Upload Image</v-btn>
-              <!-- formData -->
-              <!-- <img id="uploadPreview" :src="imageData" alt="ProfileImage"/> -->
+              </v-flex>
+              <v-flex xs20 sm35 offset-sm5>
+                <img id="uploadPreview" :src="imageData" alt="ProfileImage"/>
+              </v-flex>
             <br/>
           </v-card>
         </v-dialog>
           <br/>
-      <!-- </v-flex> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
-  // props: ['viewType'],
   dialog: false,
   components: {
   },
   data: () => ({
     username: 'username26', // Grab from store
-    menuItem: 'menuName1', // User input
-    itemName: 'itemName1', // User input
+    menuItem: '', // User input // menuName1
+    itemName: '', // User input // itemName1
     selectedFile: null,
     responseDataStatus: '',
-    test: null
+    responseData: '',
+    test: null,
+    show: true // true for Restaurant and false for Profile
   }),
   methods: {
     beforeCreate () {
@@ -42,10 +50,10 @@ export default {
         this.$router.push({path: '/Unauthorized'})
       }
       try {
-        jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True'
-        jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True'
-        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' ||
-          jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
+          this.show = false
+        } else if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+          this.show = true
         } else {
           this.$router.push({path: '/Forbidden'})
         }
@@ -59,7 +67,7 @@ export default {
     SubmitImageUpload: function () {
       // ReadRestaurantProfile
       var formData = new FormData()
-      if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
+      if (this.show === false) {
         formData.append('username', this.username)
         formData.append('filename', this.selectedFile, this.selectedFile.name)
         axios.post('http://localhost:8081/Profile/User/Edit/ProfileImageUpload', formData, {
@@ -72,12 +80,12 @@ export default {
           console.log(error.response.data)
         })
       }
-      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+      if (this.show === true) {
         formData.append('username', this.username)
         formData.append('menuItem', this.menuItem)
         formData.append('itemName', this.itemName)
         formData.append('filename', this.selectedFile, this.selectedFile.name)
-        axios.post('http://localhost:8081/Profile/User/Edit/MenuItemImageUpload', formData, {
+        axios.post('http://localhost:8081/Profile/Restaurant/Edit/MenuItemImageUpload', formData, {
         }).then(response => {
           this.responseDataStatus = 'Success! Image has been uploaded.'
           this.responseData = response.data

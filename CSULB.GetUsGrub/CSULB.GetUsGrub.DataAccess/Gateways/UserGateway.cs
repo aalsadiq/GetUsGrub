@@ -639,16 +639,28 @@ namespace CSULB.GetUsGrub.DataAccess
                                        select account).SingleOrDefault();
 
                     //Set ResponseDto equal to the ResponseDto from EditDisplayName.
-                    EditDisplayName(user.Username, user.NewDisplayName);
-
-                    //Set ResponseDto equal to the ResponseDto from EditUserName.
-                    EditUserName(user.Username, user.NewUsername);
-
-                    return new ResponseDto<bool>()
+                    if (user.NewDisplayName != null) // TODO: @Jen Added because what Jen and I did is not working?!  [-Angelica]
                     {
-                        Data = false,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
+                        EditDisplayName(user.Username, user.NewDisplayName);
+                    }
+
+                    if (user.NewUsername != null) //Added
+                    {
+                        // Set ResponseDto equal to the ResponseDto from EditUserName.
+                        EditUserName(user.Username, user.NewUsername);
+
+                        // Change image name (only admins can edit users)
+                        // userAccount.UserProfile.DisplayPicture
+                    }
+                    return new ResponseDto<bool>
+                    {
+                        Data = true
                     };
+                    //return new ResponseDto<bool>()
+                    //{
+                    //    Data = false,
+                    //    Error = GeneralErrorMessages.GENERAL_ERROR
+                    //};
                 }
                 catch (Exception)
                 {

@@ -311,9 +311,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
-            // TODO: @Jen Can I still leave the display picture here? Or should I just delete this whole user profile line?
-            //If I comment userProfile, I would have to create something else in the user gateway called StoreAdmin? (I think this would probably be best)
-            var userProfile = new UserProfile(displayPicture: registerUserDto.UserProfileDto.DisplayPicture, displayName: registerUserDto.UserProfileDto.DisplayName);
+
+            //Admin User Profile
+            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table as administrator
             var userClaims = new UserClaims(claimsFactory.Create(AccountType.ADMIN));

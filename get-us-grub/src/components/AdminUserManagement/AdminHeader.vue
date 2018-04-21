@@ -39,7 +39,7 @@
               <img src="../../../../Images/DefaultImages/DefaultProfileImage.png">
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>Admin admin</v-list-tile-title>
+              <v-list-tile-title> </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>

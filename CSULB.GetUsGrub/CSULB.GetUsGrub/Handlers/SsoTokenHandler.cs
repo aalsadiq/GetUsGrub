@@ -25,7 +25,6 @@ namespace CSULB.GetUsGrub
         private const string AuthorizationScheme = "Bearer";
 
         /// <summary>
-        /// The HasToken method.
         /// Checks request header if Authorization key exists.
         /// <para>
         /// @author: Jennifer Nguyen
@@ -45,7 +44,7 @@ namespace CSULB.GetUsGrub
         }
 
         /// <summary>
-        /// The TryGetToken method.
+        /// The GetToken method.
         /// Gets the token from the request header with the appropriate Authorization Scheme.
         /// <para>
         /// @author: Jennifer Nguyen

@@ -12,7 +12,8 @@ namespace CSULB.GetUsGrub.Controllers
     {
         // POST Logout/User
         [HttpPost]
-        [Route("Logout/")]
+        [AllowAnonymous]
+        [Route("Logout")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult LogoutUserUser(HttpRequestMessage request)
         {
@@ -29,7 +30,7 @@ namespace CSULB.GetUsGrub.Controllers
                 }
 
                 var username = tokenService.GetTokenUsername(tokenString);
-                if (string.IsNullOrEmpty(tokenString))
+                if (string.IsNullOrEmpty(username))
                 {
                     return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
                 }

@@ -28,8 +28,8 @@ namespace CSULB.GetUsGrub
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        // POST: Sso/Registration
         [HttpPost]
+        [Route("FirstTimeUser")]
         // TODO: @Jenn Update origins to reflect SSO request when demoing [-Jenn]
         //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult Registration(HttpRequestMessage request)
@@ -58,8 +58,7 @@ namespace CSULB.GetUsGrub
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
-
-        // POST: Sso/Login
+        
         [HttpPost]
         [Route("Login")]
         //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]

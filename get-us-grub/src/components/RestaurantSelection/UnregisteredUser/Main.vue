@@ -32,9 +32,8 @@ export default {
   margin: 3.5em 0em -0.3em 0em;
   font-weight: bold;
   font-size: small;
-  padding: 0.1em 0em 0.1em 1em;
+  padding: 0.1em 1em 0.1em 1em;
   color: rgb(82, 159, 247) !important;
-  background-color: rgb(255, 255, 255) !important;
 }
 #unregistered-restaurant-selection {
   padding: 2.5em 0 0 0;

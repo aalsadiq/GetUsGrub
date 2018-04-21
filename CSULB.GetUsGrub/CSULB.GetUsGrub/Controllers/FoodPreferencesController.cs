@@ -17,7 +17,7 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("GetPreferences")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult GetPreferences(string username)
         {
             // Check if model is valid for the database

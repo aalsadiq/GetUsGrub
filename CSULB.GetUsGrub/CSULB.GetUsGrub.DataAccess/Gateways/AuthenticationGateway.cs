@@ -149,8 +149,8 @@ namespace CSULB.GetUsGrub.DataAccess
             try
             {
                 var salt = (from salts in authenticationContext.PasswordSalts
-                    where salts.Id == id
-                    select salts.Salt).FirstOrDefault();
+                            where salts.Id == id
+                            select salts.Salt).FirstOrDefault();
                 var passwordSalt = new PasswordSalt
                 {
                     Salt = salt

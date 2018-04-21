@@ -38,7 +38,7 @@ export default {
     if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
       this.profileType = 'individual'
     } else if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
-      this.profileType = 'restaurant'
+      this.profileType = 'individual'
     } else {
       this.$router.push({ path: '/Forbidden' })
     }

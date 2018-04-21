@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div fluid>
+      <v-container fluid>
         <div>
           <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
@@ -9,7 +9,7 @@
           </v-alert>
           <!-- Title bar for the restaurant selection -->
           <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
-            <span class="quote">
+            <span id="quote">
             "With great power comes great responsibility" - Uncle Ben
             </span>
           </v-alert>
@@ -108,7 +108,7 @@
           </div>
           <result-bar/>
         </div>
-      </div>
+      </v-container>
     </div>
     <div v-if="showSection">
       <!-- Restaurant selection results Vue component -->
@@ -224,17 +224,22 @@ export default {
 
 <style>
 #selectRestaurantTitleBar {
-  background-color: rgb(87, 115, 185) !important
+  background-color: #6F81AD !important
 }
 #unableToFindRestaurantAlert {
   background-color: #e26161 !important
 }
 .search-btn {
   background-color: rgb(255, 255, 255);
+  margin: 1em 2.9em 0em 1em;
 }
 #card {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;
+}
+#quote {
+  color: rgb(255, 255, 255);
+  font-size: normal;
 }
 #required {
   margin-bottom: 0.4em;

@@ -47,11 +47,20 @@
         public const string PASSWORD_REQUIRED = "Password is required.";
         public const string PASSWORD_LENGTH = "Password must be at least 8 characters and less than or equal to 64.";
         public const string PASSWORD_FORMAT = "Password must not be empty or contain spaces.";
+        public const string USER_DOES_NOT_EXIST = "User does not exist";
+        public const string INVALID_USERNAME = "Invalid username, please try again.";
+
+        // Validation error messages for EditUserDto
+        public const string NEWUSERNAME_FORMAT = "New username must not contain spaces and special characters.";
 
         // Validation error messages for UserProfile
         public const string DISPLAY_NAME_REQUIRED = "Display name is required.";
 
         // Validation error messages for a Token
         public const string INVALID_TOKEN = "Token is not valid.";
+
+        // Validation error messages for Images
+        public const string INVALID_IMAGE_TYPE = "Invalid image type.";
+        public const string INVALID_IMAGE_SIZE = "Invalid image size.";
     }
 }

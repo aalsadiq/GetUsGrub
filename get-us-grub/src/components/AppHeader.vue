@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -75,10 +76,18 @@ export default {
       }
     },
     logout () {
-      this.$store.dispatch('setAuthenticationToken', null)
-      // Force reload to set store back to default initial state
-      location.reload()
-      this.$router.push({path: '/'})
+      axios.post('http://localhost:8081/Logout', {}, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.$store.dispatch('setAuthenticationToken', null)
+        // Force reload to clear cache
+        location.reload()
+        this.$router.push({path: '/'})
+      }).catch(error => {
+        console.log(error.response)
+      })
     }
   }
 }
@@ -89,7 +98,7 @@ export default {
   margin: auto;
 }
 #header-toolbar {
-  background-color: #329fa3;
+  background-color: #5caabc;
 }
 div.btn__content {
   text-transform: none;

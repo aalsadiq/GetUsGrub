@@ -139,9 +139,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="keys.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="keys.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

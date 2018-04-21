@@ -27,7 +27,7 @@
 <script>
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
-
+import axios from 'axios'
 export default {
   name: 'App',
   data () {
@@ -84,8 +84,15 @@ export default {
     },
     // Refresh the user's session by calling creation of new token
     refresh () {
-      console.log('refresh')
-      // this.popUp = false
+      axios.post('http://localhost:8081/RenewSession', {}, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.$store.state.authenticationToken = response.data
+      }).catch(error => {
+        console.log(error.response)
+      })
     }
   },
   // Set time intervals throughout user's session

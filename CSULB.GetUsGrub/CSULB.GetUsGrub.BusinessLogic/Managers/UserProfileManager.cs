@@ -1,6 +1,7 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System;
+using System.Configuration;
+using System.IO;
 using System.Web;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -15,12 +16,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public ResponseDto<UserProfileDto> GetProfile(string username)
         {
+            // Retrieve userID from db
+            var userGateway = new UserGateway();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(username);
             // Retrieve profile from database
             var profileGateway = new UserProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.GetUserProfileByUsername(username);
+            var userProfileResponseDto = profileGateway.GetUserProfileByUsername(username); // TODO: @Andrew, you had this and it doesnt exist anymore... profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id); [-Angelica]
 
-            return responseDtoFromGateway;
+            return userProfileResponseDto;
         }
 
         public ResponseDto<bool> EditProfile(UserProfileDto userProfileDto)
@@ -43,41 +48,68 @@ namespace CSULB.GetUsGrub.BusinessLogic
             string username = userProfileDto.Username;
             var userProfileDomain = new UserProfile(userProfileDto.DisplayName, userProfileDto.DisplayPicture);
 
+            // Retrieve userID from db
+            var userGateway = new UserGateway();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(username);
 
             // Execute update of database
             var profileGateway = new UserProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditUserProfileByUserProfileDomain(username, userProfileDomain);
+            var responseDtoFromGateway = profileGateway.EditUserProfileById(userAccountResponseDto.Data.Id, userProfileDomain);
 
             return responseDtoFromGateway;
         }
 
         //ImageUploadManager
         // TODO: @Angelica Add image profile upload here
-        public ResponseDto<bool> ProfileImageUpload(UserProfileDto image)
+        public ResponseDto<bool> ProfileImageUpload(HttpPostedFile image,  string username)
         {
+            var user = new UserProfileDto() { Username = username};
+  
+            var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
+            var result = ImageUploadValidationStrategy.ExecuteStrategy();
 
-            //var profileImageUploadPreLogicValidationStrategy = new ProfileImageUploadPreLogicValidationStrategy(image);
-            //Imagename will be based on user
-            //var result = profileImageUploadPreLogicvalidationStrategy.ExecuteStrategy();//make sure it is a path
-            //var result = image.DisplayPicture;
-            //Console.WriteLine("Inside profileImageUpload: " + image.DisplayPicture);
-            //byte[] imgbytes = System.IO.File.ReadAllBytes(image.DisplayPicture);
-        
-            return new ResponseDto<bool>
+            if (result.Data == false)
             {
-                Data = true,
-            };
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = result.Error
+                };
+            }
 
-            //if (result.Error != null)
-            //{
-            //    return new ResponseDto<bool>
-            //    {
-            //        Data = false,
-            //        Error = "Something went wrong. Please try again later."
-            //    };
-            //}
+            var renameImage = Path.GetExtension(image.FileName);
+            var newImagename = username + renameImage;
 
+            // Save image to path
+            string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
+
+            // Set Diplay Picture Path
+            user.DisplayPicture = savePath + newImagename;
+  
+            // Call gateway to save path to database
+            using (var gateway = new UserProfileGateway())
+            {
+                var gatewayresult = gateway.UploadImage(user);
+                if (gatewayresult.Data == false)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = gatewayresult.Error
+                    };
+                }
+
+                // Save the image to the path
+                image.SaveAs(savePath + newImagename);
+
+                return new ResponseDto<bool>
+                {
+                    Data = true
+                };
+            }
         }
+
     }
 }

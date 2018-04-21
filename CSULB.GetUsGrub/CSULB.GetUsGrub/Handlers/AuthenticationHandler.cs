@@ -13,7 +13,13 @@ namespace CSULB.GetUsGrub
     // This Handler is checking if the User is Authenticated
     public class AuthenticationHandler : DelegatingHandler
     {
-        // TODO: @Brian Talk to you later [-Jenn]   
+        private readonly IEnumerable<string> _urisToSkip;
+
+        public AuthenticationHandler()
+        {
+            _urisToSkip = new UniformResourceIdentifiers().UrisToSkipAuthn;
+        }
+
         /// <summary>
         /// The CheckIfSkippedUri method.
         /// Checks if the Uniform Resource Identifier is in the skip Authentication list.
@@ -48,7 +54,7 @@ namespace CSULB.GetUsGrub
                 {
                     return await base.SendAsync(request, cancellationToken);
                 }
-                
+
                 // Extracting the tokenString from the Header
                 var tokenString = tokenService.ExtractToken(request);
 

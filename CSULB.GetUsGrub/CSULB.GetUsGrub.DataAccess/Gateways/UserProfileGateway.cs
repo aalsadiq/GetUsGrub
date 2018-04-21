@@ -27,7 +27,7 @@ namespace CSULB.GetUsGrub.DataAccess
             {
                 // Find profile associated with account
                 var userProfile = (from profile in profileContext.UserProfiles
-                                   where profile.Id == userAccountId
+                                   where profile.UserAccount.Username == username // TODO: @Andrew, you had this before. I don't know why.  profile.user == userAccountId
                                    select profile).SingleOrDefault();
 
                 ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>

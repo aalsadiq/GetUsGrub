@@ -52,8 +52,8 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="primary" flat>Save</v-btn>
-                          <v-btn color="primary" flat @click.native="dialog2=false">Close</v-btn>
+                          <v-btn color="primary" @click="EditUserProfile" :loading="loading">Save</v-btn>
+                          <v-btn color="primary" @click="dialog2=false">Close</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -89,14 +89,13 @@ export default {
   data () {
     return {
       username: '',
-      displayName: 'User Profile',
+      displayName: null,
       profile: null,
       errors: null,
       dialog: false,
       dialog2: false
     }
   },
-  /*
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
       this.$router.push({ path: '/Unauthorized' })
@@ -110,7 +109,6 @@ export default {
       this.$router.push({ path: '/Forbidden' })
     }
   },
-  */
   created () {
     // retrieve claim to check if they can view a user profile or a restaurant profile
     // if the claim is view user profile

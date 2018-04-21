@@ -51,7 +51,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Execute update of database
             var profileGateway = new UserProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditUserProfileByUserProfileDomain(username, userProfileDomain);
+            var responseDtoFromGateway = profileGateway.EditUserProfileByDomain(userProfileDomain.Id, userProfileDomain);
 
             return responseDtoFromGateway;
         }

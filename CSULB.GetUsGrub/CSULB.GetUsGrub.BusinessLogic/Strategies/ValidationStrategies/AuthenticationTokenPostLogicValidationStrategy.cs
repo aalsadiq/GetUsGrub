@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.BusinessLogic.Strategies.ValidationStrategies
 
         public bool ExcuteStrategy()
         {
-            var validationResult = _authenticationTokenValidator.Validate(_authenticationToken, ruleSet: "UsernameAndPassword");
+            var validationResult = _authenticationTokenValidator.Validate(_authenticationToken, ruleSet: "TokenNoSalt");
 
             if (!validationResult.IsValid)
             {

@@ -189,22 +189,17 @@ export default {
   position: absolute;
   overflow-x: hidden;
 }
-
 #user-profile {
   max-width: 1200px;
   margin: auto;
 }
-
 #profile-header {
   padding-top: 2em;
 }
-
 #display-name {
   padding-top: 1em;
 }
-
 #food-preferences {
   padding-top: 1em;
 }
-
 </style>

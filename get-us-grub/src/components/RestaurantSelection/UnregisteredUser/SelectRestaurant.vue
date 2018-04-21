@@ -109,7 +109,7 @@
         </div>
       </div>
     </div>
-    <div v-if="showSection">
+    <div v-show="showSection">
       <!-- Restaurant selection results Vue component -->
       <result/>
     </div>
@@ -184,7 +184,6 @@ export default {
       }).catch(error => {
         this.valid = true
         this.disable = false
-        Promise.reject(error)
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page
@@ -205,10 +204,11 @@ export default {
             // Route to the General Error page
             this.$router.push({path: '/GeneralError'})
           }
-        } catch (ex) {
           Promise.reject(error)
+        } catch (ex) {
           // Route to the General Error page
           this.$router.push({path: '/GeneralError'})
+          Promise.reject(error)
         }
       })
     }
@@ -218,14 +218,13 @@ export default {
 
 <style>
 #selectRestaurantTitleBar {
-  background-color: rgb(87, 115, 185) !important
+  background-color: #6F81AD !important
 }
 #unableToFindRestaurantAlert {
   background-color: #e26161 !important
 }
-.search-btn {
+#search-btn {
   background-color: rgb(255, 255, 255);
-  margin: 1em 2.9em 0em 1em;
 }
 #card {
   padding: 0 0.7em 0 0.7em;

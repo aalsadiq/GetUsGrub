@@ -32,7 +32,7 @@
         </v-flex>
       </v-layout>
     </div>
-    <v-layout>
+    <v-layout  id="create-user-layout">
     <v-flex xs12>
         <v-toolbar dark tabs flat>
           <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-1">
@@ -289,7 +289,7 @@
                         :disabled=disable
                       ></v-select>
                       <v-menu
-                        ref="openMenu"
+                        ref="menu"
                         lazy
                         :close-on-content-click="false"
                         v-model="openTimeSync"
@@ -306,7 +306,6 @@
                           label="Select opening time (24hr format)"
                           v-model="businessHour.openTime"
                           prepend-icon="access_time"
-                          :rules="$store.state.rules.openTimeRules"
                           readonly
                           required
                           :disabled=disable
@@ -314,13 +313,12 @@
                         <v-time-picker
                           format="24hr"
                           v-model="businessHour.openTime"
-                          @change="$refs.openMenu.save(time)"
                           :max="businessHour.closeTime"
                         >
                         </v-time-picker>
                       </v-menu>
                       <v-menu
-                        ref="closeMenu"
+                        ref="menu"
                         lazy
                         :close-on-content-click="false"
                         v-model="closeTimeSync"
@@ -337,7 +335,6 @@
                           label="Select closing time (24hr format)"
                           v-model="businessHour.closeTime"
                           prepend-icon="access_time"
-                          :rules="$store.state.rules.closeTimeRules"
                           readonly
                           required
                           :disabled=disable
@@ -346,7 +343,6 @@
                           format="24hr"
                           scrollable
                           v-model="businessHour.closeTime"
-                          @change="$refs.closeMenu.save(time)"
                           :min="businessHour.openTime"
                         >
                         </v-time-picker>
@@ -354,8 +350,9 @@
                     </v-form>
                     <v-btn @click.prevent="addBusinessHour" :disabled="!validAddBusinessHour || disable">Add</v-btn>
                     <ul class="list-group">
-                        <li v-for="storeHour in businessHours" :key="storeHour" class="list-group-item">
+                        <li v-for="(storeHour, index) in businessHours" :key="index" class="list-group-item">
                             {{ storeHour.day }}: {{ storeHour.openTime }} - {{ storeHour.closeTime }}
+                            <v-btn>Delete</v-btn>
                         </li>
                     </ul>
                     <v-btn color="grey lighten-5" @click="restaurantStep = 3" :disabled=disable>Previous</v-btn>
@@ -415,9 +412,10 @@
                           ></v-text-field>
                         </v-flex>
                       </v-layout>
-                      <v-flex xs4>
+                      <v-flex xs12>
                         <v-subheader>Enter a phone number</v-subheader>
                       </v-flex>
+                      <v-layout id="phone-number">
                       <v-flex xs12 sm2>
                         <v-text-field
                           v-model="restaurantProfile.phoneNumber"
@@ -428,6 +426,7 @@
                           :disabled=disable
                         ></v-text-field>
                       </v-flex>
+                      </v-layout>
                     </v-form>
                     <v-btn color="grey lighten-5" @click="restaurantStep = 4" :disabled=disable>Previous</v-btn>
                     <v-btn color="primary" @click="restaurantSubmit" :disabled="!validContactInput || disable" :loading="loading">Submit</v-btn>
@@ -555,7 +554,7 @@ export default {
       this.validSecurityInput = false
       this.disable = true
       this.loader = 'loading'
-      axios.post('http://localhost:8081/User/Registration/Individual', {
+      axios.post(this.$store.state.urls.userManagement.createIndividualUser, {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile
@@ -572,19 +571,19 @@ export default {
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page
-            this.$router.push({path: '/Unauthorized'})
+            this.$router.push('Unauthorized')
           }
           if (error.response.status === 403) {
             // Route to Forbidden page
-            this.$router.push({path: '/Forbidden'})
+            this.$router.push('Forbidden')
           }
           if (error.response.status === 404) {
             // Route to ResourceNotFound page
-            this.$router.push({path: '/ResourceNotFound'})
+            this.$router.push('ResourceNotFound')
           }
           if (error.response.status === 500) {
             // Route to InternalServerError page
-            this.$router.push({path: '/InternalServerError'})
+            this.$router.push('InternalServerError')
           } else {
             this.errors = JSON.parse(JSON.parse(error.response.data.message))
           }
@@ -600,7 +599,7 @@ export default {
       this.validContactInput = false
       this.disable = true
       this.loader = 'loading'
-      axios.post('http://localhost:8081/User/Registration/Restaurant', {
+      axios.post(this.$store.state.urls.userManagement.createRestaurantUser, {
         userAccountDto: this.userAccount,
         securityQuestionDtos: this.securityQuestions,
         userProfileDto: this.userProfile,
@@ -621,19 +620,19 @@ export default {
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page
-            this.$router.push({path: '/Unauthorized'})
+            this.$router.push('Unauthorized')
           }
           if (error.response.status === 403) {
             // Route to Forbidden page
-            this.$router.push({path: '/Forbidden'})
+            this.$router.push('Forbidden')
           }
           if (error.response.status === 404) {
             // Route to ResourceNotFound page
-            this.$router.push({path: '/ResourceNotFound'})
+            this.$router.push('ResourceNotFound')
           }
           if (error.response.status === 500) {
             // Route to InternalServerError page
-            this.$router.push({path: '/InternalServerError'})
+            this.$router.push('InternalServerError')
           } else {
             this.errors = JSON.parse(JSON.parse(error.response.data.message))
           }
@@ -655,6 +654,9 @@ export default {
 #contact-layout {
   margin: 0em 0em 0em 1.1em;
 }
+#phone-number {
+  margin: -1.6em 0em 0em 1.1em;
+}
 #error-title {
   margin: 0em 3.1em 0em 0em;
 }
@@ -675,5 +677,8 @@ p {
 .theme--light .stepper--vertical
 .stepper__content:not(:last-child) {
   border: none;
+}
+#create-user-layout {
+  margin: -1.7em 0 0 0;
 }
 </style>

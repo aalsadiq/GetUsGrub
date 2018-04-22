@@ -16,6 +16,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public ResponseDto<RestaurantProfileDto> GetProfile(string username)
         {
+            // Retrieve account by username
+            var userGateway = new UserGateway();
+
             // Retrieve profile from database
             var profileGateway = new RestaurantProfileGateway();
 

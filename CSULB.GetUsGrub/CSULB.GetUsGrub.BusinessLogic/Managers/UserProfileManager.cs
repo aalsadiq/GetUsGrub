@@ -1,6 +1,7 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Web;
 
@@ -14,12 +15,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class UserProfileManager //: IProfileManager<UserProfileDto>
     {
-        public ResponseDto<UserProfileDto> GetProfile(string username)
+        public ResponseDto<UserProfileDto> GetProfile(string token)
         {
             // Retrieve userID from db
             var userGateway = new UserGateway();
 
-            var userAccountResponseDto = userGateway.GetUserByUsername(username);
+            var tokenService = new TokenService();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
             // Retrieve profile from database
             var profileGateway = new UserProfileGateway();
 
@@ -28,7 +31,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return userProfileResponseDto;
         }
 
-        public ResponseDto<UserProfileDto> EditProfile(UserProfileDto userProfileDto)
+        public ResponseDto<UserProfileDto> EditProfile(UserProfileDto userProfileDto, string token)
         {
             // Prelogic validation strategy
             var editUserProfilePreLogicValidationStrategy = new EditUserProfilePreLogicValidationStrategy(userProfileDto);
@@ -45,13 +48,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Extract DTO contents and map DTO to domain model
-            string username = userProfileDto.Username;
+            var tokenService = new TokenService();
             var userProfileDomain = new UserProfile(userProfileDto.DisplayName, userProfileDto.DisplayPicture);
 
             // Retrieve userID from db
             var userGateway = new UserGateway();
 
-            var userAccountResponseDto = userGateway.GetUserByUsername(username);
+            var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
 
             // Execute update of database
             var profileGateway = new UserProfileGateway();

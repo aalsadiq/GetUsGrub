@@ -12,7 +12,7 @@
               </div>
               <div id="display-name">
                 <v-flex xs12>
-                  <h1>{{ displayName }}</h1>
+                  <h1>{{ profile.displayName }}</h1>
                 </v-flex>
               </div>
               <template>
@@ -92,8 +92,7 @@ export default {
   },
   data () {
     return {
-      displayName: '',
-      displayPicture: '',
+      profile: null,
       newDisplayName: '',
       errors: '',
       dialog: false,
@@ -120,13 +119,9 @@ export default {
     axios.get(this.$store.state.urls.profileManagement.userProfile, {
       headers: {
         Authorization: `Bearer ${this.$store.state.authenticationToken}`
-      },
-      params: {
-        username: jwt.decode(this.$store.state.authenticationToken).Username
       }
     }).then(response => {
-      this.displayName = response.data.displayName
-      this.displayPicture = response.data.displayPicture
+      this.profile = response.data
     }).catch(error => {
       try {
         if (error.response.status === 401) {
@@ -155,17 +150,16 @@ export default {
     })
   },
   methods: {
-    editUserProfile: function (displayName) {
+    editUserProfile: function () {
       axios.post(this.$store.state.urls.profileManagement.updateUserProfile,
         {
-          username: jwt.decode(this.$store.state.authenticationToken).Username,
           displayName: this.newDisplayName
         },
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
         this.dialog2 = false
-        this.displayName = this.newDisplayName
+        this.profile.displayName = this.newDisplayName
       }).catch(error => {
         try {
           if (error.response.status === 401) {

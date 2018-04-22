@@ -79,9 +79,7 @@ export default {
   },
   data () {
     return {
-      username: '',
-      displayName: 'Restaurant Display Name',
-      restaurant: null
+      displayName: ''
     }
   },
   beforeCreate () {

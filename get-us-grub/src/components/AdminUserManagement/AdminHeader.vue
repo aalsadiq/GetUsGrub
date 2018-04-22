@@ -36,8 +36,8 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img src=this.cPAth>
-              <!-- <img src="../../../../Images/DefaultImages/DefaultProfileImage.png"> -->
+              <img :src="'ImagePath'"/>
+              <!-- <img src="../../../../Images/DefaultImages/DefaultProfileImage.png" /> -->
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title> </v-list-tile-title>
@@ -52,10 +52,11 @@
           </v-list-tile-action>
           <v-list-tile-content ref="items">
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            <!-- <v-list-tile-title>{{ ImagePath }}</v-list-tile-title> -->
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-      <v-btn id="setImagePath" name= "setImagePath" color="pink" type="submit" value ="setImagePath" v-on:click="setImagePath">check Image Path</v-btn>
+      <!-- <v-btn id="setImagePath" name= "setImagePath" color="pink" type="submit" value ="setImagePath" v-on:click="setImagePath">check Image Path</v-btn> -->
     </v-navigation-drawer>
   </div>
 </template>
@@ -79,8 +80,7 @@ export default {
       ],
       mini: true,
       right: null,
-      imagePath: null,
-      constPath: '../../../../Images/DefaultImages/DefaultProfileImage.png', // For Admin
+      ImagePath: '', // For Admin
       output: ''
     }
   },
@@ -113,11 +113,13 @@ export default {
       this.$router.push({path: '/Forbidden'})
     }
   },
-  setImagePath () {
-    this.imagePath = 'C:/Users/Angelica/Documents/GetUsGrub/Images/DefaultImages/DefaultProfileImage.png'
-    this.output = this.imagePath.split(/[/]+/).pop()
-    this.imagePath = this.constPath + this.output
-    console.log(this.output)
+  created () {
+    this.ImagePath = '../../../../Images/DefaultImages/DefaultProfileImage.png'
+  },
+  computed: {
+    imageURL () {
+      return this.ImagePath
+    }
   }
   // ,
   // created () {

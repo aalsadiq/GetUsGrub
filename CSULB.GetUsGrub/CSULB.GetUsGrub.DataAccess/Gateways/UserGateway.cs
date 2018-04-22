@@ -36,8 +36,8 @@ namespace CSULB.GetUsGrub.DataAccess
             try
             {
                 var userAccount = (from account in context.UserAccounts
-                                    where account.Username == username
-                                    select account).FirstOrDefault();
+                                   where account.Username == username
+                                   select account).FirstOrDefault();
 
                 // Return a ResponseDto with a UserAccount model
                 return new ResponseDto<UserAccount>()
@@ -77,14 +77,14 @@ namespace CSULB.GetUsGrub.DataAccess
             {
                 try
                 {
-                // Add UserAccount
+                    // Add UserAccount
                     context.UserAccounts.Add(userAccount);
                     context.SaveChanges();
 
                     // Get Id from UserAccount
                     var userId = (from account in context.UserAccounts
-                                    where account.Username == userAccount.Username
-                                    select account.Id).SingleOrDefault();
+                                  where account.Username == userAccount.Username
+                                  select account.Id).SingleOrDefault();
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
@@ -109,8 +109,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         // Get SecurityQuestionId for each securityAnswerSalt
                         var securityQuestionId = (from query in updatedSecurityQuestions
-                                                    where query.Question == securityQuestions[i].Question
-                                                    select query.Id).SingleOrDefault();
+                                                  where query.Question == securityQuestions[i].Question
+                                                  select query.Id).SingleOrDefault();
 
                         // Set SecurityQuestionId for SecurityAnswerSalt
                         securityAnswerSalts[i].Id = securityQuestionId;
@@ -150,7 +150,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
             }
         }
-        
+
         /// <summary>
         /// The StoreRestaurantUser method.
         /// Contains logic to store a restaurant user to the database.
@@ -183,8 +183,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Get Id from UserAccount
                     var userId = (from account in context.UserAccounts
-                                    where account.Username == userAccount.Username
-                                    select account.Id).SingleOrDefault();
+                                  where account.Username == userAccount.Username
+                                  select account.Id).SingleOrDefault();
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
@@ -210,16 +210,16 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Get SecurityQuestions in database
                     var queryable = (from question in context.SecurityQuestions
-                                        where question.UserId == userId
-                                        select question).ToList();
+                                     where question.UserId == userId
+                                     select question).ToList();
 
                     // Add SecurityAnswerSalts
                     for (var i = 0; i < securityQuestions.Count; i++)
                     {
                         // Get SecurityQuestionId for each securityAnswerSalt
                         var securityQuestionId = (from query in queryable
-                                                    where query.Question == securityQuestions[i].Question
-                                                    select query.Id).SingleOrDefault();
+                                                  where query.Question == securityQuestions[i].Question
+                                                  select query.Id).SingleOrDefault();
 
                         // Set SecurityQuestionId for SecurityAnswerSalt
                         securityAnswerSalts[i].Id = securityQuestionId;
@@ -295,8 +295,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Get Id from UserAccount
                     var userId = (from account in context.UserAccounts
-                                    where account.Username == userAccount.Username
-                                    select account.Id).SingleOrDefault();
+                                  where account.Username == userAccount.Username
+                                  select account.Id).SingleOrDefault();
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
@@ -814,14 +814,19 @@ namespace CSULB.GetUsGrub.DataAccess
             try
             {
                 // Makes sure user account exists
-                var userId = (from account in context.UserAccounts
-                                   where account.Username == username
-                                   select account.Id).FirstOrDefault();
+                var dbUser = (from account in context.UserAccounts
+                              where account.Username == username
+                              select account).FirstOrDefault();
 
                 // Get list of preferences pertaining to user
-                var preferences = (from foodPreferences in context.FoodPreferences
-                                   where foodPreferences.UserId == userId
-                                   select foodPreferences.Preference).ToList();
+                var dbPreferences = dbUser.FoodPreferences;
+
+                // Foreach to extract preference string from preference objects
+                var preferences = new List<string>();
+                foreach (var preference in dbPreferences)
+                {
+                    preferences.Add(preference.Preference);
+                }
 
                 // Return response dto with food preferences dto
                 return new ResponseDto<FoodPreferencesDto>

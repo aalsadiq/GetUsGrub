@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security;
 using System.Security.Claims;
 
@@ -27,17 +28,25 @@ namespace CSULB.GetUsGrub.UserAccessControl
             ClaimsPrincipal principal = context.Principal;
 
             // Get the username claim from the principal
-            var username = principal.FindFirst("Username").Value;
+            try
+            {
+                var username = principal.FindFirst("Username").Value;
 
-            // Pass principal into transformer to create principal with all of the user's claims
-            ClaimsTransformer transformer = new ClaimsTransformer();
-            principal = transformer.Authenticate("permission", principal);
+                // Pass principal into transformer to create principal with all of the user's claims
+                ClaimsTransformer transformer = new ClaimsTransformer();
+                principal = transformer.Authenticate("permission", principal);
 
-            // Check principal to see if it contains the claim needed
-            bool hasAccess = principal.HasClaim(claim, "True");
+                // Check principal to see if it contains the claim needed
+                bool hasAccess = principal.HasClaim(claim, "True");
 
-            // Return true or false
-            return hasAccess;
+                // Return true or false
+                return hasAccess;
+            }
+            catch (Exception)
+            {
+                throw new SecurityException();
+            }
+           
         }
     }
 }

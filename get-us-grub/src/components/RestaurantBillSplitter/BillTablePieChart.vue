@@ -7,16 +7,6 @@ export default {
   props: ['chartData', 'options'],
   data () {
     return {
-      data: {
-        labels: ['January', 'February'],
-        datasets: [
-          {
-            label: 'GitHub Commits',
-            backgroundColor: '#f87979',
-            data: [40, 20]
-          }
-        ]
-      }
     }
   },
   mounted () {

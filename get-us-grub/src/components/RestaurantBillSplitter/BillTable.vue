@@ -1,7 +1,8 @@
 <template>
   <div class="bill-table">
     <h1>Your Bill</h1>
-    <v-divider/>
+    <v-divider />
+    <h2 class="total">Total: {{ this.money.prefix }}{{ totalPrice }} </h2>
     <div>
       <h1 v-if="!billItems.length"> Drag Items Here!</h1>
       <draggable class="bill" v-bind:list="billItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
@@ -14,7 +15,7 @@
             }
           ] }" :width="100" :height="100"></bill-table-pie-chart>
           <div class="bill-item-controls">
-            {{billItem.name}} : ${{billItem.price}} {{billItemIndexb}}
+            <h2> {{ billItem.itemName }} : ${{ billItem.itemPrice }} </h2>
             <br />
             <ul style="list-style-type: none">
               <li>
@@ -38,7 +39,6 @@
         </div>
       </draggable>
     </div>
-    <h2 class="total">Total: {{ this.money.prefix }}{{ totalPrice }} </h2>
   </div>
 </template>
 
@@ -102,12 +102,6 @@ export default {
     grid-column: 1;
   }
 
-  .bill-table {
-    grid-column: 2 / 3;
-    grid-row: 1 / 4;
-    outline: solid;
-  }
-
     .bill-table > div {
       outline: solid;
       margin: 20px;
@@ -121,7 +115,8 @@ export default {
   .bill {
     display: grid;
     grid-template-columns: auto auto;
-    min-height: 20px;
+    min-height: 10px;
+    min-width: 0;
   }
 
     .bill > .bill-item {
@@ -131,6 +126,9 @@ export default {
       padding: 10px;
       background-color: aquamarine;
       border-radius: 10px;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
     }
 
   .total {

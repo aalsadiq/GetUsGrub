@@ -19,6 +19,9 @@ export const store = new Vuex.Store({
     ],
     restaurantMenus: [
     ],
+    showRestaurantMenuItems: false,
+    restaurantMenuItems: [
+    ],
     billItems: [
     ],
     billUsers: [
@@ -34,7 +37,7 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantId: 26,
+        restaurantId: null,
         displayName: '',
         address: {
           street1: '',
@@ -270,9 +273,9 @@ export const store = new Vuex.Store({
     totalPrice: state => {
       var temp = 0
       state.billItems.forEach(function (element) {
-        temp = temp + element.price
+        temp = temp + element.itemPrice
       })
-      return temp
+      return temp.toFixed(2)
     },
     getClaim: state => {
     }
@@ -287,8 +290,8 @@ export const store = new Vuex.Store({
     },
     addToDictionary: (state, payload) => {
       state.menuItems.push({
-        name: payload[0],
-        price: payload[1],
+        itemName: payload[0],
+        itemPrice: payload[1],
         selected: []
       })
     },
@@ -301,16 +304,32 @@ export const store = new Vuex.Store({
     populateRestaurantMenus: (state, payload) => {
       payload.forEach(function (element, index) {
         console.log(element)
-        this.$set(state.restaurantMenus[index], state.restaurantMenus, payload)
+        state.restaurantMenus[index] = element
+      })
+    },
+    useCustomMenu: (state) => {
+      state.showRestaurantMenuItems = false
+    },
+    populateDictionary: (state, payload) => {
+      state.showRestaurantMenuItems = true
+      state.restaurantMenuItems.splice(0, state.restaurantMenuItems.length)
+      payload.forEach(function (element, index) {
+        state.restaurantMenuItems.push({
+          itemName: element.itemName,
+          itemPrice: element.itemPrice,
+          selected: []
+        })
       })
     },
     editDictionaryItem: (state, payload) => {
-      state.menuItems[payload[0]].name = payload[1]
-      state.menuItems[payload[0]].price = payload[2]
+      state.menuItems[payload[0]].itemName = payload[1]
+      state.menuItems[payload[0]].itemPrice = payload[2]
     },
     editBillItem: (state, payload) => {
-      state.billItems[payload[0]].name = payload[1]
-      state.billItems[payload[0]].price = payload[2]
+      Vue.set(state.billItems[payload[0]], 'itemName', payload[1])
+      Vue.set(state.billItems[payload[0]], 'itemPrice', payload[2])
+      // state.billItems[payload[0]].itemName = payload[1]
+      // state.billItems[payload[0]].itemPrice = payload[2]
     },
     removeFromDictionary: (state, payload) => {
       console.log('Dictionary Store Mutation Index: ' + payload)
@@ -388,6 +407,16 @@ export const store = new Vuex.Store({
     populateRestaurantMenus: (context, payload) => {
       setTimeout(function () {
         context.commit('populateRestaurantMenus', payload)
+      }, 250)
+    },
+    useCustomMenu: (context) => {
+      setTimeout(function () {
+        context.commit('useCustomMenu')
+      }, 250)
+    },
+    populateDictionary: (context, payload) => {
+      setTimeout(function () {
+        context.commit('populateDictionary', payload)
       }, 250)
     },
     editDictionaryItem: (context, payload) => {

@@ -73,7 +73,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
                 else if (userAttempts.Count >= 5)
                 {
-                    if (!(userAttempts.LastAttemptTime.CompareTo(DateTime.Now.Subtract(TimeSpan.FromMinutes(20))) > 0))
+                    var timeToCompare = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(20));
+                    if (!(userAttempts.LastAttemptTime.CompareTo(timeToCompare) < 0))
                     {
                         return new ResponseDto<LoginDto>
                         {
@@ -81,10 +82,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                             Error = AuthenticationErrorMessages.LOCKED_ACCOUNT
                         };
                     }
-                    else
-                    {
-                        userAttempts.Count = 0;
-                    }
+                    userAttempts.Count = 0;
                 }
 
                 // Pull the User From DB
@@ -154,7 +152,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     returnDto = new ResponseDto<LoginDto>
                     {
                         Data = loginDto,
-                        Error = "Something went wrong check UserName and Password!!"
+                        Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
                     };
                 }
                 else
@@ -175,7 +173,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             return returnDto;
-
         }
     }
 }

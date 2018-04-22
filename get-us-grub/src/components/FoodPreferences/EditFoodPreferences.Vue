@@ -78,6 +78,6 @@ h1, h3 {
   font-family: 'Open Sans', sans-serif;
 }
 #page-container {
-  margin: 3.5em 0 0 0;
+  margin: 5.5em 0 0 0;
 }
 </style>

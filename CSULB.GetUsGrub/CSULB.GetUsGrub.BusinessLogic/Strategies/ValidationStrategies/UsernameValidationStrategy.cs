@@ -5,8 +5,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class UsernameValidationStrategy
     {
-        private readonly UserAccountDto _userAccountDto; //Private read only userAccountDto
+        private readonly UserAccountDto _userAccountDto; 
         private readonly UserAccountDtoValidator _userAccountDtoValidator;
+        private readonly UserValidator _userValidator;
 
         /// <summary>
         /// Defines a strategy for validating models before processing business logic 
@@ -19,24 +20,31 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             _userAccountDto = userAccount;
             _userAccountDtoValidator = new UserAccountDtoValidator();
+            _userValidator = new UserValidator();
         }
         
-        //Executes the username strategy
+        // Executes the username strategy
         public ResponseDto<bool> ExecuteStrategy()
         {
-            var validationWrappers = new List<IValidationWrapper>()
+            var validationWrapper = new ValidationWrapper<UserAccountDto>(_userAccountDto, "Username", _userAccountDtoValidator);
+            var result = validationWrapper.ExecuteValidator();
+            if (!result.Data)
             {
-                new ValidationWrapper<UserAccountDto>(_userAccountDto, "Username", _userAccountDtoValidator)
-            };
-
-            foreach (var validationWrapper in validationWrappers)
+                result.Error = ValidationErrorMessages.INVALID_USERNAME;
+                return result;
+            }
+ 
+            // Validate user does exist
+             result = _userValidator.CheckIfUserExists(_userAccountDto.Username);
+            if (!result.Data)
             {
-                var result = validationWrapper.ExecuteValidator();
-                if (!result.Data)
+                if (result.Error == null)
                 {
-                    result.Error = "Invalid username, please try again.";
-                    return result;
+                    result.Error = ValidationErrorMessages.USER_DOES_NOT_EXIST;
                 }
+
+                result.Data = false;
+                return result;
             }
 
             return new ResponseDto<bool>()

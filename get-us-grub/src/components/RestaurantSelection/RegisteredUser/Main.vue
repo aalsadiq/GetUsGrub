@@ -57,21 +57,22 @@ export default {
   },
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
-      this.$router.push({path: '/Unauthorized'})
+      this.$router.push('Unauthorized')
     }
     try {
       if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
       } else {
-        this.$router.push({path: '/Forbidden'})
+        this.$router.push('Forbidden')
       }
     } catch (ex) {
-      this.$router.push({path: '/Forbidden'})
+      this.$router.push('Forbidden')
     }
   },
   created () {
-    axios.get('http://localhost:8081/FoodPreferences/GetPreferences', {
+    axios.get(this.$store.state.urls.foodPreferences.getPreferences, {
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
+        'Authorization': `Bearer ${this.$store.state.authenticationToken}`
       },
       params: {
         username: jwt.decode(this.$store.state.authenticationToken).Username

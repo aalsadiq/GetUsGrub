@@ -15,6 +15,8 @@
         public string DisplayPicture { get; set; }
         public string DisplayName { get; set; }
 
+        //Add path change display to file
+
         // Constructors
         public UserProfileDto() { }
 

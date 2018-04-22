@@ -12,7 +12,9 @@ namespace CSULB.GetUsGrub.Models
         // Automatic Properties 
         [Required]
         public string Username { get; set; }//The username that will be edited. 
+
         public string NewUsername { get; set; }//Part of user account 
+
         public string NewDisplayName { get; set; }//Part of user account 
     }
 }

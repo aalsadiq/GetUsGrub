@@ -1,5 +1,8 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
 using System;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -15,9 +18,9 @@ namespace CSULB.GetUsGrub.Controllers
     public class FoodPreferencesController : ApiController
     {
         [HttpGet]
-        [AllowAnonymous]
         [Route("GetPreferences")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         public IHttpActionResult GetPreferences(string username)
         {
             // Check if model is valid for the database

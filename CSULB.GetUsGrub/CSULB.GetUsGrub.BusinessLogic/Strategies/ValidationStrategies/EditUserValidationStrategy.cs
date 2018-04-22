@@ -5,7 +5,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 {
     public class EditUserValidationStrategy
     {
-        private readonly EditUserDto _editUserDto; //Private read only userAccountDto
+        private readonly EditUserDto _editUserDto; 
         private readonly EditUserDtoValidator _editUserDtoValidator;
 
         /// <summary>
@@ -23,36 +23,34 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public ResponseDto<bool> ExecuteStrategy()
         {
-            //Will validate the username and new username
+            // Will validate the username and new username
             var validationWrappers = new List<IValidationWrapper>()
             {
-                new ValidationWrapper<EditUserDto>(_editUserDto, "Username", _editUserDtoValidator),
-                new ValidationWrapper<EditUserDto>(_editUserDto, "NewUserName", _editUserDtoValidator)//If null it is okay!
+                new ValidationWrapper<EditUserDto>(_editUserDto, "EditUsername", _editUserDtoValidator),
+                new ValidationWrapper<EditUserDto>(_editUserDto, "EditNewDisplayName", _editUserDtoValidator)
             };
 
-            //Goes through each validation in the validation wrapper.
+            // Goes through each validation in the validation wrapper.
             foreach (var validationWrapper in validationWrappers)
             {
                 var result = validationWrapper.ExecuteValidator();
                 if (!result.Data)
                 {
-                    result.Error = "Something went wrong in EditUser.";//@TODO: Angelica  Change this later...
                     return result;
                 }
             }
-           
-            //Checks if that user exists, if it doesn't exit out...
-            var userValidator = new UserValidator();//Creating a user validator to check if user exists
-            if (userValidator.CheckIfUserExists(_editUserDto.Username).Data == false)//If user exists exit out
+            // Validator to check if user exists
+            var userValidator = new UserValidator();
+            if (userValidator.CheckIfUserExists(_editUserDto.Username).Data == false)
             {
                 return new ResponseDto<bool>
                 {
                     Data = false,
-                    Error = "Invalid username."
+                    Error = ValidationErrorMessages.USER_DOES_NOT_EXIST
                 };
             }
 
-            //Check if username is null
+            //Check if new display name is null
             if(_editUserDto.NewDisplayName != null)
             {
                 //Checks if username is equal to displayname

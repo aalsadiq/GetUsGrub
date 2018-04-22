@@ -71,7 +71,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         //ImageUploadManager
         // TODO: @Angelica Add image profile upload here
-        public ResponseDto<bool> MenuItemImageUpload(HttpPostedFile image, string username, string menuItem, string ItemName)
+        public ResponseDto<bool> MenuItemImageUpload(HttpPostedFile image, string username, int menuId)
         {
             var user = new UserProfileDto() { Username = username };
 
@@ -87,19 +87,18 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            var renameImage = Path.GetExtension(image.FileName);
-            var newImagename = username + "_" + menuItem + "_" + ItemName  + renameImage;
+            var imageExtension = Path.GetExtension(image.FileName);
+            var newImagename = menuId  + imageExtension; // Id + extension
 
             // Save image to path
             string savePath = ConfigurationManager.AppSettings["MenuImagePath"];
-            //string fileName = Path.GetFileName(image.FileName);// file name should be username.png
-            //Debug.WriteLine(fileName);
+
             var menuPath = savePath +  newImagename; // Store image path to DTO
 
             // Call gateway to save path to database
             using (var gateway = new RestaurantProfileGateway())
             {
-                var gatewayresult = gateway.UploadImage(user, menuPath, menuItem, ItemName);
+                var gatewayresult = gateway.UploadImage(user, menuPath, menuId);
                 if (gatewayresult.Data == false)
                 {
                     return new ResponseDto<bool>()

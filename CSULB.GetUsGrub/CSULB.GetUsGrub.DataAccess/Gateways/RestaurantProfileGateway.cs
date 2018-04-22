@@ -220,7 +220,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
         //ImageUploadGateway for profile
         //store the path in the database...
-        public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto, string menuPath, string menuName, string ItemName)
+        public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto, string menuPath, int menuId)
         {
             using (var userContext = new UserContext())
             {
@@ -228,23 +228,12 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                        //Queries for the user account based on id.
-                        var userAccount = (from account in userContext.UserAccounts
-                                           where account.Username == userProfileDto.Username
-                                           select account).FirstOrDefault();
 
                         // RestaurantMenuItems
-                        // Queries for the users Restaurant Menu Items based on user account id and restaurant menu items user id.
-                        // RestaurantMenuItem Id where MenuId is equal to Restaurant Menu Id
                         var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
-                                                       join restaurantMenu in userContext.RestaurantMenus
-                                                       on restaurantMenuItems.MenuId equals restaurantMenu.Id // on menu id
-                                                       where restaurantMenu.MenuName == menuName &&
-                                                       restaurantMenuItems.ItemName == ItemName &&
-                                                       restaurantMenu.RestaurantId == userAccount.Id
+                                                       where restaurantMenuItems.Id == menuId
                                                        select restaurantMenuItems).FirstOrDefault();
 
-                        Debug.WriteLine("Restaurant Menu Items " + userRestaurantMenuItems);
                         // Checks if restaurant menu items result is null, if not then change image paths
                         userRestaurantMenuItems.ItemPicture = menuPath;
                         

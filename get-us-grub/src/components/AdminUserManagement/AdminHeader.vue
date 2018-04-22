@@ -36,6 +36,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
+              <img src= "C:/Users/Angelica/Documents/GetUsGrub/Images/DefaultImages/DefaultProfileImage.png">
               <!-- <img src="../../../../Images/DefaultImages/DefaultProfileImage.png"> -->
             </v-list-tile-avatar>
             <v-list-tile-content>
@@ -54,6 +55,7 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
+      <v-btn id="setImagePath" name= "setImagePath" color="pink" type="submit" value ="setImagePath" v-on:click="setImagePath">check Image Path</v-btn>
     </v-navigation-drawer>
   </div>
 </template>
@@ -76,7 +78,10 @@ export default {
         { title: 'Log Out', icon: 'power_settings_new', path: '/', click: 'logout' }
       ],
       mini: true,
-      right: null
+      right: null,
+      imagePath: null,
+      constPath: '../../../../Images/DefaultImages/', // For Admin
+      output: ''
     }
   },
   // logout () {
@@ -107,6 +112,12 @@ export default {
     } catch (ex) {
       this.$router.push({path: '/Forbidden'})
     }
+  },
+  setImagePath () {
+    this.imagePath = 'C:/Users/Angelica/Documents/GetUsGrub/Images/DefaultImages/DefaultProfileImage.png'
+    this.output = this.imagePath.split(/[/]+/).pop()
+    this.imagePath = this.constPath + this.output
+    console.log(this.output)
   }
   // ,
   // created () {

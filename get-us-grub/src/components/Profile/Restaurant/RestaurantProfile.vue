@@ -69,13 +69,15 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import ImageUpload from '@/components/ImageUploadVues/ImageUpload'
+import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
+import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 export default {
   name: 'RestaurantProfile',
   components: {
     FoodPreferences,
-    ImageUpload
+    ProfileImageUpload,
+    MenuItemImageUpload
   },
   data () {
     return {

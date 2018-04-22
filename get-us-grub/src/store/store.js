@@ -65,6 +65,11 @@ export const store = new Vuex.Store({
       restaurantSelection: {
         unregisteredUser: 'http://localhost:8081/RestaurantSelection/Unregistered/',
         registeredUser: 'http://localhost:8081/RestaurantSelection/Registered/'
+      },
+      profileManagement: {
+        userProfile: 'http://localhost:8081/Profile/User',
+        updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
+        restaurantProfile: 'http://localhost:8081/Profile/Restaurant'
       }
     },
     // Rules for validations

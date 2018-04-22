@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -21,6 +23,7 @@ namespace CSULB.GetUsGrub.Controllers
         [AllowAnonymous] // TODO: remember to change localhosts to 8080
         [Route("User")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
         public IHttpActionResult GetProfile(string username)
         {
             if (!ModelState.IsValid)
@@ -46,10 +49,11 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         [AllowAnonymous] // TODO: Remove for deployment
         [Route("User/Edit")]
-        [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.UPDATE)]
         public IHttpActionResult EditProfile([FromBody] UserProfileDto userProfileDto)
         {
             if (!ModelState.IsValid)
@@ -79,7 +83,7 @@ namespace CSULB.GetUsGrub.Controllers
         // PUT Profile/User/EditUser/ImageUpload
         [Route("User/Edit/ProfileImageUpload")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPost]
         public IHttpActionResult ProfileImageUpload() 
         {

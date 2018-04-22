@@ -36,7 +36,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img src= "C:/Users/Angelica/Documents/GetUsGrub/Images/DefaultImages/DefaultProfileImage.png">
+              <img src=this.cPAth>
               <!-- <img src="../../../../Images/DefaultImages/DefaultProfileImage.png"> -->
             </v-list-tile-avatar>
             <v-list-tile-content>
@@ -80,7 +80,7 @@ export default {
       mini: true,
       right: null,
       imagePath: null,
-      constPath: '../../../../Images/DefaultImages/', // For Admin
+      constPath: '../../../../Images/DefaultImages/DefaultProfileImage.png', // For Admin
       output: ''
     }
   },

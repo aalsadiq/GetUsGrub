@@ -23,7 +23,7 @@ namespace CSULB.GetUsGrub.Controllers
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         [Route("GetPreferences")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult GetPreferences([FromBody] string username)
+        public IHttpActionResult GetPreferences(string username)
         {
             // Check if model is valid for the database
             if (!ModelState.IsValid)
@@ -54,8 +54,9 @@ namespace CSULB.GetUsGrub.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        //[AllowAnonymous]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.UPDATE)]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         [Route("Edit")]
         public IHttpActionResult EditPreferences([FromBody] FoodPreferencesDto foodPreferencesDto)
         {

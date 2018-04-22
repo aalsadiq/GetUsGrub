@@ -4,9 +4,8 @@
       <div id="page-container">
         <h1>{{ title }}</h1>
         <h3>{{ message }}</h3>
-        <br/>
         <div id="form-container">
-          <v-form v-model=isValid>
+          <v-form>
             <v-checkbox
               v-for="preference in $store.state.constants.foodPreferences"
               :key='preference'
@@ -21,9 +20,9 @@
         </div>
         <div>
           <router-link to="/FoodPreferences">
-            <v-btn dark="true">Back</v-btn>
+            <v-btn dark=true>Cancel</v-btn>
           </router-link>
-          <v-btn dark="true">Save</v-btn>
+          <v-btn dark=true>Save</v-btn>
         </div>
       </div>
     <app-footer/>
@@ -34,6 +33,8 @@
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
 import axios from 'axios'
+import jwt from 'jsonwebtoken'
+
 export default {
   name: 'EditPreferences',
   components: {
@@ -43,26 +44,43 @@ export default {
   data: () => ({
     title: 'Edit Your Food Preferences',
     message: 'Checked elements will be saved as your updated food preferences.',
-    foodPreferences: ['Halal', 'Vegan'],
+    foodPreferences: [],
     checklist: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-Vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
     isValid: false
   }),
+
+  // beforeCreate () {
+  // if (this.$store.state.authenticationToken === null) {
+  //   this.$router.push({path: '/Unauthorized'})
+  // }
+  // try {
+  //   if (jwt.decode(this.$store.state.authenticationToken).UpdatePreferences === 'True') {
+  //   } else {
+  //     this.$router.push({path: '/Forbidden'})
+  //     }
+  //   } catch (ex) {
+  //   this.$router.push({path: '/Forbidden'})
+  //   }
+  // },
+
   created () {
-    axios.get('http://localhost:8081/FoodPreferences/GetPreferences', {
+    axios.get(this.$store.state.urls.foodPreferences.getPreferences, {
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
+        'Authorization': `Bearer ${this.$store.state.authenticationToken}`
       },
       params: {
-        username: 'username17'
+        username: jwt.decode(this.$store.state.authenticationToken).Username
       }
     }).then(response => {
       console.log(response.data)
       this.foodPreferences = response.data
-    }).catch(e => {
-      this.errors.push(e)
+    }).catch(error => {
+      Promise.reject(error)
     })
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -73,6 +91,7 @@ h1, h3 {
 }
 #form-container {
   display: inline-block;
+  margin: 1em;
 }
 .text {
   font-family: 'Open Sans', sans-serif;

@@ -5,14 +5,14 @@
       <h1>{{ title }}</h1>
       <h3>{{ message }}</h3>
       <div id="text-container">
-        <li v-for='preference in foodPreferences' :key='preference'>{{ preference }}</li>
+        <li v-for='preference in foodPreferences.reverse()' :key='preference'>{{ preference }}</li>
       </div>
       <div>
         <router-link to="/Profile">
-          <v-btn dark="true">Back</v-btn>
+          <v-btn dark=true>Back</v-btn>
         </router-link>
         <router-link to=/FoodPreferences/Edit>
-          <v-btn dark="true">Edit</v-btn>
+          <v-btn dark=true>Edit</v-btn>
         </router-link>
       </div>
     </div>
@@ -47,7 +47,7 @@ export default {
       this.$router.push({path: '/Unauthorized'})
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
       } else {
         this.$router.push({path: '/Forbidden'})
       }
@@ -57,19 +57,19 @@ export default {
   },
 
   created () {
-    axios.get('http://localhost:8081/FoodPreferences/GetPreferences', {
+    axios.get(this.$store.state.urls.foodPreferences.getPreferences, {
       headers: {
         'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
         'Authorization': `Bearer ${this.$store.state.authenticationToken}`
       },
       params: {
-        Username: jwt.decode(this.$store.state.authenticationToken).Username
+        username: jwt.decode(this.$store.state.authenticationToken).Username
       }
     }).then(response => {
       console.log(response.data)
       this.foodPreferences = response.data
-    }).catch(e => {
-      this.errors.push(e)
+    }).catch(error => {
+      Promise.reject(error)
     })
   }
 }
@@ -91,10 +91,11 @@ export default {
   }
   li {
     font-family: 'Open Sans', sans-serif;
+    font-size: 1.1em;
     text-align: left;
     list-style-type: circle;
   }
   #page-container {
-    margin: 3.5em 0 0 0;
+    margin: 5.5em 0 0 0;
   }
 </style>

@@ -1,19 +1,22 @@
 <template>
   <div>
     <app-header/>
-    <h1>{{ title }}</h1>
-    <h3>{{ message }}</h3>
-    <div class="text-container">
-      <li v-for='preference in foodPreferences' :key='preference'>{{ preference }}</li>
+    <div id="page-container">
+      <h1>{{ title }}</h1>
+      <h3>{{ message }}</h3>
+      <div id="text-container">
+        <li v-for='preference in foodPreferences' :key='preference'>{{ preference }}</li>
+      </div>
+      <div>
+        <router-link to="/Profile">
+          <v-btn dark="true">Back</v-btn>
+        </router-link>
+        <router-link to=/FoodPreferences/Edit>
+          <v-btn dark="true">Edit</v-btn>
+        </router-link>
+      </div>
     </div>
-    <div>
-      <router-link to="/Profile">
-        <v-btn dark="true">Back</v-btn>
-      </router-link>
-      <router-link to=/FoodPreferences/Edit>
-        <v-btn dark="true">Edit</v-btn>
-      </router-link>
-    </div>
+    <app-footer/>
   </div>
 </template>
 
@@ -80,7 +83,7 @@ export default {
     font-weight: normal;
     font-family: 'Open Sans', sans-serif;
   }
-  .text-container {
+  #text-container {
     display: inline-block;
     padding-top: 1vh;
     padding-bottom: 1vh;
@@ -89,5 +92,8 @@ export default {
     font-family: 'Open Sans', sans-serif;
     text-align: left;
     list-style-type: circle;
+  }
+  #page-container {
+    margin: 3.5em 0 0 0;
   }
 </style>

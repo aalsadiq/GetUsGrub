@@ -1,29 +1,31 @@
 <template>
   <div>
     <app-header/>
-    <h1>{{ title }}</h1>
-    <h3>{{ message }}</h3>
-    <br/>
-    <div class="form-container">
-      <v-form v-model=isValid>
-        <v-checkbox
-          v-for="preference in $store.state.constants.foodPreferences"
-          :key='preference'
-          :label='preference'
-          :value='preference'
-          v-model="foodPreferences"
-          style="display: inline-block"
-          hide-details
-        >
-        </v-checkbox>
-      </v-form>
-    </div>
-    <div>
-      <router-link to="/FoodPreferences">
-        <v-btn dark="true">Back</v-btn>
-      </router-link>
-      <v-btn dark="true">Save</v-btn>
-    </div>
+      <div id="page-container">
+        <h1>{{ title }}</h1>
+        <h3>{{ message }}</h3>
+        <br/>
+        <div id="form-container">
+          <v-form v-model=isValid>
+            <v-checkbox
+              v-for="preference in $store.state.constants.foodPreferences"
+              :key='preference'
+              :label='preference'
+              :value='preference'
+              v-model="foodPreferences"
+              style="display: inline-block"
+              hide-details
+            >
+            </v-checkbox>
+          </v-form>
+        </div>
+        <div>
+          <router-link to="/FoodPreferences">
+            <v-btn dark="true">Back</v-btn>
+          </router-link>
+          <v-btn dark="true">Save</v-btn>
+        </div>
+      </div>
     <app-footer/>
   </div>
 </template>
@@ -69,10 +71,13 @@ h1, h3 {
   font-weight: normal;
   font-family: 'Open Sans', sans-serif;
 }
-.form-container {
+#form-container {
   display: inline-block;
 }
 .text {
   font-family: 'Open Sans', sans-serif;
+}
+#page-container {
+  margin: 3.5em 0 0 0;
 }
 </style>

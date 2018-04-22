@@ -59,7 +59,8 @@ export const store = new Vuex.Store({
         createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant'
       },
       foodPreferences: {
-        getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences'
+        getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',
+        editPreferences: 'http://localhost:8081/FoodPreferences/Edit'
       },
       restaurantSelection: {
         unregisteredUser: 'http://localhost:8081/RestaurantSelection/Unregistered/',

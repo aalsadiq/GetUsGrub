@@ -1,10 +1,10 @@
 <template>
   <div>
     <app-header/>
-    <div id="page-container">
+    <div id="page-divider">
       <h1>{{ title }}</h1>
       <h3>{{ message }}</h3>
-      <div id="text-container">
+      <div id="text-divider">
         <li v-for='preference in foodPreferences.reverse()' :key='preference'>{{ preference }}</li>
       </div>
       <div>
@@ -84,7 +84,7 @@ export default {
     font-weight: normal;
     font-family: 'Open Sans', sans-serif;
   }
-  #text-container {
+  #text-divider {
     display: inline-block;
     padding-top: 1vh;
     padding-bottom: 1vh;
@@ -95,7 +95,7 @@ export default {
     text-align: left;
     list-style-type: circle;
   }
-  #page-container {
+  #page-divider {
     margin: 5.5em 0 0 0;
   }
 </style>

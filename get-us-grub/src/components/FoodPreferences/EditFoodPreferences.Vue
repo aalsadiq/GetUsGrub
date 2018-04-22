@@ -1,10 +1,10 @@
 <template>
   <div>
     <app-header/>
-      <div id="page-container">
+      <div id="page-divider">
         <h1>{{ title }}</h1>
         <h3>{{ message }}</h3>
-        <div id="form-container">
+        <div id="form-divider">
           <v-form>
             <v-checkbox
               v-for="preference in $store.state.constants.foodPreferences"
@@ -89,14 +89,14 @@ h1, h3 {
   font-weight: normal;
   font-family: 'Open Sans', sans-serif;
 }
-#form-container {
+#form-divider {
   display: inline-block;
   margin: 1em;
 }
 .text {
   font-family: 'Open Sans', sans-serif;
 }
-#page-container {
+#page-divider {
   margin: 5.5em 0 0 0;
 }
 </style>

@@ -20,14 +20,14 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public ResponseDto<UserProfileDto> GetUserProfileByUsername(string username)
+        public ResponseDto<UserProfileDto> GetUserProfileById(int? id)
         {
 
             using (var profileContext = new IndividualProfileContext())
             {
                 // Find profile associated with account
                 var userProfile = (from profile in profileContext.UserProfiles
-                                   where profile.UserAccount.Username == username // TODO: @Andrew, you had this before. I don't know why.  profile.user == userAccountId
+                                   where profile.UserAccount.Id == id
                                    select profile).SingleOrDefault();
 
                 ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
@@ -45,11 +45,11 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="userProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditUserProfileById(int? userAccountId, UserProfile userProfileDomain)
+        public ResponseDto<UserProfileDto> EditUserProfileById(int? userAccountId, UserProfile userProfileDomain)
         {
             using (var profileContext = new IndividualProfileContext())
             {
-                var userProfile = (from profile in profileContext.UserProfiles
+                var dbUserProfile = (from profile in profileContext.UserProfiles
                                     where profile.Id == userAccountId
                                     select profile).SingleOrDefault();
 
@@ -58,12 +58,16 @@ namespace CSULB.GetUsGrub.DataAccess
                     try
                     {
                         // Apply and save changes
-                        userProfile = userProfileDomain;
-                        profileContext.SaveChanges();
-
-                        ResponseDto<bool> responseDto = new ResponseDto<bool>
+                        if (userProfileDomain.DisplayName != null)
                         {
-                            Data = true,
+                            dbUserProfile.DisplayName = userProfileDomain.DisplayName;
+                        }
+                        profileContext.SaveChanges();
+                        dbContextTransaction.Commit();
+
+                        ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
+                        {
+                            Data = new UserProfileDto(dbUserProfile),
                             Error = null
                         };
                         return responseDto;
@@ -73,9 +77,9 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         dbContextTransaction.Rollback();
 
-                        ResponseDto<bool> responseDto = new ResponseDto<bool>
+                        ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
                         {
-                            Data = false,
+                            Data = new UserProfileDto(dbUserProfile),
                             Error = "Something went wrong. Please try again later."
                         };
                         return responseDto;

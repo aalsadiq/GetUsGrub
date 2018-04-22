@@ -8,7 +8,7 @@
             <div id="profile-image">
               <v-avatar :tile="tile"
                         :size="avatarSize">
-                <img src="@/assets/ProfileImages/nets.jpg">
+                <img src="../../../../../Images/DefaultImages/DefaultProfileImage.png">
               </v-avatar>
             </div>
             <div id="display-name">
@@ -86,13 +86,12 @@ export default {
       restaurant: null
     }
   },
-  /*
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
       this.$router.push({ path: '/Unauthorized' })
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
       } else {
         this.$router.push({ path: '/Forbidden' })
       }
@@ -100,13 +99,12 @@ export default {
       this.$router.push({ path: '/Forbidden' })
     }
   },
-  */
   created () {
     // retrieve claim to check if they can view a user profile or a restaurant profile
     // if the claim is view user profile
     // make the username the store's username
     axios
-      .get('http://localhost:8081/Profile/User', {
+      .get('http://localhost:8081/Profile/Restaurant', {
         headers: {
           'Access-Control-Allow-Origin': '*'
         },

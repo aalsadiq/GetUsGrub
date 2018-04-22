@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary>
-    public class UserProfileManager : IProfileManager<UserProfileDto>
+    public class UserProfileManager //: IProfileManager<UserProfileDto>
     {
         public ResponseDto<UserProfileDto> GetProfile(string username)
         {
@@ -23,12 +23,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Retrieve profile from database
             var profileGateway = new UserProfileGateway();
 
-            var userProfileResponseDto = profileGateway.GetUserProfileByUsername(username); // TODO: @Andrew, you had this and it doesnt exist anymore... profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id); [-Angelica]
+            var userProfileResponseDto = profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id);
 
             return userProfileResponseDto;
         }
 
-        public ResponseDto<bool> EditProfile(UserProfileDto userProfileDto)
+        public ResponseDto<UserProfileDto> EditProfile(UserProfileDto userProfileDto)
         {
             // Prelogic validation strategy
             var editUserProfilePreLogicValidationStrategy = new EditUserProfilePreLogicValidationStrategy(userProfileDto);
@@ -37,9 +37,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             if (result.Error != null)
             {
-                return new ResponseDto<bool>
+                return new ResponseDto<UserProfileDto>
                 {
-                    Data = false,
+                    Data = userProfileDto,
                     Error = "Something went wrong. Please try again later."
                 };
             }

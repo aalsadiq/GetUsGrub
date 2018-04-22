@@ -3,12 +3,12 @@
     <v-container class="scroll-y" id="scroll-target">
       <app-header/>
       <v-container id="profile">
-        <template v-if="profileType === 'individual'">
+        <div v-if="profileType === 'user'">
           <user-profile/>
-        </template>
-        <template v-if="profileType === 'restaurant'">
+        </div>
+        <div v-if="profileType === 'restaurant'">
           <restaurant-profile/>
-        </template>
+        </div>
       </v-container>
       <app-footer/>
     </v-container>
@@ -31,32 +31,36 @@ export default {
   },
   data () {
     return {
-      profileType: 'individual'
+      profileType: null
     }
   },
   beforeCreate () {
-    if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
-      this.profileType = 'individual'
-    } else if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
-      this.profileType = 'restaurant'
-    } else {
-      this.$router.push({ path: '/Forbidden' })
-    }
-    /*
     if (this.$store.state.authenticationToken === null) {
       this.$router.push({ path: '/Unauthorized' })
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadIndividual === 'True') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True') {
+      } else if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+        console.log('this is a restaurantprofile')
       } else {
         this.$router.push({ path: '/Forbidden' })
       }
     } catch (ex) {
-      this.$router.push({ path: '/Forbidden' })
+      this.$router.push({path: '/Forbidden'})
     }
-    */
   },
   created () {
+    if (jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True') {
+      this.profileType = 'user'
+      console.log('this is a user profile')
+      console.log(this.profileType)
+    } else if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+      this.profileType = 'restaurant'
+      console.log('this is a restaurantprofile')
+      console.log(this.profileType)
+    } else {
+      this.$router.push({ path: '/Forbidden' })
+    }
   }
 }
 </script>

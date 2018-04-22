@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -49,7 +48,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
-            Debug.WriteLine(username);
 
             // Validate RestaurantSelection data transfer object
             var result = _restaurantSelectionPreLogicValidationStrategy.ExecuteStrategy();
@@ -161,6 +159,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .OrderBy(businessHourDto => (int)Enum.Parse(typeof(DayOfWeek), businessHourDto.Day))
                 .ThenBy(businessHourDto => businessHourDto.OpenTime)
                 .ToList();
+
+            // Sort the food preferences by ascending order
+            SelectedRestaurantDto.FoodPreferences = SelectedRestaurantDto.FoodPreferences
+                .OrderBy(foodPreferences => foodPreferences).ToList();
 
             // Return the selected restaurant
             return new ResponseDto<SelectedRestaurantDto>()

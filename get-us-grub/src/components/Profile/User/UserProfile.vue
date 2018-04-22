@@ -164,8 +164,8 @@ export default {
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
-          this.dialog2 = false
-          this.displayName = this.newDisplayName
+        this.dialog2 = false
+        this.displayName = this.newDisplayName
       }).catch(error => {
         try {
           if (error.response.status === 401) {

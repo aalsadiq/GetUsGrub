@@ -47,15 +47,30 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="foodPreferencesDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditFoodPreferences(FoodPreferencesDto foodPreferencesDto)
+        public ResponseDto<bool> EditFoodPreferences(string username, FoodPreferencesDto foodPreferencesDto)
         {
-            var updatedFoodPreferences = foodPreferencesDto.FoodPreferences;
-
-            return new ResponseDto<bool>
+            try
             {
-                Data = false,
-                Error =  "Something went wrong; Edit Food Preferences."
-            };
+                // Convert list of food preferences as strings to list of Food Preference objects
+                var updatedFoodPreferences = new List<FoodPreference>();
+                foreach (var foodPreference in foodPreferencesDto.FoodPreferences)
+                {
+                    updatedFoodPreferences.Add(new FoodPreference(foodPreference));
+                }
+
+                var gateway = new UserGateway();
+                var result = gateway.EditFoodPreferencesByUsername(username, updatedFoodPreferences);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error =  "Something went wrong; Edit Food Preferences."
+                };
+            }  
         }
     }
 }

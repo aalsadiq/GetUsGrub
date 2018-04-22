@@ -843,6 +843,47 @@ namespace CSULB.GetUsGrub.DataAccess
                 };
             }
         }
+    
+        /// <summary>
+        /// Update the user's list of food preferences
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="foodPreferencesDto"></param>
+        /// <returns>Boolean determining success of transaction </returns>
+        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<FoodPreference> updatedFoodPreferences)
+        {         
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Get the user account associated with the username
+                    var userAccount = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).FirstOrDefault();
+
+                    // Update the current list of with the updated list
+                    userAccount.FoodPreferences = updatedFoodPreferences;               
+
+                    // Save changes and return response dto with boolean true
+                    context.SaveChanges();
+                    dbContextTransaction.Commit();
+                    return new ResponseDto<bool>
+                    {
+                        Data = true
+                    };
+                }
+                catch (Exception)
+                {
+                    // If an error occurs, roll back and return response dto with boolean false
+                    dbContextTransaction.Rollback();
+                    return new ResponseDto<bool>
+                    {
+                        Data = false,
+                        Error = "Error in saving the updated food preferences."
+                    };
+                }
+            }     
+        }
 
         /// <summary>
         /// Dispose of the context

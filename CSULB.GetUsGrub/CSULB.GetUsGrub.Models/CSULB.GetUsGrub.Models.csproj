@@ -78,6 +78,7 @@
     <Compile Include="Constants\ImagePaths.cs" />
     <Compile Include="Constants\ResourceConstant.cs" />
     <Compile Include="Constants\RoleTypes.cs" />
+    <Compile Include="Constants\TokenPayloadConstants\AuthenticationTokenConstants.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadKeys.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadValues.cs" />
     <Compile Include="Constants\UniformResourceIdentifiers.cs" />

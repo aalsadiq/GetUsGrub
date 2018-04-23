@@ -27,7 +27,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 return new ResponseDto<LoginDto>
                 {
-                    Data = loginDto,
                     Error = validateLoginDtoResult.Error
                 };
             }
@@ -116,11 +115,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
 
                 // Check if user is Active
-                if (dataBaseUserAccount.IsActive == null && dataBaseUserAccount.IsActive == false)
+                if (dataBaseUserAccount.IsActive == null || dataBaseUserAccount.IsActive == false)
                 {
                     return new ResponseDto<LoginDto>
                     {
-                        Data = loginDto,
                         Error = AuthenticationErrorMessages.INACTIVE_USER
                     };
                 }
@@ -151,7 +149,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                     returnDto = new ResponseDto<LoginDto>
                     {
-                        Data = loginDto,
                         Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
                     };
                 }

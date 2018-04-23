@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -51,7 +52,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.ReadJwtToken(incomingTokenString);
-                var username = token.Claims.First(claim => claim.Type == "Username").Value;
+                var username = token.Claims.First(claim => claim.Type == ResourceConstant.USERNAME).Value;
 
                 return username;
             }

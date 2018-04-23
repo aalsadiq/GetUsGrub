@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
+using System;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -38,6 +39,22 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return new ResponseDto<ICollection<string>>
             {
                 Error = "Something went wrong."
+            };
+        }
+
+        /// <summary>
+        /// Method to edit user's food preferences
+        /// </summary>
+        /// <param name="foodPreferencesDto"></param>
+        /// <returns></returns>
+        public ResponseDto<bool> EditFoodPreferences(FoodPreferencesDto foodPreferencesDto)
+        {
+            var updatedFoodPreferences = foodPreferencesDto.FoodPreferences;
+
+            return new ResponseDto<bool>
+            {
+                Data = false,
+                Error =  "Something went wrong; Edit Food Preferences."
             };
         }
     }

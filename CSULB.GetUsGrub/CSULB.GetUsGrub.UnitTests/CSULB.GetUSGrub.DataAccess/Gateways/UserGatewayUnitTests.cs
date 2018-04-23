@@ -136,7 +136,6 @@ namespace CSULB.GetUsGrub.UnitTests
                 "Pescetarian",
                 "Vegan"
             };
-
             UserGateway gateway = new UserGateway();
 
             // Act

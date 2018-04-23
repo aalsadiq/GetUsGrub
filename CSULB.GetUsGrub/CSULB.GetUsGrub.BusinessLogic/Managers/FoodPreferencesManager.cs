@@ -51,14 +51,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             try
             {
-                // Convert list of food preferences as strings to list of Food Preference objects
-                var updatedFoodPreferences = new List<FoodPreference>();
-                foreach (var foodPreference in foodPreferencesDto.FoodPreferences)
-                {
-                    updatedFoodPreferences.Add(new FoodPreference(foodPreference));
-                }
-
+                // Open the user gateway
                 var gateway = new UserGateway();
+
+                // Get list of updated food preferences from dto
+                var updatedFoodPreferences = foodPreferencesDto.FoodPreferences;
+
+                // Call gateway to update user's food preferences
                 var result = gateway.EditFoodPreferencesByUsername(username, updatedFoodPreferences);
 
                 return result;

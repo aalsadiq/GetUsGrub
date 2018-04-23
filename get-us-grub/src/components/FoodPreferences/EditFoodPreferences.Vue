@@ -67,16 +67,16 @@ export default {
   },
 
   // beforeCreate () {
-  // if (this.$store.state.authenticationToken === null) {
-  //   this.$router.push({path: '/Unauthorized'})
-  // }
-  // try {
-  //   if (jwt.decode(this.$store.state.authenticationToken).UpdatePreferences === 'True') {
-  //   } else {
-  //     this.$router.push({path: '/Forbidden'})
+  //   if (this.$store.state.authenticationToken === null) {
+  //     this.$router.push({path: '/Unauthorized'})
+  //   }
+  //   try {
+  //     if (jwt.decode(this.$store.state.authenticationToken).UpdatePreferences === 'True') {
+  //     } else {
+  //       this.$router.push({path: '/Forbidden'})
   //     }
   //   } catch (ex) {
-  //   this.$router.push({path: '/Forbidden'})
+  //     this.$router.push({path: '/Forbidden'})
   //   }
   // },
 

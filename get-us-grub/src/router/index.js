@@ -146,16 +146,6 @@ export default new Router({
         next()
       }
     },
-    // {
-    //   path: '/FoodPreferences',
-    //   name: 'FoodPreferences',
-    //   component: FoodPreferences
-    // },
-    // {
-    //   path: '/EditFoodPreferences',
-    //   name: 'EditFoodPreferences',
-    //   component: EditFoodPreferences
-    // },
     {
       path: '/FoodPreferences',
       name: 'FoodPreferences',

@@ -850,7 +850,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="username"></param>
         /// <param name="foodPreferencesDto"></param>
         /// <returns>Boolean determining success of transaction </returns>
-        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<FoodPreference> updatedFoodPreferences)
+        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> updatedFoodPreferences)
         {         
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
@@ -861,8 +861,24 @@ namespace CSULB.GetUsGrub.DataAccess
                                         where account.Username == username
                                         select account).FirstOrDefault();
 
-                    // Update the current list of with the updated list
-                    userAccount.FoodPreferences = updatedFoodPreferences;               
+                    // Get the current list of food preferences
+                    var currentFoodPreferences = userAccount.FoodPreferences;
+
+                    // Removed current food preferences that are not on the updated list
+                    foreach (var preference in currentFoodPreferences.ToList())
+                    {                  
+                        if (!updatedFoodPreferences.Contains(preference.Preference))
+                        {
+                            context.FoodPreferences.Attach(preference);
+                            context.FoodPreferences.Remove(preference);
+                        }
+                    }
+
+                    // Update current list of food preferences
+                    foreach (var preference in updatedFoodPreferences)
+                    {
+                        currentFoodPreferences.Add(new FoodPreference(preference));
+                    }
 
                     // Save changes and return response dto with boolean true
                     context.SaveChanges();
@@ -872,14 +888,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     // If an error occurs, roll back and return response dto with boolean false
                     dbContextTransaction.Rollback();
                     return new ResponseDto<bool>
                     {
                         Data = false,
-                        Error = "Error in saving the updated food preferences."
+                        Error = e.Message
                     };
                 }
             }     

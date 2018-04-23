@@ -24,7 +24,7 @@ namespace CSULB.GetUsGrub.Controllers
         [Route("User")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
-        public IHttpActionResult GetProfile(string username)
+        public IHttpActionResult GetProfile()
         {
             if (!ModelState.IsValid)
             {
@@ -34,13 +34,13 @@ namespace CSULB.GetUsGrub.Controllers
             try
             {
                 var profileManager = new UserProfileManager();
-                var response = profileManager.GetProfile(username);
+                var response = profileManager.GetProfile(Request.Headers.Authorization.Parameter);
                 if (response.Error != null)
                 {
                     return BadRequest(response.Error);
                 }
 
-                return Ok(response.Data); //TODO: make sure to have responses as response.Data
+                return Ok(response.Data); 
             }
 
             catch (Exception e)
@@ -64,7 +64,7 @@ namespace CSULB.GetUsGrub.Controllers
             try
             {
                 var profileManager = new UserProfileManager();
-                var response = profileManager.EditProfile(userProfileDto);
+                var response = profileManager.EditProfile(userProfileDto, Request.Headers.Authorization.Parameter);
                 if (response.Error != null)
                 {
                     return BadRequest(response.Error);

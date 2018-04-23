@@ -12,7 +12,7 @@
               </div>
               <div id="display-name">
                 <v-flex xs12>
-                  <h1>{{ displayName }}</h1>
+                  <h1>{{ profile.displayName }}</h1>
                 </v-flex>
               </div>
               <template>
@@ -37,7 +37,7 @@
                       <v-btn color="primary" dark slot="activator">Edit Profile</v-btn>
                       <v-card>
                         <v-card-title>
-                          <span>Edit Profile Name</span>
+                          <span>Edit Profile</span>
                           <v-spacer></v-spacer>
                         </v-card-title>
                         <v-card-text>
@@ -46,7 +46,7 @@
                               <v-flex xs12>
                                 <v-text-field
                                   label="Display Name"
-                                  v-model="newDisplayName"
+                                  v-model="profile.displayName"
                                   required
                                   ></v-text-field>
                               </v-flex>
@@ -92,9 +92,9 @@ export default {
   },
   data () {
     return {
-      displayName: '',
-      displayPicture: '',
-      newDisplayName: '',
+      profile: {
+        displayName: ''
+      },
       errors: '',
       dialog: false,
       dialog2: false
@@ -120,13 +120,9 @@ export default {
     axios.get(this.$store.state.urls.profileManagement.userProfile, {
       headers: {
         Authorization: `Bearer ${this.$store.state.authenticationToken}`
-      },
-      params: {
-        username: jwt.decode(this.$store.state.authenticationToken).Username
       }
     }).then(response => {
-      this.displayName = response.data.displayName
-      this.displayPicture = response.data.displayPicture
+      this.profile = response.data
     }).catch(error => {
       try {
         if (error.response.status === 401) {
@@ -155,17 +151,15 @@ export default {
     })
   },
   methods: {
-    editUserProfile: function (displayName) {
+    editUserProfile: function () {
       axios.post(this.$store.state.urls.profileManagement.updateUserProfile,
         {
-          username: jwt.decode(this.$store.state.authenticationToken).Username,
-          displayName: this.newDisplayName
+          displayName: this.profile.displayName
         },
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
         this.dialog2 = false
-        this.displayName = this.newDisplayName
       }).catch(error => {
         try {
           if (error.response.status === 401) {

@@ -12,7 +12,7 @@
               </div>
               <div id="display-name">
                 <v-flex xs12>
-                  <h1>{{ profile.displayName }}</h1>
+                  <h1>{{ displayName }}</h1>
                 </v-flex>
               </div>
               <template>
@@ -46,7 +46,7 @@
                               <v-flex xs12>
                                 <v-text-field
                                   label="Display Name"
-                                  v-model="profile.displayName"
+                                  v-model="displayName"
                                   required
                                   ></v-text-field>
                               </v-flex>
@@ -92,9 +92,8 @@ export default {
   },
   data () {
     return {
-      profile: {
-        displayName: ''
-      },
+      displayName: '',
+      displayPicture: '',
       errors: '',
       dialog: false,
       dialog2: false
@@ -114,9 +113,6 @@ export default {
     }
   },
   created () {
-    // retrieve claim to check if they can view a user profile or a restaurant profile
-    // if the claim is view user profile
-    // make the username the store's username
     axios.get(this.$store.state.urls.profileManagement.userProfile, {
       headers: {
         Authorization: `Bearer ${this.$store.state.authenticationToken}`

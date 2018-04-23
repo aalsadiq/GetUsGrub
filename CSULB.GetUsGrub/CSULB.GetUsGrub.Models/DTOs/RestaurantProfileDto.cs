@@ -12,8 +12,8 @@ namespace CSULB.GetUsGrub.Models
     {
         
         // Automatic properties
-        public string Username { get; set; }
         public string DisplayName { get; set; }
+        public string DisplayPicture { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
         public RestaurantDetail Details { get; set; }
@@ -38,8 +38,10 @@ namespace CSULB.GetUsGrub.Models
             RestaurantMenuItems = restaurantMenuItems;
         }*/
 
-        public RestaurantProfileDto(RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours, Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary)
+        public RestaurantProfileDto(UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours, Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary)
         {
+            DisplayName = userProfile.DisplayName;
+            DisplayPicture = userProfile.DisplayPicture;
             PhoneNumber = restaurantProfile.PhoneNumber;
             Address = restaurantProfile.Address;
             Details = restaurantProfile.Details;

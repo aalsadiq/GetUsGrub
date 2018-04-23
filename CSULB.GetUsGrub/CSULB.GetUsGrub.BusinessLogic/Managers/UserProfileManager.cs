@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary>
-    public class UserProfileManager //: IProfileManager<UserProfileDto>
+    public class UserProfileManager : IProfileManager<UserProfileDto>
     {
         public ResponseDto<UserProfileDto> GetProfile(string token)
         {
@@ -31,18 +31,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return userProfileResponseDto;
         }
 
-        public ResponseDto<UserProfileDto> EditProfile(UserProfileDto userProfileDto, string token)
+        public ResponseDto<bool> EditProfile(UserProfileDto userProfileDto, string token)
         {
-            // Prelogic validation strategy
             var editUserProfilePreLogicValidationStrategy = new EditUserProfilePreLogicValidationStrategy(userProfileDto);
 
             var result = editUserProfilePreLogicValidationStrategy.ExecuteStrategy();
 
             if (result.Error != null)
             {
-                return new ResponseDto<UserProfileDto>
+                return new ResponseDto<bool>
                 {
-                    Data = userProfileDto,
+                    Data = true,
                     Error = "Something went wrong. Please try again later."
                 };
             }

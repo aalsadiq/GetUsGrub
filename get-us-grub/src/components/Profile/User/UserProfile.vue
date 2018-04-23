@@ -37,7 +37,7 @@
                       <v-btn color="primary" dark slot="activator">Edit Profile</v-btn>
                       <v-card>
                         <v-card-title>
-                          <span>Edit Profile Name</span>
+                          <span>Edit Profile</span>
                           <v-spacer></v-spacer>
                         </v-card-title>
                         <v-card-text>
@@ -46,7 +46,7 @@
                               <v-flex xs12>
                                 <v-text-field
                                   label="Display Name"
-                                  v-model="newDisplayName"
+                                  v-model="profile.displayName"
                                   required
                                   ></v-text-field>
                               </v-flex>
@@ -92,8 +92,9 @@ export default {
   },
   data () {
     return {
-      profile: null,
-      newDisplayName: '',
+      profile: {
+        displayName: ''
+      },
       errors: '',
       dialog: false,
       dialog2: false
@@ -153,13 +154,12 @@ export default {
     editUserProfile: function () {
       axios.post(this.$store.state.urls.profileManagement.updateUserProfile,
         {
-          displayName: this.newDisplayName
+          displayName: this.profile.displayName
         },
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
         this.dialog2 = false
-        this.profile.displayName = this.newDisplayName
       }).catch(error => {
         try {
           if (error.response.status === 401) {

@@ -40,7 +40,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
 
-                return Ok(response.Data); //TODO: make sure to have responses as response.Data
+                return Ok(response.Data); 
             }
 
             catch (Exception e)

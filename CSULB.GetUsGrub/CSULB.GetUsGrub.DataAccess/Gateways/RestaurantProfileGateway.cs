@@ -25,64 +25,48 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         /// 
         // move context up to here
-        public ResponseDto<RestaurantProfileDto> GetRestaurantProfileByUsername(string username)
-        {
-            using (var userContext = new UserContext())
+        public ResponseDto<RestaurantProfileDto> GetRestaurantProfileById(int? id)
+        {       
+            using (var restaurantContext = new RestaurantContext())
             {
-                // Find account associated with username *** have manager open user gateway
-                var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
+                restaurantContext.Configuration.ProxyCreationEnabled = false;
+                // Find profile associated with account
+                var dbUserProfile = (from profile in restaurantContext.UserProfiles
+                                    where profile.Id == id
+                                    select profile).SingleOrDefault();
 
-                
-                using (var restaurantContext = new RestaurantContext())
+                // Find restaurant associated with profile
+                var dbRestaurantProfile = dbUserProfile.RestaurantProfile;
+
+                // Find restaurant's business hours
+                var dbBusinessHours = dbRestaurantProfile.BusinessHours;
+
+                // Then, find all active menus associated with this restaurant and turn it into a List
+                var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
+
+
+                // Find restaurant's menu items
+                // Find dbRestaurantMenuItems by doing dbRestaurantProfile.RestaurantMenu.Where();
+
+                Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary = new Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>();
+
+                foreach (var menu in dbRestaurantMenus)
                 {
-                    // Find profile associated with account
-                    var userProfile = (from profile in restaurantContext.UserProfiles
-                                       where profile.Id == userAccount.Id
-                                       select profile).SingleOrDefault();
+                    // Then, find all menu items associated with each menu and turn that into a list
+                    var items = menu.RestaurantMenuItems.ToList();
 
-                    // Find restaurant associated with profile
-                    var restaurantProfile = (from restaurant in restaurantContext.RestaurantProfiles
-                                             where restaurant.Id == userProfile.Id
-                                             select restaurant).SingleOrDefault();
-
-                    // Find restaurant's business hours
-                    IList<BusinessHour> businessHours = (from hours in restaurantContext.BusinessHours
-                                         where hours.RestaurantId == restaurantProfile.Id
-                                         select hours).ToList();
-
-                    // Then, find all active menus associated with this restaurant and turn it into a List
-                    var restaurantMenus = (from menus in restaurantContext.RestaurantMenus
-                                           where menus.RestaurantId == restaurantProfile.Id
-                                           where menus.IsActive == true
-                                           select menus).ToList();
-
-
-                    // Find restaurant's menu items
-                    // Find dbRestaurantMenuItems by doing dbRestaurantProfile.RestaurantMenu.Where();
-
-                    Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary = new Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>();
-
-                    foreach (var menu in restaurantMenus)
-                    {
-                        // Then, find all menu items associated with each menu and turn that into a list
-                        var items = (from menuItems in restaurantContext.RestaurantMenuItems
-                                     where menuItems.MenuId == menu.Id
-                                     select menuItems).ToList();
-
-                        // Map menu items to menus in a dictionary
-                        menuDictionary.Add(menu, items);
-                    }
-
-                    ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
-                    {
-                        Data = new RestaurantProfileDto(restaurantProfile, businessHours, menuDictionary),
-                        Error = null
-                    };
-                    return responseDto;
+                    // Map menu items to menus in a dictionary
+                    menuDictionary.Add(menu, items);
                 }
+
+                ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
+                {
+                    Data = new RestaurantProfileDto(dbUserProfile, dbRestaurantProfile, dbBusinessHours, menuDictionary),
+                    Error = null
+                };
+                return responseDto;
             }
+            
         }
 
         /// <summary>

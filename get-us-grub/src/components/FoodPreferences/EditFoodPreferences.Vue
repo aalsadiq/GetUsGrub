@@ -20,9 +20,9 @@
         </div>
         <div>
           <router-link to="/FoodPreferences">
-            <v-btn dark=true>Cancel</v-btn>
+            <v-btn :dark=true>Cancel</v-btn>
           </router-link>
-          <v-btn dark=true>Save</v-btn>
+          <v-btn :dark=true @click="update">Save</v-btn>
         </div>
       </div>
     <app-footer/>
@@ -46,20 +46,37 @@ export default {
     message: 'Checked elements will be saved as your updated food preferences.',
     foodPreferences: [],
     checklist: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-Vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
-    isValid: false
+    foodPreferencesDto: {
+      foodPreferences: []
+    },
+    response: false
   }),
 
+  methods: {
+    update () {
+      axios.post(this.$store.state.urls.foodPreferences.editPreferences, {
+        username: jwt.decode(this.$store.state.authenticationToken).Username,
+        foodPreferencesDto: this.foodPreferencesDto
+      }).then(response => {
+        console.log(response.data)
+        this.response = response.data
+      }).catch(error => {
+        Promise.reject(error)
+      })
+    }
+  },
+
   // beforeCreate () {
-  // if (this.$store.state.authenticationToken === null) {
-  //   this.$router.push({path: '/Unauthorized'})
-  // }
-  // try {
-  //   if (jwt.decode(this.$store.state.authenticationToken).UpdatePreferences === 'True') {
-  //   } else {
-  //     this.$router.push({path: '/Forbidden'})
+  //   if (this.$store.state.authenticationToken === null) {
+  //     this.$router.push({path: '/Unauthorized'})
+  //   }
+  //   try {
+  //     if (jwt.decode(this.$store.state.authenticationToken).UpdatePreferences === 'True') {
+  //     } else {
+  //       this.$router.push({path: '/Forbidden'})
   //     }
   //   } catch (ex) {
-  //   this.$router.push({path: '/Forbidden'})
+  //     this.$router.push({path: '/Forbidden'})
   //   }
   // },
 
@@ -80,7 +97,6 @@ export default {
     })
   }
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

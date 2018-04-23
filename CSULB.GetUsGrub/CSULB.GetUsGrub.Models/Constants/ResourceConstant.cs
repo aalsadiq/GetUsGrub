@@ -27,5 +27,8 @@
 
         // Resource Types for Restaurant Selection
         public const string RESTAURANTSELECTION = "RestaurantSelection";
+
+        // Resource Types for Username
+        public const string USERNAME = "Username";
     }
 }

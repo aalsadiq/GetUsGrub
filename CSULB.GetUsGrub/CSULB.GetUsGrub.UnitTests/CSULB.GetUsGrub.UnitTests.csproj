@@ -113,6 +113,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Managers\LoginManagerIntegrationTest.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PwnedPasswordIntegrationTest.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\AuthenticationTokenDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\FoodPreferencesDtoValidatorUnitTests.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\ValidationWrapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategyUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\FoodPreferenceValidatorUnitTests.cs" />
+    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\AuthenticationGatewayIntegrationTest.cs" />
     <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\AuthorizationGatewayUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantSelectionDtoValidatorUnitTests.cs" />

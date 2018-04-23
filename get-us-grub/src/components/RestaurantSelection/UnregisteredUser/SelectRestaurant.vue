@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <v-container fluid>
+      <div fluid>
         <div>
           <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
@@ -9,7 +9,7 @@
           </v-alert>
           <!-- Title bar for the restaurant selection -->
           <v-alert id="selectRestaurantTitleBar" :value=showRestaurantTitleBar>
-            <span id="quote">
+            <span class="quote">
             "With great power comes great responsibility" - Uncle Ben
             </span>
           </v-alert>
@@ -32,7 +32,7 @@
                     :disabled=disable
                   ></v-select>
                 </v-flex>
-                <!-- City text field -->
+               <!-- City text field -->
                 <v-flex xs4>
                 <v-text-field
                   label="Enter a city"
@@ -92,22 +92,25 @@
             </v-form>
           </v-card>
           <!-- Submit button -->
-          <v-tooltip bottom>
-            <v-btn
-              class="search-btn"
-              @click="submit"
-              :disabled="!valid"
-              :loading="loading"
-              slot="activator"
-              >
-              <v-icon>search</v-icon>
-            </v-btn>
-            <span>Search</span>
-          </v-tooltip>
+          <div class="search-btn-div">
+            <v-tooltip bottom>
+              <v-btn
+                class="search-btn"
+                @click="submit"
+                :disabled="!valid"
+                :loading="loading"
+                slot="activator"
+                >
+                <v-icon>search</v-icon>
+              </v-btn>
+              <span>Search</span>
+            </v-tooltip>
+          </div>
+          <result-bar/>
         </div>
-      </v-container>
+      </div>
     </div>
-    <div v-if="showSection">
+    <div v-show="showSection">
       <!-- Restaurant selection results Vue component -->
       <result/>
     </div>
@@ -117,11 +120,13 @@
 <script>
 import axios from 'axios'
 import Result from '@/components/RestaurantSelection/Result'
+import ResultBar from '@/components/RestaurantSelection/ResultBar'
 
 export default {
   // Vue component dependencies
   components: {
-    Result
+    Result,
+    ResultBar
   },
   // Local variable data
   data () {
@@ -154,7 +159,7 @@ export default {
       this.loader = 'loading'
       this.showSection = false
       // Sending GET Request
-      axios.get('http://localhost:8081/RestaurantSelection/Unregistered/', {
+      axios.get(this.$store.state.urls.restaurantSelection.unregisteredUser, {
         // Paramaters for URL queries
         params: {
           foodType: this.$store.state.restaurantSelection.request.foodType.type,
@@ -182,31 +187,30 @@ export default {
       }).catch(error => {
         this.valid = true
         this.disable = false
-        Promise.reject(error)
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page
-            this.$router.push({path: '/Unauthorized'})
+            this.$router.push('Unauthorized')
           }
           if (error.response.status === 403) {
             // Route to Forbidden page
-            this.$router.push({path: '/Forbidden'})
+            this.$router.push('Forbidden')
           }
           if (error.response.status === 404) {
             // Route to ResourceNotFound page
-            this.$router.push({path: '/ResourceNotFound'})
+            this.$router.push('ResourceNotFound')
           }
           if (error.response.status === 500) {
             // Route to InternalServerError page
-            this.$router.push({path: '/InternalServerError'})
+            this.$router.push('InternalServerError')
           } else {
             // Route to the General Error page
-            this.$router.push({path: '/GeneralError'})
+            this.$router.push('GeneralError')
           }
-        } catch (ex) {
           Promise.reject(error)
+        } catch (ex) {
           // Route to the General Error page
-          this.$router.push({path: '/GeneralError'})
+          this.$router.push('GeneralError')
         }
       })
     }
@@ -216,22 +220,22 @@ export default {
 
 <style>
 #selectRestaurantTitleBar {
-  background-color: rgb(87, 115, 185) !important
+  background-color: #6F81AD !important
 }
 #unableToFindRestaurantAlert {
   background-color: #e26161 !important
 }
-.search-btn {
+#search-btn {
   background-color: rgb(255, 255, 255);
-  margin: 1em 2.9em 0em 1em;
 }
 #card {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;
 }
-#quote {
+.quote {
   color: rgb(255, 255, 255);
-  font-size: normal;
+  font-size: 1.1em;
+  font-weight: bold;
 }
 #required {
   margin-bottom: 0.4em;

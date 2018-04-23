@@ -1,8 +1,7 @@
 <template>
   <div>
     <app-admin-header/>
-    <v-container class="scroll-y" id="scroll-target">
-    <v-container id="create-user-container">
+    <div id="create-user-div">
       <v-layout>
         <v-flex xs15order-lg2>
           <h1>Select your user!</h1>
@@ -18,8 +17,7 @@
             </div>
           </v-flex>
         </v-layout>
-      </v-container>
-      </v-container>
+      </div>
     <app-footer/>
   </div>
 </template>
@@ -53,10 +51,7 @@ export default {
 </script>
 
 <style>
-#create-user-container {
-  padding: 2em 0em 0em 8em;
-}
-#router-container {
-  margin-top: 0em;
+#create-user-div {
+  padding: 2em 6em 0em 10em;
 }
 </style>

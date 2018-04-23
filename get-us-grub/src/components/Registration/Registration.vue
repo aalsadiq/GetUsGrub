@@ -1,11 +1,9 @@
 <template>
   <div>
     <app-header/>
-    <v-container class="scroll-y" id="scroll-target">
-      <v-container id="registration">
+      <div id="registration">
         <app-create-user/>
-      </v-container>
-    </v-container>
+      </div>
     <app-footer/>
   </div>
 </template>
@@ -36,13 +34,8 @@ export default {
 </script>
 
 <style>
-#scroll-target {
-  max-height: 50.5em;
-  margin: -0.8em 1em 0em 1em;
-}
 #registration {
-  max-width: 1200px;
-  padding-top: -2em;
-  margin: 4em 0em 0em 7%;
+  padding: 2.5em 0 0 0;
+  margin: 3.5em 10em 10em 11.5em;
 }
 </style>

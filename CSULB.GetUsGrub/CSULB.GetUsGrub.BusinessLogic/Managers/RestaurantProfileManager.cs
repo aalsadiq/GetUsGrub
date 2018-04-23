@@ -1,6 +1,8 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Web;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -12,19 +14,25 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class RestaurantProfileManager : IProfileManager<RestaurantProfileDto>
     {
-        public ResponseDto<RestaurantProfileDto> GetProfile(string username)
+        public ResponseDto<RestaurantProfileDto> GetProfile(string token)
         {
+            // Retrieve account by username
+            var userGateway = new UserGateway();
+
+            var tokenService = new TokenService();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
+
             // Retrieve profile from database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.GetRestaurantProfileByUsername(username);
+            var responseDtoFromGateway = profileGateway.GetRestaurantProfileById(userAccountResponseDto.Data.Id);
 
             return responseDtoFromGateway;
         }
 
-        public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto)
+        public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto, string token)
         {
-            // Prelogic validation strategy TODO: @andrew move this to after the 
             var editRestaurantProfilePreLogicValidationStrategy = new EditRestaurantUserProfilePreLogicValidationStrategy(restaurantProfileDto);
 
             var result = editRestaurantProfilePreLogicValidationStrategy.ExecuteStrategy();
@@ -39,8 +47,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Extract DTO contents and map DTO to domain model
-
-            var username = restaurantProfileDto.Username;
+            var tokenService = new TokenService();
 
             // Extract restaurant profile domain
             var restaurantProfileDomain = new RestaurantProfile(
@@ -62,12 +69,58 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(username, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(tokenService.GetTokenUsername(token), restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
 
             return responseDtoFromGateway;
         }
 
         //ImageUploadManager
-        // TODO: @Angelica Add image menu item upload here
+        // TODO: @Angelica Add image profile upload here
+        public ResponseDto<bool> MenuItemImageUpload(HttpPostedFile image, string username, string menuItem, string ItemName)
+        {
+            var user = new UserProfileDto() { Username = username };
+
+            var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
+            var result = ImageUploadValidationStrategy.ExecuteStrategy();
+
+            if (result.Data == false)
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = result.Error
+                };
+            }
+
+            var renameImage = Path.GetExtension(image.FileName);
+            var newImagename = username + "_" + menuItem + "_" + ItemName  + renameImage;
+
+            // Save image to path
+            string savePath = ConfigurationManager.AppSettings["MenuImagePath"];
+            //string fileName = Path.GetFileName(image.FileName);// file name should be username.png
+            //Debug.WriteLine(fileName);
+            var menuPath = savePath +  newImagename; // Store image path to DTO
+
+            // Call gateway to save path to database
+            using (var gateway = new RestaurantProfileGateway())
+            {
+                var gatewayresult = gateway.UploadImage(user, menuPath, menuItem, ItemName);
+                if (gatewayresult.Data == false)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = gatewayresult.Error
+                    };
+                }
+
+                image.SaveAs(menuPath);
+
+                return new ResponseDto<bool>
+                {
+                    Data = true
+                };
+            }
+        }
     }
 }

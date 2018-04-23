@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @updated: 04/09/2018
     /// </para>
     /// </summary>
-    public class RestaurantGateway : IDisposable
+    public class RestaurantGateway: IDisposable
     {
         // Open the Restaurant context
         RestaurantContext context = new RestaurantContext();
@@ -140,7 +140,11 @@ namespace CSULB.GetUsGrub.DataAccess
                                             && avgFoodPrice == restaurantProfile.Details.AvgFoodPrice
                                             && distanceInMeters >= location.Distance(restaurantProfile.Location)
                                             && currentLocalDayOfWeek == businessHour.Day
-                                            && !foodPreferences.Where(foodPref => !userProfile.UserAccount.FoodPreferences.Select(pref => pref.Preference).Contains(foodPref)).Select(pref => pref).ToList().Any()
+                                            // If restaurant does not contain user's food preference, then omit restaurant from select
+                                            && !foodPreferences.Where(clientFoodPref => !userProfile.UserAccount.FoodPreferences
+                                                  .Select(restaurantFoodPref => restaurantFoodPref.Preference)
+                                                  .Contains(clientFoodPref))
+                                                  .ToList().Any()
                                      select businessHour).ToList();
 
                 // Select one restaurant profile id from a randomized list of qualified restaurants where the restaurants' business hours are open now
@@ -171,7 +175,10 @@ namespace CSULB.GetUsGrub.DataAccess
                                                                         Day = businessHour.Day,
                                                                         OpenDateTime = businessHour.OpenTime,
                                                                         CloseDateTime = businessHour.CloseTime
-                                                                    }).ToList()
+                                                                    }).ToList(),
+                                                FoodPreferences = (from foodPreference in context.FoodPreferences
+                                                                   where foodPreference.UserId == restaurantProfile.Id
+                                                                   select foodPreference.Preference).ToList()
                                             }).FirstOrDefault();
 
                 // Return the SelectedRestaurantDto
@@ -191,12 +198,9 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        /// <summary>
-        /// Dispose of the context
-        /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
-            context.Dispose();
+            throw new NotImplementedException();
         }
     }
 }

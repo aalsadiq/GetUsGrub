@@ -7,6 +7,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using CSULB.GetUsGrub.Models.Constants.TokenPayloadConstants;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -16,11 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class AuthenticationTokenManager
     {
-        private readonly TokenService _tokenService;
-        public AuthenticationTokenManager()
-        {
-            _tokenService = new TokenService();
-        }
 
         /// <summary>
         /// 
@@ -33,13 +29,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>
         /// Response with the AuthenticationTokenDto
         /// </returns>
-        public ResponseDto<AuthenticationTokenDto> CreateToken(LoginDto loginDto)
+        public ResponseDto<AuthenticationTokenDto> CreateToken(string username)
         {
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var authenticationToken = new AuthenticationToken();
             var salt = new SaltGenerator().GenerateSalt(128);
-            
+
             // Creating the Header of the Token
             var key = new SymmetricSecurityKey(Encoding.Default.GetBytes(salt));
             var signingCredentials = new SigningCredentials(key, "HS256");
@@ -47,7 +43,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             authenticationToken.Salt = salt;
 
             // Assigning the Username to the Token
-            authenticationToken.Username = loginDto.Username;
+            authenticationToken.Username = username;
 
             // Time Stamping the Token
             var issuedOn = DateTime.UtcNow;
@@ -57,7 +53,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var claimIdentity = new ClaimsIdentity();
             var claimPrincipal = new ClaimsPrincipal();
             var claimTransformer = new ClaimsTransformer();
-            claimIdentity.AddClaim(new Claim("Username", authenticationToken.Username));
+            claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
             claimPrincipal.AddIdentity(claimIdentity);
             claimPrincipal = claimTransformer.Authenticate("read", claimPrincipal);
 
@@ -68,10 +64,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Audience = "https://www.GetUsGrub.com",
+                Audience = AuthenticationTokenConstants.AUDIENCE,
                 IssuedAt = issuedOn,
                 Expires = authenticationToken.ExpiresOn,
-                Issuer = "CSULB.GetUsGrub",
+                Issuer = AuthenticationTokenConstants.ISSUER,
                 SigningCredentials = signingCredentials,
 
             };
@@ -92,7 +88,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var authenticationTokenDto = new AuthenticationTokenDto(authenticationToken.Username,
                 authenticationToken.ExpiresOn, authenticationToken.TokenString);
 
-            
+
             // Returning the Token to the Controler
             return new ResponseDto<AuthenticationTokenDto>
             {
@@ -115,7 +111,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<AuthenticationTokenDto> RevokeToken(AuthenticationTokenDto authenticationTokenDto)
         {
 
-            var authenticationTokenPreLogicValidationStrategy = 
+            var authenticationTokenPreLogicValidationStrategy =
                 new AuthenticationTokenPreLogicValidationStrategy(authenticationTokenDto);
 
             // Checking if the Dto has all the information it needs
@@ -148,7 +144,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-
             // Updating the Token on the Database
             using (var authenticationGateway = new AuthenticationGateway())
             {
@@ -159,7 +154,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return new ResponseDto<AuthenticationTokenDto>
             {
                 Data = authenticationTokenDto,
-                Error = "Session Ended"
             };
         }
 
@@ -200,35 +194,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// 
-        /// GetTokenClaims
-        /// 
-        /// This Function gets the claims from inside the token
-        /// 
-        /// </summary>
-        /// <param name="tokenString"></param>
-        /// <param name="claimType"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Claim GetTokenClaims(AuthenticationToken token, string claimType)
-        {
-            SecurityToken validatedToken;
-            var tokenPrincipal = GetTokenPrincipal(token, out validatedToken);
-            if (tokenPrincipal != null)
-            {
-                foreach (Claim claim in tokenPrincipal.Claims)
-                {
-                    if (claim.Type.Equals(claimType))
-                    {
-                        return claim;
-                    }
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// 
         /// Gets the parameters to help validate the token
         /// 
         /// </summary>
@@ -240,30 +205,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             return new TokenValidationParameters()
             {
-                ValidAudience = "https://www.GetUsGrub.com",
-                ValidIssuer = "CSULB.GetUsGrub",
+                ValidAudience = AuthenticationTokenConstants.AUDIENCE,
+                ValidIssuer = AuthenticationTokenConstants.ISSUER,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt)),
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
-            };
-        }
-
-        /// <summary>
-        /// 
-        /// This Method checks if the token is Authenticated or not then we extract the princible 
-        /// 
-        /// </summary>
-        /// <param name="incomingTokenString"></param>
-        /// <returns></returns>
-        public ResponseDto<bool> AuthenticateToken(string incomingTokenString)
-        {
-            
-            
-
-            return new ResponseDto<bool>()
-            {
-                Data = true
             };
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -12,73 +13,60 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary>
-    public class RestaurantProfileGateway
+    public class RestaurantProfileGateway: IDisposable
     {
+        // Open the Restaurant context
+        RestaurantContext context = new RestaurantContext();
+
         /// <summary>
         /// Returns restaurant profile dto inside response dto
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        
+        /// 
         // move context up to here
-        public ResponseDto<RestaurantProfileDto> GetRestaurantProfileByUsername(string username)
-        {
-            using (var userContext = new UserContext())
+        public ResponseDto<RestaurantProfileDto> GetRestaurantProfileById(int? id)
+        {       
+            using (var restaurantContext = new RestaurantContext())
             {
-                // Find account associated with username *** have manager open user gateway
-                var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
+                restaurantContext.Configuration.ProxyCreationEnabled = false;
+                // Find profile associated with account
+                var dbUserProfile = (from profile in restaurantContext.UserProfiles
+                                    where profile.Id == id
+                                    select profile).SingleOrDefault();
 
-                
-                using (var restaurantContext = new RestaurantContext())
+                // Find restaurant associated with profile
+                var dbRestaurantProfile = dbUserProfile.RestaurantProfile;
+
+                // Find restaurant's business hours
+                var dbBusinessHours = dbRestaurantProfile.BusinessHours;
+
+                // Then, find all active menus associated with this restaurant and turn it into a List
+                var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
+
+
+                // Find restaurant's menu items
+                // Find dbRestaurantMenuItems by doing dbRestaurantProfile.RestaurantMenu.Where();
+
+                Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary = new Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>();
+
+                foreach (var menu in dbRestaurantMenus)
                 {
-                    // Find profile associated with account
-                    var userProfile = (from profile in restaurantContext.UserProfiles
-                                       where profile.Id == userAccount.Id
-                                       select profile).SingleOrDefault();
+                    // Then, find all menu items associated with each menu and turn that into a list
+                    var items = menu.RestaurantMenuItems.ToList();
 
-                    // Find restaurant associated with profile
-                    var restaurantProfile = (from restaurant in restaurantContext.RestaurantProfiles
-                                             where restaurant.Id == userProfile.Id
-                                             select restaurant).SingleOrDefault();
-
-                    // Find restaurant's business hours
-                    IList<BusinessHour> businessHours = (from hours in restaurantContext.BusinessHours
-                                         where hours.RestaurantId == restaurantProfile.Id
-                                         select hours).ToList();
-
-                    // Then, find all active menus associated with this restaurant and turn it into a List
-                    var restaurantMenus = (from menus in restaurantContext.RestaurantMenus
-                                           where menus.RestaurantId == restaurantProfile.Id
-                                           where menus.IsActive == true
-                                           select menus).ToList();
-
-
-                    // Find restaurant's menu items
-                    // Find dbRestaurantMenuItems by doing dbRestaurantProfile.RestaurantMenu.Where();
-
-                    Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary = new Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>();
-
-                    foreach (var menu in restaurantMenus)
-                    {
-                        // Then, find all menu items associated with each menu and turn that into a list
-                        var items = (from menuItems in restaurantContext.RestaurantMenuItems
-                                     where menuItems.MenuId == menu.Id
-                                     select menuItems).ToList();
-
-                        // Map menu items to menus in a dictionary
-                        menuDictionary.Add(menu, items);
-                    }
-
-                    ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
-                    {
-                        Data = new RestaurantProfileDto(restaurantProfile, businessHours, menuDictionary),
-                        Error = null
-                    };
-                    return responseDto;
+                    // Map menu items to menus in a dictionary
+                    menuDictionary.Add(menu, items);
                 }
+
+                ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
+                {
+                    Data = new RestaurantProfileDto(dbUserProfile, dbRestaurantProfile, dbBusinessHours, menuDictionary),
+                    Error = null
+                };
+                return responseDto;
             }
+            
         }
 
         /// <summary>
@@ -212,6 +200,66 @@ namespace CSULB.GetUsGrub.DataAccess
                     }
                 }
             }
+        }
+
+        //ImageUploadGateway for profile
+        //store the path in the database...
+        public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto, string menuPath, string menuName, string ItemName)
+        {
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on id.
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == userProfileDto.Username
+                                           select account).FirstOrDefault();
+
+                        // RestaurantMenuItems
+                        // Queries for the users Restaurant Menu Items based on user account id and restaurant menu items user id.
+                        // RestaurantMenuItem Id where MenuId is equal to Restaurant Menu Id
+                        var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
+                                                       join restaurantMenu in userContext.RestaurantMenus
+                                                       on restaurantMenuItems.MenuId equals restaurantMenu.Id // on menu id
+                                                       where restaurantMenu.MenuName == menuName &&
+                                                       restaurantMenuItems.ItemName == ItemName &&
+                                                       restaurantMenu.RestaurantId == userAccount.Id
+                                                       select restaurantMenuItems).FirstOrDefault();
+
+                        Debug.WriteLine("Restaurant Menu Items " + userRestaurantMenuItems);
+                        // Checks if restaurant menu items result is null, if not then change image paths
+                        userRestaurantMenuItems.ItemPicture = menuPath;
+                        
+                        userContext.SaveChanges();
+                        dbContextTransaction.Commit();
+
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = GeneralErrorMessages.GENERAL_ERROR
+                        };
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Dispose of the context
+        /// </summary>
+        void IDisposable.Dispose()
+        {
+            context.Dispose();
         }
     }
 }

@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <v-app>
-      <v-container id="router-container">
-        <router-view/>
+      <div id="router-div">
+        <router-view id="router"/>
+        <!-- Popup for refreshing session -->
         <v-snackbar
           :timeout="timeout"
           :top="verticalPosition === 'top'"
@@ -11,13 +12,14 @@
           :left="horizontalPosition === 'left'"
           :multi-line="mode === 'multi-line'"
           :vertical="mode === 'vertical'"
-          v-model="snackbar"
-          :color="'error'"
+          v-model="popUp"
+          :color="popUpColor"
         >
-          Your session will expire in {{ expMinutes }}
+          <v-icon>warning</v-icon>
+          <span id="session-expire-text"> Your session will expire in {{ expMinutes }} </span>
           <v-btn id='refresh-btn' light color="white" @click.native="refresh">Refresh</v-btn>
         </v-snackbar>
-      </v-container>
+      </div>
     </v-app>
   </div>
 </template>
@@ -25,7 +27,7 @@
 <script>
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
-
+import axios from 'axios'
 export default {
   name: 'App',
   data () {
@@ -33,55 +35,74 @@ export default {
       datenow: null,
       exp: null,
       expMinutes: '5 minutes',
-      snackbar: false,
+      popUp: false,
       verticalPosition: 'bottom',
       horizontalPosition: 'left',
       mode: 'mult-line',
+      popUpColor: 'warning',
       timeout: 10000000
     }
   },
   methods: {
-    time () {
-      this.datenow = moment.unix(moment().unix())
-    },
-    logoutUser () {
-      this.$store.dispatch('setAuthenticationToken', null)
-      location.reload()
-      this.$router.push({path: '/'})
-    },
+  // Compare expiration time with the current date time and triggers the popup
     compareTime () {
       try {
         if (this.$store.state.authenticationToken == null) {
-          this.snackbar = false
-        } else if (!this.snackbar && this.exp.diff(this.datenow, 'minutes') < 5 && this.exp.diff(this.datenow, 'minutes') > 0) {
-          this.expMinutes = '5 minutes'
-          this.snackbar = true
-        } else if (!this.snackbar && this.exp.diff(this.datenow, 'minutes') < 1 && this.exp.diff(this.datenow, 'minutes') > 0) {
-          this.expMinutes = '1 minute'
-          this.snackbar = true
-        } else if (this.exp.diff(this.datenow, 'seconds') <= 10) {
-          this.snackbar = false
+          this.popUp = false
+        } else if (this.exp.diff(this.dateTimeNow, 'seconds') <= 10) {
+          this.popUp = false
           this.logoutUser()
+        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') <= 1 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
+          this.expMinutes = '1 minute'
+          this.popUpColor = 'error'
+          this.popUp = true
+        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') <= 5 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
+          this.expMinutes = '5 minutes'
+          this.popUpColor = 'warning'
+          this.popUp = true
         }
       } catch (ex) {}
     },
+    time () {
+      // Set dateTimeNow as a moment object in unix format
+      this.dateTimeNow = moment.unix(moment().unix())
+    },
+    logoutUser () {
+      this.$store.dispatch('setAuthenticationToken', null)
+      // Force reload to clear cache
+      location.reload()
+      this.$router.push({path: '/'})
+    },
+    // Set the exp variable if there is a token in the Vuex store
     setExpiration () {
       try {
         if (this.$store.state.authenticationToken != null) {
+          // Set exp as a moment object in unix format
           this.exp = moment.unix(jwt.decode(this.$store.state.authenticationToken).exp)
         }
       } catch (ex) {}
     },
+    // Refresh the user's session by calling creation of new token
     refresh () {
-      console.log('refresh')
-      // this.snackbar = false
+      axios.post('http://localhost:8081/RenewSession', {}, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.$store.state.authenticationToken = response.data
+      }).catch(error => {
+        console.log(error.response)
+      })
     }
   },
+  // Set time intervals throughout user's session
   mounted () {
-    this.timeInterval = setInterval(this.time, 1000)
-    this.setExpirationInterval = setInterval(this.setExpiration, 1000)
-    this.compareInterval = setInterval(this.compareTime, 1000)
+    // Call function every 5000 milliseconds (5 seconds)
+    this.timeInterval = setInterval(this.time, 5000)
+    this.setExpirationInterval = setInterval(this.setExpiration, 50000)
+    this.compareInterval = setInterval(this.compareTime, 5000)
   },
+  // Clear all intervals set
   beforeDestroy () {
     clearInterval(this.timeInterval)
     clearInterval(this.setExpirationInterval)
@@ -97,27 +118,36 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-#router-container {
-  margin-top: 3.3em;
+  background-color: rgb(243, 243, 243);
 }
 /* Removing scrollbar on page */
 html {
-  overflow-y: hidden;
+  background-color: rgb(243, 243, 243);
   overflow-x: hidden;
+}
+/* Make scrollbar transparent */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
 }
 /* Omit text underlines to router-links */
 a {
   text-decoration: none;
 }
 .container {
-  background-color: rgb(255, 255, 255);
   max-width: 100%;
-  padding: 0px 35px 0px 16px;
 }
 #refresh-btn {
   color: rgb(177, 13, 13);
   font-weight: bold;
   padding: 0.3em;
+}
+#router {
+  width: 100%;
+  padding: 0 0 3em 0;
+}
+#session-expire-text {
+  margin: 0em -1.5em 0em 0.7em;
+  font-weight: bold;
 }
 </style>

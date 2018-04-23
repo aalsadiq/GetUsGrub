@@ -5,16 +5,10 @@ import App from './App'
 import router from './router'
 import { store } from './store/store.js'
 import Vuetify from 'vuetify'
-import axios from 'axios'
 import VueCharts from 'vue-chartjs'
 import Notifications from 'vue-notification'
 import 'es6-promise/auto'
-// Ensure you are using css-loader
 
-// window.axios.defaults.headers.common = {
-//   'X-Requested-With' : 'XMLHttpRequest'
-// };
-Vue.use(axios)
 Vue.use(Vuetify)
 Vue.use(Notifications)
 Vue.use(VueCharts)

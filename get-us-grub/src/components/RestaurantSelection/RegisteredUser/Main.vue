@@ -1,9 +1,8 @@
 <template>
   <div>
-    <v-container class="scroll-y" id="scroll-target">
-      <v-container id="restaurant-selection-registered-user">
+      <div id="restaurant-selection-registered-user">
         <app-header/>
-        <v-container id="select-restaurant">
+        <div id="select-restaurant">
           <div id="food-preferences">
             <v-layout>
             <v-flex xs12>
@@ -18,8 +17,11 @@
             <v-layout>
               <v-flex xs12>
                 <v-card>
-                  <p v-for="preference in foodPreferences" :key="preference">
+                  <p v-if="foodPreferences || foodPreferences.length > 0" v-for="preference in foodPreferences" :key="preference">
                     {{ preference }}
+                  </p>
+                  <p v-if="!foodPreferences || foodPreferences.length === 0">
+                    You currently have no food preferences.
                   </p>
                 </v-card>
               </v-flex>
@@ -27,10 +29,9 @@
           </div>
           <!-- Main page of the restaurant selector -->
           <select-restaurant/>
-        </v-container>
+        </div>
         <app-footer/>
-      </v-container>
-    </v-container>
+      </div>
   </div>
 </template>
 
@@ -56,21 +57,21 @@ export default {
   },
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
-      this.$router.push({path: '/Unauthorized'})
+      this.$router.push('Unauthorized')
     }
     try {
       if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
       } else {
-        this.$router.push({path: '/Forbidden'})
+        this.$router.push('Forbidden')
       }
     } catch (ex) {
-      this.$router.push({path: '/Forbidden'})
+      this.$router.push('Forbidden')
     }
   },
   created () {
-    axios.get('http://localhost:8081/FoodPreferences/GetPreferences', {
+    axios.get(this.$store.state.urls.foodPreferences.getPreferences, {
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:8080',
+        'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
         'Authorization': `Bearer ${this.$store.state.authenticationToken}`
       },
       params: {
@@ -86,12 +87,8 @@ export default {
 </script>
 
 <style>
-#scroll-target {
-  max-height: 56.5em;
-  position: absolute;
-  overflow-x: hidden;
-}
 #restaurant-selection-registered-user {
+  padding: 2.5em 0 0 0;
   max-width: 1200px;
   margin: auto;
 }
@@ -99,6 +96,17 @@ export default {
   margin-top: 2em;
 }
 #food-preferences {
-  margin: 0em 2.4em 0em 1.2em;
+  margin: 0em 0em 1em 0em;
+}
+#preferences-title {
+  font-weight: bold;
+  font-size: 1em;
+}
+#food-preferences-alert {
+  height: 2em;
+  background-color: rgb(2, 53, 112) !important;
+}
+p {
+  margin: 0 0 0.1em 0;
 }
 </style>

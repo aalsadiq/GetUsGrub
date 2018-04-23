@@ -44,7 +44,33 @@ export const store = new Vuex.Store({
           zip: null
         },
         phoneNumber: '',
-        businessHours: []
+        businessHours: [],
+        foodPreferences: null
+      }
+    },
+    // Header values for Axios requests
+    headers: {
+      accessControlAllowOrigin: 'http://localhost:8080'
+    },
+    // Uniform Resource Locations for Axios requests
+    urls: {
+      userManagement: {
+        createIndividualUser: 'http://localhost:8081/User/Registration/Individual',
+        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant'
+      },
+      foodPreferences: {
+        getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',
+        editPreferences: 'http://localhost:8081/FoodPreferences/Edit'
+      },
+      restaurantSelection: {
+        unregisteredUser: 'http://localhost:8081/RestaurantSelection/Unregistered/',
+        registeredUser: 'http://localhost:8081/RestaurantSelection/Registered/'
+      },
+      profileManagement: {
+        userProfile: 'http://localhost:8081/Profile/User',
+        updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
+        restaurantProfile: 'http://localhost:8081/Profile/Restaurant',
+        updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit'
       }
     },
     // Rules for validations
@@ -349,10 +375,11 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.address = payload.address
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
+      state.restaurantSelection.selectedRestaurant.foodPreferences = payload.foodPreferences
     },
     // TODO: @Ahmed It is better to make it a generic mutation to a state than naming it a "loginUser" mutation [-Jenn]
     // Look at setAuthenticationToken (I am using this to set token to null when user clicks on the logout button)
-    loginUser: (state, payload) => {
+    getAuthenticationToken: (state, payload) => {
       state.isAuthenticated = true
       state.authenticationToken = payload.auth
     },
@@ -421,9 +448,9 @@ export const store = new Vuex.Store({
       }, 250)
     },
     // TODO: @Ahmed same with this one. [-Jenn]
-    loginUser: (context, payload) => {
+    getAuthenticationToken: (context, payload) => {
       setTimeout(function () {
-        context.commit('loginUser', payload)
+        context.commit('getAuthenticationToken', payload)
       }, 250)
     },
     setAuthenticationToken: (context, payload) => {

@@ -10,35 +10,33 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary>
-    public class UserProfileGateway
+    public class UserProfileGateway: IDisposable
     {
-       /// <summary>
-       /// Returns user profile dto inside response dto
-       /// </summary>
-       /// <param name="username"></param>
-       /// <returns></returns>
-        public ResponseDto<UserProfileDto> GetUserProfileByUsername(string username)
+        // Open the User context
+        UserContext context = new UserContext();
+
+        /// <summary>
+        /// Returns user profile dto inside response dto
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public ResponseDto<UserProfileDto> GetUserProfileById(int? id)
         {
-            using (var userContext = new UserContext())
+
+            using (var profileContext = new IndividualProfileContext())
             {
-                // Find account associated with username
-                var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
+                // Find profile associated with account
+                var dbUserProfile = (from profile in profileContext.UserProfiles
+                                   where profile.UserAccount.Id == id
+                                   select profile).SingleOrDefault();
 
-                using (var profileContext = new IndividualProfileContext())
+                ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
                 {
-                    // Find profile associated with account
-                    var userProfile = userAccount.UserProfile;
+                    Data = new UserProfileDto(dbUserProfile),
+                    Error = null
+                };
 
-                    ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
-                    {
-                        Data = new UserProfileDto(userProfile),
-                        Error = null
-                    };
-
-                    return responseDto;
-                }
+                return responseDto;
             }
         }
 
@@ -47,48 +45,44 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="userProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditUserProfileByUserProfileDomain(string username, UserProfile userProfileDomain)
+        public ResponseDto<bool> EditUserProfileById(int? userAccountId, UserProfile userProfileDomain)
         {
-            using (var userContext = new UserContext())
+            using (var profileContext = new IndividualProfileContext())
             {
-                var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
+                var dbUserProfile = (from profile in profileContext.UserProfiles
+                                    where profile.Id == userAccountId
+                                    select profile).SingleOrDefault();
 
-                using (var profileContext = new IndividualProfileContext())
+                using (var dbContextTransaction = profileContext.Database.BeginTransaction())
                 {
-                    var userProfile = (from profile in profileContext.UserProfiles
-                                       where profile.Id == userAccount.Id
-                                       select profile).SingleOrDefault();
-
-                    using (var dbContextTransaction = profileContext.Database.BeginTransaction())
+                    try
                     {
-                        try
+                        // Apply and save changes
+                        if (userProfileDomain.DisplayName != null)
                         {
-                            // Apply and save changes
-                            userProfile.DisplayName = userProfileDomain.DisplayName;
-                            userProfile.DisplayPicture = userProfileDomain.DisplayPicture;
-                            userContext.SaveChanges();
-
-                            ResponseDto<bool> responseDto = new ResponseDto<bool>
-                            {
-                                Data = true,
-                                Error = null
-                            };
-                            return responseDto;
+                            dbUserProfile.DisplayName = userProfileDomain.DisplayName;
                         }
+                        profileContext.SaveChanges();
+                        dbContextTransaction.Commit();
 
-                        catch (Exception)
+                        ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
-                            dbContextTransaction.Rollback();
+                            Data = true,
+                            Error = null
+                        };
+                        return responseDto;
+                    }
 
-                            ResponseDto<bool> responseDto = new ResponseDto<bool>
-                            {
-                                Data = false,
-                                Error = "Something went wrong. Please try again later."
-                            };
-                            return responseDto;
-                        }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+
+                        ResponseDto<bool> responseDto = new ResponseDto<bool>
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
+                        return responseDto;
                     }
                 }
             }
@@ -96,6 +90,49 @@ namespace CSULB.GetUsGrub.DataAccess
 
         //ImageUploadGateway for profile
         //store the path in the database...
+        public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto)
+        {
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on username.
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == userProfileDto.Username
+                                           select account).FirstOrDefault();
+
+                        userAccount.UserProfile.DisplayPicture = userProfileDto.DisplayPicture;
+                        userContext.SaveChanges();
+                        dbContextTransaction.Commit();
+
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = GeneralErrorMessages.GENERAL_ERROR
+                        };
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Dispose of the context
+        /// </summary>
+        void IDisposable.Dispose()
+        {
+            context.Dispose();
+        }
 
     }
 }

@@ -2,7 +2,7 @@
   <v-toolbar id="header-toolbar" dark fixed>
     <v-toolbar-items>
       <v-btn flat id="home-btn" to="/">
-        <v-avatar :size="52" tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>
+        <v-avatar :size="52" :tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>
         <v-toolbar-title>
           <span id="toolbar-title">
             GetUsGrub
@@ -15,7 +15,7 @@
       <v-btn
         flat
         class="nav-btn"
-        to="/Registration"
+        to="Registration"
         v-if="showWithoutAuthentication()"
       >
         <span class="nav-btn-text">REGISTER</span>
@@ -23,7 +23,7 @@
       <v-btn
         flat
         class="nav-btn"
-        to="/Login"
+        to="Login"
         v-if="showWithoutAuthentication()"
       >
         <span class="nav-btn-text">LOGIN</span>
@@ -31,14 +31,14 @@
       <v-btn
         flat
         class="nav-btn"
-        to="/RestaurantBillSplitter"
+        to="RestaurantBillSplitter"
       >
         <span class="nav-btn-text">SPLIT BILL</span>
       </v-btn>
        <v-btn
         flat
         class="nav-btn"
-        to="/Profile"
+        to="Profile"
         v-if="this.$store.state.isAuthenticated"
       >
 
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -84,9 +85,18 @@ export default {
       }
     },
     logout () {
-      this.$store.dispatch('setAuthenticationToken', null)
-      location.reload()
-      this.$router.push({path: '/'})
+      axios.post('http://localhost:8081/Logout', {}, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.$store.dispatch('setAuthenticationToken', null)
+        // Force reload to clear cache
+        location.reload()
+        this.$router.push({path: '/'})
+      }).catch(error => {
+        console.log(error.response)
+      })
     }
   }
 }
@@ -97,7 +107,7 @@ export default {
   margin: auto;
 }
 #header-toolbar {
-  background-color: #329fa3;
+  background-color: #5caabc;
 }
 div.btn__content {
   text-transform: none;
@@ -109,15 +119,15 @@ div.btn__content {
 }
 #toolbar-title {
   font-weight: bold;
-  font-size: x-large;
+  font-size: 1.4em;
 }
 .btn__content:before {
-  opacity: 0.20;
+  opacity: 0.23;
   color: rgb(255, 255, 255);
 }
 .nav-btn-text {
   font-weight: bold;
-  font-size: normal;
+  font-size: 1.2em;
   color: rgb(255, 255, 255);
 }
 #home-btn > .btn__content:before {

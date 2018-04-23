@@ -22,7 +22,7 @@ namespace CSULB.GetUsGrub.Models
 
         public UniformResourceIdentifiers()
         {
-            UrisToSkipAuthn = new Collection<string>()
+            UrisToSkipAuthn = new Collection<string>
             {
                 SSO_REGISTRATION,
                 SSO_LOGIN

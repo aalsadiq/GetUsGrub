@@ -29,6 +29,7 @@ import SsoTestingHub from '@/components/Sso/SsoTestingHub.vue'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/ResourceNotFound',
@@ -171,7 +172,7 @@ export default new Router({
       name: 'Login',
       component: Login,
       beforeEnter: (to, from, next) => {
-        document.title = 'Login Brh!'
+        document.title = 'Login'
         next()
       }
     },

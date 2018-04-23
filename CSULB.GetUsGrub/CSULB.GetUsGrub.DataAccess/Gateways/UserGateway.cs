@@ -843,6 +843,63 @@ namespace CSULB.GetUsGrub.DataAccess
                 };
             }
         }
+    
+        /// <summary>
+        /// Update the user's list of food preferences
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="foodPreferencesDto"></param>
+        /// <returns>Boolean determining success of transaction </returns>
+        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> updatedFoodPreferences)
+        {         
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Get the user account associated with the username
+                    var userAccount = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).FirstOrDefault();
+
+                    // Get the current list of food preferences
+                    var currentFoodPreferences = userAccount.FoodPreferences;
+
+                    // Removed current food preferences that are not on the updated list
+                    foreach (var preference in currentFoodPreferences.ToList())
+                    {                  
+                        if (!updatedFoodPreferences.Contains(preference.Preference))
+                        {
+                            context.FoodPreferences.Attach(preference);
+                            context.FoodPreferences.Remove(preference);
+                        }
+                    }
+
+                    // Update current list of food preferences
+                    foreach (var preference in updatedFoodPreferences)
+                    {
+                        currentFoodPreferences.Add(new FoodPreference(preference));
+                    }
+
+                    // Save changes and return response dto with boolean true
+                    context.SaveChanges();
+                    dbContextTransaction.Commit();
+                    return new ResponseDto<bool>
+                    {
+                        Data = true
+                    };
+                }
+                catch (Exception e)
+                {
+                    // If an error occurs, roll back and return response dto with boolean false
+                    dbContextTransaction.Rollback();
+                    return new ResponseDto<bool>
+                    {
+                        Data = false,
+                        Error = e.Message
+                    };
+                }
+            }     
+        }
 
         /// <summary>
         /// Dispose of the context

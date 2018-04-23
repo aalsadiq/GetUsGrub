@@ -5,7 +5,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.SsoDbContext
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.SsoContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<CSULB.GetUsGrub.DataAccess.UserContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.SsoDbContext
             MigrationsDirectory = @"Migrations\SsoDbContext";
         }
 
-        protected override void Seed(CSULB.GetUsGrub.DataAccess.SsoContext context)
+        protected override void Seed(CSULB.GetUsGrub.DataAccess.UserContext context)
         {
             //  This method will be called after migrating to the latest version.
 

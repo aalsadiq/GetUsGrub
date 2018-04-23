@@ -47,15 +47,29 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="foodPreferencesDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditFoodPreferences(FoodPreferencesDto foodPreferencesDto)
+        public ResponseDto<bool> EditFoodPreferences(string username, FoodPreferencesDto foodPreferencesDto)
         {
-            var updatedFoodPreferences = foodPreferencesDto.FoodPreferences;
-
-            return new ResponseDto<bool>
+            try
             {
-                Data = false,
-                Error =  "Something went wrong; Edit Food Preferences."
-            };
+                // Open the user gateway
+                var gateway = new UserGateway();
+
+                // Get list of updated food preferences from dto
+                var updatedFoodPreferences = foodPreferencesDto.FoodPreferences;
+
+                // Call gateway to update user's food preferences
+                var result = gateway.EditFoodPreferencesByUsername(username, updatedFoodPreferences);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error =  "Something went wrong; Edit Food Preferences."
+                };
+            }  
         }
     }
 }

@@ -137,6 +137,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = isCredentialsValid.Error
                 };
             }
+
+            var isTokenUnused = StoreValidToken();
+
+            if (!isTokenUnused.Data)
+            {
+                return new ResponseDto<AuthenticationTokenDto>()
+                {
+                    Error = isTokenUnused.Error
+                };
+            }
             
             return new AuthenticationTokenManager().CreateToken(payload.Username);
         }
@@ -267,11 +277,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
             using (var ssoGateway = new SsoGateway())
             {
                 var getTokenResult = ssoGateway.GetInvalidSsoToken(_ssoToken.Token);
+
                 if (getTokenResult.Data == null)
                 {
-                    var storeTokenResult = ssoGateway.StoreInvalidSsoToken(new InvalidSsoToken(_ssoToken.Token));
-                    return storeTokenResult;
+                    return ssoGateway.StoreInvalidSsoToken(new InvalidSsoToken(_ssoToken.Token));
                 }
+
                 return new ResponseDto<bool>
                 {
                     Data = false
@@ -289,13 +300,22 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns></returns>
         private ResponseDto<bool> StoreValidToken()
         {
-            using (var ssoGateway = new SsoGateway())
+            using (var gateway = new SsoGateway())
             {
-                var gatewayResult = ssoGateway.StoreValidSsoToken(new ValidSsoToken(_ssoToken.Token));
-                return gatewayResult;
+                var getTokenResult = gateway.GetValidSsoToken(_ssoToken.Token);
+
+                if (getTokenResult.Data == null)
+                {
+                    return gateway.StoreValidSsoToken(new ValidSsoToken(_ssoToken.Token));
+                }
+
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = SsoErrorMessages.TOKEN_EXISTS_ERROR
+                };
             }
         }
-
 
         /// <summary>
         /// The MapRequestJwtPayloadToSsoJwtPayload method.

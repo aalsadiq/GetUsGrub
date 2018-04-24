@@ -864,13 +864,22 @@ namespace CSULB.GetUsGrub.DataAccess
                     // Get the current list of food preferences
                     var currentFoodPreferences = userAccount.FoodPreferences;
 
-                    // Removed current food preferences that are not on the updated list
+                    // Compare current food preferences with updated list
                     foreach (var preference in currentFoodPreferences.ToList())
-                    {                  
-                        if (!updatedFoodPreferences.Contains(preference.Preference))
+                    {
+                        var preferenceName = preference.Preference;
+
+                        // Remove unwanted preferences not in the updated list
+                        if (!updatedFoodPreferences.Contains(preferenceName))
                         {
                             context.FoodPreferences.Attach(preference);
                             context.FoodPreferences.Remove(preference);
+                        }
+
+                        // Remove duplicated preferences
+                        if (updatedFoodPreferences.Contains(preferenceName))
+                        {
+                            updatedFoodPreferences.Remove(preferenceName);
                         }
                     }
 

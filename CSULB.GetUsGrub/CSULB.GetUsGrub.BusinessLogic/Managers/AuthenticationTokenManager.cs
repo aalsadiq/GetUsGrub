@@ -68,7 +68,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // I thought you already told me to account for this? Check ClaimsTransformer and ClaimsFactory in User Access Control
             if (isFirstTimeUser)
             {
-                foreach(var claim in new FirstTimeUserClaims().Claims)
+                foreach(var claim in new FirstTimeUser().Claims)
                 {
                     claimIdentity.AddClaim(claim);
                 }

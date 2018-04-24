@@ -21,6 +21,12 @@ namespace CSULB.GetUsGrub.UserAccessControl
             new Claim(ActionConstant.READ+ResourceConstant.RESTAURANT, "True"),
             new Claim(ActionConstant.UPDATE+ResourceConstant.RESTAURANT, "True"),
 
+            // For Restaurant Profile Management and Food Preferences
+            new Claim(ActionConstant.READ+ResourceConstant.PREFERENCES, "True"),
+
+            // For Food Preferences and Restaurant Selection
+            new Claim(ActionConstant.READ+ResourceConstant.RESTAURANT, "True"),
+
             // For Bill Splitter
             new Claim(ActionConstant.ACCESS+ResourceConstant.MENU, "True")
         };

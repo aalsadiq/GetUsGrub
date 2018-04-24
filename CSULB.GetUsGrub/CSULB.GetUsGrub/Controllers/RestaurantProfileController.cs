@@ -19,11 +19,11 @@ namespace CSULB.GetUsGrub.Controllers
     /// </summary> 
     [RoutePrefix("Profile")]
     public class RestaurantProfileController : ApiController
-    {
+    {  
         [HttpGet]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.READ)]
         [Route("Restaurant")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.READ)]
         public IHttpActionResult GetProfile()
         {
             if (!ModelState.IsValid)
@@ -49,7 +49,9 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
+        
         [HttpPost]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
         [AllowAnonymous] // TODO: Remove for deployment
         [Route("Restaurant/Edit")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
@@ -82,10 +84,11 @@ namespace CSULB.GetUsGrub.Controllers
 
         // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/Edit/MenuItemImageUpload
+        [HttpPost]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
         [Route("Restaurant/Edit/MenuItemImageUpload")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         // TODO: @Angelica Check what claims are needed here [Angelica!]
-        [HttpPost]
         public IHttpActionResult MenuItemImageUpload()
         {
             try

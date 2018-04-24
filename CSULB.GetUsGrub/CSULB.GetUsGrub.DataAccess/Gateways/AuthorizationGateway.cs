@@ -26,9 +26,11 @@ namespace CSULB.GetUsGrub.DataAccess
             try
             {
                 // Get the claims from the database 
-                var claims = (from userClaims in context.Claims
+                var userAccount = (from userClaims in context.Claims
                               where userClaims.UserAccount.Username == username
-                              select userClaims).FirstOrDefault().Claims;
+                              select userClaims).FirstOrDefault();
+
+                var claims = userAccount.Claims;
 
                 // If claims are found, return the claims from the database 
                 return new ResponseDto<ICollection<Claim>>
@@ -41,7 +43,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 // If an error occurs, return DTO with error
                 return new ResponseDto<ICollection<Claim>>
                 {
-                    Error = "User is invalid."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             } 
         }

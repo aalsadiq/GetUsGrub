@@ -10,9 +10,9 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// @author: Rachel Dang
     /// @updated: 04/07/18
     /// </summary>
-    public class AdminClaims : IClaims
+    public class AdminUser : IClaims
     {
-        public string Type => AccountType.ADMIN;
+        public string Type => AccountType.Admin;
 
         public ICollection<Claim> Claims => new List<Claim>
         {

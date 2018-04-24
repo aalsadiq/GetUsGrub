@@ -22,6 +22,7 @@ import Login from '@/components/Login/Login.vue'
 import Testing from '@/components/Login/DecodeTestingGround.vue'
 import Profile from '@/components/Profile/Profile.vue'
 import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
+import SsoLogin from '@/components/Sso/Login.vue'
 import TestProfile from '@/components/Profile/TestProfile.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
@@ -190,6 +191,15 @@ export default new Router({
       component: FirstTimeRegistration,
       beforeEnter: (to, from, next) => {
         document.title = 'First Time Registration'
+        next()
+      }
+    },
+    {
+      path: '/SingleSignOn',
+      name: 'SsoLogin',
+      component: SsoLogin,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Get Us Grub'
         next()
       }
     },

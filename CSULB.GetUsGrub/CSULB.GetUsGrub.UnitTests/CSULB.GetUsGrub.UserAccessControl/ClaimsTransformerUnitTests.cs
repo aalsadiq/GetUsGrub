@@ -4,13 +4,14 @@ using CSULB.GetUsGrub.UserAccessControl;
 using CSULB.GetUsGrub.Models;
 using FluentAssertions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CSULB.GetUsGrub.UnitTests
 {
     /// <summary>
     /// Unit testing for the ClaimsTransformer.
     /// @author: Rachel Dang
-    /// @updated: 04/09/2018
+    /// @updated: 04/24/2018
     /// </summary>
     public class ClaimsTransformerUnitTests
     {
@@ -23,14 +24,14 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var user = "username1";
-            var claims = new List<Claim> { new Claim("Username", user) };
+            var claims = new List<Claim> { new Claim(ResourceConstant.USERNAME, user) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
-            var resourceName = "permission";
+            var permissionType = PermissionTypes.All;
 
             // Act
-            principal = transformer.Authenticate(resourceName, principal);
+            principal = transformer.Authenticate(permissionType, principal);
             var result = principal.HasClaim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True");
             
             // Assert
@@ -42,15 +43,15 @@ namespace CSULB.GetUsGrub.UnitTests
         {
             // Arrange
             var user = "username1";
-            var claims = new List<Claim> { new Claim("Username", user) };
+            var claims = new List<Claim> { new Claim(ResourceConstant.USERNAME, user) };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
-            var resourceName = "read";
+            var permissionType = PermissionTypes.Read;
 
             // Act
-            var allClaims = transformer.Authenticate(resourceName, principal).HasClaim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True");
-            var readClaims = transformer.Authenticate(resourceName, principal).HasClaim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True");
+            var allClaims = transformer.Authenticate(permissionType, principal).HasClaim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True");
+            var readClaims = transformer.Authenticate(permissionType, principal).HasClaim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True");
 
             // Assert
             allClaims.Should().BeFalse();

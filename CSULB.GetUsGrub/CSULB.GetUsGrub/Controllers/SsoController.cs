@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub
 {
@@ -29,9 +30,9 @@ namespace CSULB.GetUsGrub
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("FirstTimeUser")]
+        [ActionName("Registration")]
         // TODO: @Jenn Update origins to reflect SSO request when demoing [-Jenn]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: "https://fannbrian.github.io", headers: "*", methods: "POST")]
         public IHttpActionResult Registration(HttpRequestMessage request)
         {
             try
@@ -60,10 +61,40 @@ namespace CSULB.GetUsGrub
         }
         
         [HttpPost]
-        [Route("Login")]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [ActionName("Login")]
+        [EnableCors(origins: "https://www.fannbrian.github.io", headers: "*", methods: "POST")]
         public IHttpActionResult Login(HttpRequestMessage request)
         {
+            try
+            {
+                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).IsValidPayload();
+                if (result.Data)
+                {
+                    return Redirect("https://www.google.com");
+                }
+                return Redirect("https://www.google.com");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+            }
+        }
+
+        [HttpPost]
+        [Route("JwtLogin")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult JwtLogin(HttpRequestMessage request)
+        {
+            try
+            {
+                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageRegistrationToken();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+            }
             throw new NotImplementedException();
         }
     }

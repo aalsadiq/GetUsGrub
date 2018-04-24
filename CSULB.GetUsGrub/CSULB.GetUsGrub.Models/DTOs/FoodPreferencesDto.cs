@@ -11,6 +11,11 @@ namespace CSULB.GetUsGrub.Models
     {
         public ICollection<string> FoodPreferences { get; set; }
 
+        public FoodPreferencesDto()
+        {
+
+        }
+
         public FoodPreferencesDto(ICollection<string> foodPreferences)
         {
             FoodPreferences = foodPreferences;

@@ -23,7 +23,7 @@ namespace CSULB.GetUsGrub.Controllers
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         [Route("GetPreferences")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult GetPreferences(string username)
+        public IHttpActionResult GetPreferences()
         {
             // Check if model is valid for the database
             if (!ModelState.IsValid)
@@ -33,9 +33,12 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
+                // Get token string from request header
+                var tokenString = Request.Headers.Authorization.Parameter;
+
                 // If model is valid, call manager to get preferences
                 var manager = new FoodPreferencesManager();
-                var preferences = manager.GetFoodPreferences(username);
+                var preferences = manager.GetFoodPreferences(tokenString);
 
                 // If there is an error in the response, return a bad request
                 if (preferences.Error != null)
@@ -58,7 +61,7 @@ namespace CSULB.GetUsGrub.Controllers
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.UPDATE)]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         [Route("Edit")]
-        public IHttpActionResult EditPreferences([FromBody] string username, FoodPreferencesDto foodPreferencesDto)
+        public IHttpActionResult EditPreferences([FromBody] FoodPreferencesDto foodPreferencesDto)
         {
             // Check if model is valid for the database
             if (!ModelState.IsValid)
@@ -68,9 +71,12 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
+                // Get token string from request header
+                var tokenString = Request.Headers.Authorization.Parameter;
+
                 // If model is valid, call manager to get preferences
                 var manager = new FoodPreferencesManager();
-                var response = manager.EditFoodPreferences(username, foodPreferencesDto);
+                var response = manager.EditFoodPreferences(tokenString, foodPreferencesDto);
 
                 // If there is an error in the response, return a bad request
                 if (response.Error != null)

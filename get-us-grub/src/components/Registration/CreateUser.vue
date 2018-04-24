@@ -647,7 +647,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #create-user {
   margin: 1em 0 7em -2em;
 }

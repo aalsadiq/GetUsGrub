@@ -20,7 +20,6 @@ namespace CSULB.GetUsGrub.Controllers
     public class RestaurantProfileController : ApiController
     {
         [HttpGet]
-        [AllowAnonymous] // TODO: Remove for deployment
         [Route("Restaurant")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.READ)]
@@ -49,7 +48,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         [AllowAnonymous] // TODO: Remove for deployment
         [Route("Restaurant/Edit")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]

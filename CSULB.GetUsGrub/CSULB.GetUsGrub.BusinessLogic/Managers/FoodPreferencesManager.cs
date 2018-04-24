@@ -18,8 +18,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username"></param>
         /// <returns>Food Preferences DTO within the Response DTO</returns>
-        public ResponseDto<ICollection<string>> GetFoodPreferences(string username)
+        public ResponseDto<ICollection<string>> GetFoodPreferences(string tokenString)
         {
+            // Extract username from token string
+            var tokenService = new TokenService();
+            var username = tokenService.GetTokenUsername(tokenString);
+
             using (var gateway = new UserGateway())
             {
                 // Call the user gateway to use the method to get food preferences by username
@@ -47,8 +51,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="foodPreferencesDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditFoodPreferences(string username, FoodPreferencesDto foodPreferencesDto)
+        public ResponseDto<bool> EditFoodPreferences(string tokenString, FoodPreferencesDto foodPreferencesDto)
         {
+            // Extract username from token string
+            var tokenService = new TokenService();
+            var username = tokenService.GetTokenUsername(tokenString);
+
             try
             {
                 // Open the user gateway

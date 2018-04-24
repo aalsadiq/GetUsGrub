@@ -4,7 +4,7 @@
       <div v-if="showUnauthenticated()">
         <restaurant-selection-unregistered-user-main/>
       </div>
-      <div v-if="showRestaurantHome()">
+      <div v-if="!showUnauthenticated() && !showRegisteredRestaurantSelection()" id="generic-home">
         <img src="@/assets/GetUsGrub.png">
         <p>Welcome!</p>
       </div>
@@ -46,15 +46,6 @@ export default {
         return false
       }
     },
-    showRestaurantHome () {
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurant === 'True') {
-          return true
-        }
-      } catch (ex) {
-        return false
-      }
-    },
     showUnauthenticated () {
       if (this.$store.state.authenticationToken === null) {
         return true
@@ -65,3 +56,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#generic-home {
+  padding: 7em 0 0 0;
+}
+</style>

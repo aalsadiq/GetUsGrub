@@ -1,82 +1,95 @@
 <template>
   <div>
-    <v-container class="scroll-y" id="scroll-target">
-      <v-container id="user-profile">
-        <div id="profile-header">
-          <v-flex xs12>
-            <v-card>
-              <div id="profile-image">
-                <v-avatar :size="avatarSize">
-                  <img src="../../../../../Images/DefaultImages/DefaultProfileImage.png">
-                </v-avatar>
-              </div>
-              <div id="display-name">
-                <v-flex xs12>
-                  <h1>{{ displayName }}</h1>
-                </v-flex>
-              </div>
-              <template>
-                <div>
-                  <v-layout row justify-center>
-                    <template>
-                      <v-dialog v-model="dialog" persistent max-width="1000">
-                        <v-btn color="primary" dark slot="activator">Edit Profile Image</v-btn>
-                        <v-card>
-                          <v-layout wrap>
-                            <image-upload />
-                          </v-layout>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="green darken-1" flat @click.native="dialog=false">Close</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                    </template>
-                    <!--Get this out of a dialog-->
-                    <v-dialog v-model="dialog2" persistent max-width="500px">
-                      <v-btn color="primary" dark slot="activator">Edit Profile</v-btn>
-                      <v-card>
-                        <v-card-title>
-                          <span>Edit Profile Name</span>
-                          <v-spacer></v-spacer>
-                        </v-card-title>
-                        <v-card-text>
-                          <v-container grid-list-md>
-                            <v-layout wrap>
-                              <v-flex xs12>
-                                <v-text-field
-                                  label="Display Name"
-                                  v-model="newDisplayName"
-                                  required
-                                  ></v-text-field>
-                              </v-flex>
-                            </v-layout>
-                          </v-container>
-                          <small>*indicates required field</small>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="primary" @click.native="editUserProfile">Save</v-btn>
-                          <v-btn color="primary" @click.native="dialog2=false">Close</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </v-layout>
-                </div>
-              </template>
-            </v-card>
-          </v-flex>
+    <app-header/>
+    <div id="user-profile-div">
+      <div>
+        <v-parallax src="/static/parallax.png" height="425">
+        <div id="main-edit-btns-div">
+          <v-layout>
+            <v-flex fixed>
+            <div id="edit-profile-btn-div" v-if="!isEdit">
+              <v-btn id="edit-profile-btn" dark icon @click="toggleIsEdit()">
+                <v-icon>edit</v-icon>
+              </v-btn>
+              <span id="edit-profile-btn-txt">Edit Profile</span>
+            </div>
+            </v-flex>
+            <div id="edit-btns-div">
+              <v-btn dark @click="editUserProfile()" v-if="isEdit">
+                Submit All Changes
+              </v-btn>
+              <v-btn dark @click="cancel()" v-if="isEdit">
+                Cancel
+              </v-btn>
+            </div>
+          </v-layout>
         </div>
-        <div id="food-preferences">
-          <v-flex xs12>
-            <v-card>
-              <food-preferences/>
-            </v-card>
-          </v-flex>
-        </div>
-      </v-container>
-    </v-container>
+          <div id="display-picture">
+            <v-layout column align-center justify-center>
+              <v-avatar
+                :size="225"
+                class="grey lighten-4"
+              >
+                <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
+              </v-avatar>
+              <v-flex>
+                <v-btn id="image-upload-btn" dark v-if="isEdit">
+                  <span id="upload-image-text">Upload Image</span>
+                </v-btn>
+              </v-flex>
+              <v-flex>
+              <div id="display-name-div">
+                  <div v-if="!editDisplayName">
+                    <span id="display-name-text">
+                      {{ displayName }}
+                    </span>
+                    <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()" v-if="isEdit">
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                  </div>
+                  <span id="display-name-text" v-if="editDisplayName">
+                    <v-layout row>
+                    <v-flex>
+                    <v-text-field
+                      label="Enter a display name"
+                      v-model="displayName"
+                      :rules="$store.state.rules.displayNameRules"
+                      required
+                      dark
+                    ></v-text-field>
+                    </v-flex>
+                    <v-flex>
+                    <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()">
+                      <v-icon>save</v-icon>
+                    </v-btn>
+                    </v-flex>
+                    </v-layout>
+                  </span>
+              </div>
+              </v-flex>
+            </v-layout>
+          </div>
+        </v-parallax>
+      </div>
+      <div>
+      <v-tabs
+          color="cyan"
+          slot="extension"
+          v-model="tab"
+          grow
+          show-arrows
+        >
+        <v-tabs-slider color="yellow"></v-tabs-slider>
+        <v-tab v-for="itemTab in itemsTab" :key="itemTab" id="item-tab">
+          {{ itemTab }}
+        </v-tab>
+      </v-tabs>
+            <div class="user-profile-tab-contents" v-if="itemsTab[tab] === 'Food Preferences'">
+        <food-preferences class="profile-component" :isEdit="isEdit"/>
+      </div>
+    </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -84,6 +97,7 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
+
 export default {
   name: 'UserProfile',
   components: {
@@ -92,80 +106,79 @@ export default {
   },
   data () {
     return {
+      editDisplayName: false,
+      isEdit: false,
       displayName: '',
       displayPicture: '',
-      newDisplayName: '',
-      errors: '',
-      dialog: false,
-      dialog2: false
+      tab: '',
+      itemsTab: [
+        'Food Preferences'
+      ],
+      errors: ''
     }
   },
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
       this.$router.push({ path: '/Unauthorized' })
     }
-    try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True') {
-      } else {
-        this.$router.push({ path: '/Forbidden' })
-      }
-    } catch (ex) {
-      this.$router.push({ path: '/Forbidden' })
-    }
   },
   created () {
-    // retrieve claim to check if they can view a user profile or a restaurant profile
-    // if the claim is view user profile
-    // make the username the store's username
-    axios.get(this.$store.state.urls.profileManagement.userProfile, {
-      headers: {
-        Authorization: `Bearer ${this.$store.state.authenticationToken}`
-      },
-      params: {
-        username: jwt.decode(this.$store.state.authenticationToken).Username
-      }
-    }).then(response => {
-      this.displayName = response.data.displayName
-      this.displayPicture = response.data.displayPicture
-    }).catch(error => {
-      try {
-        if (error.response.status === 401) {
-          // Route to Unauthorized page
-          this.$router.push({ path: '/Unauthorized' })
-        }
-        if (error.response.status === 403) {
-          // Route to Forbidden page
-          this.$router.push({ path: '/Forbidden' })
-        }
-        if (error.response.status === 404) {
-          // Route to ResourceNotFound page
-          this.$router.push({ path: '/ResourceNotFound' })
-        }
-        if (error.response.status === 500) {
-          // Route to InternalServerError page
-          this.$router.push({ path: '/InternalServerError' })
-        } else {
-          this.errors = JSON.parse(JSON.parse(error.response.data.message))
-        }
-        Promise.reject(error)
-      } catch (ex) {
-        this.errors = error.response.data
-        Promise.reject(error)
-      }
-    })
+    this.getUserProfile()
   },
   methods: {
-    editUserProfile: function (displayName) {
+    getUserProfile () {
+      try {
+        if (jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True') {
+          axios.get(this.$store.state.urls.profileManagement.userProfile, {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.authenticationToken}`
+            }
+          }).then(response => {
+            this.displayName = response.data.displayName
+            this.displayPicture = response.data.displayPicture
+          }).catch(error => {
+            try {
+              if (error.response.status === 401) {
+                // Route to Unauthorized page
+                this.$router.push({ path: '/Unauthorized' })
+              }
+              if (error.response.status === 403) {
+                // Route to Forbidden page
+                this.$router.push({ path: '/Forbidden' })
+              }
+              if (error.response.status === 404) {
+                // Route to ResourceNotFound page
+                this.$router.push({ path: '/ResourceNotFound' })
+              }
+              if (error.response.status === 500) {
+                // Route to InternalServerError page
+                this.$router.push({ path: '/InternalServerError' })
+              } else {
+                this.errors = JSON.parse(JSON.parse(error.response.data.message))
+              }
+              Promise.reject(error)
+            } catch (ex) {
+              this.errors = error.response.data
+              Promise.reject(error)
+            }
+          })
+        } else {
+          this.$router.push({ path: '/Forbidden' })
+        }
+      } catch (ex) {
+        this.$router.push({ path: '/Forbidden' })
+      }
+    },
+    editUserProfile: function () {
       axios.post(this.$store.state.urls.profileManagement.updateUserProfile,
         {
-          username: jwt.decode(this.$store.state.authenticationToken).Username,
-          displayName: this.newDisplayName
+          displayName: this.displayName,
+          displayPicture: this.displayPicture
         },
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
-        this.dialog2 = false
-        this.displayName = this.newDisplayName
+        this.isEdit = false
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -192,33 +205,62 @@ export default {
           Promise.reject(error)
         }
       })
-    }
-  },
-  computed: {
-    avatarSize () {
-      return '200px'
+    },
+    toggleIsEdit () {
+      this.isEdit = !this.isEdit
+    },
+    toggleEditDisplayName () {
+      this.editDisplayName = !this.editDisplayName
+    },
+    cancel () {
+      this.toggleIsEdit()
+      this.getRestaurantProfile()
     }
   }
 }
 </script>
 
 <style scoped>
-#scroll-target {
-  max-height: 56.5em;
-  position: absolute;
-  overflow-x: hidden;
+#user-profile-div {
+  margin: 0 0 0 0;
+  padding: 3.5em 0 0 0;
 }
-#user-profile {
-  max-width: 1200px;
+#image-upload-btn {
+  margin: 1em 0 0 0;
+}
+.user-profile-tab-contents {
+  padding: 0 0 4em 0;
   margin: auto;
 }
-#profile-header {
-  padding-top: 2em;
+#item-tab {
+  font-weight: bold;
+  color: white;
 }
-#display-name {
-  padding-top: 1em;
+.profile-component {
+  padding: 2em 0 0 0;
 }
-#food-preferences {
-  padding-top: 1em;
+#display-name-div {
+  margin: 1em 0 0 0em;
+}
+#display-name-text {
+  font-size: 2.5em;
+}
+#display-name-edit-btn {
+  margin: 0 -2em 0.8em 0;
+}
+#edit-profile-btn-div {
+  margin: -3em 0 0 0;
+}
+#edit-profile-btn {
+  padding: 0 0 0 0;
+}
+#edit-profile-btn-txt {
+  margin: 1.1em 0 0 0;
+}
+#edit-btns-div {
+  padding: 1em 0 0 0;
+}
+#main-edit-btns-div {
+  align-self: right;
 }
 </style>

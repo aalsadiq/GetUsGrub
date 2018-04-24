@@ -198,9 +198,12 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Dispose of the context
+        /// </summary>
+        void IDisposable.Dispose()
         {
-            throw new NotImplementedException();
+            context.Dispose();
         }
     }
 }

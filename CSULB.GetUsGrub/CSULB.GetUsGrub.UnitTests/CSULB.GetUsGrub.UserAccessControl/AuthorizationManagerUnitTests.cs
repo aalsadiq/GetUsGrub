@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.UnitTests
     /// <summary>
     /// Unit testing for the AuthorizationManager.
     /// @author: Rachel Dang
-    /// @updated: 03/22/2018
+    /// @updated: 04/24/2018
     /// </summary>
     public class AuthorizationManagerUnitTests
     {
@@ -76,10 +76,9 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Act
             var result = Assert.Throws<SecurityException>(() => manager.CheckAccess(context)).Message;
-            var expected = "User is invalid.";
 
             // Assert
-            result.Should().Be(expected);
+            result.Should().NotBeNull();
         }
 
         [Fact]
@@ -98,10 +97,9 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Act
             var result = Assert.Throws<SecurityException>(() => manager.CheckAccess(context)).Message;
-            var expected = "User is invalid.";
 
             // Assert
-            result.Should().Be(expected);
+            result.Should().NotBeNull();
         }
     }
 }

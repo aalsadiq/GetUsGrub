@@ -26,13 +26,13 @@ namespace CSULB.GetUsGrub.DataAccess
             using (var profileContext = new IndividualProfileContext())
             {
                 // Find profile associated with account
-                var userProfile = (from profile in profileContext.UserProfiles
+                var dbUserProfile = (from profile in profileContext.UserProfiles
                                    where profile.UserAccount.Id == id
                                    select profile).SingleOrDefault();
 
                 ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
                 {
-                    Data = new UserProfileDto(userProfile),
+                    Data = new UserProfileDto(dbUserProfile),
                     Error = null
                 };
 
@@ -45,7 +45,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="userProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<UserProfileDto> EditUserProfileById(int? userAccountId, UserProfile userProfileDomain)
+        public ResponseDto<bool> EditUserProfileById(int? userAccountId, UserProfile userProfileDomain)
         {
             using (var profileContext = new IndividualProfileContext())
             {
@@ -58,16 +58,13 @@ namespace CSULB.GetUsGrub.DataAccess
                     try
                     {
                         // Apply and save changes
-                        if (userProfileDomain.DisplayName != null)
-                        {
-                            dbUserProfile.DisplayName = userProfileDomain.DisplayName;
-                        }
+                        dbUserProfile.DisplayName = userProfileDomain.DisplayName;
                         profileContext.SaveChanges();
                         dbContextTransaction.Commit();
 
-                        ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
+                        ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
-                            Data = new UserProfileDto(dbUserProfile),
+                            Data = true,
                             Error = null
                         };
                         return responseDto;
@@ -77,9 +74,9 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         dbContextTransaction.Rollback();
 
-                        ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
+                        ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
-                            Data = new UserProfileDto(dbUserProfile),
+                            Data = false,
                             Error = "Something went wrong. Please try again later."
                         };
                         return responseDto;

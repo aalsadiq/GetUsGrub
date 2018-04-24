@@ -7,6 +7,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using CSULB.GetUsGrub.Models.Constants.TokenPayloadConstants;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -16,11 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class AuthenticationTokenManager
     {
-        private readonly TokenService _tokenService;
-        public AuthenticationTokenManager()
-        {
-            _tokenService = new TokenService();
-        }
 
         /// <summary>
         /// 
@@ -35,7 +31,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </returns>
         public ResponseDto<AuthenticationTokenDto> CreateToken(string username)
         {
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var authenticationToken = new AuthenticationToken();
             var salt = new SaltGenerator().GenerateSalt(128);
@@ -53,14 +48,39 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var issuedOn = DateTime.UtcNow;
             authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
 
-            // Getting the ReadClaims for the user
+            var isFirstTimeUser = false;
+
+            using(var gateway = new AuthenticationGateway())
+            {
+                var userAccountResult = gateway.GetUserAccount(username);
+                if (userAccountResult.Data.IsFirstTimeUser == true)
+                {
+                    isFirstTimeUser = true;
+                }
+            }
+
             var claimIdentity = new ClaimsIdentity();
             var claimPrincipal = new ClaimsPrincipal();
             var claimTransformer = new ClaimsTransformer();
-            claimIdentity.AddClaim(new Claim("Username", authenticationToken.Username));
-            claimPrincipal.AddIdentity(claimIdentity);
-            claimPrincipal = claimTransformer.Authenticate("read", claimPrincipal);
+            claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
 
+            // TODO: @Ahmed
+            // I thought you already told me to account for this? Check ClaimsTransformer and ClaimsFactory in User Access Control
+            if (isFirstTimeUser)
+            {
+                foreach(var claim in new FirstTimeUser().Claims)
+                {
+                    claimIdentity.AddClaim(claim);
+                }
+            }
+
+            claimPrincipal.AddIdentity(claimIdentity);
+
+            if (!isFirstTimeUser)
+            {
+                // Getting the ReadClaims for the user
+                claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Read, claimPrincipal);
+            }
 
             var claims = claimPrincipal.Claims;
 
@@ -68,12 +88,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Audience = "https://www.GetUsGrub.com",
+                Audience = AuthenticationTokenConstants.AUDIENCE,
                 IssuedAt = issuedOn,
                 Expires = authenticationToken.ExpiresOn,
-                Issuer = "CSULB.GetUsGrub",
+                Issuer = AuthenticationTokenConstants.ISSUER,
                 SigningCredentials = signingCredentials,
-
             };
 
             // Changing the Token to a String Form
@@ -198,35 +217,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// 
-        /// GetTokenClaims
-        /// 
-        /// This Function gets the claims from inside the token
-        /// 
-        /// </summary>
-        /// <param name="tokenString"></param>
-        /// <param name="claimType"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Claim GetTokenClaims(AuthenticationToken token, string claimType)
-        {
-            SecurityToken validatedToken;
-            var tokenPrincipal = GetTokenPrincipal(token, out validatedToken);
-            if (tokenPrincipal != null)
-            {
-                foreach (Claim claim in tokenPrincipal.Claims)
-                {
-                    if (claim.Type.Equals(claimType))
-                    {
-                        return claim;
-                    }
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// 
         /// Gets the parameters to help validate the token
         /// 
         /// </summary>
@@ -238,28 +228,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             return new TokenValidationParameters()
             {
-                ValidAudience = "https://www.GetUsGrub.com",
-                ValidIssuer = "CSULB.GetUsGrub",
+                ValidAudience = AuthenticationTokenConstants.AUDIENCE,
+                ValidIssuer = AuthenticationTokenConstants.ISSUER,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt)),
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
-            };
-        }
-
-        /// <summary>
-        /// 
-        /// This Method checks if the token is Authenticated or not then we extract the princible 
-        /// 
-        /// </summary>
-        /// <param name="incomingTokenString"></param>
-        /// <returns></returns>
-        public ResponseDto<bool> AuthenticateToken(string incomingTokenString)
-        {
-
-            return new ResponseDto<bool>()
-            {
-                Data = true
             };
         }
     }

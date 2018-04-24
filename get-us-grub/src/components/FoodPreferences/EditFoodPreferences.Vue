@@ -19,10 +19,10 @@
           </v-form>
         </div>
         <div>
-          <router-link to="/FoodPreferences">
-            <v-btn dark=true>Cancel</v-btn>
+          <router-link to="/Profile">
+            <v-btn :dark=true>Cancel</v-btn>
           </router-link>
-          <v-btn dark=true>Save</v-btn>
+          <v-btn :dark=true @click="update">Save</v-btn>
         </div>
       </div>
     <app-footer/>
@@ -45,23 +45,43 @@ export default {
     title: 'Edit Your Food Preferences',
     message: 'Checked elements will be saved as your updated food preferences.',
     foodPreferences: [],
-    checklist: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-Vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
-    isValid: false
+    checklist: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
+    response: false
   }),
 
-  // beforeCreate () {
-  // if (this.$store.state.authenticationToken === null) {
-  //   this.$router.push({path: '/Unauthorized'})
-  // }
-  // try {
-  //   if (jwt.decode(this.$store.state.authenticationToken).UpdatePreferences === 'True') {
-  //   } else {
-  //     this.$router.push({path: '/Forbidden'})
-  //     }
-  //   } catch (ex) {
-  //   this.$router.push({path: '/Forbidden'})
-  //   }
-  // },
+  methods: {
+    update: function () {
+      axios.post(this.$store.state.urls.foodPreferences.editPreferences,
+        {
+          'foodPreferences': this.foodPreferences
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
+            'Authorization': `Bearer ${this.$store.state.authenticationToken}`
+          }
+        }).then(response => {
+        console.log(response.data)
+        this.response = response.data
+      }).catch(error => {
+        Promise.reject(error)
+      })
+    }
+  },
+
+  beforeCreate () {
+    if (this.$store.state.authenticationToken === null) {
+      this.$router.push({path: '/Unauthorized'})
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
+      } else {
+        this.$router.push({path: '/Forbidden'})
+      }
+    } catch (ex) {
+      this.$router.push({path: '/Forbidden'})
+    }
+  },
 
   created () {
     axios.get(this.$store.state.urls.foodPreferences.getPreferences, {
@@ -80,7 +100,6 @@ export default {
     })
   }
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

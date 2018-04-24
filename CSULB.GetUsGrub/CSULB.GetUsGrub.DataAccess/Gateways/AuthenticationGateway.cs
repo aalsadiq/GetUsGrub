@@ -183,6 +183,10 @@ namespace CSULB.GetUsGrub.DataAccess
             {
                 try
                 {
+                    (from account in authenticationContext.UserAccounts
+                        where account.Id == incomingFailedAttempt.Id
+                        select account.Id).First();
+
                     // Updating the failed attempts
                     authenticationContext.FailedAttempts.AddOrUpdate(incomingFailedAttempt);
                     authenticationContext.SaveChanges();

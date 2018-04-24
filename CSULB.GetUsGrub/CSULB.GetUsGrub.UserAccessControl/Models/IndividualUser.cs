@@ -10,9 +10,9 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// @author: Rachel Dang
     /// @updated: 04/07/18
     /// </summary>
-    public class IndividualClaims : IClaims
+    public class IndividualUser : IClaims
     {
-        public string Type => AccountType.INDIVIDUAL;
+        public string Type => AccountType.Individual;
 
         public ICollection<Claim> Claims => new List<Claim>
         {

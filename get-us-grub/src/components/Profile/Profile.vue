@@ -1,17 +1,13 @@
 <template>
   <div>
-    <v-container class="scroll-y" id="scroll-target">
       <app-header/>
-      <v-container id="profile">
         <div v-if="profileType === 'user'">
           <user-profile/>
         </div>
         <div v-if="profileType === 'restaurant'">
           <restaurant-profile/>
         </div>
-      </v-container>
       <app-footer/>
-    </v-container>
   </div>
 </template>
 
@@ -43,9 +39,11 @@ export default {
       } else if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
         console.log('this is a restaurantprofile')
       } else {
+        console.log('profile else')
         this.$router.push({ path: '/Forbidden' })
       }
     } catch (ex) {
+      console.log('profile exception')
       this.$router.push({path: '/Forbidden'})
     }
   },

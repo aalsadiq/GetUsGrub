@@ -62,12 +62,25 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // Open the user gateway
                 var gateway = new UserGateway();
 
+                // Get list of current food preferences from database
+                var currentFoodPreferences = gateway.GetFoodPreferencesByUsername(username).Data.FoodPreferences;
+
                 // Get list of updated food preferences from dto
                 var updatedFoodPreferences = foodPreferencesDto.FoodPreferences;
+
+                // Remove duplicate values
+                foreach (var preference in currentFoodPreferences)
+                {
+                    if (updatedFoodPreferences.Contains(preference))
+                    {
+                        updatedFoodPreferences.Remove(preference);
+                    }
+                }
 
                 // Call gateway to update user's food preferences
                 var result = gateway.EditFoodPreferencesByUsername(username, updatedFoodPreferences);
 
+                // Return boolean determining success of update
                 return result;
             }
             catch (Exception)

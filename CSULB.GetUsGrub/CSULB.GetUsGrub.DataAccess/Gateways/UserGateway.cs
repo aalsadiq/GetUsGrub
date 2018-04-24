@@ -12,8 +12,8 @@ namespace CSULB.GetUsGrub.DataAccess
     /// A <c>UserGateway</c> class.
     /// Defines methods that communicates with the UserContext.
     /// <para>
-    /// @author: Jennifer Nguyen, Angelica Salas Tovar
-    /// @updated: 03/11/2018
+    /// @author: Jennifer Nguyen, Angelica Salas Tovar, Rachel Dang
+    /// @updated: 04/24/2018
     /// </para>
     /// </summary>
     public class UserGateway : IDisposable
@@ -846,11 +846,14 @@ namespace CSULB.GetUsGrub.DataAccess
     
         /// <summary>
         /// Update the user's list of food preferences
+        /// 
+        /// @author: Rachel Dang
+        /// @updated: 04/24/2018
         /// </summary>
         /// <param name="username"></param>
         /// <param name="foodPreferencesDto"></param>
-        /// <returns>Boolean determining success of transaction </returns>
-        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> updatedFoodPreferences)
+        /// <returns>Response dto with boolean determining success of transaction</returns>
+        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> preferencesToBeAdded, ICollection<string> preferencesToBeRemoved)
         {         
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
@@ -861,30 +864,21 @@ namespace CSULB.GetUsGrub.DataAccess
                                         where account.Username == username
                                         select account).FirstOrDefault();
 
-                    // Get the current list of food preferences
                     var currentFoodPreferences = userAccount.FoodPreferences;
 
-                    // Compare current food preferences with updated list
+                    // Removed unwanted food preferences not in the updated list
                     foreach (var preference in currentFoodPreferences.ToList())
                     {
-                        var preferenceName = preference.Preference;
-
                         // Remove unwanted preferences not in the updated list
-                        if (!updatedFoodPreferences.Contains(preferenceName))
+                        if (preferencesToBeRemoved.Contains(preference.Preference))
                         {
                             context.FoodPreferences.Attach(preference);
                             context.FoodPreferences.Remove(preference);
                         }
-
-                        // Remove duplicated preferences
-                        if (updatedFoodPreferences.Contains(preferenceName))
-                        {
-                            updatedFoodPreferences.Remove(preferenceName);
-                        }
                     }
 
-                    // Update current list of food preferences
-                    foreach (var preference in updatedFoodPreferences)
+                    // Add new food preferences
+                    foreach (var preference in preferencesToBeAdded)
                     {
                         currentFoodPreferences.Add(new FoodPreference(preference));
                     }
@@ -904,7 +898,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     return new ResponseDto<bool>
                     {
                         Data = false,
-                        Error = e.Message
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }     

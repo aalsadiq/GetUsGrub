@@ -129,7 +129,6 @@
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Filters\AuthenticationFilter.cs" />
     <Compile Include="Controllers\SsoController.cs" />
-    <Compile Include="Controllers\UserAccessTestController.cs" />
     <Compile Include="Handlers\AuthenticationHandler.cs" />
     <Compile Include="Filters\GlobalSecurityExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">

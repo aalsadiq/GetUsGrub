@@ -22,7 +22,8 @@ import Login from '@/components/Login/Login.vue'
 import Testing from '@/components/Login/DecodeTestingGround.vue'
 import Profile from '@/components/Profile/Profile.vue'
 import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
-import SsoTestingHub from '@/components/Sso/SsoTestingHub.vue'
+import SsoLogin from '@/components/Sso/Login.vue'
+import TestProfile from '@/components/Profile/TestProfile.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
@@ -31,6 +32,15 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/TestProfile',
+      name: 'TestProfile',
+      component: TestProfile,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Profile'
+        next()
+      }
+    },
     {
       path: '/ResourceNotFound',
       name: 'ResourceNotFound',
@@ -185,11 +195,11 @@ export default new Router({
       }
     },
     {
-      path: '/SsoTestingHub',
-      name: 'SsoTestingHub',
-      component: SsoTestingHub,
+      path: '/SingleSignOn',
+      name: 'SsoLogin',
+      component: SsoLogin,
       beforeEnter: (to, from, next) => {
-        document.title = 'SsoTestingHub'
+        document.title = 'Get Us Grub'
         next()
       }
     },

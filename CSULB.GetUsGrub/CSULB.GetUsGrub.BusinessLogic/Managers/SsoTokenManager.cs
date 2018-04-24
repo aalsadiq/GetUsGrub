@@ -170,7 +170,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var payload = jwt.Payload;
             var ssoTokenPayloadDto = new SsoTokenPayloadDto();
             
-            // Check if required information is in the payload
+            // Mapping required information in the payload to a data transfer object
             foreach (var keyValuePair in payload)
             {
                 switch (keyValuePair.Key)

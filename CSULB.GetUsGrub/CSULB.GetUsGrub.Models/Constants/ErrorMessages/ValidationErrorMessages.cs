@@ -25,13 +25,13 @@
         public const string STREET_1_REQUIRED = "Address needs a street1.";
         public const string CITY_REQUIRED = "City is required.";
         public const string STATE_REQUIRED = "State is required.";
-        public const string NOT_VALID_STATE = "State be a valid state.";
+        public const string NOT_VALID_STATE = "State must be a valid state.";
         public const string ZIP_REQUIRED = "Address needs a zip code.";
         public const string ZIP_FORMAT = "Zip code is not a valid format.";
 
         // Validation error messages for RestaurantDetail
         public const string FOOD_TYPE_REQUIRED = "Food type is required.";
-        public const string AVG_FOOD_PRICE_REQUIRED = "Average food price is required";
+        public const string AVG_FOOD_PRICE_REQUIRED = "Average food price is required.";
         public const string NOT_VALID_AVG_FOOD_PRICE = "Average food price is invalid.";
 
         // Validation error messages for RestaurantSelectionDto
@@ -47,8 +47,8 @@
         public const string PASSWORD_REQUIRED = "Password is required.";
         public const string PASSWORD_LENGTH = "Password must be at least 8 characters and less than or equal to 64.";
         public const string PASSWORD_FORMAT = "Password must not be empty or contain spaces.";
-        public const string USER_DOES_NOT_EXIST = "User does not exist";
-        public const string INVALID_USERNAME = "Invalid username, please try again.";
+        public const string USER_DOES_NOT_EXIST = "User does not exist.";
+        public const string INVALID_USERNAME = "Invalid username. Please try again.";
 
         // Validation error messages for EditUserDto
         public const string NEWUSERNAME_FORMAT = "New username must not contain spaces and special characters.";

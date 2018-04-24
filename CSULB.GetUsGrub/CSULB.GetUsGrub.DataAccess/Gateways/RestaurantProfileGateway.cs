@@ -32,7 +32,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 // Find account associated with username *** have manager open user gateway
                 var userAccount = (from account in userContext.UserAccounts
                                    where account.Username == username
-                                   select account).SingleOrDefault();
+                                   select account).FirstOrDefault();
 
                 
                 using (var restaurantContext = new RestaurantContext())

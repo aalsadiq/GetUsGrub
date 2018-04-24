@@ -119,7 +119,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var claimsFactory = new ClaimsFactory();
             var dateTimeService = new DateTimeService();
             var geocodeService = new GoogleGeocodeService();
-            // TODO: @Jenn Make a call to Rachel's Food Preference Validator [-Jenn]
+
             // Validate data transfer object
             var restaurantResult = createRestaurantPreLogicValidationStrategy.ExecuteStrategy();
             if (restaurantResult.Error != null)
@@ -179,7 +179,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
-            // TODO: @Jenn Make a call to Rachel's Food Preference Validator [-Jenn]
+
             // Validate domain models
             var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);
             var validateResult = createRestaurantPostLogicValdiationStrategy.ExecuteStrategy();

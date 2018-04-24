@@ -222,7 +222,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #selectRestaurantTitleBar {
   background-color: #6F81AD !important
 }

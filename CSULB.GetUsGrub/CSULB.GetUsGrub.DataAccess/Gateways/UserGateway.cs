@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -902,6 +903,140 @@ namespace CSULB.GetUsGrub.DataAccess
                     };
                 }
             }     
+        }
+
+        /// <summary>
+        /// The GetSecurityQuestions method.
+        /// Get the security questions pertaining to a user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/21/2018
+        /// </para>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>ResponseDto with Security Questions</returns>
+        public ResponseDto<ICollection<SecurityQuestion>> GetSecurityQuestions(string username)
+        {
+            try
+            {
+                // Get collection of security questions pertaining to a username
+                var securityQuestions = (from account in context.UserAccounts
+                    where account.Username == username
+                    select account.SecurityQuestions).FirstOrDefault();
+
+                return new ResponseDto<ICollection<SecurityQuestion>>()
+                {
+                    Data = securityQuestions
+                };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<ICollection<SecurityQuestion>>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+        }
+
+        /// <summary>
+        /// The GetUserAccountBySecurityQuestions method.
+        /// Gets a user's account in the database given security questions.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="securityQuestionDtos"></param>
+        /// <returns>ResponseDto with a UserAccount</returns>
+        public ResponseDto<UserAccount> GetUserAccountBySecurityQuestions(string username, ICollection<SecurityQuestionDto> securityQuestionDtos)
+        {
+            try
+            {
+                // Get UserAccount where security questions and answers match
+                var userAccount = (from account in context.UserAccounts
+                                    join question in context.SecurityQuestions
+                                        on account.Id equals question.UserId
+                                    where account.Username == username
+                                        && securityQuestionDtos.Select(securityQuestion => securityQuestion.Question)
+                                            .Contains(question.Question)
+                                        && securityQuestionDtos.Select(securityQuestion => securityQuestion.Answer)
+                                            .Contains(question.Answer)
+                                    select account).FirstOrDefault();
+
+                return new ResponseDto<UserAccount>()
+                {
+                    Data = userAccount
+                };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<UserAccount>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+        }
+
+        /// <summary>
+        /// The UpdatePassword method.
+        /// Update database models associated with updating a user's password.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccount"></param>
+        /// <param name="passwordSalt"></param>
+        /// <returns>ResponseDto with true or false boolean</returns>
+        public ResponseDto<bool> UpdatePassword(UserAccount userAccount, PasswordSalt passwordSalt)
+        {
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    // Get Id from username
+                    userAccount.Id = (from account in context.UserAccounts
+                        where account.Username == userAccount.Username
+                        select account.Id).FirstOrDefault();
+                    context.SaveChanges();
+
+                    // Set UserId to dependencies
+                    passwordSalt.Id = userAccount.Id;
+                    context.SaveChanges();
+
+                    // Update UserAccount
+                    context.UserAccounts.Add(userAccount);
+
+                    // Update PasswordSalt
+                    context.PasswordSalts.AddOrUpdate(passwordSalt);
+                    context.SaveChanges();
+
+                    // Commit transaction to database
+                    dbContextTransaction.Commit();
+
+                    // Return a true ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Returns a false ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                }
+            }
         }
 
         /// <summary>

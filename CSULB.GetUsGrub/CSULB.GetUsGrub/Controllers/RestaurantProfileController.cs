@@ -20,8 +20,7 @@ namespace CSULB.GetUsGrub.Controllers
     public class RestaurantProfileController : ApiController
     {  
         [HttpGet]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.READ)]
-        [AllowAnonymous] // TODO: Remove for deployment
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.READ)]
         [Route("Restaurant")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult GetProfile()

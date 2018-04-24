@@ -170,6 +170,7 @@ export default {
         }
       // Receiving successful response
       }).then(response => {
+        console.log(response)
         if (response.data != null) {
           this.showAlert = false
           this.valid = true
@@ -218,7 +219,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #selectRestaurantTitleBar {
   background-color: #6F81AD !important
 }

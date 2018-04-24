@@ -76,6 +76,7 @@
     <Compile Include="Constants\ErrorMessages\ValidationErrorMessages.cs" />
     <Compile Include="Constants\RegularExpressions.cs" />
     <Compile Include="Constants\ImagePaths.cs" />
+    <Compile Include="Constants\ResetPasswordValidationTypes.cs" />
     <Compile Include="Constants\ResourceConstant.cs" />
     <Compile Include="Constants\RoleTypes.cs" />
     <Compile Include="Constants\TokenPayloadConstants\SsoTokenPayloadKeys.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="DTOs\EditUserDto.cs" />
     <Compile Include="DTOs\LoginDto.cs" />
     <Compile Include="DTOs\BusinessHourDto.cs" />
+    <Compile Include="DTOs\ResetPasswordDto.cs" />
     <Compile Include="DTOs\SelectedRestaurantDto.cs" />
     <Compile Include="Constants\ErrorMessages\GeneralErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\SsoErrorMessages.cs" />

@@ -2,6 +2,8 @@ using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
 using System.Diagnostics;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -18,10 +20,10 @@ namespace CSULB.GetUsGrub.Controllers
     public class RestaurantProfileController : ApiController
     {
         [HttpGet]
-        [AllowAnonymous] // TODO: Remove for deployment
         [Route("Restaurant")]
         [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
-        public IHttpActionResult GetProfile([FromBody] string username)
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.READ)]
+        public IHttpActionResult GetProfile(string username)
         {
             if (!ModelState.IsValid)
             {
@@ -37,7 +39,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
 
-                return Ok(response);
+                return Ok(response.Data);
             }
 
             catch (Exception e)
@@ -46,10 +48,10 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-        [HttpPut]
-        [AllowAnonymous] // TODO: Remove for deployment
+        [HttpPost]
         [Route("Restaurant/Edit")]
         [EnableCors(origins: "http://localhost:8081", headers: "*", methods: "*")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
         public IHttpActionResult EditProfile([FromBody] RestaurantProfileDto restaurantProfileDto)
         {
             if (!ModelState.IsValid)
@@ -66,7 +68,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
 
-                return Ok(response);
+                return Ok(response.Data);
             }
 
             catch (Exception e)

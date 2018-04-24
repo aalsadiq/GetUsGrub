@@ -20,19 +20,19 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public ResponseDto<UserProfileDto> GetUserProfileByUsername(string username)
+        public ResponseDto<UserProfileDto> GetUserProfileById(int? id)
         {
 
             using (var profileContext = new IndividualProfileContext())
             {
                 // Find profile associated with account
-                var userProfile = (from profile in profileContext.UserProfiles
-                                   where profile.UserAccount.Username == username // TODO: @Andrew, you had this before. I don't know why.  profile.user == userAccountId
+                var dbUserProfile = (from profile in profileContext.UserProfiles
+                                   where profile.UserAccount.Id == id
                                    select profile).SingleOrDefault();
 
                 ResponseDto<UserProfileDto> responseDto = new ResponseDto<UserProfileDto>
                 {
-                    Data = new UserProfileDto(userProfile),
+                    Data = new UserProfileDto(dbUserProfile),
                     Error = null
                 };
 
@@ -49,7 +49,7 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             using (var profileContext = new IndividualProfileContext())
             {
-                var userProfile = (from profile in profileContext.UserProfiles
+                var dbUserProfile = (from profile in profileContext.UserProfiles
                                     where profile.Id == userAccountId
                                     select profile).SingleOrDefault();
 
@@ -58,8 +58,12 @@ namespace CSULB.GetUsGrub.DataAccess
                     try
                     {
                         // Apply and save changes
-                        userProfile = userProfileDomain;
+                        if (userProfileDomain.DisplayName != null)
+                        {
+                            dbUserProfile.DisplayName = userProfileDomain.DisplayName;
+                        }
                         profileContext.SaveChanges();
+                        dbContextTransaction.Commit();
 
                         ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {

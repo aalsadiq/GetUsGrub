@@ -14,19 +14,25 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class RestaurantProfileManager : IProfileManager<RestaurantProfileDto>
     {
-        public ResponseDto<RestaurantProfileDto> GetProfile(string username)
+        public ResponseDto<RestaurantProfileDto> GetProfile(string token)
         {
-            // Retrieve profile from database
-            var profileGateway = new RestaurantProfileGateway();
+            // Retrieve account by username
+            var userGateway = new UserGateway();
 
-            var responseDtoFromGateway = profileGateway.GetRestaurantProfileByUsername(username);
+            var tokenService = new TokenService();
 
-            return responseDtoFromGateway;
+            var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
+
+            // Retrieve restaurant profile from database
+            var restaurantProfileGateway = new RestaurantProfileGateway();
+
+            var restaurantProfileResponseDto = restaurantProfileGateway.GetRestaurantProfileById(userAccountResponseDto.Data.Id);
+
+            return restaurantProfileResponseDto;
         }
 
-        public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto)
+        public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto, string token)
         {
-            // Prelogic validation strategy TODO: @andrew move this to after the 
             var editRestaurantProfilePreLogicValidationStrategy = new EditRestaurantUserProfilePreLogicValidationStrategy(restaurantProfileDto);
 
             var result = editRestaurantProfilePreLogicValidationStrategy.ExecuteStrategy();
@@ -41,8 +47,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Extract DTO contents and map DTO to domain model
-
-            var username = restaurantProfileDto.Username;
+            var tokenService = new TokenService();
 
             // Extract restaurant profile domain
             var restaurantProfileDomain = new RestaurantProfile(
@@ -57,14 +62,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
 
             // Extract restaurant menu dictionary
-            var restaurantMenuDomains = restaurantProfileDto.MenuDictionary;
+            var restaurantMenuDomains = restaurantProfileDto.RestaurantMenusList;
 
             // Extract menu items
 
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(username, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(tokenService.GetTokenUsername(token), restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
 
             return responseDtoFromGateway;
         }

@@ -25,64 +25,75 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <returns></returns>
         /// 
         // move context up to here
-        public ResponseDto<RestaurantProfileDto> GetRestaurantProfileByUsername(string username)
-        {
-            using (var userContext = new UserContext())
+        public ResponseDto<RestaurantProfileDto> GetRestaurantProfileById(int? id)
+        {       
+            using (var restaurantContext = new RestaurantContext())
             {
-                // Find account associated with username *** have manager open user gateway
-                var userAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
+                var dbUserProfile = (from profile in restaurantContext.UserProfiles
+                                     where profile.Id == id
+                                     select profile).SingleOrDefault();
 
+                var userProfileDomain = new UserProfile(dbUserProfile.Id, dbUserProfile.DisplayName, dbUserProfile.DisplayPicture);
+                // Find restaurant associated with the ID
+                var dbRestaurantProfile = (from restaurantProfile in restaurantContext.RestaurantProfiles
+                                           where restaurantProfile.Id == dbUserProfile.Id
+                                           select restaurantProfile).SingleOrDefault();
+
+                var restaurantProfileDomain = new RestaurantProfile(dbRestaurantProfile.PhoneNumber, dbRestaurantProfile.Address, dbRestaurantProfile.Details);
                 
-                using (var restaurantContext = new RestaurantContext())
+                // Find restaurant's business hours
+                var dbBusinessHours = (from hour in restaurantContext.BusinessHours
+                                       where hour.RestaurantId == dbRestaurantProfile.Id
+                                       select hour).ToList();
+
+                var businessHourDomains = new List<BusinessHour>();
+                foreach (var dbHour in dbBusinessHours)
                 {
-                    // Find profile associated with account
-                    var userProfile = (from profile in restaurantContext.UserProfiles
-                                       where profile.Id == userAccount.Id
-                                       select profile).SingleOrDefault();
+                    businessHourDomains.Add(new BusinessHour(dbHour.Id, dbHour.Day, dbHour.OpenTime, dbHour.CloseTime));
+                }
 
-                    // Find restaurant associated with profile
-                    var restaurantProfile = (from restaurant in restaurantContext.RestaurantProfiles
-                                             where restaurant.Id == userProfile.Id
-                                             select restaurant).SingleOrDefault();
+                IList<RestaurantMenuWithItems> restaurantMenusList = new List<RestaurantMenuWithItems>();
 
-                    // Find restaurant's business hours
-                    IList<BusinessHour> businessHours = (from hours in restaurantContext.BusinessHours
-                                         where hours.RestaurantId == restaurantProfile.Id
-                                         select hours).ToList();
+                var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
 
-                    // Then, find all active menus associated with this restaurant and turn it into a List
-                    var restaurantMenus = (from menus in restaurantContext.RestaurantMenus
-                                           where menus.RestaurantId == restaurantProfile.Id
-                                           where menus.IsActive == true
-                                           select menus).ToList();
-
-
-                    // Find restaurant's menu items
-                    // Find dbRestaurantMenuItems by doing dbRestaurantProfile.RestaurantMenu.Where();
-
-                    Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary = new Dictionary<RestaurantMenu, IList<RestaurantMenuItem>>();
-
-                    foreach (var menu in restaurantMenus)
+                if (dbRestaurantMenus != null)
+                {
+                    foreach (var menu in dbRestaurantMenus)
                     {
+                        // create the menu domain
+                        var menuDomain = new RestaurantMenu(menu.Id, menu.MenuName, menu.IsActive, menu.Flag);
+
+                        // create the list for the menu items
+                        var menuItemDomains = new List<RestaurantMenuItem>();
                         // Then, find all menu items associated with each menu and turn that into a list
-                        var items = (from menuItems in restaurantContext.RestaurantMenuItems
+                        var dbMenuItems = (from menuItems in restaurantContext.RestaurantMenuItems
                                      where menuItems.MenuId == menu.Id
                                      select menuItems).ToList();
 
-                        // Map menu items to menus in a dictionary
-                        menuDictionary.Add(menu, items);
+                        foreach (var item in dbMenuItems)
+                        {
+                            var menuItemDomain = new RestaurantMenuItem(item.Id, item.ItemName, item.ItemPrice, item.ItemPicture, item.Tag, item.Description, item.IsActive, item.Flag);
+                            menuItemDomains.Add(menuItemDomain);
+                            // Map menu items to menus in a dictionary
+                        }
+                        var restaurantMenuWithItems = new RestaurantMenuWithItems(menuDomain, menuItemDomains);
+                        restaurantMenusList.Add(restaurantMenuWithItems);
                     }
-
-                    ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
-                    {
-                        Data = new RestaurantProfileDto(restaurantProfile, businessHours, menuDictionary),
-                        Error = null
-                    };
-                    return responseDto;
                 }
+
+                else
+                {
+                    dbRestaurantMenus = new Collection<RestaurantMenu>();
+                }
+                
+                ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
+                {
+                    Data = new RestaurantProfileDto(userProfileDomain, restaurantProfileDomain, businessHourDomains, restaurantMenusList),
+                    Error = null
+                };
+                return responseDto;
             }
+            
         }
 
         /// <summary>
@@ -90,7 +101,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="restaurantProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditRestaurantProfile(string username, RestaurantProfile restaurantProfileDomain, IList<BusinessHour> businessHourDomains, Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary)
+        public ResponseDto<bool> EditRestaurantProfile(string username, RestaurantProfile restaurantProfileDomain, IList<BusinessHour> businessHourDomains, IList<RestaurantMenuWithItems> restaurantMenusList)
         {
             using (var userContext = new UserContext())
             {

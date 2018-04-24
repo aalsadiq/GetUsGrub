@@ -7,6 +7,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using CSULB.GetUsGrub.Models.Constants.TokenPayloadConstants;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -16,11 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class AuthenticationTokenManager
     {
-        private readonly TokenService _tokenService;
-        public AuthenticationTokenManager()
-        {
-            _tokenService = new TokenService();
-        }
 
         /// <summary>
         /// 
@@ -57,7 +53,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var claimIdentity = new ClaimsIdentity();
             var claimPrincipal = new ClaimsPrincipal();
             var claimTransformer = new ClaimsTransformer();
-            claimIdentity.AddClaim(new Claim("Username", authenticationToken.Username));
+            claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
             claimPrincipal.AddIdentity(claimIdentity);
             claimPrincipal = claimTransformer.Authenticate("read", claimPrincipal);
 
@@ -68,10 +64,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Audience = "https://www.GetUsGrub.com",
+                Audience = AuthenticationTokenConstants.AUDIENCE,
                 IssuedAt = issuedOn,
                 Expires = authenticationToken.ExpiresOn,
-                Issuer = "CSULB.GetUsGrub",
+                Issuer = AuthenticationTokenConstants.ISSUER,
                 SigningCredentials = signingCredentials,
 
             };
@@ -198,35 +194,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// 
-        /// GetTokenClaims
-        /// 
-        /// This Function gets the claims from inside the token
-        /// 
-        /// </summary>
-        /// <param name="tokenString"></param>
-        /// <param name="claimType"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Claim GetTokenClaims(AuthenticationToken token, string claimType)
-        {
-            SecurityToken validatedToken;
-            var tokenPrincipal = GetTokenPrincipal(token, out validatedToken);
-            if (tokenPrincipal != null)
-            {
-                foreach (Claim claim in tokenPrincipal.Claims)
-                {
-                    if (claim.Type.Equals(claimType))
-                    {
-                        return claim;
-                    }
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// 
         /// Gets the parameters to help validate the token
         /// 
         /// </summary>
@@ -238,28 +205,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             return new TokenValidationParameters()
             {
-                ValidAudience = "https://www.GetUsGrub.com",
-                ValidIssuer = "CSULB.GetUsGrub",
+                ValidAudience = AuthenticationTokenConstants.AUDIENCE,
+                ValidIssuer = AuthenticationTokenConstants.ISSUER,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(authenticationToken.Salt)),
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
-            };
-        }
-
-        /// <summary>
-        /// 
-        /// This Method checks if the token is Authenticated or not then we extract the princible 
-        /// 
-        /// </summary>
-        /// <param name="incomingTokenString"></param>
-        /// <returns></returns>
-        public ResponseDto<bool> AuthenticateToken(string incomingTokenString)
-        {
-
-            return new ResponseDto<bool>()
-            {
-                Data = true
             };
         }
     }

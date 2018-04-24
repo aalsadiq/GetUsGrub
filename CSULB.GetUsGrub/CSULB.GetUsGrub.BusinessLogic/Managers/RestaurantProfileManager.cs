@@ -23,12 +23,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
 
-            // Retrieve profile from database
-            var profileGateway = new RestaurantProfileGateway();
+            // Retrieve restaurant profile from database
+            var restaurantProfileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.GetRestaurantProfileById(userAccountResponseDto.Data.Id);
+            var restaurantProfileResponseDto = restaurantProfileGateway.GetRestaurantProfileById(userAccountResponseDto.Data.Id);
 
-            return responseDtoFromGateway;
+            return restaurantProfileResponseDto;
         }
 
         public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto, string token)
@@ -62,7 +62,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
 
             // Extract restaurant menu dictionary
-            var restaurantMenuDomains = restaurantProfileDto.MenuDictionary;
+            var restaurantMenuDomains = restaurantProfileDto.RestaurantMenusList;
 
             // Extract menu items
 

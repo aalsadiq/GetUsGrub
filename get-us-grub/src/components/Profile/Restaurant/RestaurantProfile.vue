@@ -72,23 +72,53 @@
                 <v-flex xs12>
                   <h3>Phone Number:</h3>
                   <p>
-                    {{ restaurant.phoneNumber }}
+                    {{ phoneNumber }}
                   </p>
                   <h3>Address:</h3>
-                  <p v-if='restaurant.address.street2 === ""'>
-                    {{ restaurant.address.street1 }},
-                    {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
+                  <p v-if='address.street2 === ""'>
+                    {{ address.street1 }},
+                    {{ address.city }}, {{ address.state }} {{ address.zip }}
                   </p>
-                  <p v-if='restaurant.address.street2 !== ""'>
-                    {{ restaurant.address.street1 }},
-                    {{ restaurant.address.street2 }},
-                    {{ restaurant.address.city }}, {{ restaurant.address.state }} {{ restaurant.address.zip }}
+                  <p v-if='address.street2 !== ""'>
+                    {{ address.street1 }},
+                    {{ address.street2 }},
+                    {{ address.city }}, {{ address.state }} {{ address.zip }}
                   </p>
                   <h3>BusinessHours:</h3>
-                  <p v-for="businessHour in restaurant.businessHours" :key="businessHour.day">
+                  <p v-for="businessHour in businessHours" :key="businessHour.day">
                     {{ businessHour.day }}:
-                    {{ businessHour.twelveHourFormatOpenTime }} -
-                    {{ businessHour.twelveHourFormatCloseTime }}
+                    {{ businessHour.OpenTime }} -
+                    {{ businessHour.CloseTime }}
+                  </p>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+        </div>
+        <div id="profile-details">
+          <v-flex xs12>
+            <v-card>
+              <v-layout row justify-space-between>
+                <v-flex xs12>
+                  <h3>Phone Number:</h3>
+                  <p>
+                    {{ phoneNumber }}
+                  </p>
+                  <h3>Address:</h3>
+                  <p v-if='address.street2 === ""'>
+                    {{ address.street1 }},
+                    {{ address.city }}, {{ address.state }} {{ address.zip }}
+                  </p>
+                  <p v-if='address.street2 !== ""'>
+                    {{ address.street1 }},
+                    {{ address.street2 }},
+                    {{ address.city }}, {{ address.state }} {{ address.zip }}
+                  </p>
+                  <h3>BusinessHours:</h3>
+                  <p v-for="businessHour in businessHours" :key="businessHour.day">
+                    {{ businessHour.day }}:
+                    {{ businessHour.OpenTime }} -
+                    {{ businessHour.CloseTime }}
                   </p>
                 </v-flex>
               </v-layout>
@@ -98,7 +128,7 @@
         <div id="food-preferences">
           <v-flex xs12>
             <v-card>
-              <food-preferences />
+              <!--<food-preferences />-->
             </v-card>
           </v-flex>
         </div>
@@ -111,49 +141,47 @@
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import ImageUpload from '@/components/ImageUploadVues/ImageUpload'
-import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
+// import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 export default {
   name: 'RestaurantProfile',
   components: {
-    FoodPreferences,
+    // FoodPreferences,
     ImageUpload
   },
   data () {
     return {
-      profile: {
-        displayName: ''
+      displayName: '',
+      displayPicture: '',
+      phoneNumber: '',
+      address: {
+        street1: '',
+        street2: '',
+        city: '',
+        state: '',
+        zip: null
       },
-      restaurant: {
-        address: {
-          street1: '',
-          street2: '',
-          city: '',
-          state: '',
-          zip: null
-        },
-        phoneNumber: '',
-        details: {
-          foodType: '',
-          avgFoodPrice: null,
-          hasDelivery: null,
-          hasTakeOut: null,
-          acceptsCreditCards: null,
-          attire: '',
-          servesAlcohol: null,
-          hasOutdoorSeating: null,
-          hasTv: null,
-          hasDriveThru: null,
-          caters: null,
-          allowsPets: null
-        }
+      details: {
+        avgFoodPrice: null,
+        hasReservations: null,
+        hasDelivery: null,
+        hasTakeOut: null,
+        acceptCreditCards: null,
+        attire: null,
+        servesAlcohol: null,
+        hasOutdoorSeating: null,
+        hasTv: null,
+        hasDriveThru: null,
+        caters: null,
+        allowsPets: null,
+        foodType: ''
       },
+      restaurantMenusList: [],
       businessHours: [],
       businessHour: {
         day: '',
-        openTime: null,
-        closeTime: null
+        openTime: '',
+        closeTime: ''
       },
-
       errors: '',
       dialog: false,
       dialog2: false
@@ -164,18 +192,17 @@ export default {
       this.$router.push({ path: '/Unauthorized' })
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
       } else {
+        console.log('forbidden else')
         this.$router.push({ path: '/Forbidden' })
       }
     } catch (ex) {
+      console.log('forbidden exception')
       this.$router.push({ path: '/Forbidden' })
     }
   },
   created () {
-    // retrieve claim to check if they can view a user profile or a restaurant profile
-    // if the claim is view user profile
-    // make the username the store's username
     axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
       headers: {
         Authorization: `Bearer ${this.$store.state.authenticationToken}`

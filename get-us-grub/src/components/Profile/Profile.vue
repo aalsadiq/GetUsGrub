@@ -43,9 +43,11 @@ export default {
       } else if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
         console.log('this is a restaurantprofile')
       } else {
+        console.log('profile else')
         this.$router.push({ path: '/Forbidden' })
       }
     } catch (ex) {
+      console.log('profile exception')
       this.$router.push({path: '/Forbidden'})
     }
   },

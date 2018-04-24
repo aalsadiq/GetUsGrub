@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<bool>
                 {
                     Data = false,
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 

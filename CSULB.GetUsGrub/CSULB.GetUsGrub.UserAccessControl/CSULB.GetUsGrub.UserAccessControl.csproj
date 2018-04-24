@@ -59,7 +59,6 @@
     <Compile Include="Factories\ClaimsFactory.cs" />
     <Compile Include="Models\Interfaces\IClaims.cs" />
     <Compile Include="Factories\Interfaces\IFactory.cs" />
-    <Compile Include="Filters\GlobalSecurityExceptionFilter.cs" />
     <Compile Include="Managers\AuthorizationManager.cs" />
     <Compile Include="Managers\ClaimsTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

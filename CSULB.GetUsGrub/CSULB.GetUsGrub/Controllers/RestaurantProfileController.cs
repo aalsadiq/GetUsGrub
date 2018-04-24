@@ -49,7 +49,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         [AllowAnonymous] // TODO: Remove for deployment
         [Route("Restaurant/Edit")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]

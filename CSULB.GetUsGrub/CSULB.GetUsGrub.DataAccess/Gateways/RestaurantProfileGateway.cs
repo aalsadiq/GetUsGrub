@@ -27,22 +27,22 @@ namespace CSULB.GetUsGrub.DataAccess
         // move context up to here
         public ResponseDto<RestaurantProfileDto> GetRestaurantProfileById(int? id)
         {       
-            using (var restaurantContext = new RestaurantContext())
+            using (context)
             {
-                var dbUserProfile = (from profile in restaurantContext.UserProfiles
+                var dbUserProfile = (from profile in context.UserProfiles
                                      where profile.Id == id
                                      select profile).SingleOrDefault();
 
                 var userProfileDomain = new UserProfile(dbUserProfile.Id, dbUserProfile.DisplayName, dbUserProfile.DisplayPicture);
                 // Find restaurant associated with the ID
-                var dbRestaurantProfile = (from restaurantProfile in restaurantContext.RestaurantProfiles
+                var dbRestaurantProfile = (from restaurantProfile in context.RestaurantProfiles
                                            where restaurantProfile.Id == dbUserProfile.Id
                                            select restaurantProfile).SingleOrDefault();
 
                 var restaurantProfileDomain = new RestaurantProfile(dbRestaurantProfile.PhoneNumber, dbRestaurantProfile.Address, dbRestaurantProfile.Details);
                 
                 // Find restaurant's business hours
-                var dbBusinessHours = (from hour in restaurantContext.BusinessHours
+                var dbBusinessHours = (from hour in context.BusinessHours
                                        where hour.RestaurantId == dbRestaurantProfile.Id
                                        select hour).ToList();
 
@@ -66,7 +66,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         // create the list for the menu items
                         var menuItemDomains = new List<RestaurantMenuItem>();
                         // Then, find all menu items associated with each menu and turn that into a list
-                        var dbMenuItems = (from menuItems in restaurantContext.RestaurantMenuItems
+                        var dbMenuItems = (from menuItems in context.RestaurantMenuItems
                                      where menuItems.MenuId == menu.Id
                                      select menuItems).ToList();
 
@@ -101,132 +101,220 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="restaurantProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditRestaurantProfile(string username, RestaurantProfile restaurantProfileDomain, IList<BusinessHour> businessHourDomains, IList<RestaurantMenuWithItems> restaurantMenusList)
+        public ResponseDto<bool> EditRestaurantProfileById(int? id, UserProfile userProfileDomain, RestaurantProfile restaurantProfileDomain, IList<BusinessHour> businessHourDomains, IList<RestaurantMenuWithItems> restaurantMenuDomains)
         {
-            using (var userContext = new UserContext())
+            using (context)
             {
-                // Find account associated with username
-                var dbUserAccount = (from account in userContext.UserAccounts
-                                   where account.Username == username
-                                   select account).SingleOrDefault();
-                    
-                using (var restaurantContext = new RestaurantContext())
+                using (var dbContextTransaction = context.Database.BeginTransaction())
                 {
-                    // Find profile associated with account
-                    var dbUserProfile = (from profile in restaurantContext.UserProfiles
-                                        where profile.Id == dbUserAccount.Id
-                                        select profile).SingleOrDefault();
-
-                    // Find restaurant associated with profile
-                    var dbRestaurantProfile = dbUserProfile.RestaurantProfile;
-
-                    // Find restaurant's business hours
-                    var dbBusinessHours = dbRestaurantProfile.BusinessHours;
-
-                    // Then, find all menus associated with this restaurant and turn it into a List
-                    var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
-
-                    // Finally, find all menu items associated with this restaurant and return it as a list
-                    ICollection<RestaurantMenuItem> dbMenuItems = new Collection<RestaurantMenuItem>();
-                    foreach (var menu in dbRestaurantMenus)
+                    try
                     {
-                        foreach (var item in menu.RestaurantMenuItems)
-                        {
-                            dbMenuItems.Add(item);
-                        }
-                    }
-                    
-                    using (var dbContextTransaction = restaurantContext.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            // Update restaurant profile table
-                            dbRestaurantProfile = restaurantProfileDomain;
+                        // Find profile associated with account
+                        var dbUserProfile = (from profile in context.UserProfiles
+                                             where profile.Id == id
+                                             select profile).SingleOrDefault();
 
-                            // Find the business hours on the database that have the same Ids as the new business hours
-                            for (var i = 0; i < businessHourDomains.Count; i++)
+                        // Find restaurant associated with profile
+                        var dbRestaurantProfile = dbUserProfile.RestaurantProfile;
+
+                        // Find restaurant's business hours
+                        var dbBusinessHours = dbRestaurantProfile.BusinessHours;
+
+                        // Then, find all menus associated with this restaurant and their menu items
+                        IList<RestaurantMenuWithItems> dbRestaurantMenusList = new List<RestaurantMenuWithItems>();
+
+                        var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
+
+                        foreach (var menu in dbRestaurantMenus)
+                        {
+                            // create the list for the menu items
+                            var dbMenuItemsList = new List<RestaurantMenuItem>();
+
+                            // Then, find all menu items associated with each menu and turn that into a list
+                            var dbMenuItems = (from menuItems in context.RestaurantMenuItems
+                                               where menuItems.MenuId == menu.Id
+                                               select menuItems).ToList();
+
+                            foreach (var item in dbMenuItems)
                             {
-                                Flag flag = businessHourDomains[i].Flag;
-                                switch(flag)
+                                dbMenuItemsList.Add(item);
+                                // Map menu items to menus in a dictionary
+                            }
+                            var dbRestaurantMenuWithItems = new RestaurantMenuWithItems(menu, dbMenuItemsList);
+                            dbRestaurantMenusList.Add(dbRestaurantMenuWithItems);
+                        }
+
+                        // Update associated user profile
+                        dbUserProfile.DisplayName = userProfileDomain.DisplayName;
+                        context.SaveChanges();
+
+                        // Update restaurant profile
+                        dbRestaurantProfile.PhoneNumber = restaurantProfileDomain.PhoneNumber;
+                        dbRestaurantProfile.Address = restaurantProfileDomain.Address;
+                        dbRestaurantProfile.Details = restaurantProfileDomain.Details;
+                        dbRestaurantProfile.GeoCoordinates = restaurantProfileDomain.GeoCoordinates;
+                        dbRestaurantProfile = restaurantProfileDomain;
+                        context.SaveChanges();
+
+                        // Find the business hours on the database that have the same Ids as the new business hours
+
+                        foreach (var businessHour in businessHourDomains)
+                        {
+                            Flag flag = businessHour.Flag;
+                            switch (flag)
+                            {
+                                case Flag.NotSet:
+                                    break;
+                                case Flag.Add:
+                                    // reset flag
+                                    businessHour.Flag = 0;
+                                    dbBusinessHours.Add(businessHour);
+                                    context.SaveChanges();
+                                    break;
+                                case Flag.Edit:
+                                    // find the corresponding businessHour by ID
+                                    var dbBusinessHour = (from hour in context.BusinessHours
+                                                          where hour.Id == businessHour.Id
+                                                          select hour).SingleOrDefault();
+                                    dbBusinessHour.Day = businessHour.Day;
+                                    dbBusinessHour.OpenTime = businessHour.OpenTime;
+                                    dbBusinessHour.CloseTime = businessHour.CloseTime;
+                                    context.SaveChanges();
+                                    break;
+                                case Flag.Delete:
+                                    // find the corresponding businessHour by ID
+                                    dbBusinessHour = (from hour in context.BusinessHours
+                                                        where hour.Id == businessHour.Id
+                                                        select hour).SingleOrDefault();
+                                    context.BusinessHours.Remove(dbBusinessHour);
+                                    context.SaveChanges();
+                                    break;
+                            }
+                        }
+
+                        // Update menu
+                        foreach (var restaurantMenuWithItems in restaurantMenuDomains)
+                        {
+                            Flag flag = restaurantMenuWithItems.RestaurantMenu.Flag;
+                            switch(flag)
+                            {
+                                case Flag.NotSet:
+                                    break;
+                                case Flag.Add:
+                                    restaurantMenuWithItems.RestaurantMenu.Flag = 0;
+                                    restaurantMenuWithItems.RestaurantMenu.RestaurantMenuItems = new Collection<RestaurantMenuItem>();
+                                    dbRestaurantMenus.Add(restaurantMenuWithItems.RestaurantMenu);
+                                    context.SaveChanges();
+
+                                    // add the menu items inside the menu
+                                    foreach (var menuItem in restaurantMenuWithItems.MenuItem)
+                                    {
+                                        // find the corresponding menu
+                                        var dbRestaurantMenu = (from menu in context.RestaurantMenus
+                                                                where menu.Id == restaurantMenuWithItems.RestaurantMenu.Id
+                                                                select menu).SingleOrDefault();
+                                        // reset flag
+                                        menuItem.Flag = 0;
+                                        dbRestaurantMenu.RestaurantMenuItems.Add(menuItem);
+                                        context.SaveChanges();
+                                    }
+                                    break;
+                                case Flag.Edit:
+                                    // query for menu with the same ID
+                                    var dbMenu = (from menu in context.RestaurantMenus
+                                                          where menu.Id == restaurantMenuWithItems.RestaurantMenu.Id
+                                                          select menu).SingleOrDefault();
+                                    dbMenu.MenuName = restaurantMenuWithItems.RestaurantMenu.MenuName;
+                                    dbMenu.IsActive = restaurantMenuWithItems.RestaurantMenu.IsActive;
+                                    context.SaveChanges();
+                                    break;
+                                case Flag.Delete:
+                                    // retrieves the menu from the db
+                                    dbMenu = (from menu in context.RestaurantMenus
+                                              where menu.Id == restaurantMenuWithItems.RestaurantMenu.Id
+                                              select menu).SingleOrDefault();
+                                    context.RestaurantMenus.Remove(dbMenu);
+                                    // iterate through that menu's menu items
+                                    foreach (var menuItem in restaurantMenuWithItems.MenuItem)
+                                    {
+                                       var dbMenuItem = (from item in context.RestaurantMenuItems
+                                                         where item.Id == menuItem.Id
+                                                         select item).SingleOrDefault();
+                                        context.RestaurantMenuItems.Remove(dbMenuItem);
+                                        context.SaveChanges();
+                                    }
+                                    break;
+                            }
+                        }
+                        
+                        // Update menu items
+                        foreach (var restaurantMenuWithItems in restaurantMenuDomains)
+                        {
+                            foreach (var menuItem in restaurantMenuWithItems.MenuItem)
+                            {
+                                Flag flag = menuItem.Flag;
+                                switch (flag)
                                 {
                                     case Flag.Add:
-                                        dbBusinessHours.Add(businessHourDomains[i]);
+                                        // find the corresponding menu
+                                        var dbRestaurantMenu = (from menu in context.RestaurantMenus
+                                                                where menu.Id == restaurantMenuWithItems.RestaurantMenu.Id
+                                                                select menu).SingleOrDefault();
+                                        // reset flag
+                                        menuItem.Flag = 0;
+                                        dbRestaurantMenu.RestaurantMenuItems.Add(menuItem);
+                                        context.SaveChanges();
                                         break;
                                     case Flag.Edit:
-                                        // go through dbBusinessHours to find dbBusinessHour with the same id
-                                        // did not use foreach because it would require assignnment of each property of dbBusinessHours one by one
-                                        for (var j = 0; j < dbBusinessHours.Count; j++)
-                                        {
-                                            if (businessHourDomains[i].Id == dbBusinessHours[i].Id)
-                                            {
-                                                dbBusinessHours[i] = businessHourDomains[i];
-                                            }
-                                        }
+                                        // query for menu item with the same ID
+                                        var dbMenuItem = (from item in context.RestaurantMenuItems
+                                                          where item.Id == menuItem.Id
+                                                          select item).SingleOrDefault();
+                                        dbMenuItem.ItemName = menuItem.ItemName;
+                                        dbMenuItem.ItemPicture = menuItem.ItemPicture;
+                                        dbMenuItem.ItemPrice = menuItem.ItemPrice;
+                                        dbMenuItem.Tag = menuItem.Tag;
+                                        dbMenuItem.Description = menuItem.Description;
+                                        dbMenuItem.IsActive = menuItem.IsActive;
+                                        context.SaveChanges();
                                         break;
                                     case Flag.Delete:
-                                        foreach(var dbHour in dbBusinessHours)
-                                        {
-                                            if(businessHourDomains[i].Id == dbHour.Id)
-                                            {
-                                                dbBusinessHours.Remove(dbHour);
-                                            }
-                                        }
+                                        dbMenuItem = (from item in context.RestaurantMenuItems
+                                                      where item.Id == menuItem.Id
+                                                      select item).SingleOrDefault();
+                                        context.RestaurantMenuItems.Remove(dbMenuItem);
+                                        context.SaveChanges();
                                         break;
                                 }
                             }
-
-                            //Update menu
-                            /*for (var i = 0; i < restaurantMenuDomains.Count; i++)
-                            {
-                                Flag flag = restaurantMenuDomains[i].Flag;
-                                switch(flag)
-                                {
-                                    case Flag.Add:
-                                        // Add the menu
-                                        dbRestaurantMenus.Add(restaurantMenuDomains[i]);
-
-                                        // Add the items
-                                        //dbMenuItems.Add(restaurantMenuDomains[i].RestaurantMenuItems);
-                                        break;
-                                    case Flag.Edit:
-                                        break;
-                                    case Flag.Delete:
-                                        // Delete menu items associated with this menu
-                                        break;
-                                }
-                            }*/
-
-                            // Update menu items
-                            // Find restaurant's menu items
-
-
-                            // Then, find all menu items associated with each menu and turn that into a list
-
-
-                            restaurantContext.SaveChanges();
-
-                            ResponseDto<bool> responseDto = new ResponseDto<bool>
-                            {
-                                Data = true,
-                                Error = null
-                            };
-                            return responseDto;
                         }
+                        
 
-                        catch (Exception)
+                        context.SaveChanges();
+                        dbContextTransaction.Commit();
+
+                        ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
-                            dbContextTransaction.Rollback();
+                            Data = true,
+                            Error = null
+                        };
+                        return responseDto;
+                    }
 
-                            ResponseDto<bool> responseDto = new ResponseDto<bool>
-                            {
-                                Data = false,
-                                Error = "Something went wrong. Please try again later."
-                            };
-                            return responseDto;
-                        }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+
+                        ResponseDto<bool> responseDto = new ResponseDto<bool>
+                        {
+                            Data = false,
+                            Error = "Something went wrong. Please try again later."
+                        };
+                        return responseDto;
                     }
                 }
             }
+            
         }
 
         //ImageUploadGateway for profile

@@ -125,6 +125,7 @@ export const store = new Vuex.Store({
     },
     // Constants are data that are non-changing
     constants: {
+      defaultProfilePicturePath: '@/assets/DefaultProfileImage.png',
       securityQuestions: [{
         id: 0,
         questions: [
@@ -155,7 +156,7 @@ export const store = new Vuex.Store({
           },
           {
             id: 6,
-            question: 'What is your favorite spots team?'
+            question: 'What is your favorite sports team?'
           }
         ]
       },
@@ -172,7 +173,7 @@ export const store = new Vuex.Store({
           },
           {
             id: 9,
-            question: 'What is the name of yur first pet?'
+            question: 'What is the name of your first pet?'
           }
         ]
       }],

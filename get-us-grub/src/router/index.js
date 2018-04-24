@@ -194,15 +194,6 @@ export default new Router({
       }
     },
     {
-      path: '/SsoTestingHub',
-      name: 'SsoTestingHub',
-      component: SsoTestingHub,
-      beforeEnter: (to, from, next) => {
-        document.title = 'SsoTestingHub'
-        next()
-      }
-    },
-    {
       path: '*'
     }
   ]

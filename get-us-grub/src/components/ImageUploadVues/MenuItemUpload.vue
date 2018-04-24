@@ -8,21 +8,17 @@
             <br/>
             <v-flex xs1 sm4 offset-sm1>
               <v-flex sm2>
-              <input id="uploadImage" name="imaageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
-              </v-flex>
-              <div v-if="show===true">
-                 <v-text-field label="Menu Name" v-model="menuItem" required />
-                 <v-text-field label="Menu Item" v-model="itemName" required />
-              </div>
+              <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
               <v-btn id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">Upload Image</v-btn>
               </v-flex>
-              <v-flex xs20 sm35 offset-sm5>
-                <img id="uploadPreview" :src="imageData" alt="ProfileImage"/>
+              </v-flex>
+              <v-flex xs15 sm15 offset-sm2>
+                  <img id="previewImage" class="preview" :src="imageData" height="100" width="100"/>
               </v-flex>
             <br/>
           </v-card>
         </v-dialog>
-          <br/>
+      <br/>
   </div>
 </template>
 
@@ -40,7 +36,8 @@ export default {
     selectedFile: null,
     responseDataStatus: '',
     responseData: '',
-    test: null
+    test: null,
+    imageData: ''// Stores in base 64 format of image
   }),
   methods: {
     beforeCreate () {
@@ -56,6 +53,17 @@ export default {
     },
     StoreSelectedFile: function (event) {
       this.selectedFile = event.target.files[0]
+      this.previewImage(event)
+    },
+    previewImage: function (event) {
+      var input = event.target // References the DOM input element
+      if (input.files[0]) {
+        var reader = new FileReader() // Read image and convert to base64
+        reader.onload = (e) => {
+          this.imageData = e.target.result // Read image as base64
+        }
+        reader.readAsDataURL(input.files[0]) // Read as data url (base64 format)
+      }
     },
     SubmitImageUpload: function () {
       var formData = new FormData()

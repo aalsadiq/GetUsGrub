@@ -63,6 +63,7 @@
 
 <script>
 import jwt from 'jsonwebtoken'
+import axios from 'axios'
 export default {
   name: 'admin-header',
   showImageUpload: false,
@@ -84,20 +85,20 @@ export default {
       output: ''
     }
   },
-  // logout () {
-  //     axios.post('http://localhost:8081/Logout', {}, {
-  //       headers: {
-  //         Authorization: `Bearer ${this.$store.state.authenticationToken}`
-  //       }
-  //     }).then(response => {
-  //       this.$store.dispatch('setAuthenticationToken', null)
-  //       // Force reload to clear cache
-  //       location.reload()
-  //       this.$router.push({path: '/'})
-  //     }).catch(error => {
-  //       console.log(error.response)
-  //     })
-  //   },
+  logout () {
+    axios.post('http://localhost:8081/Logout', {}, {
+      headers: {
+        Authorization: `Bearer ${this.$store.state.authenticationToken}`
+      }
+    }).then(response => {
+      this.$store.dispatch('setAuthenticationToken', null)
+      // Force reload to clear cache
+      location.reload()
+      this.$router.push({path: '/'})
+    }).catch(error => {
+      console.log(error.response)
+    })
+  },
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
       this.$router.push({path: '/Unauthorized'})

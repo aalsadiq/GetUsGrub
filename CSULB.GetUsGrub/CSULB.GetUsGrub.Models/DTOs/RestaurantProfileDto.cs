@@ -12,16 +12,17 @@ namespace CSULB.GetUsGrub.Models
     {
         
         // Automatic properties
-        public string Username { get; set; }
         public string DisplayName { get; set; }
+        public string DisplayPicture { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
         public RestaurantDetail Details { get; set; }
         public GeoCoordinates GeoCoordinates { get; set; }
-        public Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> MenuDictionary { get; set; }
+        public IList<RestaurantMenuWithItems> RestaurantMenusList { get; set; }
+        //public Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary
         public IList<BusinessHour> BusinessHours { get; set; }
-        //public IList<RestaurantMenu> RestaurantMenus { get; set; }
-        //public IList<RestaurantMenuItem> RestaurantMenuItems { get; set; }
+        //public ICollection<RestaurantMenu> RestaurantMenus { get; set; }
+        //public ICollection<RestaurantMenuItem> RestaurantMenuItems { get; set; }
 
         // Constructors
         public RestaurantProfileDto() { }
@@ -38,13 +39,15 @@ namespace CSULB.GetUsGrub.Models
             RestaurantMenuItems = restaurantMenuItems;
         }*/
 
-        public RestaurantProfileDto(RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours, Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary)
+        public RestaurantProfileDto(UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours, IList<RestaurantMenuWithItems> restaurantMenusList)
         {
+            DisplayName = userProfile.DisplayName;
+            DisplayPicture = userProfile.DisplayPicture;
             PhoneNumber = restaurantProfile.PhoneNumber;
             Address = restaurantProfile.Address;
             Details = restaurantProfile.Details;
             BusinessHours = businessHours;
-            MenuDictionary = menuDictionary;
+            RestaurantMenusList = restaurantMenusList;
         }
     }
 }

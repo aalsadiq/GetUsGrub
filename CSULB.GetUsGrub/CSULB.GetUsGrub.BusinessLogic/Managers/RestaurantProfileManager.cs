@@ -14,19 +14,27 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class RestaurantProfileManager : IProfileManager<RestaurantProfileDto>
     {
-        public ResponseDto<RestaurantProfileDto> GetProfile(string username)
+        public ResponseDto<RestaurantProfileDto> GetProfile(string token)
         {
-            // Retrieve profile from database
-            var profileGateway = new RestaurantProfileGateway();
+            // Retrieve account by username
+            var userGateway = new UserGateway();
 
-            var responseDtoFromGateway = profileGateway.GetRestaurantProfileByUsername(username);
+            var tokenService = new TokenService();
 
-            return responseDtoFromGateway;
+            var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
+
+            // Retrieve restaurant profile from database
+            var restaurantProfileGateway = new RestaurantProfileGateway();
+
+            var restaurantProfileResponseDto = restaurantProfileGateway.GetRestaurantProfileById(userAccountResponseDto.Data.Id);
+
+            return restaurantProfileResponseDto;
         }
 
-        public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto)
+        public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto, string token)
         {
-            // Prelogic validation strategy TODO: @andrew move this to after the 
+            var geocodeService = new GoogleGeocodeService();
+
             var editRestaurantProfilePreLogicValidationStrategy = new EditRestaurantUserProfilePreLogicValidationStrategy(restaurantProfileDto);
 
             var result = editRestaurantProfilePreLogicValidationStrategy.ExecuteStrategy();
@@ -40,31 +48,49 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Extract DTO contents and map DTO to domain model
+            // Retrieve account by username
+            var userGateway = new UserGateway();
 
-            var username = restaurantProfileDto.Username;
+            var tokenService = new TokenService();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
+
+            // Extrant user profile domain
+            var userProfileDomain = new UserProfile
+            {
+                DisplayName = restaurantProfileDto.DisplayName
+            };
+
+            var geocodeResponse = geocodeService.Geocode(restaurantProfileDto.Address);
+            if (geocodeResponse.Error != null)
+            {
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
 
             // Extract restaurant profile domain
             var restaurantProfileDomain = new RestaurantProfile(
                 restaurantProfileDto.PhoneNumber,
                 restaurantProfileDto.Address,
-                restaurantProfileDto.Details,
-                restaurantProfileDto.GeoCoordinates.Latitude,
-                restaurantProfileDto.GeoCoordinates.Longitude);
+                restaurantProfileDto.Details);
+
+            restaurantProfileDomain.GeoCoordinates = new GeoCoordinates(geocodeResponse.Data.Latitude, geocodeResponse.Data.Longitude);
 
             // Extract business hours domains
             var businessHourDomains = restaurantProfileDto.BusinessHours;
 
 
             // Extract restaurant menu dictionary
-            var restaurantMenuDomains = restaurantProfileDto.MenuDictionary;
-
-            // Extract menu items
+            var restaurantMenuDomains = restaurantProfileDto.RestaurantMenusList;
 
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(username, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfileById(userAccountResponseDto.Data.Id, userProfileDomain, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
 
             return responseDtoFromGateway;
         }

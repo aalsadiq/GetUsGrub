@@ -59,11 +59,18 @@ export const store = new Vuex.Store({
         createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant'
       },
       foodPreferences: {
-        getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences'
+        getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',
+        editPreferences: 'http://localhost:8081/FoodPreferences/Edit'
       },
       restaurantSelection: {
         unregisteredUser: 'http://localhost:8081/RestaurantSelection/Unregistered/',
         registeredUser: 'http://localhost:8081/RestaurantSelection/Registered/'
+      },
+      profileManagement: {
+        userProfile: 'http://localhost:8081/Profile/User',
+        updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
+        restaurantProfile: 'http://localhost:8081/Profile/Restaurant',
+        updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit'
       }
     },
     // Rules for validations

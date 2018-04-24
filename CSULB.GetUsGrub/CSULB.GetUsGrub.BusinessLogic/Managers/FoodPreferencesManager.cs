@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
+using System;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -17,8 +18,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username"></param>
         /// <returns>Food Preferences DTO within the Response DTO</returns>
-        public ResponseDto<ICollection<string>> GetFoodPreferences(string username)
+        public ResponseDto<ICollection<string>> GetFoodPreferences(string tokenString)
         {
+            // Extract username from token string
+            var tokenService = new TokenService();
+            var username = tokenService.GetTokenUsername(tokenString);
+
             using (var gateway = new UserGateway())
             {
                 // Call the user gateway to use the method to get food preferences by username
@@ -39,6 +44,40 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 Error = "Something went wrong."
             };
+        }
+
+        /// <summary>
+        /// Method to edit user's food preferences
+        /// </summary>
+        /// <param name="foodPreferencesDto"></param>
+        /// <returns></returns>
+        public ResponseDto<bool> EditFoodPreferences(string tokenString, FoodPreferencesDto foodPreferencesDto)
+        {
+            // Extract username from token string
+            var tokenService = new TokenService();
+            var username = tokenService.GetTokenUsername(tokenString);
+
+            try
+            {
+                // Open the user gateway
+                var gateway = new UserGateway();
+
+                // Get list of updated food preferences from dto
+                var updatedFoodPreferences = foodPreferencesDto.FoodPreferences;
+
+                // Call gateway to update user's food preferences
+                var result = gateway.EditFoodPreferencesByUsername(username, updatedFoodPreferences);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error =  "Something went wrong; Edit Food Preferences."
+                };
+            }  
         }
     }
 }

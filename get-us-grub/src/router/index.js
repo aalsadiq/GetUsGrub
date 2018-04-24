@@ -29,6 +29,7 @@ import TestProfile from '@/components/Profile/TestProfile.vue'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/TestProfile',
@@ -155,16 +156,6 @@ export default new Router({
         next()
       }
     },
-    // {
-    //   path: '/FoodPreferences',
-    //   name: 'FoodPreferences',
-    //   component: FoodPreferences
-    // },
-    // {
-    //   path: '/EditFoodPreferences',
-    //   name: 'EditFoodPreferences',
-    //   component: EditFoodPreferences
-    // },
     {
       path: '/FoodPreferences',
       name: 'FoodPreferences',

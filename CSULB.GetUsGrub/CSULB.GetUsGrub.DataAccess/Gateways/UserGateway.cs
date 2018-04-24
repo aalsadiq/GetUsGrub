@@ -37,8 +37,8 @@ namespace CSULB.GetUsGrub.DataAccess
             try
             {
                 var userAccount = (from account in context.UserAccounts
-                                    where account.Username == username
-                                    select account).FirstOrDefault();
+                                   where account.Username == username
+                                   select account).FirstOrDefault();
 
                 // Return a ResponseDto with a UserAccount model
                 return new ResponseDto<UserAccount>()
@@ -84,8 +84,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Get Id from UserAccount
                     var userId = (from account in context.UserAccounts
-                                    where account.Username == userAccount.Username
-                                    select account.Id).SingleOrDefault();
+                                  where account.Username == userAccount.Username
+                                  select account.Id).SingleOrDefault();
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
@@ -110,8 +110,8 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         // Get SecurityQuestionId for each securityAnswerSalt
                         var securityQuestionId = (from query in updatedSecurityQuestions
-                                                    where query.Question == securityQuestions[i].Question
-                                                    select query.Id).SingleOrDefault();
+                                                  where query.Question == securityQuestions[i].Question
+                                                  select query.Id).SingleOrDefault();
 
                         // Set SecurityQuestionId for SecurityAnswerSalt
                         securityAnswerSalts[i].Id = securityQuestionId;
@@ -151,7 +151,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 }
             }
         }
-        
+
         /// <summary>
         /// The StoreRestaurantUser method.
         /// Contains logic to store a restaurant user to the database.
@@ -184,8 +184,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Get Id from UserAccount
                     var userId = (from account in context.UserAccounts
-                                    where account.Username == userAccount.Username
-                                    select account.Id).SingleOrDefault();
+                                  where account.Username == userAccount.Username
+                                  select account.Id).SingleOrDefault();
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
@@ -211,16 +211,16 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Get SecurityQuestions in database
                     var queryable = (from question in context.SecurityQuestions
-                                        where question.UserId == userId
-                                        select question).ToList();
+                                     where question.UserId == userId
+                                     select question).ToList();
 
                     // Add SecurityAnswerSalts
                     for (var i = 0; i < securityQuestions.Count; i++)
                     {
                         // Get SecurityQuestionId for each securityAnswerSalt
                         var securityQuestionId = (from query in queryable
-                                                    where query.Question == securityQuestions[i].Question
-                                                    select query.Id).SingleOrDefault();
+                                                  where query.Question == securityQuestions[i].Question
+                                                  select query.Id).SingleOrDefault();
 
                         // Set SecurityQuestionId for SecurityAnswerSalt
                         securityAnswerSalts[i].Id = securityQuestionId;
@@ -296,8 +296,8 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Get Id from UserAccount
                     var userId = (from account in context.UserAccounts
-                                    where account.Username == userAccount.Username
-                                    select account.Id).SingleOrDefault();
+                                  where account.Username == userAccount.Username
+                                  select account.Id).SingleOrDefault();
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
@@ -815,14 +815,19 @@ namespace CSULB.GetUsGrub.DataAccess
             try
             {
                 // Makes sure user account exists
-                var userId = (from account in context.UserAccounts
-                                   where account.Username == username
-                                   select account.Id).FirstOrDefault();
+                var dbUser = (from account in context.UserAccounts
+                              where account.Username == username
+                              select account).FirstOrDefault();
 
                 // Get list of preferences pertaining to user
-                var preferences = (from foodPreferences in context.FoodPreferences
-                                   where foodPreferences.UserId == userId
-                                   select foodPreferences.Preference).ToList();
+                var dbPreferences = dbUser.FoodPreferences;
+
+                // Foreach to extract preference string from preference objects
+                var preferences = new List<string>();
+                foreach (var preference in dbPreferences)
+                {
+                    preferences.Add(preference.Preference);
+                }
 
                 // Return response dto with food preferences dto
                 return new ResponseDto<FoodPreferencesDto>
@@ -838,6 +843,72 @@ namespace CSULB.GetUsGrub.DataAccess
                     Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
+        }
+    
+        /// <summary>
+        /// Update the user's list of food preferences
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="foodPreferencesDto"></param>
+        /// <returns>Boolean determining success of transaction </returns>
+        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> updatedFoodPreferences)
+        {         
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Get the user account associated with the username
+                    var userAccount = (from account in context.UserAccounts
+                                        where account.Username == username
+                                        select account).FirstOrDefault();
+
+                    // Get the current list of food preferences
+                    var currentFoodPreferences = userAccount.FoodPreferences;
+
+                    // Compare current food preferences with updated list
+                    foreach (var preference in currentFoodPreferences.ToList())
+                    {
+                        var preferenceName = preference.Preference;
+
+                        // Remove unwanted preferences not in the updated list
+                        if (!updatedFoodPreferences.Contains(preferenceName))
+                        {
+                            context.FoodPreferences.Attach(preference);
+                            context.FoodPreferences.Remove(preference);
+                        }
+
+                        // Remove duplicated preferences
+                        if (updatedFoodPreferences.Contains(preferenceName))
+                        {
+                            updatedFoodPreferences.Remove(preferenceName);
+                        }
+                    }
+
+                    // Update current list of food preferences
+                    foreach (var preference in updatedFoodPreferences)
+                    {
+                        currentFoodPreferences.Add(new FoodPreference(preference));
+                    }
+
+                    // Save changes and return response dto with boolean true
+                    context.SaveChanges();
+                    dbContextTransaction.Commit();
+                    return new ResponseDto<bool>
+                    {
+                        Data = true
+                    };
+                }
+                catch (Exception e)
+                {
+                    // If an error occurs, roll back and return response dto with boolean false
+                    dbContextTransaction.Rollback();
+                    return new ResponseDto<bool>
+                    {
+                        Data = false,
+                        Error = e.Message
+                    };
+                }
+            }     
         }
 
         /// <summary>

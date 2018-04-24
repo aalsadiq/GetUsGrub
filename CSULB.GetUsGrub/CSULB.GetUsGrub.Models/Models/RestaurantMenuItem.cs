@@ -44,22 +44,9 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public RestaurantMenuItem() { }
 
-        // For getting
-        public RestaurantMenuItem(int? id, string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive)
-        {
-            Id = Id;
-            ItemName = itemName;
-            ItemPrice = itemPrice;
-            ItemPicture = itemPicture;
-            Tag = tag;
-            Description = description;
-            IsActive = isActive;
-        }
-
-        // For editing
         public RestaurantMenuItem(int? id, string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive, Flag flag)
         {
-            Id = Id;
+            Id = id;
             ItemName = itemName;
             ItemPrice = itemPrice;
             ItemPicture = itemPicture;

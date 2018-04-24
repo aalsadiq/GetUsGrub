@@ -76,10 +76,9 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Act
             var result = Assert.Throws<SecurityException>(() => manager.CheckAccess(context)).Message;
-            var expected = "User is invalid.";
 
             // Assert
-            result.Should().Be(expected);
+            result.Should().NotBeNull();
         }
 
         [Fact]
@@ -98,10 +97,9 @@ namespace CSULB.GetUsGrub.UnitTests
 
             // Act
             var result = Assert.Throws<SecurityException>(() => manager.CheckAccess(context)).Message;
-            var expected = "User is invalid.";
 
             // Assert
-            result.Should().Be(expected);
+            result.Should().NotBeNull();
         }
     }
 }

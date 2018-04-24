@@ -16,7 +16,6 @@ namespace CSULB.GetUsGrub
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("Sso")]
     public class SsoController : ApiController
     {
         /// <summary>
@@ -59,42 +58,46 @@ namespace CSULB.GetUsGrub
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
-        
+
+        /// <summary>
+        /// The <c>Sso Login</c> method.
+        /// Endpoint for logging in with Sso credentials.
+        /// <para>
+        /// @author: Brian Fann
+        /// @updated: 04/24/2018
+        /// </para>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet]
         [ActionName("Login")]
-        [EnableCors(origins: "http://www.localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult Login(HttpRequestMessage request)
         {
             try
             {
-                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).IsValidPayload();
-                if (result.Data)
-                {
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
-            }
-            throw new NotImplementedException();
-        }
+                var tokenManager = new SsoTokenManager(request.Headers.Authorization.Parameter);
+                var payloadResult = tokenManager.IsValidPayload();
 
-        [HttpPost]
-        [Route("JwtLogin")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult JwtLogin(HttpRequestMessage request)
-        {
-            try
-            {
-                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageRegistrationToken();
+                if (!payloadResult.Data)
+                {
+                    return BadRequest(payloadResult.Error);
+                }
+
+                var tokenResult = tokenManager.ManageLoginToken();
+
+                if (tokenResult.Error != null)
+                {
+                    return BadRequest(tokenResult.Error);
+                }
+
+                return Ok(tokenResult.Data.TokenString);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
-            throw new NotImplementedException();
         }
     }
 }

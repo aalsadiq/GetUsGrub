@@ -87,9 +87,19 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
+        /// <summary>
+        /// Generates an authentication token if the payload and credentails are valid.
+        /// <para>
+        /// @author: Brian Fann
+        /// @updated: 4/24/18
+        /// </para>
+        /// </summary>
+        /// <returns>An authentication token with the user's data</returns>
         public ResponseDto<AuthenticationTokenDto> ManageLoginToken()
         {
+            // TODO @Brian Disable reused tokens from re-authenticating users. [-Brian]
             var mappingResult = MapRequestJwtPayloadToSsoJwtPayload();
+
             if (mappingResult.Error != null)
             {
                 // Store invalid token into database
@@ -108,7 +118,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var payloadValidationStrategy = new SsoTokenRegistrationValidationStrategy(_ssoToken);
             var payloadResult = payloadValidationStrategy.ExecuteStrategy();
 
-            if (payloadResult.Data)
+            if (!payloadResult.Data)
             {
                 StoreInvalidToken();
 
@@ -118,28 +128,113 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
+            var isCredentialsValid = ValidateCredentials(payload);
+
+            if (!isCredentialsValid.Data)
+            {
+                return new ResponseDto<AuthenticationTokenDto>()
+                {
+                    Error = isCredentialsValid.Error
+                };
+            }
+            
+            return new AuthenticationTokenManager().CreateToken(payload.Username);
+        }
+
+        /// <summary>
+        /// Validates whether the payload's credentials are valid.
+        /// <para>
+        /// @author: Brian Fann
+        /// @updated: 4/24/18
+        /// </para>
+        /// </summary>
+        /// <param name="payload">Payload of token</param>
+        /// <returns>True if credentials are valid, false otherwise</returns>
+        private ResponseDto<bool> ValidateCredentials(SsoTokenPayloadDto payload)
+        {
             // Validate username and password
             var loginDto = new LoginDto(payload.Username, payload.Password);
             var accountValidationStrategy = new LoginPreLogicValidationStrategy(loginDto);
             var accountResult = accountValidationStrategy.ExecuteStrategy();
 
-            if (accountResult.Data)
+            if (!accountResult.Data)
             {
                 StoreInvalidToken();
 
-                return new ResponseDto<AuthenticationTokenDto>()
+                return new ResponseDto<bool>()
                 {
+                    Data = false,
                     Error = accountResult.Error
                 };
             }
 
-            throw new NotImplementedException();
+            using (var gateway = new AuthenticationGateway())
+            {
+                var userAccountResult = gateway.GetUserAccount(payload.Username);
+
+                if (userAccountResult.Error != null)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = userAccountResult.Error
+                    };
+                }
+
+                var userAccount = userAccountResult.Data;
+
+                // Check if user is disabled
+                //if (userAccount.IsActive == false)
+                //{
+                //    return new ResponseDto<bool>
+                //    {
+                //        Data = false,
+                //        Error = AuthenticationErrorMessages.INACTIVE_USER
+                //    };
+                //}
+
+                var saltResult = gateway.GetUserPasswordSalt(userAccount.Id);
+
+                // Check if salt exists
+                if (saltResult.Error != null)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = saltResult.Error
+                    };
+                }
+
+                // Hash the password and compare it against the database
+                var hashedPassword = new PayloadHasher().Sha256HashWithSalt(saltResult.Data.Salt, payload.Password);
+                var isPasswordMatching = hashedPassword == userAccount.Password;
+
+                if (!isPasswordMatching)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
+                    };
+                }
+            }
+
+            // Credentials are valid at this point
+            return new ResponseDto<bool>()
+            {
+                Data = true
+            };
         }
+
 
         /// <summary>
         /// Validates payload of Sso token.
+        /// <para>
+        /// @author: Brian Fann
+        /// @updated: 4/24/18
+        /// </para>
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if payload is valid, false otherwise</returns>
         public ResponseDto<bool> IsValidPayload()
         {
             var result = MapRequestJwtPayloadToSsoJwtPayload();
@@ -219,7 +314,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Extract payload from JwtSecurityToken
             var payload = jwt.Payload;
             var ssoTokenPayloadDto = new SsoTokenPayloadDto();
-            
+
             // Mapping required information in the payload to a data transfer object
             foreach (var keyValuePair in payload)
             {

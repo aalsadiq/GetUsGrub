@@ -32,7 +32,7 @@ export default {
   beforeCreate () {
     try {
       if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
-        this.$router.push('User')
+        this.$router.push({ path: '/User/Admin' })
       }
     } catch (ex) {}
   },

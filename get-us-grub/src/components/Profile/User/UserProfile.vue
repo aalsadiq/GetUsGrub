@@ -95,14 +95,14 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import ImageUpload from '@/components/ImageUploadVues/ImageUpload'
+import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 
 export default {
   name: 'UserProfile',
   components: {
     FoodPreferences,
-    ImageUpload
+    ProfileImageUpload
   },
   data () {
     return {

@@ -891,7 +891,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // If an error occurs, roll back and return response dto with boolean false
                     dbContextTransaction.Rollback();

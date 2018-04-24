@@ -2,7 +2,6 @@
 using CSULB.GetUsGrub.Models;
 using System;
 using System.IdentityModel.Services;
-using System.Security.Claims;
 using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Cors;

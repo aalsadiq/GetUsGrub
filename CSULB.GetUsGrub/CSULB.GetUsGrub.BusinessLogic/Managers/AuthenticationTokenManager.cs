@@ -55,7 +55,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var claimTransformer = new ClaimsTransformer();
             claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
             claimPrincipal.AddIdentity(claimIdentity);
-            claimPrincipal = claimTransformer.Authenticate("read", claimPrincipal);
+            claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Read, claimPrincipal);
 
 
             var claims = claimPrincipal.Claims;

@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// Create a new ClaimsPrincipal with the user's permission claims
     /// 
     /// @author: Rachel Dang
-    /// @updated: 3/21/18
+    /// @updated: 04/24/18
     /// </summary>
     public class ClaimsTransformer : ClaimsAuthenticationManager
     {

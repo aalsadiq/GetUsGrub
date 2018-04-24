@@ -45,19 +45,22 @@ export default {
     title: 'Edit Your Food Preferences',
     message: 'Checked elements will be saved as your updated food preferences.',
     foodPreferences: [],
-    checklist: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-Vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
-    foodPreferencesDto: {
-      foodPreferences: []
-    },
+    checklist: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
     response: false
   }),
 
   methods: {
-    update () {
-      axios.post(this.$store.state.urls.foodPreferences.editPreferences, {
-        username: jwt.decode(this.$store.state.authenticationToken).Username,
-        foodPreferencesDto: this.foodPreferencesDto
-      }).then(response => {
+    update: function () {
+      axios.post(this.$store.state.urls.foodPreferences.editPreferences,
+        {
+          'foodPreferences': this.foodPreferences
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
+            'Authorization': `Bearer ${this.$store.state.authenticationToken}`
+          }
+        }).then(response => {
         console.log(response.data)
         this.response = response.data
       }).catch(error => {

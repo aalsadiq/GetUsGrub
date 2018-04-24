@@ -71,6 +71,9 @@ export const store = new Vuex.Store({
         updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
         restaurantProfile: 'http://localhost:8081/Profile/Restaurant',
         updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit'
+      },
+      sso: {
+        login: 'http://localhost:8081/Sso/Login'
       }
     },
     // Rules for validations

@@ -65,15 +65,7 @@
     <Compile Include="Gateways\SsoGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Gateways\UserProfileGateway.cs" />
-    <Compile Include="Migrations\SsoDbContext\201804231122558_InitialDbCreation.cs" />
-    <Compile Include="Migrations\SsoDbContext\201804231122558_InitialDbCreation.Designer.cs">
-      <DependentUpon>201804231122558_InitialDbCreation.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
-    <Compile Include="Migrations\UserDbContext\201804231118343_InitialDbCreation.cs" />
-    <Compile Include="Migrations\UserDbContext\201804231118343_InitialDbCreation.Designer.cs">
-      <DependentUpon>201804231118343_InitialDbCreation.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -91,14 +83,6 @@
       <Project>{c93e53a0-06b5-484e-abeb-1cbcdeb40de5}</Project>
       <Name>CSULB.GetUsGrub.Models</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\SsoDbContext\201804231122558_InitialDbCreation.resx">
-      <DependentUpon>201804231122558_InitialDbCreation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\UserDbContext\201804231118343_InitialDbCreation.resx">
-      <DependentUpon>201804231118343_InitialDbCreation.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -71,6 +71,9 @@ export const store = new Vuex.Store({
         updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
         restaurantProfile: 'http://localhost:8081/Profile/Restaurant',
         updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit'
+      },
+      sso: {
+        login: 'http://localhost:8081/Sso/Login'
       }
     },
     // Rules for validations
@@ -125,6 +128,7 @@ export const store = new Vuex.Store({
     },
     // Constants are data that are non-changing
     constants: {
+      defaultProfilePicturePath: '@/assets/DefaultProfileImage.png',
       securityQuestions: [{
         id: 0,
         questions: [
@@ -155,7 +159,7 @@ export const store = new Vuex.Store({
           },
           {
             id: 6,
-            question: 'What is your favorite spots team?'
+            question: 'What is your favorite sports team?'
           }
         ]
       },
@@ -172,7 +176,7 @@ export const store = new Vuex.Store({
           },
           {
             id: 9,
-            question: 'What is the name of yur first pet?'
+            question: 'What is the name of your first pet?'
           }
         ]
       }],

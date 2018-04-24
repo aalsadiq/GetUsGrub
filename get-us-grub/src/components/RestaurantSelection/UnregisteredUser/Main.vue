@@ -27,7 +27,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #login-redirect {
   margin: 3.5em 0em -0.3em 0em;
   font-weight: bold;

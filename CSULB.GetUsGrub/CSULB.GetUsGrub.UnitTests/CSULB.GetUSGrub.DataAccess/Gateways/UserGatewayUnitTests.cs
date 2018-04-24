@@ -109,5 +109,44 @@ namespace CSULB.GetUsGrub.UnitTests
             result.Data.Should().NotBeNull();
             result.Error.Should().BeNull();
         }
+        
+        [Fact]
+        public void Should_ReturnError_When_InvalidUsernameIsPassedIn()
+        {
+            // Arrange
+            string username = "InvalidUser";
+            UserGateway gateway = new UserGateway();
+
+            // Act
+            var result = gateway.GetFoodPreferencesByUsername(username);
+
+            // Assert
+            result.Data.Should().BeNull();
+            result.Error.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Should_ReturnTrue_When_FoodPreferencesAreUpdated()
+        {
+            // Arrange
+            string username = "username1";
+            var preferencesToBeAdded = new List<string>
+            {
+                "Lacto-Vegetarian",
+                "Pescetarian",
+                "Vegan"
+            };
+            var preferencesToBeRemoved = new List<string>
+            {
+                "Halal"
+            };
+            UserGateway gateway = new UserGateway();
+
+            // Act
+            var result = gateway.EditFoodPreferencesByUsername(username, preferencesToBeAdded, preferencesToBeRemoved);
+
+            //result.Data.Should().BeTrue();
+            result.Error.Should().BeNull();
+        }
     }
 }

@@ -86,7 +86,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #display-name {
   font-size: 1.3em;
 }

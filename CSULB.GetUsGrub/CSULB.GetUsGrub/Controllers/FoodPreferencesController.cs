@@ -2,7 +2,6 @@
 using CSULB.GetUsGrub.Models;
 using System;
 using System.IdentityModel.Services;
-using System.Security.Claims;
 using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -10,20 +9,23 @@ using System.Web.Http.Cors;
 namespace CSULB.GetUsGrub.Controllers
 {
     /// <summary>
-    /// Controller to pages pertaining to Food Preferences
+    /// Controller to routes pertaining to Food Preferences
     /// 
     /// @author: Rachel Dang
-    /// @updated: 04/14/18
+    /// @updated: 04/24/18
     /// </summary>
     [RoutePrefix("FoodPreferences")]
     public class FoodPreferencesController : ApiController
     {
+        /// <summary>
+        /// Routes to the method to get user's list of food preferences
+        /// </summary>
+        /// <returns>HTTP response with or without user's list of food preferences</returns>
         [HttpGet]
-        //[AllowAnonymous]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]   
         [Route("GetPreferences")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult GetPreferences(string username)
+        public IHttpActionResult GetPreferences()
         {
             // Check if model is valid for the database
             if (!ModelState.IsValid)
@@ -33,9 +35,12 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
+                // Get token string from request header
+                var tokenString = Request.Headers.Authorization.Parameter;
+
                 // If model is valid, call manager to get preferences
                 var manager = new FoodPreferencesManager();
-                var preferences = manager.GetFoodPreferences(username);
+                var preferences = manager.GetFoodPreferences(tokenString);
 
                 // If there is an error in the response, return a bad request
                 if (preferences.Error != null)
@@ -46,15 +51,19 @@ namespace CSULB.GetUsGrub.Controllers
                 // Otherwise, return the preferences
                 return Ok(preferences.Data);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 // If any other error occurs, return a bad request
-                return BadRequest(exception.Message);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
 
+        /// <summary>
+        /// Routes to the method to edit user's list of current food preferencees
+        /// </summary>
+        /// <param name="foodPreferencesDto"></param>
+        /// <returns>HTTP response determining whether transaction was successful</returns>
         [HttpPost]
-        //[AllowAnonymous]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.UPDATE)]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         [Route("Edit")]
@@ -68,9 +77,12 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
+                // Get token string from request header
+                var tokenString = Request.Headers.Authorization.Parameter;
+
                 // If model is valid, call manager to get preferences
                 var manager = new FoodPreferencesManager();
-                var response = manager.EditFoodPreferences(foodPreferencesDto);
+                var response = manager.EditFoodPreferences(tokenString, foodPreferencesDto);
 
                 // If there is an error in the response, return a bad request
                 if (response.Error != null)
@@ -81,10 +93,10 @@ namespace CSULB.GetUsGrub.Controllers
                 // Otherwise, return the preferences
                 return Ok(response);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 // If any other error occurs, return a bad request
-                return BadRequest(exception.Message);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
     }

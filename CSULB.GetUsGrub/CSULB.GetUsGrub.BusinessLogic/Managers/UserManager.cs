@@ -55,7 +55,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.INDIVIDUAL));
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Individual));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
@@ -119,7 +119,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var claimsFactory = new ClaimsFactory();
             var dateTimeService = new DateTimeService();
             var geocodeService = new GoogleGeocodeService();
-            // TODO: @Jenn Make a call to Rachel's Food Preference Validator [-Jenn]
+
             // Validate data transfer object
             var restaurantResult = createRestaurantPreLogicValidationStrategy.ExecuteStrategy();
             if (restaurantResult.Error != null)
@@ -154,7 +154,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.RESTAURANT));
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Restaurant));
 
             // Call GeocodeService to get geocoordinates of the restaurant
             var geocodeResponse = geocodeService.Geocode(restaurantProfile.Address);
@@ -179,7 +179,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
                 securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
             }
-            // TODO: @Jenn Make a call to Rachel's Food Preference Validator [-Jenn]
+
             // Validate domain models
             var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);
             var validateResult = createRestaurantPostLogicValdiationStrategy.ExecuteStrategy();
@@ -317,7 +317,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table as administrator
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.ADMIN));
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Admin));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));

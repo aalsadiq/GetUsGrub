@@ -5,14 +5,11 @@
       <h1>{{ title }}</h1>
       <h3>{{ message }}</h3>
       <div id="text-divider">
-        <li v-for='preference in foodPreferences.reverse()' :key='preference'>{{ preference }}</li>
+        <li v-for='preference in foodPreferences' :key='preference'>{{ preference }}</li>
       </div>
       <div>
-        <router-link to="/Profile">
-          <v-btn dark=true>Back</v-btn>
-        </router-link>
         <router-link to=/FoodPreferences/Edit>
-          <v-btn dark=true>Edit</v-btn>
+          <v-btn :dark=true>Edit Food Preferences</v-btn>
         </router-link>
       </div>
     </div>
@@ -36,7 +33,7 @@ export default {
   data () {
     return {
       title: 'Your Food Preferences',
-      message: 'Here contains your list of dietary needs.',
+      message: 'Here contains your list of dietary preferences.',
       foodPreferences: [],
       errors: []
     }

@@ -21,9 +21,9 @@ namespace CSULB.GetUsGrub.Controllers
     {
         [HttpGet]
         [AllowAnonymous] // TODO: remember to change localhosts to 8080
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
         [Route("User")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
         public IHttpActionResult GetProfile()
         {
             if (!ModelState.IsValid)
@@ -51,9 +51,9 @@ namespace CSULB.GetUsGrub.Controllers
 
         [HttpPost]
         [AllowAnonymous] // TODO: Remove for deployment
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.UPDATE)]
         [Route("User/Edit")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.UPDATE)]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]   
         public IHttpActionResult EditProfile([FromBody] UserProfileDto userProfileDto)
         {
             if (!ModelState.IsValid)
@@ -104,7 +104,7 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                return Ok( "Image Upload complete!");
+                return Ok("Image Upload complete!");
             }
 
             catch (Exception ex)

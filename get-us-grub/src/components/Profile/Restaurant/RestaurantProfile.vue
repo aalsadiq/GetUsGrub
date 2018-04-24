@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container class="scroll-y" id="scroll-target">
-      <v-container id="user-profile">
+      <v-container id="restaurant-profile">
         <div id="profile-header">
           <v-flex xs12>
             <v-card>
@@ -20,7 +20,7 @@
                   <v-layout row justify-center>
                     <template>
                       <v-dialog v-model="dialog" persistent max-width="1000">
-                        <v-btn color="primary" dark slot="activator">Edit Profile Image</v-btn>
+                        <v-btn color="primary" slot="activator">Edit Profile Image</v-btn>
                         <v-card>
                           <v-layout wrap>
                             <image-upload />
@@ -54,7 +54,7 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="primary" @click.native="editUserProfile">Save</v-btn>
+                          <v-btn color="primary" @click.native="editRestaurantProfile">Save</v-btn>
                           <v-btn color="primary" @click.native="dialog2=false">Close</v-btn>
                         </v-card-actions>
                       </v-card>
@@ -72,20 +72,20 @@
                 <v-flex xs12>
                   <h3>Phone Number:</h3>
                   <p>
-                    {{ phoneNumber }}
+                    {{ profile.phoneNumber }}
                   </p>
                   <h3>Address:</h3>
-                  <p v-if='address.street2 === ""'>
-                    {{ address.street1 }},
-                    {{ address.city }}, {{ address.state }} {{ address.zip }}
+                  <p v-if='profile.address.street2 === ""'>
+                    {{ profile.address.street1 }},
+                    {{ profile.address.city }}, {{ profile.address.state }} {{ profile.address.zip }}
                   </p>
-                  <p v-if='address.street2 !== ""'>
-                    {{ address.street1 }},
-                    {{ address.street2 }},
-                    {{ address.city }}, {{ address.state }} {{ address.zip }}
+                  <p v-if='profile.address.street2 !== ""'>
+                    {{ profile.address.street1 }},
+                    {{ profile.address.street2 }},
+                    {{ profile.address.city }}, {{ profile.address.state }} {{ profile.address.zip }}
                   </p>
                   <h3>BusinessHours:</h3>
-                  <p v-for="businessHour in businessHours" :key="businessHour.day">
+                  <p v-for="businessHour in profile.businessHours" :key="businessHour.day">
                     {{ businessHour.day }}:
                     {{ businessHour.OpenTime }} -
                     {{ businessHour.CloseTime }}
@@ -102,20 +102,20 @@
                 <v-flex xs12>
                   <h3>Phone Number:</h3>
                   <p>
-                    {{ phoneNumber }}
+                    {{ profile.phoneNumber }}
                   </p>
                   <h3>Address:</h3>
-                  <p v-if='address.street2 === ""'>
-                    {{ address.street1 }},
-                    {{ address.city }}, {{ address.state }} {{ address.zip }}
+                  <p v-if='profile.address.street2 === ""'>
+                    {{ profile.address.street1 }},
+                    {{ profile.address.city }}, {{ profile.address.state }} {{ profile.address.zip }}
                   </p>
-                  <p v-if='address.street2 !== ""'>
-                    {{ address.street1 }},
-                    {{ address.street2 }},
-                    {{ address.city }}, {{ address.state }} {{ address.zip }}
+                  <p v-if='profile.address.street2 !== ""'>
+                    {{ profile.address.street1 }},
+                    {{ profile.address.street2 }},
+                    {{ profile.address.city }}, {{ profile.address.state }} {{ profile.address.zip }}
                   </p>
                   <h3>BusinessHours:</h3>
-                  <p v-for="businessHour in businessHours" :key="businessHour.day">
+                  <p v-for="businessHour in profile.businessHours" :key="businessHour.day">
                     {{ businessHour.day }}:
                     {{ businessHour.OpenTime }} -
                     {{ businessHour.CloseTime }}
@@ -128,7 +128,7 @@
         <div id="food-preferences">
           <v-flex xs12>
             <v-card>
-              <!--<food-preferences />-->
+              <food-preferences />
             </v-card>
           </v-flex>
         </div>
@@ -141,46 +141,65 @@
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import ImageUpload from '@/components/ImageUploadVues/ImageUpload'
-// import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
+import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 export default {
   name: 'RestaurantProfile',
   components: {
-    // FoodPreferences,
+    FoodPreferences,
     ImageUpload
   },
   data () {
     return {
-      displayName: '',
-      displayPicture: '',
-      phoneNumber: '',
-      address: {
-        street1: '',
-        street2: '',
-        city: '',
-        state: '',
-        zip: null
-      },
-      details: {
-        avgFoodPrice: null,
-        hasReservations: null,
-        hasDelivery: null,
-        hasTakeOut: null,
-        acceptCreditCards: null,
-        attire: null,
-        servesAlcohol: null,
-        hasOutdoorSeating: null,
-        hasTv: null,
-        hasDriveThru: null,
-        caters: null,
-        allowsPets: null,
-        foodType: ''
-      },
-      restaurantMenusList: [],
-      businessHours: [],
-      businessHour: {
-        day: '',
-        openTime: '',
-        closeTime: ''
+      profile: {
+        displayName: '',
+        displayPicture: '',
+        phoneNumber: '',
+        address: {
+          street1: '',
+          street2: '',
+          city: '',
+          state: '',
+          zip: null
+        },
+        details: {
+          avgFoodPrice: null,
+          hasReservations: null,
+          hasDelivery: null,
+          hasTakeOut: null,
+          acceptCreditCards: null,
+          attire: null,
+          servesAlcohol: null,
+          hasOutdoorSeating: null,
+          hasTv: null,
+          hasDriveThru: null,
+          caters: null,
+          allowsPets: null,
+          foodType: ''
+        },
+        restaurantMenusList: [],
+        restaurantMenu: {
+          id: null,
+          menuName: '',
+          isActive: null,
+          flag: null
+        },
+        menuItem: {
+          id: null,
+          itemName: '',
+          itemPicture: '',
+          tag: '',
+          description: '',
+          isActive: null,
+          flag: null
+        },
+        businessHours: [],
+        businessHour: {
+          id: null,
+          day: '',
+          openTime: '',
+          closeTime: '',
+          flag: null
+        }
       },
       errors: '',
       dialog: false,
@@ -193,6 +212,39 @@ export default {
     }
     try {
       if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+        axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.authenticationToken}`
+          }
+        }).then(response => {
+          console.log(response.data.restaurantMenusList)
+          this.profile = response.data
+        }).catch(error => {
+          try {
+            if (error.response.status === 401) {
+              // Route to Unauthorized page
+              this.$router.push({ path: '/Unauthorized' })
+            }
+            if (error.response.status === 403) {
+              // Route to Forbidden page
+              this.$router.push({ path: '/Forbidden' })
+            }
+            if (error.response.status === 404) {
+              // Route to ResourceNotFound page
+              this.$router.push({ path: '/ResourceNotFound' })
+            }
+            if (error.response.status === 500) {
+              // Route to InternalServerError page
+              this.$router.push({ path: '/InternalServerError' })
+            } else {
+              this.errors = JSON.parse(JSON.parse(error.response.data.message))
+            }
+            Promise.reject(error)
+          } catch (ex) {
+            this.errors = error.response.data
+            Promise.reject(error)
+          }
+        })
       } else {
         console.log('forbidden else')
         this.$router.push({ path: '/Forbidden' })
@@ -203,41 +255,9 @@ export default {
     }
   },
   created () {
-    axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
-      headers: {
-        Authorization: `Bearer ${this.$store.state.authenticationToken}`
-      }
-    }).then(response => {
-      this.profile = response.data
-    }).catch(error => {
-      try {
-        if (error.response.status === 401) {
-          // Route to Unauthorized page
-          this.$router.push({ path: '/Unauthorized' })
-        }
-        if (error.response.status === 403) {
-          // Route to Forbidden page
-          this.$router.push({ path: '/Forbidden' })
-        }
-        if (error.response.status === 404) {
-          // Route to ResourceNotFound page
-          this.$router.push({ path: '/ResourceNotFound' })
-        }
-        if (error.response.status === 500) {
-          // Route to InternalServerError page
-          this.$router.push({ path: '/InternalServerError' })
-        } else {
-          this.errors = JSON.parse(JSON.parse(error.response.data.message))
-        }
-        Promise.reject(error)
-      } catch (ex) {
-        this.errors = error.response.data
-        Promise.reject(error)
-      }
-    })
   },
   methods: {
-    editUserProfile: function () {
+    editRestaurantProfile: function () {
       axios.post(this.$store.state.urls.profileManagement.updateRestaurantProfile,
         {
           displayName: this.newDisplayName
@@ -289,7 +309,7 @@ export default {
   overflow-x: hidden;
 }
 
-#user-profile {
+#restaurant-profile {
   max-width: 1200px;
   margin: auto;
 }

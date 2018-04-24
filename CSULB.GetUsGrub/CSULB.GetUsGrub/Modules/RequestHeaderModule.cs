@@ -4,6 +4,16 @@ using System.Web;
 
 namespace CSULB.GetUsGrub
 {
+    /// <summary>
+    /// An Http Module to ensure that all incoming request headers are accepted. Also sends back a success for preflight requests.
+    /// 
+    /// CURRENTLY NOT IN USE. TO RE-ENABLE, UNCOMMENT THE SECTION INJECTING THIS MODULE IN WEB.CONFIG.
+    /// HOWEVER, THERE IS CURRENTLY AN ISSUE WITH THIS THAT BREAKS LOGIN AND REGISTRATION FUNCTIONALITY.
+    /// <para>
+    /// @author: Brian Fann
+    /// @updated: 4/24/18
+    /// </para>
+    /// </summary>
     internal class RequestHeaderModule : IHttpModule
     {
         private bool IsAcceptedHeader(HttpRequest request, string headerType, ICollection<string> acceptedHeaders)
@@ -59,7 +69,7 @@ namespace CSULB.GetUsGrub
 
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += OnHttpRequest;
+            //context.BeginRequest += OnHttpRequest;
         }
     }
 }

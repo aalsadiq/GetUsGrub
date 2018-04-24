@@ -308,7 +308,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
                             Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Error = GeneralErrorMessages.GENERAL_ERROR
                         };
                         return responseDto;
                     }

@@ -1,14 +1,23 @@
 <template>
   <div id = 'sso-login'>
     <app-header />
-    <div id = 'login-card' align='center' v-if='isLoading'>
+    <div id = 'login-card' align='center'>
       <v-flex xs8>
         <!-- Title bar for the Food Preferences -->
         <v-card id = 'login-message'>
-          <v-card-title>
-            Please wait while we securely log you in...
-          </v-card-title>
-          <v-progress-circular :size=50 indeterminate color="primary"></v-progress-circular>
+          <div v-if='isLoading'>
+            <v-avatar :size=250 :tile='true'><img src="@/assets/GetUsGrub-Food.png"></v-avatar>
+            <v-card-title>
+              Please wait while we securely log you in...
+            </v-card-title>
+            <v-progress-circular :size=50 indeterminate color="primary"></v-progress-circular>
+          </div>
+          <div v-if='!isLoading'>
+            <v-avatar :size=250><img src="@/assets/GetUsGrub-Sad.png"></v-avatar>
+            <v-card-title>
+              An error has occurred. Please try logging in.
+            </v-card-title>
+          </div>
         </v-card>
       </v-flex>
     </div>
@@ -47,8 +56,9 @@ export default {
       this.$store.state.username = jwt.decode(response.data)['Username']
       this.$router.push({path: '/'})
     }).catch(ex => {
+      this.isLoading = false
     })
-    console.log(jwt)
+    console.log(queryJwt)
   }
 }
 </script>

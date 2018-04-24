@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -84,6 +85,55 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 Data = new UserAccountDto(username: _ssoToken.SsoTokenPayloadDto.Username, password: _ssoToken.SsoTokenPayloadDto.Password, roleType: _ssoToken.SsoTokenPayloadDto.RoleType)
             };
+        }
+
+        public ResponseDto<AuthenticationTokenDto> ManageLoginToken()
+        {
+            var mappingResult = MapRequestJwtPayloadToSsoJwtPayload();
+            if (mappingResult.Error != null)
+            {
+                // Store invalid token into database
+                StoreInvalidToken();
+
+                return new ResponseDto<AuthenticationTokenDto>()
+                {
+                    Error = mappingResult.Error
+                };
+            }
+
+            _ssoToken.SsoTokenPayloadDto = mappingResult.Data;
+
+            // Validate payload
+            var payload = _ssoToken.SsoTokenPayloadDto;
+            var payloadValidationStrategy = new SsoTokenRegistrationValidationStrategy(_ssoToken);
+            var payloadResult = payloadValidationStrategy.ExecuteStrategy();
+
+            if (payloadResult.Data)
+            {
+                StoreInvalidToken();
+
+                return new ResponseDto<AuthenticationTokenDto>()
+                {
+                    Error = payloadResult.Error
+                };
+            }
+
+            // Validate username and password
+            var loginDto = new LoginDto(payload.Username, payload.Password);
+            var accountValidationStrategy = new LoginPreLogicValidationStrategy(loginDto);
+            var accountResult = accountValidationStrategy.ExecuteStrategy();
+
+            if (accountResult.Data)
+            {
+                StoreInvalidToken();
+
+                return new ResponseDto<AuthenticationTokenDto>()
+                {
+                    Error = accountResult.Error
+                };
+            }
+
+            throw new NotImplementedException();
         }
 
         /// <summary>

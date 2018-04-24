@@ -280,7 +280,59 @@ export const store = new Vuex.Store({
         5,
         10,
         15
-      ]
+      ],
+      restaurantDetails: [{
+        property: 'avgFoodPrice',
+        displayString: 'Average Food Price'
+      },
+      {
+        property: 'hasReservations',
+        displayString: 'Reservations'
+      },
+      {
+        property: 'hasDelivery',
+        displayString: 'Delivery'
+      },
+      {
+        property: 'hasTakeOut',
+        displayString: 'Take-out'
+      },
+      {
+        property: 'acceptCreditCards',
+        displayString: 'Accept Credit Cards'
+      },
+      {
+        property: 'attire',
+        displayString: 'Attire'
+      },
+      {
+        property: 'servesAlcohol',
+        displayString: 'Serves Alcohol'
+      },
+      {
+        property: 'hasOutdoorSeating',
+        displayString: 'Outdoor Seating'
+      },
+      {
+        property: 'hasTv',
+        displayString: 'TV'
+      },
+      {
+        property: 'hasDriveThru',
+        displayString: 'Drive-Thru'
+      },
+      {
+        property: 'caters',
+        displayString: 'Caters'
+      },
+      {
+        property: 'allowsPets',
+        displayString: 'Allow Pets'
+      },
+      {
+        property: 'foodType',
+        displayString: 'Food Type'
+      }]
     }
   },
   getters: {

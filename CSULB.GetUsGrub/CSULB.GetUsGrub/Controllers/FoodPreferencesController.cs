@@ -2,7 +2,6 @@
 using CSULB.GetUsGrub.Models;
 using System;
 using System.IdentityModel.Services;
-using System.Security.Claims;
 using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -20,9 +19,9 @@ namespace CSULB.GetUsGrub.Controllers
     {
         [HttpGet]
         //[AllowAnonymous]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         [Route("GetPreferences")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         public IHttpActionResult GetPreferences()
         {
             // Check if model is valid for the database

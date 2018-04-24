@@ -1,7 +1,7 @@
 <template>
   <div id="menus-div">
     <div>
-    <v-dialog v-model="menuDialog" max-width="500px">
+    <v-dialog v-model="menuDialog" persistent max-width="500px">
       <v-card>
         <v-card-title>
           <span class="headline">{{ formMenuTitle }}</span>
@@ -136,7 +136,6 @@
                 <v-list-tile-sub-title class="text--primary">${{ item.itemPrice }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
-              <v-divider v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length"></v-divider>
               </v-list-tile-content>
               <div v-if="isEdit">
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -162,7 +161,6 @@
                 <v-list-tile-sub-title class="text--primary">${{ item.itemPrice }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
-              <v-divider v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length"></v-divider>
               </v-list-tile-content>
               <div v-if="isEdit">
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -173,6 +171,19 @@
                 </v-btn>
               </div>
             </v-list-tile>
+            <v-divider
+              v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length
+                    && isEdit"
+              :key="itemIndex"
+            >
+              </v-divider>
+            <v-divider
+              v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length
+                    && !isEdit
+                    && restaurantMenusList[menuIndex].menuItem[itemIndex].isActive"
+              :key="itemIndex"
+            >
+            </v-divider>
             </template>
           </v-list>
           </v-card>
@@ -243,7 +254,6 @@
                 <v-list-tile-sub-title class="text--primary">${{ item.itemPrice }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
-              <v-divider v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length"></v-divider>
               </v-list-tile-content>
               <div v-if="isEdit">
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -269,7 +279,6 @@
                 <v-list-tile-sub-title class="text--primary">${{ item.itemPrice }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
-              <v-divider v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length"></v-divider>
               </v-list-tile-content>
               <div v-if="isEdit">
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -280,6 +289,11 @@
                 </v-btn>
               </div>
             </v-list-tile>
+            <v-divider
+              v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length"
+              :key="itemIndex"
+            >
+            </v-divider>
             </template>
           </v-list>
           </v-card>
@@ -312,19 +326,16 @@ export default {
       formMenuIndex: null,
       editedIndex: -1,
       editedMenu: {
-        newItem: true,
         menuName: '',
         isActive: true,
         flag: 0
       },
       defaultMenu: {
-        newItem: true,
         menuName: '',
         isActive: true,
         flag: 0
       },
       editedMenuItem: {
-        newItem: true,
         itemName: '',
         itemPrice: 0,
         itemPicture: '',
@@ -334,7 +345,6 @@ export default {
         flag: 0
       },
       defaultMenuItem: {
-        newItem: true,
         itemName: '',
         itemPrice: 0,
         itemPicture: '',
@@ -367,7 +377,7 @@ export default {
       const index = this.restaurantMenusList.indexOf(menu)
       if (confirm('Are you sure you want to delete this menu?')) {
         try {
-          if (this.restaurantMenusList[index].restaurantMenu.newItem) {
+          if (this.restaurantMenusList[index].restaurantMenu.flag === 1) {
             this.restaurantMenusList.splice(index, 1)
           } else {
             this.restaurantMenusList[index].restaurantMenu.flag = 3
@@ -386,7 +396,9 @@ export default {
     },
     saveMenu () {
       if (this.editedIndex > -1) {
-        this.restaurantMenusList[this.editedIndex].restaurantMenu.flag = 2
+        if (this.restaurantMenusList[this.editedIndex].restaurantMenu.flag !== 1) {
+          this.restaurantMenusList[this.editedIndex].restaurantMenu.flag = 2
+        }
         this.restaurantMenusList[this.editedIndex].restaurantMenu.menuName = this.editedMenu.menuName
         this.restaurantMenusList[this.editedIndex].restaurantMenu.isActive = this.editedMenu.isActive
       } else {
@@ -413,7 +425,7 @@ export default {
       const index = this.restaurantMenusList[menuIndex].menuItem.indexOf(item)
       if (confirm('Are you sure you want to delete this menu item?')) {
         try {
-          if (this.restaurantMenusList[menuIndex].menuItem[index].newItem) {
+          if (this.restaurantMenusList[menuIndex].menuItem[index].flag === 1) {
             this.restaurantMenusList[menuIndex].menuItem.splice(index, 1)
           } else {
             this.restaurantMenusList[menuIndex].menuItem[index].flag = 3
@@ -432,7 +444,9 @@ export default {
     },
     saveMenuItem () {
       if (this.editedIndex > -1) {
-        this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].flag = 2
+        if (this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].flag !== 1) {
+          this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].flag = 2
+        }
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].itemName = this.editedMenuItem.itemName
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].itemPrice = this.editedMenuItem.itemPrice
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].itemPicture = this.editedMenuItem.itemPicture
@@ -451,9 +465,6 @@ export default {
 </script>
 
 <style scoped>
-#menus-div {
-  padding: 2em 0 0 0;
-}
 .menus-title {
   margin: auto;
 }
@@ -466,18 +477,6 @@ export default {
 }
 .inactive-avatar {
   opacity: 0.2;
-}
-.application .theme--light.divider,
-.theme--light .divider {
-    background-color: #424242;
-}
-.divider {
-    border: none;
-    display: block;
-    height: 1px;
-    min-height: 0px;
-    flex: 0.2;
-    width: 100%;
 }
 #inactive-menus {
   margin: 2em 0 0 0;

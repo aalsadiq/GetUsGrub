@@ -130,7 +130,7 @@ export default {
 <style>
 #login-div {
   padding: 2.5em 0 0 0;
-  margin: 2em 2em 0em 2em;
+  margin: 3.5em 2em 0em 2em;
 }
 #fields-div{
   padding: 2em ;

@@ -23,7 +23,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Checking if the Dto has all the information it needs
             var validateLoginDtoResult = loginPreLogicValidationStrategy.ExecuteStrategy();
-            if (validateLoginDtoResult.Error != null)
+            if (!validateLoginDtoResult.Data)
             {
                 return new ResponseDto<LoginDto>
                 {

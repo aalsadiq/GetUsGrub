@@ -48,7 +48,6 @@ namespace CSULB.GetUsGrub.Controllers
         }
 
         [HttpPost]
-        //
         [Route("RenewSession")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult Renewsession(HttpRequestMessage request)

@@ -1,17 +1,13 @@
 <template>
   <div>
-    <v-container class="scroll-y" id="scroll-target">
       <app-header/>
-      <v-container id="profile">
         <div v-if="profileType === 'user'">
           <user-profile/>
         </div>
         <div v-if="profileType === 'restaurant'">
           <restaurant-profile/>
         </div>
-      </v-container>
       <app-footer/>
-    </v-container>
   </div>
 </template>
 

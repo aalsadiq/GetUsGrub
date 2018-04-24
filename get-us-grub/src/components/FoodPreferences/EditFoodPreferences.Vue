@@ -19,7 +19,7 @@
           </v-form>
         </div>
         <div>
-          <router-link to="/FoodPreferences">
+          <router-link to="/Profile">
             <v-btn :dark=true>Cancel</v-btn>
           </router-link>
           <v-btn :dark=true @click="update">Save</v-btn>
@@ -69,19 +69,19 @@ export default {
     }
   },
 
-  // beforeCreate () {
-  //   if (this.$store.state.authenticationToken === null) {
-  //     this.$router.push({path: '/Unauthorized'})
-  //   }
-  //   try {
-  //     if (jwt.decode(this.$store.state.authenticationToken).UpdatePreferences === 'True') {
-  //     } else {
-  //       this.$router.push({path: '/Forbidden'})
-  //     }
-  //   } catch (ex) {
-  //     this.$router.push({path: '/Forbidden'})
-  //   }
-  // },
+  beforeCreate () {
+    if (this.$store.state.authenticationToken === null) {
+      this.$router.push({path: '/Unauthorized'})
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
+      } else {
+        this.$router.push({path: '/Forbidden'})
+      }
+    } catch (ex) {
+      this.$router.push({path: '/Forbidden'})
+    }
+  },
 
   created () {
     axios.get(this.$store.state.urls.foodPreferences.getPreferences, {

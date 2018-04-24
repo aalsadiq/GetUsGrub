@@ -109,10 +109,10 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="registerUserDto">The user information that will be stored in the database.</param>
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
         // POST User/CreateAdmin
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Create")]
-        [Route("CreateAdmin")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         [HttpPost]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Create")]
+        [Route("CreateAdmin")]       
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]       
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
             if (!ModelState.IsValid)
@@ -146,10 +146,10 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="username">The expected user to be deleted.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // DELETE User/DeleteUser
-        [Route("DeleteUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "DELETE")]
-        // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpDelete]
+        // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Delete")]
+        [Route("DeleteUser")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "DELETE")]       
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
         {
             if (!ModelState.IsValid)
@@ -181,10 +181,10 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="username">The expected user to be reactivated.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/DeactivateUser
-        [Route("DeactivateUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
         [HttpPut]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
+        [Route("DeactivateUser")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")] 
         public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
         {
             //System.Diagnostics.Debug.WriteLine("The user name is "+ user.Username);
@@ -219,10 +219,10 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="username">The expected user to be reactivated.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/ReactivateUser
-        [Route("ReactivateUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
         [HttpPut]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
+        [Route("ReactivateUser")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]    
         public IHttpActionResult ReactivateUser([FromBody] UserAccountDto user)
         {
             //Checks if what was given is a valid model.
@@ -256,10 +256,10 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="username">The expected user to be edited.</param>
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // PUT User/EditUser
-        [Route("EditUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPut]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]     
+        [Route("EditUser")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]        
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
             //Checks if what was given is a valid model.

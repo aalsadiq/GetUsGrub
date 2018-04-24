@@ -33,7 +33,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #registration {
   padding: 2.5em 0 0 0;
   margin: 3.5em 10em 10em 11.5em;

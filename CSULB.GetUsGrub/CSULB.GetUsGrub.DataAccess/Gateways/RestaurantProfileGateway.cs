@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -12,14 +13,17 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary>
-    public class RestaurantProfileGateway
+    public class RestaurantProfileGateway: IDisposable
     {
+        // Open the Restaurant context
+        RestaurantContext context = new RestaurantContext();
+
         /// <summary>
         /// Returns restaurant profile dto inside response dto
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        
+        /// 
         // move context up to here
         public ResponseDto<RestaurantProfileDto> GetRestaurantProfileByUsername(string username)
         {
@@ -212,6 +216,66 @@ namespace CSULB.GetUsGrub.DataAccess
                     }
                 }
             }
+        }
+
+        //ImageUploadGateway for profile
+        //store the path in the database...
+        public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto, string menuPath, string menuName, string ItemName)
+        {
+            using (var userContext = new UserContext())
+            {
+                using (var dbContextTransaction = userContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //Queries for the user account based on id.
+                        var userAccount = (from account in userContext.UserAccounts
+                                           where account.Username == userProfileDto.Username
+                                           select account).FirstOrDefault();
+
+                        // RestaurantMenuItems
+                        // Queries for the users Restaurant Menu Items based on user account id and restaurant menu items user id.
+                        // RestaurantMenuItem Id where MenuId is equal to Restaurant Menu Id
+                        var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
+                                                       join restaurantMenu in userContext.RestaurantMenus
+                                                       on restaurantMenuItems.MenuId equals restaurantMenu.Id // on menu id
+                                                       where restaurantMenu.MenuName == menuName &&
+                                                       restaurantMenuItems.ItemName == ItemName &&
+                                                       restaurantMenu.RestaurantId == userAccount.Id
+                                                       select restaurantMenuItems).FirstOrDefault();
+
+                        Debug.WriteLine("Restaurant Menu Items " + userRestaurantMenuItems);
+                        // Checks if restaurant menu items result is null, if not then change image paths
+                        userRestaurantMenuItems.ItemPicture = menuPath;
+                        
+                        userContext.SaveChanges();
+                        dbContextTransaction.Commit();
+
+                        return new ResponseDto<bool>()
+                        {
+                            Data = true
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+
+                        return new ResponseDto<bool>()
+                        {
+                            Data = false,
+                            Error = GeneralErrorMessages.GENERAL_ERROR
+                        };
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Dispose of the context
+        /// </summary>
+        void IDisposable.Dispose()
+        {
+            context.Dispose();
         }
     }
 }

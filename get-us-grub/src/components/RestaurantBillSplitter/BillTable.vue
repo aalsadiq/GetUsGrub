@@ -7,13 +7,7 @@
       <h1 v-if="!billItems.length"> Drag Items Here!</h1>
       <draggable class="bill" v-bind:list="billItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
         <div class="bill-item" v-for="(billItem, billItemIndex) in billItems" :key="billItemIndex">
-          <bill-table-pie-chart :billItem="billItem" :chartData="{ labels: [billItem.selected], datasets: [
-            {
-              label: 'GitHub Commits',
-              backgroundColor: '#f87979',
-              data: [40, 20]
-            }
-          ] }" :width="100" :height="100"></bill-table-pie-chart>
+          <bill-table-pie-chart :billItem="billItem" :billItemIndex="billItemIndex" :width="50" :height="50" />
           <div class="bill-item-controls">
             <h2> {{ billItem.itemName }} : ${{ billItem.itemPrice }} </h2>
             <br />
@@ -25,7 +19,7 @@
                 <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
               </li>
               <li>
-                <manage-users :billItem="billItem" />
+                <manage-users :billItem="billItem" :billItemIndex="billItemIndex"/>
               </li>
             </ul>
           </div>

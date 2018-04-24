@@ -1,11 +1,11 @@
 <template>
   <div class="dictionary">
-    <h1 v-if="restaurantDisplayName">{{ restaurantDisplayName }}</h1>
-    <h1 id="customDictionaryHeader" v-if="!restaurantDisplayName"> Dictionary</h1>
+    <h1 v-if="showRestaurantMenuItems">{{ restaurantDisplayName }}</h1>
+    <h1 id="customDictionaryHeader" v-if="!showRestaurantMenuItems"> Dictionary</h1>
     <v-divider />
     <ul style="list-style: none; display: inline-flex;">
       <li>
-        <dictionary-input />
+        <dictionary-input v-if="!showRestaurantMenuItems" />
       </li>
       <li>
         <get-restaurant-menus />
@@ -29,7 +29,6 @@
 <script>
 import axios from 'axios'
 import draggable from 'vuedraggable'
-import { EventBus } from '@/event-bus/event-bus.js'
 import { VMoney } from 'v-money'
 import DictionaryInput from './DictionaryInput'
 import GetRestaurantMenus from './GetRestaurantMenus.vue'
@@ -48,7 +47,7 @@ export default {
   data () {
     return {
       restaurantId: null,
-      restaurantDisplayName: '',
+      restaurantDisplayName: this.$store.state.restaurantSelection.selectedRestaurant.displayName,
       money: {
         decimal: '.',
         thousands: '',
@@ -69,14 +68,6 @@ export default {
         itemPrice: el.itemPrice,
         selected: el.selected
       }
-    },
-    Log: function () {
-      console.log(this.$refs.editForm)
-    },
-    GetRestaurantMenus: function () {
-      axios.get('http://localhost:8081/RestaurantBillSplitter', {
-        displayName: ''
-      })
     }
   },
   computed: {

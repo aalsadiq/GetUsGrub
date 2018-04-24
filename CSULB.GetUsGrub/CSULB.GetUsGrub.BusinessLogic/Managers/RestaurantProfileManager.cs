@@ -1,6 +1,8 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Web;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -68,6 +70,52 @@ namespace CSULB.GetUsGrub.BusinessLogic
         }
 
         //ImageUploadManager
-        // TODO: @Angelica Add image menu item upload here
+        // TODO: @Angelica Add image profile upload here
+        public ResponseDto<bool> MenuItemImageUpload(HttpPostedFile image, string username, string menuItem, string ItemName)
+        {
+            var user = new UserProfileDto() { Username = username };
+
+            var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
+            var result = ImageUploadValidationStrategy.ExecuteStrategy();
+
+            if (result.Data == false)
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = result.Error
+                };
+            }
+
+            var renameImage = Path.GetExtension(image.FileName);
+            var newImagename = username + "_" + menuItem + "_" + ItemName  + renameImage;
+
+            // Save image to path
+            string savePath = ConfigurationManager.AppSettings["MenuImagePath"];
+            //string fileName = Path.GetFileName(image.FileName);// file name should be username.png
+            //Debug.WriteLine(fileName);
+            var menuPath = savePath +  newImagename; // Store image path to DTO
+
+            // Call gateway to save path to database
+            using (var gateway = new RestaurantProfileGateway())
+            {
+                var gatewayresult = gateway.UploadImage(user, menuPath, menuItem, ItemName);
+                if (gatewayresult.Data == false)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = gatewayresult.Error
+                    };
+                }
+
+                image.SaveAs(menuPath);
+
+                return new ResponseDto<bool>
+                {
+                    Data = true
+                };
+            }
+        }
     }
 }

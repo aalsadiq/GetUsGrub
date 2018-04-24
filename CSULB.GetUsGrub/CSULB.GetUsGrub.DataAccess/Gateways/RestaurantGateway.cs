@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// @updated: 04/09/2018
     /// </para>
     /// </summary>
-    public class RestaurantGateway : IDisposable
+    public class RestaurantGateway: IDisposable
     {
         // Open the Restaurant context
         RestaurantContext context = new RestaurantContext();
@@ -175,7 +175,10 @@ namespace CSULB.GetUsGrub.DataAccess
                                                                         Day = businessHour.Day,
                                                                         OpenDateTime = businessHour.OpenTime,
                                                                         CloseDateTime = businessHour.CloseTime
-                                                                    }).ToList()
+                                                                    }).ToList(),
+                                                FoodPreferences = (from foodPreference in context.FoodPreferences
+                                                                   where foodPreference.UserId == restaurantProfile.Id
+                                                                   select foodPreference.Preference).ToList()
                                             }).FirstOrDefault();
 
                 // Return the SelectedRestaurantDto
@@ -195,12 +198,12 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        /// <summary>
-        /// Dispose of the context
-        /// </summary>
-        void IDisposable.Dispose()
-        {
-            context.Dispose();
-        }
-    }
+				/// <summary>
+				/// Dispose of the context
+				/// </summary>
+				void IDisposable.Dispose()
+				{
+						context.Dispose();
+				}
+		}
 }

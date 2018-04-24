@@ -32,7 +32,6 @@
 
 <script>
 import axios from 'axios'
-import { EventBus } from '@/event-bus/event-bus.js'
 
 export default {
   name: 'GetRestaurantMenus',

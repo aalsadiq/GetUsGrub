@@ -37,8 +37,8 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantId: null,
-        displayName: '',
+        restaurantId: 26,
+        displayName: 'Halal Guys',
         address: {
           street1: '',
           street2: '',
@@ -47,7 +47,27 @@ export const store = new Vuex.Store({
           zip: null
         },
         phoneNumber: '',
-        businessHours: []
+        businessHours: [],
+        foodPreferences: null
+      }
+    },
+    // Header values for Axios requests
+    headers: {
+      accessControlAllowOrigin: 'http://localhost:8080'
+    },
+    // Uniform Resource Locations for Axios requests
+    urls: {
+      userManagement: {
+        createIndividualUser: 'http://localhost:8081/User/Registration/Individual',
+        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant'
+      },
+      foodPreferences: {
+        getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',
+        editPreferences: 'http://localhost:8081/FoodPreferences/Edit'
+      },
+      restaurantSelection: {
+        unregisteredUser: 'http://localhost:8081/RestaurantSelection/Unregistered/',
+        registeredUser: 'http://localhost:8081/RestaurantSelection/Registered/'
       }
     },
     // Rules for validations
@@ -298,7 +318,8 @@ export const store = new Vuex.Store({
     addBillUser: (state, payload) => {
       state.billUsers.push({
         name: payload[0],
-        uID: payload[1]
+        uID: payload[1],
+        moneyOwes: 0.00
       })
     },
     populateRestaurantMenus: (state, payload) => {
@@ -354,6 +375,13 @@ export const store = new Vuex.Store({
         }
       };
     },
+    updateUserMoneyOwes: (state, payload) => {
+      for (var i = 0; i < state.billItems[payload].selected.length; i++) {
+        for (var j = 0; j < state.billUsers.length; j++) {
+
+        }
+      }
+    },
     setSelectedRestaurant: (state, payload) => {
       state.originAddress = payload.clientCity + ',' + payload.clientState
       if (payload.address.street2 === '') {
@@ -368,6 +396,7 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.address = payload.address
       state.restaurantSelection.selectedRestaurant.phoneNumber = payload.phoneNumber
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
+      state.restaurantSelection.selectedRestaurant.foodPreferences = payload.foodPreferences
     },
     // TODO: @Ahmed It is better to make it a generic mutation to a state than naming it a "loginUser" mutation [-Jenn]
     // Look at setAuthenticationToken (I am using this to set token to null when user clicks on the logout button)
@@ -442,6 +471,11 @@ export const store = new Vuex.Store({
     removeUser: (context, payload) => {
       setTimeout(function () {
         context.commit('removeUser', payload)
+      }, 250)
+    },
+    updateUserMoneyOwes: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateUserMoneyOwes', payload)
       }, 250)
     },
     setSelectedRestaurant: (context, payload) => {

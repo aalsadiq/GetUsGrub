@@ -1,6 +1,6 @@
 <template>
   <div id="restaurant-bill-splitter">
-    <app-header />    
+    <app-header />
     <div class="wrapper">
       <h1 id="restaurant-name-header" v-if="restaurantDisplayName"> {{ this.restaurantDisplayName }} </h1>
       <restaurantBillSplitter-userTable id="userTable"/>
@@ -51,9 +51,6 @@ export default {
         }
       }).then(response => {
         this.$store.dispatch('populateRestaurantMenus', response.data.data.menus)
-        // for (int i = 0; i < response.data.data.menus.length; i++) {
-        // this.menus[i] = response.data.data.menus[i]
-        // }
       }).catch(error => {
         console.log(error.response.data)
       })

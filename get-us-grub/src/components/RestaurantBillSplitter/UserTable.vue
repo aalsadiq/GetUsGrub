@@ -6,7 +6,7 @@
       <div class="user" v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
         <ul class="user-list">
           <li>
-            <h2>{{ billUser.name }} $0.00</h2>
+            <h2>{{ billUser.name }} owes ${{ billUser.moneyOwes }}</h2>
           </li>
           <li>
             <v-btn small color="red" v-on:click="RemoveUser(billUser.uID)"><v-icon>clear</v-icon></v-btn>

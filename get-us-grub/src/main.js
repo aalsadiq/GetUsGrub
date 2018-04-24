@@ -8,11 +8,7 @@ import Vuetify from 'vuetify'
 import VueCharts from 'vue-chartjs'
 import Notifications from 'vue-notification'
 import 'es6-promise/auto'
-// Ensure you are using css-loader
 
-// window.axios.defaults.headers.common = {
-//   'X-Requested-With' : 'XMLHttpRequest'
-// };
 Vue.use(Vuetify)
 Vue.use(Notifications)
 Vue.use(VueCharts)

@@ -55,7 +55,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.INDIVIDUAL));
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Individual));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
@@ -154,7 +154,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.RESTAURANT));
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Restaurant));
 
             // Call GeocodeService to get geocoordinates of the restaurant
             var geocodeResponse = geocodeService.Geocode(restaurantProfile.Address);
@@ -317,7 +317,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table as administrator
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.ADMIN));
+            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Admin));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));

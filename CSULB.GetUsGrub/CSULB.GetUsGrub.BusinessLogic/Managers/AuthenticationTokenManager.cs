@@ -64,9 +64,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var claimTransformer = new ClaimsTransformer();
             claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
 
+            // TODO: @Ahmed
+            // I thought you already told me to account for this? Check ClaimsTransformer and ClaimsFactory in User Access Control
             if (isFirstTimeUser)
             {
-                foreach(var claim in new FirstTimeUserClaims().Claims)
+                foreach(var claim in new FirstTimeUser().Claims)
                 {
                     claimIdentity.AddClaim(claim);
                 }
@@ -77,7 +79,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             if (!isFirstTimeUser)
             {
                 // Getting the ReadClaims for the user
-                claimPrincipal = claimTransformer.Authenticate("read", claimPrincipal);
+                claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Read, claimPrincipal);
             }
 
             var claims = claimPrincipal.Claims;

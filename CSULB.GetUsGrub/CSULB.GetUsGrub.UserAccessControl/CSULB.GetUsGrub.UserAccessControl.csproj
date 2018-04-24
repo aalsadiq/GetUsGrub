@@ -52,13 +52,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Constants\AccountType.cs" />
-    <Compile Include="Models\AdminClaims.cs" />
-    <Compile Include="Models\FirstTimeUserClaims.cs" />
-    <Compile Include="Models\IndividualClaims.cs" />
-    <Compile Include="Models\RestaurantClaims.cs" />
+    <Compile Include="Models\AdminUser.cs" />
+    <Compile Include="Models\Constants\PermissionTypes.cs" />
+    <Compile Include="Models\FirstTimeUser.cs" />
+    <Compile Include="Models\IndividualUser.cs" />
+    <Compile Include="Models\RestaurantUser.cs" />
     <Compile Include="Factories\ClaimsFactory.cs" />
     <Compile Include="Models\Interfaces\IClaims.cs" />
-    <Compile Include="Factories\Interfaces\IFactory.cs" />
+    <Compile Include="Models\Interfaces\IFactory.cs" />
     <Compile Include="Managers\AuthorizationManager.cs" />
     <Compile Include="Managers\ClaimsTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

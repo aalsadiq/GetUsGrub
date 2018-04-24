@@ -11,9 +11,9 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// @author: Rachel Dang
     /// @updated: 04/07/18
     /// </summary>
-    public class RestaurantClaims : IClaims
+    public class RestaurantUser : IClaims
     {
-        public string Type => AccountType.RESTAURANT;
+        public string Type => AccountType.Restaurant;
 
         public ICollection<Claim> Claims => new List<Claim>
         {

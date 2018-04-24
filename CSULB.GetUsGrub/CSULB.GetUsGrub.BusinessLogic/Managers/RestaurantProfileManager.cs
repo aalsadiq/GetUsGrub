@@ -33,6 +33,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto, string token)
         {
+            var geocodeService = new GoogleGeocodeService();
+
             var editRestaurantProfilePreLogicValidationStrategy = new EditRestaurantUserProfilePreLogicValidationStrategy(restaurantProfileDto);
 
             var result = editRestaurantProfilePreLogicValidationStrategy.ExecuteStrategy();
@@ -46,16 +48,37 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Extract DTO contents and map DTO to domain model
+            // Retrieve account by username
+            var userGateway = new UserGateway();
+
             var tokenService = new TokenService();
+
+            var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
+
+            // Extrant user profile domain
+            var userProfileDomain = new UserProfile
+            {
+                DisplayName = restaurantProfileDto.DisplayName
+            };
+
+            var geocodeResponse = geocodeService.Geocode(restaurantProfileDto.Address);
+            if (geocodeResponse.Error != null)
+            {
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
 
             // Extract restaurant profile domain
             var restaurantProfileDomain = new RestaurantProfile(
                 restaurantProfileDto.PhoneNumber,
                 restaurantProfileDto.Address,
-                restaurantProfileDto.Details,
-                restaurantProfileDto.GeoCoordinates.Latitude,
-                restaurantProfileDto.GeoCoordinates.Longitude);
+                restaurantProfileDto.Details);
+
+            restaurantProfileDomain.GeoCoordinates = new GeoCoordinates(geocodeResponse.Data.Latitude, geocodeResponse.Data.Longitude);
 
             // Extract business hours domains
             var businessHourDomains = restaurantProfileDto.BusinessHours;
@@ -64,12 +87,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Extract restaurant menu dictionary
             var restaurantMenuDomains = restaurantProfileDto.RestaurantMenusList;
 
-            // Extract menu items
-
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfile(tokenService.GetTokenUsername(token), restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfileById(userAccountResponseDto.Data.Id, userProfileDomain, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
 
             return responseDtoFromGateway;
         }

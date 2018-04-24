@@ -31,5 +31,12 @@ namespace CSULB.GetUsGrub.Models
             DisplayPicture = displayPicture;
             DisplayName = displayName;
         }
+
+        public UserProfile(int? id, string displayName, string displayPicture)
+        {
+            Id = id;
+            DisplayName = displayName;
+            DisplayPicture = displayPicture;
+        }
     }
 }

@@ -8,9 +8,9 @@
     /// </summary>
     public static class AccountType
     {
-        public const string INDIVIDUAL = "Individual";
-        public const string RESTAURANT = "Restaurant";
-        public const string ADMIN = "Admin";
-        public const string FIRSTTIMEUSER = "FirstTimeUser";
+        public const string Individual = "Individual";
+        public const string Restaurant = "Restaurant";
+        public const string Admin = "Admin";
+        public const string FirstTimeUser = "FirstTimeUser";
     }
 }

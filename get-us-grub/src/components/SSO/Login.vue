@@ -46,9 +46,15 @@ export default {
       method: 'GET',
       url: this.$store.state.urls.sso.login,
       headers: {
-        Authorization: `Bearer ${queryJwt}`
+        'Access-Control-Allow-Origin': this.$store.state.baseUrl,
+        'Access-Control-Allow-Credentials': true,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${queryJwt}`,
+        'X-Requested-With': 'XMLHttpRequest'
       }
     }).then(response => {
+      console.log(response)
       this.valid = true
       this.disable = false
       this.$store.state.isAuthenticated = true

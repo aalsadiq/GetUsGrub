@@ -31,7 +31,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </returns>
         public ResponseDto<AuthenticationTokenDto> CreateToken(string username)
         {
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var authenticationToken = new AuthenticationToken();
             var salt = new SaltGenerator().GenerateSalt(128);
@@ -49,14 +48,39 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var issuedOn = DateTime.UtcNow;
             authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
 
-            // Getting the ReadClaims for the user
+            var isFirstTimeUser = false;
+
+            using(var gateway = new AuthenticationGateway())
+            {
+                var userAccountResult = gateway.GetUserAccount(username);
+                if (userAccountResult.Data.IsFirstTimeUser == true)
+                {
+                    isFirstTimeUser = true;
+                }
+            }
+
             var claimIdentity = new ClaimsIdentity();
             var claimPrincipal = new ClaimsPrincipal();
             var claimTransformer = new ClaimsTransformer();
             claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
-            claimPrincipal.AddIdentity(claimIdentity);
-            claimPrincipal = claimTransformer.Authenticate("read", claimPrincipal);
 
+            // TODO: @Ahmed
+            // I thought you already told me to account for this? Check ClaimsTransformer and ClaimsFactory in User Access Control
+            if (isFirstTimeUser)
+            {
+                foreach(var claim in new FirstTimeUser().Claims)
+                {
+                    claimIdentity.AddClaim(claim);
+                }
+            }
+
+            claimPrincipal.AddIdentity(claimIdentity);
+
+            if (!isFirstTimeUser)
+            {
+                // Getting the ReadClaims for the user
+                claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Read, claimPrincipal);
+            }
 
             var claims = claimPrincipal.Claims;
 
@@ -69,7 +93,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 Expires = authenticationToken.ExpiresOn,
                 Issuer = AuthenticationTokenConstants.ISSUER,
                 SigningCredentials = signingCredentials,
-
             };
 
             // Changing the Token to a String Form

@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.UnitTests
     /// <summary>
     /// Unit testing for the AuthorizationManager.
     /// @author: Rachel Dang
-    /// @updated: 03/22/2018
+    /// @updated: 04/24/2018
     /// </summary>
     public class AuthorizationManagerUnitTests
     {

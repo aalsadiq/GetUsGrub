@@ -93,10 +93,13 @@ namespace CSULB.GetUsGrub.Controllers
         {
             try
             {
+
                 var image = HttpContext.Current.Request.Files[0];
                 var username = HttpContext.Current.Request.Params["username"];
-                var menuItem = HttpContext.Current.Request.Params["menuItem"];
-                var itemName = HttpContext.Current.Request.Params["itemName"];
+                var stringMenuId = HttpContext.Current.Request.Params["menuId"];
+
+                var menuId = Convert.ToInt32(stringMenuId);
+                Debug.WriteLine("menuItem: " + menuId);
 
                 if (username == null || username == "")
                 {
@@ -104,7 +107,7 @@ namespace CSULB.GetUsGrub.Controllers
                 }
 
                 var manager = new RestaurantProfileManager();
-                var response = manager.MenuItemImageUpload(image, username, menuItem, itemName);
+                var response = manager.MenuItemImageUpload(image, username, menuId);
 
                 if (response.Error != null)
                 {

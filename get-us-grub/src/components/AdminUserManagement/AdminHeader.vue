@@ -36,7 +36,8 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <!-- <img src="../../../../Images/DefaultImages/DefaultProfileImage.png"> -->
+              <img :src="'ImagePath'"/>
+              <!-- <img src="../../../../Images/DefaultImages/DefaultProfileImage.png" /> -->
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title> </v-list-tile-title>
@@ -51,15 +52,18 @@
           </v-list-tile-action>
           <v-list-tile-content ref="items">
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            <!-- <v-list-tile-title>{{ ImagePath }}</v-list-tile-title> -->
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
+      <!-- <v-btn id="setImagePath" name= "setImagePath" color="pink" type="submit" value ="setImagePath" v-on:click="setImagePath">check Image Path</v-btn> -->
     </v-navigation-drawer>
   </div>
 </template>
 
 <script>
 import jwt from 'jsonwebtoken'
+import axios from 'axios'
 export default {
   name: 'admin-header',
   showImageUpload: false,
@@ -76,23 +80,25 @@ export default {
         { title: 'Log Out', icon: 'power_settings_new', path: '/', click: 'logout' }
       ],
       mini: true,
-      right: null
+      right: null,
+      ImagePath: '', // For Admin
+      output: ''
     }
   },
-  // logout () {
-  //     axios.post('http://localhost:8081/Logout', {}, {
-  //       headers: {
-  //         Authorization: `Bearer ${this.$store.state.authenticationToken}`
-  //       }
-  //     }).then(response => {
-  //       this.$store.dispatch('setAuthenticationToken', null)
-  //       // Force reload to clear cache
-  //       location.reload()
-  //       this.$router.push({path: '/'})
-  //     }).catch(error => {
-  //       console.log(error.response)
-  //     })
-  //   },
+  logout () {
+    axios.post('http://localhost:8081/Logout', {}, {
+      headers: {
+        Authorization: `Bearer ${this.$store.state.authenticationToken}`
+      }
+    }).then(response => {
+      this.$store.dispatch('setAuthenticationToken', null)
+      // Force reload to clear cache
+      location.reload()
+      this.$router.push({path: '/'})
+    }).catch(error => {
+      console.log(error.response)
+    })
+  },
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
       this.$router.push({path: '/Unauthorized'})
@@ -106,6 +112,14 @@ export default {
       }
     } catch (ex) {
       this.$router.push({path: '/Forbidden'})
+    }
+  },
+  created () {
+    this.ImagePath = '../../../../Images/DefaultImages/DefaultProfileImage.png'
+  },
+  computed: {
+    imageURL () {
+      return this.ImagePath
     }
   }
   // ,

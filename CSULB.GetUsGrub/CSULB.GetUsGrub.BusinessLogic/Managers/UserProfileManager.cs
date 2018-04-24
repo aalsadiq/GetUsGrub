@@ -81,8 +81,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            var renameImage = Path.GetExtension(image.FileName);
-            var newImagename = username + renameImage;
+            var fileExtension = Path.GetExtension(image.FileName);
+            var newImagename = username + fileExtension;
 
             // Save image to path
             string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];

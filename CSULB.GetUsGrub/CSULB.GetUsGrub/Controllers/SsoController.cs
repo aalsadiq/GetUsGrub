@@ -60,9 +60,9 @@ namespace CSULB.GetUsGrub
             }
         }
         
-        [HttpPost]
+        [HttpGet]
         [ActionName("Login")]
-        [EnableCors(origins: "https://www.fannbrian.github.io", headers: "*", methods: "POST")]
+        [EnableCors(origins: "http://www.localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult Login(HttpRequestMessage request)
         {
             try
@@ -70,15 +70,14 @@ namespace CSULB.GetUsGrub
                 var result = new SsoTokenManager(request.Headers.Authorization.Parameter).IsValidPayload();
                 if (result.Data)
                 {
-                    return Redirect("https://www.google.com");
                 }
-                return Redirect("https://www.google.com");
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
+            throw new NotImplementedException();
         }
 
         [HttpPost]

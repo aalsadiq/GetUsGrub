@@ -179,7 +179,11 @@ export default {
           userAccountDto: this.userAccount,
           securityQuestionDtos: this.securityQuestions,
           userProfileDto: this.userProfile
-        }).then(response => {
+        },
+        {
+          headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
+        }
+        ).then(response => {
           this.responseData = response.data
           this.showSuccess = true
           this.showError = false

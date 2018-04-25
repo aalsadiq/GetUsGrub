@@ -67,6 +67,9 @@ export default {
       if (viewType === 'DeactivateUser') {
         axios.put(this.$store.state.urls.userManagement.deactivateUser, {
           username: this.userAccount.username
+        },
+        {
+          headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
           this.responseData = response.data
           this.showSuccess = true
@@ -104,7 +107,11 @@ export default {
       if (viewType === 'ReactivateUser') {
         axios.put(this.$store.state.urls.userManagement.reactivateUser, {
           username: this.userAccount.username
-        }).then(response => {
+        },
+        {
+          headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
+        }
+        ).then(response => {
           this.responseData = response.data
           this.showSuccess = true
           this.showError = false
@@ -141,7 +148,11 @@ export default {
       if (viewType === 'DeleteUser') {
         axios.delete(this.$store.state.urls.userManagement.deleteUser, {
           data: {username: this.userAccount.username}
-        }).then(response => {
+        },
+        {
+          headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
+        }
+        ).then(response => {
           this.responseData = response.data
           this.showSuccess = true
           this.showError = false

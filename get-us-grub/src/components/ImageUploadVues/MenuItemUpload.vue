@@ -108,7 +108,11 @@ export default {
       formData.append('menuId', this.menuId)
       formData.append('filename', this.selectedFile, this.selectedFile.name)
       axios.post(this.$store.state.urls.profileManagement.menuItemUpload, formData, {
-      }).then(response => {
+      },
+      {
+        headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
+      }
+      ).then(response => {
         this.responseData = response.data
         this.showSuccess = true
         this.showError = false

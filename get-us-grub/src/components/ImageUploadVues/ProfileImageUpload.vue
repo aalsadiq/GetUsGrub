@@ -116,7 +116,11 @@ export default {
       formData.append('username', this.username) // this.$store.state.username
       formData.append('filename', this.selectedFile, this.selectedFile.name)
       axios.post(this.$store.state.urls.profileManagement.profileImageUpload, formData, {
-      }).then(response => {
+      },
+      {
+        headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
+      }
+      ).then(response => {
         this.responseData = response.data
         this.showSuccess = true
         this.showError = false

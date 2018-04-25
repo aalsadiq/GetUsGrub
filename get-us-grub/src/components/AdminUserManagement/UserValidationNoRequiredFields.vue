@@ -71,7 +71,11 @@ export default {
         username: this.editUser.username,
         newUsername: this.editUser.newUsername,
         newDisplayName: this.editUser.newDisplayName
-      }).then(response => {
+      },
+      {
+        headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
+      }
+      ).then(response => {
         this.responseData = response.data
         this.newUsername = null
         this.newDisplayname = null

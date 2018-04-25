@@ -1,12 +1,13 @@
 <template>
   <div id="image-upload">
         <v-dialog  v-model="dialog">
-          <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
+          <v-btn color="dark" dark slot="activator">Upload Image</v-btn>
+          <v-flex >
           <v-card dark>
             {{ responseDataStatus }}
             {{ responseData }}
             <br/>
-            <v-flex xs1 sm4 offset-sm1>
+            <v-flex  xs4 sm2 md1>
               <v-flex sm2>
               <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
               <v-btn id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">Upload Image</v-btn>
@@ -17,6 +18,7 @@
               </v-flex>
             <br/>
           </v-card>
+          </v-flex>
         </v-dialog>
       <br/>
   </div>
@@ -24,7 +26,7 @@
 
 <script>
 import axios from 'axios'
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
   dialog: false,
@@ -35,23 +37,23 @@ export default {
     responseDataStatus: '',
     responseData: '',
     test: null,
-    username: 'username14',
+    username: 'username16',
     imageData: '' // Stores in base 64 format of image
   }),
   methods: {
-    beforeCreate () {
-      if (this.$store.state.authenticationToken === null) {
-        this.$router.push({path: '/Unauthorized'})
-      }
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' || jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
-        } else {
-          this.$router.push({path: '/Forbidden'})
-        }
-      } catch (ex) {
-        this.$router.push({path: '/Forbidden'})
-      }
-    },
+    // beforeCreate () {
+    //   if (this.$store.state.authenticationToken === null) {
+    //     this.$router.push({path: '/Unauthorized'})
+    //   }
+    //   try {
+    //     if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
+    //     } else {
+    //       this.$router.push({path: '/Forbidden'})
+    //     }
+    //   } catch (ex) {
+    //     this.$router.push({path: '/Forbidden'})
+    //   }
+    // },
     StoreSelectedFile: function (event) {
       this.selectedFile = event.target.files[0]
       this.previewImage(event)
@@ -60,8 +62,8 @@ export default {
       var input = event.target // References the DOM input element
       if (input.files[0]) {
         var reader = new FileReader() // Read image and convert to base64
-        reader.onload = (e) => {
-          this.imageData = e.target.result // Read image as base64
+        reader.onload = (image) => {
+          this.imageData = image.target.result // Read image as base64
         }
         reader.readAsDataURL(input.files[0]) // Read as data url (base64 format)
       }

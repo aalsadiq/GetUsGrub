@@ -54,8 +54,12 @@
             <!-- <v-list-tile-title>{{ ImagePath }}</v-list-tile-title> -->
           </v-list-tile-content>
         </v-list-tile>
+                <!-- { title: 'Log Out', icon: 'power_settings_new', v-on:click logout() } -->
       </v-list>
       <!-- <v-btn id="setImagePath" name= "setImagePath" color="pink" type="submit" value ="setImagePath" v-on:click="setImagePath">check Image Path</v-btn> -->
+          <v-btn flat id="logout-btn" @click="logout()">
+          <v-icon>power_settings_new</v-icon>
+        </v-btn>
     </v-navigation-drawer>
   </div>
 </template>
@@ -75,28 +79,13 @@ export default {
         { title: 'Edit User', icon: 'edit', path: '/User/EditUser' },
         { title: 'Deactivate User', icon: 'block', path: '/User/DeactivateUser' },
         { title: 'Reactivate User', icon: 'check', method: 'reactivateUser', path: '/User/ReactivateUser' },
-        { title: 'Delete User', icon: 'delete', path: '/User/DeleteUser' },
-        { title: 'Log Out', icon: 'power_settings_new', path: '/', click: 'logout' }
+        { title: 'Delete User', icon: 'delete', path: '/User/DeleteUser' }
       ],
       mini: true,
       right: null,
       ImagePath: '../../../../Images/DefaultImages/DefaultProfileImage.png', // For Admin
       output: ''
     }
-  },
-  logout () {
-    axios.post('http://localhost:8081/Logout', {}, {
-      headers: {
-        Authorization: `Bearer ${this.$store.state.authenticationToken}`
-      }
-    }).then(response => {
-      this.$store.dispatch('setAuthenticationToken', null)
-      // Force reload to clear cache
-      location.reload()
-      this.$router.push({path: '/'})
-    }).catch(error => {
-      console.log(error.response)
-    })
   },
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
@@ -114,46 +103,42 @@ export default {
     }
   },
   created () {
-    this.ImagePath = require('../../../../Images/DefaultImages/DefaultProfileImage.png')
+    // this.ImagePath = require('../../../../Images/DefaultImages/DefaultProfileImage.png')
+    axios.get('http://localhost:8081/', { // Get User Profile...
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:8080',
+        'Authorization': `Bearer ${this.$store.state.authenticationToken}`
+      },
+      params: {
+        username: jwt.decode(this.$store.state.authenticationToken).Username
+      }
+    }).then(response => {
+      this.foodPreferences = response.data
+    }).catch(error => {
+      Promise.reject(error)
+    })
   },
   computed: {
     imageURL () {
       return this.ImagePath
     }
+  },
+  methods: {
+    logout () {
+      axios.post('http://localhost:8081/Logout', {}, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.$store.commit('setAuthenticationToken', null)
+        this.$router.push({path: '/'})
+      }).catch(error => {
+        console.log(error.response)
+      })
+    }
   }
-  // ,
-  // created () {
-  //   axios.get('http://localhost:8081/', { // Get User Profile...
-  //     headers: {
-  //       'Access-Control-Allow-Origin': 'http://localhost:8080',
-  //       'Authorization': `Bearer ${this.$store.state.authenticationToken}`
-  //     },
-  //     params: {
-  //       username: jwt.decode(this.$store.state.authenticationToken).Username
-  //     }
-  //   }).then(response => {
-  //     this.foodPreferences = response.data
-  //   }).catch(error => {
-  //     Promise.reject(error)
-  //   })
-  // }
 }
 </script>
 
 <style>
-/* .application--wrap {
-  height: 300px;
-  width:  943px;
-} */
-/* .theme--light{
-  width: 300px;
-  height:  943px;
-}
-#nav-drawer{
-  padding: 0em;
-}
-.body{
-  width: 300px;
-  height:  943px;
-} */
 </style>

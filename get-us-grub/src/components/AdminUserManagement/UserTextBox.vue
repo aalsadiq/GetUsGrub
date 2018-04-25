@@ -37,7 +37,7 @@ export default {
   methods: {
     userSubmit: function (viewType) {
       if (viewType === 'DeactivateUser') {
-        axios.put('http://localhost:8081/User/DeactivateUser', {
+        axios.put(this.$store.state.urls.userManagement.deactivateUser, {
           username: this.userAccount.username
         }).then(response => {
           // showAlert = true
@@ -75,7 +75,7 @@ export default {
         })
       }
       if (viewType === 'ReactivateUser') {
-        axios.put('http://localhost:8081/User/ReactivateUser', {
+        axios.put(this.$store.state.urls.userManagement.reactivateUser, {
           username: this.userAccount.username
         }).then(response => {
           this.responseDataStatus = 'Success! User has been reactivated: '
@@ -112,7 +112,7 @@ export default {
         })
       }
       if (viewType === 'DeleteUser') {
-        axios.delete('http://localhost:8081/User/DeleteUser', {
+        axios.delete(this.$store.state.urls.userManagement.deleteUser, {
           data: {username: this.userAccount.username}
         }).then(response => {
           this.responseDataStatus = 'Success! User has been deleted: '

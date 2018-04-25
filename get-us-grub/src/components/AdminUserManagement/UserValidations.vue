@@ -143,7 +143,7 @@ export default {
     },
     userSubmit (viewType) {
       if (viewType === 'CreateAdmin') {
-        axios.post('http://localhost:8081/User/CreateAdmin', {
+        axios.post(this.$store.state.urls.userManagement.createAdminUser, {
           userAccountDto: this.userAccount,
           securityQuestionDtos: this.securityQuestions,
           userProfileDto: this.userProfile

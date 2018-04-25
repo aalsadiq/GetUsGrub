@@ -56,7 +56,12 @@ export const store = new Vuex.Store({
     urls: {
       userManagement: {
         createIndividualUser: 'http://localhost:8081/User/Registration/Individual',
-        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant'
+        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant',
+        createAdminUser: 'http://localhost:8081/User/CreateAdmin',
+        deactivateUser: 'http://localhost:8081/User/DeactivateUser',
+        reactivateUser: 'http://localhost:8081/User/ReactivateUser',
+        editUser: 'http://localhost:8081/User/EditUser',
+        deleteUser: 'http://localhost:8081/User/DeleteUser'
       },
       foodPreferences: {
         getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',

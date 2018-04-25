@@ -159,31 +159,32 @@ namespace CSULB.GetUsGrub.DataAccess
 
                         foreach (var businessHourDto in businessHourDtos)
                         {
-                            Flag flag = businessHour.Flag;
+                            Flag flag = businessHourDto.Flag;
                             switch (flag)
                             {
                                 case Flag.NotSet:
                                     break;
                                 case Flag.Add:
                                     // reset flag
-                                    businessHour.Flag = 0;
-                                    dbBusinessHours.Add(businessHour);
+                                    businessHourDto.Flag = 0;
+                                    var businessHourDomain = new BusinessHour(businessHourDto.Day, businessHourDto.OpenDateTime, businessHourDto.CloseDateTime);
+                                    dbBusinessHours.Add(businessHourDomain);
                                     context.SaveChanges();
                                     break;
                                 case Flag.Edit:
                                     // find the corresponding businessHour by ID
-                                    var dbBusinessHour = (from hour in context.BusinessHours
-                                                          where hour.Id == businessHour.Id
-                                                          select hour).SingleOrDefault();
-                                    dbBusinessHour.Day = businessHour.Day;
-                                    dbBusinessHour.OpenTime = businessHour.OpenTime;
-                                    dbBusinessHour.CloseTime = businessHour.CloseTime;
+                                    var dbBusinessHour = (from dbHour in context.BusinessHours
+                                                          where dbHour.Id == businessHourDto.Id
+                                                          select dbHour).SingleOrDefault();
+                                    dbBusinessHour.Day = businessHourDto.Day;
+                                    dbBusinessHour.OpenTime = businessHourDto.OpenDateTime;
+                                    dbBusinessHour.CloseTime = businessHourDto.CloseDateTime;
                                     context.SaveChanges();
                                     break;
                                 case Flag.Delete:
                                     // find the corresponding businessHour by ID
                                     dbBusinessHour = (from hour in context.BusinessHours
-                                                        where hour.Id == businessHour.Id
+                                                        where hour.Id == businessHourDto.Id
                                                         select hour).SingleOrDefault();
                                     context.BusinessHours.Remove(dbBusinessHour);
                                     context.SaveChanges();

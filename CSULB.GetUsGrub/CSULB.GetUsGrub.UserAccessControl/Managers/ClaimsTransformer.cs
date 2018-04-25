@@ -107,6 +107,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
 
             // Create claims pertaining to first time users
             var claims = factory.Create(AccountTypes.FirstTimeUser);
+            claims.Add(new Claim(ResourceConstant.USERNAME, username));
 
             // Call method to create and return the new claims principal
             return CreateClaimsPrincipal(claims);

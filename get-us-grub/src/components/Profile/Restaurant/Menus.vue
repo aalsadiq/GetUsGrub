@@ -1,5 +1,6 @@
 <template>
   <div id="menus-div">
+    {{ restaurantMenusList }}
     <div>
     <v-dialog v-model="menuDialog" persistent max-width="500px">
       <v-card>
@@ -49,9 +50,6 @@
                 <v-text-field label="Item Price" v-model="editedMenuItem.itemPrice" required></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="Item Picture" v-model="editedMenuItem.itemPicture"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
                 <v-text-field label="Tag" v-model="editedMenuItem.tag"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
@@ -93,6 +91,8 @@
           v-model="activeTab"
           fixed-tabs
           show-arrows
+          prev-icon="chevron_left"
+          next-icon="chevron_right"
         >
           <v-tabs-slider color="yellow"></v-tabs-slider>
           <v-tab v-for="(menu, menuIndex) in restaurantMenusList" :key="menuIndex" v-if="menu.restaurantMenu.isActive && menu.restaurantMenu.flag !== 3">
@@ -138,6 +138,10 @@
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
               </v-list-tile-content>
               <div v-if="isEdit">
+                <!-- Button to call Image Upload's function -->
+                <v-btn icon class="mx-0">
+                  <v-icon color="blue">photo_camera</v-icon>
+                </v-btn>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -163,6 +167,10 @@
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
               </v-list-tile-content>
               <div v-if="isEdit">
+                <!-- Button to call Image Upload's function -->
+                <v-btn icon class="mx-0">
+                  <v-icon color="blue">photo_camera</v-icon>
+                </v-btn>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -211,6 +219,8 @@
           v-model="inactiveTab"
           fixed-tabs
           show-arrows
+          prev-icon="chevron_left"
+          next-icon="chevron_right"
         >
           <v-tabs-slider color="yellow"></v-tabs-slider>
           <v-tab v-for="(menu, menuIndex) in restaurantMenusList" :key="menuIndex" v-if="!menu.restaurantMenu.isActive && menu.restaurantMenu.flag !== 3">
@@ -318,6 +328,10 @@ export default {
         restaurantMenu: null,
         menuItem: []
       },
+      defaultNewMenu: {
+        restaurantMenu: null,
+        menuItem: []
+      },
       activeTab: null,
       inactiveTab: null,
       menuDialog: false,
@@ -403,6 +417,7 @@ export default {
         this.restaurantMenusList[this.editedIndex].restaurantMenu.isActive = this.editedMenu.isActive
       } else {
         this.editedMenu.flag = 1
+        this.newMenu = Object.assign({}, this.defaultNewMenu)
         this.newMenu.restaurantMenu = this.editedMenu
         this.restaurantMenusList.push(this.newMenu)
       }

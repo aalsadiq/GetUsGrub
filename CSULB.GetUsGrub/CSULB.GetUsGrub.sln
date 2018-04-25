@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSULB.GetUsGrub", "CSULB.GetUsGrub\CSULB.GetUsGrub.csproj", "{ED3B1782-7C3D-4D18-B560-B731B2B76942}"
 EndProject
@@ -14,6 +14,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSULB.GetUsGrub.UserAccessControl", "CSULB.GetUsGrub.UserAccessControl\CSULB.GetUsGrub.UserAccessControl.csproj", "{25BB252D-4EBC-4603-978D-657798E5A1FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSULB.GetUsGrub.UnitTests", "CSULB.GetUsGrub.UnitTests\CSULB.GetUsGrub.UnitTests.csproj", "{1B86E6CD-A3D4-423E-8501-146757AB2059}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Image", "Image", "{5257C858-6472-4EBB-8F6E-72DA7A3D7558}"
+	ProjectSection(SolutionItems) = preProject
+		Images\ProfileImages\26user.png = Images\ProfileImages\26user.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

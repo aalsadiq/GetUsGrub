@@ -1,6 +1,7 @@
 <template>
   <div id="contact-info-div">
     <div>
+    <!-- Conact info dialog popup form -->
     <v-dialog v-model="dialog" persistent max-width="500px">
       <v-card>
         <v-card-title>
@@ -8,9 +9,10 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-layout wrap>
+            <v-layout>
               <v-form v-model="valid">
                 <v-layout>
+                  <!-- User input for phone number -->
                   <v-flex xs12>
                   <v-subheader>Enter a phone number</v-subheader>
                   </v-flex>
@@ -25,6 +27,7 @@
                   </v-flex>
                   </v-layout>
                   <v-layout>
+                  <!-- User input for address -->
                   <v-flex xs12>
                     <v-subheader>Enter the address of your restaurant</v-subheader>
                   </v-flex>
@@ -84,13 +87,15 @@
       </v-card>
     </v-dialog>
     </div>
-    <v-layout row pb-2>
-      <v-flex xs8 offset-xs2>
+    <v-layout row wrap>
+      <v-flex d-flex>
         <v-card class="card--flex-toolbar">
+          <!-- Card with toolbar that holds the contact information of a user -->
           <v-toolbar dark card prominent color="teal">
             <v-spacer/>
             <v-toolbar-title>Contact</v-toolbar-title>
             <v-spacer/>
+            <!-- Edit button on the card toolbar-->
               <div v-if="isEdit">
                 <v-btn icon class="mx-0" @click="editContactInfo()">
                   <v-icon color="black">edit</v-icon>
@@ -105,23 +110,34 @@
           </p>
           <h3>Address:</h3>
           <p class="paragraph" v-if='address.street2 === ""'>
-            {{ address.street1 }},
+            {{ address.street1 }} <br>
             {{ address.city }}, {{ address.state }} {{ address.zip }}
           </p>
           <p class="paragraph" v-if='address.street2 !== ""'>
-            {{ address.street1 }},
-            {{ address.street2 }},
+            {{ address.street1 }} <br>
+            {{ address.street2 }} <br>
             {{ address.city }}, {{ address.state }} {{ address.zip }}
           </p>
           </v-card-text>
         </v-card>
+      </v-flex>
+      <!-- Google embedded map displayed here -->
+      <v-flex>
+        <google-embed-map/>
       </v-flex>
     </v-layout>
   </div>
 </template>
 
 <script>
+import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap'
+
 export default {
+  // Vue component dependencies
+  components: {
+    GoogleEmbedMap
+  },
+  // Passed down variables from parent component
   props: [
     'phoneNumber',
     'address',
@@ -154,11 +170,13 @@ export default {
       this.editedContact.address = this.address
       this.dialog = true
     },
+    // Close dialog popup
     close () {
       this.dialog = false
       setTimeout(() => {
       }, 300)
     },
+    // Save user input contact information
     save () {
       this.phoneNumber = this.editedContact.phoneNumber
       this.address = this.editedContact.address

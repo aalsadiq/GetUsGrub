@@ -29,7 +29,7 @@
                 :size="225"
                 class="grey lighten-4"
               >
-                <img v-bind:src="require('C:/Users/Jenn/Desktop/GitHub/GetUsGrub/get-us-grub/src/assets/DefaultProfileImage.png')" alt="avatar">
+                <img id='profile-picture' :src="require('C:\\Users\\Jenn\\Desktop\\GitHub\\GetUsGrub\\CSULB.GetUsGrub\\Images\\ProfileImages\\DefaultProfileImage.png')" alt="display picture">
               </v-avatar>
               <v-flex>
                 <v-btn id="image-upload-btn" dark v-if="isEdit">
@@ -106,10 +106,10 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import ContactInfo from '@/components/Profile/ContactInfo'
-import RestaurantDetails from '@/components/Profile/RestaurantDetails'
-import BusinessHours from '@/components/Profile/BusinessHours'
-import Menus from '@/components/Profile/Menus'
+import ContactInfo from './ContactInfo'
+import RestaurantDetails from './RestaurantDetails'
+import BusinessHours from './BusinessHours'
+import Menus from './Menus'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 import ImageUpload from '@/components/ImageUploadVues/ImageUpload'
 
@@ -126,7 +126,35 @@ export default {
     return {
       editDisplayName: false,
       isEdit: false,
-      profile: null,
+      profile: {
+        displayName: '',
+        displayPicture: '',
+        phoneNumber: '',
+        address: {
+          street1: '',
+          street2: '',
+          city: '',
+          state: '',
+          zip: 0
+        },
+        details: {
+          avgFoodPrice: 1,
+          hasReservations: null,
+          hasDelivery: null,
+          hasTakeOut: null,
+          acceptCreditCards: null,
+          attire: null,
+          servesAlcohol: null,
+          hasOutdoorSeating: null,
+          hasTv: null,
+          hasDriveThru: null,
+          caters: null,
+          allowsPets: null,
+          foodType: ''
+        },
+        restaurantMenusList: [],
+        businessHours: []
+      },
       tab: '',
       itemsTab: [
         'Contact Info',
@@ -147,6 +175,18 @@ export default {
     this.getRestaurantProfile()
   },
   methods: {
+    // updateProfileUrl (url) {
+    //   console.log('B4 Changed to '+url)
+    //   try {
+    //     var img = new File(url)
+    //     var reader = new FileReader()
+    //     this.displayPictureUrl = reader.readAsDataURL(img)
+    //   }
+    //   catch(ex) {
+    //     console.log(ex)
+    //   }
+    //   console.log('Changed to '+url)
+    // },
     getRestaurantProfile () {
       try {
         if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
@@ -156,6 +196,7 @@ export default {
             }
           }).then(response => {
             this.profile = response.data
+            // this.updateProfileUrl(this.profile.displayPicture)
           }).catch(error => {
             try {
               if (error.response.status === 401) {
@@ -178,16 +219,14 @@ export default {
               }
               Promise.reject(error)
             } catch (ex) {
-              this.errors = error.response.data
+              this.errors = error.response
               Promise.reject(error)
             }
           })
         } else {
-          console.log('forbidden else')
           this.$router.push({ path: '/Forbidden' })
         }
       } catch (ex) {
-        console.log('forbidden exception')
         this.$router.push({ path: '/Forbidden' })
       }
     },
@@ -197,9 +236,9 @@ export default {
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
+        this.getRestaurantProfile()
         this.isEdit = false
       }).catch(error => {
-        console.log(error)
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page

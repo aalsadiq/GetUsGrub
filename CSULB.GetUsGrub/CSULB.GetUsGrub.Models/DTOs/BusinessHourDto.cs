@@ -23,6 +23,7 @@ namespace CSULB.GetUsGrub.Models
         public string CloseTime { get; set; }
         public string TwelveHourFormatOpenTime { get; set; }
         public string TwelveHourFormatCloseTime { get; set; }
+        public Flag Flag { get; set; }
         private DateTime _odt;
         private DateTime _cdt;
         public DateTime OpenDateTime

@@ -14,7 +14,8 @@ import DeactivateUser from '@/components/AdminUserManagement/AdminDeactivateUser
 import ReactivateUser from '@/components/AdminUserManagement/AdminReactivateUser.vue'
 import DeleteUser from '@/components/AdminUserManagement/AdminDeleteUser.vue'
 import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
-import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
+import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload.vue'
+import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
@@ -22,6 +23,8 @@ import Login from '@/components/Login/Login.vue'
 import Testing from '@/components/Login/DecodeTestingGround.vue'
 import Profile from '@/components/Profile/Profile.vue'
 import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
+import SsoLogin from '@/components/Sso/Login.vue'
+import TestProfile from '@/components/Profile/TestProfile.vue'
 // import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 // import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
@@ -30,6 +33,15 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/TestProfile',
+      name: 'TestProfile',
+      component: TestProfile,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Profile'
+        next()
+      }
+    },
     {
       path: '/ResourceNotFound',
       name: 'ResourceNotFound',
@@ -126,7 +138,12 @@ export default new Router({
     {
       path: '/User/Profile/ImageUpload',
       name: 'ImageUpload',
-      component: ImageUpload
+      component: ProfileImageUpload
+    },
+    {
+      path: '/User/Profile/MenuItemUpload',
+      name: 'MenuItemUpload',
+      component: MenuItemImageUpload
     },
     {
       path: '/RestaurantBillSplitter',
@@ -180,6 +197,15 @@ export default new Router({
       component: FirstTimeRegistration,
       beforeEnter: (to, from, next) => {
         document.title = 'First Time Registration'
+        next()
+      }
+    },
+    {
+      path: '/SingleSignOn',
+      name: 'SsoLogin',
+      component: SsoLogin,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Get Us Grub'
         next()
       }
     },

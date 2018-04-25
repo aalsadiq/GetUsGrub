@@ -5,7 +5,7 @@
       :value='value.userAccount.username'
       required
       :disabled=true
-      ></v-text-field>
+    />
     <v-text-field
       label="Please enter your password"
       v-model="value.userAccount.password"
@@ -17,7 +17,7 @@
       :type=" visible ? 'text' : 'password'"
       required
       v-on:input="$emit('input', value)"
-      ></v-text-field>
+    />
   </v-form>
 </template>
 <script>

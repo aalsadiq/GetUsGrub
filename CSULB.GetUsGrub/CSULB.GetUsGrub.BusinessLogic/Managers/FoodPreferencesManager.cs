@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System.Collections.Generic;
-using System;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -18,8 +17,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username"></param>
         /// <returns>Food Preferences DTO within the Response DTO</returns>
-        public ResponseDto<ICollection<string>> GetFoodPreferences(string username)
+        public ResponseDto<ICollection<string>> GetFoodPreferences(string tokenString)
         {
+            // Extract username from token string
+            var tokenService = new TokenService();
+            var username = tokenService.GetTokenUsername(tokenString);
+
             using (var gateway = new UserGateway())
             {
                 // Call the user gateway to use the method to get food preferences by username
@@ -38,7 +41,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Otherwise, return a DTO with error message
             return new ResponseDto<ICollection<string>>
             {
-                Error = "Something went wrong."
+                Error = GeneralErrorMessages.GENERAL_ERROR
             };
         }
 
@@ -46,30 +49,56 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// Method to edit user's food preferences
         /// </summary>
         /// <param name="foodPreferencesDto"></param>
-        /// <returns></returns>
-        public ResponseDto<bool> EditFoodPreferences(string username, FoodPreferencesDto foodPreferencesDto)
+        /// <returns>Response DTO with a boolean determining success of the transaction</returns>
+        public ResponseDto<bool> EditFoodPreferences(string tokenString, FoodPreferencesDto foodPreferencesDto)
         {
-            try
+            // Extract username from token string
+            var tokenService = new TokenService();
+            var username = tokenService.GetTokenUsername(tokenString);
+
+            using (var gateway = new UserGateway())
             {
-                // Open the user gateway
-                var gateway = new UserGateway();
+                // Get list of current food preferences from database
+                var currentFoodPreferences = gateway.GetFoodPreferencesByUsername(username).Data.FoodPreferences;
 
                 // Get list of updated food preferences from dto
                 var updatedFoodPreferences = foodPreferencesDto.FoodPreferences;
 
-                // Call gateway to update user's food preferences
-                var result = gateway.EditFoodPreferencesByUsername(username, updatedFoodPreferences);
+                // Call method to create lists of food preferences to be added and to be removed
+                var preferencesToBeAdded = LeftOuterJoin(updatedFoodPreferences, currentFoodPreferences);
+                var preferencesToBeRemoved = LeftOuterJoin(currentFoodPreferences, updatedFoodPreferences);
 
+                // Call gateway to update user's food preferences
+                var result = gateway.EditFoodPreferencesByUsername(username, preferencesToBeAdded, preferencesToBeRemoved);
+
+                // Return boolean determining success of update
                 return result;
             }
-            catch (Exception)
+        }
+        
+        /// <summary>
+        /// Method to get the left outer join of list one with list two
+        /// </summary>
+        /// <param name="listOne"></param>
+        /// <param name="listTwo"></param>
+        /// <returns>Result of the left outer join of two lists</returns>
+        private ICollection<string> LeftOuterJoin(ICollection<string> listOne, ICollection<string> listTwo)
+        {
+            // Create a list containing the left outer join result
+            var result = new List<string>();
+
+            // Iterate through items in list one
+            foreach (var item in listOne)
             {
-                return new ResponseDto<bool>
+                // If item does not exist in list two, add to left outer join result
+                if (!listTwo.Contains(item))
                 {
-                    Data = false,
-                    Error =  "Something went wrong; Edit Food Preferences."
-                };
-            }  
+                    result.Add(item);
+                }
+            }
+
+            // Return the result
+            return result;
         }
     }
-}
+} 

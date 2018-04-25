@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace CSULB.GetUsGrub.DataAccess
     /// A <c>UserGateway</c> class.
     /// Defines methods that communicates with the UserContext.
     /// <para>
-    /// @author: Jennifer Nguyen, Angelica Salas Tovar
-    /// @updated: 03/11/2018
+    /// @author: Jennifer Nguyen, Angelica Salas Tovar, Rachel Dang
+    /// @updated: 04/24/2018
     /// </para>
     /// </summary>
     public class UserGateway : IDisposable
@@ -685,18 +686,23 @@ namespace CSULB.GetUsGrub.DataAccess
                     string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
 
                     // Set Diplay Picture Path
-                    //userAccount.Username.DisplayPicture = savePath + newImagename;
+                    var oldPath = @userAccount.UserProfile.DisplayPicture;
+                    var extension = Path.GetExtension(oldPath);
 
-                    // Testing --
-                    var oldPath = userAccount.UserProfile.DisplayPicture;
-                    Debug.WriteLine(oldPath);
-                    var newPath = savePath + newUsername + ".png";
-                    Debug.WriteLine(newPath);
+                    // If image path is not default change it.
+                    if (oldPath != ImagePaths.DEFAULT_DISPLAY_IMAGE)
+                    {
+                        // The new path once user has their profile picture.
+                        var newPath = savePath + newUsername + extension;
 
-                    // Rename profile image
-                    File.Move(oldPath, newPath);
-
-                    // End of testing --
+                        // Rename profile image based on username
+                        File.Move(oldPath, newPath);
+                    }
+                    else
+                    {
+                        // If it is the default path, leave it as default.
+                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+                    }
 
                     // Select the username from useraccount and give it the new username.
                     userAccount.Username = newUsername;
@@ -846,11 +852,14 @@ namespace CSULB.GetUsGrub.DataAccess
     
         /// <summary>
         /// Update the user's list of food preferences
+        /// 
+        /// @author: Rachel Dang
+        /// @updated: 04/24/2018
         /// </summary>
         /// <param name="username"></param>
         /// <param name="foodPreferencesDto"></param>
-        /// <returns>Boolean determining success of transaction </returns>
-        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> updatedFoodPreferences)
+        /// <returns>Response dto with boolean determining success of transaction</returns>
+        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> preferencesToBeAdded, ICollection<string> preferencesToBeRemoved)
         {         
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
@@ -861,21 +870,21 @@ namespace CSULB.GetUsGrub.DataAccess
                                         where account.Username == username
                                         select account).FirstOrDefault();
 
-                    // Get the current list of food preferences
                     var currentFoodPreferences = userAccount.FoodPreferences;
 
-                    // Removed current food preferences that are not on the updated list
+                    // Removed unwanted food preferences not in the updated list
                     foreach (var preference in currentFoodPreferences.ToList())
-                    {                  
-                        if (!updatedFoodPreferences.Contains(preference.Preference))
+                    {
+                        // Remove unwanted preferences not in the updated list
+                        if (preferencesToBeRemoved.Contains(preference.Preference))
                         {
                             context.FoodPreferences.Attach(preference);
                             context.FoodPreferences.Remove(preference);
                         }
                     }
 
-                    // Update current list of food preferences
-                    foreach (var preference in updatedFoodPreferences)
+                    // Add new food preferences
+                    foreach (var preference in preferencesToBeAdded)
                     {
                         currentFoodPreferences.Add(new FoodPreference(preference));
                     }
@@ -888,17 +897,151 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // If an error occurs, roll back and return response dto with boolean false
                     dbContextTransaction.Rollback();
                     return new ResponseDto<bool>
                     {
                         Data = false,
-                        Error = e.Message
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }     
+        }
+
+        /// <summary>
+        /// The GetSecurityQuestions method.
+        /// Get the security questions pertaining to a user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/21/2018
+        /// </para>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>ResponseDto with Security Questions</returns>
+        public ResponseDto<ICollection<SecurityQuestion>> GetSecurityQuestions(string username)
+        {
+            try
+            {
+                // Get collection of security questions pertaining to a username
+                var securityQuestions = (from account in context.UserAccounts
+                    where account.Username == username
+                    select account.SecurityQuestions).FirstOrDefault();
+
+                return new ResponseDto<ICollection<SecurityQuestion>>()
+                {
+                    Data = securityQuestions
+                };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<ICollection<SecurityQuestion>>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+        }
+
+        /// <summary>
+        /// The GetUserAccountBySecurityQuestions method.
+        /// Gets a user's account in the database given security questions.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="securityQuestionDtos"></param>
+        /// <returns>ResponseDto with a UserAccount</returns>
+        public ResponseDto<UserAccount> GetUserAccountBySecurityQuestions(string username, ICollection<SecurityQuestionDto> securityQuestionDtos)
+        {
+            try
+            {
+                // Get UserAccount where security questions and answers match
+                var userAccount = (from account in context.UserAccounts
+                                    join question in context.SecurityQuestions
+                                        on account.Id equals question.UserId
+                                    where account.Username == username
+                                        && securityQuestionDtos.Select(securityQuestion => securityQuestion.Question)
+                                            .Contains(question.Question)
+                                        && securityQuestionDtos.Select(securityQuestion => securityQuestion.Answer)
+                                            .Contains(question.Answer)
+                                    select account).FirstOrDefault();
+
+                return new ResponseDto<UserAccount>()
+                {
+                    Data = userAccount
+                };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<UserAccount>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+        }
+
+        /// <summary>
+        /// The UpdatePassword method.
+        /// Update database models associated with updating a user's password.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccount"></param>
+        /// <param name="passwordSalt"></param>
+        /// <returns>ResponseDto with true or false boolean</returns>
+        public ResponseDto<bool> UpdatePassword(UserAccount userAccount, PasswordSalt passwordSalt)
+        {
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    // Get Id from username
+                    userAccount.Id = (from account in context.UserAccounts
+                        where account.Username == userAccount.Username
+                        select account.Id).FirstOrDefault();
+                    context.SaveChanges();
+
+                    // Set UserId to dependencies
+                    passwordSalt.Id = userAccount.Id;
+                    context.SaveChanges();
+
+                    // Update UserAccount
+                    context.UserAccounts.Add(userAccount);
+
+                    // Update PasswordSalt
+                    context.PasswordSalts.AddOrUpdate(passwordSalt);
+                    context.SaveChanges();
+
+                    // Commit transaction to database
+                    dbContextTransaction.Commit();
+
+                    // Return a true ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Returns a false ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                }
+            }
         }
 
         /// <summary>

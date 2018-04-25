@@ -58,10 +58,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     try
                     {
                         // Apply and save changes
-                        if (userProfileDomain.DisplayName != null)
-                        {
-                            dbUserProfile.DisplayName = userProfileDomain.DisplayName;
-                        }
+                        dbUserProfile.DisplayName = userProfileDomain.DisplayName;
                         profileContext.SaveChanges();
                         dbContextTransaction.Commit();
 

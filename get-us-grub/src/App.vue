@@ -52,13 +52,9 @@ export default {
         } else if (this.exp.diff(this.dateTimeNow, 'seconds') <= 10) {
           this.popUp = false
           this.logoutUser()
-        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') <= 1 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
-          this.expMinutes = '1 minute'
-          this.popUpColor = 'error'
-          this.popUp = true
         } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') <= 5 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
           this.expMinutes = '5 minutes'
-          this.popUpColor = 'warning'
+          this.popUpColor = 'error'
           this.popUp = true
         }
       } catch (ex) {}
@@ -89,9 +85,13 @@ export default {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
       }).then(response => {
-        this.$store.state.authenticationToken = response.data
+        console.log(response)
+        this.popUp = false
+        this.$store.dispatch('setAuthenticationToken', response.data)
+        this.exp = moment.unix(jwt.decode(this.$store.state.authenticationToken).exp)
       }).catch(error => {
-        console.log(error.response)
+        Promise.reject(error)
+        this.popUp = false
       })
     }
   },

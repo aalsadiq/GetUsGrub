@@ -1,7 +1,7 @@
 <template>
   <div id="image-upload">
         <v-dialog  v-model="dialog">
-          <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
+          <v-icon id="display-image-upload" color="blue" slot="activator">photo_camera</v-icon>
           <v-card dark>
             {{ responseDataStatus }}
             {{ responseData }}
@@ -24,7 +24,7 @@
 
 <script>
 import axios from 'axios'
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
   dialog: false,
@@ -40,17 +40,17 @@ export default {
     imageData: ''// Stores in base 64 format of image
   }),
   methods: {
-    beforeCreate () {
-      if (this.$store.state.authenticationToken === null) {
-        this.$router.push({path: '/Unauthorized'})
-      }
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
-        }
-      } catch (ex) {
-        this.$router.push({path: '/Forbidden'})
-      }
-    },
+    // beforeCreate () {
+    //   if (this.$store.state.authenticationToken === null) {
+    //     this.$router.push({path: '/Unauthorized'})
+    //   }
+    //   try {
+    //     if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+    //     }
+    //   } catch (ex) {
+    //     this.$router.push({path: '/Forbidden'})
+    //   }
+    // },
     StoreSelectedFile: function (event) {
       this.selectedFile = event.target.files[0]
       this.previewImage(event)
@@ -59,8 +59,8 @@ export default {
       var input = event.target // References the DOM input element
       if (input.files[0]) {
         var reader = new FileReader() // Read image and convert to base64
-        reader.onload = (e) => {
-          this.imageData = e.target.result // Read image as base64
+        reader.onload = (image) => {
+          this.imageData = image.target.result // Read image as base64
         }
         reader.readAsDataURL(input.files[0]) // Read as data url (base64 format)
       }

@@ -118,9 +118,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Save image to path
             string savePath = ConfigurationManager.AppSettings["MenuImagePath"];
+            //string rootedSavePath = ConfigurationManager.AppSettings["RootedMenuImagePath"];
 
             var menuPath = savePath +  newImagename; // Store image path to DTO
-
+            //var saveMenuToLocation = rootedSavePath + newImagename;
             // Call gateway to save path to database
             using (var gateway = new RestaurantProfileGateway())
             {
@@ -134,7 +135,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
 
-                image.SaveAs(menuPath);
+                image.SaveAs(savePath);
 
                 return new ResponseDto<bool>
                 {

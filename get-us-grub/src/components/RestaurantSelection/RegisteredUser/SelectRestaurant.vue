@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>
-      <v-container fluid>
         <div>
           <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
@@ -108,7 +107,6 @@
           </div>
           <result-bar/>
         </div>
-      </v-container>
     </div>
     <div v-if="showSection">
       <!-- Restaurant selection results Vue component -->

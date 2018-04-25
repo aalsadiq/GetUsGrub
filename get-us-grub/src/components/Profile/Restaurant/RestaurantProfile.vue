@@ -2,6 +2,7 @@
   <div>
     <div id="restaurant-profile-div">
       <div>
+        <!-- Portion with profile picture and display name -->
         <v-parallax src="/static/parallax.png" height="425">
         <div id="main-edit-btns-div">
           <v-layout>
@@ -23,6 +24,7 @@
             </div>
           </v-layout>
         </div>
+          <!-- Display picture -->
           <div id="display-picture">
             <v-layout column align-center justify-center>
               <v-avatar
@@ -38,32 +40,32 @@
               </v-flex>
               <v-flex>
               <div id="display-name-div">
-                  <div v-if="!editDisplayName">
-                    <span id="display-name-text">
-                      {{ profile.displayName }}
-                    </span>
-                    <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()" v-if="isEdit">
-                      <v-icon>edit</v-icon>
-                    </v-btn>
-                  </div>
-                  <span id="display-name-text"  v-if="editDisplayName">
-                    <v-layout row>
-                    <v-flex>
-                    <v-text-field
-                      label="Enter a display name"
-                      v-model="profile.displayName"
-                      :rules="$store.state.rules.displayNameRules"
-                      required
-                      dark
-                    ></v-text-field>
-                    </v-flex>
-                    <v-flex>
-                    <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()">
-                      <v-icon>save</v-icon>
-                    </v-btn>
-                    </v-flex>
-                    </v-layout>
+                <div v-if="!editDisplayName">
+                  <span id="display-name-text">
+                    {{ profile.displayName }}
                   </span>
+                  <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()" v-if="isEdit">
+                    <v-icon>edit</v-icon>
+                  </v-btn>
+                </div>
+                <span id="display-name-text"  v-if="editDisplayName">
+                  <v-layout row>
+                  <v-flex>
+                  <v-text-field
+                    label="Enter a display name"
+                    v-model="profile.displayName"
+                    :rules="$store.state.rules.displayNameRules"
+                    required
+                    dark
+                  ></v-text-field>
+                  </v-flex>
+                  <v-flex>
+                  <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()">
+                    <v-icon>save</v-icon>
+                  </v-btn>
+                  </v-flex>
+                  </v-layout>
+                </span>
               </div>
               </v-flex>
             </v-layout>
@@ -71,6 +73,7 @@
         </v-parallax>
       </div>
       <div>
+      <!-- Tabs toolbar -->
       <v-tabs
           color="cyan"
           slot="extension"
@@ -113,6 +116,7 @@ import Menus from './Menus'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
 import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
+
 export default {
   components: {
     ContactInfo,
@@ -167,11 +171,21 @@ export default {
       error: null
     }
   },
+  // Check if user has permission to view the page
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
-      this.$router.push({ path: '/Unauthorized' })
+      this.$router.push('Unauthorized')
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+      } else {
+        this.$router.push('Forbidden')
+      }
+    } catch (ex) {
+      this.$router.push('Forbidden')
     }
   },
+  // Get the restaurant profile information
   created () {
     this.getRestaurantProfile()
   },
@@ -189,47 +203,39 @@ export default {
     //   console.log('Changed to '+url)
     // },
     getRestaurantProfile () {
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
-          axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
-            headers: {
-              Authorization: `Bearer ${this.$store.state.authenticationToken}`
-            }
-          }).then(response => {
-            this.profile = response.data
-            // this.updateProfileUrl(this.profile.displayPicture)
-          }).catch(error => {
-            try {
-              if (error.response.status === 401) {
-                // Route to Unauthorized page
-                this.$router.push({ path: '/Unauthorized' })
-              }
-              if (error.response.status === 403) {
-                // Route to Forbidden page
-                this.$router.push({ path: '/Forbidden' })
-              }
-              if (error.response.status === 404) {
-                // Route to ResourceNotFound page
-                this.$router.push({ path: '/ResourceNotFound' })
-              }
-              if (error.response.status === 500) {
-                // Route to InternalServerError page
-                this.$router.push({ path: '/InternalServerError' })
-              } else {
-                this.errors = JSON.parse(JSON.parse(error.response.data.message))
-              }
-              Promise.reject(error)
-            } catch (ex) {
-              this.errors = error.response
-              Promise.reject(error)
-            }
-          })
-        } else {
-          this.$router.push({ path: '/Forbidden' })
+      axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
-      } catch (ex) {
-        this.$router.push({ path: '/Forbidden' })
-      }
+      }).then(response => {
+        this.profile = response.data
+        // this.updateProfileUrl(this.profile.displayPicture)
+      }).catch(error => {
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({ path: '/Unauthorized' })
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({ path: '/Forbidden' })
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({ path: '/ResourceNotFound' })
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({ path: '/InternalServerError' })
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response
+          Promise.reject(error)
+        }
+      })
     },
     editRestaurantProfile: function () {
       axios.post(this.$store.state.urls.profileManagement.updateRestaurantProfile,

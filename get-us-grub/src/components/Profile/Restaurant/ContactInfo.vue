@@ -87,17 +87,19 @@
       </v-card>
     </v-dialog>
     </div>
-    <v-layout row wrap>
-      <v-flex d-flex>
+    <v-layout row pb-2>
+      <v-flex xs8 offset-xs2>
         <v-card class="card--flex-toolbar">
           <!-- Card with toolbar that holds the contact information of a user -->
           <v-toolbar dark card prominent color="teal">
             <v-spacer/>
-            <v-toolbar-title>Contact</v-toolbar-title>
+            <div id="contact-toolbar-text">
+              <v-toolbar-title>Contact Information</v-toolbar-title>
+            </div>
             <v-spacer/>
             <!-- Edit button on the card toolbar-->
               <div v-if="isEdit">
-                <v-btn icon class="mx-0" @click="editContactInfo()">
+                <v-btn id="edit-btn" icon class="mx-0" @click="editContactInfo()">
                   <v-icon color="black">edit</v-icon>
                 </v-btn>
               </div>
@@ -121,22 +123,12 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <!-- Google embedded map displayed here -->
-      <v-flex>
-        <google-embed-map/>
-      </v-flex>
     </v-layout>
   </div>
 </template>
 
 <script>
-import GoogleEmbedMap from '@/components/EmbedMap/GoogleEmbedMap'
-
 export default {
-  // Vue component dependencies
-  components: {
-    GoogleEmbedMap
-  },
   // Passed down variables from parent component
   props: [
     'phoneNumber',
@@ -160,6 +152,7 @@ export default {
       }
     }
   },
+  // Setting parent passed down variables to local variables
   created () {
     this.editedContact.phoneNumber = this.phoneNumber
     this.editedContact.address = this.address
@@ -185,3 +178,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#contact-toolbar-text {
+  margin: 0 0.5em 0 0;
+  align-content: center;
+}
+#edit-btn {
+  margin: 0 7em 0 3em;
+}
+</style>

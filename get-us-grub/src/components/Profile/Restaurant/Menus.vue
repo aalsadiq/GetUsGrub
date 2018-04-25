@@ -1,7 +1,7 @@
 <template>
   <div id="menus-div">
-    {{ restaurantMenusList }}
     <div>
+    <!-- Dialog popup for adding/editing menus -->
     <v-dialog v-model="menuDialog" persistent max-width="500px">
       <v-card>
         <v-card-title>
@@ -32,6 +32,7 @@
     </v-dialog>
     </div>
     <div>
+    <!-- Dialog popup for adding/editing menu items -->
     <v-dialog v-model="menuItemDialog" persistent max-width="500px">
       <v-card>
         <v-card-title>
@@ -73,8 +74,10 @@
       </v-card>
     </v-dialog>
     </div>
+    <!-- Portion dealing with active menus -->
     <div id="active-menus">
     <v-layout row justify-center>
+      <!-- Tabs to click on an active menu -->
       <v-flex xs8>
       <v-toolbar color="teal" dark tabs>
         <v-spacer/>
@@ -97,20 +100,24 @@
           <v-tabs-slider color="yellow"></v-tabs-slider>
           <v-tab v-for="(menu, menuIndex) in restaurantMenusList" :key="menuIndex" v-if="menu.restaurantMenu.isActive && menu.restaurantMenu.flag !== 3">
             {{ menu.restaurantMenu.menuName }}
+            <!-- Buttons on the active menu tab -->
             <div v-if="isEdit">
-              <v-btn icon class="mx-0" @click="editMenu(menu)">
-                <v-icon color="yellow">edit</v-icon>
-              </v-btn>
-              <v-btn icon class="mx-0" @click="deleteMenu(menu)">
-                <v-icon color="grey">delete</v-icon>
-              </v-btn>
-              <v-btn dark slot="activator" class="mb-2" icon @click="addMenuItem(menuIndex)">
-                <v-icon>add_circle</v-icon>
-              </v-btn>
+              <v-layout>
+                <v-btn icon class="mx-0" @click="editMenu(menu)">
+                  <v-icon color="yellow">edit</v-icon>
+                </v-btn>
+                <v-btn icon class="mx-0" @click="deleteMenu(menu)">
+                  <v-icon color="grey">delete</v-icon>
+                </v-btn>
+                <v-btn dark slot="activator" class="mb-2" icon @click="addMenuItem(menuIndex)">
+                  <v-icon>add_circle</v-icon>
+                </v-btn>
+              </v-layout>
             </div>
           </v-tab>
         </v-tabs>
       </v-toolbar>
+      <!-- Binding the which active menu tab user clicks on to activeTab variable -->
       <v-tabs-items v-model="activeTab">
         <v-tab-item v-for="(menu, menuIndex) in restaurantMenusList" :key="menuIndex" v-if="menu.restaurantMenu.isActive && menu.restaurantMenu.flag !== 3">
           <div
@@ -120,23 +127,29 @@
           >
           <v-card flat>
           <v-list three-line>
+            <!-- Active Menu's menu items -->
             <template v-for="(item, itemIndex) in restaurantMenusList[menuIndex].menuItem">
+            <!-- An active menu item of an active menu -->
             <v-list-tile
+              id="active-menu-active-menu-item"
               @click="toggle()"
               avatar
               ripple
               :key="item.id"
               v-if="item.isActive && item.flag !== 3"
               >
+              <!-- Picture of active menu item for an active menu -->
               <v-list-tile-avatar size="50">
                 <img :src="require('@/assets/GetUsGrub.png')">
               </v-list-tile-avatar>
+              <!-- Content of active menu item for an active menu -->
               <v-list-tile-content class="active-menu-item">
                 <v-list-tile-title>{{ item.itemName }}</v-list-tile-title>
                 <v-list-tile-sub-title class="text--primary">${{ item.itemPrice }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
               </v-list-tile-content>
+              <!-- Buttons on the active menu item of an active menu -->
               <div v-if="isEdit">
                 <!-- Button to call Image Upload's function -->
                 <v-btn icon class="mx-0">
@@ -150,22 +163,27 @@
                 </v-btn>
               </div>
             </v-list-tile>
+            <!-- An inactive menu item of an active menu -->
             <v-list-tile
+              id="active-menu-inactive-menu-item"
               @click="toggle()"
               avatar
               ripple
               :key="item.id"
               v-if="!item.isActive && isEdit && item.flag !== 3"
               >
+              <!-- Picture of inactive menu item for an active menu -->
               <v-list-tile-avatar size="50" class="inactive-avatar">
                 <img :src="require('@/assets/GetUsGrub.png')">
               </v-list-tile-avatar>
+              <!-- Content of inactive menu item for an active menu -->
               <v-list-tile-content class="inactive-menu-item">
                 <v-list-tile-title>{{ item.itemName }}</v-list-tile-title>
                 <v-list-tile-sub-title class="text--primary">${{ item.itemPrice }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
               </v-list-tile-content>
+              <!-- Buttons on the inactive menu item of an active menu -->
               <div v-if="isEdit">
                 <!-- Button to call Image Upload's function -->
                 <v-btn icon class="mx-0">
@@ -179,6 +197,7 @@
                 </v-btn>
               </div>
             </v-list-tile>
+            <!-- The line underneath the menu item content -->
             <v-divider
               v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length
                     && isEdit"
@@ -201,9 +220,11 @@
     </v-flex>
   </v-layout>
   </div>
+  <!-- Portion dealing with inactive menus -->
   <div id="inactive-menus" v-if="isEdit">
     <v-layout row justify-center>
       <v-flex xs8>
+      <!-- Tabs to click on an inactive menu -->
       <v-toolbar color="teal" dark tabs>
         <v-spacer/>
         <v-toolbar-title class="menus-title">Inactive Menus</v-toolbar-title>
@@ -225,7 +246,9 @@
           <v-tabs-slider color="yellow"></v-tabs-slider>
           <v-tab v-for="(menu, menuIndex) in restaurantMenusList" :key="menuIndex" v-if="!menu.restaurantMenu.isActive && menu.restaurantMenu.flag !== 3">
             {{ menu.restaurantMenu.menuName }}
+            <!-- Buttons on the inactive menu tab -->
             <div v-if="isEdit">
+              <v-layout>
               <v-btn icon class="mx-0" @click="editMenu(menu)">
                 <v-icon color="yellow">edit</v-icon>
               </v-btn>
@@ -235,10 +258,12 @@
               <v-btn dark slot="activator" class="mb-2" icon @click="addMenuItem(menuIndex)">
                 <v-icon>add_circle</v-icon>
               </v-btn>
+              </v-layout>
             </div>
           </v-tab>
         </v-tabs>
       </v-toolbar>
+      <!-- Binding the which active menu tab user clicks on to activeTab variable -->
       <v-tabs-items v-model="inactiveTab">
         <v-tab-item v-for="(menu, menuIndex) in restaurantMenusList" :key="menuIndex" v-if="!menu.restaurantMenu.isActive && menu.restaurantMenu.flag !== 3">
           <div
@@ -248,7 +273,9 @@
           >
           <v-card flat>
           <v-list three-line>
+            <!-- Inactive Menu's menu items -->
             <template v-for="(item, itemIndex) in restaurantMenusList[menuIndex].menuItem">
+            <!-- An active menu item of an inactive menu -->
             <v-list-tile
               @click="toggle()"
               avatar
@@ -256,16 +283,23 @@
               :key="item.id"
               v-if="item.isActive && item.flag !== 3"
               >
+              <!-- Picture of active menu item for an inactive menu -->
               <v-list-tile-avatar size="50">
                 <img :src="require('@/assets/GetUsGrub.png')">
               </v-list-tile-avatar>
+              <!-- Content of active menu item for an inactive menu -->
               <v-list-tile-content class="active-menu-item">
                 <v-list-tile-title>{{ item.itemName }}</v-list-tile-title>
                 <v-list-tile-sub-title class="text--primary">${{ item.itemPrice }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
               </v-list-tile-content>
+              <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
+                <!-- Button to call Image Upload's function -->
+                <v-btn icon class="mx-0">
+                  <v-icon color="blue">photo_camera</v-icon>
+                </v-btn>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -274,6 +308,7 @@
                 </v-btn>
               </div>
             </v-list-tile>
+            <!-- An inactive menu item of an inactive menu -->
             <v-list-tile
               @click="toggle()"
               avatar
@@ -281,16 +316,23 @@
               :key="item.id"
               v-if="!item.isActive && isEdit && item.flag !== 3"
               >
+              <!-- Picture of inactive menu item for an inactive menu -->
               <v-list-tile-avatar size="50" class="inactive-avatar">
                 <img :src="require('@/assets/GetUsGrub.png')">
               </v-list-tile-avatar>
+              <!-- Content of inactive menu item for an inactive menu -->
               <v-list-tile-content class="inactive-menu-item">
                 <v-list-tile-title>{{ item.itemName }}</v-list-tile-title>
                 <v-list-tile-sub-title class="text--primary">${{ item.itemPrice }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
                 <v-list-tile-action-text>#{{ item.tag }}</v-list-tile-action-text>
               </v-list-tile-content>
+              <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
+                <!-- Button to call Image Upload's function -->
+                <v-btn icon class="mx-0">
+                  <v-icon color="blue">photo_camera</v-icon>
+                </v-btn>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -299,8 +341,17 @@
                 </v-btn>
               </div>
             </v-list-tile>
+            <!-- The line underneath the menu item content -->
             <v-divider
-              v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length"
+              v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length
+                    && isEdit"
+              :key="itemIndex"
+            >
+            </v-divider>
+            <v-divider
+              v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length
+                    && !isEdit
+                    && restaurantMenusList[menuIndex].menuItem[itemIndex].isActive"
               :key="itemIndex"
             >
             </v-divider>
@@ -318,6 +369,7 @@
 
 <script>
 export default {
+  // Props are variables passed down by parent component
   props: [
     'restaurantMenusList',
     'isEdit'
@@ -384,6 +436,7 @@ export default {
     },
     editMenu (menu) {
       this.editedIndex = this.restaurantMenusList.indexOf(menu)
+      // Assign a new object of menu.restaurantMenu to editedMenu
       this.editedMenu = Object.assign({}, menu.restaurantMenu)
       this.menuDialog = true
     },
@@ -391,8 +444,11 @@ export default {
       const index = this.restaurantMenusList.indexOf(menu)
       if (confirm('Are you sure you want to delete this menu?')) {
         try {
+          // If the menu has been newly added during that session and user wants to delete it
           if (this.restaurantMenusList[index].restaurantMenu.flag === 1) {
+            // Then delete the menu from the list entirely
             this.restaurantMenusList.splice(index, 1)
+            // Else set the flag to delete in order to be deleted in the backend database
           } else {
             this.restaurantMenusList[index].restaurantMenu.flag = 3
           }
@@ -409,12 +465,16 @@ export default {
       }, 300)
     },
     saveMenu () {
+      // If the item has been edited
       if (this.editedIndex > -1) {
+        // If the flag is not a newly added menu during the user's session
         if (this.restaurantMenusList[this.editedIndex].restaurantMenu.flag !== 1) {
+          // Set the flag to edit so that the backend can handle it as an edited item
           this.restaurantMenusList[this.editedIndex].restaurantMenu.flag = 2
         }
         this.restaurantMenusList[this.editedIndex].restaurantMenu.menuName = this.editedMenu.menuName
         this.restaurantMenusList[this.editedIndex].restaurantMenu.isActive = this.editedMenu.isActive
+      // Else item is newly added
       } else {
         this.editedMenu.flag = 1
         this.newMenu = Object.assign({}, this.defaultNewMenu)
@@ -440,9 +500,12 @@ export default {
       const index = this.restaurantMenusList[menuIndex].menuItem.indexOf(item)
       if (confirm('Are you sure you want to delete this menu item?')) {
         try {
+          // If the menu item has been newly added during that session and user wants to delete it
           if (this.restaurantMenusList[menuIndex].menuItem[index].flag === 1) {
+            // Then delete the menu from the list entirely
             this.restaurantMenusList[menuIndex].menuItem.splice(index, 1)
           } else {
+            // Else set the flag to delete in order to be deleted in the backend database
             this.restaurantMenusList[menuIndex].menuItem[index].flag = 3
           }
         } catch (ex) {
@@ -458,8 +521,11 @@ export default {
       }, 300)
     },
     saveMenuItem () {
+      // If the item has been edited
       if (this.editedIndex > -1) {
+        // If the flag is not a newly added menu item during the user's session
         if (this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].flag !== 1) {
+          // Set the flag to edit so that the backend can handle it as an edited item
           this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].flag = 2
         }
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].itemName = this.editedMenuItem.itemName
@@ -468,6 +534,7 @@ export default {
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].tag = this.editedMenuItem.tag
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].description = this.editedMenuItem.description
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].isActive = this.editedMenuItem.isActive
+      // Else item is newly added
       } else {
         this.editedMenuItem.flag = 1
         this.restaurantMenusList[this.formMenuIndex].menuItem.push(this.editedMenuItem)

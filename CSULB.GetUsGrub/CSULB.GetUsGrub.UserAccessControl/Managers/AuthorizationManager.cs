@@ -31,7 +31,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             {
                 // Transform the claims principal to contain all of the user's permission claims
                 ClaimsTransformer transformer = new ClaimsTransformer();
-                principal = transformer.Authenticate(PermissionTypes.All, principal);
+                principal = transformer.Authenticate(PermissionTypes.Authorization, principal);
 
                 // Check transformed claims principal to see if it contains the claim needed
                 bool hasAccess = principal.HasClaim(claim, "True");

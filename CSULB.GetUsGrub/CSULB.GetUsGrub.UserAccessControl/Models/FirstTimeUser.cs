@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// </summary>
     public class FirstTimeUser : IClaims
     {
-        public string Type => AccountType.FirstTimeUser;
+        public string Type => AccountTypes.FirstTimeUser;
 
         public ICollection<Claim> Claims => new List<Claim>
         {

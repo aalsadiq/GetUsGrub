@@ -81,7 +81,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             restaurantProfileDomain.GeoCoordinates = new GeoCoordinates(geocodeResponse.Data.Latitude, geocodeResponse.Data.Longitude);
 
             // Extract business hours domains
-            var businessHourDomains = restaurantProfileDto.BusinessHours;
+            var businessHourDtos = restaurantProfileDto.BusinessHourDtos;
 
 
             // Extract restaurant menu dictionary
@@ -90,7 +90,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfileById(userAccountResponseDto.Data.Id, userProfileDomain, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfileById(userAccountResponseDto.Data.Id, userProfileDomain, restaurantProfileDomain, businessHourDtos, restaurantMenuDomains);
 
             return responseDtoFromGateway;
         }

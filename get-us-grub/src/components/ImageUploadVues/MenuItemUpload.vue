@@ -1,24 +1,60 @@
 <template>
   <div id="image-upload">
-        <v-dialog  v-model="dialog">
+    <v-layout row justify-center>
+        <v-dialog  v-model="dialog" max-width="500px">
           <v-icon id="display-image-upload" color="blue" slot="activator">photo_camera</v-icon>
           <v-card dark>
-            {{ responseDataStatus }}
-            {{ responseData }}
+            <div id="success">
+              <v-layout>
+                <v-flex xs12>
+                  <v-alert type="success" :value="showSuccess">
+                  <span>
+                    {{ responseData }}
+                  </span>
+                  </v-alert>
+                </v-flex>
+              </v-layout>
+            </div>
+            <div v-show="showError" id="error-div">
+              <v-layout>
+              <v-flex xs12>
+                <!-- Title bar for the restaurant selection -->
+                <v-alert id="registration-error" :value=true icon='warning'>
+                  <span id="error-title">
+                    An error has occurred
+                  </span>
+                </v-alert>
+              </v-flex>
+              </v-layout>
+              <v-layout>
+                <v-flex xs12>
+                  <v-card id="error-card">
+                    <p v-for="error in errors" :key="error">
+                      {{ error }}
+                    </p>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </div>
             <br/>
-            <v-flex xs1 sm4 offset-sm1>
-              <v-flex sm2>
-              <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
-              <v-btn id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">Upload Image</v-btn>
+            <v-flex xs6>
+                <label class="custom-file-upload">
+                   <h5>choose image
+                   <i class="material-icons">cloud_download</i>
+                   </h5>
+                  <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
+                </label>
+                <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
+                  Upload
+                  <v-icon color="white">cloud_upload</v-icon>
+                </v-btn>
               </v-flex>
-              </v-flex>
-              <v-flex xs15 sm15 offset-sm2>
-                  <img id="previewImage" class="preview" :src="imageData" height="100" width="100"/>
-              </v-flex>
+              <img id="previewImage" class="preview" :src="imageData"/>
             <br/>
           </v-card>
         </v-dialog>
-      <br/>
+      </v-layout>
+    <br/>
   </div>
 </template>
 
@@ -33,9 +69,10 @@ export default {
   data: () => ({
     username: '26user', // Can grab from token
     menuId: 4, // For testing purposes
-    selectedFile: null,
-    responseDataStatus: '',
     responseData: '',
+    show: false,
+    showError: false,
+    showSuccess: false,
     test: null,
     imageData: ''// Stores in base 64 format of image
   }),
@@ -69,16 +106,16 @@ export default {
       var formData = new FormData()
       formData.append('username', this.username) // this.$store.state.username
       formData.append('menuId', this.menuId)
-      // formData.append('itemName', this.itemName)
       formData.append('filename', this.selectedFile, this.selectedFile.name)
-      axios.post('http://localhost:8081/Profile/Restaurant/Edit/MenuItemImageUpload', formData, {
+      axios.post(this.$store.state.urls.profileManagement.menuItemUpload, formData, {
       }).then(response => {
-        this.responseDataStatus = 'Success! Image has been uploaded.'
         this.responseData = response.data
+        this.showSuccess = true
+        this.showError = false
       }).catch(error => {
-        this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
-        console.log(error.response.data)
+        this.showSuccess = false
+        this.showError = true
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page
@@ -114,8 +151,28 @@ export default {
   height: 40em;
   width: 80em;
 }
-#uploadPreview{
+#previewImage{
   height: 100px;
   width: 100px;
+}
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  display: inline-block;
+  padding: 0em .8em .5em .8em;
+  cursor: pointer;
+  background: slateblue;
+  font-size: 14px;
+}
+.btn--small{
+  font: 5em;
+}
+#card {
+  padding: 0 0.7em 0 0.7em;
+  margin: 0 0 1em 0;
+}
+#user-text-box-alert{
+  background-color: #e26161 !important
 }
 </style>

@@ -1,36 +1,5 @@
 <template>
-<div>
-  <!-- <v-app>
-    <v-navigation-drawer id="nav-drawer" stateless hide-overlay :mini-variant.sync="mini" v-model="drawer">
-    <v-toolbar flat class="transparent">
-        <v-list class="pa-0">
-          <v-list-tile avatar>
-            <v-list-tile-avatar>
-              <img src="../../../../Images/DefaultImages/DefaultProfileImage.png">
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Admin admin</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-btn icon @click.native.stop="mini = !mini">
-              <v-icon>chevron_left</v-icon>
-            </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
-      </v-list>
-    </v-toolbar>
-        <v-list class="header-admin" dense>
-        <v-list-tile v-for="item in items" :key="item.title" @click="item" :to="item.path">
-            <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content ref="items">
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-  </v-navigation-drawer>
-  </v-app> -->
+  <div>
     <v-navigation-drawer id="nav-drawer" permanent absolute v-model="drawer" >
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
@@ -38,28 +7,26 @@
             <v-list-tile-avatar>
               <img :src="ImagePath"/>
             </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title> </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </v-toolbar>
-      <v-list class="header-admin" dense>
-        <v-list-tile v-for="item in items" :key="item.title" @click="item" :to="item.path">
-            <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content ref="items">
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            <!-- <v-list-tile-title>{{ ImagePath }}</v-list-tile-title> -->
+          <v-list-tile-content>
+          <v-list-tile-title/>
           </v-list-tile-content>
         </v-list-tile>
-                <!-- { title: 'Log Out', icon: 'power_settings_new', v-on:click logout() } -->
       </v-list>
-      <!-- <v-btn id="setImagePath" name= "setImagePath" color="pink" type="submit" value ="setImagePath" v-on:click="setImagePath">check Image Path</v-btn> -->
-          <v-btn flat id="logout-btn" @click="logout()">
-          <v-icon>power_settings_new</v-icon>
-        </v-btn>
+    </v-toolbar>
+    <v-list class="header-admin" dense>
+      <v-list-tile v-for="item in items" :key="item.title" @click="item" :to="item.path">
+        <v-list-tile-action>
+        <v-icon>{{ item.icon }}</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content ref="items">
+          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
+      <v-btn flat id="logout-btn" @click="logout()">
+        <v-icon>power_settings_new</v-icon>
+      </v-btn>
+      {{ this.ImagePath }}
     </v-navigation-drawer>
   </div>
 </template>
@@ -95,6 +62,7 @@ export default {
       if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' &&
         jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
         jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
+        // Create, Deactivate, Reactivate, Edit, and Delete Claims?
       } else {
         this.$router.push({path: '/Forbidden'})
       }
@@ -104,24 +72,7 @@ export default {
   },
   created () {
     // this.ImagePath = require('../../../../Images/DefaultImages/DefaultProfileImage.png')
-    axios.get('http://localhost:8081/', { // Get User Profile...
-      headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:8080',
-        'Authorization': `Bearer ${this.$store.state.authenticationToken}`
-      },
-      params: {
-        username: jwt.decode(this.$store.state.authenticationToken).Username
-      }
-    }).then(response => {
-      this.foodPreferences = response.data
-    }).catch(error => {
-      Promise.reject(error)
-    })
-  },
-  computed: {
-    imageURL () {
-      return this.ImagePath
-    }
+    this.getUserProfile()
   },
   methods: {
     logout () {
@@ -135,10 +86,57 @@ export default {
       }).catch(error => {
         console.log(error.response)
       })
-    }
+    },
+    getUserProfile () {
+      try {
+        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' &&
+          jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
+          jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
+          axios.get(this.$store.state.urls.profileManagement.userProfile, {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.authenticationToken}`
+            }
+          }).then(response => {
+            this.displayName = response.data.displayName
+            this.displayPicture = response.data.displayPicture
+            this.ImagePath = require(this.displayPicture)
+          }).catch(error => {
+            try {
+              if (error.response.status === 401) {
+                // Route to Unauthorized page
+                this.$router.push({ path: '/Unauthorized' })
+              }
+              if (error.response.status === 403) {
+                // Route to Forbidden page
+                this.$router.push({ path: '/Forbidden' })
+              }
+              if (error.response.status === 404) {
+                // Route to ResourceNotFound page
+                this.$router.push({ path: '/ResourceNotFound' })
+              }
+              if (error.response.status === 500) {
+                // Route to InternalServerError page
+                this.$router.push({ path: '/InternalServerError' })
+              } else {
+                this.errors = JSON.parse(JSON.parse(error.response.data.message))
+              }
+              Promise.reject(error)
+            } catch (ex) {
+              this.errors = error.response.data
+              Promise.reject(error)
+            }
+          })
+        } else {
+          this.$router.push({ path: '/Forbidden' })
+        }
+      } catch (ex) {
+        this.$router.push({ path: '/Forbidden' })
+      }
+    },
   }
 }
 </script>
 
 <style>
+
 </style>

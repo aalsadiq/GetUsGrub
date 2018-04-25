@@ -1,6 +1,37 @@
 <template>
     <div id="app">
-      {{ responseDataStatus }} {{ responseData }}
+    <div id="success">
+      <v-layout>
+        <v-flex xs12>
+          <v-alert type="success" :value="showSuccess">
+            <span>
+              {{ responseData }}
+            </span>
+          </v-alert>
+        </v-flex>
+      </v-layout>
+    </div>
+    <div v-show="showError" id="error-div">
+      <v-layout>
+      <v-flex xs12>
+        <!-- Title bar for the restaurant selection -->
+        <v-alert id="registration-error" :value=true icon='warning'>
+          <span id="error-title">
+            An error has occurred
+          </span>
+        </v-alert>
+      </v-flex>
+      </v-layout>
+      <v-layout>
+        <v-flex xs12>
+          <v-card id="error-card">
+            <p v-for="error in errors" :key="error">
+              {{ error }}
+            </p>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </div>
       <v-flex xs6 sm3 offset-sm5>
         <v-form v-model="validIdentificationInput">
           <v-text-field label="Enter user to edit" v-model="editUser.username" :rules="$store.state.rules.usernameRules"></v-text-field>
@@ -26,7 +57,8 @@ export default {
     validIdentificationInput: false,
     validSecurityInput: false,
     responseData: '',
-    responseDataStatus: '',
+    showError: false,
+    showSuccess: false,
     editUser: {
       username: '',
       newUsername: null,
@@ -34,23 +66,46 @@ export default {
     }
   }),
   methods: {
-  userSubmit () {
+    userSubmit () {
       axios.put(this.$store.state.urls.userManagement.editUser, {
         username: this.editUser.username,
         newUsername: this.editUser.newUsername,
         newDisplayName: this.editUser.newDisplayName
       }).then(response => {
-        this.responseDataStatus = 'Success! User has been edited: '
         this.responseData = response.data
         this.newUsername = null
         this.newDisplayname = null
-        console.log(response)
+        this.showSuccess = true
+        this.showError = false
       }).catch(error => {
-        this.responseDataStatus = 'An error has occured.'
-        this.responseData = error.response.data
         this.newUsername = null
         this.newDisplayName = null
-        console.log(error.response.data)
+        this.showSuccess = false
+        this.showError = true
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push('Unauthorized')
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push('Forbidden')
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push('ResourceNotFound')
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push('InternalServerError')
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response.data
+          Promise.reject(error)
+        }
       })
     }
   }

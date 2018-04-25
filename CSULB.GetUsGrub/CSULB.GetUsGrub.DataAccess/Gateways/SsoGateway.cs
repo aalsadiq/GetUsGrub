@@ -46,7 +46,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     Data = validSsoToken
                 };
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new ResponseDto<ValidSsoToken>()
                 {

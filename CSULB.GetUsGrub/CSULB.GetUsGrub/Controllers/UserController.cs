@@ -1,6 +1,8 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -147,7 +149,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // DELETE User/DeleteUser
         [HttpDelete]
-        // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Delete")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Delete")]
         [Route("DeleteUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "DELETE")]       
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
@@ -257,11 +259,12 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // PUT User/EditUser
         [HttpPut]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]     
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [Route("EditUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]        
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
+            System.Diagnostics.Debug.WriteLine("new: " + user.NewUsername + "dis: " + user.NewDisplayName + "user:" +user.Username);
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {
@@ -269,6 +272,10 @@ namespace CSULB.GetUsGrub.Controllers
             }
             try
             {
+                if(user.NewDisplayName=="" && user.NewUsername == "" || user.NewDisplayName==null && user.NewUsername==null)
+                {
+                    return BadRequest("Invalid: Empty new username or displayname");
+                }
                 var manager = new UserManager();
                 var response = manager.Edituser(user);
                 if (response.Error != null)

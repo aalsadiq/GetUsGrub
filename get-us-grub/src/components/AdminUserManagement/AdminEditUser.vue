@@ -23,7 +23,7 @@ export default {
     'app-user-validations-not-required': UserValidationsNoRequiredFields
   },
   data: () => ({
-    check: false,
+    check: false
   })
 }
 </script>

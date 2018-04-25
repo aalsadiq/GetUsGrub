@@ -24,7 +24,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
         public override ClaimsPrincipal Authenticate(string permissionType, ClaimsPrincipal incomingPrincipal)
         {
             // Get the username claim for the claims principal
-            string username = incomingPrincipal.FindFirst("Username").Value;
+            string username = incomingPrincipal.FindFirst(ResourceConstant.USERNAME).Value;
 
             // Authenticate that user is valid and grab user's claims from the database
             ICollection<Claim> claims;
@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             // If user's claims are null, user is a first time user registered through the SSO
             if (!claims.Any())
             {
-                return CreateSsoClaimsPrincipal();
+                return CreateSsoClaimsPrincipal(username);
             }
 
             // Create the new claims principal based on permission type
@@ -101,13 +101,13 @@ namespace CSULB.GetUsGrub.UserAccessControl
         /// Method to create a claims principal with claims pertaining to first time users through the SSO
         /// </summary>
         /// <returns></returns>
-        private ClaimsPrincipal CreateSsoClaimsPrincipal()
+        private ClaimsPrincipal CreateSsoClaimsPrincipal(string username)
         {
-            // Create a new instance of the claims factory
             var factory = new ClaimsFactory();
 
             // Create claims pertaining to first time users
             var claims = factory.Create(AccountTypes.FirstTimeUser);
+            claims.Add(new Claim(ResourceConstant.USERNAME, username));
 
             // Call method to create and return the new claims principal
             return CreateClaimsPrincipal(claims);

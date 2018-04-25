@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Constants\AccountType.cs" />
+    <Compile Include="Models\Constants\AccountTypes.cs" />
     <Compile Include="Models\AdminUser.cs" />
     <Compile Include="Models\Constants\PermissionTypes.cs" />
     <Compile Include="Models\FirstTimeUser.cs" />

@@ -28,7 +28,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
-            var permissionType = PermissionTypes.All;
+            var permissionType = PermissionTypes.Authorization;
 
             // Act
             principal = transformer.Authenticate(permissionType, principal);
@@ -47,7 +47,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
-            var permissionType = PermissionTypes.Read;
+            var permissionType = PermissionTypes.Authentication;
 
             // Act
             var allClaims = transformer.Authenticate(permissionType, principal).HasClaim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True");

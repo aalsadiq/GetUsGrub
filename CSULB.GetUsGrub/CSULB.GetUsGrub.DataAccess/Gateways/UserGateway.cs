@@ -71,9 +71,15 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
-            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile)
+        public ResponseDto<bool> StoreIndividualUser(IndividualUserRegistrationParameterObject param)
         {
+            var userAccount = param.UserAccount;
+            var passwordSalt = param.PasswordSalt;
+            var claims = param.UserClaims;
+            var userProfile = param.UserProfile;
+            var securityQuestions = param.SecurityQuestions;
+            var securityAnswerSalts = param.SecurityAnswerSalts;
+
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
@@ -170,16 +176,25 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="businessHours"></param>
         /// <param name="foodPreferences"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
-            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours,
-            IList<FoodPreference> foodPreferences)
+        public ResponseDto<bool> StoreRestaurantUser(RestaurantRegistrationParameterObject param)
         {
+            // Unpack parameter object into individual models.
+            var userAccount = param.UserAccount;
+            var passwordSalt = param.PasswordSalt;
+            var claims = param.UserClaims;
+            var userProfile = param.UserProfile;
+            var restaurantProfile = param.RestaurantProfile;
+            var securityQuestions = param.SecurityQuestions;
+            var securityAnswerSalts = param.SecurityAnswerSalts;
+            var foodPreferences = param.FoodPreferences;
+            var businessHours = param.BusinessHours;
+
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
                 {
                     // Add UserAccount
-                    context.UserAccounts.Add(userAccount);
+                    context.UserAccounts.AddOrUpdate(userAccount);
                     context.SaveChanges();
 
                     // Get Id from UserAccount
@@ -679,9 +694,6 @@ namespace CSULB.GetUsGrub.DataAccess
                                         where account.Username == username
                                         select account).SingleOrDefault();
 
-                    //var renameImage = Path.GetExtension(image.FileName);
-                    // var newImagename = username + renameImage;
-
                     // Save image to path
                     string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
 
@@ -706,7 +718,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Select the username from useraccount and give it the new username.
                     userAccount.Username = newUsername;
-
+                    Debug.WriteLine("useraccount.username: " + userAccount.Username); // Delete later
                     context.SaveChanges();
                     dbContextTransaction.Commit();
                     return new ResponseDto<bool>()
@@ -714,8 +726,9 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.WriteLine(e); // Show exception...
                     dbContextTransaction.Rollback();
                     return new ResponseDto<bool>()
                     {

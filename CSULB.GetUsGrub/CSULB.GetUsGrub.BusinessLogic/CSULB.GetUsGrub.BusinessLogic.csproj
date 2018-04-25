@@ -116,6 +116,7 @@
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditFoodPreferencesValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\EditRestaurantUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\EditUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\EditUserValidationStrategy.cs" />

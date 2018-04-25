@@ -33,13 +33,22 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <param name="userProfile"></param>
         /// <param name="restaurantProfile"></param>
         /// <param name="businessHours"></param>
-        public CreateRestaurantPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
-            IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
-            UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours)
+        public CreateRestaurantPostLogicValidationStrategy(RestaurantRegistrationParameterObject param)
         {
-            _restaurantProfile = restaurantProfile;
-            _businessHours = businessHours;
-            _createIndividualPostLogicValidationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, claims, userProfile);
+            _restaurantProfile = param.RestaurantProfile;
+            _businessHours = param.BusinessHours;
+
+            var individualParam = new IndividualUserRegistrationParameterObject()
+            {
+                UserAccount = param.UserAccount,
+                SecurityQuestions = param.SecurityQuestions,
+                SecurityAnswerSalts = param.SecurityAnswerSalts,
+                PasswordSalt = param.PasswordSalt,
+                UserClaims = param.UserClaims,
+                UserProfile = param.UserProfile
+            };
+
+            _createIndividualPostLogicValidationStrategy = new CreateIndividualPostLogicValidationStrategy(individualParam);
             _businessHourValidator = new BusinessHourValidator();
         }
 

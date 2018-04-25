@@ -81,7 +81,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             restaurantProfileDomain.GeoCoordinates = new GeoCoordinates(geocodeResponse.Data.Latitude, geocodeResponse.Data.Longitude);
 
             // Extract business hours domains
-            var businessHourDomains = restaurantProfileDto.BusinessHours;
+            var businessHourDtos = restaurantProfileDto.BusinessHourDtos;
 
 
             // Extract restaurant menu dictionary
@@ -90,7 +90,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfileById(userAccountResponseDto.Data.Id, userProfileDomain, restaurantProfileDomain, businessHourDomains, restaurantMenuDomains);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfileById(userAccountResponseDto.Data.Id, userProfileDomain, restaurantProfileDomain, businessHourDtos, restaurantMenuDomains);
 
             return responseDtoFromGateway;
         }
@@ -117,10 +117,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var newImagename = menuId  + imageExtension; // Id + extension
 
             // Save image to path
-            string savePath = ConfigurationManager.AppSettings["MenuImagePath"];
+            string saveToPath = ConfigurationManager.AppSettings["RootedMenuImagePath"];
+            //string rootedSavePath = ConfigurationManager.AppSettings["RootedMenuImagePath"];
+            string  saveToDB = ConfigurationManager.AppSettings["MenuImagePath"];
 
-            var menuPath = savePath +  newImagename; // Store image path to DTO
-
+            var menuPath = saveToDB + newImagename; // unrooted path
+            //var menuPath = savePath +  newImagename; // Store image path to DTO
+            //var saveMenuToLocation = rootedSavePath + newImagename;
+            var saveImageToPath = saveToPath + newImagename;
             // Call gateway to save path to database
             using (var gateway = new RestaurantProfileGateway())
             {
@@ -134,7 +138,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
 
-                image.SaveAs(menuPath);
+                image.SaveAs(saveImageToPath);
 
                 return new ResponseDto<bool>
                 {

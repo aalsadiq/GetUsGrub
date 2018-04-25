@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// </summary>
     public class AdminUser : IClaims
     {
-        public string Type => AccountType.Admin;
+        public string Type => AccountTypes.Admin;
 
         public ICollection<Claim> Claims => new List<Claim>
         {
@@ -29,6 +29,9 @@ namespace CSULB.GetUsGrub.UserAccessControl
             new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True"),
             new Claim(ActionConstant.READ + ResourceConstant.RESTAURANT, "True"),
             new Claim(ActionConstant.UPDATE + ResourceConstant.RESTAURANT, "True"),
+
+            // For All Profile Management
+            new Claim(ActionConstant.UPDATE + ResourceConstant.IMAGE, "True"),
 
             // For Food Preferences
             new Claim(ActionConstant.CREATE + ResourceConstant.PREFERENCES, "True"),

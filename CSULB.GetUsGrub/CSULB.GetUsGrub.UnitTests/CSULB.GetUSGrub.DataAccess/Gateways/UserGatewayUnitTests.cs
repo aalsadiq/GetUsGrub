@@ -88,8 +88,18 @@ namespace CSULB.GetUsGrub.UnitTests
             };
             var userGateway = new UserGateway();
 
+            var individualUserRegistrationParam = new IndividualUserRegistrationParameterObject()
+            {
+                UserAccount = userAccount,
+                PasswordSalt = passwordSalt,
+                SecurityQuestions = securityQuestions,
+                SecurityAnswerSalts = securityAnswerSalts,
+                UserClaims = claims,
+                UserProfile = userProfile
+            };
+
             // Act
-            Action act = () => userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile);
+            Action act = () => userGateway.StoreIndividualUser(individualUserRegistrationParam);
 
             // Assert
             act.Should().NotThrow();

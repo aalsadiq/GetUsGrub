@@ -83,7 +83,7 @@ namespace CSULB.GetUsGrub.Controllers
         // PUT Profile/User/EditUser/ImageUpload
         [Route("User/Edit/ProfileImageUpload")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
         [HttpPost]
         public IHttpActionResult ProfileImageUpload() 
         {

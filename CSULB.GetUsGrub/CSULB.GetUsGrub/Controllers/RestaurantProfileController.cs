@@ -91,7 +91,6 @@ namespace CSULB.GetUsGrub.Controllers
         {
             try
             {
-
                 var image = HttpContext.Current.Request.Files[0];
                 var username = HttpContext.Current.Request.Params["username"];
                 var stringMenuId = HttpContext.Current.Request.Params["menuId"];

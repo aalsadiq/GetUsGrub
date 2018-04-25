@@ -50,10 +50,10 @@ namespace CSULB.GetUsGrub.UserAccessControl
             // Create the new claims principal based on permission type
             switch (permissionType)
             {
-                case PermissionTypes.All:
+                case PermissionTypes.Authorization:
                     return CreateClaimsPrincipal(claims);
-                case PermissionTypes.Read:
-                    return CreateReadPermissionsClaimsPrincipal(username, claims);
+                case PermissionTypes.Authentication:
+                    return CreateAuthenticationClaimsPrincipal(username, claims);
                 default:
                     return incomingPrincipal;
             }
@@ -82,13 +82,13 @@ namespace CSULB.GetUsGrub.UserAccessControl
         /// <param name="resourceName"></param>
         /// <param name="incomingPrincipal"></param>
         /// <returns>Claims principal with permissions from the database</returns>
-        private ClaimsPrincipal CreateReadPermissionsClaimsPrincipal(string username, ICollection<Claim> claims)
+        private ClaimsPrincipal CreateAuthenticationClaimsPrincipal(string username, ICollection<Claim> claims)
         {
             // Convert the collection to a list
             var readClaims = claims.ToList();
 
             // Remove all claims that are not read claims
-            readClaims.RemoveAll(x => !x.Type.StartsWith(PermissionTypes.Read));
+            readClaims.RemoveAll(x => !x.Type.StartsWith(PermissionTypes.Authentication));
 
             // Add username claim
             readClaims.Add(new Claim(ResourceConstant.USERNAME, username));
@@ -107,7 +107,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             var factory = new ClaimsFactory();
 
             // Create claims pertaining to first time users
-            var claims = factory.Create(AccountType.FirstTimeUser);
+            var claims = factory.Create(AccountTypes.FirstTimeUser);
 
             // Call method to create and return the new claims principal
             return CreateClaimsPrincipal(claims);

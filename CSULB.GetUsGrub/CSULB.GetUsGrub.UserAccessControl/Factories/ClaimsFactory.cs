@@ -16,19 +16,19 @@ namespace CSULB.GetUsGrub.UserAccessControl
             switch(type)
             {
                 // Create claims collection for an individual user
-                case AccountType.Individual:
+                case AccountTypes.Individual:
                     return new IndividualUser().Claims;
 
                 // Create claims collection for a restaurant user
-                case AccountType.Restaurant:
+                case AccountTypes.Restaurant:
                     return new RestaurantUser().Claims;
 
                 // Create claims collection for an admin user
-                case AccountType.Admin:
+                case AccountTypes.Admin:
                     return new AdminUser().Claims;
 
                 // Create claims collection for first time user
-                case AccountType.FirstTimeUser:
+                case AccountTypes.FirstTimeUser:
                     return new FirstTimeUser().Claims;
                 
                 // Return an empty list of claims for default

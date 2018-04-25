@@ -19,6 +19,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             // For Individual Profie Management
             new Claim(ActionConstant.READ + ResourceConstant.INDIVIDUAL, "True"),
             new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True"),
+            new Claim(ActionConstant.UPDATE + ResourceConstant.IMAGE, "True"),
 
             // For Food Preferences
             new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"),

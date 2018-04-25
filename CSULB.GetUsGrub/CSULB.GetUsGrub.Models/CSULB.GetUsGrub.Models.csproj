@@ -141,6 +141,8 @@
     <Compile Include="Models\RestaurantProfile.cs" />
     <Compile Include="Models\SecurityQuestion.cs" />
     <Compile Include="Models\UserAccount.cs" />
+    <Compile Include="ParameterObjects\IndividualUserRegistrationParameterObject.cs" />
+    <Compile Include="ParameterObjects\RestaurantRegistrationParameterObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DTOs\RestaurantSelectionDto.cs" />
   </ItemGroup>

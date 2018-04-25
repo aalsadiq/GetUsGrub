@@ -61,7 +61,7 @@ export default {
     try {
       if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' &&
         jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
-        jwt.decode(this.$store.state.authenticationToken).ReadUserProfile == 'True' &&
+        jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True' &&
         jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
       } else {
         this.$router.push({path: '/Forbidden'})
@@ -91,7 +91,7 @@ export default {
       try {
         if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' &&
           jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
-          jwt.decode(this.$store.state.authenticationToken).ReadUserProfile == 'True' &&
+          jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True' &&
           jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
           axios.get(this.$store.state.urls.profileManagement.userProfile, {
             headers: {

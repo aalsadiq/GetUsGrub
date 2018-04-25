@@ -1,43 +1,40 @@
 <template>
   <div id="image-upload">
     <v-layout row justify-center>
-      <div id="success">
-        <v-layout>
-          <v-flex xs12>
-            <v-alert type="success" :value="showSuccess">
-            <span>
-               {{ responseData }}
-            </span>
-            </v-alert>
-          </v-flex>
-        </v-layout>
-      </div>
-      <div v-show="showError" id="error-div">
-        <v-layout>
-        <v-flex xs12>
-          <!-- Title bar for the restaurant selection -->
-          <v-alert id="registration-error" :value=true icon='warning'>
-            <span id="error-title">
-              An error has occurred
-            </span>
-          </v-alert>
-        </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex xs12>
-            <v-card id="error-card">
-              <p v-for="error in errors" :key="error">
-                {{ error }}
-              </p>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </div>
         <v-dialog  v-model="dialog" max-width="500px">
         <v-btn small color="dark" dark slot="activator">Upload Image</v-btn>
           <v-card dark>
-            {{ responseDataStatus }}
-            {{ responseData }}
+        <div id="success">
+          <v-layout>
+            <v-flex xs12>
+              <v-alert type="success" :value="showSuccess">
+                <span>
+                  {{ responseData }}
+                </span>
+                </v-alert>
+              </v-flex>
+            </v-layout>
+          </div>
+          <div v-show="showError" id="error-div">
+            <v-layout>
+            <v-flex xs12>
+              <v-alert id="error-card" :value=true icon='warning'>
+                <span id="error-title">
+                  An error has occurred
+                </span>
+              </v-alert>
+            </v-flex>
+            </v-layout>
+            <v-layout>
+              <v-flex xs12>
+                <v-card id="error-card">
+                  <p v-for="error in errors" :key="error">
+                    {{ error }}
+                  </p>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </div>
             <br/>
             <v-flex xs6>
                 <label class="custom-file-upload">
@@ -79,7 +76,7 @@ export default {
     test: null,
     showError: false,
     showSuccess: false,
-    username: 'username16',
+    username: '26user',
     imageData: '' // Stores in base 64 format of image
   }),
   methods: {

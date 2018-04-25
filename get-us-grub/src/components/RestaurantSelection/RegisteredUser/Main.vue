@@ -78,7 +78,7 @@ export default {
         username: jwt.decode(this.$store.state.authenticationToken).Username
       }
     }).then(response => {
-      this.foodPreferences = response.data
+      this.foodPreferences = response.data.sort()
     }).catch(error => {
       Promise.reject(error)
     })

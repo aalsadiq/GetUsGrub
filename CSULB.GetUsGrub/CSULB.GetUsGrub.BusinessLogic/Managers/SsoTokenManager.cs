@@ -141,6 +141,26 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return new AuthenticationTokenManager().CreateToken(payload.Username);
         }
 
+        public ResponseDto<ResetPasswordDto> ManageRestartPasswordToken()
+        {
+            var mappingResult = MapRequestJwtPayloadToSsoJwtPayload();
+            if (mappingResult.Error != null)
+            {
+                // Store invalid token into database
+                StoreInvalidToken();
+
+                return new ResponseDto<ResetPasswordDto>()
+                {
+                    Error = mappingResult.Error
+                };
+            }
+
+            _ssoToken.SsoTokenPayloadDto = mappingResult.Data;
+            //
+
+
+        }
+
         /// <summary>
         /// Validates whether the payload's credentials are valid.
         /// <para>
@@ -225,7 +245,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 Data = true
             };
         }
-
 
         /// <summary>
         /// Validates payload of Sso token.

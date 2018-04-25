@@ -69,7 +69,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Validate domain models
-            var createIndividualPostLogicValdiationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile);
+            var individualRegistrationParam = new IndividualUserRegistrationParameterObject()
+            {
+                UserAccount = userAccount,
+                SecurityQuestions = securityQuestions,
+                SecurityAnswerSalts = securityAnswerSalts,
+                PasswordSalt = passwordSalt,
+                UserClaims = userClaims,
+                UserProfile = userProfile
+            };
+
+            var createIndividualPostLogicValdiationStrategy = new CreateIndividualPostLogicValidationStrategy(individualRegistrationParam);
             var validateResult = createIndividualPostLogicValdiationStrategy.ExecuteStrategy();
             if (!validateResult.Data)
             {
@@ -83,7 +93,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Store user in database
             using (var userGateway = new UserGateway())
             {
-                var gatewayResult = userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, userClaims, userProfile);
+                var gatewayResult = userGateway.StoreIndividualUser(individualRegistrationParam);
                 if (gatewayResult.Data == false)
                 {
                     return new ResponseDto<RegisterUserDto>()
@@ -104,8 +114,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// The CreateRestaurantUser method.
         /// Contains business logic for creating a restaurant user.
         /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
+        /// @author: Jennifer Nguyen, Brian Fann
+        /// @updated: 04/25/2018
         /// </para>
         /// </summary>
         /// <param name="registerRestaurantDto"></param>
@@ -113,12 +123,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<RegisterRestaurantDto> CreateRestaurantUser(RegisterRestaurantDto registerRestaurantDto)
         {
             var createRestaurantPreLogicValidationStrategy = new CreateRestaurantPreLogicValidationStrategy(registerRestaurantDto);
-            var securityAnswerSalts = new List<SecurityAnswerSalt>();
-            var saltGenerator = new SaltGenerator();
-            var payloadHasher = new PayloadHasher();
-            var claimsFactory = new ClaimsFactory();
-            var dateTimeService = new DateTimeService();
-            var geocodeService = new GoogleGeocodeService();
 
             // Validate data transfer object
             var restaurantResult = createRestaurantPreLogicValidationStrategy.ExecuteStrategy();
@@ -130,58 +134,21 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = restaurantResult.Error
                 };
             }
-
-            // Map data transfer object to domain models
-            var userAccount = new UserAccount(username: registerRestaurantDto.UserAccountDto.Username, password: registerRestaurantDto.UserAccountDto.Password, isActive: true, isFirstTimeUser: false, roleType: RoleTypes.PUBLIC);
-            var securityQuestions = registerRestaurantDto.SecurityQuestionDtos
-                .Select(securityQuestionDto => new SecurityQuestion(
-                    securityQuestionDto.Question, securityQuestionDto.Answer))
-                .ToList();
-            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
-            var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
-            var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, 
-                address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details);
-            var businessHours = registerRestaurantDto.BusinessHourDtos
-                .Select(businessHourDto => new BusinessHour(
-                    day: businessHourDto.Day, 
-                    openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), registerRestaurantDto.TimeZone), 
-                    closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), registerRestaurantDto.TimeZone)))
-                .ToList();
-            var foodPreferences = new List<FoodPreference>();
-            if (registerRestaurantDto.FoodPreferences != null)
+            
+            // Create a domain model based on the dto.
+            var mappingResult = MapRestaurantDtoToModels(registerRestaurantDto, out var registerRestaurantParam);
+            
+            if (!mappingResult.Data)
             {
-                foodPreferences = registerRestaurantDto.FoodPreferences.Select(foodPreference => new FoodPreference(foodPreference)).ToList();
-            }
-
-            // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Restaurant));
-
-            // Call GeocodeService to get geocoordinates of the restaurant
-            var geocodeResponse = geocodeService.Geocode(restaurantProfile.Address);
-            if (geocodeResponse.Error != null)
-            {
-                return new ResponseDto<RegisterRestaurantDto>
+                return new ResponseDto<RegisterRestaurantDto>()
                 {
                     Data = registerRestaurantDto,
-                    Error = GeneralErrorMessages.GENERAL_ERROR
+                    Error = mappingResult.Error
                 };
             }
 
-            restaurantProfile.GeoCoordinates = new GeoCoordinates(latitude: geocodeResponse.Data.Latitude, longitude: geocodeResponse.Data.Longitude);
-
-            // Hash password
-            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
-            userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
-
-            // Hash security answers
-            for (var i = 0; i < securityQuestions.Count; i++)
-            {
-                securityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
-                securityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(securityAnswerSalts[i].Salt, securityQuestions[i].Answer);
-            }
-
             // Validate domain models
-            var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile, restaurantProfile, businessHours);
+            var createRestaurantPostLogicValdiationStrategy = new CreateRestaurantPostLogicValidationStrategy(registerRestaurantParam);
             var validateResult = createRestaurantPostLogicValdiationStrategy.ExecuteStrategy();
             if (!validateResult.Data)
             {
@@ -195,13 +162,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Store user in database
             using (var userGateway = new UserGateway())
             {
-                var gatewayResult = userGateway.StoreRestaurantUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, userClaims, userProfile, restaurantProfile, businessHours, foodPreferences);
-                if (gatewayResult.Data == false)
+                var createResult = userGateway.StoreRestaurantUser(registerRestaurantParam);
+
+                if (!createResult.Data)
                 {
                     return new ResponseDto<RegisterRestaurantDto>()
                     {
                         Data = registerRestaurantDto,
-                        Error = GeneralErrorMessages.GENERAL_ERROR
+                        Error = createResult.Error
                     };
                 }
             }
@@ -209,6 +177,175 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return new ResponseDto<RegisterRestaurantDto>
             {
                 Data = registerRestaurantDto
+            };
+        }
+
+        /// <summary>
+        /// Instantiate domain model equivalent of Dto's
+        /// <para>
+        /// @author: Brian Fann
+        /// @updated: 4/25/18
+        /// </para>
+        /// </summary>
+        /// <param name="dto">Dto to map</param>
+        /// <param name="param">Parameter Object to map to</param>
+        /// <returns></returns>
+        private ResponseDto<bool> MapRestaurantDtoToModels(RegisterRestaurantDto dto, out RestaurantRegistrationParameterObject param)
+        {
+            // Map variables to the parameters
+            param = new RestaurantRegistrationParameterObject
+            {
+                UserAccount = new UserAccount(
+                    username: dto.UserAccountDto.Username,
+                    password: dto.UserAccountDto.Password,
+                    isActive: true,
+                    isFirstTimeUser: false,
+                    roleType: RoleTypes.PUBLIC),
+
+                SecurityQuestions = dto.SecurityQuestionDtos
+                .Select(securityQuestionDto => new SecurityQuestion(
+                    securityQuestionDto.Question, securityQuestionDto.Answer))
+                .ToList(),
+
+                UserProfile = new UserProfile(
+                    displayPicture: ImagePaths.DEFAULT_DISPLAY_IMAGE,
+                    displayName: dto.UserProfileDto.DisplayName),
+
+                RestaurantProfile = new RestaurantProfile(
+                    phoneNumber: dto.RestaurantProfileDto.PhoneNumber,
+                    address: dto.RestaurantProfileDto.Address,
+                    details: dto.RestaurantProfileDto.Details)
+            };
+
+            // Call GeocodeService to get geocoordinates of the restaurant
+            var geocodeService = new GoogleGeocodeService();
+            var geocodeResponse = geocodeService.Geocode(param.RestaurantProfile.Address);
+
+            if (geocodeResponse.Error != null)
+            {
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
+            param.RestaurantProfile.GeoCoordinates = new GeoCoordinates(latitude: geocodeResponse.Data.Latitude, longitude: geocodeResponse.Data.Longitude);
+
+            var dateTimeService = new DateTimeService();
+
+            param.BusinessHours = dto.BusinessHourDtos
+                .Select(businessHourDto => new BusinessHour(
+                    day: businessHourDto.Day,
+                    openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), dto.TimeZone),
+                    closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), dto.TimeZone)))
+                .ToList();
+
+            param.FoodPreferences = new List<FoodPreference>();
+
+            if (dto.FoodPreferences != null)
+            {
+                param.FoodPreferences = dto.FoodPreferences.Select(foodPreference => new FoodPreference(foodPreference)).ToList();
+            }
+
+            // Set user claims to be stored in UserClaims table
+            var claimsFactory = new ClaimsFactory();
+            param.UserClaims = new UserClaims(claimsFactory.Create(AccountType.Restaurant));
+
+            // Hash password
+            var saltGenerator = new SaltGenerator();
+            param.PasswordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
+
+            // Hash security answers
+            var payloadHasher = new PayloadHasher();
+            param.SecurityAnswerSalts = new List<SecurityAnswerSalt>();
+
+            for (var i = 0; i < param.SecurityQuestions.Count; i++)
+            {
+                param.SecurityAnswerSalts.Add(new SecurityAnswerSalt { Salt = saltGenerator.GenerateSalt(128) });
+                param.SecurityQuestions[i].Answer = payloadHasher.Sha256HashWithSalt(param.SecurityAnswerSalts[i].Salt, param.SecurityQuestions[i].Answer);
+            }
+            
+            // Hash password
+            param.UserAccount.Password = payloadHasher.Sha256HashWithSalt(param.PasswordSalt.Salt, param.UserAccount.Password);
+
+            // Successful response
+            return new ResponseDto<bool>()
+            {
+                Data = true
+            };
+        }
+
+        /// <summary>
+        /// Validates whether the payload's credentials are valid.
+        /// <para>
+        /// @author: Brian Fann
+        /// @updated: 4/24/18
+        /// </para>
+        /// </summary>
+        /// <param name="payload">Payload of token</param>
+        /// <returns>True if credentials are valid, false otherwise</returns>
+        private ResponseDto<bool> ValidateCredentials(IUserAccount account)
+        {
+            // Validate username and password
+            var loginDto = new LoginDto(account.Username, account.Password);
+            var accountValidationStrategy = new LoginPreLogicValidationStrategy(loginDto);
+            var accountResult = accountValidationStrategy.ExecuteStrategy();
+
+            if (!accountResult.Data)
+            {
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = accountResult.Error
+                };
+            }
+
+            using (var gateway = new AuthenticationGateway())
+            {
+                var userAccountResult = gateway.GetUserAccount(account.Username);
+
+                if (userAccountResult.Error != null)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = userAccountResult.Error
+                    };
+                }
+
+                var userAccount = userAccountResult.Data;
+
+                var saltResult = gateway.GetUserPasswordSalt(userAccount.Id);
+
+                // Check if salt exists
+                if (saltResult.Error != null)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = saltResult.Error
+                    };
+                }
+
+                // Hash the password and compare it against the database
+                var hashedPassword = new PayloadHasher().Sha256HashWithSalt(saltResult.Data.Salt, account.Password);
+                var isPasswordMatching = hashedPassword == userAccount.Password;
+
+                if (!isPasswordMatching)
+                {
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
+                    };
+                }
+            }
+
+            // Credentials are valid at this point
+            return new ResponseDto<bool>()
+            {
+                Data = true
             };
         }
 
@@ -331,7 +468,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Validate domain models
-            var createIndividualPostLogicValdiationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, userClaims, userProfile);
+            var individualRegistrationParam = new IndividualUserRegistrationParameterObject()
+            {
+                UserAccount = userAccount,
+                SecurityQuestions = securityQuestions,
+                SecurityAnswerSalts = securityAnswerSalts,
+                PasswordSalt = passwordSalt,
+                UserClaims = userClaims,
+                UserProfile = userProfile
+            };
+
+            var createIndividualPostLogicValdiationStrategy = new CreateIndividualPostLogicValidationStrategy(individualRegistrationParam);
             var validateResult = createIndividualPostLogicValdiationStrategy.ExecuteStrategy();
             if (!validateResult.Data)
             {
@@ -345,7 +492,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Store user in database
             using (var userGateway = new UserGateway())
             {
-                var gatewayResult = userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, userClaims, userProfile);
+                var gatewayResult = userGateway.StoreIndividualUser(individualRegistrationParam);
                 if (gatewayResult.Data == false)
                 {
                     return new ResponseDto<RegisterUserDto>()

@@ -128,6 +128,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
+            // Validate user's credentials
             var isCredentialsValid = ValidateCredentials(payload);
 
             if (!isCredentialsValid.Data)
@@ -138,6 +139,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
+            // Ensure token is only used once.
             var isTokenUnused = StoreValidToken();
 
             if (!isTokenUnused.Data)
@@ -192,16 +194,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 var userAccount = userAccountResult.Data;
-
-                // Check if user is disabled
-                //if (userAccount.IsActive == false)
-                //{
-                //    return new ResponseDto<bool>
-                //    {
-                //        Data = false,
-                //        Error = AuthenticationErrorMessages.INACTIVE_USER
-                //    };
-                //}
 
                 var saltResult = gateway.GetUserPasswordSalt(userAccount.Id);
 

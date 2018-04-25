@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using CSULB.GetUsGrub.BusinessLogic;
 using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -52,6 +53,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Response DTO with a boolean determining success of the transaction</returns>
         public ResponseDto<bool> EditFoodPreferences(string tokenString, FoodPreferencesDto foodPreferencesDto)
         {
+            // Validate the food preference dto
+            var editFoodPreferencesValidationStrategy = new EditFoodPreferencesValidationStrategy(foodPreferencesDto);
+            var validationResult = editFoodPreferencesValidationStrategy.ExecuteStrategy();
+
+            // If the food preference dto fails validation, return an error
+            if (validationResult.Error != null)
+            {
+                return new ResponseDto<bool>
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.MODEL_STATE_ERROR
+                };
+            }
+
             // Extract username from token string
             var tokenService = new TokenService();
             var username = tokenService.GetTokenUsername(tokenString);

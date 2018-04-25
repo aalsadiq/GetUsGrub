@@ -30,7 +30,7 @@
                 :size="225"
                 class="grey lighten-4"
               >
-                <img v-bind:src="require('C:/Users/Jenn/Desktop/GitHub/GetUsGrub/get-us-grub/src/assets/DefaultProfileImage.png')" alt="avatar">
+                <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
               </v-avatar>
               <v-flex>
                 <v-btn id="image-upload-btn" dark v-if="isEdit">
@@ -95,14 +95,14 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import ImageUpload from '@/components/ImageUploadVues/ImageUpload'
+import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 
 export default {
   name: 'UserProfile',
   components: {
     FoodPreferences,
-    ImageUpload
+    ProfileImageUpload
   },
   data () {
     return {

@@ -29,7 +29,7 @@
                 :size="225"
                 class="grey lighten-4"
               >
-                <img id='profile-picture' :src="require('C:\\Users\\Jenn\\Desktop\\GitHub\\GetUsGrub\\CSULB.GetUsGrub\\Images\\ProfileImages\\DefaultProfileImage.png')" alt="display picture">
+                <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
               </v-avatar>
               <v-flex>
                 <v-btn id="image-upload-btn" dark v-if="isEdit">
@@ -111,8 +111,8 @@ import RestaurantDetails from './RestaurantDetails'
 import BusinessHours from './BusinessHours'
 import Menus from './Menus'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
-import ImageUpload from '@/components/ImageUploadVues/ImageUpload'
-
+import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
+import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 export default {
   components: {
     ContactInfo,
@@ -120,7 +120,8 @@ export default {
     BusinessHours,
     Menus,
     FoodPreferences,
-    ImageUpload
+    ProfileImageUpload,
+    MenuItemImageUpload
   },
   data () {
     return {

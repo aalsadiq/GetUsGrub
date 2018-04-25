@@ -103,8 +103,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
         /// <returns></returns>
         private ClaimsPrincipal CreateSsoClaimsPrincipal(string username)
         {
-            // Create claims for Sso First Time User
-            var claims = new ClaimsFactory().Create(AccountType.FirstTimeUser);
+            var factory = new ClaimsFactory();
 
             // Create claims pertaining to first time users
             var claims = factory.Create(AccountTypes.FirstTimeUser);

@@ -250,7 +250,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Set user claims to be stored in UserClaims table
             var claimsFactory = new ClaimsFactory();
-            param.UserClaims = new UserClaims(claimsFactory.Create(AccountType.Restaurant));
+            param.UserClaims = new UserClaims(claimsFactory.Create(AccountTypes.Restaurant));
 
             // Hash password
             var saltGenerator = new SaltGenerator();

@@ -79,7 +79,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             if (!isFirstTimeUser)
             {
                 // Getting the ReadClaims for the user
-                claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Read, claimPrincipal);
+                claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Authentication, claimPrincipal);
             }
 
             var claims = claimPrincipal.Claims;

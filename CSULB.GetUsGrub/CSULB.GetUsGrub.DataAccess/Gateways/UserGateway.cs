@@ -694,9 +694,6 @@ namespace CSULB.GetUsGrub.DataAccess
                                         where account.Username == username
                                         select account).SingleOrDefault();
 
-                    //var renameImage = Path.GetExtension(image.FileName);
-                    // var newImagename = username + renameImage;
-
                     // Save image to path
                     string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
 
@@ -721,7 +718,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Select the username from useraccount and give it the new username.
                     userAccount.Username = newUsername;
-
+                    Debug.WriteLine("useraccount.username: " + userAccount.Username); // Delete later
                     context.SaveChanges();
                     dbContextTransaction.Commit();
                     return new ResponseDto<bool>()
@@ -729,8 +726,9 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.WriteLine(e); // Show exception...
                     dbContextTransaction.Rollback();
                     return new ResponseDto<bool>()
                     {

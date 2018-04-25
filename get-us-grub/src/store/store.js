@@ -57,7 +57,12 @@ export const store = new Vuex.Store({
     urls: {
       userManagement: {
         createIndividualUser: 'http://localhost:8081/User/Registration/Individual',
-        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant'
+        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant',
+        createAdminUser: 'http://localhost:8081/User/CreateAdmin',
+        deactivateUser: 'http://localhost:8081/User/DeactivateUser',
+        reactivateUser: 'http://localhost:8081/User/ReactivateUser',
+        editUser: 'http://localhost:8081/User/EditUser',
+        deleteUser: 'http://localhost:8081/User/DeleteUser'
       },
       foodPreferences: {
         getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',
@@ -71,7 +76,9 @@ export const store = new Vuex.Store({
         userProfile: 'http://localhost:8081/Profile/User',
         updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
         restaurantProfile: 'http://localhost:8081/Profile/Restaurant',
-        updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit'
+        updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit',
+        menuItemUpload: 'http://localhost:8081/Profile/Restaurant/Edit/MenuItemImageUpload',
+        profileImageUpload: 'http://localhost:8081/Profile/User/Edit/ProfileImageUpload'
       },
       sso: {
         login: 'http://localhost:8081/Sso/Login'

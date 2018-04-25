@@ -34,7 +34,7 @@
           slot="activator"
           class="nav-btn"
           to="Profile"
-          v-if="this.$store.state.username"
+          v-if="!showWithoutAuthentication()"
         >
           <v-icon id="person-icon">person</v-icon>
           <span class="nav-btn-text" id="username-text">
@@ -91,7 +91,7 @@ export default {
         this.$store.dispatch('setAuthenticationToken', null)
         // Force reload to clear cache
         location.reload()
-        this.$router.push({path: '/'})
+        this.$router.push({path: '/Logout'})
       }).catch(error => {
         console.log(error.response)
       })

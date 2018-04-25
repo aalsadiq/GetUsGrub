@@ -55,7 +55,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Individual));
+            var userClaims = new UserClaims(claimsFactory.Create(AccountTypes.Individual));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
@@ -454,7 +454,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table as administrator
-            var userClaims = new UserClaims(claimsFactory.Create(AccountType.Admin));
+            var userClaims = new UserClaims(claimsFactory.Create(AccountTypes.Admin));
 
             // Hash password
             var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));

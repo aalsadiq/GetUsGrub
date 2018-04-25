@@ -13,7 +13,6 @@
 //        {
 //            // Arrange
 //            var token = "";
-//            var key = "";
 //            var jwt = new TokenService().GetJwtSecurityToken(token);
 //        }
 //    }

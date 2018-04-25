@@ -290,5 +290,65 @@ namespace CSULB.GetUsGrub.Controllers
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
+        [HttpPost]
+        // Opts authentication
+        [AllowAnonymous]
+        [Route("FirstTimeRegistration/Individual")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult RegisterFirstTimeIndividualUser([FromBody] RegisterUserDto registerUserDto)
+        {
+            // Model Binding Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
+            }
+            try
+            {
+                var userManager = new UserManager();
+                var response = userManager.CreateIndividualUser(registerUserDto);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                // Sending HTTP response 201 Status
+                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
+            }
+            // Catch exceptions
+            catch (Exception)
+            {
+                // Sending HTTP response 400 Status
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+            }
+        }
+        [HttpPost]
+        // Opts authentication
+        [AllowAnonymous]
+        [Route("FirstTimeRegistration/Restaurant")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult RegisterFirstTimeRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
+        {
+            // Model Binding Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
+            }
+            try
+            {
+                var userManager = new UserManager();
+                var response = userManager.CreateRestaurantUser(registerRestaurantDto);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                // HTTP 201 Status
+                return Created("Restaurant user has been created: ", registerRestaurantDto.UserAccountDto.Username);
+            }
+            // Catch exceptions
+            catch (Exception)
+            {
+                // HTTP 400 Status
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+            }
+        }
     }
 }

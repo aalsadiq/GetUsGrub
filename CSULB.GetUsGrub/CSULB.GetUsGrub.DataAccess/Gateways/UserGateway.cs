@@ -686,18 +686,23 @@ namespace CSULB.GetUsGrub.DataAccess
                     string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
 
                     // Set Diplay Picture Path
-                    //userAccount.Username.DisplayPicture = savePath + newImagename;
+                    var oldPath = @userAccount.UserProfile.DisplayPicture;
+                    var extension = Path.GetExtension(oldPath);
 
-                    // Testing --
-                    var oldPath = userAccount.UserProfile.DisplayPicture;
-                    Debug.WriteLine(oldPath);
-                    var newPath = savePath + newUsername + ".png";
-                    Debug.WriteLine(newPath);
+                    // If image path is not default change it.
+                    if (oldPath != ImagePaths.DEFAULT_DISPLAY_IMAGE)
+                    {
+                        // The new path once user has their profile picture.
+                        var newPath = savePath + newUsername + extension;
 
-                    // Rename profile image
-                    File.Move(oldPath, newPath);
-
-                    // End of testing --
+                        // Rename profile image based on username
+                        File.Move(oldPath, newPath);
+                    }
+                    else
+                    {
+                        // If it is the default path, leave it as default.
+                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+                    }
 
                     // Select the username from useraccount and give it the new username.
                     userAccount.Username = newUsername;

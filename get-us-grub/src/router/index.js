@@ -14,7 +14,8 @@ import DeactivateUser from '@/components/AdminUserManagement/AdminDeactivateUser
 import ReactivateUser from '@/components/AdminUserManagement/AdminReactivateUser.vue'
 import DeleteUser from '@/components/AdminUserManagement/AdminDeleteUser.vue'
 import EditUser from '@/components/AdminUserManagement/AdminEditUser.vue'
-import ImageUpload from '@/components/ImageUploadVues/ImageUpload.vue'
+import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload.vue'
+import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
@@ -137,7 +138,12 @@ export default new Router({
     {
       path: '/User/Profile/ImageUpload',
       name: 'ImageUpload',
-      component: ImageUpload
+      component: ProfileImageUpload
+    },
+    {
+      path: '/User/Profile/MenuItemUpload',
+      name: 'MenuItemUpload',
+      component: MenuItemImageUpload
     },
     {
       path: '/RestaurantBillSplitter',

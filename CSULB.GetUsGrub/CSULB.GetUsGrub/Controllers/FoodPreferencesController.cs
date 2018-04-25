@@ -22,9 +22,9 @@ namespace CSULB.GetUsGrub.Controllers
         /// </summary>
         /// <returns>HTTP response with or without user's list of food preferences</returns>
         [HttpGet]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]   
         [Route("GetPreferences")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         public IHttpActionResult GetPreferences()
         {
             // Check if model is valid for the database

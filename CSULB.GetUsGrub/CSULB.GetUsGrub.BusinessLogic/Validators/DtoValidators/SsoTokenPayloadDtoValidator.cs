@@ -22,12 +22,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 RuleFor(ssoTokenPayloadDto => ssoTokenPayloadDto.Username)
                     .NotEmpty().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
-                    .NotNull().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD);
+                    .NotNull().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
+                    .Matches(RegularExpressions.USERNAME_FORMAT);
 
                 RuleFor(ssoTokenPayloadDto => ssoTokenPayloadDto.Password)
                     .NotEmpty().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
                     .NotNull().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
-                    .Matches(RegularExpressions.USERNAME_FORMAT);
+                    .Matches(RegularExpressions.STRING_CONTAINS_NO_SPACES);
 
                 RuleFor(ssoTokenPayloadDto => ssoTokenPayloadDto.RoleType)
                     .NotEmpty().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)

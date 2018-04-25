@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// </summary>
     public class AdminUser : IClaims
     {
-        public string Type => AccountType.Admin;
+        public string Type => AccountTypes.Admin;
 
         public ICollection<Claim> Claims => new List<Claim>
         {

@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// </summary>
     public class IndividualUser : IClaims
     {
-        public string Type => AccountType.Individual;
+        public string Type => AccountTypes.Individual;
 
         public ICollection<Claim> Claims => new List<Claim>
         {

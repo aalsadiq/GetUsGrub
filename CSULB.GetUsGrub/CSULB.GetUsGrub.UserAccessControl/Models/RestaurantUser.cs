@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// </summary>
     public class RestaurantUser : IClaims
     {
-        public string Type => AccountType.Restaurant;
+        public string Type => AccountTypes.Restaurant;
 
         public ICollection<Claim> Claims => new List<Claim>
         {

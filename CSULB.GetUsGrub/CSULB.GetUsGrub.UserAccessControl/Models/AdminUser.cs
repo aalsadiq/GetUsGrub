@@ -30,6 +30,9 @@ namespace CSULB.GetUsGrub.UserAccessControl
             new Claim(ActionConstant.READ + ResourceConstant.RESTAURANT, "True"),
             new Claim(ActionConstant.UPDATE + ResourceConstant.RESTAURANT, "True"),
 
+            // For All Profile Management
+            new Claim(ActionConstant.UPDATE + ResourceConstant.IMAGE, "True"),
+
             // For Food Preferences
             new Claim(ActionConstant.CREATE + ResourceConstant.PREFERENCES, "True"),
             new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"),

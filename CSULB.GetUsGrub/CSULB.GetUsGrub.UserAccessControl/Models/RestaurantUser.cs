@@ -20,6 +20,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             // For Restaurant Profie Management
             new Claim(ActionConstant.READ+ResourceConstant.RESTAURANT, "True"),
             new Claim(ActionConstant.UPDATE+ResourceConstant.RESTAURANT, "True"),
+            new Claim(ActionConstant.UPDATE + ResourceConstant.IMAGE, "True"),
 
             // For Food Preferences and Restaurant Selection
             new Claim(ActionConstant.READ+ResourceConstant.PREFERENCES, "True"),

@@ -5,7 +5,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img :src="ImagePath"/>
+              <img :src="imagePath"/>
             </v-list-tile-avatar>
           <v-list-tile-content>
           <v-list-tile-title/>
@@ -26,7 +26,7 @@
       <v-btn flat id="logout-btn" @click="logout()">
         <v-icon>power_settings_new</v-icon>
       </v-btn>
-      {{ this.ImagePath }}
+      {{ imagePath }}
     </v-navigation-drawer>
   </div>
 </template>
@@ -34,6 +34,7 @@
 <script>
 import jwt from 'jsonwebtoken'
 import axios from 'axios'
+
 export default {
   name: 'admin-header',
   showImageUpload: false,
@@ -50,8 +51,10 @@ export default {
       ],
       mini: true,
       right: null,
-      ImagePath: '../../../../Images/DefaultImages/DefaultProfileImage.png', // For Admin
-      output: ''
+      imagePath: '../../../../Images/DefaultImages/DefaultProfileImage.png', // For Admin
+      output: '',
+      displayName: '',
+      displayPicture: ''
     }
   },
   beforeCreate () {
@@ -59,10 +62,7 @@ export default {
       this.$router.push({path: '/Unauthorized'})
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' &&
-        jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
-        jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True' &&
-        jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
       } else {
         this.$router.push({path: '/Forbidden'})
       }
@@ -72,7 +72,8 @@ export default {
   },
   created () {
     // this.ImagePath = require('../../../../Images/DefaultImages/DefaultProfileImage.png')
-    this.getUserProfile()
+    this.getAdminProfile()
+    // this.imagePath = require(this.displayPicture)
   },
   methods: {
     logout () {
@@ -87,53 +88,42 @@ export default {
         console.log(error.response)
       })
     },
-    getUserProfile () {
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' &&
-          jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
-          jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True' &&
-          jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
-          axios.get(this.$store.state.urls.profileManagement.userProfile, {
-            headers: {
-              Authorization: `Bearer ${this.$store.state.authenticationToken}`
-            }
-          }).then(response => {
-            this.displayName = response.data.displayName
-            this.displayPicture = response.data.displayPicture
-            this.ImagePath = require(this.displayPicture)
-          }).catch(error => {
-            try {
-              if (error.response.status === 401) {
-                // Route to Unauthorized page
-                this.$router.push({ path: '/Unauthorized' })
-              }
-              if (error.response.status === 403) {
-                // Route to Forbidden page
-                this.$router.push({ path: '/Forbidden' })
-              }
-              if (error.response.status === 404) {
-                // Route to ResourceNotFound page
-                this.$router.push({ path: '/ResourceNotFound' })
-              }
-              if (error.response.status === 500) {
-                // Route to InternalServerError page
-                this.$router.push({ path: '/InternalServerError' })
-              } else {
-                this.errors = JSON.parse(JSON.parse(error.response.data.message))
-              }
-              Promise.reject(error)
-            } catch (ex) {
-              this.errors = error.response.data
-              Promise.reject(error)
-            }
-          })
-        } else {
-          this.$router.push({ path: '/Forbidden' })
+    getAdminProfile () {
+      axios.get(this.$store.state.urls.profileManagement.userProfile, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        },
+        params: {}
+      }).then(response => {
+        this.displayName = response.data.displayName
+        this.displayPicture = response.data.displayPicture
+      }).catch(error => {
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({ path: '/Unauthorized' })
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({ path: '/Forbidden' })
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({ path: '/ResourceNotFound' })
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({ path: '/InternalServerError' })
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response.data
+          Promise.reject(error)
         }
-      } catch (ex) {
-        this.$router.push({ path: '/Forbidden' })
-      }
-    },
+      })
+    }
   }
 }
 </script>

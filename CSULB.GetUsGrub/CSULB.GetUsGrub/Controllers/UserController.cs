@@ -112,7 +112,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
         // POST User/CreateAdmin
         [HttpPost]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.CREATE)]
+       // [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.CREATE)]
         [Route("CreateAdmin")]       
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]       
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)

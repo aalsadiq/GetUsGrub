@@ -624,11 +624,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         }
 
         /// <summary>
-        /// The CreateIndividualUser method.
-        /// Contains business logic to create an individual user.
+        /// The CreateAdmin method.
+        /// Contains business logic to create an admin user.
         /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
+        /// @author: Jennifer Nguyen, Angelica Salas
+        /// @updated: 04/26/2018
         /// </para>
         /// </summary>
         /// <param name="registerUserDto"></param>
@@ -710,8 +710,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// DeactivateUser deactivates the user when given a username.
+        /// <para>
         /// @author: Angelica Salas Tovar
         /// @update: 03/20/2018
+        /// </para>
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
@@ -753,8 +755,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// ReactivateUser reactivates the user when given a username.
+        /// <para>
         /// @author: Angelica Salas Tovar
         /// @update: 03/20/2018
+        /// </para>
         /// </summary>
         /// <param name="username">The user that will be reactivated.</param>
         /// <returns>Response Dto</returns>
@@ -795,8 +799,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// DeleteUser deletes the user when given a username.
+        /// <para>
         /// @author: Angelica Salas Tovar
         /// @update: 03/20/2018
+        /// </para>
         /// </summary>
         /// <param name="username">The user that will be deleted.</param>
         /// <returns>Response Dto</returns>
@@ -837,8 +843,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
         /// <summary>
         /// EditUser edits the user when given a.
+        /// <para>
         /// @author: Angelica Salas Tovar
         /// @update: 03/20/2018
+        /// </para>
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>

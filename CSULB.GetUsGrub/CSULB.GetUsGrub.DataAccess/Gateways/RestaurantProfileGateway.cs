@@ -319,8 +319,17 @@ namespace CSULB.GetUsGrub.DataAccess
             
         }
 
-        //ImageUploadGateway for profile
-        //store the path in the database...
+        /// <summary>
+        /// Stores virtual menu image path in database.
+        /// <para>
+        /// @author: Angelica Salas Tovar
+        /// @update: 04/26/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userProfileDto">The user profile</param>
+        /// <param name="menuPath">The virtual menu image path</param>
+        /// <param name="menuId">The menu id</param>
+        /// <returns></returns>
         public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto, string menuPath, int menuId)
         {
             using (var userContext = new UserContext())
@@ -329,7 +338,6 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-
                         // RestaurantMenuItems
                         var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
                                                        where restaurantMenuItems.Id == menuId

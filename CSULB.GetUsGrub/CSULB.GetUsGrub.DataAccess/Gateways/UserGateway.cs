@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// A <c>UserGateway</c> class.
     /// Defines methods that communicates with the UserContext.
     /// <para>
-    /// @author: Jennifer Nguyen, Angelica Salas Tovar, Rachel Dang
+    /// @author: Jennifer Nguyen, Angelica Salas Tovar, Rachel Dang, Andrew Kao
     /// @updated: 04/24/2018
     /// </para>
     /// </summary>
@@ -246,6 +246,29 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.BusinessHours.Add(businessHour);
                         context.SaveChanges();
                     }
+
+                    // Add First Menu
+                    // Find the corresponding profile
+                    var dbRestaurantProfile = (from profile in context.RestaurantProfiles
+                                               where profile.Id == userId
+                                               select profile).SingleOrDefault();
+                    var newMenu = new RestaurantMenu("Your First Menu", false, 0);
+
+                    newMenu.RestaurantProfile = dbRestaurantProfile;
+                    context.RestaurantMenus.Add(newMenu);
+                    context.Entry(dbRestaurantProfile).State = System.Data.Entity.EntityState.Unchanged;
+                    context.SaveChanges();
+
+                    // Add First Menu Item
+                    // Find the corresponding menu
+                    var dbRestaurantMenu = (from menu in context.RestaurantMenus
+                                            where menu.RestaurantId == restaurantProfile.Id
+                                            select menu).SingleOrDefault();
+                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_MENU_ITEM_IMAGE, "", false, 0);
+                    newMenuItem.RestaurantMenu = dbRestaurantMenu;
+                    context.RestaurantMenuItems.Add(newMenuItem);
+                    context.Entry(dbRestaurantMenu).State = System.Data.Entity.EntityState.Unchanged;
+                    context.SaveChanges();
 
                     // Commit transaction to database
                     dbContextTransaction.Commit();

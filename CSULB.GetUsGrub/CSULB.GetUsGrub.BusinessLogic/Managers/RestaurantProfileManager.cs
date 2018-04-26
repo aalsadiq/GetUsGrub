@@ -3,6 +3,7 @@ using CSULB.GetUsGrub.Models;
 using System.Configuration;
 using System.IO;
 using System.Web;
+using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -16,11 +17,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         public ResponseDto<RestaurantProfileDto> GetProfile(string token)
         {
+            var tokenService = new TokenService();
+            var restaurantBusinessHourDtoService = new RestaurantBusinessHourDtoService();
+
             // Retrieve account by username
             var userGateway = new UserGateway();
 
-            var tokenService = new TokenService();
-
+            // Call the gateway
             var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
 
             // Retrieve restaurant profile from database
@@ -28,12 +31,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             var restaurantProfileResponseDto = restaurantProfileGateway.GetRestaurantProfileById(userAccountResponseDto.Data.Id);
 
+            // Call the RestaurantBusinessHourDtoService
+            var convertedRestaurantBusinessHourDtos = restaurantBusinessHourDtoService.SetStringTimesFromDateTimes(restaurantProfileResponseDto.Data.BusinessHours);
+
+            // Replace the BusinessHourDtos with the converted ones
+            restaurantProfileResponseDto.Data.BusinessHours = convertedRestaurantBusinessHourDtos;
+
             return restaurantProfileResponseDto;
         }
 
         public ResponseDto<bool> EditProfile(RestaurantProfileDto restaurantProfileDto, string token)
         {
             var geocodeService = new GoogleGeocodeService();
+            var restaurantBusinessHourDtoService = new RestaurantBusinessHourDtoService();
+            var tokenService = new TokenService();
 
             var editRestaurantProfilePreLogicValidationStrategy = new EditRestaurantUserProfilePreLogicValidationStrategy(restaurantProfileDto);
 
@@ -50,8 +61,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Retrieve account by username
             var userGateway = new UserGateway();
-
-            var tokenService = new TokenService();
 
             var userAccountResponseDto = userGateway.GetUserByUsername(tokenService.GetTokenUsername(token));
 
@@ -76,21 +85,28 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var restaurantProfileDomain = new RestaurantProfile(
                 restaurantProfileDto.PhoneNumber,
                 restaurantProfileDto.Address,
-                restaurantProfileDto.Details);
-
-            restaurantProfileDomain.GeoCoordinates = new GeoCoordinates(geocodeResponse.Data.Latitude, geocodeResponse.Data.Longitude);
+                restaurantProfileDto.Details)
+            {
+                GeoCoordinates = new GeoCoordinates(geocodeResponse.Data.Latitude, geocodeResponse.Data.Longitude)
+            };
 
             // Extract business hours domains
-            var businessHourDtos = restaurantProfileDto.BusinessHourDtos;
+            var restaurantBusinessHourDtos = restaurantProfileDto.BusinessHours;
 
+            // Call the RestaurantBusinessHourDtoService
+            var convertedRestaurantBusinessHourDtos = restaurantBusinessHourDtoService.SetDateTimesFromStringTimes(restaurantBusinessHourDtos);
 
-            // Extract restaurant menu dictionary
+            // Extract restaurant menus
+            if (restaurantProfileDto.RestaurantMenusList.Count == 0)
+            {
+                
+            }
             var restaurantMenuDomains = restaurantProfileDto.RestaurantMenusList;
 
             // Execute update of database
             var profileGateway = new RestaurantProfileGateway();
 
-            var responseDtoFromGateway = profileGateway.EditRestaurantProfileById(userAccountResponseDto.Data.Id, userProfileDomain, restaurantProfileDomain, businessHourDtos, restaurantMenuDomains);
+            var responseDtoFromGateway = profileGateway.EditRestaurantProfileById(userAccountResponseDto.Data.Id, userProfileDomain, restaurantProfileDomain, convertedRestaurantBusinessHourDtos, restaurantMenuDomains);
 
             return responseDtoFromGateway;
         }

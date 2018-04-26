@@ -145,6 +145,19 @@ export const store = new Vuex.Store({
       ],
       businessHourRules: [
         businessHour => !!businessHour || 'Business hour is required'
+      ],
+      menuNameRules: [
+        menuName => !!menuName || 'Menu name is required'
+      ],
+      itemNameRules: [
+        itemName => !!itemName || 'Menu item name is required'
+      ],
+      itemPriceRules: [
+        itemPrice => !!itemPrice || 'Item price is required',
+        itemPrice => /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(itemPrice) || 'Incorrect price format'
+      ],
+      tagRules: [
+        tag => !!tag || 'Tag is required'
       ]
     },
     // Constants are data that are non-changing

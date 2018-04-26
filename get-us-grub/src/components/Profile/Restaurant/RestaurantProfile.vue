@@ -140,7 +140,7 @@ export default {
           street2: '',
           city: '',
           state: '',
-          zip: 0
+          zip: null
         },
         details: {
           avgFoodPrice: 1,

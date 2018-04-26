@@ -382,9 +382,12 @@ export const store = new Vuex.Store({
       };
     },
     updateUserMoneyOwes: (state, payload) => {
+      var billItemPriceSplit = state.billItems[payload].itemPrice / state.billItems[payload].selected.length
       for (var i = 0; i < state.billItems[payload].selected.length; i++) {
         for (var j = 0; j < state.billUsers.length; j++) {
-
+          if (state.billItems[payload].selected[i] === state.billUsers[j].uID) {
+            state.billUsers[j].moneyOwes += Number(state.billItems[payload].itemPrice / state.billItems[payload].selected.length).toFixed(2)
+          }
         }
       }
     },

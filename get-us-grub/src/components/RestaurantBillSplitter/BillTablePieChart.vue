@@ -12,33 +12,38 @@ export default {
       // billUsers: this.billItem.selected,
       // labelList: [],
       // labels: this.billItem.selected,
-      datacollection: null,
-      datasets: [
-        {
-          label: 'Remaining',
-          backgroundColor: '#f87979',
-          data: [this.billItem.itemPrice]
-        },
-        {
-          label: 'Test1',
-          backgroundColor: '#ffffff',
-          data: [100]
-        }
-      ]
+      datacollection: null,            
     }
   },
   mounted () {
     EventBus.$on('users-in-bill-item', payload => {
       this.updatePieChartLabels(payload)
     })
-
-    this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false })
+    this.fillData()
+    this.renderChart(this.datacollection, { responsive: true, maintainAspectRatio: false })
   },
   updated () {
   },
   methods: {
     fillData: function () {
       this.datacollection = {
+        datasets: [
+          {
+            label: 'Remaining',
+            backgroundColor: '#f87979',
+            data: [this.billItem.itemPrice]
+          },
+          {
+            label: 'Test1',
+            backgroundColor: '#ffffff',
+            data: [100]
+          },
+          {
+            label: 'Test2',
+            backgroundColor: '#00ff00',
+            data: [10]
+          }
+        ]
       }
     },
     updatePieChartLabels: function (payload) {

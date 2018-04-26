@@ -47,7 +47,7 @@ export default {
       EventBus.$emit('users-in-bill-item', billItem)
     }
   },
-  updated () {
+  updated() {
     this.updateUserMoneyOwes(this.billItemIndex)
     this.emitUsersInBillItemEvent(this.billItem)
   },

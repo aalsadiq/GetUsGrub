@@ -111,10 +111,16 @@ export default {
       }).then(response => {
         this.valid = true
         this.disable = false
-        this.$store.state.isAuthenticated = true
-        this.$store.state.authenticationToken = response.data
-        this.$store.state.username = jwt.decode(response.data)['Username']
-        this.$router.push({path: '/'})
+        var decodedJwt = jwt.decode(response.data)
+        this.$store.state.username = decodedJwt['Username']
+        if (decodedJwt.ReadIsFirstTimeUser === 'True') {
+          this.$store.state.firstTimeUserToken = response.data
+          this.$router.push('FirstTimeRegistration')
+        } else {
+          this.$store.state.isAuthenticated = true
+          this.$store.state.authenticationToken = response.data
+          this.$router.push({path: '/'})
+        }
       }).catch(error => {
         this.showError = true
         this.valid = true

@@ -11,18 +11,18 @@
           <v-text-field label="Item Name"
                         :rules="[rules.required]"
                         ref="nameField"
-                        v-model="name"
+                        v-model="itemName"
                         required />
           <v-text-field label="Item Price"
                         :rules="[rules.required, rules.nonzero, rules.max, rules.nonnegative]"
                         prefix="$"
                         ref="priceField"
-                        v-model.number="price"
+                        v-model.number="itemPrice"
                         v-money="money"
                         required />
           <v-btn color="teal"
                  dark
-                 v-on:click="AddToDictionary(name, price)">
+                 v-on:click="AddToDictionary(itemName, itemPrice)">
             Add To Dictionary
           </v-btn>
           <v-btn color="teal"
@@ -50,8 +50,8 @@ export default {
     return {
       valid: true,
       maxValue: 1000.00,
-      name: '',
-      price: null,
+      itemName: '',
+      itemPrice: null,
       dialog: false,
       rules: {
         required: (value) => (!!value) || 'Required.',
@@ -72,10 +72,10 @@ export default {
   },
   directives: { money: VMoney },
   methods: {
-    AddToDictionary: function (name, price) {
+    AddToDictionary: function (itemName, itemPrice) {
       if (this.$refs.dictionaryInputForm.validate()) {
         console.log('Add Form Validated')
-        this.$store.dispatch('addToDictionary', [name, price])
+        this.$store.dispatch('addToDictionary', [itemName, itemPrice])
       }
     },
     ValidatePrice: function () {

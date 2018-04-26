@@ -26,6 +26,8 @@
 
 <script>
 import AddBillUser from './AddBillUser.vue'
+import { EventBus } from '@/event-bus/event-bus.js'
+
 export default {
   name: 'ManageUsers',
   components: {
@@ -36,8 +38,18 @@ export default {
       dialog: false
     }
   },
-  props: ['billItem'],
+  props: ['billItem', 'billItemIndex'],
   methods: {
+    updateUserMoneyOwes: function (billItemIndex) {
+      this.$store.dispatch('updateUserMoneyOwes', billItemIndex)
+    },
+    emitUsersInBillItemEvent: function (billItem) {
+      EventBus.$emit('users-in-bill-item', billItem)
+    }
+  },
+  updated() {
+    this.updateUserMoneyOwes(this.billItemIndex)
+    this.emitUsersInBillItemEvent(this.billItem)
   },
   computed: {
     billUsers () {

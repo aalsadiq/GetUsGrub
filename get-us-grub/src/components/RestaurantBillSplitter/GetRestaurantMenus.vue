@@ -12,11 +12,19 @@
       <v-list>
         <v-toolbar>
           <v-toolbar-title>
-            Test
+            Select Your Menu!
           </v-toolbar-title>
         </v-toolbar>
-        <v-btn v-on:click="GetRestaurantMenus">GET</v-btn>
-        <div v-for="(element, index) in restaurantMenus" :key="index"><p>Test</p></div>
+        <div>
+          <v-btn dark color="green" v-on:click="useCustomMenu"> Your Custom Menu</v-btn>
+        </div>
+        <v-divider />
+        <div v-if="this.restaurantDisplayName">
+          <h2> {{ this.restaurantDisplayName }}'s Menus </h2>
+          <v-btn dark color="blue" v-for="(menu, index) in restaurantMenus" :key="index" v-on:click="populateDictionary(menu.items)">
+            {{ menu.menuName }}
+          </v-btn>
+        </div>
       </v-list>
     </v-navigation-drawer>
   </v-layout>
@@ -30,36 +38,22 @@ export default {
   data () {
     return {
       drawer: false,
-      restaurantId: null
+      restaurantId: this.$store.state.restaurantSelection.selectedRestaurant.restaurantId,
+      restaurantDisplayName: this.$store.state.restaurantSelection.selectedRestaurant.displayName,
+      restaurantMenuItems: []
     }
   },
   // updated () {
   //   this.restaurantMenus = this.$store.state.restaurantMenus
   // },
   methods: {
-    GetRestaurantMenus: function () {
-      if (this.$store.state.isAuthenticated) {
-        console.log('Authenticated')
-        this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
-        console.log(this.restaurantId)
-        axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
-          headers: {
-            'Access-Control-Allow-Origin': '*'
-          },
-          params: {
-            restaurantId: this.restaurantId
-          }
-        }).then(response => {
-          this.$store.dispatch('populateRestaurantMenus', response.data.data.menus)
-          console.log(response.data.data.menus)
-          console.log(this.$store.state.restaurantMenus)
-          // for (int i = 0; i < response.data.data.menus.length; i++) {
-          // this.menus[i] = response.data.data.menus[i]
-          // }
-        }).catch(error => {
-          console.log(error.response.data)
-        })
-      }
+    useCustomMenu: function () {
+      this.$store.dispatch('useCustomMenu')
+    },
+    populateDictionary: function (menuItems) {
+      this.restaurantMenuItems = menuItems
+      console.log(this.restaurantMenuItems)
+      this.$store.dispatch('populateDictionary', this.restaurantMenuItems)
     }
   },
   computed: {
@@ -71,5 +65,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

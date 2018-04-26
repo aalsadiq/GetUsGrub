@@ -2,7 +2,7 @@
   <v-dialog v-model="editDialog" scrollable max-width="300px">
     <v-btn small dark color="blue" slot="activator" v-on:click="UpdateTextFields">Edit</v-btn>
     <v-card>
-      <v-card-title><h2> {{Item.name}} : ${{Item.price}} </h2></v-card-title>
+      <v-card-title><h2> {{Item.itemName}} : ${{Item.itemPrice}} </h2></v-card-title>
       <v-divider />
       <v-card-text>
         <v-form v-model="valid"
@@ -15,7 +15,7 @@
           <v-text-field label="Enter New Price"
                         prefix="$"
                         :rules="[rules.required, rules.nonzero, rules.max]"
-                        v-model="newItemPrice"
+                        v-model.number="newItemPrice"
                         v-money="money"
                         required />
           <v-btn color="blue"
@@ -24,7 +24,6 @@
             Close
           </v-btn>
           <v-btn color="blue" dark v-on:click="EditFoodItem(editType, itemIndex, newItemName, newItemPrice)">Save</v-btn>
-          <v-btn v-on:click="Log">Log</v-btn>
           <br /><small>*indicates required field</small>
         </v-form>
       </v-card-text>
@@ -42,8 +41,8 @@ export default {
   props: ['editType', 'itemIndex', 'Item'],
   data () {
     return {
-      newItemName: this.Item.name,
-      newItemPrice: this.Item.price,
+      newItemName: this.Item.itemName,
+      newItemPrice: this.Item.itemPrice,
       editDialog: false,
       valid: true,
       rules: {
@@ -79,11 +78,8 @@ export default {
       }
     },
     UpdateTextFields: function () {
-      this.newItemName = this.Item.name
-      this.newItemPrice = this.Item.price
-    },
-    Log: function () {
-      console.log(this.newItemName)
+      this.newItemName = this.Item.itemName
+      this.newItemPrice = this.Item.itemPrice
     }
   },
   computed: {

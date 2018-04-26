@@ -38,8 +38,8 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantId: 26,
-        displayName: 'Halal Guys',
+        restaurantId: null,
+        displayName: '',
         address: {
           street1: '',
           street2: '',
@@ -92,6 +92,9 @@ export const store = new Vuex.Store({
         login: 'http://localhost:8081/Sso/Login',
         createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
         createRestaurantUser: 'http://localhost:8081/User/FirstTimeRegistration/Restaurant'
+      },
+      restaurantBillSplitter: {
+        getRestaurantMenus: 'http://localhost:8081/RestaurantBillSplitter/Restaurant'
       }
     },
     // Rules for validations
@@ -148,6 +151,19 @@ export const store = new Vuex.Store({
       ],
       businessHourRules: [
         businessHour => !!businessHour || 'Business hour is required'
+      ],
+      menuNameRules: [
+        menuName => !!menuName || 'Menu name is required'
+      ],
+      itemNameRules: [
+        itemName => !!itemName || 'Menu item name is required'
+      ],
+      itemPriceRules: [
+        itemPrice => !!itemPrice || 'Item price is required',
+        itemPrice => /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(itemPrice) || 'Incorrect price format'
+      ],
+      tagRules: [
+        tag => !!tag || 'Tag is required'
       ]
     },
     // Constants are data that are non-changing
@@ -468,16 +484,15 @@ export const store = new Vuex.Store({
       };
     },
     updateUserMoneyOwesFromSelected: (state, payload) => {
+      var oldSplit
+      var newSplit
       if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) {
-        // state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].billItemsInfo.push({
-
-        // })
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].moneyOwes += payload.billItem.itemPrice
       } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) {
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice
       } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is added to selected list
-        var oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
-        var newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
+        oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
+        newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {
           state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
         })
@@ -485,8 +500,8 @@ export const store = new Vuex.Store({
           state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
         })
       } else if (payload.oldSelected.length > payload.newSelected.length) { // When a user is REMOVED from the selected list
-        var oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
-        var newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
+        oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
+        newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {
           state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
         })

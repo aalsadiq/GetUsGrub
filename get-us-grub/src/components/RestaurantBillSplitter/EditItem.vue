@@ -34,7 +34,6 @@
 
 <script>
 import { VMoney } from 'v-money'
-// import { EventBus } from '@/event-bus/event-bus.js'
 
 export default {
   name: 'EditItem',

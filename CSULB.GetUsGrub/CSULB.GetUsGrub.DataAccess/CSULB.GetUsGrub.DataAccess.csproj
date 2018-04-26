@@ -69,6 +69,7 @@
     <Compile Include="Migrations\SsoDbContext\201804261957096_InitialDbCreation.Designer.cs">
       <DependentUpon>201804261957096_InitialDbCreation.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageService.cs" />
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
     <Compile Include="Migrations\UserDbContext\201804261955541_InitialDbCreation.cs" />
     <Compile Include="Migrations\UserDbContext\201804261955541_InitialDbCreation.Designer.cs">

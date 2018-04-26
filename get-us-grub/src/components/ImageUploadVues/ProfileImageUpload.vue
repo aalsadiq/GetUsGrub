@@ -38,26 +38,23 @@
         <br/>
         <v-flex xs4>
             <label class="custom-file-upload">
-                <h5>choose image
+                <h5>CHOOSE IMAGE
                 <i class="material-icons">cloud_download</i>
                 </h5>
               <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
             </label>
+            <v-spacer/>
+            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
+              Upload
+            <v-icon color="white">cloud_upload</v-icon>
+            </v-btn>
           </v-flex>
           <br/>
             <div class="preview-image" v-if="imageData.length > 0">
               <img id="previewImage" class="preview" :src="imageData"/>
             </div>
           <br/>
-          <div id="submit-image">
-          <v-flex xs3>
-            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
-              Upload
-            <v-icon color="white">cloud_upload</v-icon>
-            </v-btn>
-            </v-flex>
-            <br/>
-            </div>
+
           </v-card>
           </v-dialog>
         </v-layout>
@@ -67,7 +64,7 @@
 
 <script>
 import axios from 'axios'
-// import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
   dialog: false,
@@ -80,23 +77,23 @@ export default {
     test: null,
     showError: false,
     showSuccess: false,
-    username: 'randomusertodelete',
+    username: '',
     imageData: '' // Stores in base 64 format of image
   }),
+  beforeCreate () {
+    if (this.$store.state.authenticationToken === null) {
+      this.$router.push({path: '/Unauthorized'})
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
+      } else {
+        this.$router.push({path: '/Forbidden'})
+      }
+    } catch (ex) {
+      this.$router.push({path: '/Forbidden'})
+    }
+  },
   methods: {
-    // beforeCreate () {
-    //   if (this.$store.state.authenticationToken === null) {
-    //     this.$router.push({path: '/Unauthorized'})
-    //   }
-    //   try {
-    //     if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
-    //     } else {
-    //       this.$router.push({path: '/Forbidden'})
-    //     }
-    //   } catch (ex) {
-    //     this.$router.push({path: '/Forbidden'})
-    //   }
-    // },
     StoreSelectedFile: function (event) {
       this.selectedFile = event.target.files[0]
       this.previewImage(event)
@@ -114,7 +111,7 @@ export default {
     SubmitImageUpload: function () {
       // ReadRestaurantProfile
       var formData = new FormData()
-      formData.append('username', this.username) // this.$store.state.username
+      formData.append('username', this.$store.state.username)
       formData.append('filename', this.selectedFile, this.selectedFile.name)
       axios.post(this.$store.state.urls.profileManagement.profileImageUpload, formData, {
       },
@@ -125,6 +122,8 @@ export default {
         this.responseData = response.data
         this.showSuccess = true
         this.showError = false
+        this.getUserProfile()
+        // get profile
       }).catch(error => {
         this.responseData = error.response.data
         this.showSuccess = false
@@ -154,12 +153,47 @@ export default {
           Promise.reject(error)
         }
       })
+    },
+    getUserProfile () {
+      axios.get(this.$store.state.urls.profileManagement.userProfile, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.displayName = response.data.displayName
+        this.displayPicture = response.data.displayPicture
+      }).catch(error => {
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({ path: '/Unauthorized' })
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({ path: '/Forbidden' })
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({ path: '/ResourceNotFound' })
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({ path: '/InternalServerError' })
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response.data
+          Promise.reject(error)
+        }
+      })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 #image-upload{
   height: 40em;
   width: 80em;
@@ -176,7 +210,7 @@ input[type="file"] {
   padding: 0em .5em .25em .25em;
   cursor: pointer;
   background: slateblue;
-  font-size: 14px;
+  font-size: 15px;
   margin-left: .30em;
   margin-right:.30em;
 }
@@ -190,4 +224,18 @@ input[type="file"] {
 #user-text-box-alert{
   background-color: #e26161 !important
 }
+.btn__content{
+    border-top-width: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    width: 137.5px;
+    height: 27px;
+}
+/* img#display-picture{
+  height: 50px;
+  width:50px;
+  padding-left:0px;
+} */
 </style>

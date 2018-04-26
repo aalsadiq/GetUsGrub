@@ -104,7 +104,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            ICollection<SecurityQuestionWithSaltDto> securityQuestionWithSalts;
+            IList<SecurityQuestionWithSaltDto> securityQuestionWithSalts;
 
             // Get security questions and security answer hashes
             using (var userGateway = new UserGateway())

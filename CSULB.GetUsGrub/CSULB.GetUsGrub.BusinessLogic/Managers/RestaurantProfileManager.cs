@@ -111,12 +111,22 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return responseDtoFromGateway;
         }
 
-        //ImageUploadManager
-        // TODO: @Angelica Add image profile upload here
+        /// <summary>
+        /// Uploads a menu image for the specified username and menu id.
+        /// <para>
+        /// @author: Angelica Salas Tovar
+        /// @update: 04/26/2018
+        /// </para>
+        /// </summary>
+        /// <param name="image">The image</param>
+        /// <param name="username">The user</param>
+        /// <param name="menuId">The menu id</param>
+        /// <returns></returns>
         public ResponseDto<bool> MenuItemImageUpload(HttpPostedFile image, string username, int menuId)
         {
             var user = new UserProfileDto() { Username = username };
-
+            
+            // Image Validations
             var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
             var result = ImageUploadValidationStrategy.ExecuteStrategy();
 
@@ -141,7 +151,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Save physical Path
             string physicalPath = ImagePaths.PHYSICAL_MENU_ITEM_PATH + newImagename;
         
-            // Call gateway to save path to database
+            // Call gateway to save virtualPath to database
             using (var gateway = new RestaurantProfileGateway())
             {
                 var gatewayresult = gateway.UploadImage(user, virtualPath, menuId);
@@ -154,6 +164,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
 
+                // Save the image to the physical path
                 image.SaveAs(physicalPath);
 
                 return new ResponseDto<bool>

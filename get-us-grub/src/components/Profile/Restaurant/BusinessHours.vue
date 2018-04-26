@@ -1,33 +1,29 @@
 <template>
   <div id="business-hours-div">
-    <div>
-    <v-layout row justify-center>
-      <!-- Dialog popup for business hours form -->
-    <v-dialog v-model="dialog" persistent max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">{{ formTitle }}</span>
-        </v-card-title>
-        <v-card-text>
-            <v-layout wrap>
-              <v-form v-model="valid">
-              <!-- Time Zone user input -->
-              <v-flex xs12>
+  <div>
+  <v-layout row justify-center>
+    <!-- Dialog popup for business hours form -->
+  <v-dialog v-model="dialog" persistent max-width="500px">
+    <v-card>
+      <v-card-title>
+        <span class="headline">{{ formTitle }}</span>
+      </v-card-title>
+      <v-card-text>
+          <v-layout wrap>
+            <v-form v-model="isValid">
               <v-select
                 :items="$store.state.constants.timeZones"
                 item-text="displayString"
                 item-value="timeZoneName"
-                v-model="timeZone"
+                v-model="editedBusinessHour.timeZone"
                 label="Select your time zone"
                 single-line
                 auto
                 hide-details
                 :rules="$store.state.rules.timeZoneRules"
                 required
+                :disabled=disable
               ></v-select>
-              </v-flex>
-              <!-- Day of week user input -->
-              <v-flex xs12>
               <v-select
                 :items="$store.state.constants.dayOfWeek"
                 v-model="editedBusinessHour.day"
@@ -37,10 +33,8 @@
                 hide-details
                 :rules="$store.state.rules.businessDayRules"
                 required
+                :disabled=disable
               ></v-select>
-              </v-flex>
-              <!-- Open time user input -->
-              <v-flex xs12>
               <v-menu
                 ref="menu"
                 lazy
@@ -58,9 +52,11 @@
                   slot="activator"
                   label="Select opening time (24hr format)"
                   v-model="editedBusinessHour.openTime"
+                  :rules="$store.state.rules.businessHourRules"
                   prepend-icon="access_time"
                   readonly
                   required
+                  :disabled=disable
                 ></v-text-field>
                 <v-time-picker
                   format="24hr"
@@ -69,9 +65,6 @@
                 >
                 </v-time-picker>
               </v-menu>
-              </v-flex>
-              <!-- Close time user input -->
-              <v-flex xs12>
               <v-menu
                 ref="menu"
                 lazy
@@ -89,9 +82,11 @@
                   slot="activator"
                   label="Select closing time (24hr format)"
                   v-model="editedBusinessHour.closeTime"
+                  :rules="$store.state.rules.businessHourRules"
                   prepend-icon="access_time"
                   readonly
                   required
+                  :disabled=disable
                 ></v-text-field>
                 <v-time-picker
                   format="24hr"
@@ -99,79 +94,87 @@
                   v-model="editedBusinessHour.closeTime"
                   :min="editedBusinessHour.openTime"
                 >
-              </v-time-picker>
+                </v-time-picker>
               </v-menu>
-              </v-flex>
-              </v-form>
-            </v-layout>
-        </v-card-text>
-        <!-- Buttons to cancel or save form -->
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="save" :disabled="!valid">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    </v-layout>
-    </div>
-      <v-layout row>
-      <v-flex xs12 sm6 offset-sm3>
-        <v-card>
-          <v-toolbar color="pink" dark>
-            <v-spacer/>
-            <v-toolbar-title>Business Hours</v-toolbar-title>
-            <v-spacer/>
-            <!-- Button to add business hours -->
-            <v-btn dark class="mb-2" icon @click="addBusinessHour()" v-if="isEdit">
-            <v-icon>add_circle</v-icon>
-          </v-btn>
-          </v-toolbar>
-          <v-list two-line>
-            <template v-for="(businessHour, index) in businessHours" v-if="businessHour.flag !== 3">
-              <v-list-tile
-                avatar
-                ripple
-                @click="toggle()"
-                :key="index"
-              >
-                <v-list-tile-content>
-                  <!-- Business hour day of week -->
-                  <v-list-tile-title>{{ businessHour.day }}</v-list-tile-title>
-                  <!-- Convert UTC time to display local time -->
-                  <v-list-tile-sub-title class="text--primary">
-                    {{ convertUtcToLocalTime(businessHour.openTime, 'h:mm a') }} - {{ convertUtcToLocalTime(businessHour.closeTime, 'h:mm a') }}
-                    </v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <div v-if="isEdit">
-                    <!-- Edit a business hour -->
-                    <v-btn icon class="mx-0" @click="editBusinessHour(businessHour)">
-                      <v-icon color="teal">edit</v-icon>
-                    </v-btn>
-                    <!-- Delete a particular business hour -->
-                    <v-btn icon class="mx-0" @click="deleteBusinessHour(businessHour)">
-                      <v-icon color="pink">delete</v-icon>
-                    </v-btn>
-                  </div>
-                </v-list-tile-action>
-              </v-list-tile>
-              <v-divider
-                v-if="index !== businessHours.length"
-                :key="businessHour.id"
-              >
-              </v-divider>
-            </template>
-          </v-list>
-        </v-card>
-      </v-flex>
+            </v-form>
+          </v-layout>
+      </v-card-text>
+      <!-- Buttons to cancel or save form -->
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
+        <v-btn color="blue darken-1" flat @click.native="save" :disabled="!isValid">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  </v-layout>
+  </div>
+   <div v-show="showError" id="error-div">
+    <v-layout>
+    <v-flex xs12 sm6 offset-sm3>
+      <!-- Error messages for registration -->
+      <v-alert id="error-message" :value=true icon='warning'>
+        <span id="error-title">
+          {{ error }}
+        </span>
+      </v-alert>
+    </v-flex>
     </v-layout>
   </div>
+    <v-layout row>
+    <v-flex xs12 sm6 offset-sm3>
+      <v-card>
+        <v-toolbar color="pink" dark>
+          <v-spacer/>
+          <v-toolbar-title>Business Hours</v-toolbar-title>
+          <v-spacer/>
+          <!-- Button to add business hours -->
+          <v-btn dark class="mb-2" icon @click="addBusinessHour()" v-if="isEdit">
+          <v-icon>add_circle</v-icon>
+        </v-btn>
+        </v-toolbar>
+        <v-list two-line>
+          <template v-for="(businessHour, index) in businessHours" v-if="businessHour.flag !== 3">
+            <v-list-tile
+              avatar
+              ripple
+              @click="toggle()"
+              :key="index"
+            >
+              <v-list-tile-content>
+                <!-- Business hour day of week -->
+                <v-list-tile-title>{{ businessHour.day }}</v-list-tile-title>
+                <v-list-tile-sub-title class="text--primary">
+                  {{ businessHour.openTime }} - {{ businessHour.closeTime }}
+                </v-list-tile-sub-title>
+              </v-list-tile-content>
+              <v-list-tile-action>
+                <div v-if="isEdit">
+                  <!-- Edit a business hour -->
+                  <v-btn icon class="mx-0" @click="editBusinessHour(businessHour)">
+                    <v-icon color="teal">edit</v-icon>
+                  </v-btn>
+                  <!-- Delete a particular business hour -->
+                  <v-btn icon class="mx-0" @click="deleteBusinessHour(businessHour)">
+                    <v-icon color="pink">delete</v-icon>
+                  </v-btn>
+                </div>
+              </v-list-tile-action>
+            </v-list-tile>
+            <v-divider
+              v-if="index !== businessHours.length"
+              :key="businessHour.id"
+            >
+            </v-divider>
+          </template>
+        </v-list>
+      </v-card>
+    </v-flex>
+  </v-layout>
+</div>
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   // Passed down variables from parent component
   props: [
@@ -180,20 +183,24 @@ export default {
   ],
   data () {
     return {
-      valid: false,
+      disable: false,
+      showError: false,
+      error: '',
+      isValid: false,
       editedIndex: -1,
       time: '',
       openTimeSync: false,
       closeTimeSync: false,
-      timeZone: 'Pacific Standard Time',
       dialog: false,
       editedBusinessHour: {
+        timeZone: '',
         day: '',
         openTime: null,
         closeTime: null,
         flag: 0
       },
       defaultBusinessHour: {
+        timeZone: '',
         day: '',
         openTime: null,
         closeTime: null,
@@ -208,45 +215,36 @@ export default {
     }
   },
   methods: {
-    // Compute UTC time to local time
-    convertUtcToLocalTime (utcTime, format) {
-      return moment(utcTime).format(format)
-    },
-    // Concatenate new date variable with a new time
-    concatenateDateAndTime (dateTime, time) {
-      var newDateTime = moment(moment(dateTime).format('YYYY-MM-DD') + ' ' + time)
-      return newDateTime.format('YYYY-MM-DDTHH:mm:ss')
-    },
-    // Create a new date time
-    createDateTime (time) {
-      var dateTime = moment('2018-05-17' + ' ' + time)
-      return dateTime.format('YYYY-MM-DDTHH:mm:ss')
-    },
     // Set up to add business hour
     addBusinessHour () {
+      this.showError = false
       this.editedIndex = -1
       this.dialog = true
     },
     // Set up to edit business hour
     editBusinessHour (businessHour) {
+      this.showError = false
       this.editedIndex = this.businessHours.indexOf(businessHour)
       this.editedBusinessHour = Object.assign({}, businessHour)
-      this.editedBusinessHour.openTime = this.convertUtcToLocalTime(businessHour.openTime, 'h:mm')
-      this.editedBusinessHour.closeTime = this.convertUtcToLocalTime(businessHour.closeTime, 'h:mm')
       this.dialog = true
     },
     // Set up to delete business hour
     deleteBusinessHour (businessHour) {
       const index = this.businessHours.indexOf(businessHour)
-      if (confirm('Are you sure you want to delete this business hour?')) {
-        try {
-          if (this.businessHours[index].flag === 1) {
-            this.businessHours.splice(index, 1)
-          } else {
+      if (this.business.hours.length <= 1) {
+        this.error = 'It is required that you have one business hour.'
+        this.showError = true
+      } else {
+        if (confirm('Are you sure you want to delete this business hour?')) {
+          try {
+            if (this.businessHours[index].flag === 1) {
+              this.businessHours.splice(index, 1)
+            } else {
+              this.businessHours[index].flag = 3
+            }
+          } catch (ex) {
             this.businessHours[index].flag = 3
           }
-        } catch (ex) {
-          this.businessHours[index].flag = 3
         }
       }
     },
@@ -266,13 +264,13 @@ export default {
           this.businessHours[this.editedIndex].flag = 2
         }
         this.businessHours[this.editedIndex].day = this.editedBusinessHour.day
-        this.businessHours[this.editedIndex].openTime = this.concatenateDateAndTime(this.businessHours[this.editedIndex].openTime, this.editedBusinessHour.openTime)
-        this.businessHours[this.editedIndex].closeTime = this.concatenateDateAndTime(this.businessHours[this.editedIndex].closeTime, this.editedBusinessHour.closeTime)
+        this.businessHours[this.editedIndex].openTime = this.editedBusinessHour.openTime
+        this.businessHours[this.editedIndex].closeTime = this.editedBusinessHour.closeTime
       // Save added business hour
       } else {
         this.editedBusinessHour.flag = 1
-        this.editedBusinessHour.openTime = this.createDateTime(this.editedBusinessHour.openTime)
-        this.editedBusinessHour.closeTime = this.createDateTime(this.editedBusinessHour.closeTime)
+        this.editedBusinessHour.openTime = this.editedBusinessHour.openTime
+        this.editedBusinessHour.closeTime = this.editedBusinessHour.closeTime
         this.businessHours.push(this.editedBusinessHour)
       }
       this.close()

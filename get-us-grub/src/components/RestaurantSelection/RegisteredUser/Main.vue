@@ -1,37 +1,37 @@
 <template>
   <div>
-      <div id="restaurant-selection-registered-user">
-        <app-header/>
-        <div id="select-restaurant">
-          <div id="food-preferences">
-            <v-layout>
+    <div id="restaurant-selection-registered-user">
+      <app-header/>
+      <div id="select-restaurant">
+        <div id="food-preferences">
+          <v-layout>
+          <v-flex xs12>
+            <!-- Title bar for the Food Preferences -->
+            <v-alert id="food-preferences-alert" :value=true>
+              <span id="preferences-title">
+                Your Food Preferences
+              </span>
+            </v-alert>
+          </v-flex>
+          </v-layout>
+          <v-layout>
             <v-flex xs12>
-              <!-- Title bar for the Food Preferences -->
-              <v-alert id="food-preferences-alert" :value=true>
-                <span id="preferences-title">
-                  Your Food Preferences
-                </span>
-              </v-alert>
+              <v-card>
+                <p v-if="foodPreferences || foodPreferences.length > 0" v-for="preference in foodPreferences" :key="preference">
+                  {{ preference }}
+                </p>
+                <p v-if="!foodPreferences || foodPreferences.length === 0">
+                  You currently have no food preferences.
+                </p>
+              </v-card>
             </v-flex>
-            </v-layout>
-            <v-layout>
-              <v-flex xs12>
-                <v-card>
-                  <p v-if="foodPreferences || foodPreferences.length > 0" v-for="preference in foodPreferences" :key="preference">
-                    {{ preference }}
-                  </p>
-                  <p v-if="!foodPreferences || foodPreferences.length === 0">
-                    You currently have no food preferences.
-                  </p>
-                </v-card>
-              </v-flex>
-            </v-layout>
-          </div>
-          <!-- Main page of the restaurant selector -->
-          <select-restaurant/>
+          </v-layout>
         </div>
-        <app-footer/>
+        <!-- Main page of the restaurant selector -->
+        <select-restaurant/>
       </div>
+      <app-footer/>
+    </div>
   </div>
 </template>
 
@@ -78,7 +78,7 @@ export default {
         username: jwt.decode(this.$store.state.authenticationToken).Username
       }
     }).then(response => {
-      this.foodPreferences = response.data
+      this.foodPreferences = response.data.sort()
     }).catch(error => {
       Promise.reject(error)
     })

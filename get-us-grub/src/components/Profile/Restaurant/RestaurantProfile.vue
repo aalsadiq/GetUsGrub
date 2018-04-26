@@ -3,40 +3,23 @@
     <div id="restaurant-profile-div">
       <div>
         <!-- Portion with profile picture and display name -->
-        <v-parallax src="/static/parallax.png" height="425">
-        <div id="main-edit-btns-div">
-          <v-layout>
-            <v-flex fixed>
-            <div id="edit-profile-btn-div" v-if="!isEdit">
-              <v-btn id="edit-profile-btn" dark icon @click="toggleIsEdit()">
-                <v-icon>edit</v-icon>
-              </v-btn>
-              <span id="edit-profile-btn-txt">Edit Profile</span>
-            </div>
-            </v-flex>
-            <div id="edit-btns-div">
-              <v-btn dark @click="editRestaurantProfile()" v-if="isEdit">
-                Submit All Changes
-              </v-btn>
-              <v-btn dark @click="cancel()" v-if="isEdit">
-                Cancel
-              </v-btn>
-            </div>
-          </v-layout>
-        </div>
+        <v-parallax src="/static/parallax.png" height="400">
           <!-- Display picture -->
           <div id="display-picture">
             <v-layout column align-center justify-center>
               <v-avatar
-                :size="225"
+                :size="200"
                 class="grey lighten-4"
               >
                 <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
               </v-avatar>
               <v-flex>
-                <v-btn id="image-upload-btn" dark v-if="isEdit">
+                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
                   <span id="upload-image-text">Upload Image</span>
-                </v-btn>
+                </v-btn> -->
+                <div v-if="isEdit">
+                  <profile-image-upload id="image-upload"/>
+                </div>
               </v-flex>
               <v-flex>
               <div id="display-name-div">
@@ -48,7 +31,7 @@
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
-                <span id="display-name-text"  v-if="editDisplayName">
+                <div id="display-name-text"  v-if="editDisplayName && isEdit">
                   <v-layout row>
                   <v-flex>
                   <v-text-field
@@ -59,16 +42,33 @@
                     dark
                   ></v-text-field>
                   </v-flex>
+                  <span v-if="showDisplayNameError"> {{ error }} </span>
                   <v-flex>
-                  <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()">
+                  <v-btn id="display-name-edit-btn" dark icon @click="submitEditDisplayName()">
                     <v-icon>save</v-icon>
                   </v-btn>
                   </v-flex>
                   </v-layout>
-                </span>
+                </div>
               </div>
-              </v-flex>
+            </v-flex>
             </v-layout>
+            <v-tooltip bottom>
+            <v-btn
+              v-if="!isEdit"
+              fab
+              color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="toggleIsEdit()"
+              id="edit-button"
+              slot="activator"
+              >
+              <v-icon>edit</v-icon>
+            </v-btn>
+             <span>Edit Profile</span>
+            </v-tooltip>
           </div>
         </v-parallax>
       </div>
@@ -102,6 +102,14 @@
         <food-preferences class="profile-component" :isEdit="isEdit"/>
       </div>
     </div>
+    <div id="edit-btns-div">
+      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
+        Submit All Changes
+      </v-btn>
+      <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
+        Cancel
+      </v-btn>
+    </div>
   </div>
 </div>
 </template>
@@ -124,11 +132,13 @@ export default {
     BusinessHours,
     Menus,
     FoodPreferences,
-    ProfileImageUpload,
-    MenuItemImageUpload
+    'profile-image-upload': ProfileImageUpload,
+    'menu-image-upload': MenuItemImageUpload
   },
   data () {
     return {
+      showDisplayNameError: false,
+      error: '',
       editDisplayName: false,
       isEdit: false,
       profile: {
@@ -140,7 +150,7 @@ export default {
           street2: '',
           city: '',
           state: '',
-          zip: 0
+          zip: null
         },
         details: {
           avgFoodPrice: 1,
@@ -167,8 +177,7 @@ export default {
         'Business Hours',
         'Menus',
         'Accommodations'
-      ],
-      error: null
+      ]
     }
   },
   // Check if user has permission to view the page
@@ -278,6 +287,25 @@ export default {
     toggleEditDisplayName () {
       this.editDisplayName = !this.editDisplayName
     },
+    submitEditDisplayName () {
+      console.log('here')
+      if (this.checkDisplayNameDoesNotEqualUsername()) {
+        this.toggleEditDisplayName()
+        this.editRestaurantProfile()
+      }
+    },
+    checkDisplayNameDoesNotEqualUsername () {
+      console.log('here')
+      if (this.$store.state.username === this.editDisplayName) {
+        console.log('herehere')
+        this.error = 'Username must not equal display name.'
+        this.showDisplayNameError = true
+        return false
+      } else {
+        this.showDisplayNameError = false
+        return true
+      }
+    },
     cancel () {
       this.toggleIsEdit()
       this.getRestaurantProfile()
@@ -295,7 +323,7 @@ export default {
   margin: 1em 0 0 0;
 }
 .restaurant-profile-tab-contents {
-  padding: 0 0 4em 0;
+  padding: 0 0 2em 0;
   margin: auto;
 }
 #item-tab {
@@ -324,9 +352,14 @@ export default {
   margin: 1.1em 0 0 0;
 }
 #edit-btns-div {
-  padding: 1em 0 0 0;
+  margin: 0 0 3em 0;
 }
-#main-edit-btns-div {
-  align-self: right;
+.btn--bottom.btn--absolute {
+  bottom: -2.5em;
+  left: 47em;
 }
+/* #image-upload{
+  width: 0px;
+  height: 0px;
+} */
 </style>

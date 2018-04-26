@@ -10,15 +10,15 @@
                 :size="225"
                 class="grey lighten-4"
               >
-                <img :src="displayPicture" alt="avatar">
+              <img :src="displayPicture" alt="avatar">
               </v-avatar>
               <v-flex>
                 <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
                   <span id="upload-image-text">Upload Image</span>
                 </v-btn> -->
-                <!-- <div v-if="ifEdit">
-                  <image-upload-app id="image-upload"/>
-                </div> -->
+               <div v-if="isEdit">
+                  <profile-image-upload id="image-upload"/>
+                </div>
               </v-flex>
               <v-flex>
               <div id="display-name-div">
@@ -118,7 +118,7 @@ export default {
   name: 'UserProfile',
   components: {
     FoodPreferences,
-    ProfileImageUpload
+    'profile-image-upload': ProfileImageUpload
   },
   data () {
     return {

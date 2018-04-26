@@ -132,7 +132,7 @@ import BusinessHours from './BusinessHours'
 import Menus from './Menus'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
-import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
+import RestaurantImageUpload from '@/components/ImageUploadVues/RestaurantImageUpload'
 
 export default {
   components: {
@@ -141,7 +141,7 @@ export default {
     BusinessHours,
     Menus,
     FoodPreferences,
-    'profile-image-upload': ProfileImageUpload,
+    'profile-image-upload': RestaurantImageUpload,
     'menu-image-upload': MenuItemImageUpload
   },
   data () {

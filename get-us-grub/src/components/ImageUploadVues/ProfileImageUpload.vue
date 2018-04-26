@@ -72,7 +72,7 @@ export default {
     test: null,
     showError: false,
     showSuccess: false,
-    username: 'useruser1',
+    username: 'randomusertodelete',
     imageData: '' // Stores in base 64 format of image
   }),
   methods: {

@@ -502,14 +502,13 @@ namespace CSULB.GetUsGrub.DataAccess
                         {
                             context.RestaurantMenuItems.Remove(menuItems);
 
-                            //// If menus are set to the default path, move on
-                            //if( menuItems.ItemPicture!= ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
-                            //{
-                            //    // Deleting Menu Images
-                            //    //File.Delete(menuItems.ItemPicture);
-                            //    deleteImage(menuItems.ItemPicture);
-                            //    Debug.WriteLine(menuItems.ItemPicture);
-                            //}
+                            // If menus are set to the default path, move on
+                            if (menuItems.ItemPicture != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                            {
+                                // Deleting Menu Images
+                                deleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH,menuItems.ItemPicture);
+                                Debug.WriteLine(menuItems.ItemPicture);
+                            }
                         }
                     }
                     // RestaurantMenus
@@ -600,13 +599,16 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.FailedAttempts.Remove(failedAttempt);
                     }
 
-                    //// Check if user image is set to default, if so move on
-                    //if (userAccount.UserProfile.DisplayPicture != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
-                    //{
-                    //    // Deleting profile image
-                    //    deleteImage(userAccount.UserProfile.DisplayPicture);
-                    //    Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
-                    //}
+                    // Check if user image is set to default, if so move on
+                    var temp = userAccount.UserProfile.DisplayPicture;
+                    Debug.WriteLine("displayPicture: " + temp );
+                    //Debug.WriteLine("dvirtualdisplayname: " + ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH);
+                    if (userAccount.UserProfile.DisplayPicture != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    {
+                        // Deleting profile image
+                        deleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH,userAccount.UserProfile.DisplayPicture);
+                        Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
+                    }
                     //Delete useraccount
                     context.UserAccounts.Remove(userAccount);
                     context.SaveChanges(); 
@@ -709,27 +711,22 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Save image to path
                     string savePath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH;
-                    Debug.WriteLine("SavePath: " + savePath);
 
                     // Set Diplay Picture Path
                     var oldPath = @userAccount.UserProfile.DisplayPicture;
-                    Debug.WriteLine("oldPath: " + oldPath);
+
                     var extension = Path.GetExtension(oldPath);
-                    Debug.WriteLine("Extension: " + extension);
+
                     var deleteOldPath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + userAccount.Username + extension;
-                    Debug.WriteLine("DeleteOldPath: " + deleteOldPath);
+
                     // If image path is not default change it.
                     if (oldPath != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
                     {
                         // The new path once user has their profile picture.
                         var newPath = savePath + newUsername + extension;
-                        Debug.WriteLine("NewPath " + newPath);
 
                         // Rename profile image based on username
-                        Debug.WriteLine("About to move files");
                         File.Move(deleteOldPath, newPath);
-                        Debug.WriteLine("File has been moved");
-
                     }
                     else
                     {
@@ -1086,14 +1083,20 @@ namespace CSULB.GetUsGrub.DataAccess
             context.Dispose();
         }
 
-        public ResponseDto<bool> deleteImage(string imagePath)
+        public ResponseDto<bool> deleteImage(string path, string image)
         {
             // Delete a file by using File class static method...
             try
             {
-                if (File.Exists(imagePath))
+                var imageName = Path.GetFileName(image);
+                Debug.WriteLine(imageName);
+
+                var filePath = path + imageName;
+                Debug.WriteLine(filePath);
+               
+                if (File.Exists(filePath))
                 {
-                    File.Delete(imagePath);
+                    File.Delete(filePath);
                     
                     return new ResponseDto<bool>()
                     {
@@ -1103,7 +1106,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 return new ResponseDto<bool>()
                 {
                     Data = false,
-                    Error = "File does not exist" // Add to constants later
+                    Error = "Image does not exist." // Add to constants later
                 };
             }
             catch (Exception){

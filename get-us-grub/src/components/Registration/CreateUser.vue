@@ -18,7 +18,7 @@
         <!-- Error messages for registration -->
         <v-alert id="registration-error" :value=true icon='warning'>
           <span id="error-title">
-            An error has occurred
+            An error has occurred.
           </span>
         </v-alert>
       </v-flex>

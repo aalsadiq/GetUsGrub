@@ -21,7 +21,7 @@
           <!-- Error messages for registration -->
           <v-alert id="registration-error" :value="true" icon='warning'>
             <span id="error-title">
-              An error has occurred
+              An error has occurred.
             </span>
           </v-alert>
         </v-flex>
@@ -44,6 +44,7 @@
             <v-toolbar dark color="primary">
               <v-toolbar-title>Reset Password</v-toolbar-title>
             </v-toolbar>
+            <div v-if="!showSuccess">
             <v-card-text>
               <v-form v-model="isValid">
                   <v-text-field
@@ -57,32 +58,23 @@
                   >
                   </v-text-field>
                 <div v-if="isSecurityQuestionsForm">
-                  <div v-for="(securityQuestion, index) in securityQuestions" :key="index">
-                    <!-- <v-text-field
-                      prepend-icon="https"
-                      type="text"
-                      v-model="securityQuestion.question"
-                      :disabled="isDisabled"
-                      :rules="$store.state.rules.securityQuestionRules"
-                      required>
-                    </v-text-field> -->
+                  <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
                     <v-select
-                      :items="$store.state.constants.securityQuestion"
+                      :items="set.questions"
                       item-text="question"
                       item-value="id"
-                      v-model="securityQuestions[index].question"
-                      label="Select a security question"
+                      v-model="securityQuestions[set.id].question"
                       single-line
                       auto
                       append-icon="https"
                       hide-details
                       :rules="$store.state.rules.securityQuestionRules"
                       required
-                      :disabled=disable
+                      :disabled="isDisabled"
                     ></v-select>
                     <v-text-field
                       label="Enter an answer to the above security question"
-                      v-model="securityQuestions[index].answer"
+                      v-model="securityQuestions[set.id].answer"
                       :rules="$store.state.rules.securityAnswerRules"
                       required
                       :disabled="isSubmitDisabled">
@@ -91,7 +83,7 @@
                 </div>
                 <div v-if="isConfirmPasswordForm">
                   <v-text-field
-                    label="Enter a password"
+                    label="Enter a new password"
                     v-model="password"
                     :rules="$store.state.rules.passwordRules"
                     :min="8"
@@ -110,12 +102,19 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <div v-if="isUsernameForm">
-                <v-btn @click="getSecurityQuestions" color="primary" :disabled="!isValid">Submit</v-btn>
+                <v-btn @click="getSecurityQuestions" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
+              </div>
+              <div v-if="isSecurityQuestionsForm">
+                <v-btn @click="confirmSecurityAnswers" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
               </div>
               <div v-if="isConfirmPasswordForm">
-                <v-btn color="primary" :disabled="!isPasswordValid || !isValid">Submit</v-btn>
+                <v-btn color="primary" @click="updatePassword" :disabled="!isPasswordValid || !isValid || isSubmitDisabled">Submit</v-btn>
               </div>
             </v-card-actions>
+            </div>
+            <div v-if="showSuccess">
+              <v-btn color="blue-grey darken-3" dark to="Login">Login</v-btn>
+            </div>
           </v-card>
         </v-flex>
       </v-layout>
@@ -138,6 +137,7 @@ export default {
   },
   data () {
     return {
+      errors: [],
       showError: false,
       showSuccess: false,
       visible: false,
@@ -150,7 +150,8 @@ export default {
       isConfirmPasswordForm: false,
       username: '',
       securityQuestions: [],
-      password: ''
+      password: '',
+      passwordErrorMessages: []
     }
   },
   methods: {
@@ -161,13 +162,14 @@ export default {
       axios.post(this.$store.state.urls.resetPassword.getSecurityQuestions, {
         username: this.username
       }).then(response => {
-        console.log(response.data)
+        this.showError = false
         this.isValid = true
         this.isUsernameForm = false
         this.isSubmitDisabled = false
         this.isSecurityQuestionsForm = true
         this.securityQuestions = response.data.securityQuestionDtos
       }).catch(error => {
+        this.isSubmitDisabled = false
         this.showSuccess = false
         this.showError = true
         this.isValid = true
@@ -206,9 +208,11 @@ export default {
         username: this.username,
         securityQuestionDtos: this.securityQuestions
       }).then(response => {
+        this.showError = false
         this.isValid = true
         this.isSubmitDisabled = false
-        this.securityQuestions = response.data.securityQuestionDtos
+        this.isSecurityQuestionsForm = false
+        this.isConfirmPasswordForm = true
       }).catch(error => {
         this.isSubmitDisabled = false
         this.showSuccess = false
@@ -249,6 +253,7 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         password: this.password
       }).then(response => {
+        console.log(response)
         this.isValid = true
         this.isSubmitDisabled = false
         this.showSuccess = true
@@ -284,11 +289,11 @@ export default {
       })
     },
     validatePassword () {
-      if (this.userAccount.password.length < 8) {
+      if (this.password.length < 8) {
         this.passwordErrorMessages = []
         return
       }
-      PasswordValidation.methods.validate(this.userAccount.password)
+      PasswordValidation.methods.validate(this.password)
         .then(response => {
           this.isPasswordValid = response.isValid
           this.passwordErrorMessages = response.message

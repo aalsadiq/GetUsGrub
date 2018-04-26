@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -23,10 +24,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
 								//TODO: @Ryan TEST ALL SCENARIOS [-Ryan]
 								// Then, find all active menus associated with this restaurant and turn it into a List
-								var restaurantMenus = (from menus in context.RestaurantMenus
-																			 where menus.RestaurantId == restaurantProfile.Id
-																			 where menus.IsActive == true
-																			 select menus).ToList();
+								var restaurantMenus = restaurantProfile.RestaurantMenu;
 
 								List<RestaurantMenuWithItems> restaurantMenuWithItemsList = new List<RestaurantMenuWithItems>();
 
@@ -51,7 +49,7 @@ namespace CSULB.GetUsGrub.DataAccess
 										Error = null
 								};
 						}
-						catch
+						catch (Exception)
 						{
 								return new ResponseDto<List<RestaurantMenuWithItems>>
 								{

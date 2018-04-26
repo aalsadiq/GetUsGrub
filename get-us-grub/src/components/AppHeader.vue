@@ -28,20 +28,27 @@
       >
         <span class="nav-btn-text">LOGIN</span>
       </v-btn>
+      <v-tooltip bottom>
+        <v-btn
+          flat
+          slot="activator"
+          class="nav-btn"
+          to="Profile"
+          v-if="!showWithoutAuthentication()"
+        >
+          <v-icon id="person-icon">person</v-icon>
+          <span class="nav-btn-text" id="username-text">
+            {{ this.$store.state.username }}
+          </span>
+        </v-btn>
+        <span>Profile</span>
+      </v-tooltip>
       <v-btn
         flat
         class="nav-btn"
         to="RestaurantBillSplitter"
       >
         <span class="nav-btn-text">SPLIT BILL</span>
-      </v-btn>
-       <v-btn
-        flat
-        class="nav-btn"
-        to="Profile"
-        v-if="this.$store.state.isAuthenticated"
-      >
-        <span class="nav-btn-text">PROFILE</span>
       </v-btn>
       <v-btn
         flat
@@ -57,6 +64,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -81,12 +89,14 @@ export default {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
       }).then(response => {
-        this.$store.dispatch('setAuthenticationToken', null)
-        // Force reload to clear cache
-        location.reload()
+        this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('resetState', this.$store.state)
         this.$router.push({path: '/'})
       }).catch(error => {
-        console.log(error.response)
+        this.$store.commit('setAuthenticationToken', null)
+        this.resetState()
+        this.$store.commit('resetState', this.$store.state)
+        Promise.reject(error)
       })
     }
   }
@@ -123,5 +133,11 @@ div.btn__content {
 }
 #home-btn > .btn__content:before {
   opacity: 0;
+}
+#username-text {
+  text-transform: uppercase;
+}
+#person-icon {
+  margin: 0 0.4em 0.1em 0;
 }
 </style>

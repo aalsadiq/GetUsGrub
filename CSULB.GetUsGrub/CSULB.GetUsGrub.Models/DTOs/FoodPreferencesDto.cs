@@ -9,7 +9,11 @@ namespace CSULB.GetUsGrub.Models
     /// </summary>
     public class FoodPreferencesDto
     {
+        // Automatic Property
         public ICollection<string> FoodPreferences { get; set; }
+
+        // Constructors
+        public FoodPreferencesDto() { }
 
         public FoodPreferencesDto(ICollection<string> foodPreferences)
         {

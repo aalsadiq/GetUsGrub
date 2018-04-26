@@ -171,12 +171,12 @@ export default {
       // Receiving successful response
       }).then(response => {
         if (response.data != null) {
+          this.$store.dispatch('setSelectedRestaurant', response.data)
           this.showAlert = false
           this.valid = true
           this.showRestaurantTitleBar = true
           this.showSection = true
           this.disable = false
-          this.$store.dispatch('setSelectedRestaurant', response.data)
         } else {
           this.showAlert = true
           this.disable = false
@@ -218,7 +218,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #selectRestaurantTitleBar {
   background-color: #6F81AD !important
 }

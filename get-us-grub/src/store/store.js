@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { setTimeout } from 'timers'
+import defaultState from './defaultState'
 
 Vue.use(Vuex)
 
@@ -9,6 +10,7 @@ export const store = new Vuex.Store({
   state: {
     isAuthenticated: true,
     authenticationToken: null,
+    firstTimeUserToken: null,
     username: '',
     timer: null,
     originAddress: 'Los Angeles, CA',
@@ -59,7 +61,12 @@ export const store = new Vuex.Store({
     urls: {
       userManagement: {
         createIndividualUser: 'http://localhost:8081/User/Registration/Individual',
-        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant'
+        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant',
+        createAdminUser: 'http://localhost:8081/User/CreateAdmin',
+        deactivateUser: 'http://localhost:8081/User/DeactivateUser',
+        reactivateUser: 'http://localhost:8081/User/ReactivateUser',
+        editUser: 'http://localhost:8081/User/EditUser',
+        deleteUser: 'http://localhost:8081/User/DeleteUser'
       },
       foodPreferences: {
         getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',
@@ -73,7 +80,12 @@ export const store = new Vuex.Store({
         userProfile: 'http://localhost:8081/Profile/User',
         updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
         restaurantProfile: 'http://localhost:8081/Profile/Restaurant',
-        updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit'
+        updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit',
+        menuItemUpload: 'http://localhost:8081/Profile/Restaurant/Edit/MenuItemImageUpload',
+        profileImageUpload: 'http://localhost:8081/Profile/User/Edit/ProfileImageUpload'
+      },
+      sso: {
+        login: 'http://localhost:8081/Sso/Login'
       }
     },
     // Rules for validations
@@ -128,6 +140,7 @@ export const store = new Vuex.Store({
     },
     // Constants are data that are non-changing
     constants: {
+      defaultProfilePicturePath: '@/assets/DefaultProfileImage.png',
       securityQuestions: [{
         id: 0,
         questions: [
@@ -158,7 +171,7 @@ export const store = new Vuex.Store({
           },
           {
             id: 6,
-            question: 'What is your favorite spots team?'
+            question: 'What is your favorite sports team?'
           }
         ]
       },
@@ -175,7 +188,7 @@ export const store = new Vuex.Store({
           },
           {
             id: 9,
-            question: 'What is the name of yur first pet?'
+            question: 'What is the name of your first pet?'
           }
         ]
       }],
@@ -283,7 +296,59 @@ export const store = new Vuex.Store({
         5,
         10,
         15
-      ]
+      ],
+      restaurantDetails: [{
+        property: 'avgFoodPrice',
+        displayString: 'Average Food Price'
+      },
+      {
+        property: 'hasReservations',
+        displayString: 'Reservations'
+      },
+      {
+        property: 'hasDelivery',
+        displayString: 'Delivery'
+      },
+      {
+        property: 'hasTakeOut',
+        displayString: 'Take-out'
+      },
+      {
+        property: 'acceptCreditCards',
+        displayString: 'Accept Credit Cards'
+      },
+      {
+        property: 'attire',
+        displayString: 'Attire'
+      },
+      {
+        property: 'servesAlcohol',
+        displayString: 'Serves Alcohol'
+      },
+      {
+        property: 'hasOutdoorSeating',
+        displayString: 'Outdoor Seating'
+      },
+      {
+        property: 'hasTv',
+        displayString: 'TV'
+      },
+      {
+        property: 'hasDriveThru',
+        displayString: 'Drive-Thru'
+      },
+      {
+        property: 'caters',
+        displayString: 'Caters'
+      },
+      {
+        property: 'allowsPets',
+        displayString: 'Allow Pets'
+      },
+      {
+        property: 'foodType',
+        displayString: 'Food Type'
+      }]
     }
   },
   getters: {
@@ -308,6 +373,10 @@ export const store = new Vuex.Store({
   },
   // Mutations are called to change the states in the store
   mutations: {
+    // Reset states in store to default
+    resetState (state) {
+      Object.assign(state, defaultState)
+    },
     originAddress: (state, payload) => {
       state.originAddress = payload
     },

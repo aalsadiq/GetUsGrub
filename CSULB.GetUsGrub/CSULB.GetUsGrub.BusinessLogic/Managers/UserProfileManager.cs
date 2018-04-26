@@ -81,11 +81,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            var renameImage = Path.GetExtension(image.FileName);
-            var newImagename = username + renameImage;
+            var fileExtension = Path.GetExtension(image.FileName);
+            var newImagename = username + fileExtension;
 
             // Save image to path
             string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
+            string rootedSavePath = ConfigurationManager.AppSettings["RootedProfileImagePath"];
+
+            var rootedImagePath = rootedSavePath + newImagename; // Save to rooted path
 
             // Set Diplay Picture Path
             user.DisplayPicture = savePath + newImagename;
@@ -104,7 +107,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 // Save the image to the path
-                image.SaveAs(savePath + newImagename);
+                image.SaveAs(rootedImagePath); //savePath + newImagename
 
                 return new ResponseDto<bool>
                 {

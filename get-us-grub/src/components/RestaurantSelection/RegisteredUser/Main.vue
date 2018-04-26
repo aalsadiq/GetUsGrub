@@ -86,7 +86,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #restaurant-selection-registered-user {
   padding: 2.5em 0 0 0;
   max-width: 1200px;
@@ -96,7 +96,8 @@ export default {
   margin-top: 2em;
 }
 #food-preferences {
-  margin: 0em 0em 1em 0em;
+  margin: 3em 0 0.5em 0;
+  padding: 0.1em 0 0 0;
 }
 #preferences-title {
   font-weight: bold;

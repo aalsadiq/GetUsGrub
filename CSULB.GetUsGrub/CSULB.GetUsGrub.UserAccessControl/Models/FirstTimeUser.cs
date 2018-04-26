@@ -10,9 +10,9 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// @author: Rachel Dang
     /// @updated: 04/17/18
     /// </summary>
-    public class FirstTimeUserClaims : IClaims
+    public class FirstTimeUser : IClaims
     {
-        public string Type => AccountType.FIRSTTIMEUSER;
+        public string Type => AccountTypes.FirstTimeUser;
 
         public ICollection<Claim> Claims => new List<Claim>
         {

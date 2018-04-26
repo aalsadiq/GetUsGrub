@@ -17,7 +17,7 @@
         >
           <v-icon>warning</v-icon>
           <span id="session-expire-text"> Your session will expire in {{ expMinutes }} </span>
-          <v-btn id='refresh-btn' light color="white" @click.native="refresh">Refresh</v-btn>
+          <v-btn id='refresh-btn' light color="white" @click.native="refresh" :disable="disable">Refresh</v-btn>
         </v-snackbar>
       </div>
     </v-app>
@@ -40,7 +40,8 @@ export default {
       horizontalPosition: 'left',
       mode: 'mult-line',
       popUpColor: 'warning',
-      timeout: 10000000
+      timeout: 10000000,
+      disable: false
     }
   },
   methods: {
@@ -52,13 +53,9 @@ export default {
         } else if (this.exp.diff(this.dateTimeNow, 'seconds') <= 10) {
           this.popUp = false
           this.logoutUser()
-        } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') <= 1 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
-          this.expMinutes = '1 minute'
-          this.popUpColor = 'error'
-          this.popUp = true
         } else if (!this.popUp && this.exp.diff(this.dateTimeNow, 'minutes') <= 5 && this.exp.diff(this.dateTimeNow, 'minutes') > 0) {
           this.expMinutes = '5 minutes'
-          this.popUpColor = 'warning'
+          this.popUpColor = 'error'
           this.popUp = true
         }
       } catch (ex) {}
@@ -68,10 +65,18 @@ export default {
       this.dateTimeNow = moment.unix(moment().unix())
     },
     logoutUser () {
-      this.$store.dispatch('setAuthenticationToken', null)
-      // Force reload to clear cache
-      location.reload()
-      this.$router.push({path: '/'})
+      axios.post('http://localhost:8081/Logout', {}, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.$store.commit('setAuthenticationToken', null)
+        this.$router.push({path: '/'})
+      }).catch(error => {
+        this.$store.commit('setAuthenticationToken', null)
+        this.$router.push({path: '/'})
+        Promise.reject(error)
+      })
     },
     // Set the exp variable if there is a token in the Vuex store
     setExpiration () {
@@ -84,14 +89,20 @@ export default {
     },
     // Refresh the user's session by calling creation of new token
     refresh () {
+      this.disable = true
       axios.post('http://localhost:8081/RenewSession', {}, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
       }).then(response => {
-        this.$store.state.authenticationToken = response.data
+        this.popUp = false
+        this.$store.commit('setAuthenticationToken', response.data)
+        this.exp = moment.unix(jwt.decode(this.$store.state.authenticationToken).exp)
+        this.disable = false
       }).catch(error => {
-        console.log(error.response)
+        Promise.reject(error)
+        this.popUp = false
+        this.disable = false
       })
     }
   },

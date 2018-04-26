@@ -23,6 +23,8 @@ namespace CSULB.GetUsGrub.Models
         public string CloseTime { get; set; }
         public string TwelveHourFormatOpenTime { get; set; }
         public string TwelveHourFormatCloseTime { get; set; }
+        public Flag Flag { get; set; }
+        public int? Id { get; set; }
         private DateTime _odt;
         private DateTime _cdt;
         public DateTime OpenDateTime
@@ -51,6 +53,14 @@ namespace CSULB.GetUsGrub.Models
 
         public BusinessHourDto(string day, DateTime openDateTime, DateTime closeDateTime)
         {
+            Day = day;
+            OpenDateTime = openDateTime;
+            CloseDateTime = closeDateTime;
+        }
+
+        public BusinessHourDto(int? id, string day, DateTime openDateTime, DateTime closeDateTime)
+        {
+            Id = id;
             Day = day;
             OpenDateTime = openDateTime;
             CloseDateTime = closeDateTime;

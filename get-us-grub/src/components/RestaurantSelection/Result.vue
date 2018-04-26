@@ -30,7 +30,7 @@
             {{ businessHour.twelveHourFormatCloseTime }}
           </p>
           <div v-if="restaurant.foodPreferences !== null">
-            <h3>Accommodations</h3>
+            <h3>Accommodations:</h3>
               <p class="paragraph" v-for="foodPreference in restaurant.foodPreferences" :key="foodPreference">
                 {{ foodPreference }}
               </p>
@@ -86,7 +86,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #display-name {
   font-size: 1.3em;
 }

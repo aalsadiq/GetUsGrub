@@ -14,12 +14,15 @@ namespace CSULB.GetUsGrub.UnitTests.CSULB.GetUsGrub.UserManagement.CRUD
         public string ReactivateUsername = "username8";
 
         public string InvalidUser = "DNE";
-        public string UsernameToEdit = "username10";
+
         public string Username = "newusername10";
         public string DisplayName = "newdisplayname10";
 
-        public string EditUsername = "username10";
-        public string EditDisplayName = "newdisplaname";
+        // Editing user
+        public string UsernameToEdit = "U4";
+        public string EditUsername = "username4";
+        public string EditDisplayName = "newdisplaname4";
+
         public string DeleteUser = "username25";
         
 

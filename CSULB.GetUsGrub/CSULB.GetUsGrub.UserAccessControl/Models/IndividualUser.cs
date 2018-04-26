@@ -10,15 +10,16 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// @author: Rachel Dang
     /// @updated: 04/07/18
     /// </summary>
-    public class IndividualClaims : IClaims
+    public class IndividualUser : IClaims
     {
-        public string Type => AccountType.INDIVIDUAL;
+        public string Type => AccountTypes.Individual;
 
         public ICollection<Claim> Claims => new List<Claim>
         {
             // For Individual Profie Management
             new Claim(ActionConstant.READ + ResourceConstant.INDIVIDUAL, "True"),
             new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True"),
+            new Claim(ActionConstant.UPDATE + ResourceConstant.IMAGE, "True"),
 
             // For Food Preferences
             new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"),

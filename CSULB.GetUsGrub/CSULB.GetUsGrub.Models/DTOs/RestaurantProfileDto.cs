@@ -18,6 +18,7 @@ namespace CSULB.GetUsGrub.Models
         public Address Address { get; set; }
         public RestaurantDetail Details { get; set; }
         public GeoCoordinates GeoCoordinates { get; set; }
+        public IList<BusinessHourDto> BusinessHourDtos { get; set; }
         public IList<RestaurantMenuWithItems> RestaurantMenusList { get; set; }
         //public Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary
         public IList<BusinessHour> BusinessHours { get; set; }
@@ -27,26 +28,14 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public RestaurantProfileDto() { }
 
-        /*public RestaurantProfileDto(RestaurantProfile restaurantProfile, double? latitude, double? longitude, IList<BusinessHour> businessHours, IList<RestaurantMenu> restaurantMenus, IList<RestaurantMenuItem> restaurantMenuItems)
-        {
-            PhoneNumber = restaurantProfile.PhoneNumber;
-            Address = restaurantProfile.Address;
-            Details = restaurantProfile.Details;
-            GeoCoordinates.Latitude = latitude;
-            GeoCoordinates.Longitude = longitude;
-            BusinessHours = businessHours;
-            RestaurantMenus = restaurantMenus;
-            RestaurantMenuItems = restaurantMenuItems;
-        }*/
-
-        public RestaurantProfileDto(UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours, IList<RestaurantMenuWithItems> restaurantMenusList)
+        public RestaurantProfileDto(UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHourDto> businessHourDtos, IList<RestaurantMenuWithItems> restaurantMenusList)
         {
             DisplayName = userProfile.DisplayName;
             DisplayPicture = userProfile.DisplayPicture;
             PhoneNumber = restaurantProfile.PhoneNumber;
             Address = restaurantProfile.Address;
             Details = restaurantProfile.Details;
-            BusinessHours = businessHours;
+            BusinessHourDtos = businessHourDtos;
             RestaurantMenusList = restaurantMenusList;
         }
     }

@@ -24,12 +24,7 @@ namespace CSULB.GetUsGrub
             if (exceptionType == typeof(SecurityException))
             {
                 actionExecutedContext.Response = actionExecutedContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden,
-                    JsonConvert.SerializeObject(new
-                    {
-                        message = "You do not have the permission.",
-                        err_type = "Security Issue",
-                        err_code = 403
-                    }));
+                    "403 Forbidden. You are not authorized to perform this request.");
             }
         }
     }

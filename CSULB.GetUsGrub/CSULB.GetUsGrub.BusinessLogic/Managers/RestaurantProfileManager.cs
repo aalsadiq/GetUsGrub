@@ -113,22 +113,22 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            var imageExtension = Path.GetExtension(image.FileName);
-            var newImagename = menuId  + imageExtension; // Id + extension
+            // Store file extension from file
+            var fileExtension = Path.GetExtension(image.FileName);
 
-            // Save image to path
-            string saveToPath = ConfigurationManager.AppSettings["RootedMenuImagePath"];
-            //string rootedSavePath = ConfigurationManager.AppSettings["RootedMenuImagePath"];
-            string  saveToDB = ConfigurationManager.AppSettings["MenuImagePath"];
+            // Image name = menuId + extension
+            var newImagename = menuId + fileExtension;
 
-            var menuPath = saveToDB + newImagename; // unrooted path
-            //var menuPath = savePath +  newImagename; // Store image path to DTO
-            //var saveMenuToLocation = rootedSavePath + newImagename;
-            var saveImageToPath = saveToPath + newImagename;
+            // Saving Virtual Path
+            var virtualPath = ImagePaths.VIRTUAL_MENU_ITEM_PATH + newImagename;
+
+            // Save physical Path
+            string physicalPath = ImagePaths.PHYSICAL_MENU_ITEM_PATH + newImagename;
+        
             // Call gateway to save path to database
             using (var gateway = new RestaurantProfileGateway())
             {
-                var gatewayresult = gateway.UploadImage(user, menuPath, menuId);
+                var gatewayresult = gateway.UploadImage(user, virtualPath, menuId);
                 if (gatewayresult.Data == false)
                 {
                     return new ResponseDto<bool>()
@@ -138,7 +138,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
 
-                image.SaveAs(saveImageToPath);
+                image.SaveAs(physicalPath);
 
                 return new ResponseDto<bool>
                 {

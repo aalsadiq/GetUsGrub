@@ -501,6 +501,15 @@ namespace CSULB.GetUsGrub.DataAccess
                         foreach (var menuItems in userRestaurantMenuItems)
                         {
                             context.RestaurantMenuItems.Remove(menuItems);
+
+                            //// If menus are set to the default path, move on
+                            //if( menuItems.ItemPicture!= ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                            //{
+                            //    // Deleting Menu Images
+                            //    //File.Delete(menuItems.ItemPicture);
+                            //    deleteImage(menuItems.ItemPicture);
+                            //    Debug.WriteLine(menuItems.ItemPicture);
+                            //}
                         }
                     }
                     // RestaurantMenus
@@ -591,6 +600,13 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.FailedAttempts.Remove(failedAttempt);
                     }
 
+                    //// Check if user image is set to default, if so move on
+                    //if (userAccount.UserProfile.DisplayPicture != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    //{
+                    //    // Deleting profile image
+                    //    deleteImage(userAccount.UserProfile.DisplayPicture);
+                    //    Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
+                    //}
                     //Delete useraccount
                     context.UserAccounts.Remove(userAccount);
                     context.SaveChanges(); 
@@ -632,23 +648,35 @@ namespace CSULB.GetUsGrub.DataAccess
                 //Set ResponseDto equal to the ResponseDto from EditDisplayName.
                 if (user.NewDisplayName != null) // TODO: @Jen Added because what Jen and I did is not working?!  [-Angelica]
                 {
-                    EditDisplayName(user.Username, user.NewDisplayName);
+                    var result = EditDisplayName(user.Username, user.NewDisplayName);
+                    if (result.Error != null)
+                    {
+                        return new ResponseDto<bool>
+                        {
+                            Data = false,
+                            Error = result.Error
+                        };
+                    }
                 }
 
                 if (user.NewUsername != null) //Added
                 {
                     // Set ResponseDto equal to the ResponseDto from EditUserName.
-                    EditUserName(user.Username, user.NewUsername);
+                    var result = EditUserName(user.Username, user.NewUsername);
+                    if (result.Error != null)
+                    {
+                        return new ResponseDto<bool>
+                        {
+                            Data = false,
+                            Error = result.Error
+                        };
+                    }
                 }
+
                 return new ResponseDto<bool>
                 {
                     Data = true
                 };
-                //return new ResponseDto<bool>()
-                //{
-                //    Data = false,
-                //    Error = GeneralErrorMessages.GENERAL_ERROR
-                //};
             }
             catch (Exception)
             {
@@ -680,25 +708,33 @@ namespace CSULB.GetUsGrub.DataAccess
                                         select account).SingleOrDefault();
 
                     // Save image to path
-                    string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
+                    string savePath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH;
+                    Debug.WriteLine("SavePath: " + savePath);
 
                     // Set Diplay Picture Path
                     var oldPath = @userAccount.UserProfile.DisplayPicture;
+                    Debug.WriteLine("oldPath: " + oldPath);
                     var extension = Path.GetExtension(oldPath);
-
+                    Debug.WriteLine("Extension: " + extension);
+                    var deleteOldPath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + userAccount.Username + extension;
+                    Debug.WriteLine("DeleteOldPath: " + deleteOldPath);
                     // If image path is not default change it.
-                    if (oldPath != ImagePaths.DEFAULT_DISPLAY_IMAGE)
+                    if (oldPath != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
                     {
                         // The new path once user has their profile picture.
                         var newPath = savePath + newUsername + extension;
+                        Debug.WriteLine("NewPath " + newPath);
 
                         // Rename profile image based on username
-                        File.Move(oldPath, newPath);
+                        Debug.WriteLine("About to move files");
+                        File.Move(deleteOldPath, newPath);
+                        Debug.WriteLine("File has been moved");
+
                     }
                     else
                     {
                         // If it is the default path, leave it as default.
-                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
                     }
 
                     // Select the username from useraccount and give it the new username.
@@ -1049,5 +1085,36 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             context.Dispose();
         }
+
+        public ResponseDto<bool> deleteImage(string imagePath)
+        {
+            // Delete a file by using File class static method...
+            try
+            {
+                if (File.Exists(imagePath))
+                {
+                    File.Delete(imagePath);
+                    
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+                }
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = "File does not exist" // Add to constants later
+                };
+            }
+            catch (Exception){
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+            
+        }
+
     }
 }

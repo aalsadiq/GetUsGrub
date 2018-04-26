@@ -1,63 +1,59 @@
 <template>
   <div id="image-upload">
     <v-layout row justify-center>
-        <v-dialog  v-model="dialog" max-width="500px">
-        <v-btn small color="dark" dark slot="activator">Upload Image</v-btn>
-          <v-card dark>
+      <v-card dark>
         <div id="success">
           <v-layout>
             <v-flex xs12>
               <v-alert type="success" :value="showSuccess">
-                <span>
-                  {{ responseData }}
-                </span>
-                </v-alert>
-              </v-flex>
-            </v-layout>
-          </div>
-          <div v-show="showError" id="error-div">
-            <v-layout>
-            <v-flex xs12>
-              <v-alert id="error-card" :value=true icon='warning'>
-                <span id="error-title">
-                  An error has occurred
-                </span>
+              <span>
+                {{ responseData }}
+              </span>
               </v-alert>
             </v-flex>
-            </v-layout>
-            <v-layout>
-              <v-flex xs12>
-                <v-card id="error-card">
-                  <p v-for="error in errors" :key="error">
-                    {{ error }}
-                  </p>
-                </v-card>
-              </v-flex>
-            </v-layout>
-          </div>
-            <br/>
-            <v-flex xs6>
-                <label class="custom-file-upload">
-                   <h5>choose image
-                   <i class="material-icons">cloud_download</i>
-                   </h5>
-                  <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
-                </label>
-                <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
-                  Upload
-                  <v-icon color="white">cloud_upload</v-icon>
-                </v-btn>
-              </v-flex>
-              <div v-if: >
-                <v-flex xs12>
-                    <img id="previewImage" class="preview" :src="imageData"/> <!-- height="100" width="100" -->
-                </v-flex>
-              </div>
+          </v-layout>
+        </div>
+        <div v-show="showError" id="error-div">
+          <v-layout>
+          <v-flex xs12>
+            <!-- Title bar for the restaurant selection -->
+            <v-alert id="registration-error" :value=true icon='warning'>
+              <span id="error-title">
+                An error has occurred
+              </span>
+            </v-alert>
+          </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs20>
+              <v-card id="error-card">
+                <p v-for="error in errors" :key="error">
+                  {{ error }}
+                </p>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </div>
+        <br/>
+        <v-flex xs12>
+            <label class="custom-file-upload">
+                <h5>choose image
+                <i class="material-icons">cloud_download</i>
+                </h5>
+              <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
+            </label>
+          </v-flex>
+          <br/>
+          <img id="previewImage" class="preview" :src="imageData"/>
+          <br/>
+            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
+              Upload
+            <v-icon color="white">cloud_upload</v-icon>
+            </v-btn>
             <br/>
           </v-card>
-        </v-dialog>
-    </v-layout>
-      <br/>
+      </v-layout>
+    <br/>
   </div>
 </template>
 
@@ -76,7 +72,7 @@ export default {
     test: null,
     showError: false,
     showSuccess: false,
-    username: '26user',
+    username: 'useruser1',
     imageData: '' // Stores in base 64 format of image
   }),
   methods: {
@@ -169,10 +165,12 @@ input[type="file"] {
 }
 .custom-file-upload {
   display: inline-block;
-  padding: 0em .8em .5em .8em;
+  padding: 0em .5em .25em .25em;
   cursor: pointer;
   background: slateblue;
   font-size: 14px;
+  margin-left: .30em;
+  margin-right:.30em;
 }
 .btn--small{
   font: 5em;

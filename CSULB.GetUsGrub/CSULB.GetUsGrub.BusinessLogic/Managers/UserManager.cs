@@ -51,7 +51,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
-            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var displayImagePath = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table
@@ -137,7 +137,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .Select(securityQuestionDto => new SecurityQuestion(
                     securityQuestionDto.Question, securityQuestionDto.Answer))
                 .ToList();
-            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var displayImagePath = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerRestaurantDto.UserProfileDto.DisplayName);
             var restaurantProfile = new RestaurantProfile(phoneNumber: registerRestaurantDto.RestaurantProfileDto.PhoneNumber, 
                 address: registerRestaurantDto.RestaurantProfileDto.Address, details: registerRestaurantDto.RestaurantProfileDto.Details);
@@ -313,7 +313,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .ToList();
 
             //Admin User Profile
-            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var displayImagePath = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table as administrator

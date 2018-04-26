@@ -5,7 +5,8 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img :src="ImagePath"/>
+              <img :src="displayPicture"/>
+              {{ displayName }}
             </v-list-tile-avatar>
           <v-list-tile-content>
           <v-list-tile-title/>
@@ -26,7 +27,6 @@
       <v-btn flat id="logout-btn" @click="logout()">
         <v-icon>power_settings_new</v-icon>
       </v-btn>
-      {{ this.ImagePath }}
     </v-navigation-drawer>
   </div>
 </template>
@@ -50,8 +50,9 @@ export default {
       ],
       mini: true,
       right: null,
-      ImagePath: '../../../../Images/DefaultImages/DefaultProfileImage.png', // For Admin
-      output: ''
+      output: '',
+      displayName: '',
+      displayPicture: ''
     }
   },
   beforeCreate () {
@@ -59,10 +60,7 @@ export default {
       this.$router.push({path: '/Unauthorized'})
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' &&
-        jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
-        jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True' &&
-        jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
       } else {
         this.$router.push({path: '/Forbidden'})
       }
@@ -71,8 +69,7 @@ export default {
     }
   },
   created () {
-    // this.ImagePath = require('../../../../Images/DefaultImages/DefaultProfileImage.png')
-    this.getUserProfile()
+    this.getAdminProfile()
   },
   methods: {
     logout () {
@@ -87,12 +84,9 @@ export default {
         console.log(error.response)
       })
     },
-    getUserProfile () {
+    getAdminProfile () {
       try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' &&
-          jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
-          jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True' &&
-          jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
+        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
           axios.get(this.$store.state.urls.profileManagement.userProfile, {
             headers: {
               Authorization: `Bearer ${this.$store.state.authenticationToken}`
@@ -100,7 +94,6 @@ export default {
           }).then(response => {
             this.displayName = response.data.displayName
             this.displayPicture = response.data.displayPicture
-            this.ImagePath = require(this.displayPicture)
           }).catch(error => {
             try {
               if (error.response.status === 401) {
@@ -133,7 +126,7 @@ export default {
       } catch (ex) {
         this.$router.push({ path: '/Forbidden' })
       }
-    },
+    }
   }
 }
 </script>

@@ -85,10 +85,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>ResponseDto</returns>
         public ResponseDto<RegisterUserDto> CreateFirstTimeIndividualUser(RegisterUserDto registerUserDto)
         {
+            // Validate incoming dto
             var preLogicValidation = new CreateFirstTimeIndividualPreLogicValidationStrategy(registerUserDto);
-
-            // Validate data transfer object
             var result = preLogicValidation.ExecuteStrategy();
+
             if (result.Error != null)
             {
                 return new ResponseDto<RegisterUserDto>
@@ -97,7 +97,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = result.Error
                 };
             }
-
+            
+            // Authenticate user credentials against the database
             var credentialsValidator = new CredentialsValidator();
             var credentialsResult = credentialsValidator.IsCredentialsValid(registerUserDto.UserAccountDto.Username, registerUserDto.UserAccountDto.Password);
 
@@ -113,6 +114,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Map dto to domain models
             var mappingResult = MapIndividualDtoToModel(registerUserDto, out var userAccount, out var passwordSalt, out var userClaims, out var userProfile, out var securityQuestions, out var securityAnswerSalts);
 
+            // Map Id from database to the domain model
             var userIdResult = GetFirstTimeUserAccountId(userAccount.Username);
 
             if (userIdResult.Error != null)
@@ -123,10 +125,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = userIdResult.Error
                 };
             }
-
-            // Map the user's id to the domain model.
+            
             userAccount.Id = userIdResult.Data;
 
+            // Validate user domain model after mapping from dto
             var postLogicValidation = new CreateFirstTimeIndividualPostLogicValidationStrategy(userAccount, passwordSalt, userClaims, userProfile, securityQuestions, securityAnswerSalts);
             var validateResult = postLogicValidation.ExecuteStrategy();
             if (!validateResult.Data)
@@ -292,7 +294,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
             
-            // Authenticate user credentials
+            // Authenticate user credentials against the database
             var credentialsValidator = new CredentialsValidator();
             var credentialsResult = credentialsValidator.IsCredentialsValid(registerRestaurantDto.UserAccountDto.Username, registerRestaurantDto.UserAccountDto.Password);
 
@@ -317,7 +319,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Validate domain models
+            // Validate domain models created from dto
             var userPostLogicValidationStrategy = new CreateFirstTimeIndividualPostLogicValidationStrategy(userAccount, passwordSalt, userClaims, userProfile, securityQuestions, securityAnswerSalts);
 
             userResult = userPostLogicValidationStrategy.ExecuteStrategy();
@@ -425,6 +427,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="userAccount"></param>
+        /// <param name="passwordSalt"></param>
+        /// <param name="userClaims"></param>
+        /// <param name="userProfile"></param>
+        /// <param name="securityQuestions"></param>
+        /// <param name="securityAnswerSalts"></param>
+        /// <returns></returns>
         private ResponseDto<bool> MapIndividualDtoToModel(RegisterUserDto dto, out UserAccount userAccount, out PasswordSalt passwordSalt, out UserClaims userClaims, out UserProfile userProfile, out IList<SecurityQuestion> securityQuestions, out IList<SecurityAnswerSalt> securityAnswerSalts)
         {
             var mappingResult = MapUserDtoToModel(dto, out userAccount, out passwordSalt, out userProfile, out securityQuestions, out securityAnswerSalts);
@@ -446,6 +459,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
             };
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="userAccount"></param>
+        /// <param name="passwordSalt"></param>
+        /// <param name="userProfile"></param>
+        /// <param name="securityQuestions"></param>
+        /// <param name="securityAnswerSalts"></param>
+        /// <returns></returns>
         private ResponseDto<bool> MapUserDtoToModel(RegisterUserDto dto, out UserAccount userAccount, out PasswordSalt passwordSalt, out UserProfile userProfile, out IList<SecurityQuestion> securityQuestions, out IList<SecurityAnswerSalt> securityAnswerSalts)
         {
             // Map variables to the parameters
@@ -624,11 +647,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         }
 
         /// <summary>
-        /// The CreateIndividualUser method.
-        /// Contains business logic to create an individual user.
+        /// The CreateAdmin method.
+        /// Contains business logic to create an admin user.
         /// <para>
-        /// @author: Jennifer Nguyen
-        /// @updated: 03/13/2018
+        /// @author: Jennifer Nguyen, Angelica Salas
+        /// @updated: 04/26/2018
         /// </para>
         /// </summary>
         /// <param name="registerUserDto"></param>
@@ -710,8 +733,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// DeactivateUser deactivates the user when given a username.
+        /// <para>
         /// @author: Angelica Salas Tovar
         /// @update: 03/20/2018
+        /// </para>
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
@@ -753,8 +778,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// ReactivateUser reactivates the user when given a username.
+        /// <para>
         /// @author: Angelica Salas Tovar
         /// @update: 03/20/2018
+        /// </para>
         /// </summary>
         /// <param name="username">The user that will be reactivated.</param>
         /// <returns>Response Dto</returns>
@@ -795,8 +822,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// DeleteUser deletes the user when given a username.
+        /// <para>
         /// @author: Angelica Salas Tovar
         /// @update: 03/20/2018
+        /// </para>
         /// </summary>
         /// <param name="username">The user that will be deleted.</param>
         /// <returns>Response Dto</returns>
@@ -835,10 +864,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     };
                 }
             }
+
         /// <summary>
         /// EditUser edits the user when given a.
+        /// <para>
         /// @author: Angelica Salas Tovar
         /// @update: 03/20/2018
+        /// </para>
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>

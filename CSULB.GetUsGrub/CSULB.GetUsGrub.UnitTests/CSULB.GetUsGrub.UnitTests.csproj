@@ -114,7 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Managers\LoginManagerIntegrationTest.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Managers\SsoTokenManagerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PwnedPasswordIntegrationTest.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\AuthenticationTokenDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\FoodPreferencesDtoValidatorUnitTests.cs" />
@@ -157,9 +156,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="keys.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="keys.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

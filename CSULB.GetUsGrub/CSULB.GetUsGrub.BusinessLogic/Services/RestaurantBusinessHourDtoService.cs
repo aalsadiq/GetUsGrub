@@ -6,6 +6,12 @@ using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
+    /// <summary>
+    /// Converts the businessHours inside restaurantBusinessHourDtos to different formats
+    /// 
+    /// @author: Andrew Kao
+    /// @updated: 4/25/18
+    /// </summary>
     public class RestaurantBusinessHourDtoService
     {
         /// <summary>

@@ -3,20 +3,20 @@
     <h1> Debug </h1>
     <h2> Menu Items</h2>
     <ul>
-      <li v-for="element in menuItems" :key="element">
+      <li v-for="(element, index) in menuItems" :key="index">
         {{element}}
       </li>
     </ul>
     <h2> Bill Items</h2>
     <ul>
-      <li v-for="element in billItems" :key="element">
+      <li v-for="(element, index) in billItems" :key="index">
         {{element}}
       </li>
     </ul>
     <h2> Bill Users</h2>
     <ul>
-      <h3> Unique ID Next: {{ this.$store.state.uniqueUserCounter }} </h3>
-      <li v-for="element in billUsers" :key="element">
+      <h3> Unique ID Next: {{ this.$store.state.uniqueCounter }} </h3>
+      <li v-for="(element, index) in billUsers" :key="index">
         {{element}}
       </li>
     </ul>

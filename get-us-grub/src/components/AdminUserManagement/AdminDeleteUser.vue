@@ -2,7 +2,7 @@
     <div>
       <app-admin-header/>
         <div id = 'user-text-box'>
-            <h1> Delete User Page </h1>
+            <h1> Delete User </h1>
           <app-user-text-box :viewType="submitType"/>
         </div>
     <app-footer/>

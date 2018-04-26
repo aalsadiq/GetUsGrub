@@ -11,10 +11,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         private readonly UserProfileDto _userProfileDto;
         private readonly UserProfileDtoValidator _userProfileDtoValidator;
-        private readonly UserValidator _userValidator;// checks if user exists
+        private readonly UserValidator _userValidator;
         private readonly HttpPostedFile _image;
-        const int MaxImageSize = 12000; //1024; // use to be 1024 Bytes
-        private readonly ICollection<string> _allowedFileExtensions = new Collection<string> { ".jpg", ".png", ".jpeg" };
+        const int MaxImageSize = 12000; // Bytes
+        private readonly ICollection<string> _allowedFileExtensions = new Collection<string> { ".jpg", ".png", ".jpeg" }; // Acceptable image extensions
 
         /// <summary>
         /// Defines a strategy for validating models before processing business logic 

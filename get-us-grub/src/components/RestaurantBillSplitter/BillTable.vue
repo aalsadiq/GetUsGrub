@@ -1,14 +1,19 @@
 <template>
   <div class="bill-table">
     <h1>Your Bill</h1>
-    <v-divider/>
+    <v-divider />
+    <h2 class="total">Total: {{ this.money.prefix }}{{ totalPrice / 100}} </h2>
     <div>
+      <v-btn small dark>Tip</v-btn>
+      <v-btn small dark>Tax</v-btn>
+    </div>
+    <div class="bill-items">
       <h1 v-if="!billItems.length"> Drag Items Here!</h1>
       <draggable class="bill" v-bind:list="billItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
         <div class="bill-item" v-for="(billItem, billItemIndex) in billItems" :key="billItemIndex">
-          <bill-table-pie-chart :billItem="billItem" :width="100" :height="100"></bill-table-pie-chart>
+          <!-- <bill-table-pie-chart :billItem="billItem" :billItemIndex="billItemIndex" :width="50" :height="50" /> -->
           <div class="bill-item-controls">
-            {{billItem.name}} : ${{billItem.price}}
+            <h2> {{ billItem.itemName }} : ${{ billItem.itemPrice / 100 }} </h2>
             <br />
             <ul style="list-style-type: none">
               <li>
@@ -18,7 +23,7 @@
                 <delete-item :deleteType="deleteType" :itemIndex="billItemIndex" />
               </li>
               <li>
-                <manage-users :billItem="billItem" />
+                <manage-users :billItem="billItem" :billItemIndex="billItemIndex"/>
               </li>
             </ul>
           </div>
@@ -32,7 +37,6 @@
         </div>
       </draggable>
     </div>
-    <h2 class="total">Total: {{ this.money.prefix }}{{ totalPrice }} </h2>
   </div>
 </template>
 
@@ -96,13 +100,7 @@ export default {
     grid-column: 1;
   }
 
-  .bill-table {
-    grid-column: 2 / 3;
-    grid-row: 1 / 4;
-    outline: solid;
-  }
-
-    .bill-table > div {
+    .bill-table > .bill-items {
       outline: solid;
       margin: 20px;
       background-color: grey;
@@ -115,7 +113,8 @@ export default {
   .bill {
     display: grid;
     grid-template-columns: auto auto;
-    min-height: 20px;
+    min-height: 10px;
+    min-width: 0;
   }
 
     .bill > .bill-item {
@@ -125,6 +124,9 @@ export default {
       padding: 10px;
       background-color: aquamarine;
       border-radius: 10px;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
     }
 
   .total {

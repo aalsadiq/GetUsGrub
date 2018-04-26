@@ -48,7 +48,8 @@ namespace CSULB.GetUsGrub.DataAccess
                                               Id = businessHour.Id,
                                               Day = businessHour.Day,
                                               OpenDateTime = businessHour.OpenTime,
-                                              CloseDateTime = businessHour.CloseTime
+                                              CloseDateTime = businessHour.CloseTime,
+                                              TimeZone = businessHour.TimeZone
                                           }).ToList();
 
                 IList<RestaurantMenuWithItems> restaurantMenusList = new List<RestaurantMenuWithItems>();
@@ -179,6 +180,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                     dbBusinessHour.Day = restaurantBusinessHourDto.Day;
                                     dbBusinessHour.OpenTime = restaurantBusinessHourDto.OpenDateTime;
                                     dbBusinessHour.CloseTime = restaurantBusinessHourDto.CloseDateTime;
+                                    dbBusinessHour.TimeZone = restaurantBusinessHourDto.TimeZone;
                                     context.SaveChanges();
                                     break;
                                 case Flag.Delete:

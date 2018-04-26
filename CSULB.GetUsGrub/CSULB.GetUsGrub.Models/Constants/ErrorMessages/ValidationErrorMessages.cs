@@ -62,5 +62,6 @@
         // Validation error messages for Images
         public const string INVALID_IMAGE_TYPE = "Invalid image type.";
         public const string INVALID_IMAGE_SIZE = "Invalid image size.";
+        public const string IMAGE_DOES_NOT_EXIST = "Image does not exist.";
     }
 }

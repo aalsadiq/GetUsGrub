@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.IO;
@@ -435,6 +434,7 @@ namespace CSULB.GetUsGrub.DataAccess
             {
                 try
                 {
+                   
                     // Queries for the user account based on username.
                     var userAccount = (from account in context.UserAccounts
                                         where account.Username == username
@@ -520,14 +520,15 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         foreach (var menuItems in userRestaurantMenuItems)
                         {
+                            var menuImages = menuItems.ItemPicture;
+
                             context.RestaurantMenuItems.Remove(menuItems);
 
                             // If menus are set to the default path, move on
-                            if (menuItems.ItemPicture != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                            if (menuImages != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
                             {
                                 // Deleting Menu Images
-                                deleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH,menuItems.ItemPicture);
-                                Debug.WriteLine(menuItems.ItemPicture);
+                                //deleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH, menuImages); // Call image service that was created here
                             }
                         }
                     }
@@ -619,16 +620,18 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.FailedAttempts.Remove(failedAttempt);
                     }
 
-                    // Check if user image is set to default, if so move on
-                    var temp = userAccount.UserProfile.DisplayPicture;
-                    Debug.WriteLine("displayPicture: " + temp );
-                    //Debug.WriteLine("dvirtualdisplayname: " + ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH);
-                    if (userAccount.UserProfile.DisplayPicture != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    // Grabbing profile image to delete 
+                    var profileImage = (from profile in context.UserProfiles
+                                       where profile.Id == userAccount.Id
+                                       select profile.DisplayPicture).FirstOrDefault();
+
+                    // Check if user image is set to default, if so move on 
+                    if (profileImage != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
                     {
-                        // Deleting profile image
-                        deleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH,userAccount.UserProfile.DisplayPicture);
-                        Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
+                        // Calling method to delete image from specified path
+                       //deleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH, profileImage); // Call image service here
                     }
+
                     //Delete useraccount
                     context.UserAccounts.Remove(userAccount);
                     context.SaveChanges(); 
@@ -1102,42 +1105,5 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             context.Dispose();
         }
-
-        public ResponseDto<bool> deleteImage(string path, string image)
-        {
-            // Delete a file by using File class static method...
-            try
-            {
-                var imageName = Path.GetFileName(image);
-                Debug.WriteLine(imageName);
-
-                var filePath = path + imageName;
-                Debug.WriteLine(filePath);
-               
-                if (File.Exists(filePath))
-                {
-                    File.Delete(filePath);
-                    
-                    return new ResponseDto<bool>()
-                    {
-                        Data = true
-                    };
-                }
-                return new ResponseDto<bool>()
-                {
-                    Data = false,
-                    Error = "Image does not exist." // Add to constants later
-                };
-            }
-            catch (Exception){
-                return new ResponseDto<bool>()
-                {
-                    Data = false,
-                    Error = GeneralErrorMessages.GENERAL_ERROR
-                };
-            }
-            
-        }
-
     }
 }

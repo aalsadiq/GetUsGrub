@@ -6,7 +6,6 @@
       <restaurantBillSplitter-userTable id="userTable"/>
       <restaurantBillSplitter-billTable id="billTable"/>
       <restaurantBillSplitter-dictionary id="dictionary"/>
-      <debug id="debug"/>
     </div>
     <app-footer />
   </div>

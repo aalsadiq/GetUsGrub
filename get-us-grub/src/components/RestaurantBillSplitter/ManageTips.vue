@@ -9,7 +9,7 @@
                 lazy-validation>
           <div v-for="(billUser, billUserIndex) in billUsers"
                :key="billUser">
-            <h3> {{ billUserIndex }}</h3>
+            <h3> {{ billUserIndex }} </h3>
             <h3> {{ billUser.name }} </h3>
             <v-text-field label="Tip"
                           :rules="[rules.required, rules.max, rules.nonnegative]"

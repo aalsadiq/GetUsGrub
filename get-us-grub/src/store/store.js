@@ -407,7 +407,8 @@ export const store = new Vuex.Store({
       state.menuItems.push({
         itemName: payload[0],
         itemPrice: payload[1],
-        selected: []
+        selected: [],
+        selectedManual: []
       })
     },
     addBillUser: (state, payload) => {
@@ -433,7 +434,8 @@ export const store = new Vuex.Store({
         state.restaurantMenuItems.push({
           itemName: element.itemName,
           itemPrice: element.itemPrice,
-          selected: []
+          selected: [],
+          selectedManual: []
         })
       })
     },
@@ -444,8 +446,6 @@ export const store = new Vuex.Store({
     editBillItem: (state, payload) => {
       Vue.set(state.billItems[payload[0]], 'itemName', payload[1])
       Vue.set(state.billItems[payload[0]], 'itemPrice', payload[2])
-      // state.billItems[payload[0]].itemName = payload[1]
-      // state.billItems[payload[0]].itemPrice = payload[2]
     },
     removeFromDictionary: (state, payload) => {
       state.menuItems.splice(payload, 1)
@@ -470,11 +470,11 @@ export const store = new Vuex.Store({
     updateUserMoneyOwesFromSelected: (state, payload) => {
       var oldSplit
       var newSplit
-      if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) {
+      if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) { // When the first new user is ADDED to selected list
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].moneyOwes += payload.billItem.itemPrice
-      } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) {
+      } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) { // When the last user is REMOVED from the selected list
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice
-      } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is added to selected list
+      } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is ADDED to selected list
         oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
         newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {

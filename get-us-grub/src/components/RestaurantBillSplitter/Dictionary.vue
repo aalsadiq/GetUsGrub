@@ -68,7 +68,8 @@ export default {
         uID: this.getAndIncrementUniqueCounter(),
         itemName: el.itemName,
         itemPrice: el.itemPrice,
-        selected: el.selected
+        selected: el.selected,
+        selectedManual: el.selectedManual
       }
     },
     getAndIncrementUniqueCounter: function () {

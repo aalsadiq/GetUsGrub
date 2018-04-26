@@ -14,9 +14,12 @@
                 <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
               </v-avatar>
               <v-flex>
-                <v-btn id="image-upload-btn" dark v-if="isEdit">
+                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
                   <span id="upload-image-text">Upload Image</span>
-                </v-btn>
+                </v-btn> -->
+                <div v-if="isEdit">
+                  <profile-image-upload id="image-upload"/>
+                </div>
               </v-flex>
               <v-flex>
               <div id="display-name-div">
@@ -128,8 +131,8 @@ export default {
     BusinessHours,
     Menus,
     FoodPreferences,
-    ProfileImageUpload,
-    MenuItemImageUpload
+    'profile-image-upload': ProfileImageUpload,
+    'menu-image-upload': MenuItemImageUpload
   },
   data () {
     return {
@@ -334,4 +337,8 @@ export default {
   bottom: -2.5em;
   left: 47em;
 }
+/* #image-upload{
+  width: 0px;
+  height: 0px;
+} */
 </style>

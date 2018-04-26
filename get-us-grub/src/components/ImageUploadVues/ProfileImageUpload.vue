@@ -1,6 +1,8 @@
 <template>
   <div id="image-upload">
     <v-layout row justify-center>
+    <v-dialog  v-model="dialog" max-width="500px">
+      <v-btn small color="dark" dark slot="activator">Upload Image</v-btn>
       <v-card dark>
         <div id="success">
           <v-layout>
@@ -16,8 +18,7 @@
         <div v-show="showError" id="error-div">
           <v-layout>
           <v-flex xs12>
-            <!-- Title bar for the restaurant selection -->
-            <v-alert id="registration-error" :value=true icon='warning'>
+            <v-alert id="menu-error" :value=true icon='warning'>
               <span id="error-title">
                 An error has occurred
               </span>
@@ -35,7 +36,7 @@
           </v-layout>
         </div>
         <br/>
-        <v-flex xs12>
+        <v-flex xs4>
             <label class="custom-file-upload">
                 <h5>choose image
                 <i class="material-icons">cloud_download</i>
@@ -44,15 +45,22 @@
             </label>
           </v-flex>
           <br/>
-          <img id="previewImage" class="preview" :src="imageData"/>
+            <div class="preview-image" v-if="imageData.length > 0">
+              <img id="previewImage" class="preview" :src="imageData"/>
+            </div>
           <br/>
+          <div id="submit-image">
+          <v-flex xs3>
             <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
               Upload
             <v-icon color="white">cloud_upload</v-icon>
             </v-btn>
+            </v-flex>
             <br/>
+            </div>
           </v-card>
-      </v-layout>
+          </v-dialog>
+        </v-layout>
     <br/>
   </div>
 </template>

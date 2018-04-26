@@ -75,7 +75,6 @@
   <ItemGroup>
     <Compile Include="Managers\FoodPreferencesManager.cs" />
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
-    <Compile Include="Managers\PasswordManager.cs" />
     <Compile Include="Managers\RegisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Managers\UnregisteredUserRestaurantSelectionManager.cs" />

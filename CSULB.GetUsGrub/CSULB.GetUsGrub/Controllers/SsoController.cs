@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using CSULB.GetUsGrub.BusinessLogic.Services;
 
 namespace CSULB.GetUsGrub
 {
@@ -107,6 +108,15 @@ namespace CSULB.GetUsGrub
         {
             try
             {
+                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageResetPasswordToken();
+                if (result.Error != null)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                //
+                var passwordService = new PasswordService();
+                var respose = result.Data;
 
                 return Ok();
             }

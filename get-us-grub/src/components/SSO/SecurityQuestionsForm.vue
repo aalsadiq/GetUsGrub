@@ -1,5 +1,6 @@
 <template>
   <v-form v-model="value.isValid" v-on:input="$emit('input', value)">
+    <!-- CREATE A SECURITY QUESTION & ANSWER FIELD FOR EACH SET IN STORE -->
     <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
       <v-select
         :items="set.questions"

@@ -7,7 +7,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// The <c>CreateIndividualPreLogicValidationStrategy</c> class.
     /// Defines a strategy for validating models before processing business logic for creating an individual user.
     /// <para>
-    /// @author: Jennifer Nguyen, Brian Fann
+    /// @author: Jennifer Nguyen
     /// @updated: 03/12/2018
     /// </para>
     /// </summary>

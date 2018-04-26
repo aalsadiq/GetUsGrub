@@ -15,10 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSULB.GetUsGrub.UserAccessC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSULB.GetUsGrub.UnitTests", "CSULB.GetUsGrub.UnitTests\CSULB.GetUsGrub.UnitTests.csproj", "{1B86E6CD-A3D4-423E-8501-146757AB2059}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Image", "Image", "{5257C858-6472-4EBB-8F6E-72DA7A3D7558}"
-	ProjectSection(SolutionItems) = preProject
-		Images\ProfileImages\26user.png = Images\ProfileImages\26user.png
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSULB.GetUsGrub.Images", "CSULB.GetUsGrub.Images\CSULB.GetUsGrub.Images.csproj", "{62A4A533-8643-4206-BAFC-1E1D4C8E5292}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +47,10 @@ Global
 		{1B86E6CD-A3D4-423E-8501-146757AB2059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B86E6CD-A3D4-423E-8501-146757AB2059}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B86E6CD-A3D4-423E-8501-146757AB2059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62A4A533-8643-4206-BAFC-1E1D4C8E5292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62A4A533-8643-4206-BAFC-1E1D4C8E5292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62A4A533-8643-4206-BAFC-1E1D4C8E5292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62A4A533-8643-4206-BAFC-1E1D4C8E5292}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

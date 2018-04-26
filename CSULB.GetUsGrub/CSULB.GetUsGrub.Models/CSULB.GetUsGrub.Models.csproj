@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Constants\ActionConstant.cs" />
     <Compile Include="Constants\ErrorMessages\AuthenticationErrorMessages.cs" />
+    <Compile Include="Constants\ErrorMessages\ResetPasswordErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\RestaurantSelectionErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\UserManagementErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\ValidationErrorMessages.cs" />
@@ -87,9 +88,12 @@
     <Compile Include="DTOs\AuthenticationTokenDto.cs" />
     <Compile Include="DTOs\FoodPreferencesDto.cs" />
     <Compile Include="DTOs\EditUserDto.cs" />
+    <Compile Include="DTOs\Interfaces\IBusinessHourDto.cs" />
     <Compile Include="DTOs\LoginDto.cs" />
     <Compile Include="DTOs\BusinessHourDto.cs" />
     <Compile Include="DTOs\ResetPasswordDto.cs" />
+    <Compile Include="DTOs\RestaurantBusinessHourDto.cs" />
+    <Compile Include="DTOs\SecurityQuestionWithSaltDto.cs" />
     <Compile Include="DTOs\SelectedRestaurantDto.cs" />
     <Compile Include="Constants\ErrorMessages\GeneralErrorMessages.cs" />
     <Compile Include="Constants\ErrorMessages\SsoErrorMessages.cs" />
@@ -141,8 +145,6 @@
     <Compile Include="Models\RestaurantProfile.cs" />
     <Compile Include="Models\SecurityQuestion.cs" />
     <Compile Include="Models\UserAccount.cs" />
-    <Compile Include="ParameterObjects\IndividualUserRegistrationParameterObject.cs" />
-    <Compile Include="ParameterObjects\RestaurantRegistrationParameterObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DTOs\RestaurantSelectionDto.cs" />
   </ItemGroup>
@@ -150,9 +152,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DTOs\Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

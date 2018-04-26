@@ -67,5 +67,27 @@ namespace CSULB.GetUsGrub.Models
             Description = description;
             IsActive = isActive;
         }
+
+        public RestaurantMenuItem(int? id, string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive)
+        {
+            Id = id;
+            ItemName = itemName;
+            ItemPrice = itemPrice;
+            ItemPicture = itemPicture;
+            Tag = tag;
+            Description = description;
+            IsActive = isActive;
+        }
+
+        public RestaurantMenuItem(string itemName, decimal itemPrice, string itemPicture, string tag, string description, bool isActive, Flag flag)
+        {
+            ItemName = itemName;
+            ItemPrice = itemPrice;
+            ItemPicture = itemPicture;
+            Tag = tag;
+            Description = description;
+            IsActive = isActive;
+            Flag = flag;
+        }
     }
 }

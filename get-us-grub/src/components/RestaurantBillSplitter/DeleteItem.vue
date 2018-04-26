@@ -20,6 +20,7 @@ export default {
       if (deleteType === 'Dictionary') {
         this.$store.dispatch('removeFromDictionary', itemIndex)
       } else if (deleteType === 'BillTable') {
+        this.$store.dispatch('updateUserMoneyOwesFromDeleteItem', { itemIndex })
         this.$store.dispatch('removeFromBillTable', itemIndex)
       }
     },

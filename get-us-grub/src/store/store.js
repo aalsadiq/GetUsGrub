@@ -473,11 +473,9 @@ export const store = new Vuex.Store({
 
         // })
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].moneyOwes += payload.billItem.itemPrice
-      }
-      else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) {
+      } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) {
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice
-      }
-      else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is added to selected list
+      } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is added to selected list
         var oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
         var newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {
@@ -486,8 +484,7 @@ export const store = new Vuex.Store({
         payload.newSelected.forEach(function (element, index) {
           state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
         })
-      }
-      else if (payload.oldSelected.length > payload.newSelected.length) { // When a user is REMOVED from the selected list
+      } else if (payload.oldSelected.length > payload.newSelected.length) { // When a user is REMOVED from the selected list
         var oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
         var newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {

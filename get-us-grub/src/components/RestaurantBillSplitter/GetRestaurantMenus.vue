@@ -52,7 +52,7 @@ export default {
     },
     populateDictionary: function (menuItems) {
       this.restaurantMenuItems = menuItems
-      console.log(this.restaurantMenuItems)
+      console.log(this.restaurantMenuItems)     
       this.$store.dispatch('populateDictionary', this.restaurantMenuItems)
     }
   },

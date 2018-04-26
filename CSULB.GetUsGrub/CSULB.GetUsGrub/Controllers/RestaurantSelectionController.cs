@@ -88,10 +88,9 @@ namespace CSULB.GetUsGrub.Controllers
         /// <param name="avgFoodPrice"></param>
         /// <returns>Ok HTTP response or Bad Request HTTP response</returns>
         [HttpGet]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANTSELECTION, Operation = ActionConstant.READ)]
         [Route("Registered")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        [AuthenticationFilter(true)]   
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANTSELECTION, Operation = ActionConstant.READ)]
         public IHttpActionResult RegisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
             // Model Binding Validation

@@ -96,8 +96,8 @@ export default {
   margin-top: 2em;
 }
 #food-preferences {
-  margin: 3em 0em -0.3em 0em;
-  padding: 0.1em 1em 0.1em 1em;
+  margin: 3em 0 0.5em 0;
+  padding: 0.1em 0 0 0;
 }
 #preferences-title {
   font-weight: bold;

@@ -18,7 +18,6 @@ import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
 import jwt from 'jsonwebtoken'
 export default {
-  name: 'Profile',
   components: {
     AppHeader,
     AppFooter,

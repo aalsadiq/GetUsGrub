@@ -60,9 +60,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
             }
 
-            // Validate user does not exist
+            // Validate user exists
             result = _userValidator.CheckIfUserExists(_resetPasswordDto.Username);
-            if (result.Data)
+            if (!result.Data)
             {
                 if (result.Error == null)
                 {
@@ -109,17 +109,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             switch (_validationType)
             {
-                case ResetPasswordValidationTypes.FirstValidation:
+                case ResetPasswordValidationTypes.GetSecurityQuestionsValidation:
                     validationWrappers.Add(new ValidationWrapper<ResetPasswordDto>(_resetPasswordDto, "Username", new ResetPasswordDtoValidator()));
                     return validationWrappers;
-                case ResetPasswordValidationTypes.SecondValidation:
+                case ResetPasswordValidationTypes.ConfirmSecurityQuestionAnswersValidation:
                     validationWrappers.Add(new ValidationWrapper<ResetPasswordDto>(_resetPasswordDto, "UsernameAndSecurityQuestions", new ResetPasswordDtoValidator()));
                     foreach (var securityQuestionDto in _resetPasswordDto.SecurityQuestionDtos)
                     {
                         validationWrappers.Add(new ValidationWrapper<SecurityQuestionDto>(securityQuestionDto, "CreateUser", new SecurityQuestionDtoValidator()));
                     }
                     return validationWrappers;
-                case ResetPasswordValidationTypes.ThirdValidation:
+                case ResetPasswordValidationTypes.UpdatePasswordValidation:
                     validationWrappers.Add(new ValidationWrapper<ResetPasswordDto>(_resetPasswordDto, "UsernameAndPassword", new ResetPasswordDtoValidator()));
                     return validationWrappers;
                 default:

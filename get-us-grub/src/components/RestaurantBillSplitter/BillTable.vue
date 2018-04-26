@@ -2,14 +2,18 @@
   <div class="bill-table">
     <h1>Your Bill</h1>
     <v-divider />
-    <h2 class="total">Total: {{ this.money.prefix }}{{ totalPrice }} </h2>
+    <h2 class="total">Total: {{ this.money.prefix }}{{ totalPrice / 100}} </h2>
     <div>
+      <v-btn small dark>Tip</v-btn>
+      <v-btn small dark>Tax</v-btn>
+    </div>
+    <div class="bill-items">
       <h1 v-if="!billItems.length"> Drag Items Here!</h1>
       <draggable class="bill" v-bind:list="billItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
         <div class="bill-item" v-for="(billItem, billItemIndex) in billItems" :key="billItemIndex">
           <bill-table-pie-chart :billItem="billItem" :billItemIndex="billItemIndex" :width="50" :height="50" />
           <div class="bill-item-controls">
-            <h2> {{ billItem.itemName }} : ${{ billItem.itemPrice }} </h2>
+            <h2> {{ billItem.itemName }} : ${{ billItem.itemPrice / 100 }} </h2>
             <br />
             <ul style="list-style-type: none">
               <li>
@@ -96,7 +100,7 @@ export default {
     grid-column: 1;
   }
 
-    .bill-table > div {
+    .bill-table > .bill-items {
       outline: solid;
       margin: 20px;
       background-color: grey;

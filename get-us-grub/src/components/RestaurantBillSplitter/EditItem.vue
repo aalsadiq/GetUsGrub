@@ -2,7 +2,7 @@
   <v-dialog v-model="editDialog" scrollable max-width="300px">
     <v-btn small dark color="blue" slot="activator" v-on:click="UpdateTextFields">Edit</v-btn>
     <v-card>
-      <v-card-title><h2> {{Item.itemName}} : ${{Item.itemPrice}} </h2></v-card-title>
+      <v-card-title><h2> {{Item.itemName}} : ${{Item.itemPrice / 100}} </h2></v-card-title>
       <v-divider />
       <v-card-text>
         <v-form v-model="valid"
@@ -23,7 +23,7 @@
                  v-on:click.native="editDialog = false">
             Close
           </v-btn>
-          <v-btn color="blue" dark v-on:click="EditFoodItem(editType, itemIndex, newItemName, newItemPrice)">Save</v-btn>
+          <v-btn color="blue" dark v-on:click="EditFoodItem(editType, itemIndex, Item, newItemName, newItemPrice)">Save</v-btn>
           <br /><small>*indicates required field</small>
         </v-form>
       </v-card-text>
@@ -34,6 +34,8 @@
 
 <script>
 import { VMoney } from 'v-money'
+import { EventBus } from '@/event-bus/event-bus.js'
+
 export default {
   name: 'EditItem',
   components: {
@@ -63,19 +65,19 @@ export default {
   },
   directives: { money: VMoney },
   methods: {
-    EditFoodItem: function (editType, itemIndex, newItemName, newItemPrice) {
+    EditFoodItem: function (editType, itemIndex, Item, newItemName, newItemPrice) {
       if (this.$refs.editForm.validate()) {
-        console.log('Index: ' + itemIndex)
-        console.log('New Name: ' + newItemName)
-        console.log('New Price: ' + newItemPrice)
+        newItemPrice = this.convertFromUSDtoInt(newItemPrice)
         if (editType === 'Dictionary') {
-          console.log('Dictionary Item Editted')
           this.$store.dispatch('editDictionaryItem', [itemIndex, newItemName, newItemPrice])
         } else if (editType === 'BillTable') {
-          console.log('Bill Item Editted')
-          this.$store.dispatch('editBillItem', [itemIndex, newItemName, newItemPrice])
+          this.$store.dispatch('updateUserMoneyOwesFromEditItem', { itemIndex, Item, newItemPrice })
+          this.$store.dispatch('editBillItem', [itemIndex, newItemName, newItemPrice])          
         }
       }
+    },
+    convertFromUSDtoInt: function (usDollars) {
+      return this.$store.getters.convertFromUSDtoInt(usDollars)
     },
     UpdateTextFields: function () {
       this.newItemName = this.Item.itemName

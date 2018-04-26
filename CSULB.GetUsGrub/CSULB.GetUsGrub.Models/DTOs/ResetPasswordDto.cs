@@ -17,7 +17,7 @@ namespace CSULB.GetUsGrub.Models
         [Required]
         public string Username { get; set; }
         public string Password { get; set; }
-        public ICollection<SecurityQuestionDto> SecurityQuestionDtos { get; set; }
+        public IList<SecurityQuestionDto> SecurityQuestionDtos { get; set; }
 
         // Constructors
         public ResetPasswordDto() { }
@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.Models
         {
             Username = username;
         }
-        public ResetPasswordDto(string username, ICollection<SecurityQuestionDto> securityQuestionDtos)
+        public ResetPasswordDto(string username, IList<SecurityQuestionDto> securityQuestionDtos)
         {
             Username = username;
             SecurityQuestionDtos = securityQuestionDtos;

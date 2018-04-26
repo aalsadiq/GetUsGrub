@@ -22,7 +22,7 @@
                         required />
           <v-btn color="teal"
                  dark
-                 v-on:click="AddToDictionary(itemName, itemPrice)">
+                 v-on:click="addToDictionary(itemName, itemPrice)">
             Add To Dictionary
           </v-btn>
           <v-btn color="teal"
@@ -72,20 +72,17 @@ export default {
   },
   directives: { money: VMoney },
   methods: {
-    AddToDictionary: function (itemName, itemPrice) {
+    addToDictionary: function (itemName, itemPrice) {
       if (this.$refs.dictionaryInputForm.validate()) {
-        console.log('Add Form Validated')
+        itemPrice = this.convertFromUSDtoInt(itemPrice)
         this.$store.dispatch('addToDictionary', [itemName, itemPrice])
       }
     },
-    ValidatePrice: function () {
-      return true
-    },
-    log: function () {
-      console.log(this.$refs.dictionaryInputForm)
+    convertFromUSDtoInt: function (usDollars) {
+      return this.$store.getters.convertFromUSDtoInt(usDollars)
     }
   },
-  computed: {
+  computed: {    
   }
 }
 </script>

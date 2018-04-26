@@ -10,7 +10,8 @@
                     :key="billUserIndex"
                     :label="billUser.name"
                     :value="billUser.uID"
-                    v-model="billItem.selected"></v-checkbox>
+                    v-model="billItem.selected">
+        </v-checkbox>
       </v-card-text>
       <v-divider />
       <v-card-text style="display: inline-block">
@@ -39,21 +40,42 @@ export default {
     }
   },
   props: ['billItem', 'billItemIndex'],
+  watch: {
+    selected(newSelected, oldSelected) {
+      if (this.dialog === true) {
+        console.log('Old: ' + oldSelected)
+        console.log('New: ' + newSelected)
+        console.log('Bill Item Index: ' + this.billItemIndex)
+        console.log('Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
+        //this.updateBillItemsInUser()
+        this.updateUserMoneyOwesFromSelected(this.billItemIndex, this.billItem, newSelected, oldSelected)
+        console.log('New Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)}      
+    }
+  },
   methods: {
-    updateUserMoneyOwes: function (billItemIndex) {
-      this.$store.dispatch('updateUserMoneyOwes', billItemIndex)
+    updateUserMoneyOwesFromSelected: function (billItemIndex, billItem, newSelected, oldSelected) {
+      this.$store.dispatch('updateUserMoneyOwesFromSelected', { billItemIndex, billItem, newSelected, oldSelected })
     },
+    // updateBillItemsInUser: function () {
+       
+    // },
     emitUsersInBillItemEvent: function (billItem) {
       EventBus.$emit('users-in-bill-item', billItem)
     }
   },
-  updated() {
-    this.updateUserMoneyOwes(this.billItemIndex)
+  created () {
+    this.billItemSelected = this.billItem.selected // Used to keep track of the this.billItem.selected array BEFORE the changes
+  },
+  updated () {
     this.emitUsersInBillItemEvent(this.billItem)
+    this.billItemSelected = this.billItem.selected
   },
   computed: {
     billUsers () {
       return this.$store.state.billUsers
+    },
+    selected () {
+      return this.billItem.selected
     }
   }
 }

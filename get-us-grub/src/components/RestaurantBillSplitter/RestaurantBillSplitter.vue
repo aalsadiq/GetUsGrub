@@ -50,6 +50,12 @@ export default {
           restaurantId: this.restaurantId
         }
       }).then(response => {
+        for (var i = 0; i < response.data.data.menus.length; i++) {
+          for (var j = 0; j < response.data.data.menus[i].items.length; j++) {
+            response.data.data.menus[i].items[j].itemPrice = this.convertFromUSDtoInt(response.data.data.menus[i].items[j].itemPrice)
+          }
+        }
+        console.log(response.data.data)
         this.$store.dispatch('populateRestaurantMenus', response.data.data.menus)
       }).catch(error => {
         console.log(error.response.data)
@@ -57,6 +63,9 @@ export default {
     }
   },
   methods: {
+    convertFromUSDtoInt: function (usDollars) {
+      return this.$store.getters.convertFromUSDtoInt(usDollars)
+    }
   },
   computed: {
   }

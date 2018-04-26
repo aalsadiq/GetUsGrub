@@ -147,10 +147,8 @@ export default {
       }
       if (viewType === 'DeleteUser') {
         axios.delete(this.$store.state.urls.userManagement.deleteUser, {
+          headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` },
           data: {username: this.userAccount.username}
-        },
-        {
-          headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }
         ).then(response => {
           this.responseData = response.data

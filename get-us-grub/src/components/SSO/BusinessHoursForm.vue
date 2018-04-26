@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-form v-model="value.isValid">
+      <!-- TIMEZONE FIELD -->
       <v-select
         :items="$store.state.constants.timeZones"
         item-text="displayString"
@@ -12,7 +13,9 @@
         hide-details
         :rules="$store.state.rules.timeZoneRules"
         required
+        :disabled="disabled"
         ></v-select>
+      <!-- DAY FIELD -->
       <v-select
         :items="$store.state.constants.dayOfWeek"
         v-model="businessHour.day"
@@ -22,7 +25,9 @@
         hide-details
         :rules="$store.state.rules.businessDayRules"
         required
+        :disabled="disabled"
         ></v-select>
+      <!-- TIME PICKER OPENNING TIME MENU -->
       <v-menu
         ref="openMenu"
         lazy
@@ -35,7 +40,9 @@
         max-width="290px"
         min-width="290px"
         :return-value.sync="time"
+        :disabled="disabled"
         >
+        <!-- TIME PICKER OPENING START TIME -->
         <v-text-field
           slot="activator"
           label="Select opening time (24hr format)"
@@ -44,15 +51,19 @@
           :rules="$store.state.rules.openTimeRules"
           readonly
           required
+          :disabled="disabled"
           ></v-text-field>
+        <!-- TIME PICKER OPENING END TIME -->
         <v-time-picker
           format="24hr"
           v-model="businessHour.openTime"
           @change="$refs.openMenu.save(time)"
           :max="businessHour.closeTime"
+          :disabled="disabled"
           >
         </v-time-picker>
       </v-menu>
+      <!-- TIME PICKER CLOSING TIME MENU -->
       <v-menu
         ref="closeMenu"
         lazy
@@ -65,7 +76,9 @@
         max-width="290px"
         min-width="290px"
         :return-value.sync="time"
+        :disabled="disabled"
         >
+        <!-- TIME PICKER CLOSING START TIME -->
         <v-text-field
           slot="activator"
           label="Select closing time (24hr format)"
@@ -74,18 +87,22 @@
           :rules="$store.state.rules.closeTimeRules"
           readonly
           required
+          :disabled="disabled"
           ></v-text-field>
+        <!-- TIME PICKER CLOSING END TIME -->
         <v-time-picker
           format="24hr"
           scrollable
           v-model="businessHour.closeTime"
           @change="$refs.closeMenu.save(time)"
           :min="businessHour.openTime"
+          :disabled="disabled"
           >
         </v-time-picker>
       </v-menu>
     </v-form>
-    <v-btn @click.prevent="addBusinessHour" :disabled="!value.isValid">Add</v-btn>
+    <!-- ADD ENTRY BUTTON -->
+    <v-btn @click.prevent="addBusinessHour" :disabled="!value.isValid || disabled">Add</v-btn>
     <ul class="list-group">
       <li v-for="storeHour in value.businessHours" :key="storeHour" class="list-group-item">
         {{ storeHour.day }}: {{ storeHour.openTime }} - {{ storeHour.closeTime }}
@@ -111,7 +128,10 @@ export default {
     time: '',
     counter: 0
   }),
-  props: ['value'],
+  props: [
+    'value',
+    'disabled'
+  ],
   methods: {
     addBusinessHour () {
       this.value.businessHours.push({day: this.businessHour.day, openTime: this.businessHour.openTime, closeTime: this.businessHour.closeTime})

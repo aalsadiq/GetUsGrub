@@ -24,23 +24,10 @@ namespace CSULB.GetUsGrub.UserAccessControl
             new Claim(ActionConstant.DEACTIVATE + ResourceConstant.USER, "True"),
             new Claim(ActionConstant.REACTIVATE + ResourceConstant.USER, "True"),
 
-            // For Indvidiual and Restaurant Profile Management
-            new Claim(ActionConstant.READ + ResourceConstant.INDIVIDUAL, "True"),
-            new Claim(ActionConstant.UPDATE + ResourceConstant.INDIVIDUAL, "True"),
-            new Claim(ActionConstant.READ + ResourceConstant.RESTAURANT, "True"),
-            new Claim(ActionConstant.UPDATE + ResourceConstant.RESTAURANT, "True"),
-
             // For All Profile Management
             new Claim(ActionConstant.UPDATE + ResourceConstant.IMAGE, "True"),
 
-            // For Food Preferences
-            new Claim(ActionConstant.CREATE + ResourceConstant.PREFERENCES, "True"),
-            new Claim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True"),
-            new Claim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True"),
-            new Claim(ActionConstant.DELETE + ResourceConstant.PREFERENCES, "True"),
-
             // For Bill Splitter
-            new Claim(ActionConstant.ACCESS + ResourceConstant.DICTIONARY, "True"),
             new Claim(ActionConstant.ACCESS + ResourceConstant.MENU, "True")
         };
 }

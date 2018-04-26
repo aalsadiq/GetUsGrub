@@ -26,7 +26,6 @@ namespace CSULB.GetUsGrub.UserAccessControl
             new Claim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True"),
 
             // For Bill Splitter  
-            new Claim(ActionConstant.ACCESS + ResourceConstant.DICTIONARY, "True"),
             new Claim(ActionConstant.ACCESS + ResourceConstant.MENU, "True"),
 
             // For Restaurant Selector

@@ -44,7 +44,8 @@ export default {
       console.log(this.restaurantId)
       axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
+          'Authorization': `Bearer ${this.$store.state.authenticationToken}`
         },
         params: {
           restaurantId: this.restaurantId
@@ -58,7 +59,7 @@ export default {
         console.log(response.data.data)
         this.$store.dispatch('populateRestaurantMenus', response.data.data.menus)
       }).catch(error => {
-        console.log(error.response.data)
+        Promise.reject(error)
       })
     }
   },

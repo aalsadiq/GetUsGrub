@@ -82,7 +82,9 @@ export const store = new Vuex.Store({
         profileImageUpload: 'http://localhost:8081/Profile/User/Edit/ProfileImageUpload'
       },
       sso: {
-        login: 'http://localhost:8081/Sso/Login'
+        login: 'http://localhost:8081/Sso/Login',
+        createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
+        createRestaurantUser: 'http://localhost:8081/User/FirstTimeRegistration/Restaurant'
       }
     },
     // Rules for validations

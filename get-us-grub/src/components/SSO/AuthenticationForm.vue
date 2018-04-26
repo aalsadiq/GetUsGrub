@@ -21,7 +21,7 @@
   </v-form>
 </template>
 <script>
-// import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 export default {
   name: 'SSOAuthenticationForm',
@@ -35,14 +35,15 @@ export default {
     'value'
   ],
   created () {
-    // var username = jwt.decode(this.$store.state.authenticationToken).username
-    var username = 'TestUser123'
+    var username = jwt.decode(this.$store.state.firstTimeUserToken).Username
+    console.log(username)
+    console.log(jwt)
     this.value.userAccount.username = username
     this.$emit('input', this.value)
   },
   beforeCreate () {
-    if (this.$store.state.authenticationToken === null) {
-      // this.$router.push({path: '/Unauthorized'})
+    if (this.$store.state.firstTimeUserToken === null) {
+      this.$router.push({path: '/Unauthorized'})
     }
   }
 }

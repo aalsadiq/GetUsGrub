@@ -5,7 +5,7 @@
         <v-flex xs12>
           <v-alert type="success" :value="showSuccess">
             <span>
-              Success! User <code>{{ username }}</code> has been created.
+              Success! User <code>{{ authentication.userAccount.username }}</code> has been created.
             </span>
           </v-alert>
         </v-flex>
@@ -97,6 +97,8 @@ import SecurityQuestionsForm from './SecurityQuestionsForm'
 import ProfileForm from './ProfileForm'
 import BusinessHoursForm from './BusinessHoursForm'
 import ContactInfoForm from './ContactInfoForm'
+import axios from 'axios'
+import jwt from 'jsonwebtoken'
 
 export default {
   name: 'SsoCreateUser',
@@ -110,6 +112,7 @@ export default {
   },
   props: [],
   data: () => ({
+    showSuccess: false,
     tabs: null,
     formStep: 0,
     lastRestaurantStep: 0,
@@ -191,7 +194,51 @@ export default {
         securityQuestionDtos: this.securityQuestions.questions,
         userProfileDto: this.profile.userProfile
       }
-
+      console.log('Sending ' + jwt.decode(this.$store.state.firstTimeUserToken).Username)
+      axios.post(this.$store.state.urls.sso.createIndividualUser,
+        dto,
+        {
+          headers: { Authorization: `Bearer ${this.$store.state.firstTimeUserToken}` }
+        }).then(response => {
+        console.log('successful registration')
+        // this.validContactInput = true
+        // this.disable = false
+        // this.username = response.data
+        // this.showSuccess = true
+      }).catch(error => {
+        // this.showSuccess = false
+        // this.showError = true
+        // this.validContactInput = true
+        // this.disable = false
+        console.log('error: ' + error)
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            // this.$router.push('Unauthorized')
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            // this.$router.push('Forbidden')
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            // this.$router.push('ResourceNotFound')
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            // this.$router.push('InternalServerError')
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          console.log(error.response)
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response
+          console.log(error.response)
+          Promise.reject(error)
+        }
+      })
+      console.log(dto)
       console.log(dto)
     },
     submitRestaurant () {
@@ -204,6 +251,51 @@ export default {
         timeZone: this.businessHours.timeZone,
         businessHourDtos: this.businessHours.businessHours
       }
+      axios({
+        method: 'POST',
+        url: this.$store.state.urls.sso.createRestaurantUser,
+        headers: {
+          Authorization: this.$store.state.firstTimeUserToken
+        },
+        data: dto
+      }).then(response => {
+        console.log('successful registration')
+        // this.validContactInput = true
+        // this.disable = false
+        // this.username = response.data
+        // this.showSuccess = true
+      }).catch(error => {
+        // this.showSuccess = false
+        // this.showError = true
+        // this.validContactInput = true
+        // this.disable = false
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push('Unauthorized')
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push('Forbidden')
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push('ResourceNotFound')
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push('InternalServerError')
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          console.log(error.response)
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response
+          console.log(error.response)
+          Promise.reject(error)
+        }
+      })
       console.log(dto)
     },
     previousStep () {

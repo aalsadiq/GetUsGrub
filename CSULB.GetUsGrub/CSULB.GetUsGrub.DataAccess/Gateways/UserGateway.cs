@@ -1004,7 +1004,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="username"></param>
         /// <returns>A ResponseDto with a list of SecurityAnswerSalt</returns>
-        public ResponseDto<List<SecurityQuestionWithSaltDto>> GetSecurityQuestionWithSalt(string username)
+        public ResponseDto<IList<SecurityQuestionWithSaltDto>> GetSecurityQuestionWithSalt(string username)
         {
             try
             {
@@ -1021,14 +1021,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         Salt = salt.Salt
                     }).ToList();
 
-                return new ResponseDto<List<SecurityQuestionWithSaltDto>>()
+                return new ResponseDto<IList<SecurityQuestionWithSaltDto>>()
                 {
                     Data = securityQuestionWithSaltDto
                 };
             }
             catch (Exception)
             {
-                return new ResponseDto<List<SecurityQuestionWithSaltDto>>()
+                return new ResponseDto<IList<SecurityQuestionWithSaltDto>>()
                 {
                     Data = null,
                     Error = GeneralErrorMessages.GENERAL_ERROR

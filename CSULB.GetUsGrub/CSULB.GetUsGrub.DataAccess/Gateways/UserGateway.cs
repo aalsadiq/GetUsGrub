@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// A <c>UserGateway</c> class.
     /// Defines methods that communicates with the UserContext.
     /// <para>
-    /// @author: Jennifer Nguyen, Angelica Salas Tovar, Rachel Dang
+    /// @author: Jennifer Nguyen, Angelica Salas Tovar, Rachel Dang, Andrew Kao
     /// @updated: 04/24/2018
     /// </para>
     /// </summary>
@@ -249,6 +249,17 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.BusinessHours.Add(businessHour);
                         context.SaveChanges();
                     }
+
+                    // Add First Menu
+                    context.RestaurantMenus.Add(new RestaurantMenu("Your First Menu", false, 0));
+                    context.SaveChanges();
+
+                    // Add First Menu Item
+                    // Find the corresponding menu
+                    var dbRestaurantMenu = (from menu in context.RestaurantMenus
+                                            where menu.RestaurantId == restaurantProfile.Id
+                                            select menu).SingleOrDefault();
+                    dbRestaurantMenu.RestaurantMenuItems.Add(new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_MENU_ITEM_IMAGE, "", false, 0));
 
                     // Commit transaction to database
                     dbContextTransaction.Commit();

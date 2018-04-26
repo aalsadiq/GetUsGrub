@@ -49,7 +49,7 @@
             :disabled=disable
           ></v-text-field>
           <v-text-field
-            label="Enter new password"
+            label="Enter a password"
             v-model="userAccount.password"
             :rules="$store.state.rules.passwordRules"
             :min="8"

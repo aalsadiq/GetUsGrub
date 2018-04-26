@@ -5,7 +5,8 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img :src="imagePath"/>
+              <img :src="displayPicture"/>
+              {{ displayName }}
             </v-list-tile-avatar>
           <v-list-tile-content>
           <v-list-tile-title/>
@@ -26,7 +27,6 @@
       <v-btn flat id="logout-btn" @click="logout()">
         <v-icon>power_settings_new</v-icon>
       </v-btn>
-      {{ imagePath }}
     </v-navigation-drawer>
   </div>
 </template>
@@ -51,7 +51,6 @@ export default {
       ],
       mini: true,
       right: null,
-      imagePath: '../../../../Images/DefaultImages/DefaultProfileImage.png', // For Admin
       output: '',
       displayName: '',
       displayPicture: ''
@@ -71,9 +70,7 @@ export default {
     }
   },
   created () {
-    // this.ImagePath = require('../../../../Images/DefaultImages/DefaultProfileImage.png')
     this.getAdminProfile()
-    // this.imagePath = require(this.displayPicture)
   },
   methods: {
     logout () {
@@ -89,40 +86,47 @@ export default {
       })
     },
     getAdminProfile () {
-      axios.get(this.$store.state.urls.profileManagement.userProfile, {
-        headers: {
-          Authorization: `Bearer ${this.$store.state.authenticationToken}`
-        },
-        params: {}
-      }).then(response => {
-        this.displayName = response.data.displayName
-        this.displayPicture = response.data.displayPicture
-      }).catch(error => {
-        try {
-          if (error.response.status === 401) {
-            // Route to Unauthorized page
-            this.$router.push({ path: '/Unauthorized' })
-          }
-          if (error.response.status === 403) {
-            // Route to Forbidden page
-            this.$router.push({ path: '/Forbidden' })
-          }
-          if (error.response.status === 404) {
-            // Route to ResourceNotFound page
-            this.$router.push({ path: '/ResourceNotFound' })
-          }
-          if (error.response.status === 500) {
-            // Route to InternalServerError page
-            this.$router.push({ path: '/InternalServerError' })
-          } else {
-            this.errors = JSON.parse(JSON.parse(error.response.data.message))
-          }
-          Promise.reject(error)
-        } catch (ex) {
-          this.errors = error.response.data
-          Promise.reject(error)
+      try {
+        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
+          axios.get(this.$store.state.urls.profileManagement.userProfile, {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.authenticationToken}`
+            }
+          }).then(response => {
+            this.displayName = response.data.displayName
+            this.displayPicture = response.data.displayPicture
+          }).catch(error => {
+            try {
+              if (error.response.status === 401) {
+                // Route to Unauthorized page
+                this.$router.push({ path: '/Unauthorized' })
+              }
+              if (error.response.status === 403) {
+                // Route to Forbidden page
+                this.$router.push({ path: '/Forbidden' })
+              }
+              if (error.response.status === 404) {
+                // Route to ResourceNotFound page
+                this.$router.push({ path: '/ResourceNotFound' })
+              }
+              if (error.response.status === 500) {
+                // Route to InternalServerError page
+                this.$router.push({ path: '/InternalServerError' })
+              } else {
+                this.errors = JSON.parse(JSON.parse(error.response.data.message))
+              }
+              Promise.reject(error)
+            } catch (ex) {
+              this.errors = error.response.data
+              Promise.reject(error)
+            }
+          })
+        } else {
+          this.$router.push({ path: '/Forbidden' })
         }
-      })
+      } catch (ex) {
+        this.$router.push({ path: '/Forbidden' })
+      }
     }
   }
 }

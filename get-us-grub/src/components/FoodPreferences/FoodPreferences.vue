@@ -6,17 +6,17 @@
         <h3 v-else>{{ editMessage }}</h3>
       </v-card-title>
       <v-expand-transition>
-        <v-card-text v-show="!isEdit">
-          <div class="form-component">
+        <v-card-text v-show="!isChecklist">
+          <div class="form-component" style="padding-bottom: 1em">
             <li v-for="preference in currentFoodPreferences" :key='preference'>{{ preference }}</li>
           </div>
-          <div class="btn-divider">
+          <div class="btn-divider" v-show="isEdit">
             <v-btn :dark="true" @click.native="toggleEdit">Edit Food Preferences</v-btn>
           </div>
         </v-card-text>
       </v-expand-transition>
       <v-expand-transition>
-        <v-card-text v-show="isEdit">
+        <v-card-text v-show="isChecklist">
           <div class="form-component">
               <v-checkbox
                 v-for="preference in $store.state.constants.foodPreferences"
@@ -46,13 +46,16 @@ import jwt from 'jsonwebtoken'
 
 export default {
   name: 'FoodPreferences',
+  props: [
+    'isEdit'
+  ],
   data: () => ({
     message: 'Here contains your list of dietary preferences.',
     editMessage: 'Update your dietary preferences by hitting save.',
     updatedFoodPreferences: [],
     currentFoodPreferences: [],
     errors: [],
-    isEdit: false,
+    isChecklist: false,
     isDisabled: true
   }),
   watch: {
@@ -62,7 +65,7 @@ export default {
   },
   methods: {
     toggleEdit: function () {
-      this.isEdit = !this.isEdit
+      this.isChecklist = !this.isChecklist
     },
     checkChanges: function () {
       var current = this.currentFoodPreferences

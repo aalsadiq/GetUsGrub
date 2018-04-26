@@ -34,6 +34,7 @@
 <script>
 import jwt from 'jsonwebtoken'
 import axios from 'axios'
+
 export default {
   name: 'admin-header',
   showImageUpload: false,

@@ -120,8 +120,8 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(2);
-            errors[0].ToString().Should().Be("State is required." );
-            errors[1].ToString().Should().Be("State be a valid state.");
+            errors[0].ToString().Should().Be(ValidationErrorMessages.STATE_REQUIRED);
+            errors[1].ToString().Should().Be(ValidationErrorMessages.NOT_VALID_STATE);
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace CSULB.GetUsGrub.UnitTests
             // Assert
             isValid.Should().Be(false);
             errors.Count.Should().Be(1);
-            errors[0].ToString().Should().Be("State be a valid state.");
+            errors[0].ToString().Should().Be(ValidationErrorMessages.NOT_VALID_STATE);
         }
 
         [Fact]

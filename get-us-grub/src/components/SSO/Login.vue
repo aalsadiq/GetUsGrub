@@ -10,12 +10,12 @@
             <v-card-title>
               Please wait while we securely log you in...
             </v-card-title>
-            <v-progress-circular :size=50 indeterminate color="primary"></v-progress-circular>
+            <v-progress-circular :size=50 indeterminate color="primary" />
           </div>
           <div v-if='!isLoading'>
             <v-avatar :size=250><img src="@/assets/GetUsGrub-Sad.png"></v-avatar>
             <v-card-title>
-              An error has occurred. Please try logging in.
+              An error has occurred. Please try logging in manually.
             </v-card-title>
           </div>
         </v-card>
@@ -46,21 +46,24 @@ export default {
       method: 'GET',
       url: this.$store.state.urls.sso.login,
       headers: {
-        'Access-Control-Allow-Origin': this.$store.state.baseUrl,
-        'Access-Control-Allow-Credentials': true,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${queryJwt}`,
-        'X-Requested-With': 'XMLHttpRequest'
+        Authorization: `Bearer ${queryJwt}`
       }
     }).then(response => {
-      console.log(response)
       this.valid = true
       this.disable = false
-      this.$store.state.isAuthenticated = true
-      this.$store.state.authenticationToken = response.data
-      this.$store.state.username = jwt.decode(response.data)['Username']
-      this.$router.push({path: '/'})
+
+      var decodedJwt = jwt.decode(response.data)
+
+      this.$store.state.username = decodedJwt['Username']
+      console.log(decodedJwt)
+      if (decodedJwt.ReadIsFirstTimeUser === 'True') {
+        this.$store.state.firstTimeUserToken = response.data
+        this.$router.push('FirstTimeRegistration')
+      } else {
+        this.$store.state.isAuthenticated = true
+        this.$store.state.authenticationToken = response.data
+        this.$router.push({path: '/'})
+      }
     }).catch(ex => {
       this.isLoading = false
     })

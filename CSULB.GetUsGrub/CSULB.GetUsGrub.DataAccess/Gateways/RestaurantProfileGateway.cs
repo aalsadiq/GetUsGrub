@@ -44,8 +44,9 @@ namespace CSULB.GetUsGrub.DataAccess
                 // Find restaurant's business hours
                 var businessHourDtos = (from businessHour in context.BusinessHours
                                           where businessHour.RestaurantId == dbRestaurantProfile.Id
-                                          select new BusinessHourDto()
+                                          select new RestaurantBusinessHourDto()
                                           {
+                                              Id = businessHour.Id,
                                               Day = businessHour.Day,
                                               OpenDateTime = businessHour.OpenTime,
                                               CloseDateTime = businessHour.CloseTime
@@ -55,7 +56,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                 var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
 
-                if (dbRestaurantMenus != null)
+                if (dbRestaurantMenus.Count > 0)
                 {
                     foreach (var menu in dbRestaurantMenus)
                     {
@@ -82,7 +83,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                 else
                 {
-                    dbRestaurantMenus = new Collection<RestaurantMenu>();
+                    restaurantMenusList = new List<RestaurantMenuWithItems>();
                 }
                 
                 ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
@@ -100,7 +101,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="restaurantProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditRestaurantProfileById(int? id, UserProfile userProfileDomain, RestaurantProfile restaurantProfileDomain, IList<BusinessHourDto> businessHourDtos, IList<RestaurantMenuWithItems> restaurantMenuDomains)
+        public ResponseDto<bool> EditRestaurantProfileById(int? id, UserProfile userProfileDomain, RestaurantProfile restaurantProfileDomain, IList<RestaurantBusinessHourDto> RestaurantBusinessHourDtos, IList<RestaurantMenuWithItems> restaurantMenuDomains)
         {
             using (context)
             {
@@ -157,34 +158,34 @@ namespace CSULB.GetUsGrub.DataAccess
 
                         // Find the business hours on the database that have the same Ids as the new business hours
 
-                        foreach (var businessHourDto in businessHourDtos)
+                        foreach (var restaurantBusinessHourDto in RestaurantBusinessHourDtos)
                         {
-                            Flag flag = businessHourDto.Flag;
+                            Flag flag = restaurantBusinessHourDto.Flag;
                             switch (flag)
                             {
                                 case Flag.NotSet:
                                     break;
                                 case Flag.Add:
                                     // reset flag
-                                    businessHourDto.Flag = 0;
-                                    var businessHourDomain = new BusinessHour(businessHourDto.Day, businessHourDto.OpenDateTime, businessHourDto.CloseDateTime);
+                                    restaurantBusinessHourDto.Flag = 0;
+                                    var businessHourDomain = new BusinessHour(restaurantBusinessHourDto.Day, restaurantBusinessHourDto.OpenDateTime, restaurantBusinessHourDto.CloseDateTime);
                                     dbBusinessHours.Add(businessHourDomain);
                                     context.SaveChanges();
                                     break;
                                 case Flag.Edit:
                                     // find the corresponding businessHour by ID
                                     var dbBusinessHour = (from dbHour in context.BusinessHours
-                                                          where dbHour.Id == businessHourDto.Id
+                                                          where dbHour.Id == restaurantBusinessHourDto.Id
                                                           select dbHour).SingleOrDefault();
-                                    dbBusinessHour.Day = businessHourDto.Day;
-                                    dbBusinessHour.OpenTime = businessHourDto.OpenDateTime;
-                                    dbBusinessHour.CloseTime = businessHourDto.CloseDateTime;
+                                    dbBusinessHour.Day = restaurantBusinessHourDto.Day;
+                                    dbBusinessHour.OpenTime = restaurantBusinessHourDto.OpenDateTime;
+                                    dbBusinessHour.CloseTime = restaurantBusinessHourDto.CloseDateTime;
                                     context.SaveChanges();
                                     break;
                                 case Flag.Delete:
                                     // find the corresponding businessHour by ID
                                     dbBusinessHour = (from hour in context.BusinessHours
-                                                        where hour.Id == businessHourDto.Id
+                                                        where hour.Id == restaurantBusinessHourDto.Id
                                                         select hour).SingleOrDefault();
                                     context.BusinessHours.Remove(dbBusinessHour);
                                     context.SaveChanges();

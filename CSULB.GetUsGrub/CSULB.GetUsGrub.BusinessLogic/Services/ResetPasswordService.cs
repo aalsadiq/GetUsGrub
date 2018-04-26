@@ -1,6 +1,7 @@
 ﻿namespace CSULB.GetUsGrub.BusinessLogic
 {
-    public class PasswordManager
+    public class ResetPasswordService
     {
+
     }
 }

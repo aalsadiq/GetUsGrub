@@ -78,7 +78,7 @@ namespace CSULB.GetUsGrub.DataAccess
                 try
                 {
                     // Add UserAccount
-                    context.UserAccounts.Add(userAccount);
+                    context.UserAccounts.AddOrUpdate(userAccount);
                     context.SaveChanges();
 
                     // Get Id from UserAccount
@@ -119,7 +119,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.SaveChanges();
                     }
                     // Add PasswordSalt
-                    context.PasswordSalts.Add(passwordSalt);
+                    context.PasswordSalts.AddOrUpdate(passwordSalt);
 
                     // Add UserClaims
                     context.UserClaims.Add(userClaims);
@@ -137,7 +137,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     // Rolls back the changes saved in the transaction
                     dbContextTransaction.Rollback();
@@ -227,7 +227,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     }
 
                     // Add PasswordSalt
-                    context.PasswordSalts.Add(passwordSalt);
+                    context.PasswordSalts.AddOrUpdate(passwordSalt);
 
                     // Add UserClaims
                     context.UserClaims.Add(userClaims);

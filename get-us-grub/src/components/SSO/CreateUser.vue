@@ -79,7 +79,7 @@
                 <v-stepper-content step='6'>
                   <contact-info-form v-model='profile' />
                   <v-btn color='grey lighten-5' @click='formStep = 4'>Previous</v-btn>
-                  <v-btn color="primary" :disabled="!profile.isValidContactInfo" @click="submitUser">Submit</v-btn>
+                  <v-btn color="primary" :disabled="!profile.isValidContactInfo" @click="submitRestaurant">Submit</v-btn>
                 </v-stepper-content>
               </v-stepper-items>
             </v-stepper>

@@ -18,14 +18,11 @@ import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload.vue
 import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
-import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 import Login from '@/components/Login/Login.vue'
 import Testing from '@/components/Login/Logout.vue'
 import Profile from '@/components/Profile/Profile.vue'
 import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
 import SsoLogin from '@/components/Sso/Login.vue'
-// import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
-// import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 
 Vue.use(Router)
 
@@ -157,11 +154,6 @@ export default new Router({
       path: '/FoodPreferences',
       name: 'FoodPreferences',
       component: FoodPreferences
-    },
-    {
-      path: '/FoodPreferences/Edit',
-      name: 'EditFoodPreferences',
-      component: EditFoodPreferences
     },
     {
       path: '/Login',

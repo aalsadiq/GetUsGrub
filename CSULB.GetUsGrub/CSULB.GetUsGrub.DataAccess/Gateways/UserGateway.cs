@@ -71,15 +71,8 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreIndividualUser(IndividualUserRegistrationParameterObject param)
+        public ResponseDto<bool> StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, UserClaims userClaims, UserProfile userProfile, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts)
         {
-            var userAccount = param.UserAccount;
-            var passwordSalt = param.PasswordSalt;
-            var claims = param.UserClaims;
-            var userProfile = param.UserProfile;
-            var securityQuestions = param.SecurityQuestions;
-            var securityAnswerSalts = param.SecurityAnswerSalts;
-
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
@@ -95,7 +88,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
-                    claims.Id = userId;
+                    userClaims.Id = userId;
                     userProfile.Id = userId;
 
                     // Add SecurityQuestions
@@ -129,7 +122,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     context.PasswordSalts.Add(passwordSalt);
 
                     // Add UserClaims
-                    context.UserClaims.Add(claims);
+                    context.UserClaims.Add(userClaims);
 
                     // Add UserProfile
                     context.UserProfiles.Add(userProfile);
@@ -176,19 +169,8 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="businessHours"></param>
         /// <param name="foodPreferences"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreRestaurantUser(RestaurantRegistrationParameterObject param)
+        public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, UserClaims userClaims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts, IList<FoodPreference> foodPreferences, IList<BusinessHour> businessHours)
         {
-            // Unpack parameter object into individual models.
-            var userAccount = param.UserAccount;
-            var passwordSalt = param.PasswordSalt;
-            var claims = param.UserClaims;
-            var userProfile = param.UserProfile;
-            var restaurantProfile = param.RestaurantProfile;
-            var securityQuestions = param.SecurityQuestions;
-            var securityAnswerSalts = param.SecurityAnswerSalts;
-            var foodPreferences = param.FoodPreferences;
-            var businessHours = param.BusinessHours;
-
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
@@ -204,7 +186,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
-                    claims.Id = userId;
+                    userClaims.Id = userId;
                     userProfile.Id = userId;
                     restaurantProfile.Id = userId;
 
@@ -248,7 +230,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     context.PasswordSalts.Add(passwordSalt);
 
                     // Add UserClaims
-                    context.UserClaims.Add(claims);
+                    context.UserClaims.Add(userClaims);
 
                     // Add UserProfile
                     context.UserProfiles.Add(userProfile);

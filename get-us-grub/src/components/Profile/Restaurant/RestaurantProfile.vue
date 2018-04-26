@@ -42,8 +42,9 @@
                     dark
                   ></v-text-field>
                   </v-flex>
+                  <span v-if="showDisplayNameError"> {{ error }} </span>
                   <v-flex>
-                  <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()">
+                  <v-btn id="display-name-edit-btn" dark icon @click="submitEditDisplayName()">
                     <v-icon>save</v-icon>
                   </v-btn>
                   </v-flex>
@@ -102,10 +103,10 @@
       </div>
     </div>
     <div id="edit-btns-div">
-      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit">
+      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
         Submit All Changes
       </v-btn>
-      <v-btn dark @click="cancel()" v-if="isEdit">
+      <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
         Cancel
       </v-btn>
     </div>
@@ -136,6 +137,8 @@ export default {
   },
   data () {
     return {
+      showDisplayNameError: false,
+      error: '',
       editDisplayName: false,
       isEdit: false,
       profile: {
@@ -147,7 +150,7 @@ export default {
           street2: '',
           city: '',
           state: '',
-          zip: 0
+          zip: null
         },
         details: {
           avgFoodPrice: 1,
@@ -174,8 +177,7 @@ export default {
         'Business Hours',
         'Menus',
         'Accommodations'
-      ],
-      error: null
+      ]
     }
   },
   // Check if user has permission to view the page
@@ -284,6 +286,25 @@ export default {
     },
     toggleEditDisplayName () {
       this.editDisplayName = !this.editDisplayName
+    },
+    submitEditDisplayName () {
+      console.log('here')
+      if (this.checkDisplayNameDoesNotEqualUsername()) {
+        this.toggleEditDisplayName()
+        this.editRestaurantProfile()
+      }
+    },
+    checkDisplayNameDoesNotEqualUsername () {
+      console.log('here')
+      if (this.$store.state.username === this.editDisplayName) {
+        console.log('herehere')
+        this.error = 'Username must not equal display name.'
+        this.showDisplayNameError = true
+        return false
+      } else {
+        this.showDisplayNameError = false
+        return true
+      }
     },
     cancel () {
       this.toggleIsEdit()

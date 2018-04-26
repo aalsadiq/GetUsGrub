@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Performs business logic and executes requests regarding user profiles
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// @updated: 4/28/18
     /// </summary>
     public class UserProfileManager : IProfileManager<UserProfileDto>
     {
@@ -26,7 +26,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Retrieve profile from database
             var profileGateway = new UserProfileGateway();
 
-            var userProfileResponseDto = profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id);
+						var userProfileResponseDto = profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id); // TODO: @Andrew, you had this and it doesnt exist anymore... profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id); [-Angelica]
 
             return userProfileResponseDto;
         }

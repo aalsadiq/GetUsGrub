@@ -6,7 +6,7 @@ namespace CSULB.GetUsGrub.Models
     /// Restaurant profile DTO
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/20/18
+    /// @updated: 4/25/18
     /// </summary>
     public class RestaurantProfileDto : IRestaurantProfile
     {
@@ -20,10 +20,6 @@ namespace CSULB.GetUsGrub.Models
         public GeoCoordinates GeoCoordinates { get; set; }
         public IList<RestaurantBusinessHourDto> BusinessHours { get; set; }
         public IList<RestaurantMenuWithItems> RestaurantMenusList { get; set; }
-        //public Dictionary<RestaurantMenu, IList<RestaurantMenuItem>> menuDictionary
-        // public IList<BusinessHour> BusinessHours { get; set; }
-        //public ICollection<RestaurantMenu> RestaurantMenus { get; set; }
-        //public ICollection<RestaurantMenuItem> RestaurantMenuItems { get; set; }
 
         // Constructors
         public RestaurantProfileDto() { }

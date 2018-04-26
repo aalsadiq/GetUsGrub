@@ -10,7 +10,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// Restaurant profile queries
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// @updated: 4/26/18
     /// </summary>
     public class RestaurantProfileGateway: IDisposable
     {
@@ -60,10 +60,10 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     foreach (var menu in dbRestaurantMenus)
                     {
-                        // create the menu domain
+                        // Create the menu domain
                         var menuDomain = new RestaurantMenu(menu.Id, menu.MenuName, menu.IsActive, menu.Flag);
 
-                        // create the list for the menu items
+                        // Create the list for the menu items
                         var menuItemDomains = new List<RestaurantMenuItem>();
                         // Then, find all menu items associated with each menu and turn that into a list
                         var dbMenuItems = (from menuItems in context.RestaurantMenuItems
@@ -166,7 +166,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                 case Flag.NotSet:
                                     break;
                                 case Flag.Add:
-                                    // reset flag
+                                    // Reset flag
                                     restaurantBusinessHourDto.Flag = 0;
                                     var businessHourDomain = new BusinessHour(restaurantBusinessHourDto.TimeZone, restaurantBusinessHourDto.Day, restaurantBusinessHourDto.OpenDateTime, restaurantBusinessHourDto.CloseDateTime);
                                     dbBusinessHours.Add(businessHourDomain);
@@ -184,7 +184,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                     context.SaveChanges();
                                     break;
                                 case Flag.Delete:
-                                    // find the corresponding businessHour by ID
+                                    // Find the corresponding businessHour by ID
                                     dbBusinessHour = (from hour in context.BusinessHours
                                                         where hour.Id == restaurantBusinessHourDto.Id
                                                         select hour).SingleOrDefault();
@@ -208,21 +208,21 @@ namespace CSULB.GetUsGrub.DataAccess
                                     dbRestaurantMenus.Add(restaurantMenuWithItems.RestaurantMenu);
                                     context.SaveChanges();
 
-                                    // add the menu items inside the menu
+                                    // Add the menu items inside the menu
                                     foreach (var menuItem in restaurantMenuWithItems.MenuItem)
                                     {
-                                        // find the corresponding menu
+                                        // Find the corresponding menu
                                         var dbRestaurantMenu = (from menu in context.RestaurantMenus
                                                                 where menu.Id == restaurantMenuWithItems.RestaurantMenu.Id
                                                                 select menu).SingleOrDefault();
-                                        // reset flag
+                                        // Reset flag
                                         menuItem.Flag = 0;
                                         dbRestaurantMenu.RestaurantMenuItems.Add(menuItem);
                                         context.SaveChanges();
                                     }
                                     break;
                                 case Flag.Edit:
-                                    // query for menu with the same ID
+                                    // Query for menu with the same ID
                                     var dbMenu = (from menu in context.RestaurantMenus
                                                           where menu.Id == restaurantMenuWithItems.RestaurantMenu.Id
                                                           select menu).SingleOrDefault();
@@ -231,12 +231,12 @@ namespace CSULB.GetUsGrub.DataAccess
                                     context.SaveChanges();
                                     break;
                                 case Flag.Delete:
-                                    // retrieves the menu from the db
+                                    // Retrieves the menu from the db
                                     dbMenu = (from menu in context.RestaurantMenus
                                               where menu.Id == restaurantMenuWithItems.RestaurantMenu.Id
                                               select menu).SingleOrDefault();
                                     context.RestaurantMenus.Remove(dbMenu);
-                                    // iterate through that menu's menu items
+                                    // Iterate through that menu's menu items
                                     foreach (var menuItem in restaurantMenuWithItems.MenuItem)
                                     {
                                        var dbMenuItem = (from item in context.RestaurantMenuItems
@@ -258,17 +258,17 @@ namespace CSULB.GetUsGrub.DataAccess
                                 switch (flag)
                                 {
                                     case Flag.Add:
-                                        // find the corresponding menu
+                                        // Find the corresponding menu
                                         var dbRestaurantMenu = (from menu in context.RestaurantMenus
                                                                 where menu.Id == restaurantMenuWithItems.RestaurantMenu.Id
                                                                 select menu).SingleOrDefault();
-                                        // reset flag
+                                        // Reset flag
                                         menuItem.Flag = 0;
                                         dbRestaurantMenu.RestaurantMenuItems.Add(menuItem);
                                         context.SaveChanges();
                                         break;
                                     case Flag.Edit:
-                                        // query for menu item with the same ID
+                                        // Query for menu item with the same ID
                                         var dbMenuItem = (from item in context.RestaurantMenuItems
                                                           where item.Id == menuItem.Id
                                                           select item).SingleOrDefault();

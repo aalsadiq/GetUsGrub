@@ -21,6 +21,9 @@ export const store = new Vuex.Store({
     ],
     restaurantMenus: [
     ],
+    showRestaurantMenuItems: false,
+    restaurantMenuItems: [
+    ],
     billItems: [
     ],
     billUsers: [
@@ -36,7 +39,7 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantId: 26,
+        restaurantId: null,
         displayName: '',
         address: {
           street1: '',
@@ -90,6 +93,9 @@ export const store = new Vuex.Store({
         login: 'http://localhost:8081/Sso/Login',
         createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
         createRestaurantUser: 'http://localhost:8081/User/FirstTimeRegistration/Restaurant'
+      },
+      restaurantBillSplitter: {
+        getRestaurantMenus: 'http://localhost:8081/RestaurantBillSplitter/Restaurant'
       }
     },
     // Rules for validations
@@ -146,6 +152,19 @@ export const store = new Vuex.Store({
       ],
       businessHourRules: [
         businessHour => !!businessHour || 'Business hour is required'
+      ],
+      menuNameRules: [
+        menuName => !!menuName || 'Menu name is required'
+      ],
+      itemNameRules: [
+        itemName => !!itemName || 'Menu item name is required'
+      ],
+      itemPriceRules: [
+        itemPrice => !!itemPrice || 'Item price is required',
+        itemPrice => /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(itemPrice) || 'Incorrect price format'
+      ],
+      tagRules: [
+        tag => !!tag || 'Tag is required'
       ]
     },
     // Constants are data that are non-changing
@@ -374,11 +393,20 @@ export const store = new Vuex.Store({
     totalPrice: state => {
       var temp = 0
       state.billItems.forEach(function (element) {
-        temp = temp + element.price
+        temp = temp + element.itemPrice
       })
-      return temp
+      return temp.toFixed(2)
     },
     getClaim: state => {
+    },
+    convertFromUSDtoInt: (state) => (usDollars) => {
+      return parseInt(usDollars * 100.00)
+    },
+    convertFromInttoUSD: (state) => (usDollars) => {
+      return usDollars / 100
+    },
+    getUniqueCounter: state => {
+      return state.uniqueCounter
     }
   },
   // Mutations are called to change the states in the store synchronously
@@ -391,30 +419,47 @@ export const store = new Vuex.Store({
     },
     addToDictionary: (state, payload) => {
       state.menuItems.push({
-        name: payload[0],
-        price: payload[1],
+        itemName: payload[0],
+        itemPrice: payload[1],
         selected: []
       })
     },
     addBillUser: (state, payload) => {
       state.billUsers.push({
         name: payload[0],
-        uID: payload[1]
+        uID: payload[1],
+        moneyOwes: 0
       })
     },
     populateRestaurantMenus: (state, payload) => {
       payload.forEach(function (element, index) {
         console.log(element)
-        this.$set(state.restaurantMenus[index], state.restaurantMenus, payload)
+        state.restaurantMenus[index] = element
+      })
+    },
+    useCustomMenu: (state) => {
+      state.showRestaurantMenuItems = false
+    },
+    populateDictionary: (state, payload) => {
+      state.showRestaurantMenuItems = true
+      state.restaurantMenuItems.splice(0, state.restaurantMenuItems.length)
+      payload.forEach(function (element, index) {
+        state.restaurantMenuItems.push({
+          itemName: element.itemName,
+          itemPrice: element.itemPrice,
+          selected: []
+        })
       })
     },
     editDictionaryItem: (state, payload) => {
-      state.menuItems[payload[0]].name = payload[1]
-      state.menuItems[payload[0]].price = payload[2]
+      state.menuItems[payload[0]].itemName = payload[1]
+      state.menuItems[payload[0]].itemPrice = payload[2]
     },
     editBillItem: (state, payload) => {
-      state.billItems[payload[0]].name = payload[1]
-      state.billItems[payload[0]].price = payload[2]
+      Vue.set(state.billItems[payload[0]], 'itemName', payload[1])
+      Vue.set(state.billItems[payload[0]], 'itemPrice', payload[2])
+      // state.billItems[payload[0]].itemName = payload[1]
+      // state.billItems[payload[0]].itemPrice = payload[2]
     },
     removeFromDictionary: (state, payload) => {
       console.log('Dictionary Store Mutation Index: ' + payload)
@@ -438,6 +483,50 @@ export const store = new Vuex.Store({
           }
         }
       };
+    },
+    updateUserMoneyOwesFromSelected: (state, payload) => {
+      var oldSplit
+      var newSplit
+      if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) {
+        state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].moneyOwes += payload.billItem.itemPrice
+      } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) {
+        state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice
+      } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is added to selected list
+        oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
+        newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
+        payload.oldSelected.forEach(function (element, index) {
+          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+        })
+        payload.newSelected.forEach(function (element, index) {
+          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+        })
+      } else if (payload.oldSelected.length > payload.newSelected.length) { // When a user is REMOVED from the selected list
+        oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
+        newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
+        payload.oldSelected.forEach(function (element, index) {
+          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+        })
+        payload.newSelected.forEach(function (element, index) {
+          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+        })
+      }
+    },
+    updateUserMoneyOwesFromEditItem: (state, payload) => {
+      var oldSplit = Math.ceil(payload.Item.itemPrice / payload.Item.selected.length)
+      var newSplit = Math.ceil(payload.newItemPrice / payload.Item.selected.length)
+      state.billItems[payload.itemIndex].selected.forEach(function (select, selectedIndex) {
+        state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes -= oldSplit
+        state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes += newSplit
+      })
+    },
+    updateUserMoneyOwesFromDeleteItem: (state, payload) => {
+      var oldSplit = Math.ceil(state.billItems[payload.itemIndex].itemPrice / state.billItems[payload.itemIndex].selected.length)
+      state.billItems[payload.itemIndex].selected.forEach(function (select, selectIndex) {
+        state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes -= oldSplit
+      })
+    },
+    incrementUniqueCounter: (state) => {
+      state.uniqueCounter++
     },
     setSelectedRestaurant: (state, payload) => {
       state.originAddress = payload.clientCity + ',' + payload.clientState
@@ -493,6 +582,16 @@ export const store = new Vuex.Store({
         context.commit('populateRestaurantMenus', payload)
       }, 250)
     },
+    useCustomMenu: (context) => {
+      setTimeout(function () {
+        context.commit('useCustomMenu')
+      }, 250)
+    },
+    populateDictionary: (context, payload) => {
+      setTimeout(function () {
+        context.commit('populateDictionary', payload)
+      }, 250)
+    },
     editDictionaryItem: (context, payload) => {
       setTimeout(function () {
         context.commit('editDictionaryItem', payload)
@@ -517,6 +616,24 @@ export const store = new Vuex.Store({
       setTimeout(function () {
         context.commit('removeUser', payload)
       }, 250)
+    },
+    updateUserMoneyOwesFromSelected: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateUserMoneyOwesFromSelected', payload)
+      }, 250)
+    },
+    updateUserMoneyOwesFromEditItem: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateUserMoneyOwesFromEditItem', payload)
+      }, 250)
+    },
+    updateUserMoneyOwesFromDeleteItem: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateUserMoneyOwesFromDeleteItem', payload)
+      }, 250)
+    },
+    incrementUniqueCounter: (context) => {
+      context.commit('incrementUniqueCounter')
     },
     setSelectedRestaurant: (context, payload) => {
       setTimeout(function () {

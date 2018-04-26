@@ -80,6 +80,11 @@ export const store = new Vuex.Store({
         menuItemUpload: 'http://localhost:8081/Profile/Restaurant/Edit/MenuItemImageUpload',
         profileImageUpload: 'http://localhost:8081/Profile/User/Edit/ProfileImageUpload'
       },
+      resetPassword: {
+        getSecurityQuestions: 'http://localhost:8081/ResetPassword/GetSecurityQuestions',
+        confirmSecurityAnswers: 'http://localhost:8081/ResetPassword/ConfirmSecurityAnswers',
+        updatePassword: 'http://localhost:8081/ResetPassword/UpdatePassword'
+      },
       sso: {
         login: 'http://localhost:8081/Sso/Login',
         createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
@@ -134,6 +139,12 @@ export const store = new Vuex.Store({
       ],
       foodPreferenceRules: [
         foodPreference => !!foodPreference || 'Food preference is required'
+      ],
+      businessDayRules: [
+        businessDay => !!businessDay || 'Business day is required'
+      ],
+      businessHourRules: [
+        businessHour => !!businessHour || 'Business hour is required'
       ]
     },
     // Constants are data that are non-changing
@@ -369,7 +380,7 @@ export const store = new Vuex.Store({
     getClaim: state => {
     }
   },
-  // Mutations are called to change the states in the store
+  // Mutations are called to change the states in the store synchronously
   mutations: {
     originAddress: (state, payload) => {
       state.originAddress = payload
@@ -443,8 +454,6 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
       state.restaurantSelection.selectedRestaurant.foodPreferences = payload.foodPreferences
     },
-    // TODO: @Ahmed It is better to make it a generic mutation to a state than naming it a "loginUser" mutation [-Jenn]
-    // Look at setAuthenticationToken (I am using this to set token to null when user clicks on the logout button)
     getAuthenticationToken: (state, payload) => {
       state.isAuthenticated = true
       state.authenticationToken = payload.auth
@@ -526,24 +535,3 @@ export const store = new Vuex.Store({
     }
   }
 })
-
-// export default new Vuex.Store({
-//  state: {
-//    isAuthenticated: false
-//  },
-//  getters: {
-//    isAuth: function (state) {
-//      return state.isAuthenticated
-//    }
-//  },
-//  mutations: {
-//    signIn: function (state)_{
-//      state.isAuthenticated = true
-//    }
-//  },
-//  actions: {
-//    signIn: function (context, payload) {
-//      context.commit('signIn')
-//    }
-//  }
-// })

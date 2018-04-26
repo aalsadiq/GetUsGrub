@@ -42,10 +42,10 @@
         :return-value.sync="time"
         :disabled="disabled"
         >
-        <!-- TIME PICKER OPENING START TIME -->
+        <!-- TIME PICKER OPENING TIME -->
         <v-text-field
           slot="activator"
-          label="Select opening time (24hr format)"
+          label="Select opening time (12hr format)"
           v-model="businessHour.openTime"
           prepend-icon="access_time"
           :rules="$store.state.rules.openTimeRules"
@@ -53,9 +53,8 @@
           required
           :disabled="disabled"
           ></v-text-field>
-        <!-- TIME PICKER OPENING END TIME -->
         <v-time-picker
-          format="24hr"
+          format="12hr"
           v-model="businessHour.openTime"
           @change="$refs.openMenu.save(time)"
           :max="businessHour.closeTime"
@@ -78,7 +77,7 @@
         :return-value.sync="time"
         :disabled="disabled"
         >
-        <!-- TIME PICKER CLOSING START TIME -->
+        <!-- TIME PICKER CLOSING TIME -->
         <v-text-field
           slot="activator"
           label="Select closing time (24hr format)"
@@ -89,7 +88,6 @@
           required
           :disabled="disabled"
           ></v-text-field>
-        <!-- TIME PICKER CLOSING END TIME -->
         <v-time-picker
           format="24hr"
           scrollable

@@ -54,7 +54,7 @@ export default {
 
       var decodedJwt = jwt.decode(response.data)
 
-      this.$store.state.username = decodedJwt['Username']
+      this.$store.state.username = decodedJwt.Username
       console.log(decodedJwt)
       if (decodedJwt.ReadIsFirstTimeUser === 'True') {
         this.$store.state.firstTimeUserToken = response.data

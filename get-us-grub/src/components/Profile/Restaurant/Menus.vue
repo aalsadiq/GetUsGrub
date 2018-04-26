@@ -181,7 +181,7 @@
                 <!-- Button to call Image Upload's function -->
                 <!-- <v-btn icon class="mx-0">
                   <v-icon color="blue">photo_camera</v-icon> -->
-                   <menu-image-upload/>
+                   <menu-image-upload :menuId="this.editedMenuItem.id"/>
                 <!-- </v-btn> -->
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
@@ -435,6 +435,7 @@ export default {
         flag: 0
       },
       editedMenuItem: {
+        id: 0,
         itemName: '',
         itemPrice: null,
         itemPicture: '',
@@ -444,6 +445,7 @@ export default {
         flag: 0
       },
       defaultMenuItem: {
+        id: 0,
         itemName: '',
         itemPrice: null,
         itemPicture: '',
@@ -595,5 +597,9 @@ export default {
 }
 #inactive-menus {
   margin: 2em 0 0 0;
+}
+div#image-upload{
+    width: 0px;
+    height: 0px;
 }
 </style>

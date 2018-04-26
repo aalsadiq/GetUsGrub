@@ -65,12 +65,13 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
+  props: ['menuId'],
   dialog: false,
   components: {
   },
   data: () => ({
     username: '', // Can grab from token
-    menuId: 249, // For testing purposes
+    menuId: 0, // For testing purposes
     responseData: '',
     show: false,
     showError: false,

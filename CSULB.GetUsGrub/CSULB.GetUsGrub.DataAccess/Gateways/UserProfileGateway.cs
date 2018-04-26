@@ -8,7 +8,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// User profile queries
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// @updated: 4/26/18
     /// </summary>
     public class UserProfileGateway: IDisposable
     {

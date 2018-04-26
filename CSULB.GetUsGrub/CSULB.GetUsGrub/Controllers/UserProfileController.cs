@@ -20,8 +20,7 @@ namespace CSULB.GetUsGrub.Controllers
     public class UserProfileController : ApiController
     {
         [HttpGet]
-        [AllowAnonymous] // TODO: remember to change localhosts to 8080
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
         [Route("User")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult GetProfile()
@@ -50,8 +49,7 @@ namespace CSULB.GetUsGrub.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous] // TODO: Remove for deployment
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.UPDATE)]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.UPDATE)]
         [Route("User/Edit")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]   
         public IHttpActionResult EditProfile([FromBody] UserProfileDto userProfileDto)

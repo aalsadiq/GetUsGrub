@@ -31,7 +31,6 @@
         <v-icon>power_settings_new</v-icon>
         <h5 id="logout-text"> Logout </h5>
       </v-btn>
-
     </v-navigation-drawer>
   </div>
 </template>

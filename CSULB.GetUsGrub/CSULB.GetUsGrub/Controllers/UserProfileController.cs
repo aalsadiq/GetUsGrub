@@ -77,11 +77,10 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-        // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/EditUser/ImageUpload
         [Route("User/Edit/ProfileImageUpload")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)]
         [HttpPost]
         public IHttpActionResult ProfileImageUpload() 
         {

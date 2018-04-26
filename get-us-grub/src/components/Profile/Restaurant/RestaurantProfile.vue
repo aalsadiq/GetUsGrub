@@ -99,10 +99,10 @@
       </div>
     </div>
     <div id="edit-btns-div">
-      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit">
+      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
         Submit All Changes
       </v-btn>
-      <v-btn dark @click="cancel()" v-if="isEdit">
+      <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
         Cancel
       </v-btn>
     </div>

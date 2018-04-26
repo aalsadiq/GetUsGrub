@@ -85,8 +85,15 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        //ImageUploadGateway for profile
-        //store the path in the database...
+        /// <summary>
+        /// Stores virtual path in database.
+        /// <para>
+        /// @author: Angelica Salas Tovar
+        /// @update: 04/26/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userProfileDto"></param>
+        /// <returns></returns>
         public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto)
         {
             using (var userContext = new UserContext())
@@ -100,6 +107,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                            where account.Username == userProfileDto.Username
                                            select account).FirstOrDefault();
 
+                        // Sets the current path to the virtual path
                         userAccount.UserProfile.DisplayPicture = userProfileDto.DisplayPicture;
                         userContext.SaveChanges();
                         dbContextTransaction.Commit();

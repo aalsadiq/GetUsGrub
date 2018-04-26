@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security;
 using System.Security.Claims;
+using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.UserAccessControl
 {
@@ -43,7 +44,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             {
                 System.Diagnostics.Debug.WriteLine(e);
                 // If an error occurs, throw a security exception
-                throw new SecurityException();
+                throw new SecurityException(GeneralErrorMessages.GENERAL_ERROR);
             }
            
         }

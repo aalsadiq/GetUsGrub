@@ -90,12 +90,11 @@ export default {
         }
       }).then(response => {
         this.$store.commit('setAuthenticationToken', null)
-        this.$store.commit('resetState', this.$store.state)
+        // Force refresh of page
+        location.reload()
         this.$router.push({path: '/'})
       }).catch(error => {
         this.$store.commit('setAuthenticationToken', null)
-        this.resetState()
-        this.$store.commit('resetState', this.$store.state)
         Promise.reject(error)
       })
     }

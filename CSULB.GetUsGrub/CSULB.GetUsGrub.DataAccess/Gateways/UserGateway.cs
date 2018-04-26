@@ -264,7 +264,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var dbRestaurantMenu = (from menu in context.RestaurantMenus
                                             where menu.RestaurantId == restaurantProfile.Id
                                             select menu).SingleOrDefault();
-                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_MENU_ITEM_IMAGE, "", false, 0);
+                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH, "", false, 0);
                     newMenuItem.RestaurantMenu = dbRestaurantMenu;
                     context.RestaurantMenuItems.Add(newMenuItem);
                     context.Entry(dbRestaurantMenu).State = System.Data.Entity.EntityState.Unchanged;

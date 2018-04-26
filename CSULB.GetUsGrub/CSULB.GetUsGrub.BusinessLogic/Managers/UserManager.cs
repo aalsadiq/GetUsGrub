@@ -342,7 +342,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             .ToList();
 
             userProfile = new UserProfile(
-                displayPicture: ImagePaths.DEFAULT_DISPLAY_IMAGE,
+                displayPicture: ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH,
                 displayName: dto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { setTimeout } from 'timers'
-import defaultState from './defaultState'
 
 Vue.use(Vuex)
 
@@ -372,10 +371,6 @@ export const store = new Vuex.Store({
   },
   // Mutations are called to change the states in the store
   mutations: {
-    // Reset states in store to default
-    resetState (state) {
-      Object.assign(state, defaultState)
-    },
     originAddress: (state, payload) => {
       state.originAddress = payload
     },

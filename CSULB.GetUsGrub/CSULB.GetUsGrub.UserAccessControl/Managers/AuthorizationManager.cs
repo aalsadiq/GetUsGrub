@@ -39,8 +39,9 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // Return true or false determining user access
                 return hasAccess;
             }          
-            catch (Exception)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e);
                 // If an error occurs, throw a security exception
                 throw new SecurityException();
             }

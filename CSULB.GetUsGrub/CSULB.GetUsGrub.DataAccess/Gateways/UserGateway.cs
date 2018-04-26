@@ -264,7 +264,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var dbRestaurantMenu = (from menu in context.RestaurantMenus
                                             where menu.RestaurantId == restaurantProfile.Id
                                             select menu).SingleOrDefault();
-                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_MENU_ITEM_IMAGE, "", false, 0);
+                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH, "", false, 0);
                     newMenuItem.RestaurantMenu = dbRestaurantMenu;
                     context.RestaurantMenuItems.Add(newMenuItem);
                     context.Entry(dbRestaurantMenu).State = System.Data.Entity.EntityState.Unchanged;
@@ -521,6 +521,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         foreach (var menuItems in userRestaurantMenuItems)
                         {
                             context.RestaurantMenuItems.Remove(menuItems);
+
+                            // If menus are set to the default path, move on
+                            if (menuItems.ItemPicture != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                            {
+                                // Deleting Menu Images
+                                deleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH,menuItems.ItemPicture);
+                                Debug.WriteLine(menuItems.ItemPicture);
+                            }
                         }
                     }
                     // RestaurantMenus
@@ -611,6 +619,16 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.FailedAttempts.Remove(failedAttempt);
                     }
 
+                    // Check if user image is set to default, if so move on
+                    var temp = userAccount.UserProfile.DisplayPicture;
+                    Debug.WriteLine("displayPicture: " + temp );
+                    //Debug.WriteLine("dvirtualdisplayname: " + ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH);
+                    if (userAccount.UserProfile.DisplayPicture != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    {
+                        // Deleting profile image
+                        deleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH,userAccount.UserProfile.DisplayPicture);
+                        Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
+                    }
                     //Delete useraccount
                     context.UserAccounts.Remove(userAccount);
                     context.SaveChanges(); 
@@ -652,23 +670,35 @@ namespace CSULB.GetUsGrub.DataAccess
                 //Set ResponseDto equal to the ResponseDto from EditDisplayName.
                 if (user.NewDisplayName != null) // TODO: @Jen Added because what Jen and I did is not working?!  [-Angelica]
                 {
-                    EditDisplayName(user.Username, user.NewDisplayName);
+                    var result = EditDisplayName(user.Username, user.NewDisplayName);
+                    if (result.Error != null)
+                    {
+                        return new ResponseDto<bool>
+                        {
+                            Data = false,
+                            Error = result.Error
+                        };
+                    }
                 }
 
                 if (user.NewUsername != null) //Added
                 {
                     // Set ResponseDto equal to the ResponseDto from EditUserName.
-                    EditUserName(user.Username, user.NewUsername);
+                    var result = EditUserName(user.Username, user.NewUsername);
+                    if (result.Error != null)
+                    {
+                        return new ResponseDto<bool>
+                        {
+                            Data = false,
+                            Error = result.Error
+                        };
+                    }
                 }
+
                 return new ResponseDto<bool>
                 {
                     Data = true
                 };
-                //return new ResponseDto<bool>()
-                //{
-                //    Data = false,
-                //    Error = GeneralErrorMessages.GENERAL_ERROR
-                //};
             }
             catch (Exception)
             {
@@ -700,25 +730,28 @@ namespace CSULB.GetUsGrub.DataAccess
                                         select account).SingleOrDefault();
 
                     // Save image to path
-                    string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
+                    string savePath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH;
 
                     // Set Diplay Picture Path
                     var oldPath = @userAccount.UserProfile.DisplayPicture;
+
                     var extension = Path.GetExtension(oldPath);
 
+                    var deleteOldPath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + userAccount.Username + extension;
+
                     // If image path is not default change it.
-                    if (oldPath != ImagePaths.DEFAULT_DISPLAY_IMAGE)
+                    if (oldPath != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
                     {
                         // The new path once user has their profile picture.
                         var newPath = savePath + newUsername + extension;
 
                         // Rename profile image based on username
-                        File.Move(oldPath, newPath);
+                        File.Move(deleteOldPath, newPath);
                     }
                     else
                     {
                         // If it is the default path, leave it as default.
-                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
                     }
 
                     // Select the username from useraccount and give it the new username.
@@ -1069,5 +1102,42 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             context.Dispose();
         }
+
+        public ResponseDto<bool> deleteImage(string path, string image)
+        {
+            // Delete a file by using File class static method...
+            try
+            {
+                var imageName = Path.GetFileName(image);
+                Debug.WriteLine(imageName);
+
+                var filePath = path + imageName;
+                Debug.WriteLine(filePath);
+               
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+                }
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = "Image does not exist." // Add to constants later
+                };
+            }
+            catch (Exception){
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+            
+        }
+
     }
 }

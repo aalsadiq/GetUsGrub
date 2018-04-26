@@ -141,10 +141,7 @@ html {
   overflow-x: hidden;
 }
 /* Make scrollbar transparent */
-::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-}
+
 /* Omit text underlines to router-links */
 a {
   text-decoration: none;

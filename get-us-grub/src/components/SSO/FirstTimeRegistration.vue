@@ -1,11 +1,9 @@
 <template>
-  <div id='firsttimeregistration'>
+  <div>
     <app-header/>
-    <v-container class="scroll-y" id="scroll-target">
-      <v-container id="registration">
-        <create-user />
-      </v-container>
-    </v-container>
+      <div id="registration">
+        <app-create-user/>
+      </div>
     <app-footer/>
   </div>
 </template>
@@ -21,14 +19,14 @@ export default {
   components: {
     'app-header': AppHeader,
     'app-footer': AppFooter,
-    'create-user': CreateUser
+    'app-create-user': CreateUser
   },
   beforeCreate () {
-    if (this.$store.state.authenticationToken === null) {
+    if (this.$store.state.firstTimeUserToken === null) {
       this.$router.push('Unauthorized')
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantSelection === 'True') {
+      if (jwt.decode(this.$store.state.firstTimeUserToken).ReadIsFirstTimeUser === 'True') {
       } else {
         this.$router.push('Forbidden')
       }
@@ -38,3 +36,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#registration {
+  padding: 2.5em 0 0 0;
+  margin: 3.5em 10em 10em 11.5em;
+}
+</style>

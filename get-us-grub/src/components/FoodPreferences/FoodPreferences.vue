@@ -2,13 +2,14 @@
   <div>
     <v-card>
       <v-card-title class="form-component">
-        <h3 v-if="!isEdit">{{ message }}</h3>
+        <h3 v-if="!isChecklist">{{ message }}</h3>
         <h3 v-else>{{ editMessage }}</h3>
       </v-card-title>
       <v-expand-transition>
         <v-card-text v-show="!isChecklist">
           <div class="form-component" style="padding-bottom: 1em">
-            <li v-for="preference in currentFoodPreferences" :key='preference'>{{ preference }}</li>
+            <h4 v-if="this.currentFoodPreferences.length == 0">{{ emptyPreferencesMessage }}</h4>
+            <li v-else v-for="preference in currentFoodPreferences" :key='preference'>{{ preference }}</li>
           </div>
           <div class="btn-divider" v-show="isEdit">
             <v-btn :dark="true" @click.native="toggleEdit">Edit Food Preferences</v-btn>
@@ -52,6 +53,7 @@ export default {
   data: () => ({
     message: 'Here contains your list of dietary preferences.',
     editMessage: 'Update your dietary preferences by hitting save.',
+    emptyPreferencesMessage: 'Your list is currently empty. Be sure to add in preferences by hitting edit!',
     updatedFoodPreferences: [],
     currentFoodPreferences: [],
     errors: [],

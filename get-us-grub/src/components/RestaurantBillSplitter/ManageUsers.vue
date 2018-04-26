@@ -6,12 +6,22 @@
       <v-card-text>{{billItem.name}} {{billItem.price}}</v-card-text>
       <v-divider />
       <v-card-text>
-        <v-checkbox v-for="(billUser, billUserIndex) in billUsers"
-                    :key="billUserIndex"
-                    :label="billUser.name"
+        <div v-for="(billUser, billUserIndex) in billUsers"
+             :key="billUserIndex">
+          <v-checkbox :label="billUser.name"
+                      :value="billUser.uID"
+                      v-model="billItem.selected">
+          </v-checkbox>
+          <v-switch v-if="billItem.selected.includes(billUser.uID)"
+                    :label="`Split Manually?`"
                     :value="billUser.uID"
-                    v-model="billItem.selected">
-        </v-checkbox>
+                    v-model="billItem.selectedManual">
+          </v-switch>
+          <v-text-field v-if="billItem.selected.includes(billUser.uID) && billItem.selectedManual.includes(billUser.uID)"
+                        v-money="money"
+                        prefix="$">
+          </v-text-field>
+        </div>
       </v-card-text>
       <v-divider />
       <v-card-text style="display: inline-block">
@@ -28,6 +38,7 @@
 <script>
 import AddBillUser from './AddBillUser.vue'
 import { EventBus } from '@/event-bus/event-bus.js'
+import { VMoney } from 'v-money'
 
 export default {
   name: 'ManageUsers',
@@ -36,9 +47,18 @@ export default {
   },
   data () {
     return {
-      dialog: false
+      dialog: false,
+      money: {
+        decimal: '.',
+        thousands: '',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
+      }
     }
   },
+  directives: { money: VMoney },
   props: ['billItem', 'billItemIndex'],
   watch: {
     selected (newSelected, oldSelected) {

@@ -424,19 +424,20 @@ export const store = new Vuex.Store({
       state.menuItems.push({
         itemName: payload[0],
         itemPrice: payload[1],
-        selected: []
+        selected: [],
+        selectedManual: []
       })
     },
     addBillUser: (state, payload) => {
       state.billUsers.push({
         name: payload[0],
         uID: payload[1],
-        moneyOwes: 0
+        moneyOwes: 0,
+        tipAssigned: 0
       })
     },
     populateRestaurantMenus: (state, payload) => {
       payload.forEach(function (element, index) {
-        console.log(element)
         state.restaurantMenus[index] = element
       })
     },
@@ -450,7 +451,8 @@ export const store = new Vuex.Store({
         state.restaurantMenuItems.push({
           itemName: element.itemName,
           itemPrice: element.itemPrice,
-          selected: []
+          selected: [],
+          selectedManual: []
         })
       })
     },
@@ -461,19 +463,14 @@ export const store = new Vuex.Store({
     editBillItem: (state, payload) => {
       Vue.set(state.billItems[payload[0]], 'itemName', payload[1])
       Vue.set(state.billItems[payload[0]], 'itemPrice', payload[2])
-      // state.billItems[payload[0]].itemName = payload[1]
-      // state.billItems[payload[0]].itemPrice = payload[2]
     },
     removeFromDictionary: (state, payload) => {
-      console.log('Dictionary Store Mutation Index: ' + payload)
       state.menuItems.splice(payload, 1)
     },
     removeFromBillTable: (state, payload) => {
-      console.log('Bill Store Mutation Index: ' + payload)
       state.billItems.splice(payload, 1)
     },
     removeUser: (state, payload) => {
-      console.log('User Store Mutation Index ' + payload)
       state.billUsers.forEach(function (element, index) {
         if (element.uID === payload) {
           state.billUsers.splice(index, 1)
@@ -490,11 +487,11 @@ export const store = new Vuex.Store({
     updateUserMoneyOwesFromSelected: (state, payload) => {
       var oldSplit
       var newSplit
-      if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) {
+      if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) { // When the first new user is ADDED to selected list
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].moneyOwes += payload.billItem.itemPrice
-      } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) {
+      } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) { // When the last user is REMOVED from the selected list
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice
-      } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is added to selected list
+      } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is ADDED to selected list
         oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
         newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {
@@ -528,6 +525,19 @@ export const store = new Vuex.Store({
         state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes -= oldSplit
       })
     },
+    updateBillUsersTipAssigned: (state, payload) => {
+      state.billUsers.forEach(function (element, index) {
+        Vue.set(state.billUsers[index], 'tipAssigned', payload[index].tip)
+      })
+    },
+    // updateUserMoneyOwesFromDeleteUser: (state, payload) => {
+    //   var oldSplit
+    //   var newSplit
+    //   state.billItems.forEach(function (element, index) {
+    //     if (state.billItems[index])
+    //     state.billItems[index].selected[state.billItems.selected.findIndex(x => x.selected === payload.billUserUID)]
+    //   })
+    // },
     incrementUniqueCounter: (state) => {
       state.uniqueCounter++
     },
@@ -569,14 +579,11 @@ export const store = new Vuex.Store({
     },
     addToDictionary: (context, payload) => {
       setTimeout(function () {
-        console.log('Added Food Item Name: ' + payload[0])
-        console.log('Added Food Item Price: ' + payload[1])
         context.commit('addToDictionary', payload)
       }, 250)
     },
     addBillUser: (context, payload) => {
       setTimeout(function () {
-        console.log('Added New Bill User: ' + payload)
         context.commit('addBillUser', payload)
       }, 250)
     },
@@ -633,6 +640,16 @@ export const store = new Vuex.Store({
     updateUserMoneyOwesFromDeleteItem: (context, payload) => {
       setTimeout(function () {
         context.commit('updateUserMoneyOwesFromDeleteItem', payload)
+      }, 250)
+    },
+    updateUserMoneyOwesFromDeleteUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateUserMoneyOwesFromDeleteUser', payload)
+      }, 250)
+    },
+    updateBillUsersTipAssigned: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateBillUsersTipAssigned', payload)
       }, 250)
     },
     incrementUniqueCounter: (context) => {

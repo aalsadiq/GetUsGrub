@@ -642,11 +642,11 @@ export const store = new Vuex.Store({
         context.commit('updateUserMoneyOwesFromDeleteItem', payload)
       }, 250)
     },
-    updateUserMoneyOwesFromDeleteUser: (context, payload) => {
-      setTimeout(function () {
-        context.commit('updateUserMoneyOwesFromDeleteUser', payload)
-      }, 250)
-    },
+    // updateUserMoneyOwesFromDeleteUser: (context, payload) => {
+    //   setTimeout(function () {
+    //     context.commit('updateUserMoneyOwesFromDeleteUser', payload)
+    //   }, 250)
+    // },
     updateBillUsersTipAssigned: (context, payload) => {
       setTimeout(function () {
         context.commit('updateBillUsersTipAssigned', payload)

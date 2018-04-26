@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     RemoveUser: function (billUserIndex, billUserUID) {
-      this.$store.dispatch('updateUserMoneyOwesFromDeleteUser', { billUserIndex, billUserUID })
+      // this.$store.dispatch('updateUserMoneyOwesFromDeleteUser', { billUserIndex, billUserUID })
       this.$store.dispatch('removeUser', billUserUID)
     }
   },

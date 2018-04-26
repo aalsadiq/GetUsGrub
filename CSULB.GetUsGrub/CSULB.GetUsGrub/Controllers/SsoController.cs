@@ -114,7 +114,13 @@ namespace CSULB.GetUsGrub
                 }
 
                 //
-                var respose = result.Data;
+                var resetPasswordManager = new ResetPasswordManager(result.Data);
+                var updateResponse = resetPasswordManager.SsoUpdatePassword();
+
+                if (updateResponse.Error != null)
+                {
+                    return BadRequest(result.Error);
+                }
 
                 return Ok();
             }

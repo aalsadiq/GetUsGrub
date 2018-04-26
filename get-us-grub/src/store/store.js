@@ -15,7 +15,8 @@ export const store = new Vuex.Store({
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
-    uniqueCounter: 0,
+    uniqueUserCounter: 0,
+    menuItemImagePath: 'http://localhost:64525/Images/DefaultImages/DefaultMenuItemImage.png',
     menuItems: [
     ],
     restaurantMenus: [
@@ -151,6 +152,22 @@ export const store = new Vuex.Store({
       ],
       businessHourRules: [
         businessHour => !!businessHour || 'Business hour is required'
+      ],
+      timeZoneRules: [
+        timeZone => !!timeZone || 'Time zone is required'
+      ],
+      menuNameRules: [
+        menuName => !!menuName || 'Menu name is required'
+      ],
+      itemNameRules: [
+        itemName => !!itemName || 'Menu item name is required'
+      ],
+      itemPriceRules: [
+        itemPrice => !!itemPrice || 'Item price is required',
+        itemPrice => /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(itemPrice) || 'Incorrect price format'
+      ],
+      tagRules: [
+        tag => !!tag || 'Tag is required'
       ]
     },
     // Constants are data that are non-changing

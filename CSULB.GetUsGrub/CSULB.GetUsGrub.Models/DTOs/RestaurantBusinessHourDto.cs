@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.Models
 {
+    /// <summary>
+    /// Business hour DTO for restaurant profile use
+    /// 
+    /// @author: Andrew Kao
+    /// @updated: 4/25/16
+    /// </summary>
     public class RestaurantBusinessHourDto : IBusinessHourDto
     {
         public int? Id { get; set; }

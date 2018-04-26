@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar id="header-toolbar" dark fixed>
+  <v-toolbar id="header-toolbar" app dark fixed>
     <v-toolbar-items>
       <v-btn flat id="home-btn" to="/">
         <v-avatar :size="52" :tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>

@@ -38,24 +38,21 @@
         <br/>
         <v-flex xs4>
             <label class="custom-file-upload">
-                <h5>choose image
+                <h5>CHOOSE IMAGE
                 <i class="material-icons">cloud_download</i>
                 </h5>
               <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
             </label>
+            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
+              Upload
+            <v-icon color="white">cloud_upload</v-icon>
+            </v-btn>
           </v-flex>
           <br/>
             <div class="preview-image" v-if="imageData.length > 0">
               <img id="previewImage" class="preview" :src="imageData"/>
             </div>
           <br/>
-          <v-flex xs3>
-            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
-              Upload
-            <v-icon color="white">cloud_upload</v-icon>
-            </v-btn>
-            <br/>
-            </v-flex>
           </v-card>
           </v-dialog>
         </v-layout>
@@ -65,14 +62,14 @@
 
 <script>
 import axios from 'axios'
-// import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
   dialog: false,
   components: {
   },
   data: () => ({
-    username: 'username50X', // Can grab from token
+    username: '', // Can grab from token
     menuId: 249, // For testing purposes
     responseData: '',
     show: false,
@@ -81,18 +78,19 @@ export default {
     test: null,
     imageData: ''// Stores in base 64 format of image
   }),
+  beforeCreate () {
+    if (this.$store.state.authenticationToken === null) {
+      this.$router.push({path: '/Unauthorized'})
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
+        jwt.decode(this.$store.state.authenticationToken).UpdateImage === 'True') {
+      }
+    } catch (ex) {
+      this.$router.push({path: '/Forbidden'})
+    }
+  },
   methods: {
-    // beforeCreate () {
-    //   if (this.$store.state.authenticationToken === null) {
-    //     this.$router.push({path: '/Unauthorized'})
-    //   }
-    //   try {
-    //     if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
-    //     }
-    //   } catch (ex) {
-    //     this.$router.push({path: '/Forbidden'})
-    //   }
-    // },
     StoreSelectedFile: function (event) {
       this.selectedFile = event.target.files[0]
       this.previewImage(event)
@@ -155,7 +153,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #image-upload{
   height: 40em;
   width: 80em;
@@ -172,7 +170,7 @@ input[type="file"] {
   padding: 0em .5em .25em .25em;
   cursor: pointer;
   background: slateblue;
-  font-size: 14px;
+  font-size: 15px;
   margin-left: .30em;
   margin-right:.30em;
 }
@@ -185,5 +183,14 @@ input[type="file"] {
 }
 #user-text-box-alert{
   background-color: #e26161 !important
+}
+.btn__content{
+    border-top-width: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    width: 137.5px;
+    height: 27px;
 }
 </style>

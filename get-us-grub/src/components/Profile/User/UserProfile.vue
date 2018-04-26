@@ -10,12 +10,15 @@
                 :size="225"
                 class="grey lighten-4"
               >
-                <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
+              <img :src="displayPicture" alt="avatar">
               </v-avatar>
               <v-flex>
-                <v-btn id="image-upload-btn" dark v-if="isEdit">
+                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
                   <span id="upload-image-text">Upload Image</span>
-                </v-btn>
+                </v-btn> -->
+               <div v-if="isEdit">
+                  <profile-image-upload id="image-upload"/>
+                </div>
               </v-flex>
               <v-flex>
               <div id="display-name-div">
@@ -85,10 +88,10 @@
       </div>
     </div>
       <div id="edit-btns-div">
-    <v-btn dark @click="editUserProfile()" v-if="isEdit">
+    <v-btn dark @click="editUserProfile()" v-if="isEdit && itemsTab[tab] !== 'Food Preferences'">
       Submit All Changes
     </v-btn>
-    <v-btn dark @click="cancel()" v-if="isEdit">
+    <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Food Preferences'">
       Cancel
     </v-btn>
   </div>
@@ -106,7 +109,7 @@ export default {
   name: 'UserProfile',
   components: {
     FoodPreferences,
-    ProfileImageUpload
+    'profile-image-upload': ProfileImageUpload
   },
   data () {
     return {

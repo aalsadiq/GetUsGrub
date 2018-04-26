@@ -10,7 +10,7 @@
                 :size="225"
                 class="grey lighten-4"
               >
-                <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
+                <img :src="displayPicture" alt="avatar">
               </v-avatar>
               <v-flex>
                 <v-btn id="image-upload-btn" dark v-if="isEdit">
@@ -48,8 +48,7 @@
               </div>
               </v-flex>
             </v-layout>
-            <v-tooltip bottom>
-            <v-btn
+           <v-btn
               v-if="!isEdit"
               fab
               color="cyan accent-2"
@@ -62,8 +61,18 @@
               >
               <v-icon>edit</v-icon>
             </v-btn>
-             <span>Edit Profile</span>
-            </v-tooltip>
+            <v-btn
+              v-if="isEdit"
+              fab
+              color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="cancel()"
+              slot="activator"
+              >
+              <v-icon>clear</v-icon>
+            </v-btn>
           </div>
         </v-parallax>
       </div>
@@ -269,7 +278,7 @@ export default {
   margin: 0 0 3em 0;
 }
 .btn--bottom.btn--absolute {
-  bottom: -2.5em;
-  left: 47em;
+  bottom: 2em;
+  left: 100em;
 }
 </style>

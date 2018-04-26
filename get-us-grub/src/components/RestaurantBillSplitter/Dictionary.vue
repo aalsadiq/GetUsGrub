@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 import DictionaryInput from './DictionaryInput'
@@ -69,7 +69,7 @@ export default {
         uID: this.getAndIncrementUniqueCounter(),
         itemName: el.itemName,
         itemPrice: el.itemPrice,
-        selected: el.selected,
+        selected: el.selected
       }
     },
     getAndIncrementUniqueCounter: function () {

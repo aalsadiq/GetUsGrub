@@ -7,22 +7,21 @@
         <v-form v-model="valid"
                 ref="manageTipsForms"
                 lazy-validation>
-          <div v-for="(billUser, billUserIndex) in billUsers"
-               :key="billUser">
-            <h3> {{ billUserIndex }}</h3>
-            <h3> {{ billUser.name }} </h3>
+          <div v-for="(user, index) in billUsers"
+               :key="index">
+            <h3> {{ index }}</h3>
+            <h3> {{ user.name }} </h3>
             <v-text-field label="Tip"
                           :rules="[rules.required, rules.max, rules.nonnegative]"
                           prefix="$"
-                          v-model.number="tips[billUserIndex]"
+                          v-model.number="tips[index]"
                           v-money="money"
-                          @input="updateTip"
-                          required>
-            </v-text-field>
+                          @change="updateTip"
+                          required />
           </div>
           <v-btn color="teal"
                  dark
-                 v-on:click="updateBillUsersTipAssigned(tips)">
+                 v-on:click="updateBillUsersTipAssigned">
             Save
           </v-btn>
           <v-btn color="teal"
@@ -67,26 +66,27 @@ export default {
     }
   },
   created () {
-//    state.billUsers.forEach(function (element, index)this.tips)
   },
   directives: { money: VMoney },
-    methods: {
-      updateTip() {
-        console.log('before: '+this.tips)
-        this.billUsers.forEach(function (element, index) {
-          if (this.tips[index] < 0) {
-            this.tips[index] = -this.tips[index]
-          }
-        })
-        console.log('after:' + this.tips)
-      },
-    updateBillUsersTipAssigned: function (itemName, itemPrice) {
+  methods: {
+    updateTip () {
+      var self = this
+      console.log('before: ' + self.tips)
+      self.billUsers.forEach(function (element, index) {
+        if (self.tips[index] < 0) {
+          self.tips[index] = -self.tips[index]
+        }
+      })
+      console.log('after:' + self.tips)
+    },
+    updateBillUsersTipAssigned: function () {
+      console.log('Tips: ' + this.tips)
       if (this.$refs.manageTipsForms.validate()) {
-        tips.forEach(function (element, index) {
-          tips[index] = this.convertFromUSDtoInt(tips[index])
+        this.tips.forEach(function (element, index) {
+          this.tips[index] = this.convertFromUSDtoInt(this.tips[index])
         })
-        console.log('Ayy ' + tips)
-        this.$store.dispatch('updateBillUsersTipAssigned', tips)
+        console.log('Ayy ' + this.tips)
+        this.$store.dispatch('updateBillUsersTipAssigned', this.tips)
       }
     },
     convertFromUSDtoInt: function (usDollars) {
@@ -94,9 +94,9 @@ export default {
     }
   },
   computed: {
-    billUsers() {
+    billUsers () {
       var users = this.$store.state.billUsers
-      console.log('bill users:' + users)
+      console.log('bill users count:' + users.length)
       return this.$store.state.billUsers
     }
   }

@@ -462,7 +462,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             .ToList();
 
             userProfile = new UserProfile(
-                displayPicture: ImagePaths.DEFAULT_DISPLAY_IMAGE,
+                displayPicture: ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH,
                 displayName: dto.UserProfileDto.DisplayName);
 
             // Hash password and security questions
@@ -659,7 +659,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .ToList();
 
             //Admin User Profile
-            var displayImagePath = ImagePaths.DEFAULT_DISPLAY_IMAGE;
+            var displayImagePath = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table as administrator

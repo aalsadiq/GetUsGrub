@@ -334,6 +334,12 @@ namespace CSULB.GetUsGrub.DataAccess
                                                        where restaurantMenuItems.Id == menuId
                                                        select restaurantMenuItems).FirstOrDefault();
 
+                        // To avoid images being stored with the same name and different extensions
+                        if (userRestaurantMenuItems.ItemPicture != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                        {
+                            userRestaurantMenuItems.ItemPicture = ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH;
+                        }
+
                         // Checks if restaurant menu items result is null, if not then change image paths
                         userRestaurantMenuItems.ItemPicture = menuPath;
                         

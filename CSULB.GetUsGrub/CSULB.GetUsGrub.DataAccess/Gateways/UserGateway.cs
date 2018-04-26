@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.IO;
@@ -137,7 +136,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Rolls back the changes saved in the transaction
                     dbContextTransaction.Rollback();
@@ -996,39 +995,40 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         /// <summary>
-        /// The GetUserAccountBySecurityQuestions method.
-        /// Gets a user's account in the database given security questions.
+        /// The GetSecurityAnswerSalts method.
+        /// Gets a list of security answer salts.
         /// <para>
         /// @author: Jennifer Nguyen
-        /// @updated: 04/22/2018
+        /// @updated: 04/25/2018
         /// </para>
         /// </summary>
         /// <param name="username"></param>
-        /// <param name="securityQuestionDtos"></param>
-        /// <returns>ResponseDto with a UserAccount</returns>
-        public ResponseDto<UserAccount> GetUserAccountBySecurityQuestions(string username, ICollection<SecurityQuestionDto> securityQuestionDtos)
+        /// <returns>A ResponseDto with a list of SecurityAnswerSalt</returns>
+        public ResponseDto<IList<SecurityQuestionWithSaltDto>> GetSecurityQuestionWithSalt(string username)
         {
             try
             {
-                // Get UserAccount where security questions and answers match
-                var userAccount = (from account in context.UserAccounts
-                                    join question in context.SecurityQuestions
-                                        on account.Id equals question.UserId
-                                    where account.Username == username
-                                        && securityQuestionDtos.Select(securityQuestion => securityQuestion.Question)
-                                            .Contains(question.Question)
-                                        && securityQuestionDtos.Select(securityQuestion => securityQuestion.Answer)
-                                            .Contains(question.Answer)
-                                    select account).FirstOrDefault();
+                var securityQuestionWithSaltDto = (from account in context.UserAccounts
+                    join question in context.SecurityQuestions
+                        on account.Id equals question.UserId
+                    join salt in context.SecurityAnswerSalts
+                        on question.Id equals salt.Id
+                    where account.Username == username
+                    select new SecurityQuestionWithSaltDto
+                    {
+                        Question = question.Question,
+                        Answer = question.Answer,
+                        Salt = salt.Salt
+                    }).ToList();
 
-                return new ResponseDto<UserAccount>()
+                return new ResponseDto<IList<SecurityQuestionWithSaltDto>>()
                 {
-                    Data = userAccount
+                    Data = securityQuestionWithSaltDto
                 };
             }
             catch (Exception)
             {
-                return new ResponseDto<UserAccount>()
+                return new ResponseDto<IList<SecurityQuestionWithSaltDto>>()
                 {
                     Data = null,
                     Error = GeneralErrorMessages.GENERAL_ERROR
@@ -1065,7 +1065,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     context.SaveChanges();
 
                     // Update UserAccount
-                    context.UserAccounts.Add(userAccount);
+                    context.UserAccounts.AddOrUpdate(userAccount);
 
                     // Update PasswordSalt
                     context.PasswordSalts.AddOrUpdate(passwordSalt);

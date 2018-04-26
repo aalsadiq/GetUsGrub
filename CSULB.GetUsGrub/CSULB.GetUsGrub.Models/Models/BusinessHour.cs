@@ -27,6 +27,8 @@ namespace CSULB.GetUsGrub.Models
         public DateTime OpenTime { get; set; }
         [Required]
         public DateTime CloseTime { get; set; }
+        [Required]
+        public string TimeZone { get; set; }
         public Flag Flag { get; set; }
 
         public virtual RestaurantProfile RestaurantProfile { get; set; }
@@ -34,8 +36,9 @@ namespace CSULB.GetUsGrub.Models
         // Constructors
         public BusinessHour() { }
 
-        public BusinessHour(string day, DateTime openTime, DateTime closeTime)
+        public BusinessHour(string timeZone, string day, DateTime openTime, DateTime closeTime)
         {
+            TimeZone = timeZone;
             Day = day;
             OpenTime = openTime;
             CloseTime = closeTime;

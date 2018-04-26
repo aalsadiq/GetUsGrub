@@ -50,8 +50,7 @@ namespace CSULB.GetUsGrub.Controllers
 
         
         [HttpPost]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
-        [AllowAnonymous] // TODO: Remove for deployment
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
         [Route("Restaurant/Edit")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult EditProfile([FromBody] RestaurantProfileDto restaurantProfileDto)

@@ -76,6 +76,7 @@
     <Compile Include="Managers\FoodPreferencesManager.cs" />
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
     <Compile Include="Managers\RegisteredUserRestaurantSelectionManager.cs" />
+    <Compile Include="Managers\ResetPasswordManager.cs" />
     <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Managers\UnregisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\UserProfileManager.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Strategies\ValidationStrategies\LoginPostLogicValidation.cs" />
     <Compile Include="Strategies\ValidationStrategies\LoginPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RegisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\ResetPasswordPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\ResetPasswordPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\RestaurantSelectionPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\SsoTokenRegistrationValidationStrategy.cs" />

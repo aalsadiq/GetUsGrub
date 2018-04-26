@@ -10,98 +10,92 @@
         </v-card-title>
         <v-card-text>
             <v-layout wrap>
-              <v-form v-model="valid">
-              <!-- Time Zone user input -->
-              <v-flex xs12>
-              <v-select
-                :items="$store.state.constants.timeZones"
-                item-text="displayString"
-                item-value="timeZoneName"
-                v-model="timeZone"
-                label="Select your time zone"
-                single-line
-                auto
-                hide-details
-                :rules="$store.state.rules.timeZoneRules"
-                required
-              ></v-select>
-              </v-flex>
-              <!-- Day of week user input -->
-              <v-flex xs12>
-              <v-select
-                :items="$store.state.constants.dayOfWeek"
-                v-model="editedBusinessHour.day"
-                label="Select a day"
-                single-line
-                auto
-                hide-details
-                :rules="$store.state.rules.businessDayRules"
-                required
-              ></v-select>
-              </v-flex>
-              <!-- Open time user input -->
-              <v-flex xs12>
-              <v-menu
-                ref="menu"
-                lazy
-                :close-on-content-click="false"
-                v-model="openTimeSync"
-                transition="scale-transition"
-                offset-y
-                full-width
-                :nudge-right="40"
-                max-width="290px"
-                min-width="290px"
-                :return-value.sync="time"
-              >
-                <v-text-field
-                  slot="activator"
-                  label="Select opening time (24hr format)"
-                  v-model="editedBusinessHour.openTime"
-                  prepend-icon="access_time"
-                  readonly
+              <v-form v-model="isValid">
+                <v-select
+                  :items="$store.state.constants.timeZones"
+                  item-text="displayString"
+                  item-value="timeZoneName"
+                  v-model="timeZone"
+                  label="Select your time zone"
+                  single-line
+                  auto
+                  hide-details
+                  :rules="$store.state.rules.timeZoneRules"
                   required
-                ></v-text-field>
-                <v-time-picker
-                  format="24hr"
-                  v-model="editedBusinessHour.openTime"
-                  :max="editedBusinessHour.closeTime"
-                >
-                </v-time-picker>
-              </v-menu>
-              </v-flex>
-              <!-- Close time user input -->
-              <v-flex xs12>
-              <v-menu
-                ref="menu"
-                lazy
-                :close-on-content-click="false"
-                v-model="closeTimeSync"
-                transition="scale-transition"
-                offset-y
-                full-width
-                :nudge-right="40"
-                max-width="290px"
-                min-width="290px"
-                :return-value.sync="time"
-              >
-                <v-text-field
-                  slot="activator"
-                  label="Select closing time (24hr format)"
-                  v-model="editedBusinessHour.closeTime"
-                  prepend-icon="access_time"
-                  readonly
+                  :disabled=disable
+                ></v-select>
+                <v-select
+                  :items="$store.state.constants.dayOfWeek"
+                  v-model="businessHour.day"
+                  label="Select a day"
+                  single-line
+                  auto
+                  hide-details
+                  :rules="$store.state.rules.businessDayRules"
                   required
-                ></v-text-field>
-                <v-time-picker
-                  format="24hr"
-                  scrollable
-                  v-model="editedBusinessHour.closeTime"
-                  :min="editedBusinessHour.openTime"
+                  :disabled=disable
+                ></v-select>
+                <v-menu
+                  ref="menu"
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="openTimeSync"
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  :nudge-right="40"
+                  max-width="290px"
+                  min-width="290px"
+                  :return-value.sync="time"
                 >
-              </v-time-picker>
-              </v-menu>
-              </v-flex>
+                  <v-text-field
+                    slot="activator"
+                    label="Select opening time (24hr format)"
+                    v-model="businessHour.openTime"
+                    :rules="$store.state.rules.businessHourRules"
+                    prepend-icon="access_time"
+                    readonly
+                    required
+                    :disabled=disable
+                  ></v-text-field>
+                  <v-time-picker
+                    format="24hr"
+                    v-model="businessHour.openTime"
+                    :max="businessHour.closeTime"
+                  >
+                  </v-time-picker>
+                </v-menu>
+                <v-menu
+                  ref="menu"
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="closeTimeSync"
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  :nudge-right="40"
+                  max-width="290px"
+                  min-width="290px"
+                  :return-value.sync="time"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Select closing time (24hr format)"
+                    v-model="businessHour.closeTime"
+                    :rules="$store.state.rules.businessHourRules"
+                    prepend-icon="access_time"
+                    readonly
+                    required
+                    :disabled=disable
+                  ></v-text-field>
+                  <v-time-picker
+                    format="24hr"
+                    scrollable
+                    v-model="businessHour.closeTime"
+                    :min="businessHour.openTime"
+                  >
+                  </v-time-picker>
+                </v-menu>
               </v-form>
             </v-layout>
         </v-card-text>
@@ -109,7 +103,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="save" :disabled="!valid">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="save" :disabled="!isValid">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -138,10 +132,9 @@
                 <v-list-tile-content>
                   <!-- Business hour day of week -->
                   <v-list-tile-title>{{ businessHour.day }}</v-list-tile-title>
-                  <!-- Convert UTC time to display local time -->
                   <v-list-tile-sub-title class="text--primary">
-                    {{ convertUtcToLocalTime(businessHour.openTime, 'h:mm a') }} - {{ convertUtcToLocalTime(businessHour.closeTime, 'h:mm a') }}
-                    </v-list-tile-sub-title>
+                    {{ businessHour.openTime }} - {{ businessHour.closeTime }}
+                  </v-list-tile-sub-title>
                 </v-list-tile-content>
                 <v-list-tile-action>
                   <div v-if="isEdit">
@@ -170,8 +163,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   // Passed down variables from parent component
   props: [
@@ -180,20 +171,21 @@ export default {
   ],
   data () {
     return {
-      valid: false,
+      isValid: false,
       editedIndex: -1,
       time: '',
       openTimeSync: false,
       closeTimeSync: false,
-      timeZone: 'Pacific Standard Time',
       dialog: false,
       editedBusinessHour: {
+        timeZone: '',
         day: '',
         openTime: null,
         closeTime: null,
         flag: 0
       },
       defaultBusinessHour: {
+        timeZone: '',
         day: '',
         openTime: null,
         closeTime: null,
@@ -208,20 +200,6 @@ export default {
     }
   },
   methods: {
-    // Compute UTC time to local time
-    convertUtcToLocalTime (utcTime, format) {
-      return moment(utcTime).format(format)
-    },
-    // Concatenate new date variable with a new time
-    concatenateDateAndTime (dateTime, time) {
-      var newDateTime = moment(moment(dateTime).format('YYYY-MM-DD') + ' ' + time)
-      return newDateTime.format('YYYY-MM-DDTHH:mm:ss')
-    },
-    // Create a new date time
-    createDateTime (time) {
-      var dateTime = moment('2018-05-17' + ' ' + time)
-      return dateTime.format('YYYY-MM-DDTHH:mm:ss')
-    },
     // Set up to add business hour
     addBusinessHour () {
       this.editedIndex = -1
@@ -231,8 +209,6 @@ export default {
     editBusinessHour (businessHour) {
       this.editedIndex = this.businessHours.indexOf(businessHour)
       this.editedBusinessHour = Object.assign({}, businessHour)
-      this.editedBusinessHour.openTime = this.convertUtcToLocalTime(businessHour.openTime, 'h:mm')
-      this.editedBusinessHour.closeTime = this.convertUtcToLocalTime(businessHour.closeTime, 'h:mm')
       this.dialog = true
     },
     // Set up to delete business hour
@@ -266,13 +242,13 @@ export default {
           this.businessHours[this.editedIndex].flag = 2
         }
         this.businessHours[this.editedIndex].day = this.editedBusinessHour.day
-        this.businessHours[this.editedIndex].openTime = this.concatenateDateAndTime(this.businessHours[this.editedIndex].openTime, this.editedBusinessHour.openTime)
-        this.businessHours[this.editedIndex].closeTime = this.concatenateDateAndTime(this.businessHours[this.editedIndex].closeTime, this.editedBusinessHour.closeTime)
+        this.businessHours[this.editedIndex].openTime = this.editedBusinessHour.openTime
+        this.businessHours[this.editedIndex].closeTime = this.editedBusinessHour.closeTime
       // Save added business hour
       } else {
         this.editedBusinessHour.flag = 1
-        this.editedBusinessHour.openTime = this.createDateTime(this.editedBusinessHour.openTime)
-        this.editedBusinessHour.closeTime = this.createDateTime(this.editedBusinessHour.closeTime)
+        this.editedBusinessHour.openTime = this.editedBusinessHour.openTime
+        this.editedBusinessHour.closeTime = this.editedBusinessHour.closeTime
         this.businessHours.push(this.editedBusinessHour)
       }
       this.close()

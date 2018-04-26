@@ -85,7 +85,7 @@ export default {
       this.$router.push({path: '/Unauthorized'})
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
+      if (jwt.decode(this.$store.state.authenticationToken).UpdateImage === 'True') {
       } else {
         this.$router.push({path: '/Forbidden'})
       }

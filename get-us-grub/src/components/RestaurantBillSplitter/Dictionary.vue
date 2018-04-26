@@ -29,7 +29,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 import DictionaryInput from './DictionaryInput'

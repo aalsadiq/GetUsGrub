@@ -47,7 +47,6 @@ export default {
         console.log('New: ' + newSelected)
         console.log('Bill Item Index: ' + this.billItemIndex)
         console.log('Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
-        // this.updateBillItemsInUser()
         this.updateUserMoneyOwesFromSelected(this.billItemIndex, this.billItem, newSelected, oldSelected)
         console.log('New Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
       }
@@ -57,8 +56,6 @@ export default {
     updateUserMoneyOwesFromSelected: function (billItemIndex, billItem, newSelected, oldSelected) {
       this.$store.dispatch('updateUserMoneyOwesFromSelected', { billItemIndex, billItem, newSelected, oldSelected })
     },
-    // updateBillItemsInUser: function () {
-    // },
     emitUsersInBillItemEvent: function (billItem) {
       EventBus.$emit('users-in-bill-item', billItem)
     }

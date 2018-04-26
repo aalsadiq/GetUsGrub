@@ -11,7 +11,7 @@
       <h1 v-if="!billItems.length"> Drag Items Here!</h1>
       <draggable class="bill" v-bind:list="billItems" v-bind:options="{group:{ name:'items', pull: false }}" @start="drag=true" @end="drag=false">
         <div class="bill-item" v-for="(billItem, billItemIndex) in billItems" :key="billItemIndex">
-          <bill-table-pie-chart :billItem="billItem" :billItemIndex="billItemIndex" :width="50" :height="50" />
+          <!-- <bill-table-pie-chart :billItem="billItem" :billItemIndex="billItemIndex" :width="50" :height="50" /> -->
           <div class="bill-item-controls">
             <h2> {{ billItem.itemName }} : ${{ billItem.itemPrice / 100 }} </h2>
             <br />

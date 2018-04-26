@@ -38,8 +38,8 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantId: 26,
-        displayName: 'Halal Guys',
+        restaurantId: null,
+        displayName: '',
         address: {
           street1: '',
           street2: '',
@@ -92,6 +92,9 @@ export const store = new Vuex.Store({
         login: 'http://localhost:8081/Sso/Login',
         createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
         createRestaurantUser: 'http://localhost:8081/User/FirstTimeRegistration/Restaurant'
+      },
+      restaurantBillSplitter: {
+        getRestaurantMenus: 'http://localhost:8081/RestaurantBillSplitter/Restaurant'
       }
     },
     // Rules for validations
@@ -468,12 +471,9 @@ export const store = new Vuex.Store({
       };
     },
     updateUserMoneyOwesFromSelected: (state, payload) => {
-      var oldSplit = 0
-      var newSplit = 0
+      var oldSplit
+      var newSplit
       if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) {
-        // state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].billItemsInfo.push({
-
-        // })
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].moneyOwes += payload.billItem.itemPrice
       } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) {
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice

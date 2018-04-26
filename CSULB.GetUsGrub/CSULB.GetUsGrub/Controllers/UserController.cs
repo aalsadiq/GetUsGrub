@@ -1,4 +1,4 @@
-﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
 using System.IdentityModel.Services;
@@ -112,7 +112,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>Created HTTP response or Bad Request HTTP response</returns>
         // POST User/CreateAdmin
         [HttpPost]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Create")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.CREATE)]
         [Route("CreateAdmin")]       
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]       
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
@@ -149,7 +149,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // DELETE User/DeleteUser
         [HttpDelete]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Delete")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.DELETE)]
         [Route("DeleteUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "DELETE")]       
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
@@ -184,7 +184,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/DeactivateUser
         [HttpPut]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Deactivate")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.DEACTIVATE)]
         [Route("DeactivateUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")] 
         public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
@@ -222,7 +222,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // POST User/ReactivateUser
         [HttpPut]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Reactivate")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.REACTIVATE)]
         [Route("ReactivateUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]    
         public IHttpActionResult ReactivateUser([FromBody] UserAccountDto user)
@@ -259,7 +259,7 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>An Http response or Bad Request HTTP resposne.</returns>
         // PUT User/EditUser
         [HttpPut]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = "User", Operation = "Update")]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.UPDATE)]
         [Route("EditUser")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]        
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
@@ -287,66 +287,6 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
-            }
-        }
-        [HttpPost]
-        // Opts authentication
-        [AllowAnonymous]
-        [Route("FirstTimeRegistration/Individual")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult RegisterFirstTimeIndividualUser([FromBody] RegisterUserDto registerUserDto)
-        {
-            // Model Binding Validation
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
-            }
-            try
-            {
-                var userManager = new UserManager();
-                var response = userManager.CreateIndividualUser(registerUserDto);
-                if (response.Error != null)
-                {
-                    return BadRequest(response.Error);
-                }
-                // Sending HTTP response 201 Status
-                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
-            }
-            // Catch exceptions
-            catch (Exception)
-            {
-                // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
-            }
-        }
-        [HttpPost]
-        // Opts authentication
-        [AllowAnonymous]
-        [Route("FirstTimeRegistration/Restaurant")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult RegisterFirstTimeRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
-        {
-            // Model Binding Validation
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(GeneralErrorMessages.MODEL_STATE_ERROR);
-            }
-            try
-            {
-                var userManager = new UserManager();
-                var response = userManager.CreateRestaurantUser(registerRestaurantDto);
-                if (response.Error != null)
-                {
-                    return BadRequest(response.Error);
-                }
-                // HTTP 201 Status
-                return Created("Restaurant user has been created: ", registerRestaurantDto.UserAccountDto.Username);
-            }
-            // Catch exceptions
-            catch (Exception)
-            {
-                // HTTP 400 Status
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }

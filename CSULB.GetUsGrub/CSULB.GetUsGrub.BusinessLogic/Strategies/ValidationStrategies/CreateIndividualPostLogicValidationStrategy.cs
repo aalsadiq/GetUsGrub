@@ -36,9 +36,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <param name="passwordSalt"></param>
         /// <param name="userClaims"></param>
         /// <param name="userProfile"></param>
-        public CreateIndividualPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
-                                                           IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
-                                                           UserClaims userClaims, UserProfile userProfile)
+        public CreateIndividualPostLogicValidationStrategy(UserAccount userAccount, PasswordSalt passwordSalt, UserClaims userClaims, UserProfile userProfile, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts)
         {
             _userAccount = userAccount;
             _securityQuestions = securityQuestions;

@@ -11,11 +11,13 @@
           v-model="value.restaurantProfile.address.street1"
           :rules="$store.state.rules.addressStreet1Rules"
           required
+          :disabled="disabled"
           ></v-text-field>
         <v-text-field
           label="Street 2"
           placeholder="Unit 2"
           v-model="value.restaurantProfile.address.street2"
+          :disabled="disabled"
           ></v-text-field>
         <v-text-field
           label="City"
@@ -23,6 +25,7 @@
           v-model="value.restaurantProfile.address.city"
           :rules="$store.state.constants.addressCityRules"
           required
+          :disabled="disabled"
           ></v-text-field>
         <v-select
           :items="$store.state.constants.states"
@@ -36,6 +39,7 @@
           append-icon="map"
           hide-details
           required
+          :disabled="disabled"
           ></v-select>
         <v-text-field
           label="Zip"
@@ -44,6 +48,7 @@
           type="number"
           v-model.number="value.restaurantProfile.address.zip"
           required
+          :disabled="disabled"
           ></v-text-field>
       </v-flex>
     </v-layout>
@@ -57,6 +62,7 @@
         prepend-icon="phone"
         :rules="$store.state.rules.phoneNumberRules"
         single-line
+        :disabled="disabled"
         ></v-text-field>
     </v-flex>
   </v-form>
@@ -66,6 +72,9 @@
 export default {
   name: 'ContactInfoForm',
   components: {},
-  props: ['value']
+  props: [
+    'value',
+    'disabled'
+  ]
 }
 </script>

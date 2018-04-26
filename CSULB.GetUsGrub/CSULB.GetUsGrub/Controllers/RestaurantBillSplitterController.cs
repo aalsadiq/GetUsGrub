@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Newtonsoft.Json;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -22,6 +24,7 @@ namespace CSULB.GetUsGrub.Controllers
 		public class RestaurantBillSplitterController : ApiController
 		{
 				[HttpGet]
+                //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.MENU, Operation = ActionConstant.ACCESS)]
 				[AllowAnonymous] // TODO: Remove for deployment
 				[Route("Restaurant")]
 				[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]

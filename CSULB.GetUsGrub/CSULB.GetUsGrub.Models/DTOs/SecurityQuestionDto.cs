@@ -13,5 +13,13 @@
         // Automatic Properties
         public int Question { get; set; }
         public string Answer { get; set; }
+
+        // Constructors
+        public SecurityQuestionDto() { }
+
+        public SecurityQuestionDto(int question)
+        {
+            Question = question;
+        }
     }
 }

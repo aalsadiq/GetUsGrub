@@ -3,6 +3,7 @@
     <div id="success">
       <v-layout>
         <v-flex xs12>
+          <!-- Success messages for registration -->
           <v-alert type="success" :value="showSuccess">
             <span>
               Success! User <code>{{ username }}</code> has been created.
@@ -14,7 +15,7 @@
     <div v-show="showError" id="error-div">
       <v-layout>
       <v-flex xs12>
-        <!-- Title bar for the restaurant selection -->
+        <!-- Error messages for registration -->
         <v-alert id="registration-error" :value=true icon='warning'>
           <span id="error-title">
             An error has occurred
@@ -23,6 +24,7 @@
       </v-flex>
       </v-layout>
       <v-layout>
+        <!-- Card to show error messages -->
         <v-flex xs12>
           <v-card id="error-card">
             <p v-for="error in errors" :key="error">
@@ -638,7 +640,7 @@ export default {
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response.data
+          this.errors = error.response
           Promise.reject(error)
         }
       })
@@ -647,7 +649,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #create-user {
   margin: 1em 0 7em -2em;
 }
@@ -670,7 +672,7 @@ p {
   margin: -0.9em 0em -0.5em 0em;
 }
 #success {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 .application .theme--light.stepper--vertical
 .stepper__content:not(:last-child),

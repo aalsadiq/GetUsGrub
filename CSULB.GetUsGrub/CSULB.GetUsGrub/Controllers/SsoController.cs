@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub
 {
@@ -15,7 +16,6 @@ namespace CSULB.GetUsGrub
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("Sso")]
     public class SsoController : ApiController
     {
         /// <summary>
@@ -29,9 +29,9 @@ namespace CSULB.GetUsGrub
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("FirstTimeUser")]
+        [ActionName("Registration")]
         // TODO: @Jenn Update origins to reflect SSO request when demoing [-Jenn]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: "https://fannbrian.github.io", headers: "*", methods: "POST")]
         public IHttpActionResult Registration(HttpRequestMessage request)
         {
             try
@@ -58,13 +58,78 @@ namespace CSULB.GetUsGrub
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
-        
-        [HttpPost]
-        [Route("Login")]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+
+        /// <summary>
+        /// The <c>Sso Login</c> method.
+        /// Endpoint for logging in with Sso credentials.
+        /// <para>
+        /// @author: Brian Fann
+        /// @updated: 04/24/2018
+        /// </para>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("Login")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult Login(HttpRequestMessage request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tokenManager = new SsoTokenManager(request.Headers.Authorization.Parameter);
+                var payloadResult = tokenManager.IsValidPayload();
+
+                if (!payloadResult.Data)
+                {
+                    return BadRequest(payloadResult.Error);
+                }
+
+                var tokenResult = tokenManager.ManageLoginToken();
+
+                if (tokenResult.Error != null)
+                {
+                    return BadRequest(tokenResult.Error);
+                }
+
+                return Ok(tokenResult.Data.TokenString);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+            }
+        }
+
+        [HttpPost]
+        [ActionName("ResetPassword")]
+        [EnableCors(origins: "https://fannbrian.github.io", headers: "*", methods: "POST")]
+        public IHttpActionResult ResetPassword(HttpRequestMessage request)
+        {
+            try
+            {
+                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageResetPasswordToken();
+                if (result.Error != null)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                //
+                var resetPasswordManager = new ResetPasswordManager(result.Data);
+                var updateResponse = resetPasswordManager.SsoUpdatePassword();
+
+                if (updateResponse.Error != null)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+            }
+
         }
     }
 }

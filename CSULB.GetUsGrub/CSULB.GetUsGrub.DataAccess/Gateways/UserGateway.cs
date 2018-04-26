@@ -1,7 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,8 +12,8 @@ namespace CSULB.GetUsGrub.DataAccess
     /// A <c>UserGateway</c> class.
     /// Defines methods that communicates with the UserContext.
     /// <para>
-    /// @author: Jennifer Nguyen, Angelica Salas Tovar
-    /// @updated: 03/11/2018
+    /// @author: Jennifer Nguyen, Angelica Salas Tovar, Rachel Dang, Andrew Kao
+    /// @updated: 04/24/2018
     /// </para>
     /// </summary>
     public class UserGateway : IDisposable
@@ -70,15 +70,14 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="claims"></param>
         /// <param name="userProfile"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
-            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile)
+        public ResponseDto<bool> StoreIndividualUser(UserAccount userAccount, PasswordSalt passwordSalt, UserClaims userClaims, UserProfile userProfile, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts)
         {
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
                 {
                     // Add UserAccount
-                    context.UserAccounts.Add(userAccount);
+                    context.UserAccounts.AddOrUpdate(userAccount);
                     context.SaveChanges();
 
                     // Get Id from UserAccount
@@ -88,7 +87,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
-                    claims.Id = userId;
+                    userClaims.Id = userId;
                     userProfile.Id = userId;
 
                     // Add SecurityQuestions
@@ -119,10 +118,10 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.SaveChanges();
                     }
                     // Add PasswordSalt
-                    context.PasswordSalts.Add(passwordSalt);
+                    context.PasswordSalts.AddOrUpdate(passwordSalt);
 
                     // Add UserClaims
-                    context.UserClaims.Add(claims);
+                    context.UserClaims.Add(userClaims);
 
                     // Add UserProfile
                     context.UserProfiles.Add(userProfile);
@@ -169,16 +168,14 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="businessHours"></param>
         /// <param name="foodPreferences"></param>
         /// <returns>ResponseDto with bool data</returns>
-        public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, IList<SecurityQuestion> securityQuestions,
-            IList<SecurityAnswerSalt> securityAnswerSalts, UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours,
-            IList<FoodPreference> foodPreferences)
+        public ResponseDto<bool> StoreRestaurantUser(UserAccount userAccount, PasswordSalt passwordSalt, UserClaims userClaims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts, IList<FoodPreference> foodPreferences, IList<BusinessHour> businessHours)
         {
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
                 {
                     // Add UserAccount
-                    context.UserAccounts.Add(userAccount);
+                    context.UserAccounts.AddOrUpdate(userAccount);
                     context.SaveChanges();
 
                     // Get Id from UserAccount
@@ -188,7 +185,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Set UserId to dependencies
                     passwordSalt.Id = userId;
-                    claims.Id = userId;
+                    userClaims.Id = userId;
                     userProfile.Id = userId;
                     restaurantProfile.Id = userId;
 
@@ -229,10 +226,10 @@ namespace CSULB.GetUsGrub.DataAccess
                     }
 
                     // Add PasswordSalt
-                    context.PasswordSalts.Add(passwordSalt);
+                    context.PasswordSalts.AddOrUpdate(passwordSalt);
 
                     // Add UserClaims
-                    context.UserClaims.Add(claims);
+                    context.UserClaims.Add(userClaims);
 
                     // Add UserProfile
                     context.UserProfiles.Add(userProfile);
@@ -248,6 +245,29 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.BusinessHours.Add(businessHour);
                         context.SaveChanges();
                     }
+
+                    // Add First Menu
+                    // Find the corresponding profile
+                    var dbRestaurantProfile = (from profile in context.RestaurantProfiles
+                                               where profile.Id == userId
+                                               select profile).SingleOrDefault();
+                    var newMenu = new RestaurantMenu("Your First Menu", false, 0);
+
+                    newMenu.RestaurantProfile = dbRestaurantProfile;
+                    context.RestaurantMenus.Add(newMenu);
+                    context.Entry(dbRestaurantProfile).State = System.Data.Entity.EntityState.Unchanged;
+                    context.SaveChanges();
+
+                    // Add First Menu Item
+                    // Find the corresponding menu
+                    var dbRestaurantMenu = (from menu in context.RestaurantMenus
+                                            where menu.RestaurantId == restaurantProfile.Id
+                                            select menu).SingleOrDefault();
+                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH, "", false, 0);
+                    newMenuItem.RestaurantMenu = dbRestaurantMenu;
+                    context.RestaurantMenuItems.Add(newMenuItem);
+                    context.Entry(dbRestaurantMenu).State = System.Data.Entity.EntityState.Unchanged;
+                    context.SaveChanges();
 
                     // Commit transaction to database
                     dbContextTransaction.Commit();
@@ -500,6 +520,14 @@ namespace CSULB.GetUsGrub.DataAccess
                         foreach (var menuItems in userRestaurantMenuItems)
                         {
                             context.RestaurantMenuItems.Remove(menuItems);
+
+                            // If menus are set to the default path, move on
+                            if (menuItems.ItemPicture != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                            {
+                                // Deleting Menu Images
+                                deleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH,menuItems.ItemPicture);
+                                Debug.WriteLine(menuItems.ItemPicture);
+                            }
                         }
                     }
                     // RestaurantMenus
@@ -590,6 +618,16 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.FailedAttempts.Remove(failedAttempt);
                     }
 
+                    // Check if user image is set to default, if so move on
+                    var temp = userAccount.UserProfile.DisplayPicture;
+                    Debug.WriteLine("displayPicture: " + temp );
+                    //Debug.WriteLine("dvirtualdisplayname: " + ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH);
+                    if (userAccount.UserProfile.DisplayPicture != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    {
+                        // Deleting profile image
+                        deleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH,userAccount.UserProfile.DisplayPicture);
+                        Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
+                    }
                     //Delete useraccount
                     context.UserAccounts.Remove(userAccount);
                     context.SaveChanges(); 
@@ -631,23 +669,35 @@ namespace CSULB.GetUsGrub.DataAccess
                 //Set ResponseDto equal to the ResponseDto from EditDisplayName.
                 if (user.NewDisplayName != null) // TODO: @Jen Added because what Jen and I did is not working?!  [-Angelica]
                 {
-                    EditDisplayName(user.Username, user.NewDisplayName);
+                    var result = EditDisplayName(user.Username, user.NewDisplayName);
+                    if (result.Error != null)
+                    {
+                        return new ResponseDto<bool>
+                        {
+                            Data = false,
+                            Error = result.Error
+                        };
+                    }
                 }
 
                 if (user.NewUsername != null) //Added
                 {
                     // Set ResponseDto equal to the ResponseDto from EditUserName.
-                    EditUserName(user.Username, user.NewUsername);
+                    var result = EditUserName(user.Username, user.NewUsername);
+                    if (result.Error != null)
+                    {
+                        return new ResponseDto<bool>
+                        {
+                            Data = false,
+                            Error = result.Error
+                        };
+                    }
                 }
+
                 return new ResponseDto<bool>
                 {
                     Data = true
                 };
-                //return new ResponseDto<bool>()
-                //{
-                //    Data = false,
-                //    Error = GeneralErrorMessages.GENERAL_ERROR
-                //};
             }
             catch (Exception)
             {
@@ -678,29 +728,34 @@ namespace CSULB.GetUsGrub.DataAccess
                                         where account.Username == username
                                         select account).SingleOrDefault();
 
-                    //var renameImage = Path.GetExtension(image.FileName);
-                    // var newImagename = username + renameImage;
-
                     // Save image to path
-                    string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
+                    string savePath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH;
 
                     // Set Diplay Picture Path
-                    //userAccount.Username.DisplayPicture = savePath + newImagename;
+                    var oldPath = @userAccount.UserProfile.DisplayPicture;
 
-                    // Testing --
-                    var oldPath = userAccount.UserProfile.DisplayPicture;
-                    Debug.WriteLine(oldPath);
-                    var newPath = savePath + newUsername + ".png";
-                    Debug.WriteLine(newPath);
+                    var extension = Path.GetExtension(oldPath);
 
-                    // Rename profile image
-                    File.Move(oldPath, newPath);
+                    var deleteOldPath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + userAccount.Username + extension;
 
-                    // End of testing --
+                    // If image path is not default change it.
+                    if (oldPath != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    {
+                        // The new path once user has their profile picture.
+                        var newPath = savePath + newUsername + extension;
+
+                        // Rename profile image based on username
+                        File.Move(deleteOldPath, newPath);
+                    }
+                    else
+                    {
+                        // If it is the default path, leave it as default.
+                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
+                    }
 
                     // Select the username from useraccount and give it the new username.
                     userAccount.Username = newUsername;
-
+                    Debug.WriteLine("useraccount.username: " + userAccount.Username); // Delete later
                     context.SaveChanges();
                     dbContextTransaction.Commit();
                     return new ResponseDto<bool>()
@@ -708,8 +763,9 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.WriteLine(e); // Show exception...
                     dbContextTransaction.Rollback();
                     return new ResponseDto<bool>()
                     {
@@ -846,11 +902,14 @@ namespace CSULB.GetUsGrub.DataAccess
     
         /// <summary>
         /// Update the user's list of food preferences
+        /// 
+        /// @author: Rachel Dang
+        /// @updated: 04/24/2018
         /// </summary>
         /// <param name="username"></param>
         /// <param name="foodPreferencesDto"></param>
-        /// <returns>Boolean determining success of transaction </returns>
-        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> updatedFoodPreferences)
+        /// <returns>Response dto with boolean determining success of transaction</returns>
+        public ResponseDto<bool> EditFoodPreferencesByUsername(string username, ICollection<string> preferencesToBeAdded, ICollection<string> preferencesToBeRemoved)
         {         
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
@@ -861,21 +920,21 @@ namespace CSULB.GetUsGrub.DataAccess
                                         where account.Username == username
                                         select account).FirstOrDefault();
 
-                    // Get the current list of food preferences
                     var currentFoodPreferences = userAccount.FoodPreferences;
 
-                    // Removed current food preferences that are not on the updated list
+                    // Removed unwanted food preferences not in the updated list
                     foreach (var preference in currentFoodPreferences.ToList())
-                    {                  
-                        if (!updatedFoodPreferences.Contains(preference.Preference))
+                    {
+                        // Remove unwanted preferences not in the updated list
+                        if (preferencesToBeRemoved.Contains(preference.Preference))
                         {
                             context.FoodPreferences.Attach(preference);
                             context.FoodPreferences.Remove(preference);
                         }
                     }
 
-                    // Update current list of food preferences
-                    foreach (var preference in updatedFoodPreferences)
+                    // Add new food preferences
+                    foreach (var preference in preferencesToBeAdded)
                     {
                         currentFoodPreferences.Add(new FoodPreference(preference));
                     }
@@ -888,17 +947,152 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // If an error occurs, roll back and return response dto with boolean false
                     dbContextTransaction.Rollback();
                     return new ResponseDto<bool>
                     {
                         Data = false,
-                        Error = e.Message
+                        Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
             }     
+        }
+
+        /// <summary>
+        /// The GetSecurityQuestions method.
+        /// Get the security questions pertaining to a user.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/21/2018
+        /// </para>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>ResponseDto with Security Questions</returns>
+        public ResponseDto<ICollection<SecurityQuestion>> GetSecurityQuestions(string username)
+        {
+            try
+            {
+                // Get collection of security questions pertaining to a username
+                var securityQuestions = (from account in context.UserAccounts
+                    where account.Username == username
+                    select account.SecurityQuestions).FirstOrDefault();
+
+                return new ResponseDto<ICollection<SecurityQuestion>>()
+                {
+                    Data = securityQuestions
+                };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<ICollection<SecurityQuestion>>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+        }
+
+        /// <summary>
+        /// The GetSecurityAnswerSalts method.
+        /// Gets a list of security answer salts.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/25/2018
+        /// </para>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>A ResponseDto with a list of SecurityAnswerSalt</returns>
+        public ResponseDto<List<SecurityQuestionWithSaltDto>> GetSecurityQuestionWithSalt(string username)
+        {
+            try
+            {
+                var securityQuestionWithSaltDto = (from account in context.UserAccounts
+                    join question in context.SecurityQuestions
+                        on account.Id equals question.UserId
+                    join salt in context.SecurityAnswerSalts
+                        on question.Id equals salt.Id
+                    where account.Username == username
+                    select new SecurityQuestionWithSaltDto
+                    {
+                        Question = question.Question,
+                        Answer = question.Answer,
+                        Salt = salt.Salt
+                    }).ToList();
+
+                return new ResponseDto<List<SecurityQuestionWithSaltDto>>()
+                {
+                    Data = securityQuestionWithSaltDto
+                };
+            }
+            catch (Exception)
+            {
+                return new ResponseDto<List<SecurityQuestionWithSaltDto>>()
+                {
+                    Data = null,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+        }
+
+        /// <summary>
+        /// The UpdatePassword method.
+        /// Update database models associated with updating a user's password.
+        /// <para>
+        /// @author: Jennifer Nguyen
+        /// @updated: 04/22/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userAccount"></param>
+        /// <param name="passwordSalt"></param>
+        /// <returns>ResponseDto with true or false boolean</returns>
+        public ResponseDto<bool> UpdatePassword(UserAccount userAccount, PasswordSalt passwordSalt)
+        {
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    // Get Id from username
+                    userAccount.Id = (from account in context.UserAccounts
+                        where account.Username == userAccount.Username
+                        select account.Id).FirstOrDefault();
+                    context.SaveChanges();
+
+                    // Set UserId to dependencies
+                    passwordSalt.Id = userAccount.Id;
+                    context.SaveChanges();
+
+                    // Update UserAccount
+                    context.UserAccounts.AddOrUpdate(userAccount);
+
+                    // Update PasswordSalt
+                    context.PasswordSalts.AddOrUpdate(passwordSalt);
+                    context.SaveChanges();
+
+                    // Commit transaction to database
+                    dbContextTransaction.Commit();
+
+                    // Return a true ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+
+                }
+                catch (Exception)
+                {
+                    // Rolls back the changes saved in the transaction
+                    dbContextTransaction.Rollback();
+                    // Returns a false ResponseDto
+                    return new ResponseDto<bool>()
+                    {
+                        Data = false,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                }
+            }
         }
 
         /// <summary>
@@ -908,5 +1102,42 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             context.Dispose();
         }
+
+        public ResponseDto<bool> deleteImage(string path, string image)
+        {
+            // Delete a file by using File class static method...
+            try
+            {
+                var imageName = Path.GetFileName(image);
+                Debug.WriteLine(imageName);
+
+                var filePath = path + imageName;
+                Debug.WriteLine(filePath);
+               
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    
+                    return new ResponseDto<bool>()
+                    {
+                        Data = true
+                    };
+                }
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = "Image does not exist." // Add to constants later
+                };
+            }
+            catch (Exception){
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+            
+        }
+
     }
 }

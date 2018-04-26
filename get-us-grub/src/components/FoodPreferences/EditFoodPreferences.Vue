@@ -19,7 +19,7 @@
           </v-form>
         </div>
         <div>
-          <router-link to="/FoodPreferences">
+          <router-link to="/Profile">
             <v-btn :dark=true>Cancel</v-btn>
           </router-link>
           <v-btn :dark=true @click="update">Save</v-btn>
@@ -45,19 +45,22 @@ export default {
     title: 'Edit Your Food Preferences',
     message: 'Checked elements will be saved as your updated food preferences.',
     foodPreferences: [],
-    checklist: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-Vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
-    foodPreferencesDto: {
-      foodPreferences: []
-    },
+    checklist: ['Gluten-free', 'Halal', 'Kosher', 'Lacto-vegetarian', 'Pescatarian', 'Vegan', 'Vegetarian'],
     response: false
   }),
 
   methods: {
-    update () {
-      axios.post(this.$store.state.urls.foodPreferences.editPreferences, {
-        username: jwt.decode(this.$store.state.authenticationToken).Username,
-        foodPreferencesDto: this.foodPreferencesDto
-      }).then(response => {
+    update: function () {
+      axios.post(this.$store.state.urls.foodPreferences.editPreferences,
+        {
+          'foodPreferences': this.foodPreferences
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
+            'Authorization': `Bearer ${this.$store.state.authenticationToken}`
+          }
+        }).then(response => {
         console.log(response.data)
         this.response = response.data
       }).catch(error => {
@@ -66,19 +69,19 @@ export default {
     }
   },
 
-  // beforeCreate () {
-  //   if (this.$store.state.authenticationToken === null) {
-  //     this.$router.push({path: '/Unauthorized'})
-  //   }
-  //   try {
-  //     if (jwt.decode(this.$store.state.authenticationToken).UpdatePreferences === 'True') {
-  //     } else {
-  //       this.$router.push({path: '/Forbidden'})
-  //     }
-  //   } catch (ex) {
-  //     this.$router.push({path: '/Forbidden'})
-  //   }
-  // },
+  beforeCreate () {
+    if (this.$store.state.authenticationToken === null) {
+      this.$router.push({path: '/Unauthorized'})
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadPreferences === 'True') {
+      } else {
+        this.$router.push({path: '/Forbidden'})
+      }
+    } catch (ex) {
+      this.$router.push({path: '/Forbidden'})
+    }
+  },
 
   created () {
     axios.get(this.$store.state.urls.foodPreferences.getPreferences, {

@@ -1,251 +1,250 @@
 <template>
   <div>
-    <v-container class="scroll-y" id="scroll-target">
-      <v-container id="user-profile">
-        <div id="profile-header">
-          <v-flex xs12>
-            <v-card>
-              <div id="profile-image">
-                <v-avatar :size="avatarSize">
-                  <img src="../../../../../Images/DefaultImages/DefaultProfileImage.png">
-                </v-avatar>
-              </div>
-              <div id="display-name">
-                <v-flex xs12>
-                  <h1>{{ profile.displayName }}</h1>
-                </v-flex>
-              </div>
-              <template>
-                <div>
-                  <v-layout row justify-center>
-                    <template>
-                      <v-dialog v-model="dialog" persistent max-width="1000">
-                        <v-btn color="primary" dark slot="activator">Edit Profile Image</v-btn>
-                        <v-card>
-                          <v-layout wrap>
-                            <image-upload />
-                          </v-layout>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="green darken-1" flat @click.native="dialog=false">Close</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                    </template>
-                    <!--Get this out of a dialog-->
-                    <v-dialog v-model="dialog2" persistent max-width="500px">
-                      <v-btn color="primary" dark slot="activator">Edit Profile</v-btn>
-                      <v-card>
-                        <v-card-title>
-                          <span>Edit Profile Name</span>
-                          <v-spacer></v-spacer>
-                        </v-card-title>
-                        <v-card-text>
-                          <v-container grid-list-md>
-                            <v-layout wrap>
-                              <v-flex xs12>
-                                <v-text-field label="Display Name"
-                                              v-model="newDisplayName"
-                                              required></v-text-field>
-                              </v-flex>
-                            </v-layout>
-                          </v-container>
-                          <small>*indicates required field</small>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="primary" @click.native="editUserProfile">Save</v-btn>
-                          <v-btn color="primary" @click.native="dialog2=false">Close</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </v-layout>
+    <div id="restaurant-profile-div">
+      <div>
+        <!-- Portion with profile picture and display name -->
+        <v-parallax src="/static/parallax.png" height="425">
+        <div id="main-edit-btns-div">
+          <v-layout>
+            <v-flex fixed>
+            <div id="edit-profile-btn-div" v-if="!isEdit">
+              <v-btn id="edit-profile-btn" dark icon @click="toggleIsEdit()">
+                <v-icon>edit</v-icon>
+              </v-btn>
+              <span id="edit-profile-btn-txt">Edit Profile</span>
+            </div>
+            </v-flex>
+            <div id="edit-btns-div">
+              <v-btn dark @click="editRestaurantProfile()" v-if="isEdit">
+                Submit All Changes
+              </v-btn>
+              <v-btn dark @click="cancel()" v-if="isEdit">
+                Cancel
+              </v-btn>
+            </div>
+          </v-layout>
+        </div>
+          <!-- Display picture -->
+          <div id="display-picture">
+            <v-layout column align-center justify-center>
+              <v-avatar
+                :size="225"
+                class="grey lighten-4"
+              >
+                <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
+              </v-avatar>
+              <v-flex>
+                <v-btn id="image-upload-btn" dark v-if="isEdit">
+                  <span id="upload-image-text">Upload Image</span>
+                </v-btn>
+              </v-flex>
+              <v-flex>
+              <div id="display-name-div">
+                <div v-if="!editDisplayName">
+                  <span id="display-name-text">
+                    {{ profile.displayName }}
+                  </span>
+                  <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()" v-if="isEdit">
+                    <v-icon>edit</v-icon>
+                  </v-btn>
                 </div>
-              </template>
-            </v-card>
-          </v-flex>
-        </div>
-        <div id="profile-info">
-          <v-flex xs12>
-            <v-card>
-              <v-layout row justify-space-between>
-                <v-flex xs12>
-                  <h3>Phone Number:</h3>
-                  <p>
-                    {{ phoneNumber }}
-                  </p>
-                  <h3>Address:</h3>
-                  <p v-if='address.street2 === ""'>
-                    {{ address.street1 }},
-                    {{ address.city }}, {{ address.state }} {{ address.zip }}
-                  </p>
-                  <p v-if='address.street2 !== ""'>
-                    {{ address.street1 }},
-                    {{ address.street2 }},
-                    {{ address.city }}, {{ address.state }} {{ address.zip }}
-                  </p>
-                  <h3>BusinessHours:</h3>
-                  <p v-for="businessHour in businessHours" :key="businessHour.day">
-                    {{ businessHour.day }}:
-                    {{ businessHour.OpenTime }} -
-                    {{ businessHour.CloseTime }}
-                  </p>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-flex>
-        </div>
-        <div id="profile-details">
-          <v-flex xs12>
-            <v-card>
-              <v-layout row justify-space-between>
-                <v-flex xs12>
-                  <h3>Phone Number:</h3>
-                  <p>
-                    {{ phoneNumber }}
-                  </p>
-                  <h3>Address:</h3>
-                  <p v-if='address.street2 === ""'>
-                    {{ address.street1 }},
-                    {{ address.city }}, {{ address.state }} {{ address.zip }}
-                  </p>
-                  <p v-if='address.street2 !== ""'>
-                    {{ address.street1 }},
-                    {{ address.street2 }},
-                    {{ address.city }}, {{ address.state }} {{ address.zip }}
-                  </p>
-                  <h3>BusinessHours:</h3>
-                  <p v-for="businessHour in businessHours" :key="businessHour.day">
-                    {{ businessHour.day }}:
-                    {{ businessHour.OpenTime }} -
-                    {{ businessHour.CloseTime }}
-                  </p>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-flex>
-        </div>
-        <div id="food-preferences">
-          <v-flex xs12>
-            <v-card>
-              <!--<food-preferences />-->
-            </v-card>
-          </v-flex>
-        </div>
-      </v-container>
-    </v-container>
+                <span id="display-name-text"  v-if="editDisplayName">
+                  <v-layout row>
+                  <v-flex>
+                  <v-text-field
+                    label="Enter a display name"
+                    v-model="profile.displayName"
+                    :rules="$store.state.rules.displayNameRules"
+                    required
+                    dark
+                  ></v-text-field>
+                  </v-flex>
+                  <v-flex>
+                  <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()">
+                    <v-icon>save</v-icon>
+                  </v-btn>
+                  </v-flex>
+                  </v-layout>
+                </span>
+              </div>
+              </v-flex>
+            </v-layout>
+          </div>
+        </v-parallax>
+      </div>
+      <div>
+      <!-- Tabs toolbar -->
+      <v-tabs
+          color="cyan"
+          slot="extension"
+          v-model="tab"
+          grow
+          show-arrows
+        >
+        <v-tabs-slider color="yellow"></v-tabs-slider>
+        <v-tab v-for="itemTab in itemsTab" :key="itemTab" id="item-tab">
+          {{ itemTab }}
+        </v-tab>
+      </v-tabs>
+      <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Contact Info'">
+        <contact-info class="profile-component" :phoneNumber="profile.phoneNumber" :address="profile.address" :isEdit="isEdit"/>
+      </div>
+      <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Restaurant Details'">
+        <restaurant-details class="profile-component" :details="profile.details" :isEdit="isEdit"/>
+      </div>
+      <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Business Hours'">
+        <business-hours class="profile-component" :businessHours="profile.businessHours" :isEdit="isEdit"/>
+      </div>
+      <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Menus'">
+        <menus class="profile-component" :restaurantMenusList="profile.restaurantMenusList" :isEdit="isEdit"/>
+      </div>
+      <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Accommodations'">
+        <food-preferences class="profile-component" :isEdit="isEdit"/>
+      </div>
+    </div>
   </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import ImageUpload from '@/components/ImageUploadVues/ImageUpload'
-// import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
+import ContactInfo from './ContactInfo'
+import RestaurantDetails from './RestaurantDetails'
+import BusinessHours from './BusinessHours'
+import Menus from './Menus'
+import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
+import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
+import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
+
 export default {
-  name: 'RestaurantProfile',
   components: {
-    // FoodPreferences,
-    ImageUpload
+    ContactInfo,
+    RestaurantDetails,
+    BusinessHours,
+    Menus,
+    FoodPreferences,
+    ProfileImageUpload,
+    MenuItemImageUpload
   },
   data () {
     return {
-      displayName: '',
-      displayPicture: '',
-      phoneNumber: '',
-      address: {
-        street1: '',
-        street2: '',
-        city: '',
-        state: '',
-        zip: null
+      editDisplayName: false,
+      isEdit: false,
+      profile: {
+        displayName: '',
+        displayPicture: '',
+        phoneNumber: '',
+        address: {
+          street1: '',
+          street2: '',
+          city: '',
+          state: '',
+          zip: 0
+        },
+        details: {
+          avgFoodPrice: 1,
+          hasReservations: null,
+          hasDelivery: null,
+          hasTakeOut: null,
+          acceptCreditCards: null,
+          attire: null,
+          servesAlcohol: null,
+          hasOutdoorSeating: null,
+          hasTv: null,
+          hasDriveThru: null,
+          caters: null,
+          allowsPets: null,
+          foodType: ''
+        },
+        restaurantMenusList: [],
+        businessHours: []
       },
-      details: {
-        avgFoodPrice: null,
-        hasReservations: null,
-        hasDelivery: null,
-        hasTakeOut: null,
-        acceptCreditCards: null,
-        attire: null,
-        servesAlcohol: null,
-        hasOutdoorSeating: null,
-        hasTv: null,
-        hasDriveThru: null,
-        caters: null,
-        allowsPets: null,
-        foodType: ''
-      },
-      restaurantMenusList: [],
-      businessHours: [],
-      businessHour: {
-        day: '',
-        openTime: '',
-        closeTime: ''
-      },
-      errors: '',
-      dialog: false,
-      dialog2: false
+      tab: '',
+      itemsTab: [
+        'Contact Info',
+        'Restaurant Details',
+        'Business Hours',
+        'Menus',
+        'Accommodations'
+      ],
+      error: null
     }
   },
+  // Check if user has permission to view the page
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
-      this.$router.push({ path: '/Unauthorized' })
+      this.$router.push('Unauthorized')
     }
     try {
       if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
       } else {
-        console.log('forbidden else')
-        this.$router.push({ path: '/Forbidden' })
+        this.$router.push('Forbidden')
       }
     } catch (ex) {
-      console.log('forbidden exception')
-      this.$router.push({ path: '/Forbidden' })
+      this.$router.push('Forbidden')
     }
   },
+  // Get the restaurant profile information
   created () {
-    axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
-      headers: {
-        Authorization: `Bearer ${this.$store.state.authenticationToken}`
-      }
-    }).then(response => {
-      this.profile = response.data
-    }).catch(error => {
-      try {
-        if (error.response.status === 401) {
-          // Route to Unauthorized page
-          this.$router.push({ path: '/Unauthorized' })
-        }
-        if (error.response.status === 403) {
-          // Route to Forbidden page
-          this.$router.push({ path: '/Forbidden' })
-        }
-        if (error.response.status === 404) {
-          // Route to ResourceNotFound page
-          this.$router.push({ path: '/ResourceNotFound' })
-        }
-        if (error.response.status === 500) {
-          // Route to InternalServerError page
-          this.$router.push({ path: '/InternalServerError' })
-        } else {
-          this.errors = JSON.parse(JSON.parse(error.response.data.message))
-        }
-        Promise.reject(error)
-      } catch (ex) {
-        this.errors = error.response.data
-        Promise.reject(error)
-      }
-    })
+    this.getRestaurantProfile()
   },
   methods: {
-    editUserProfile: function () {
+    // updateProfileUrl (url) {
+    //   console.log('B4 Changed to '+url)
+    //   try {
+    //     var img = new File(url)
+    //     var reader = new FileReader()
+    //     this.displayPictureUrl = reader.readAsDataURL(img)
+    //   }
+    //   catch(ex) {
+    //     console.log(ex)
+    //   }
+    //   console.log('Changed to '+url)
+    // },
+    getRestaurantProfile () {
+      axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
+        }
+      }).then(response => {
+        this.profile = response.data
+        // this.updateProfileUrl(this.profile.displayPicture)
+      }).catch(error => {
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({ path: '/Unauthorized' })
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({ path: '/Forbidden' })
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({ path: '/ResourceNotFound' })
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({ path: '/InternalServerError' })
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response
+          Promise.reject(error)
+        }
+      })
+    },
+    editRestaurantProfile: function () {
       axios.post(this.$store.state.urls.profileManagement.updateRestaurantProfile,
-        {
-          displayName: this.newDisplayName
-        },
+        this.profile,
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
-        this.dialog2 = false
+        this.getRestaurantProfile()
+        this.isEdit = false
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -272,37 +271,62 @@ export default {
           Promise.reject(error)
         }
       })
-    }
-  },
-  computed: {
-    avatarSize () {
-      return '200px'
+    },
+    toggleIsEdit () {
+      this.isEdit = !this.isEdit
+    },
+    toggleEditDisplayName () {
+      this.editDisplayName = !this.editDisplayName
+    },
+    cancel () {
+      this.toggleIsEdit()
+      this.getRestaurantProfile()
     }
   }
 }
 </script>
 
 <style scoped>
-#scroll-target {
-  max-height: 56.5em;
-  position: absolute;
-  overflow-x: hidden;
+#restaurant-profile-div {
+  margin: 0 0 0 0;
+  padding: 3.5em 0 0 0;
 }
-
-#user-profile {
-  max-width: 1200px;
+#image-upload-btn {
+  margin: 1em 0 0 0;
+}
+.restaurant-profile-tab-contents {
+  padding: 0 0 4em 0;
   margin: auto;
 }
-
-#profile-header {
-  padding-top: 2em;
+#item-tab {
+  font-weight: bold;
+  color: white;
 }
-
-#display-name {
-  padding-top: 1em;
+.profile-component {
+  padding: 2em 0 0 0;
 }
-
-#food-preferences {
-  padding-top: 1em;
+#display-name-div {
+  margin: 1em 0 0 0em;
+}
+#display-name-text {
+  font-size: 2.5em;
+}
+#display-name-edit-btn {
+  margin: 0 -2em 0.8em 0;
+}
+#edit-profile-btn-div {
+  margin: -3em 0 0 0;
+}
+#edit-profile-btn {
+  padding: 0 0 0 0;
+}
+#edit-profile-btn-txt {
+  margin: 1.1em 0 0 0;
+}
+#edit-btns-div {
+  padding: 1em 0 0 0;
+}
+#main-edit-btns-div {
+  align-self: right;
 }
 </style>

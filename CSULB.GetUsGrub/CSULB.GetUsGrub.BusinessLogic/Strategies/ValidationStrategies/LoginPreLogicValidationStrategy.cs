@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _loginDto = loginDto;
         }
 
-        public ResponseDto<LoginDto> ExecuteStrategy()
+        public ResponseDto<bool> ExecuteStrategy()
         {
             
             var validationWrapper =
@@ -23,9 +23,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             if (!validationResult.Data)
             {
                 // Return an error if validation fails
-                return new ResponseDto<LoginDto>()
+                return new ResponseDto<bool>()
                {
-                   Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
+                    Data = false,
+                    Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
                };
             }
 
@@ -34,16 +35,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var validateUserExistanceResult = userExistanceValidator.CheckIfUserExists(_loginDto.Username);
             if (!validateUserExistanceResult.Data)
             {
-                return new ResponseDto<LoginDto>
+                return new ResponseDto<bool>
                 {
+                    Data = false,
                     Error = AuthenticationErrorMessages.USERNAME_PASSWORD_ERROR
                 };
             }
             
             // Returning the Dto Back if after it has been validated
-            return new ResponseDto<LoginDto>
+            return new ResponseDto<bool>
             {
-                Data = _loginDto
+                Data = true
             };
         }
     }

@@ -13,23 +13,23 @@ namespace CSULB.GetUsGrub.UserAccessControl
     {
         public ICollection<Claim> Create(string type)
         {
-            switch (type)
+            switch(type)
             {
                 // Create claims collection for an individual user
-                case AccountType.INDIVIDUAL:
-                    return new IndividualClaims().Claims;
+                case AccountTypes.Individual:
+                    return new IndividualUser().Claims;
 
                 // Create claims collection for a restaurant user
-                case AccountType.RESTAURANT:
-                    return new RestaurantClaims().Claims;
+                case AccountTypes.Restaurant:
+                    return new RestaurantUser().Claims;
 
                 // Create claims collection for an admin user
-                case AccountType.ADMIN:
-                    return new AdminClaims().Claims;
+                case AccountTypes.Admin:
+                    return new AdminUser().Claims;
 
                 // Create claims collection for first time user
-                case AccountType.FIRSTTIMEUSER:
-                    return new FirstTimeUserClaims().Claims;
+                case AccountTypes.FirstTimeUser:
+                    return new FirstTimeUser().Claims;
                 
                 // Return an empty list of claims for default
                 default:

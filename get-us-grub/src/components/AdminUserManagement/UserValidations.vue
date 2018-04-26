@@ -1,6 +1,37 @@
 <template>
     <div id="app">
-      {{ responseDataStatus }} {{ responseData }}
+      <div id="success">
+        <v-layout>
+          <v-flex xs12>
+            <v-alert type="success" :value="showSuccess">
+            <span>
+              Success! User <code>{{ responseData }}</code> has been created.
+            </span>
+            </v-alert>
+          </v-flex>
+        </v-layout>
+      </div>
+      <div v-show="showError" id="error-div">
+        <v-layout>
+        <v-flex xs12>
+          <!-- Title bar for the restaurant selection -->
+          <v-alert id="registration-error" :value=true icon='warning'>
+            <span id="error-title">
+              An error has occurred
+            </span>
+          </v-alert>
+        </v-flex>
+        </v-layout>
+        <v-layout>
+          <v-flex xs12>
+            <v-card id="error-card">
+              <p v-for="error in errors" :key="error">
+                {{ error }}
+              </p>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </div>
       <v-flex xs6 sm3 offset-sm5>
         <v-form v-model="validIdentificationInput">
           <v-text-field
@@ -18,7 +49,7 @@
             :disabled=disable
           ></v-text-field>
           <v-text-field
-            label="Enter new password"
+            label="Enter a password"
             v-model="userAccount.password"
             :rules="$store.state.rules.passwordRules"
             :min="8"
@@ -123,8 +154,9 @@ export default {
       openTime: null,
       closeTime: null
     },
-    responseDataStatus: '',
-    responseData: ''
+    responseData: '',
+    showError: false,
+    showSuccess: false
   }),
   methods: {
     validatePassword () {
@@ -143,18 +175,22 @@ export default {
     },
     userSubmit (viewType) {
       if (viewType === 'CreateAdmin') {
-        axios.post('http://localhost:8081/User/CreateAdmin', {
+        axios.post(this.$store.state.urls.userManagement.createAdminUser, {
           userAccountDto: this.userAccount,
           securityQuestionDtos: this.securityQuestions,
           userProfileDto: this.userProfile
-        }).then(response => {
-          this.responseDataStatus = 'Success! User has been created: '
+        },
+        {
+          headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
+        }
+        ).then(response => {
           this.responseData = response.data
-          console.log(response)
+          this.showSuccess = true
+          this.showError = false
         }).catch(error => {
-          this.responseDataStatus = 'An error has occurred: '
           this.responseData = error.data
-          console.log(error.response.data)
+          this.showSuccess = false
+          this.showError = true
           try {
             if (error.response.status === 401) {
               // Route to Unauthorized page

@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-form v-model="value.isValidRestaurantDetails" v-on:input="$emit('input', value)">
-      <v-form v-model="value.isValidUserDetails" v-on:input="$emit('input', value)">
+      <v-form v-model="value.isValidUserDetails">
         <v-flex xs12>
         <v-text-field
           :label="getDisplayLabel(type)"
           v-model="value.userProfile.displayName"
           :rules="$store.state.rules.displayNameRules"
-          v-on:input="$emit('input', value)"
           required
+          :disabled="disabled"
           ></v-text-field>
         </v-flex>
       </v-form>
@@ -22,11 +22,11 @@
           label="Select a food type associated with your restaurant"
           prepend-icon="restaurant"
           :rules="$store.state.rules.foodTypeRules"
-          v-on:input="$emit('input', value)"
           required
           hide-details
           single-line
           auto
+          :disabled="disabled"
           ></v-select>
         </v-flex>
         <v-flex xs12>
@@ -38,11 +38,11 @@
           label="Select average food price"
           prepend-icon="money"
           :rules="$store.state.rules.avgFoodPriceRules"
-          v-on:input="$emit('input', value)"
           required
           hide-details
           single-line
           auto
+          :disabled="disabled"
           ></v-select>
         </v-flex>
         <v-flex xs12>
@@ -55,8 +55,8 @@
           prepend-icon="done"
           persistent-hint
           :rules="$store.state.rules.foodPreferenceRules"
-          v-on:input="$emit('input', value)"
           required
+          :disabled="disabled"
           ></v-select>
         </v-flex>
       </div>
@@ -70,7 +70,8 @@ export default {
   components: { },
   props: [
     'value',
-    'type'
+    'type',
+    'disabled'
   ],
   methods: {
     getDisplayLabel (type) {

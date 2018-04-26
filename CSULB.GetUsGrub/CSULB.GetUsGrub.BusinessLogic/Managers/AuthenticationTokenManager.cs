@@ -17,7 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class AuthenticationTokenManager
     {
-
         /// <summary>
         /// 
         /// CreateToken
@@ -25,13 +24,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// Creates a new Authentiaction Token and saves it in the Database and return it to the user
         /// 
         /// </summary>
+        /// <para>
+        /// @author: Ahmed Sadiq, Brian Fann
+        /// @updated: 4/24/18
+        /// </para>
         /// <param name="loginDto"></param>
         /// <returns>
         /// Response with the AuthenticationTokenDto
         /// </returns>
         public ResponseDto<AuthenticationTokenDto> CreateToken(string username)
         {
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var authenticationToken = new AuthenticationToken();
             var salt = new SaltGenerator().GenerateSalt(128);
@@ -48,15 +50,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Time Stamping the Token
             var issuedOn = DateTime.UtcNow;
             authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
-
-            // Getting the ReadClaims for the user
+            
+            // Build claims for user
             var claimIdentity = new ClaimsIdentity();
             var claimPrincipal = new ClaimsPrincipal();
             var claimTransformer = new ClaimsTransformer();
             claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
             claimPrincipal.AddIdentity(claimIdentity);
-            claimPrincipal = claimTransformer.Authenticate("read", claimPrincipal);
-
+            claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Authentication, claimPrincipal);
 
             var claims = claimPrincipal.Claims;
 
@@ -69,7 +70,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 Expires = authenticationToken.ExpiresOn,
                 Issuer = AuthenticationTokenConstants.ISSUER,
                 SigningCredentials = signingCredentials,
-
             };
 
             // Changing the Token to a String Form
@@ -87,7 +87,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Assigning the Token to a Dto to return it back to the User 
             var authenticationTokenDto = new AuthenticationTokenDto(authenticationToken.Username,
                 authenticationToken.ExpiresOn, authenticationToken.TokenString);
-
 
             // Returning the Token to the Controler
             return new ResponseDto<AuthenticationTokenDto>
@@ -140,7 +139,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<AuthenticationTokenDto>
                 {
                     Data = authenticationTokenDto,
-                    Error = "Something went wrong with : ATRT"
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 

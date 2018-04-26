@@ -12,7 +12,7 @@ namespace CSULB.GetUsGrub.Models
     /// @updated: 03/22/2018
     /// </para>
     /// </summary>
-    public class BusinessHourDto
+    public class BusinessHourDto : IBusinessHourDto
     {
         // Automatic Properties
         [Required]

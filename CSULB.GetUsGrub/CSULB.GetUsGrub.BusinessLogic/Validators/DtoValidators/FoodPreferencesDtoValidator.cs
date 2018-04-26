@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CSULB.GetUsGrub.Models;
+using FluentValidation;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
     /// Defines the rules to validate the Food Preferences DTO
-    /// NOTE - going to complete this when doing edit preferences
     /// 
     /// @author: Rachel Dang
-    /// @updated: 04/14/18
+    /// @updated: 04/24/18
     /// </summary>
-    public class FoodPreferencesDtoValidator
+    public class FoodPreferencesDtoValidator : AbstractValidator<FoodPreferencesDto>
     {
-
+        public FoodPreferencesDtoValidator()
+        {
+            RuleSet("EditFoodPreferences", () =>
+            {
+                RuleFor(foodPreferencesDto => foodPreferencesDto.FoodPreferences)
+                    .NotNull().WithMessage(ValidationErrorMessages.INVALID_TOKEN);
+            });
+        }
     }
 }

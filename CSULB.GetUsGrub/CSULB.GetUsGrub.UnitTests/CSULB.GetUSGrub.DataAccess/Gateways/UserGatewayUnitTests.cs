@@ -87,9 +87,9 @@ namespace CSULB.GetUsGrub.UnitTests
                 DisplayName = "displayName"
             };
             var userGateway = new UserGateway();
-
+            
             // Act
-            Action act = () => userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile);
+            Action act = () => userGateway.StoreIndividualUser(userAccount, passwordSalt, claims, userProfile, securityQuestions, securityAnswerSalts);
 
             // Assert
             act.Should().NotThrow();
@@ -129,17 +129,21 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_ReturnTrue_When_FoodPreferencesAreUpdated()
         {
             // Arrange
-            string username = "overlord39";
-            var updatedFoodPreferences = new List<string>
+            string username = "username1";
+            var preferencesToBeAdded = new List<string>
             {
                 "Lacto-Vegetarian",
                 "Pescetarian",
                 "Vegan"
             };
+            var preferencesToBeRemoved = new List<string>
+            {
+                "Halal"
+            };
             UserGateway gateway = new UserGateway();
 
             // Act
-            var result = gateway.EditFoodPreferencesByUsername(username, updatedFoodPreferences);
+            var result = gateway.EditFoodPreferencesByUsername(username, preferencesToBeAdded, preferencesToBeRemoved);
 
             //result.Data.Should().BeTrue();
             result.Error.Should().BeNull();

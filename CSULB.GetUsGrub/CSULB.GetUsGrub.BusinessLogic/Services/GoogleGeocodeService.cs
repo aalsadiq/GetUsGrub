@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Configuration;
 using System.Threading.Tasks;
 
@@ -54,49 +55,59 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>Coordinates of address.</returns>
         public async Task<ResponseDto<IGeoCoordinates>> GeocodeAsync(IAddress address)
         {
-            // Retrieve key from configuration and build url for the get request.
-            var key = ConfigurationManager.AppSettings["GoogleGeocodingApi"];
-            var url = BuildUrl(address, key);
-
-            // Send get request and parse the response
-            var request = new GetRequestService(url);
-            var response = await new GoogleBackoffRequest(request).TryExecute();
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var responseObj = JObject.Parse(responseJson);
-
-            // Retrieve status code from the response
-            var status = (string)responseObj.SelectToken("status");
-
-            // Exit early if status is not OK.
-            if (!status.Equals("OK"))
+            try
             {
-                if (status.Equals("ZERO_RESULTS"))
+                // Retrieve key from configuration and build url for the get request.
+                var key = ConfigurationManager.AppSettings["GoogleGeocodingApi"];
+                var url = BuildUrl(address, key);
+
+                // Send get request and parse the response
+                var request = new GetRequestService(url);
+                var response = await new GoogleBackoffRequest(request).TryExecute();
+                var responseJson = await response.Content.ReadAsStringAsync();
+                var responseObj = JObject.Parse(responseJson);
+
+                // Retrieve status code from the response
+                var status = (string)responseObj.SelectToken("status");
+
+                // Exit early if status is not OK.
+                if (!status.Equals("OK"))
                 {
-                    status = "Invalid Input";
+                    if (status.Equals("ZERO_RESULTS"))
+                    {
+                        status = "Invalid Input";
+                    }
+                    else
+                    {
+                        status = "Unexpected Error";
+                    }
+
+                    return new ResponseDto<IGeoCoordinates>()
+                    {
+                        Error = status
+                    };
                 }
-                else
-                {
-                    status = "Unexpected Error";
-                }
+
+                // Retrieve latitude and longitude data from response and return coordinates.
+                var lat = (float)responseObj.SelectToken("results[0].geometry.location.lat");
+                var lng = (float)responseObj.SelectToken("results[0].geometry.location.lng");
 
                 return new ResponseDto<IGeoCoordinates>()
                 {
-                    Error = status
+                    Data = new GeoCoordinates()
+                    {
+                        Latitude = lat,
+                        Longitude = lng
+                    }
                 };
             }
-
-            // Retrieve latitude and longitude data from response and return coordinates.
-            var lat = (float)responseObj.SelectToken("results[0].geometry.location.lat");
-            var lng = (float)responseObj.SelectToken("results[0].geometry.location.lng");
-
-            return new ResponseDto<IGeoCoordinates>()
+            catch (Exception)
             {
-                Data = new GeoCoordinates()
+                return new ResponseDto<IGeoCoordinates>()
                 {
-                    Latitude = lat,
-                    Longitude = lng
-                }
-            };
+                    Error = "Unexpected Error."
+                };
+            }
         }
     }
 }

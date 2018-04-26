@@ -13,13 +13,14 @@ namespace CSULB.GetUsGrub.UserAccessControl
     /// </summary>
     public class RestaurantUser : IClaims
     {
-        public string Type => AccountType.Restaurant;
+        public string Type => AccountTypes.Restaurant;
 
         public ICollection<Claim> Claims => new List<Claim>
         {
             // For Restaurant Profie Management
             new Claim(ActionConstant.READ+ResourceConstant.RESTAURANT, "True"),
             new Claim(ActionConstant.UPDATE+ResourceConstant.RESTAURANT, "True"),
+            new Claim(ActionConstant.UPDATE + ResourceConstant.IMAGE, "True"),
 
             // For Food Preferences and Restaurant Selection
             new Claim(ActionConstant.READ+ResourceConstant.PREFERENCES, "True"),

@@ -1,6 +1,5 @@
 using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
-using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IdentityModel.Services;
@@ -57,7 +56,6 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult EditProfile([FromBody] RestaurantProfileDto restaurantProfileDto)
         {
-            Debug.WriteLine(JsonConvert.SerializeObject(restaurantProfileDto));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -93,7 +91,6 @@ namespace CSULB.GetUsGrub.Controllers
         {
             try
             {
-
                 var image = HttpContext.Current.Request.Files[0];
                 var username = HttpContext.Current.Request.Params["username"];
                 var stringMenuId = HttpContext.Current.Request.Params["menuId"];

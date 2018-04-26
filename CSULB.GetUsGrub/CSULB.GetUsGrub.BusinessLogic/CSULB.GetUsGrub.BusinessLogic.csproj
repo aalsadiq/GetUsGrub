@@ -81,6 +81,7 @@
     <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Services\BackoffRequest.cs" />
+    <Compile Include="Services\RestaurantBusinessHourDtoService.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />
     <Compile Include="Services\GoogleBackoffRequest.cs" />
@@ -107,6 +108,8 @@
     <Compile Include="Services\SetPropertiesService.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\ValidationWrapper.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeIndividualPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeIndividualPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeSsoUserPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPostLogicValidationStrategy.cs" />
@@ -115,6 +118,7 @@
     <Compile Include="Strategies\ValidationStrategies\CreateIndividualPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\AuthenticationTokenPreLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\EditFoodPreferencesValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\EditRestaurantUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\EditUserProfilePreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\EditUserValidationStrategy.cs" />

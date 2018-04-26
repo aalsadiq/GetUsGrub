@@ -2,7 +2,6 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 
@@ -14,6 +13,8 @@ namespace CSULB.GetUsGrub
         {
             // Enable Cors
             config.EnableCors();
+
+            config.Routes.IgnoreRoute("Images Route", "Images/{file}.jpg");
 
             // Registering global handlers
             config.MessageHandlers.Add(new AuthenticationHandler());

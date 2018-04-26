@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// @updated: 03/12/2018
     /// </para>
     /// </summary>
-    public class CreateIndividualPostLogicValidationStrategy
+    public class CreateFirstTimeIndividualPostLogicValidationStrategy
     {
         private readonly UserAccount _userAccount;
         private readonly IList<SecurityQuestion> _securityQuestions;
@@ -36,7 +36,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <param name="passwordSalt"></param>
         /// <param name="userClaims"></param>
         /// <param name="userProfile"></param>
-        public CreateIndividualPostLogicValidationStrategy(UserAccount userAccount, PasswordSalt passwordSalt, UserClaims userClaims, UserProfile userProfile, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts)
+        public CreateFirstTimeIndividualPostLogicValidationStrategy(UserAccount userAccount, PasswordSalt passwordSalt, UserClaims userClaims, UserProfile userProfile, IList<SecurityQuestion> securityQuestions, IList<SecurityAnswerSalt> securityAnswerSalts)
         {
             _userAccount = userAccount;
             _securityQuestions = securityQuestions;
@@ -98,13 +98,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return result;
             }
 
-            // Validate user does not exist
-            result = _userValidator.CheckIfUserExists(_userAccount.Username);
-            if (result.Data)
-            {
-                result.Error = "Something went wrong. Please try again later.";
-                return result;
-            }
             return new ResponseDto<bool>()
             {
                 Data = true

@@ -134,7 +134,6 @@
     <Compile Include="Controllers\RestaurantSelectionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
-    <Compile Include="Filters\AuthenticationFilter.cs" />
     <Compile Include="Controllers\SsoController.cs" />
     <Compile Include="Handlers\AuthenticationHandler.cs" />
     <Compile Include="Filters\GlobalSecurityExceptionFilter.cs" />
@@ -161,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Formatters\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

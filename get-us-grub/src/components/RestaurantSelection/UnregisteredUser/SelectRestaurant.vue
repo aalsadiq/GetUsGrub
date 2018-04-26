@@ -170,14 +170,13 @@ export default {
         }
       // Receiving successful response
       }).then(response => {
-        console.log(response)
         if (response.data != null) {
+          this.$store.dispatch('setSelectedRestaurant', response.data)
           this.showAlert = false
           this.valid = true
           this.showRestaurantTitleBar = true
           this.showSection = true
           this.disable = false
-          this.$store.dispatch('setSelectedRestaurant', response.data)
         } else {
           this.showAlert = true
           this.disable = false

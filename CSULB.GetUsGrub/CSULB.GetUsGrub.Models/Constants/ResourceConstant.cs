@@ -17,6 +17,7 @@
         // Resource Types for Profile Management
         public const string INDIVIDUAL = "UserProfile";
         public const string RESTAURANT = "RestaurantProfile";
+        public const string IMAGE = "Image";
 
         // Resource Types for Food Preferences
         public const string PREFERENCES = "Preferences";

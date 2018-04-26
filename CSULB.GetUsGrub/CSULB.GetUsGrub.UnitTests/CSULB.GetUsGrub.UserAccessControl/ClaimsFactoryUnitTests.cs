@@ -19,7 +19,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_ReturnIndividualClaims_Given_IndividualAccountType()
         {
             // Arrange
-            var accountType = AccountType.Individual;
+            var accountType = AccountTypes.Individual;
 
             // Act
             var result = factory.Create(accountType);
@@ -33,7 +33,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_ReturnRestaurantClaims_Given_RestaurantAccountType()
         {
             // Arrange
-            var accountType = AccountType.Restaurant;
+            var accountType = AccountTypes.Restaurant;
 
             // Act
             var result = factory.Create(accountType);
@@ -47,7 +47,7 @@ namespace CSULB.GetUsGrub.UnitTests
         public void Should_ReturnAdminClaims_Given_AdminAccountType()
         {
             // Arrange
-            var accountType = AccountType.Admin;
+            var accountType = AccountTypes.Admin;
 
             // Act
             var result = factory.Create(accountType);

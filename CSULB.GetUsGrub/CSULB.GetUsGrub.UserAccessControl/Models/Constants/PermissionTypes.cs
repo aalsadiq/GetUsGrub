@@ -2,7 +2,7 @@
 {
     public class PermissionTypes
     {
-        public const string All = "All";
-        public const string Read = "Read";
+        public const string Authorization = "All";
+        public const string Authentication = "Read";
     }
 }

@@ -128,6 +128,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
+            // Validate user's credentials
             var isCredentialsValid = ValidateCredentials(payload);
 
             if (!isCredentialsValid.Data)
@@ -135,6 +136,17 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<AuthenticationTokenDto>()
                 {
                     Error = isCredentialsValid.Error
+                };
+            }
+
+            // Ensure token is only used once.
+            var isTokenUnused = StoreValidToken();
+
+            if (!isTokenUnused.Data)
+            {
+                return new ResponseDto<AuthenticationTokenDto>()
+                {
+                    Error = isTokenUnused.Error
                 };
             }
             
@@ -241,16 +253,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
                 var userAccount = userAccountResult.Data;
 
-                // Check if user is disabled
-                //if (userAccount.IsActive == false)
-                //{
-                //    return new ResponseDto<bool>
-                //    {
-                //        Data = false,
-                //        Error = AuthenticationErrorMessages.INACTIVE_USER
-                //    };
-                //}
-
                 var saltResult = gateway.GetUserPasswordSalt(userAccount.Id);
 
                 // Check if salt exists
@@ -324,11 +326,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
             using (var ssoGateway = new SsoGateway())
             {
                 var getTokenResult = ssoGateway.GetInvalidSsoToken(_ssoToken.Token);
+
                 if (getTokenResult.Data == null)
                 {
-                    var storeTokenResult = ssoGateway.StoreInvalidSsoToken(new InvalidSsoToken(_ssoToken.Token));
-                    return storeTokenResult;
+                    return ssoGateway.StoreInvalidSsoToken(new InvalidSsoToken(_ssoToken.Token));
                 }
+
                 return new ResponseDto<bool>
                 {
                     Data = false
@@ -346,13 +349,22 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns></returns>
         private ResponseDto<bool> StoreValidToken()
         {
-            using (var ssoGateway = new SsoGateway())
+            using (var gateway = new SsoGateway())
             {
-                var gatewayResult = ssoGateway.StoreValidSsoToken(new ValidSsoToken(_ssoToken.Token));
-                return gatewayResult;
+                var getTokenResult = gateway.GetValidSsoToken(_ssoToken.Token);
+
+                if (getTokenResult.Data == null)
+                {
+                    return gateway.StoreValidSsoToken(new ValidSsoToken(_ssoToken.Token));
+                }
+
+                return new ResponseDto<bool>()
+                {
+                    Data = false,
+                    Error = SsoErrorMessages.TOKEN_EXISTS_ERROR
+                };
             }
         }
-
 
         /// <summary>
         /// The MapRequestJwtPayloadToSsoJwtPayload method.

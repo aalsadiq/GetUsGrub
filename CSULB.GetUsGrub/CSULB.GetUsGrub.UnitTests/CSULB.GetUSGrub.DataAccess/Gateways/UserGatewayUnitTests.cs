@@ -87,9 +87,9 @@ namespace CSULB.GetUsGrub.UnitTests
                 DisplayName = "displayName"
             };
             var userGateway = new UserGateway();
-
+            
             // Act
-            Action act = () => userGateway.StoreIndividualUser(userAccount, passwordSalt, securityQuestions, securityAnswerSalts, claims, userProfile);
+            Action act = () => userGateway.StoreIndividualUser(userAccount, passwordSalt, claims, userProfile, securityQuestions, securityAnswerSalts);
 
             // Assert
             act.Should().NotThrow();

@@ -40,23 +40,23 @@ namespace CSULB.GetUsGrub.DataAccess
                                            select restaurantProfile).SingleOrDefault();
 
                 var restaurantProfileDomain = new RestaurantProfile(dbRestaurantProfile.PhoneNumber, dbRestaurantProfile.Address, dbRestaurantProfile.Details);
-                
-                // Find restaurant's business hours
-                var dbBusinessHours = (from hour in context.BusinessHours
-                                       where hour.RestaurantId == dbRestaurantProfile.Id
-                                       select hour).ToList();
 
-                var businessHourDomains = new List<BusinessHour>();
-                foreach (var dbHour in dbBusinessHours)
-                {
-                    businessHourDomains.Add(new BusinessHour(dbHour.Id, dbHour.Day, dbHour.OpenTime, dbHour.CloseTime));
-                }
+                // Find restaurant's business hours
+                var businessHourDtos = (from businessHour in context.BusinessHours
+                                          where businessHour.RestaurantId == dbRestaurantProfile.Id
+                                          select new RestaurantBusinessHourDto()
+                                          {
+                                              Id = businessHour.Id,
+                                              Day = businessHour.Day,
+                                              OpenDateTime = businessHour.OpenTime,
+                                              CloseDateTime = businessHour.CloseTime
+                                          }).ToList();
 
                 IList<RestaurantMenuWithItems> restaurantMenusList = new List<RestaurantMenuWithItems>();
 
                 var dbRestaurantMenus = dbRestaurantProfile.RestaurantMenu;
 
-                if (dbRestaurantMenus != null)
+                if (dbRestaurantMenus.Count > 0)
                 {
                     foreach (var menu in dbRestaurantMenus)
                     {
@@ -83,12 +83,12 @@ namespace CSULB.GetUsGrub.DataAccess
 
                 else
                 {
-                    dbRestaurantMenus = new Collection<RestaurantMenu>();
+                    restaurantMenusList = new List<RestaurantMenuWithItems>();
                 }
                 
                 ResponseDto<RestaurantProfileDto> responseDto = new ResponseDto<RestaurantProfileDto>
                 {
-                    Data = new RestaurantProfileDto(userProfileDomain, restaurantProfileDomain, businessHourDomains, restaurantMenusList),
+                    Data = new RestaurantProfileDto(userProfileDomain, restaurantProfileDomain, businessHourDtos, restaurantMenusList),
                     Error = null
                 };
                 return responseDto;
@@ -101,7 +101,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </summary>
         /// <param name="restaurantProfileDto"></param>
         /// <returns></returns>
-        public ResponseDto<bool> EditRestaurantProfileById(int? id, UserProfile userProfileDomain, RestaurantProfile restaurantProfileDomain, IList<BusinessHour> businessHourDomains, IList<RestaurantMenuWithItems> restaurantMenuDomains)
+        public ResponseDto<bool> EditRestaurantProfileById(int? id, UserProfile userProfileDomain, RestaurantProfile restaurantProfileDomain, IList<RestaurantBusinessHourDto> RestaurantBusinessHourDtos, IList<RestaurantMenuWithItems> restaurantMenuDomains)
         {
             using (context)
             {
@@ -158,33 +158,34 @@ namespace CSULB.GetUsGrub.DataAccess
 
                         // Find the business hours on the database that have the same Ids as the new business hours
 
-                        foreach (var businessHour in businessHourDomains)
+                        foreach (var restaurantBusinessHourDto in RestaurantBusinessHourDtos)
                         {
-                            Flag flag = businessHour.Flag;
+                            Flag flag = restaurantBusinessHourDto.Flag;
                             switch (flag)
                             {
                                 case Flag.NotSet:
                                     break;
                                 case Flag.Add:
                                     // reset flag
-                                    businessHour.Flag = 0;
-                                    dbBusinessHours.Add(businessHour);
+                                    restaurantBusinessHourDto.Flag = 0;
+                                    var businessHourDomain = new BusinessHour(restaurantBusinessHourDto.Day, restaurantBusinessHourDto.OpenDateTime, restaurantBusinessHourDto.CloseDateTime);
+                                    dbBusinessHours.Add(businessHourDomain);
                                     context.SaveChanges();
                                     break;
                                 case Flag.Edit:
                                     // find the corresponding businessHour by ID
-                                    var dbBusinessHour = (from hour in context.BusinessHours
-                                                          where hour.Id == businessHour.Id
-                                                          select hour).SingleOrDefault();
-                                    dbBusinessHour.Day = businessHour.Day;
-                                    dbBusinessHour.OpenTime = businessHour.OpenTime;
-                                    dbBusinessHour.CloseTime = businessHour.CloseTime;
+                                    var dbBusinessHour = (from dbHour in context.BusinessHours
+                                                          where dbHour.Id == restaurantBusinessHourDto.Id
+                                                          select dbHour).SingleOrDefault();
+                                    dbBusinessHour.Day = restaurantBusinessHourDto.Day;
+                                    dbBusinessHour.OpenTime = restaurantBusinessHourDto.OpenDateTime;
+                                    dbBusinessHour.CloseTime = restaurantBusinessHourDto.CloseDateTime;
                                     context.SaveChanges();
                                     break;
                                 case Flag.Delete:
                                     // find the corresponding businessHour by ID
                                     dbBusinessHour = (from hour in context.BusinessHours
-                                                        where hour.Id == businessHour.Id
+                                                        where hour.Id == restaurantBusinessHourDto.Id
                                                         select hour).SingleOrDefault();
                                     context.BusinessHours.Remove(dbBusinessHour);
                                     context.SaveChanges();
@@ -308,7 +309,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
                             Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Error = GeneralErrorMessages.GENERAL_ERROR
                         };
                         return responseDto;
                     }

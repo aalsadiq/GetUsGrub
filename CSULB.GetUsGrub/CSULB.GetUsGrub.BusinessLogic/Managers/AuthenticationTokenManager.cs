@@ -17,7 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class AuthenticationTokenManager
     {
-
         /// <summary>
         /// 
         /// CreateToken
@@ -25,6 +24,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// Creates a new Authentiaction Token and saves it in the Database and return it to the user
         /// 
         /// </summary>
+        /// <para>
+        /// @author: Ahmed Sadiq, Brian Fann
+        /// @updated: 4/24/18
+        /// </para>
         /// <param name="loginDto"></param>
         /// <returns>
         /// Response with the AuthenticationTokenDto
@@ -47,40 +50,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Time Stamping the Token
             var issuedOn = DateTime.UtcNow;
             authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
-
-            var isFirstTimeUser = false;
-
-            using(var gateway = new AuthenticationGateway())
-            {
-                var userAccountResult = gateway.GetUserAccount(username);
-                if (userAccountResult.Data.IsFirstTimeUser == true)
-                {
-                    isFirstTimeUser = true;
-                }
-            }
-
+            
+            // Build claims for user
             var claimIdentity = new ClaimsIdentity();
             var claimPrincipal = new ClaimsPrincipal();
             var claimTransformer = new ClaimsTransformer();
             claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
-
-            // TODO: @Ahmed
-            // I thought you already told me to account for this? Check ClaimsTransformer and ClaimsFactory in User Access Control
-            if (isFirstTimeUser)
-            {
-                foreach(var claim in new FirstTimeUser().Claims)
-                {
-                    claimIdentity.AddClaim(claim);
-                }
-            }
-
             claimPrincipal.AddIdentity(claimIdentity);
-
-            if (!isFirstTimeUser)
-            {
-                // Getting the ReadClaims for the user
-                claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Read, claimPrincipal);
-            }
+            claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Authentication, claimPrincipal);
 
             var claims = claimPrincipal.Claims;
 
@@ -110,7 +87,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Assigning the Token to a Dto to return it back to the User 
             var authenticationTokenDto = new AuthenticationTokenDto(authenticationToken.Username,
                 authenticationToken.ExpiresOn, authenticationToken.TokenString);
-
 
             // Returning the Token to the Controler
             return new ResponseDto<AuthenticationTokenDto>

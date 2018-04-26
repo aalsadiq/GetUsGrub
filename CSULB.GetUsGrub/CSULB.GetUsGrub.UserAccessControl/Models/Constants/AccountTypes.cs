@@ -6,7 +6,7 @@
     /// @author: Rachel Dang
     /// @updated: 04/07/18
     /// </summary>
-    public static class AccountType
+    public static class AccountTypes
     {
         public const string Individual = "Individual";
         public const string Restaurant = "Restaurant";

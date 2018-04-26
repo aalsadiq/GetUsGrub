@@ -17,7 +17,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly BusinessHourDtoValidator _businessHourDtoValidator;
         private readonly BusinessHourValidator _businessHourValidator;
         private readonly RestaurantDetailValidator _restaurantDetailValidator;
-        private readonly CreateIndividualPreLogicValidationStrategy _createIndividualPreLogicValidationStrategy;
 
         public CreateRestaurantPreLogicValidationStrategy(RegisterRestaurantDto registerRestaurantDto)
         {
@@ -25,7 +24,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             _businessHourDtoValidator = new BusinessHourDtoValidator();
             _businessHourValidator = new BusinessHourValidator();
             _restaurantDetailValidator = new RestaurantDetailValidator();
-            _createIndividualPreLogicValidationStrategy = new CreateIndividualPreLogicValidationStrategy(registerRestaurantDto);
         }
 
         /// <summary>
@@ -39,12 +37,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>ResponseDto</returns>
         public ResponseDto<bool> ExecuteStrategy()
         {
-            // Validate base user DTO
-            var result = _createIndividualPreLogicValidationStrategy.ExecuteStrategy();
-            if (!result.Data)
-            {
-                return result;
-            }
+            ResponseDto<bool> result;
 
             var validationWrappers = new List<IValidationWrapper>()
             {

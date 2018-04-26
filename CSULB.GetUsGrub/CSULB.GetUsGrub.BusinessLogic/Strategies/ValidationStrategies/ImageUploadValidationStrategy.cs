@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly UserProfileDtoValidator _userProfileDtoValidator;
         private readonly UserValidator _userValidator;// checks if user exists
         private readonly HttpPostedFile _image;
-        const long MaxImageSize = 1024; // use to be 1024 Bytes
+        const int MaxImageSize = 12000; //1024; // use to be 1024 Bytes
         private readonly ICollection<string> _allowedFileExtensions = new Collection<string> { ".jpg", ".png", ".jpeg" };
 
         /// <summary>

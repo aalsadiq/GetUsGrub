@@ -34,7 +34,7 @@
           slot="activator"
           class="nav-btn"
           to="Profile"
-          v-if="this.$store.state.username"
+          v-if="!showWithoutAuthentication()"
         >
           <v-icon id="person-icon">person</v-icon>
           <span class="nav-btn-text" id="username-text">
@@ -64,6 +64,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -88,12 +89,14 @@ export default {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
       }).then(response => {
-        this.$store.dispatch('setAuthenticationToken', null)
-        // Force reload to clear cache
-        location.reload()
+        this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('resetState', this.$store.state)
         this.$router.push({path: '/'})
       }).catch(error => {
-        console.log(error.response)
+        this.$store.commit('setAuthenticationToken', null)
+        this.resetState()
+        this.$store.commit('resetState', this.$store.state)
+        Promise.reject(error)
       })
     }
   }

@@ -10,8 +10,8 @@
     /// </summary>
     public class ResetPasswordValidationTypes
     {
-        public const string FirstValidation = "FirstValidation";
-        public const string SecondValidation = "SecondValidation";
-        public const string ThirdValidation = "ThirdValidation";
+        public const string GetSecurityQuestionsValidation = "GetSecurityQuestionsValidation";
+        public const string ConfirmSecurityQuestionAnswersValidation = "ConfirmSecurityAnswersValidation";
+        public const string UpdatePasswordValidation = "UpdatePasswordValidation";
     }
 }

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { setTimeout } from 'timers'
-import defaultState from './defaultState'
 
 Vue.use(Vuex)
 
@@ -82,7 +81,9 @@ export const store = new Vuex.Store({
         profileImageUpload: 'http://localhost:8081/Profile/User/Edit/ProfileImageUpload'
       },
       sso: {
-        login: 'http://localhost:8081/Sso/Login'
+        login: 'http://localhost:8081/Sso/Login',
+        createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
+        createRestaurantUser: 'http://localhost:8081/User/FirstTimeRegistration/Restaurant'
       }
     },
     // Rules for validations
@@ -370,10 +371,6 @@ export const store = new Vuex.Store({
   },
   // Mutations are called to change the states in the store
   mutations: {
-    // Reset states in store to default
-    resetState (state) {
-      Object.assign(state, defaultState)
-    },
     originAddress: (state, payload) => {
       state.originAddress = payload
     },

@@ -61,6 +61,18 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull()
                     .Must(roleType => _validRoleTypes.Contains(roleType));
             });
+
+            RuleSet("ResetPassword", () =>
+            {
+                RuleFor(userAccount => userAccount.Username)
+                    .NotEmpty()
+                    .NotNull()
+                    .Matches(RegularExpressions.USERNAME_FORMAT);
+
+                RuleFor(userAccount => userAccount.Password)
+                    .NotEmpty()
+                    .NotNull();
+            });
         }
     }
 }

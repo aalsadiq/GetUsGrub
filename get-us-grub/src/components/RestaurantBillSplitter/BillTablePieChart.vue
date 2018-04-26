@@ -9,10 +9,6 @@ export default {
   props: ['options', 'billItem', 'billItemIndex'],
   data () {
     return {
-      // billUsers: this.billItem.selected,
-      // labelList: [],
-      // labels: this.billItem.selected,
-      datacollection: null,            
     }
   },
   mounted () {

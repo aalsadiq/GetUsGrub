@@ -1,44 +1,105 @@
 <template>
   <div>
-    <app-header/>
-    <div id="page-divider">
-      <h1>{{ title }}</h1>
-      <h3>{{ message }}</h3>
-      <div id="text-divider">
-        <li v-for='preference in foodPreferences' :key='preference'>{{ preference }}</li>
-      </div>
-      <div>
-        <router-link to=/FoodPreferences/Edit>
-          <v-btn :dark=true>Edit Food Preferences</v-btn>
-        </router-link>
-      </div>
-    </div>
-    <app-footer/>
+    <v-card>
+      <v-card-title class="form-component">
+        <h3 v-if="!isEdit">{{ message }}</h3>
+        <h3 v-else>{{ editMessage }}</h3>
+      </v-card-title>
+      <v-expand-transition>
+        <v-card-text v-show="!isEdit">
+          <div class="form-component">
+            <li v-for="preference in currentFoodPreferences" :key='preference'>{{ preference }}</li>
+          </div>
+          <div class="btn-divider">
+            <v-btn :dark="true" @click.native="toggleEdit">Edit Food Preferences</v-btn>
+          </div>
+        </v-card-text>
+      </v-expand-transition>
+      <v-expand-transition>
+        <v-card-text v-show="isEdit">
+          <div class="form-component">
+              <v-checkbox
+                v-for="preference in $store.state.constants.foodPreferences"
+                :key='preference'
+                :label='preference'
+                :value='preference'
+                :change=checkChanges
+                v-model="updatedFoodPreferences"
+                style="display: inline-block"
+                hide-details
+              >
+              </v-checkbox>
+          </div>
+          <div class="btn-divider">
+            <v-btn :dark=true @click.native="cancel">Cancel</v-btn>
+            <v-btn :dark=!isDisabled :disabled=isDisabled @click.native="update">Save</v-btn>
+          </div>
+        </v-card-text>
+      </v-expand-transition>
+    </v-card>
   </div>
 </template>
 
 <script>
-import AppHeader from '@/components/AppHeader'
-import AppFooter from '@/components/AppFooter'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 
 export default {
   name: 'FoodPreferences',
-  components: {
-    'app-header': AppHeader,
-    'app-footer': AppFooter
-  },
-
-  data () {
-    return {
-      title: 'Your Food Preferences',
-      message: 'Here contains your list of dietary preferences.',
-      foodPreferences: [],
-      errors: []
+  data: () => ({
+    message: 'Here contains your list of dietary preferences.',
+    editMessage: 'Update your dietary preferences by hitting save.',
+    updatedFoodPreferences: [],
+    currentFoodPreferences: [],
+    errors: [],
+    isEdit: false,
+    isDisabled: true
+  }),
+  watch: {
+    updatedFoodPreferences () {
+      this.isDisabled = this.checkChanges()
     }
   },
-
+  methods: {
+    toggleEdit: function () {
+      this.isEdit = !this.isEdit
+    },
+    checkChanges: function () {
+      var current = this.currentFoodPreferences
+      var updated = this.updatedFoodPreferences
+      if (current.length !== updated.length) {
+        return false
+      } else {
+        for (var item in current) {
+          if (!updated.includes(current[item])) {
+            return false
+          }
+        }
+        return true
+      }
+    },
+    cancel: function () {
+      this.toggleEdit()
+      this.updatedFoodPreferences = this.currentFoodPreferences
+    },
+    update: function () {
+      axios.post(this.$store.state.urls.foodPreferences.editPreferences,
+        {
+          'foodPreferences': this.updatedFoodPreferences
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
+            'Authorization': `Bearer ${this.$store.state.authenticationToken}`
+          }
+        }).then(response => {
+        console.log(response.data)
+        this.response = response.data
+      }).catch(error => {
+        Promise.reject(error)
+      }).then(this.toggleEdit)
+    }
+  },
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
       this.$router.push({path: '/Unauthorized'})
@@ -52,7 +113,6 @@ export default {
       this.$router.push({path: '/Forbidden'})
     }
   },
-
   created () {
     axios.get(this.$store.state.urls.foodPreferences.getPreferences, {
       headers: {
@@ -64,35 +124,32 @@ export default {
       }
     }).then(response => {
       console.log(response.data)
-      this.foodPreferences = response.data
+      this.currentFoodPreferences = response.data.sort()
+      this.updatedFoodPreferences = response.data.sort()
     }).catch(error => {
       Promise.reject(error)
     })
   }
 }
-
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
-  h1, h3 {
-    font-weight: normal;
+  h3 {
+    font-weight: bold;
     font-family: 'Open Sans', sans-serif;
   }
-  #text-divider {
+  .form-component {
     display: inline-block;
-    padding-top: 1vh;
-    padding-bottom: 1vh;
+  }
+  .btn-divider {
+    padding-top: 1em;
   }
   li {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.1em;
     text-align: left;
     list-style-type: circle;
-  }
-  #page-divider {
-    margin: 5.5em 0 0 0;
   }
 </style>

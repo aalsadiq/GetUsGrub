@@ -248,7 +248,15 @@ namespace CSULB.GetUsGrub.DataAccess
                     }
 
                     // Add First Menu
-                    context.RestaurantMenus.Add(new RestaurantMenu("Your First Menu", false, 0));
+                    // Find the corresponding profile
+                    var dbRestaurantProfile = (from profile in context.RestaurantProfiles
+                                               where profile.Id == userId
+                                               select profile).SingleOrDefault();
+                    var newMenu = new RestaurantMenu("Your First Menu", false, 0);
+
+                    newMenu.RestaurantProfile = dbRestaurantProfile;
+                    context.RestaurantMenus.Add(newMenu);
+                    context.Entry(dbRestaurantProfile).State = System.Data.Entity.EntityState.Unchanged;
                     context.SaveChanges();
 
                     // Add First Menu Item
@@ -256,7 +264,11 @@ namespace CSULB.GetUsGrub.DataAccess
                     var dbRestaurantMenu = (from menu in context.RestaurantMenus
                                             where menu.RestaurantId == restaurantProfile.Id
                                             select menu).SingleOrDefault();
-                    dbRestaurantMenu.RestaurantMenuItems.Add(new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_MENU_ITEM_IMAGE, "", false, 0));
+                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_MENU_ITEM_IMAGE, "", false, 0);
+                    newMenuItem.RestaurantMenu = dbRestaurantMenu;
+                    context.RestaurantMenuItems.Add(newMenuItem);
+                    context.Entry(dbRestaurantMenu).State = System.Data.Entity.EntityState.Unchanged;
+                    context.SaveChanges();
 
                     // Commit transaction to database
                     dbContextTransaction.Commit();

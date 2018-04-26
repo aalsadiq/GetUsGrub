@@ -1,30 +1,69 @@
 <template>
   <div id="image-upload">
-        <v-dialog  v-model="dialog">
-          <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
+    <v-layout row justify-center>
+        <v-dialog  v-model="dialog" max-width="500px">
+        <v-btn small color="dark" dark slot="activator">Upload Image</v-btn>
           <v-card dark>
-            {{ responseDataStatus }}
-            {{ responseData }}
+        <div id="success">
+          <v-layout>
+            <v-flex xs12>
+              <v-alert type="success" :value="showSuccess">
+                <span>
+                  {{ responseData }}
+                </span>
+                </v-alert>
+              </v-flex>
+            </v-layout>
+          </div>
+          <div v-show="showError" id="error-div">
+            <v-layout>
+            <v-flex xs12>
+              <v-alert id="error-card" :value=true icon='warning'>
+                <span id="error-title">
+                  An error has occurred
+                </span>
+              </v-alert>
+            </v-flex>
+            </v-layout>
+            <v-layout>
+              <v-flex xs12>
+                <v-card id="error-card">
+                  <p v-for="error in errors" :key="error">
+                    {{ error }}
+                  </p>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </div>
             <br/>
-            <v-flex xs1 sm4 offset-sm1>
-              <v-flex sm2>
-              <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
-              <v-btn id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">Upload Image</v-btn>
+            <v-flex xs6>
+                <label class="custom-file-upload">
+                   <h5>choose image
+                   <i class="material-icons">cloud_download</i>
+                   </h5>
+                  <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
+                </label>
+                <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
+                  Upload
+                  <v-icon color="white">cloud_upload</v-icon>
+                </v-btn>
               </v-flex>
-              </v-flex>
-              <v-flex xs15 sm15 offset-sm2>
-                  <img id="previewImage" class="preview" :src="imageData" height="100" width="100"/>
-              </v-flex>
+              <div v-if: >
+                <v-flex xs12>
+                    <img id="previewImage" class="preview" :src="imageData"/> <!-- height="100" width="100" -->
+                </v-flex>
+              </div>
             <br/>
           </v-card>
         </v-dialog>
+    </v-layout>
       <br/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
   dialog: false,
@@ -32,26 +71,28 @@ export default {
   },
   data: () => ({
     selectedFile: null,
-    responseDataStatus: '',
     responseData: '',
+    show: false,
     test: null,
-    username: 'username14',
+    showError: false,
+    showSuccess: false,
+    username: '26user',
     imageData: '' // Stores in base 64 format of image
   }),
   methods: {
-    beforeCreate () {
-      if (this.$store.state.authenticationToken === null) {
-        this.$router.push({path: '/Unauthorized'})
-      }
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True' || jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
-        } else {
-          this.$router.push({path: '/Forbidden'})
-        }
-      } catch (ex) {
-        this.$router.push({path: '/Forbidden'})
-      }
-    },
+    // beforeCreate () {
+    //   if (this.$store.state.authenticationToken === null) {
+    //     this.$router.push({path: '/Unauthorized'})
+    //   }
+    //   try {
+    //     if (jwt.decode(this.$store.state.authenticationToken).ReadUser === 'True') {
+    //     } else {
+    //       this.$router.push({path: '/Forbidden'})
+    //     }
+    //   } catch (ex) {
+    //     this.$router.push({path: '/Forbidden'})
+    //   }
+    // },
     StoreSelectedFile: function (event) {
       this.selectedFile = event.target.files[0]
       this.previewImage(event)
@@ -60,8 +101,8 @@ export default {
       var input = event.target // References the DOM input element
       if (input.files[0]) {
         var reader = new FileReader() // Read image and convert to base64
-        reader.onload = (e) => {
-          this.imageData = e.target.result // Read image as base64
+        reader.onload = (image) => {
+          this.imageData = image.target.result // Read image as base64
         }
         reader.readAsDataURL(input.files[0]) // Read as data url (base64 format)
       }
@@ -71,14 +112,19 @@ export default {
       var formData = new FormData()
       formData.append('username', this.username) // this.$store.state.username
       formData.append('filename', this.selectedFile, this.selectedFile.name)
-      axios.post('http://localhost:8081/Profile/User/Edit/ProfileImageUpload', formData, {
-      }).then(response => {
-        this.responseDataStatus = 'Success! Image has been uploaded.'
+      axios.post(this.$store.state.urls.profileManagement.profileImageUpload, formData, {
+      },
+      {
+        headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
+      }
+      ).then(response => {
         this.responseData = response.data
+        this.showSuccess = true
+        this.showError = false
       }).catch(error => {
-        this.responseDataStatus = 'An error has occurred: '
         this.responseData = error.response.data
-        console.log(error.response.data)
+        this.showSuccess = false
+        this.showError = true
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page
@@ -114,9 +160,28 @@ export default {
   height: 40em;
   width: 80em;
 }
-#uploadPreview{
+#previewImage{
   height: 100px;
   width: 100px;
 }
-
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  display: inline-block;
+  padding: 0em .8em .5em .8em;
+  cursor: pointer;
+  background: slateblue;
+  font-size: 14px;
+}
+.btn--small{
+  font: 5em;
+}
+#card {
+  padding: 0 0.7em 0 0.7em;
+  margin: 0 0 1em 0;
+}
+#user-text-box-alert{
+  background-color: #e26161 !important
+}
 </style>

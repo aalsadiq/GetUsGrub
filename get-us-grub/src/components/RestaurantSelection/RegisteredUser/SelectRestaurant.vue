@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>
-      <v-container fluid>
         <div>
           <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
@@ -108,7 +107,6 @@
           </div>
           <result-bar/>
         </div>
-      </v-container>
     </div>
     <div v-if="showSection">
       <!-- Restaurant selection results Vue component -->
@@ -174,12 +172,12 @@ export default {
       // Receiving successful response
       }).then(response => {
         if (response.data !== null) {
+          this.$store.dispatch('setSelectedRestaurant', response.data)
           this.showAlert = false
           this.valid = true
           this.showRestaurantTitleBar = true
           this.showSection = true
           this.disable = false
-          this.$store.dispatch('setSelectedRestaurant', response.data)
         } else {
           this.showAlert = true
           this.disable = false

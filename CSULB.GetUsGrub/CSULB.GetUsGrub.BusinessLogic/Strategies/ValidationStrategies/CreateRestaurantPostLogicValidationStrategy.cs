@@ -13,7 +13,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// </summary>
     public class CreateRestaurantPostLogicValidationStrategy
     {
-        private readonly CreateIndividualPostLogicValidationStrategy _createIndividualPostLogicValidationStrategy;
         private readonly RestaurantProfile _restaurantProfile;
         private readonly IList<BusinessHour> _businessHours;
         private readonly BusinessHourValidator _businessHourValidator;
@@ -33,13 +32,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <param name="userProfile"></param>
         /// <param name="restaurantProfile"></param>
         /// <param name="businessHours"></param>
-        public CreateRestaurantPostLogicValidationStrategy(UserAccount userAccount, IList<SecurityQuestion> securityQuestions,
-            IList<SecurityAnswerSalt> securityAnswerSalts, PasswordSalt passwordSalt,
-            UserClaims claims, UserProfile userProfile, RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours)
+        public CreateRestaurantPostLogicValidationStrategy(RestaurantProfile restaurantProfile, IList<BusinessHour> businessHours)
         {
             _restaurantProfile = restaurantProfile;
             _businessHours = businessHours;
-            _createIndividualPostLogicValidationStrategy = new CreateIndividualPostLogicValidationStrategy(userAccount, securityQuestions, securityAnswerSalts, passwordSalt, claims, userProfile);
+
             _businessHourValidator = new BusinessHourValidator();
         }
 
@@ -55,12 +52,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         public ResponseDto<bool> ExecuteStrategy()
         {
             // Validate base user
-            var result = _createIndividualPostLogicValidationStrategy.ExecuteStrategy();
-            if (!result.Data)
-            {
-                return result;
-            }
-
             var validationWrappers = new List<IValidationWrapper>()
             {
                 new ValidationWrapper<RestaurantProfile>(_restaurantProfile, "CreateUser", new RestaurantProfileValidator()),
@@ -74,7 +65,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             foreach (var validationWrapper in validationWrappers)
             {
-                result = validationWrapper.ExecuteValidator();
+                var result = validationWrapper.ExecuteValidator();
                 if (!result.Data)
                 {
                     result.Error = "Something went wrong. Please try again later.";

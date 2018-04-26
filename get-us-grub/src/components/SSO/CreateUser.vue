@@ -192,25 +192,6 @@ export default {
         userProfileDto: this.profile.userProfile
       }
 
-      // axios.post('http://localhost:8081/User/Registration/Individual', {
-      //   userAccountDto: this.userAccount,
-      //   securityQuestionDtos: this.securityQuestions,
-      //   userProfileDto: this.userProfile
-      // }).then(response => {
-      //   this.validSecurityInput = true
-      //   this.disable = false
-      //   this.responseDataStatus = 'Success! User has been created: '
-      //   this.responseData = response.data
-      // }).catch(error => {
-      //   this.validSecurityInput = true
-      //   this.disable = false
-      //   this.responseDataStatus = 'An error has occurred: '
-      //   if (error.message === 'Network Error') {
-      //     this.responseData = error.message
-      //   } else {
-      //     this.responseData = error.response
-      //   }
-      // })
       console.log(dto)
     },
     submitRestaurant () {
@@ -247,9 +228,42 @@ export default {
         return false
       }
     }
-  },
-  created () {
-    console.log('created create user')
   }
 }
 </script>
+
+<style scoped>
+#create-user {
+  margin: 1em 0 7em -2em;
+}
+#contact-layout {
+  margin: 0em 0em 0em 1.1em;
+}
+#phone-number {
+  margin: -1.6em 0em 0em 1.1em;
+}
+#error-title {
+  margin: 0em 3.1em 0em 0em;
+}
+#error-card {
+  margin: 0em 0em 2em 0em;
+}
+p {
+  margin-bottom: 0em;
+}
+#error-div {
+  margin: -0.9em 0em -0.5em 0em;
+}
+#success {
+  margin-bottom: 1em;
+}
+.application .theme--light.stepper--vertical
+.stepper__content:not(:last-child),
+.theme--light .stepper--vertical
+.stepper__content:not(:last-child) {
+  border: none;
+}
+#create-user-layout {
+  margin: -1.7em 0 0 0;
+}
+</style>

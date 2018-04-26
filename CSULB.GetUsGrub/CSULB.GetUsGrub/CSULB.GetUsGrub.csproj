@@ -128,6 +128,7 @@
     <Compile Include="Constants\NetworkConstants.cs" />
     <Compile Include="Controllers\FoodPreferencesController.cs" />
     <Compile Include="Controllers\LogoutController.cs" />
+    <Compile Include="Controllers\ResetPasswordController.cs" />
     <Compile Include="Controllers\RestaurantBillSplitterController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RestaurantProfileController.cs" />
@@ -145,9 +146,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="keys.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="keys.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

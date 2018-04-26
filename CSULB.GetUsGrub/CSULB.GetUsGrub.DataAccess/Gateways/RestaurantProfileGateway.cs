@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -49,7 +48,8 @@ namespace CSULB.GetUsGrub.DataAccess
                                               Id = businessHour.Id,
                                               Day = businessHour.Day,
                                               OpenDateTime = businessHour.OpenTime,
-                                              CloseDateTime = businessHour.CloseTime
+                                              CloseDateTime = businessHour.CloseTime,
+                                              TimeZone = businessHour.TimeZone
                                           }).ToList();
 
                 IList<RestaurantMenuWithItems> restaurantMenusList = new List<RestaurantMenuWithItems>();
@@ -168,7 +168,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                 case Flag.Add:
                                     // reset flag
                                     restaurantBusinessHourDto.Flag = 0;
-                                    var businessHourDomain = new BusinessHour(restaurantBusinessHourDto.Day, restaurantBusinessHourDto.OpenDateTime, restaurantBusinessHourDto.CloseDateTime);
+                                    var businessHourDomain = new BusinessHour(restaurantBusinessHourDto.TimeZone, restaurantBusinessHourDto.Day, restaurantBusinessHourDto.OpenDateTime, restaurantBusinessHourDto.CloseDateTime);
                                     dbBusinessHours.Add(businessHourDomain);
                                     context.SaveChanges();
                                     break;
@@ -180,6 +180,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                     dbBusinessHour.Day = restaurantBusinessHourDto.Day;
                                     dbBusinessHour.OpenTime = restaurantBusinessHourDto.OpenDateTime;
                                     dbBusinessHour.CloseTime = restaurantBusinessHourDto.CloseDateTime;
+                                    dbBusinessHour.TimeZone = restaurantBusinessHourDto.TimeZone;
                                     context.SaveChanges();
                                     break;
                                 case Flag.Delete:
@@ -333,6 +334,12 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
                                                        where restaurantMenuItems.Id == menuId
                                                        select restaurantMenuItems).FirstOrDefault();
+
+                        // To avoid images being stored with the same name and different extensions
+                        if (userRestaurantMenuItems.ItemPicture != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                        {
+                            userRestaurantMenuItems.ItemPicture = ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH;
+                        }
 
                         // Checks if restaurant menu items result is null, if not then change image paths
                         userRestaurantMenuItems.ItemPicture = menuPath;

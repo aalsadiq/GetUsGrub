@@ -19,7 +19,6 @@ import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload.
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
 import Login from '@/components/Login/Login.vue'
-import Testing from '@/components/Login/Logout.vue'
 import Profile from '@/components/Profile/Profile.vue'
 import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
 import SsoLogin from '@/components/Sso/Login.vue'
@@ -165,15 +164,6 @@ export default new Router({
       }
     },
     {
-      path: '/Testing',
-      name: 'Testing',
-      component: Testing,
-      beforeEnter: (to, from, next) => {
-        document.title = 'Testing!'
-        next()
-      }
-    },
-    {
       path: '/FirstTimeRegistration',
       name: 'FirstTimeRegistration',
       component: FirstTimeRegistration,
@@ -188,6 +178,15 @@ export default new Router({
       component: SsoLogin,
       beforeEnter: (to, from, next) => {
         document.title = 'Get Us Grub'
+        next()
+      }
+    },
+    {
+      path: '/ResetPassword',
+      name: 'ResetPassword',
+      component: ResetPassword,
+      beforeEnter: (to, from, next) => {
+        document.title = 'ResetPassword'
         next()
       }
     },

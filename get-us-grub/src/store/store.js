@@ -152,6 +152,9 @@ export const store = new Vuex.Store({
       businessHourRules: [
         businessHour => !!businessHour || 'Business hour is required'
       ],
+      timeZoneRules: [
+        timeZone => !!timeZone || 'Time zone is required'
+      ],
       menuNameRules: [
         menuName => !!menuName || 'Menu name is required'
       ],

@@ -10,13 +10,11 @@
                 lazy-validation>
           <v-text-field label="Item Name"
                         :rules="[rules.required]"
-                        ref="nameField"
                         v-model="itemName"
                         required />
           <v-text-field label="Item Price"
                         :rules="[rules.required, rules.nonzero, rules.max, rules.nonnegative]"
                         prefix="$"
-                        ref="priceField"
                         v-model.number="itemPrice"
                         v-money="money"
                         required />
@@ -45,7 +43,6 @@ export default {
   components: {
     axios
   },
-  // directives: { money: VMoney },
   data () {
     return {
       valid: true,

@@ -179,9 +179,10 @@
               <!-- Buttons on the active menu item of an active menu -->
               <div v-if="isEdit">
                 <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <!-- <v-btn icon class="mx-0">
+                  <v-icon color="blue">photo_camera</v-icon> -->
+                   <menu-image-upload/>
+                <!-- </v-btn> -->
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -395,7 +396,11 @@
 </template>
 
 <script>
+import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
 export default {
+  components: {
+    'menu-image-upload': MenuItemImageUpload
+  },
   // Props are variables passed down by parent component
   props: [
     'restaurantMenusList',

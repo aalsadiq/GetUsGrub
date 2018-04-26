@@ -11,12 +11,15 @@
                 :size="200"
                 class="grey lighten-4"
               >
-                <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
+                <img :src="profile.displayPicture" alt="avatar">
               </v-avatar>
               <v-flex>
-                <v-btn id="image-upload-btn" dark v-if="isEdit">
+                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
                   <span id="upload-image-text">Upload Image</span>
-                </v-btn>
+                </v-btn> -->
+                <div v-if="isEdit">
+                  <profile-image-upload id="image-upload"/>
+                </div>
               </v-flex>
               <v-flex>
               <div id="display-name-div">
@@ -39,8 +42,9 @@
                     dark
                   ></v-text-field>
                   </v-flex>
+                  <span v-if="showDisplayNameError"> {{ error }} </span>
                   <v-flex>
-                  <v-btn id="display-name-edit-btn" dark icon @click="toggleEditDisplayName()">
+                  <v-btn id="display-name-edit-btn" dark icon @click="submitEditDisplayName()">
                     <v-icon>save</v-icon>
                   </v-btn>
                   </v-flex>
@@ -99,10 +103,10 @@
       </div>
     </div>
     <div id="edit-btns-div">
-      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit">
+      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
         Submit All Changes
       </v-btn>
-      <v-btn dark @click="cancel()" v-if="isEdit">
+      <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
         Cancel
       </v-btn>
     </div>
@@ -119,7 +123,7 @@ import BusinessHours from './BusinessHours'
 import Menus from './Menus'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
-import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
+import RestaurantImageUpload from '@/components/ImageUploadVues/RestaurantImageUpload'
 
 export default {
   components: {
@@ -128,11 +132,13 @@ export default {
     BusinessHours,
     Menus,
     FoodPreferences,
-    ProfileImageUpload,
-    MenuItemImageUpload
+    'profile-image-upload': RestaurantImageUpload,
+    'menu-image-upload': MenuItemImageUpload
   },
   data () {
     return {
+      showDisplayNameError: false,
+      error: '',
       editDisplayName: false,
       isEdit: false,
       profile: {
@@ -144,7 +150,7 @@ export default {
           street2: '',
           city: '',
           state: '',
-          zip: 0
+          zip: null
         },
         details: {
           avgFoodPrice: 1,
@@ -171,8 +177,7 @@ export default {
         'Business Hours',
         'Menus',
         'Accommodations'
-      ],
-      error: null
+      ]
     }
   },
   // Check if user has permission to view the page
@@ -282,6 +287,25 @@ export default {
     toggleEditDisplayName () {
       this.editDisplayName = !this.editDisplayName
     },
+    submitEditDisplayName () {
+      console.log('here')
+      if (this.checkDisplayNameDoesNotEqualUsername()) {
+        this.toggleEditDisplayName()
+        this.editRestaurantProfile()
+      }
+    },
+    checkDisplayNameDoesNotEqualUsername () {
+      console.log('here')
+      if (this.$store.state.username === this.editDisplayName) {
+        console.log('herehere')
+        this.error = 'Username must not equal display name.'
+        this.showDisplayNameError = true
+        return false
+      } else {
+        this.showDisplayNameError = false
+        return true
+      }
+    },
     cancel () {
       this.toggleIsEdit()
       this.getRestaurantProfile()
@@ -334,4 +358,8 @@ export default {
   bottom: -2.5em;
   left: 47em;
 }
+/* #image-upload{
+  width: 0px;
+  height: 0px;
+} */
 </style>

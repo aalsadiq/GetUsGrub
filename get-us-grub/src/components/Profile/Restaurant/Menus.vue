@@ -8,25 +8,32 @@
           <span class="headline">{{ formMenuTitle }}</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Menu Name" v-model="editedMenu.menuName" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                 <v-switch
+          <v-container>
+            <v-form v-model="valid">
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Menu Name"
+                    v-model="editedMenu.menuName"
+                    :rules="$store.state.rules.menuNameRules"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-switch
                     :label="`Active: ${editedMenu.isActive.toString()}`"
                     v-model="editedMenu.isActive"
-                    required
-                  ></v-switch>
-              </v-flex>
-            </v-layout>
+                    required>
+                  </v-switch>
+                </v-flex>
+              </v-layout>
+            </v-form>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="closeMenuDialog">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="saveMenu">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="saveMenu" :disabled="!valid">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -39,37 +46,57 @@
           <span class="headline">{{ formMenuItemTitle }}</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Menu Name" v-model="formMenuName" disabled></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Item Name" v-model="editedMenuItem.itemName" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Item Price" v-model="editedMenuItem.itemPrice" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Tag" v-model="editedMenuItem.tag"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Description" v-model="editedMenuItem.description"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                 <v-switch
+          <v-container>
+            <v-form v-model="valid">
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field label="Menu Name" v-model="formMenuName" disabled></v-text-field>
+                </v-flex>
+                <v-flex xs>
+                  <v-text-field
+                    label="Item Name"
+                    v-model="editedMenuItem.itemName"
+                    :rules="$store.state.rules.itemNameRules"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Item Price"
+                    v-model="editedMenuItem.itemPrice"
+                    :rules="$store.state.rules.itemPriceRules"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Tag"
+                    v-model="editedMenuItem.tag"
+                    :rules="$store.state.rules.tagRules"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Description"
+                    v-model="editedMenuItem.description">
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-switch
                     :label="`Active: ${editedMenuItem.isActive.toString()}`"
                     v-model="editedMenuItem.isActive"
-                    required
-                  ></v-switch>
-              </v-flex>
-            </v-layout>
+                    required>
+                  </v-switch>
+                </v-flex>
+              </v-layout>
+            </v-form>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="closeMenuItemDialog">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="saveMenuItem">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="saveMenuItem" :disabled="!valid">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -152,9 +179,10 @@
               <!-- Buttons on the active menu item of an active menu -->
               <div v-if="isEdit">
                 <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <!-- <v-btn icon class="mx-0">
+                  <v-icon color="blue">photo_camera</v-icon> -->
+                   <menu-image-upload/>
+                <!-- </v-btn> -->
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -368,7 +396,11 @@
 </template>
 
 <script>
+import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
 export default {
+  components: {
+    'menu-image-upload': MenuItemImageUpload
+  },
   // Props are variables passed down by parent component
   props: [
     'restaurantMenusList',
@@ -376,6 +408,7 @@ export default {
   ],
   data () {
     return {
+      valid: false,
       newMenu: {
         restaurantMenu: null,
         menuItem: []
@@ -403,7 +436,7 @@ export default {
       },
       editedMenuItem: {
         itemName: '',
-        itemPrice: 0,
+        itemPrice: null,
         itemPicture: '',
         tag: '',
         description: '',
@@ -412,7 +445,7 @@ export default {
       },
       defaultMenuItem: {
         itemName: '',
-        itemPrice: 0,
+        itemPrice: null,
         itemPicture: '',
         tag: '',
         description: '',

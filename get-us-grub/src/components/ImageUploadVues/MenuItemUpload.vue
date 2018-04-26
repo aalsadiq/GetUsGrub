@@ -1,59 +1,64 @@
 <template>
   <div id="image-upload">
     <v-layout row justify-center>
-        <v-dialog  v-model="dialog" max-width="500px">
-          <v-icon id="display-image-upload" color="blue" slot="activator">photo_camera</v-icon>
-          <v-card dark>
-            <div id="success">
-              <v-layout>
-                <v-flex xs12>
-                  <v-alert type="success" :value="showSuccess">
-                  <span>
-                    {{ responseData }}
-                  </span>
-                  </v-alert>
-                </v-flex>
-              </v-layout>
-            </div>
-            <div v-show="showError" id="error-div">
-              <v-layout>
-              <v-flex xs12>
-                <!-- Title bar for the restaurant selection -->
-                <v-alert id="registration-error" :value=true icon='warning'>
-                  <span id="error-title">
-                    An error has occurred
-                  </span>
-                </v-alert>
-              </v-flex>
-              </v-layout>
-              <v-layout>
-                <v-flex xs12>
-                  <v-card id="error-card">
-                    <p v-for="error in errors" :key="error">
-                      {{ error }}
-                    </p>
-                  </v-card>
-                </v-flex>
-              </v-layout>
-            </div>
-            <br/>
-            <v-flex xs6>
-                <label class="custom-file-upload">
-                   <h5>choose image
-                   <i class="material-icons">cloud_download</i>
-                   </h5>
-                  <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
-                </label>
-                <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
-                  Upload
-                  <v-icon color="white">cloud_upload</v-icon>
-                </v-btn>
-              </v-flex>
+    <v-dialog  v-model="dialog" max-width="500px">
+    <v-icon id="display-image-upload" color="blue" slot="activator">photo_camera</v-icon>
+      <v-card dark>
+        <div id="success">
+          <v-layout>
+            <v-flex xs12>
+              <v-alert type="success" :value="showSuccess">
+              <span>
+                {{ responseData }}
+              </span>
+              </v-alert>
+            </v-flex>
+          </v-layout>
+        </div>
+        <div v-show="showError" id="error-div">
+          <v-layout>
+          <v-flex xs12>
+            <v-alert id="menu-error" :value=true icon='warning'>
+              <span id="error-title">
+                An error has occurred
+              </span>
+            </v-alert>
+          </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs20>
+              <v-card id="error-card">
+                <p v-for="error in errors" :key="error">
+                  {{ error }}
+                </p>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </div>
+        <br/>
+        <v-flex xs4>
+            <label class="custom-file-upload">
+                <h5>choose image
+                <i class="material-icons">cloud_download</i>
+                </h5>
+              <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
+            </label>
+          </v-flex>
+          <br/>
+            <div class="preview-image" v-if="imageData.length > 0">
               <img id="previewImage" class="preview" :src="imageData"/>
+            </div>
+          <br/>
+          <v-flex xs3>
+            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
+              Upload
+            <v-icon color="white">cloud_upload</v-icon>
+            </v-btn>
             <br/>
+            </v-flex>
           </v-card>
-        </v-dialog>
-      </v-layout>
+          </v-dialog>
+        </v-layout>
     <br/>
   </div>
 </template>
@@ -67,8 +72,8 @@ export default {
   components: {
   },
   data: () => ({
-    username: '26user', // Can grab from token
-    menuId: 4, // For testing purposes
+    username: 'username50X', // Can grab from token
+    menuId: 249, // For testing purposes
     responseData: '',
     show: false,
     showError: false,
@@ -164,10 +169,12 @@ input[type="file"] {
 }
 .custom-file-upload {
   display: inline-block;
-  padding: 0em .8em .5em .8em;
+  padding: 0em .5em .25em .25em;
   cursor: pointer;
   background: slateblue;
   font-size: 14px;
+  margin-left: .30em;
+  margin-right:.30em;
 }
 .btn--small{
   font: 5em;

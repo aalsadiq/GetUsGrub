@@ -289,7 +289,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                                 RestaurantId = i,
                                 Day = validDayOfWeek[randomizer.Next(0, validDayOfWeek.Count)],
                                 OpenTime = DateTime.UtcNow,
-                                CloseTime = DateTime.UtcNow.AddHours(8)
+                                CloseTime = DateTime.UtcNow.AddHours(8),
+                                TimeZone = "Pacific Standard Time"
                             }
                         );
                         context.SaveChanges();

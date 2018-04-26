@@ -84,15 +84,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var fileExtension = Path.GetExtension(image.FileName);
             var newImagename = username + fileExtension;
 
-            // Save image to path
-            string savePath = ConfigurationManager.AppSettings["ProfileImagePath"];
-            string rootedSavePath = ConfigurationManager.AppSettings["RootedProfileImagePath"];
+            // Saving Virtual Path
+            var virtualPath = ImagePaths.VIRTUAL_PROFILE_IMAGE_PATH + newImagename;
 
-            var rootedImagePath = rootedSavePath + newImagename; // Save to rooted path
+            // Storing Virtual Path
+            user.DisplayPicture = virtualPath;
 
-            // Set Diplay Picture Path
-            user.DisplayPicture = savePath + newImagename;
-  
+            // Save Rooted Path
+            string rootedPath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + newImagename;
+
             // Call gateway to save path to database
             using (var gateway = new UserProfileGateway())
             {
@@ -107,8 +107,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 // Save the image to the path
-                image.SaveAs(rootedImagePath); //savePath + newImagename
-
+                image.SaveAs(rootedPath); //savePath + newImagename
+                
                 return new ResponseDto<bool>
                 {
                     Data = true

@@ -71,9 +71,13 @@ export default {
         }
       }).then(response => {
         this.$store.commit('setAuthenticationToken', null)
+        // Force refresh of page
+        location.reload()
         this.$router.push({path: '/'})
       }).catch(error => {
         this.$store.commit('setAuthenticationToken', null)
+        // Force refresh of page
+        location.reload()
         this.$router.push({path: '/'})
         Promise.reject(error)
       })
@@ -141,6 +145,7 @@ html {
     width: 0px;
     background: transparent;
 }
+
 /* Omit text underlines to router-links */
 a {
   text-decoration: none;

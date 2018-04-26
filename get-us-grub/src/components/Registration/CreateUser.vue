@@ -18,7 +18,7 @@
         <!-- Error messages for registration -->
         <v-alert id="registration-error" :value=true icon='warning'>
           <span id="error-title">
-            An error has occurred
+            An error has occurred.
           </span>
         </v-alert>
       </v-flex>
@@ -307,6 +307,7 @@
                           slot="activator"
                           label="Select opening time (24hr format)"
                           v-model="businessHour.openTime"
+                          :rules="$store.state.rules.businessHourRules"
                           prepend-icon="access_time"
                           readonly
                           required
@@ -336,6 +337,7 @@
                           slot="activator"
                           label="Select closing time (24hr format)"
                           v-model="businessHour.closeTime"
+                          :rules="$store.state.rules.businessHourRules"
                           prepend-icon="access_time"
                           readonly
                           required
@@ -350,13 +352,43 @@
                         </v-time-picker>
                       </v-menu>
                     </v-form>
-                    <v-btn @click.prevent="addBusinessHour" :disabled="!validAddBusinessHour || disable">Add</v-btn>
-                    <ul class="list-group">
-                        <li v-for="(storeHour, index) in businessHours" :key="index" class="list-group-item">
-                            {{ storeHour.day }}: {{ storeHour.openTime }} - {{ storeHour.closeTime }}
-                            <v-btn>Delete</v-btn>
-                        </li>
-                    </ul>
+                    <v-btn @click.prevent="addBusinessHour" id="add-btn" color="black" :disabled="!validAddBusinessHour || disable">Add</v-btn>
+                    <div id="business-hours-list">
+                      <v-toolbar color="teal" dark v-if="businessHours.length > 0">
+                        <v-spacer/>
+                        <v-toolbar-title>Business Hours</v-toolbar-title>
+                        <v-spacer/>
+                    </v-toolbar>
+                     <v-list two-line>
+                      <template v-for="(businessHour, index) in businessHours">
+                        <v-list-tile
+                          avatar
+                          ripple
+                          @click="toggle()"
+                          :key="index"
+                        >
+                          <v-list-tile-content>
+                            <!-- Business hour day of week -->
+                            <v-list-tile-title>{{ businessHour.day }}</v-list-tile-title>
+                            <v-list-tile-sub-title class="text--primary">
+                              {{ businessHour.openTime }} - {{ businessHour.closeTime }}
+                            </v-list-tile-sub-title>
+                          </v-list-tile-content>
+                          <v-list-tile-action>
+                            <!-- Delete a particular business hour -->
+                            <v-btn icon class="mx-0" @click="deleteBusinessHour(businessHour)">
+                              <v-icon color="pink">delete</v-icon>
+                            </v-btn>
+                          </v-list-tile-action>
+                        </v-list-tile>
+                        <v-divider
+                          v-if="index !== businessHours.length"
+                          :key="businessHour.id"
+                        >
+                        </v-divider>
+                      </template>
+                    </v-list>
+                    </div>
                     <v-btn color="grey lighten-5" @click="restaurantStep = 3" :disabled=disable>Previous</v-btn>
                     <v-btn color="primary" :disabled="!validBusinessHourInput || disable" @click="restaurantStep = 5">Next</v-btn>
                   </v-stepper-content>
@@ -551,6 +583,14 @@ export default {
         this.validBusinessHourInput = true
       }
     },
+    deleteBusinessHour (businessHour) {
+      const index = this.businessHours.indexOf(businessHour)
+      this.businessHours.splice(index, 1)
+      this.counter = this.counter - 1
+      if (this.counter <= 0) {
+        this.validBusinessHourInput = false
+      }
+    },
     userSubmit () {
       this.showError = false
       this.validSecurityInput = false
@@ -644,7 +684,8 @@ export default {
           Promise.reject(error)
         }
       })
-    }
+    },
+    toggle () {}
   }
 }
 </script>
@@ -682,5 +723,11 @@ p {
 }
 #create-user-layout {
   margin: -1.7em 0 0 0;
+}
+#add-btn {
+  color: white;
+}
+#business-hours-list {
+  margin: 1em 0 1em 0;
 }
 </style>

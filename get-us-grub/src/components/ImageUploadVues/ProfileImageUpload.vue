@@ -54,7 +54,6 @@
               <img id="previewImage" class="preview" :src="imageData"/>
             </div>
           <br/>
-
           </v-card>
           </v-dialog>
         </v-layout>
@@ -85,8 +84,9 @@ export default {
       this.$router.push({path: '/Unauthorized'})
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).UpdateImage === 'True') {
-      } else {
+      var decodedToken = jwt.decode(this.$store.state.authenticationToken)
+      if (!(decodedToken.ReadRestaurantProfile === 'True') ||
+        decodedToken.ReadUserProfile === 'True') {
         this.$router.push({path: '/Forbidden'})
       }
     } catch (ex) {
@@ -195,8 +195,11 @@ export default {
 
 <style scoped>
 #image-upload{
-  height: 40em;
-  width: 80em;
+  width: 0px;
+  height: 0px;
+  border-top-width: 10px;
+  padding-top: 0px;
+  padding-bottom: 15px;
 }
 #previewImage{
   height: 100px;

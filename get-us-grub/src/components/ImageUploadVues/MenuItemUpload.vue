@@ -69,7 +69,7 @@ export default {
   components: {
   },
   data: () => ({
-    username: 'username50X', // Can grab from token
+    username: '', // Can grab from token
     menuId: 249, // For testing purposes
     responseData: '',
     show: false,

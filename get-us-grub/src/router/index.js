@@ -18,14 +18,12 @@ import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload.vue
 import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload.vue'
 import RestaurantBillSplitter from '@/components/RestaurantBillSplitter/RestaurantBillSplitter.vue'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
-import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
+// import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
 import Login from '@/components/Login/Login.vue'
-import Testing from '@/components/Login/Logout.vue'
 import Profile from '@/components/Profile/Profile.vue'
 import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
 import SsoLogin from '@/components/Sso/Login.vue'
-// import FoodPreferences from '@/components/FoodPreferences/FoodPreferences.vue'
-// import EditFoodPreferences from '@/components/FoodPreferences/EditFoodPreferences.vue'
+import ResetPassword from '@/components/ResetPassword/ResetPassword.vue'
 
 Vue.use(Router)
 
@@ -158,26 +156,17 @@ export default new Router({
       name: 'FoodPreferences',
       component: FoodPreferences
     },
-    {
-      path: '/FoodPreferences/Edit',
-      name: 'EditFoodPreferences',
-      component: EditFoodPreferences
-    },
+    // {
+    //   path: '/FoodPreferences/Edit',
+    //   name: 'EditFoodPreferences',
+    //   component: EditFoodPreferences
+    // },
     {
       path: '/Login',
       name: 'Login',
       component: Login,
       beforeEnter: (to, from, next) => {
         document.title = 'Login'
-        next()
-      }
-    },
-    {
-      path: '/Testing',
-      name: 'Testing',
-      component: Testing,
-      beforeEnter: (to, from, next) => {
-        document.title = 'Testing!'
         next()
       }
     },
@@ -196,6 +185,15 @@ export default new Router({
       component: SsoLogin,
       beforeEnter: (to, from, next) => {
         document.title = 'Get Us Grub'
+        next()
+      }
+    },
+    {
+      path: '/ResetPassword',
+      name: 'ResetPassword',
+      component: ResetPassword,
+      beforeEnter: (to, from, next) => {
+        document.title = 'ResetPassword'
         next()
       }
     },

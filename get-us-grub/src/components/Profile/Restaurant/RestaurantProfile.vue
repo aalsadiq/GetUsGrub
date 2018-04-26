@@ -3,32 +3,12 @@
     <div id="restaurant-profile-div">
       <div>
         <!-- Portion with profile picture and display name -->
-        <v-parallax src="/static/parallax.png" height="425">
-        <div id="main-edit-btns-div">
-          <v-layout>
-            <v-flex fixed>
-            <div id="edit-profile-btn-div" v-if="!isEdit">
-              <v-btn id="edit-profile-btn" dark icon @click="toggleIsEdit()">
-                <v-icon>edit</v-icon>
-              </v-btn>
-              <span id="edit-profile-btn-txt">Edit Profile</span>
-            </div>
-            </v-flex>
-            <div id="edit-btns-div">
-              <v-btn dark @click="editRestaurantProfile()" v-if="isEdit">
-                Submit All Changes
-              </v-btn>
-              <v-btn dark @click="cancel()" v-if="isEdit">
-                Cancel
-              </v-btn>
-            </div>
-          </v-layout>
-        </div>
+        <v-parallax src="/static/parallax.png" height="400">
           <!-- Display picture -->
           <div id="display-picture">
             <v-layout column align-center justify-center>
               <v-avatar
-                :size="225"
+                :size="200"
                 class="grey lighten-4"
               >
                 <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
@@ -48,7 +28,7 @@
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </div>
-                <span id="display-name-text"  v-if="editDisplayName">
+                <div id="display-name-text"  v-if="editDisplayName && isEdit">
                   <v-layout row>
                   <v-flex>
                   <v-text-field
@@ -65,10 +45,26 @@
                   </v-btn>
                   </v-flex>
                   </v-layout>
-                </span>
+                </div>
               </div>
-              </v-flex>
+            </v-flex>
             </v-layout>
+            <v-tooltip bottom>
+            <v-btn
+              v-if="!isEdit"
+              fab
+              color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="toggleIsEdit()"
+              id="edit-button"
+              slot="activator"
+              >
+              <v-icon>edit</v-icon>
+            </v-btn>
+             <span>Edit Profile</span>
+            </v-tooltip>
           </div>
         </v-parallax>
       </div>
@@ -101,6 +97,14 @@
       <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Accommodations'">
         <food-preferences class="profile-component" :isEdit="isEdit"/>
       </div>
+    </div>
+    <div id="edit-btns-div">
+      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit">
+        Submit All Changes
+      </v-btn>
+      <v-btn dark @click="cancel()" v-if="isEdit">
+        Cancel
+      </v-btn>
     </div>
   </div>
 </div>
@@ -295,7 +299,7 @@ export default {
   margin: 1em 0 0 0;
 }
 .restaurant-profile-tab-contents {
-  padding: 0 0 4em 0;
+  padding: 0 0 2em 0;
   margin: auto;
 }
 #item-tab {
@@ -324,9 +328,10 @@ export default {
   margin: 1.1em 0 0 0;
 }
 #edit-btns-div {
-  padding: 1em 0 0 0;
+  margin: 0 0 3em 0;
 }
-#main-edit-btns-div {
-  align-self: right;
+.btn--bottom.btn--absolute {
+  bottom: -2.5em;
+  left: 47em;
 }
 </style>

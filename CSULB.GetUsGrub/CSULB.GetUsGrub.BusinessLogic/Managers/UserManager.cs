@@ -524,6 +524,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             businessHours = dto.BusinessHourDtos
                 .Select(businessHourDto => new BusinessHour(
+                    timeZone: dto.TimeZone,
                     day: businessHourDto.Day,
                     openTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.OpenTime), dto.TimeZone),
                     closeTime: dateTimeService.ConvertLocalMeanTimeToUtc(dateTimeService.ConvertTimeToDateTimeUnspecifiedKind(businessHourDto.CloseTime), dto.TimeZone)))

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -168,7 +167,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                 case Flag.Add:
                                     // reset flag
                                     restaurantBusinessHourDto.Flag = 0;
-                                    var businessHourDomain = new BusinessHour(restaurantBusinessHourDto.Day, restaurantBusinessHourDto.OpenDateTime, restaurantBusinessHourDto.CloseDateTime);
+                                    var businessHourDomain = new BusinessHour(restaurantBusinessHourDto.TimeZone, restaurantBusinessHourDto.Day, restaurantBusinessHourDto.OpenDateTime, restaurantBusinessHourDto.CloseDateTime);
                                     dbBusinessHours.Add(businessHourDomain);
                                     context.SaveChanges();
                                     break;

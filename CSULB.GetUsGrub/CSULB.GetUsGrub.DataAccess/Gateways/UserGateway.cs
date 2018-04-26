@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.IO;
@@ -137,7 +136,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Rolls back the changes saved in the transaction
                     dbContextTransaction.Rollback();

@@ -305,7 +305,7 @@ namespace CSULB.GetUsGrub.Controllers
             try
             {
                 var userManager = new UserManager();
-                var response = userManager.CreateIndividualUser(registerUserDto);
+                var response = userManager.CreateFirstTimeIndividualUser(registerUserDto);
                 if (response.Error != null)
                 {
                     return BadRequest(response.Error);
@@ -335,7 +335,7 @@ namespace CSULB.GetUsGrub.Controllers
             try
             {
                 var userManager = new UserManager();
-                var response = userManager.CreateRestaurantUser(registerRestaurantDto);
+                var response = userManager.CreateFirstTimeRestaurantUser(registerRestaurantDto);
                 if (response.Error != null)
                 {
                     return BadRequest(response.Error);

@@ -75,7 +75,6 @@
   <ItemGroup>
     <Compile Include="Managers\FoodPreferencesManager.cs" />
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
-    <Compile Include="Managers\PasswordManager.cs" />
     <Compile Include="Managers\RegisteredUserRestaurantSelectionManager.cs" />
     <Compile Include="Managers\RestaurantProfileManager.cs" />
     <Compile Include="Managers\UnregisteredUserRestaurantSelectionManager.cs" />
@@ -108,6 +107,8 @@
     <Compile Include="Services\SetPropertiesService.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\ValidationWrapper.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeIndividualPostLogicValidationStrategy.cs" />
+    <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeIndividualPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeSsoUserPreLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateRestaurantPostLogicValidationStrategy.cs" />

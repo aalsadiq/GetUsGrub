@@ -123,7 +123,6 @@ import ProfileForm from './ProfileForm'
 import BusinessHoursForm from './BusinessHoursForm'
 import ContactInfoForm from './ContactInfoForm'
 import axios from 'axios'
-import jwt from 'jsonwebtoken'
 
 export default {
   name: 'SsoCreateUser',
@@ -215,18 +214,17 @@ export default {
       }
     },
     submitUser () {
+      this.disable = true
       var dto = {
         userAccountDto: this.authentication.userAccount,
         securityQuestionDtos: this.securityQuestions.questions,
         userProfileDto: this.profile.userProfile
       }
-      console.log('Sending ' + jwt.decode(this.$store.state.firstTimeUserToken).Username)
       axios.post(this.$store.state.urls.sso.createIndividualUser,
         dto,
         {
           headers: { Authorization: `Bearer ${this.$store.state.firstTimeUserToken}` }
         }).then(response => {
-        console.log('successful registration')
         this.disable = false
         this.showSuccess = true
       }).catch(error => {
@@ -265,6 +263,7 @@ export default {
       console.log(dto)
     },
     submitRestaurant () {
+      this.disable = true
       var dto = {
         userAccountDto: this.authentication.userAccount,
         securityQuestionDtos: this.securityQuestions.questions,
@@ -282,7 +281,6 @@ export default {
         },
         data: dto
       }).then(response => {
-        console.log('successful registration')
         this.disable = false
         this.username = response.data
         this.showSuccess = true

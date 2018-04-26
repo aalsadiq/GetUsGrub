@@ -55,6 +55,11 @@ namespace CSULB.GetUsGrub.Models
             IsActive = isActive;
         }
 
-
+        public RestaurantMenu(string menuName, bool isActive, Flag flag)
+        {
+            MenuName = menuName;
+            IsActive = isActive;
+            Flag = flag;
+        }
     }
 }

@@ -37,9 +37,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 RuleFor(restaurantProfileDto => restaurantProfileDto.Address)
                     .NotEmpty().WithMessage(ValidationErrorMessages.ADDRESS_REQUIRED)
                     .NotNull().WithMessage(ValidationErrorMessages.ADDRESS_REQUIRED);
-
-                RuleFor(restaurantProfile => restaurantProfile.BusinessHours)
-                    .SetCollectionValidator(new BusinessHourValidator());
             });
         }
     }

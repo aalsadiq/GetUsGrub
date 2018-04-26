@@ -193,7 +193,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #image-upload{
   height: 40em;
   width: 80em;

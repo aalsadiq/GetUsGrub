@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace CSULB.GetUsGrub.BusinessLogic
+namespace CSULB.GetUsGrub.DataAccess
 {
     /// <summary>
     /// Image service that will user profile or menu item images.
@@ -19,7 +19,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <param name="path">The physical path of image.</param>
         /// <param name="image">The virtual path of image. Is used to get the file name.</param>
         /// <returns></returns>
-        public ResponseDto<bool> deleteImage(string path, string image)
+        public ResponseDto<bool> DeleteImage(string path, string image)
         {
             try
             {

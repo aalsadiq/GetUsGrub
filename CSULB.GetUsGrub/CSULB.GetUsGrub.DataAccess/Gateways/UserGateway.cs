@@ -20,6 +20,7 @@ namespace CSULB.GetUsGrub.DataAccess
     {
         // Open the User context
         UserContext context = new UserContext();
+        ImageService imageService = new ImageService();
 
         /// <summary>
         /// The GetUserByUsername method.
@@ -528,7 +529,8 @@ namespace CSULB.GetUsGrub.DataAccess
                             if (menuImages != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
                             {
                                 // Deleting Menu Images
-                                //deleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH, menuImages); // Call image service that was created here
+                                imageService.DeleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH, menuImages); // Call image service that was created here
+
                             }
                         }
                     }
@@ -629,7 +631,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     if (profileImage != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
                     {
                         // Calling method to delete image from specified path
-                       //deleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH, profileImage); // Call image service here
+                        imageService.DeleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH, profileImage); // Call image service here
                     }
 
                     //Delete useraccount
@@ -671,7 +673,7 @@ namespace CSULB.GetUsGrub.DataAccess
                                     select account).SingleOrDefault();
 
                 //Set ResponseDto equal to the ResponseDto from EditDisplayName.
-                if (user.NewDisplayName != null) // TODO: @Jen Added because what Jen and I did is not working?!  [-Angelica]
+                if (user.NewDisplayName != null)
                 {
                     var result = EditDisplayName(user.Username, user.NewDisplayName);
                     if (result.Error != null)
@@ -759,7 +761,7 @@ namespace CSULB.GetUsGrub.DataAccess
 
                     // Select the username from useraccount and give it the new username.
                     userAccount.Username = newUsername;
-                    Debug.WriteLine("useraccount.username: " + userAccount.Username); // Delete later
+
                     context.SaveChanges();
                     dbContextTransaction.Commit();
                     return new ResponseDto<bool>()

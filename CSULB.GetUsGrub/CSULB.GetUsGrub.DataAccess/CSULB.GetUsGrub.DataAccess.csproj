@@ -65,6 +65,7 @@
     <Compile Include="Gateways\SsoGateway.cs" />
     <Compile Include="Gateways\UserGateway.cs" />
     <Compile Include="Gateways\UserProfileGateway.cs" />
+    <Compile Include="ImageService.cs" />
     <Compile Include="Migrations\SsoDbContext\Configuration.cs" />
     <Compile Include="Migrations\UserDbContext\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

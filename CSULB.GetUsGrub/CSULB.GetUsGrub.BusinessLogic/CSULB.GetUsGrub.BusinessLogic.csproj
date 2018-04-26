@@ -81,7 +81,6 @@
     <Compile Include="Managers\UserProfileManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Services\BackoffRequest.cs" />
-    <Compile Include="Services\ImageService.cs" />
     <Compile Include="Services\RestaurantBusinessHourDtoService.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\GetRequestService.cs" />

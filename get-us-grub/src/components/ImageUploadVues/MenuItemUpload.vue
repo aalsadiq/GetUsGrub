@@ -69,7 +69,7 @@ export default {
   components: {
   },
   data: () => ({
-    username: 'username50X', // Can grab from token
+    username: '', // Can grab from token
     menuId: 249, // For testing purposes
     responseData: '',
     show: false,
@@ -83,7 +83,8 @@ export default {
       this.$router.push({path: '/Unauthorized'})
     }
     try {
-      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True') {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadRestaurantProfile === 'True' &&
+        jwt.decode(this.$store.state.authenticationToken).UpdateImage === 'True') {
       }
     } catch (ex) {
       this.$router.push({path: '/Forbidden'})

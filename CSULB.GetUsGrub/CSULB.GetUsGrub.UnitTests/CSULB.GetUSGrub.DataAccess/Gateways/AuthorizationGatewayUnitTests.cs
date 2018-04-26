@@ -25,7 +25,7 @@ namespace CSULB.GetUsGrub.UnitTests
             var result = gateway.GetClaimsByUsername(username);
 
             // Assert
-            result.Data.Should().NotBeEmpty();
+            result.Data.Should().NotBeNull();
             result.Error.Should().BeNull();
         }
 
@@ -40,7 +40,6 @@ namespace CSULB.GetUsGrub.UnitTests
             var result = gateway.GetClaimsByUsername(username);
 
             // Assert
-            result.Data.Should().BeNull();
             result.Error.Should().NotBeNull();
         }
     }

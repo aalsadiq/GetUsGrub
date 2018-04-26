@@ -100,7 +100,8 @@ export default {
         this.response = response.data
       }).catch(error => {
         Promise.reject(error)
-      }).then(this.toggleEdit)
+      }).then(this.currentFoodPreferences = this.updatedFoodPreferences.sort())
+        .then(this.toggleEdit)
     }
   },
   beforeCreate () {

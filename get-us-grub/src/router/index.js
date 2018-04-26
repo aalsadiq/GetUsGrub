@@ -22,6 +22,7 @@ import Login from '@/components/Login/Login.vue'
 import Profile from '@/components/Profile/Profile.vue'
 import FirstTimeRegistration from '@/components/Sso/FirstTimeRegistration.vue'
 import SsoLogin from '@/components/Sso/Login.vue'
+import ResetPassword from '@/components/ResetPassword/ResetPassword.vue'
 
 Vue.use(Router)
 

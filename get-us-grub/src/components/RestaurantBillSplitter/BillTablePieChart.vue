@@ -12,7 +12,7 @@ export default {
       // billUsers: this.billItem.selected,
       // labelList: [],
       // labels: this.billItem.selected,
-      datacollection: null,            
+      datacollection: null
     }
   },
   mounted () {

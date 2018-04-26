@@ -34,7 +34,7 @@
 
 <script>
 import { VMoney } from 'v-money'
-import { EventBus } from '@/event-bus/event-bus.js'
+// import { EventBus } from '@/event-bus/event-bus.js'
 
 export default {
   name: 'EditItem',
@@ -72,7 +72,7 @@ export default {
           this.$store.dispatch('editDictionaryItem', [itemIndex, newItemName, newItemPrice])
         } else if (editType === 'BillTable') {
           this.$store.dispatch('updateUserMoneyOwesFromEditItem', { itemIndex, Item, newItemPrice })
-          this.$store.dispatch('editBillItem', [itemIndex, newItemName, newItemPrice])          
+          this.$store.dispatch('editBillItem', [itemIndex, newItemName, newItemPrice])
         }
       }
     },

@@ -1,11 +1,9 @@
 <template>
-  <div id='firsttimeregistration'>
+  <div>
     <app-header/>
-    <v-container class="scroll-y" id="scroll-target">
-      <v-container id="registration">
-        <create-user />
-      </v-container>
-    </v-container>
+      <div id="registration">
+        <app-create-user/>
+      </div>
     <app-footer/>
   </div>
 </template>
@@ -21,7 +19,7 @@ export default {
   components: {
     'app-header': AppHeader,
     'app-footer': AppFooter,
-    'create-user': CreateUser
+    'app-create-user': CreateUser
   },
   beforeCreate () {
     if (this.$store.state.firstTimeUserToken === null) {

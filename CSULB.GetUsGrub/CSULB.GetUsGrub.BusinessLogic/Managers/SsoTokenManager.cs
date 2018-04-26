@@ -152,6 +152,64 @@ namespace CSULB.GetUsGrub.BusinessLogic
             
             return new AuthenticationTokenManager().CreateToken(payload.Username);
         }
+        /// <summary>
+        /// 
+        /// This Method Checks the token coming from the Sso Service and  see if it is a valid token
+        /// 
+        /// </summary>
+        /// <returns>
+        /// ResetPassword Dto with either an Error or Data to update the password with
+        /// </returns>
+        public ResponseDto<ResetPasswordDto> ManageResetPasswordToken()
+        {
+            var mappingResult = MapRequestJwtPayloadToSsoJwtPayload();
+            if (mappingResult.Error != null)
+            {
+                // Store invalid token into database
+                StoreInvalidToken();
+
+                return new ResponseDto<ResetPasswordDto>()
+                {
+                    Error = mappingResult.Error
+                };
+            }
+
+            _ssoToken.SsoTokenPayloadDto = mappingResult.Data;
+
+            // Validate the SsoToken 
+            var ssoTokenResetPasswordValidationStrategy = new SsoTokenRestPasswordValidationStrategy(_ssoToken);
+            var result = ssoTokenResetPasswordValidationStrategy.ExecuteStrategy();
+            if (!result.Data)
+            {
+                // Store invalid token into database
+                StoreInvalidToken();
+
+                return new ResponseDto<ResetPasswordDto>()
+                {
+                    Error = result.Error
+                };
+            }
+
+            // Store valid token
+            using (var ssoGateway = new SsoGateway())
+            {
+                var gatewayResult = ssoGateway.StoreValidSsoToken(new ValidSsoToken(_ssoToken.Token));
+                if (gatewayResult.Error != null)
+                {
+                    return new ResponseDto<ResetPasswordDto>()
+                    {
+                        Error = gatewayResult.Error
+                    };
+                }
+            }
+
+            // Send back a new RestPasswordDto Object
+            return new ResponseDto<ResetPasswordDto>()
+            {
+                Data = new ResetPasswordDto( _ssoToken.SsoTokenPayloadDto.Username, _ssoToken.SsoTokenPayloadDto.Password)
+            };
+
+        }
 
         /// <summary>
         /// Validates whether the payload's credentials are valid.
@@ -227,7 +285,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 Data = true
             };
         }
-
 
         /// <summary>
         /// Validates payload of Sso token.

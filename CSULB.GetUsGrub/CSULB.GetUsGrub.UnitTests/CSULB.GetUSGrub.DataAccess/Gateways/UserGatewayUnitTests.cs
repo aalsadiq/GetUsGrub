@@ -145,8 +145,32 @@ namespace CSULB.GetUsGrub.UnitTests
             // Act
             var result = gateway.EditFoodPreferencesByUsername(username, preferencesToBeAdded, preferencesToBeRemoved);
 
-            //result.Data.Should().BeTrue();
+            result.Data.Should().BeTrue();
             result.Error.Should().BeNull();
+        }
+
+        [Fact]
+        public void Should_ReturnFalse_When_FoodPreferencesAreNotUpdated()
+        {
+            // Arrange
+            string username = "InvalidUser";
+            var preferencesToBeAdded = new List<string>
+            {
+                "Lacto-vegetarian",
+                "Pescetarian",
+                "Vegan"
+            };
+            var preferencesToBeRemoved = new List<string>
+            {
+                "Halal"
+            };
+            UserGateway gateway = new UserGateway();
+
+            // Act
+            var result = gateway.EditFoodPreferencesByUsername(username, preferencesToBeAdded, preferencesToBeRemoved);
+
+            result.Data.Should().BeFalse();
+            result.Error.Should().NotBeNull();
         }
     }
 }

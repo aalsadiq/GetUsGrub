@@ -41,24 +41,21 @@ export default {
   },
   props: ['billItem', 'billItemIndex'],
   watch: {
-    selected(newSelected, oldSelected) {
+    selected (newSelected, oldSelected) {
       if (this.dialog === true) {
         console.log('Old: ' + oldSelected)
         console.log('New: ' + newSelected)
         console.log('Bill Item Index: ' + this.billItemIndex)
         console.log('Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
-        //this.updateBillItemsInUser()
         this.updateUserMoneyOwesFromSelected(this.billItemIndex, this.billItem, newSelected, oldSelected)
-        console.log('New Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)}      
+        console.log('New Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
+      }
     }
   },
   methods: {
     updateUserMoneyOwesFromSelected: function (billItemIndex, billItem, newSelected, oldSelected) {
       this.$store.dispatch('updateUserMoneyOwesFromSelected', { billItemIndex, billItem, newSelected, oldSelected })
     },
-    // updateBillItemsInUser: function () {
-       
-    // },
     emitUsersInBillItemEvent: function (billItem) {
       EventBus.$emit('users-in-bill-item', billItem)
     }

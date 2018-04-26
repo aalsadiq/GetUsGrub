@@ -24,8 +24,7 @@ namespace CSULB.GetUsGrub.Controllers
 		public class RestaurantBillSplitterController : ApiController
 		{
 				[HttpGet]
-                //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.MENU, Operation = ActionConstant.ACCESS)]
-				[AllowAnonymous] // TODO: Remove for deployment
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.MENU, Operation = ActionConstant.ACCESS)]				
 				[Route("Restaurant")]
 				[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
 				public IHttpActionResult GetRestaurantMenus(int restaurantId)

@@ -82,7 +82,7 @@ export default {
       return this.$store.getters.convertFromUSDtoInt(usDollars)
     }
   },
-  computed: {    
+  computed: {
   }
 }
 </script>

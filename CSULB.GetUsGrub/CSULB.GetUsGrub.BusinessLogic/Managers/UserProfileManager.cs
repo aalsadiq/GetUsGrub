@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Performs business logic and executes requests regarding user profiles
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// @updated: 4/28/18
     /// </summary>
     public class UserProfileManager : IProfileManager<UserProfileDto>
     {

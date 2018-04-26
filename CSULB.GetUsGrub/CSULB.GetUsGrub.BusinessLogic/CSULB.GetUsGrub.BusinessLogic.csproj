@@ -131,6 +131,7 @@
     <Compile Include="Strategies\ValidationStrategies\SsoTokenRegistrationValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UnregisteredUserRestaurantSelectionPostLogicValidationStrategy.cs" />
     <Compile Include="Strategies\ValidationStrategies\UsernameValidationStrategy.cs" />
+    <Compile Include="Validators\CredentialsValidator.cs" />
     <Compile Include="Validators\DtoValidators\AuthenticationTokenDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\EditUserDtoValidator.cs" />
     <Compile Include="Validators\DtoValidators\FoodPreferencesDtoValidator.cs" />

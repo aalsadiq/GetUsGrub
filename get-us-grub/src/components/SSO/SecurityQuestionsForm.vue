@@ -13,14 +13,14 @@
         hide-details
         :rules="$store.state.rules.securityQuestionRules"
         required
-        v-on:input="$emit('input', value)"
+        :disabled="disabled"
         ></v-select>
       <v-text-field
         label="Enter an answer to the above security question"
         v-model="value.questions[set.id].answer"
         :rules="$store.state.rules.securityAnswerRules"
         required
-        v-on:input="$emit('input', value)"
+        :disabled="disabled"
         ></v-text-field>
       </div>
   </v-form>
@@ -30,6 +30,9 @@
 export default {
   name: 'security-questions',
   components: { },
-  props: ['value']
+  props: [
+    'value',
+    'disabled'
+  ]
 }
 </script>

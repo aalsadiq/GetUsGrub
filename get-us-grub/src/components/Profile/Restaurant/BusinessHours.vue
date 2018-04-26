@@ -2,6 +2,7 @@
   <div id="business-hours-div">
     <div>
     <v-layout row justify-center>
+      <!-- Dialog popup for business hours form -->
     <v-dialog v-model="dialog" persistent max-width="500px">
       <v-card>
         <v-card-title>
@@ -10,6 +11,7 @@
         <v-card-text>
             <v-layout wrap>
               <v-form v-model="valid">
+              <!-- Time Zone user input -->
               <v-flex xs12>
               <v-select
                 :items="$store.state.constants.timeZones"
@@ -24,6 +26,7 @@
                 required
               ></v-select>
               </v-flex>
+              <!-- Day of week user input -->
               <v-flex xs12>
               <v-select
                 :items="$store.state.constants.dayOfWeek"
@@ -36,6 +39,7 @@
                 required
               ></v-select>
               </v-flex>
+              <!-- Open time user input -->
               <v-flex xs12>
               <v-menu
                 ref="menu"
@@ -66,6 +70,7 @@
                 </v-time-picker>
               </v-menu>
               </v-flex>
+              <!-- Close time user input -->
               <v-flex xs12>
               <v-menu
                 ref="menu"
@@ -100,6 +105,7 @@
               </v-form>
             </v-layout>
         </v-card-text>
+        <!-- Buttons to cancel or save form -->
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
@@ -116,6 +122,7 @@
             <v-spacer/>
             <v-toolbar-title>Business Hours</v-toolbar-title>
             <v-spacer/>
+            <!-- Button to add business hours -->
             <v-btn dark class="mb-2" icon @click="addBusinessHour()" v-if="isEdit">
             <v-icon>add_circle</v-icon>
           </v-btn>
@@ -129,25 +136,29 @@
                 :key="index"
               >
                 <v-list-tile-content>
+                  <!-- Business hour day of week -->
                   <v-list-tile-title>{{ businessHour.day }}</v-list-tile-title>
+                  <!-- Convert UTC time to display local time -->
                   <v-list-tile-sub-title class="text--primary">
                     {{ convertUtcToLocalTime(businessHour.openTime, 'h:mm a') }} - {{ convertUtcToLocalTime(businessHour.closeTime, 'h:mm a') }}
                     </v-list-tile-sub-title>
                 </v-list-tile-content>
                 <v-list-tile-action>
                   <div v-if="isEdit">
-                <v-btn icon class="mx-0" @click="editBusinessHour(businessHour)">
-                  <v-icon color="teal">edit</v-icon>
-                </v-btn>
-                <v-btn icon class="mx-0" @click="deleteBusinessHour(businessHour)">
-                  <v-icon color="pink">delete</v-icon>
-                </v-btn>
-              </div>
+                    <!-- Edit a business hour -->
+                    <v-btn icon class="mx-0" @click="editBusinessHour(businessHour)">
+                      <v-icon color="teal">edit</v-icon>
+                    </v-btn>
+                    <!-- Delete a particular business hour -->
+                    <v-btn icon class="mx-0" @click="deleteBusinessHour(businessHour)">
+                      <v-icon color="pink">delete</v-icon>
+                    </v-btn>
+                  </div>
                 </v-list-tile-action>
               </v-list-tile>
               <v-divider
-              v-if="index !== businessHours.length"
-              :key="businessHour.id"
+                v-if="index !== businessHours.length"
+                :key="businessHour.id"
               >
               </v-divider>
             </template>
@@ -162,6 +173,7 @@
 import moment from 'moment'
 
 export default {
+  // Passed down variables from parent component
   props: [
     'businessHours',
     'isEdit'
@@ -190,26 +202,32 @@ export default {
     }
   },
   computed: {
+    // Compute form title for add and edit business hour
     formTitle () {
       return this.editedIndex === -1 ? 'New Business Hour' : 'Edit Business Hour'
     }
   },
   methods: {
+    // Compute UTC time to local time
     convertUtcToLocalTime (utcTime, format) {
       return moment(utcTime).format(format)
     },
+    // Concatenate new date variable with a new time
     concatenateDateAndTime (dateTime, time) {
       var newDateTime = moment(moment(dateTime).format('YYYY-MM-DD') + ' ' + time)
       return newDateTime.format('YYYY-MM-DDTHH:mm:ss')
     },
+    // Create a new date time
     createDateTime (time) {
       var dateTime = moment('2018-05-17' + ' ' + time)
       return dateTime.format('YYYY-MM-DDTHH:mm:ss')
     },
+    // Set up to add business hour
     addBusinessHour () {
       this.editedIndex = -1
       this.dialog = true
     },
+    // Set up to edit business hour
     editBusinessHour (businessHour) {
       this.editedIndex = this.businessHours.indexOf(businessHour)
       this.editedBusinessHour = Object.assign({}, businessHour)
@@ -217,6 +235,7 @@ export default {
       this.editedBusinessHour.closeTime = this.convertUtcToLocalTime(businessHour.closeTime, 'h:mm')
       this.dialog = true
     },
+    // Set up to delete business hour
     deleteBusinessHour (businessHour) {
       const index = this.businessHours.indexOf(businessHour)
       if (confirm('Are you sure you want to delete this business hour?')) {
@@ -231,6 +250,7 @@ export default {
         }
       }
     },
+    // Close the dialog popup
     close () {
       this.dialog = false
       setTimeout(() => {
@@ -238,7 +258,9 @@ export default {
         this.editedIndex = -1
       }, 300)
     },
+    // Save the edit/add business hour inputs
     save () {
+      // Save edited business hour
       if (this.editedIndex > -1) {
         if (this.businessHours[this.editedIndex].flag !== 1) {
           this.businessHours[this.editedIndex].flag = 2
@@ -246,6 +268,7 @@ export default {
         this.businessHours[this.editedIndex].day = this.editedBusinessHour.day
         this.businessHours[this.editedIndex].openTime = this.concatenateDateAndTime(this.businessHours[this.editedIndex].openTime, this.editedBusinessHour.openTime)
         this.businessHours[this.editedIndex].closeTime = this.concatenateDateAndTime(this.businessHours[this.editedIndex].closeTime, this.editedBusinessHour.closeTime)
+      // Save added business hour
       } else {
         this.editedBusinessHour.flag = 1
         this.editedBusinessHour.openTime = this.createDateTime(this.editedBusinessHour.openTime)

@@ -117,9 +117,18 @@ export default {
       errors: ''
     }
   },
+  // Check permission if user can access this page
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
-      this.$router.push({ path: '/Unauthorized' })
+      this.$router.push('Unauthorized')
+    }
+    try {
+      if (jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True') {
+      } else {
+        this.$router.push('Forbidden')
+      }
+    } catch (ex) {
+      this.$router.push('Forbidden')
     }
   },
   created () {
@@ -127,47 +136,39 @@ export default {
   },
   methods: {
     getUserProfile () {
-      try {
-        if (jwt.decode(this.$store.state.authenticationToken).ReadUserProfile === 'True') {
-          axios.get(this.$store.state.urls.profileManagement.userProfile, {
-            headers: {
-              Authorization: `Bearer ${this.$store.state.authenticationToken}`
-            }
-          }).then(response => {
-            this.displayName = response.data.displayName
-            this.displayPicture = response.data.displayPicture
-          }).catch(error => {
-            try {
-              if (error.response.status === 401) {
-                // Route to Unauthorized page
-                this.$router.push({ path: '/Unauthorized' })
-              }
-              if (error.response.status === 403) {
-                // Route to Forbidden page
-                this.$router.push({ path: '/Forbidden' })
-              }
-              if (error.response.status === 404) {
-                // Route to ResourceNotFound page
-                this.$router.push({ path: '/ResourceNotFound' })
-              }
-              if (error.response.status === 500) {
-                // Route to InternalServerError page
-                this.$router.push({ path: '/InternalServerError' })
-              } else {
-                this.errors = JSON.parse(JSON.parse(error.response.data.message))
-              }
-              Promise.reject(error)
-            } catch (ex) {
-              this.errors = error.response.data
-              Promise.reject(error)
-            }
-          })
-        } else {
-          this.$router.push({ path: '/Forbidden' })
+      axios.get(this.$store.state.urls.profileManagement.userProfile, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
-      } catch (ex) {
-        this.$router.push({ path: '/Forbidden' })
-      }
+      }).then(response => {
+        this.displayName = response.data.displayName
+        this.displayPicture = response.data.displayPicture
+      }).catch(error => {
+        try {
+          if (error.response.status === 401) {
+            // Route to Unauthorized page
+            this.$router.push({ path: '/Unauthorized' })
+          }
+          if (error.response.status === 403) {
+            // Route to Forbidden page
+            this.$router.push({ path: '/Forbidden' })
+          }
+          if (error.response.status === 404) {
+            // Route to ResourceNotFound page
+            this.$router.push({ path: '/ResourceNotFound' })
+          }
+          if (error.response.status === 500) {
+            // Route to InternalServerError page
+            this.$router.push({ path: '/InternalServerError' })
+          } else {
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+          }
+          Promise.reject(error)
+        } catch (ex) {
+          this.errors = error.response.data
+          Promise.reject(error)
+        }
+      })
     },
     editUserProfile: function () {
       axios.post(this.$store.state.urls.profileManagement.updateUserProfile,

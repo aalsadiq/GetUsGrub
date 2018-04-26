@@ -132,7 +132,7 @@ namespace CSULB.GetUsGrub.UnitTests
             string username = "username1";
             var preferencesToBeAdded = new List<string>
             {
-                "Lacto-Vegetarian",
+                "Lacto-vegetarian",
                 "Pescetarian",
                 "Vegan"
             };

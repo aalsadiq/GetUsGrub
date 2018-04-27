@@ -25,8 +25,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// 
         /// </summary>
         /// <para>
-        /// @author: Ahmed Sadiq, Brian Fann
-        /// @updated: 4/24/18
+        /// @author: Ahmed Sadiq, Brian Fann, Rachel Dang
+        /// @updated: 4/26/18
         /// </para>
         /// <param name="loginDto"></param>
         /// <returns>
@@ -51,20 +51,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var issuedOn = DateTime.UtcNow;
             authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
             
-            // Build claims for user
-            var claimIdentity = new ClaimsIdentity();
-            var claimPrincipal = new ClaimsPrincipal();
+            // Retrieve user's "Read" permission claims from the claims transfomer
             var claimTransformer = new ClaimsTransformer();
-            claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
-            claimPrincipal.AddIdentity(claimIdentity);
-            claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Authentication, claimPrincipal);
-
-            var claims = claimPrincipal.Claims;
+            var claimsIdentity = claimTransformer.CreateAuthenticationClaimsIdentity(authenticationToken.Username);
 
             // Creating the Body of the token
             var tokenDescription = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims),
+                //Subject = new ClaimsIdentity(claims),
+                Subject = claimsIdentity,
                 Audience = AuthenticationTokenConstants.AUDIENCE,
                 IssuedAt = issuedOn,
                 Expires = authenticationToken.ExpiresOn,

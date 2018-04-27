@@ -53,7 +53,6 @@
               </div>
             </v-flex>
             </v-layout>
-            <v-tooltip bottom>
             <v-btn
               v-if="!isEdit"
               fab
@@ -67,8 +66,18 @@
               >
               <v-icon>edit</v-icon>
             </v-btn>
-             <span>Edit Profile</span>
-            </v-tooltip>
+            <v-btn
+              v-if="isEdit"
+              fab
+              color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="cancel()"
+              slot="activator"
+              >
+              <v-icon>clear</v-icon>
+            </v-btn>
           </div>
         </v-parallax>
       </div>
@@ -199,18 +208,6 @@ export default {
     this.getRestaurantProfile()
   },
   methods: {
-    // updateProfileUrl (url) {
-    //   console.log('B4 Changed to '+url)
-    //   try {
-    //     var img = new File(url)
-    //     var reader = new FileReader()
-    //     this.displayPictureUrl = reader.readAsDataURL(img)
-    //   }
-    //   catch(ex) {
-    //     console.log(ex)
-    //   }
-    //   console.log('Changed to '+url)
-    // },
     getRestaurantProfile () {
       axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
         headers: {
@@ -288,16 +285,13 @@ export default {
       this.editDisplayName = !this.editDisplayName
     },
     submitEditDisplayName () {
-      console.log('here')
       if (this.checkDisplayNameDoesNotEqualUsername()) {
         this.toggleEditDisplayName()
         this.editRestaurantProfile()
       }
     },
     checkDisplayNameDoesNotEqualUsername () {
-      console.log('here')
       if (this.$store.state.username === this.editDisplayName) {
-        console.log('herehere')
         this.error = 'Username must not equal display name.'
         this.showDisplayNameError = true
         return false
@@ -355,8 +349,8 @@ export default {
   margin: 0 0 3em 0;
 }
 .btn--bottom.btn--absolute {
-  bottom: -2.5em;
-  left: 47em;
+  bottom: 2em;
+  left: 100em;
 }
 /* #image-upload{
   width: 0px;

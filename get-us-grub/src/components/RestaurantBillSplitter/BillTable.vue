@@ -26,8 +26,8 @@
               </li>
             </ul>
           </div>
-          <div v-for="billUser in billUsers" :key="billUser">
-            <div v-for="uniqueID in billItem.selected" :key="uniqueID">
+          <div v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
+            <div v-for="(uniqueID, uniqueIDIndex) in billItem.selected" :key="uniqueIDIndex">
               <div v-if="billUser.uID === uniqueID">
                 <p> {{ billUser.name }} </p>
               </div>

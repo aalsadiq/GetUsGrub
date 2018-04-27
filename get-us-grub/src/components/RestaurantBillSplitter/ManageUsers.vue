@@ -63,12 +63,7 @@ export default {
   watch: {
     selected (newSelected, oldSelected) {
       if (this.dialog === true) {
-        console.log('Old: ' + oldSelected)
-        console.log('New: ' + newSelected)
-        console.log('Bill Item Index: ' + this.billItemIndex)
-        console.log('Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
         this.updateUserMoneyOwesFromSelected(this.billItemIndex, this.billItem, newSelected, oldSelected)
-        console.log('New Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
       }
     }
   },

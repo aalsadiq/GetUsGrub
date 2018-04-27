@@ -285,16 +285,13 @@ export default {
       this.editDisplayName = !this.editDisplayName
     },
     submitEditDisplayName () {
-      console.log('here')
       if (this.checkDisplayNameDoesNotEqualUsername()) {
         this.toggleEditDisplayName()
         this.editRestaurantProfile()
       }
     },
     checkDisplayNameDoesNotEqualUsername () {
-      console.log('here')
       if (this.$store.state.username === this.editDisplayName) {
-        console.log('herehere')
         this.error = 'Username must not equal display name.'
         this.showDisplayNameError = true
         return false

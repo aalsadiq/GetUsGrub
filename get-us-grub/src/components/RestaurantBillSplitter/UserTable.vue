@@ -9,7 +9,7 @@
             <h2>{{ billUser.name }} owes ${{ (billUser.moneyOwes / 100).toFixed(2) }}</h2>
           </li>
           <li>
-            <v-btn small color="red" v-on:click="RemoveUser(billUser.uID)"><v-icon>clear</v-icon></v-btn>
+            <v-btn small color="red" v-on:click="RemoveUser(billUserIndex, billUser.uID)"><v-icon>clear</v-icon></v-btn>
           </li>
         </ul>
         <v-divider />
@@ -46,8 +46,8 @@ export default {
     }
   },
   methods: {
-    RemoveUser: function (billUserUID) {
-      console.log('Deleting ' + billUserUID)
+    RemoveUser: function (billUserIndex, billUserUID) {
+      // this.$store.dispatch('updateUserMoneyOwesFromDeleteUser', { billUserIndex, billUserUID })
       this.$store.dispatch('removeUser', billUserUID)
     }
   },

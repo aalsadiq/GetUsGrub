@@ -231,7 +231,7 @@ export default {
     // Set up to delete business hour
     deleteBusinessHour (businessHour) {
       const index = this.businessHours.indexOf(businessHour)
-      if (this.business.hours.length <= 1) {
+      if (this.businessHours.length <= 1) {
         this.error = 'It is required that you have one business hour.'
         this.showError = true
       } else {

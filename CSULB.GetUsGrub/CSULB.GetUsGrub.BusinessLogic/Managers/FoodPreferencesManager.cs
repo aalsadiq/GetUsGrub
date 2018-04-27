@@ -1,6 +1,5 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using CSULB.GetUsGrub.BusinessLogic;
 using System.Collections.Generic;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -83,7 +82,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var preferencesToBeAdded = LeftOuterJoin(updatedFoodPreferences, currentFoodPreferences);
                 var preferencesToBeRemoved = LeftOuterJoin(currentFoodPreferences, updatedFoodPreferences);
 
-                // Call gateway to update user's food preferences
+                // If no changes are to be made and bypass front-end validation, return true
+                if (preferencesToBeAdded.Count == 0 && currentFoodPreferences.Count == 0)
+                {
+                    return new ResponseDto<bool>
+                    {
+                        Data = true
+                    };
+                }
+
+                // Otherwise, call gateway to update user's food preferences
                 var result = gateway.EditFoodPreferencesByUsername(username, preferencesToBeAdded, preferencesToBeRemoved);
 
                 // Return boolean determining success of update

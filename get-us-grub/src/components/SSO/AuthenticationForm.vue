@@ -19,7 +19,6 @@
       :type=" visible ? 'text' : 'password'"
       :disabled="disabled"
       required
-      v-on:input="$emit('input', value)"
     />
   </v-form>
 </template>

@@ -43,7 +43,7 @@
                 </h5>
               <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
             </label>
-            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
+            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="submitImageUpload">
               Upload
             <v-icon color="white">cloud_upload</v-icon>
             </v-btn>
@@ -65,13 +65,11 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
-  props: ['menuId'],
-  dialog: false,
-  components: {
-  },
+  props: ['editedMenuItem'],
   data: () => ({
+    errors: [],
+    dialog: false,
     username: '', // Can grab from token
-    menuId: 0, // For testing purposes
     responseData: '',
     show: false,
     showError: false,
@@ -106,20 +104,18 @@ export default {
         reader.readAsDataURL(input.files[0]) // Read as data url (base64 format)
       }
     },
-    SubmitImageUpload: function () {
+    submitImageUpload: function () {
       var formData = new FormData()
       formData.append('username', this.username) // this.$store.state.username
-      formData.append('menuId', this.menuId)
+      formData.append('menuId', this.editedMenuItem.id)
       formData.append('filename', this.selectedFile, this.selectedFile.name)
       axios.post(this.$store.state.urls.profileManagement.menuItemUpload, formData, {
-      },
-      {
         headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
-      }
-      ).then(response => {
+      }).then(response => {
         this.responseData = response.data
         this.showSuccess = true
         this.showError = false
+        this.dialog = false
       }).catch(error => {
         this.responseData = error.response.data
         this.showSuccess = false

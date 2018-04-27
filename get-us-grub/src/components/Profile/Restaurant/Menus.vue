@@ -274,7 +274,7 @@
             <!-- Buttons on the inactive menu tab -->
             <div v-if="isEdit">
               <v-layout>
-              <v-btn icon class="mx-0" @click="editMenu(menu)">
+              <v-btn icon class="mx-0" @click="editMenu(menu, menuIndex)">
                 <v-icon color="yellow">edit</v-icon>
               </v-btn>
               <v-btn icon class="mx-0" @click="deleteMenu(menu)">
@@ -460,11 +460,12 @@ export default {
   },
   methods: {
     addMenu () {
+      this.editedMenu = Object.assign({}, this.defaultMenu)
       this.editedIndex = -1
       this.menuDialog = true
     },
-    editMenu (menu) {
-      this.editedIndex = this.restaurantMenusList.indexOf(menu)
+    editMenu (menu, index) {
+      this.editedIndex = index
       // Assign a new object of menu.restaurantMenu to editedMenu
       this.editedMenu = Object.assign({}, menu.restaurantMenu)
       this.menuDialog = true
@@ -506,7 +507,6 @@ export default {
       // Else item is newly added
       } else {
         this.editedMenu.flag = 1
-        this.newMenu = Object.assign({}, this.defaultNewMenu)
         this.newMenu.restaurantMenu = this.editedMenu
         this.restaurantMenusList.push(this.newMenu)
         this.newMenu = Object.assign({}, this.defaultNewMenu)
@@ -514,6 +514,7 @@ export default {
       this.closeMenuDialog()
     },
     addMenuItem (menuIndex) {
+      this.editedMenuItem = Object.assign({}, this.defaultMenuItem)
       this.formMenuIndex = menuIndex
       this.formMenuName = this.restaurantMenusList[menuIndex].restaurantMenu.menuName
       this.editedIndex = -1
@@ -564,11 +565,13 @@ export default {
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].tag = this.editedMenuItem.tag
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].description = this.editedMenuItem.description
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].isActive = this.editedMenuItem.isActive
+        this.editedMenuItem = Object.assign({}, this.defaultMenuItem)
       // Else item is newly added
       } else {
         this.editedMenuItem.flag = 1
         this.editedMenuItem.itemPicture = this.$store.state.menuItemImagePath
         this.restaurantMenusList[this.formMenuIndex].menuItem.push(this.editedMenuItem)
+        this.editedMenuItem = Object.assign({}, this.defaultMenuItem)
       }
       this.closeMenuItemDialog()
     },

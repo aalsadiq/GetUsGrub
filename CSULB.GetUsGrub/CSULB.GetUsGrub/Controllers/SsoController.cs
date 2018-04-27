@@ -99,5 +99,37 @@ namespace CSULB.GetUsGrub
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
+
+        [HttpPost]
+        [ActionName("ResetPassword")]
+        [EnableCors(origins: "https://fannbrian.github.io", headers: "*", methods: "POST")]
+        public IHttpActionResult ResetPassword(HttpRequestMessage request)
+        {
+            try
+            {
+                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageResetPasswordToken();
+                if (result.Error != null)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                //
+                var resetPasswordManager = new ResetPasswordManager(result.Data);
+                var updateResponse = resetPasswordManager.SsoUpdatePassword();
+
+                if (updateResponse.Error != null)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+            }
+
+        }
     }
 }

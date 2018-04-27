@@ -139,7 +139,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<AuthenticationTokenDto>
                 {
                     Data = authenticationTokenDto,
-                    Error = "Something went wrong with : ATRT"
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 

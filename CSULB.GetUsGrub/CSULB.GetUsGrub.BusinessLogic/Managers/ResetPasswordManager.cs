@@ -34,8 +34,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>A ResponseDto which includes the ResetPasswordDto</returns>
         public ResponseDto<ResetPasswordDto> GetSecurityQuestions()
         {
-            var resetPasswordPreLogicValidationStrategy = new ResetPasswordPreLogicValidationStrategy(_resetPasswordDto, ResetPasswordValidationTypes.GetSecurityQuestionsValidation);
-            
+            var resetPasswordPreLogicValidationStrategy = new ResetPasswordPreLogicValidationStrategy(_resetPasswordDto,
+                ResetPasswordValidationTypes.GetSecurityQuestionsValidation);
+
             // Validate data transfer object
             var result = resetPasswordPreLogicValidationStrategy.ExecuteStrategy();
             if (result.Error != null)
@@ -88,7 +89,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>A ResponseDto which includes the ResetPasswordDto</returns>
         public ResponseDto<ResetPasswordDto> ConfirmSecurityQuestionAnswers()
         {
-            var resetPasswordPreLogicValidationStrategy = new ResetPasswordPreLogicValidationStrategy(_resetPasswordDto, ResetPasswordValidationTypes.ConfirmSecurityQuestionAnswersValidation);
+            var resetPasswordPreLogicValidationStrategy = new ResetPasswordPreLogicValidationStrategy(_resetPasswordDto,
+                ResetPasswordValidationTypes.ConfirmSecurityQuestionAnswersValidation);
             var payloadHasher = new PayloadHasher();
 
             // Validate data transfer object
@@ -117,7 +119,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                         Error = GeneralErrorMessages.GENERAL_ERROR
                     };
                 }
-                
+
                 securityQuestionWithSalts = securityAnswerSaltsResult.Data;
             }
 
@@ -126,7 +128,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 foreach (var securityQuestion in _resetPasswordDto.SecurityQuestionDtos)
                 {
                     // Hash the security answers in data transfer object
-                    if (securityQuestionWithSalt.Question == securityQuestion.Question && securityQuestionWithSalt.Answer != securityQuestion.Answer)
+                    if (securityQuestionWithSalt.Question == securityQuestion.Question &&
+                        securityQuestionWithSalt.Answer != securityQuestion.Answer)
                     {
                         securityQuestion.Answer = payloadHasher.Sha256HashWithSalt(salt: securityQuestionWithSalt.Salt,
                             payload: securityQuestion.Answer);
@@ -172,7 +175,70 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            var resetPasswordPreLogicValidationStrategy = new ResetPasswordPreLogicValidationStrategy(_resetPasswordDto, ResetPasswordValidationTypes.UpdatePasswordValidation);
+            var resetPasswordPreLogicValidationStrategy = new ResetPasswordPreLogicValidationStrategy(_resetPasswordDto,
+                ResetPasswordValidationTypes.UpdatePasswordValidation);
+            var saltGenerator = new SaltGenerator();
+            var payloadHasher = new PayloadHasher();
+            UserAccount userAccount;
+
+            // Validate data transfer object
+            var result = resetPasswordPreLogicValidationStrategy.ExecuteStrategy();
+            if (result.Error != null)
+            {
+                return new ResponseDto<ResetPasswordDto>
+                {
+                    Data = null,
+                    Error = result.Error
+                };
+            }
+
+            // Get the existing UserAccount model associated with the username
+            using (var userGateway = new UserGateway())
+            {
+                var gatewayResult = userGateway.GetUserByUsername(_resetPasswordDto.Username);
+                if (gatewayResult.Error != null)
+                {
+                    return new ResponseDto<ResetPasswordDto>()
+                    {
+                        Data = null,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                }
+
+                userAccount = gatewayResult.Data;
+            }
+
+            // Set the new password to the UserAccount model
+            userAccount.Password = _resetPasswordDto.Password;
+
+            // Hash password
+            var passwordSalt = new PasswordSalt(saltGenerator.GenerateSalt(128));
+            userAccount.Password = payloadHasher.Sha256HashWithSalt(passwordSalt.Salt, userAccount.Password);
+
+            // Update the password in the database
+            using (var userGateway = new UserGateway())
+            {
+                var gatewayResult = userGateway.UpdatePassword(userAccount, passwordSalt);
+                if (gatewayResult.Error != null)
+                {
+                    return new ResponseDto<ResetPasswordDto>()
+                    {
+                        Data = null,
+                        Error = GeneralErrorMessages.GENERAL_ERROR
+                    };
+                }
+            }
+
+            return new ResponseDto<ResetPasswordDto>()
+            {
+                Data = _resetPasswordDto
+            };
+        }
+
+        public ResponseDto<ResetPasswordDto> SsoUpdatePassword()
+        {
+            var resetPasswordPreLogicValidationStrategy = new ResetPasswordPreLogicValidationStrategy(_resetPasswordDto,
+                ResetPasswordValidationTypes.UpdatePasswordValidation);
             var saltGenerator = new SaltGenerator();
             var payloadHasher = new PayloadHasher();
             UserAccount userAccount;

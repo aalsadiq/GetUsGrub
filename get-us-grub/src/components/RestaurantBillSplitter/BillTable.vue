@@ -4,7 +4,7 @@
     <v-divider />
     <h2 class="total">Total: {{ this.money.prefix }}{{ (totalPrice / 100).toFixed(2) }} </h2> <!-- TODO: I've yet to figure out how to display the html element using functions to convert -->
     <div>
-      <manage-tips/>
+     <!-- <manage-tips/> -->
     </div>
     <div class="bill-items">
       <h1 v-if="!billItems.length"> Drag Items Here!</h1>
@@ -98,7 +98,7 @@ export default {
   }
 
   bill-item-controls {
-    grid-column: 1;
+    grid-column: 0;
   }
 
     .bill-table > .bill-items {
@@ -120,7 +120,7 @@ export default {
 
     .bill > .bill-item {
       display: grid;
-      grid-template-columns: 50% 50%;
+      grid-template-columns: auto;
       margin: 10px;
       padding: 10px;
       background-color: aquamarine;

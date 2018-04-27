@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <v-dialog v-model="dialog" scrollable max-width="300px">
     <v-btn small dark slot="activator">Manage Tips</v-btn>
     <v-card>
@@ -9,8 +9,8 @@
                 lazy-validation>
           <div v-for="(user, index) in billUsers"
                :key="index">
-            <h3> {{ index }}</h3>
-            <h3> {{ user.name }} </h3>
+            <h3> </h3>
+            <h3> </h3>
             <v-text-field label="Tip"
                           :rules="[rules.required, rules.max, rules.nonnegative]"
                           prefix="$"
@@ -105,4 +105,4 @@ export default {
 
 <style scoped>
 
-</style>
+</style>-->

@@ -178,17 +178,16 @@
               </v-list-tile-content>
               <!-- Buttons on the active menu item of an active menu -->
               <div v-if="isEdit">
-                <!-- Button to call Image Upload's function -->
-                <!-- <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon> -->
-                   <menu-image-upload/>
-                <!-- </v-btn> -->
+                <v-layout>
+                  <!-- Menu item image upload component button -->
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId"/>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
                 <v-btn icon class="mx-0" @click="deleteMenuItem(menuIndex, item)">
                   <v-icon color="pink">delete</v-icon>
                 </v-btn>
+                </v-layout>
               </div>
             </v-list-tile>
             <!-- An inactive menu item of an active menu -->
@@ -213,10 +212,8 @@
               </v-list-tile-content>
               <!-- Buttons on the inactive menu item of an active menu -->
               <div v-if="isEdit">
-                <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <!-- Menu item image upload component button -->
+                <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId"/>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -324,10 +321,8 @@
               </v-list-tile-content>
               <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
-                <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <!-- Menu item image upload component button -->
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId"/>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -357,10 +352,8 @@
               </v-list-tile-content>
               <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
-                <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <!-- Menu item image upload component button -->
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId"/>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -408,6 +401,7 @@ export default {
   ],
   data () {
     return {
+      menuItemId: 0,
       valid: false,
       newMenu: {
         restaurantMenu: null,
@@ -435,6 +429,7 @@ export default {
         flag: 0
       },
       editedMenuItem: {
+        id: 0,
         itemName: '',
         itemPrice: null,
         itemPicture: '',
@@ -444,6 +439,7 @@ export default {
         flag: 0
       },
       defaultMenuItem: {
+        id: 0,
         itemName: '',
         itemPrice: null,
         itemPicture: '',
@@ -513,6 +509,7 @@ export default {
         this.newMenu = Object.assign({}, this.defaultNewMenu)
         this.newMenu.restaurantMenu = this.editedMenu
         this.restaurantMenusList.push(this.newMenu)
+        this.newMenu = Object.assign({}, this.defaultNewMenu)
       }
       this.closeMenuDialog()
     },
@@ -570,6 +567,7 @@ export default {
       // Else item is newly added
       } else {
         this.editedMenuItem.flag = 1
+        this.editedMenuItem.itemPicture = this.$store.state.menuItemImagePath
         this.restaurantMenusList[this.formMenuIndex].menuItem.push(this.editedMenuItem)
       }
       this.closeMenuItemDialog()
@@ -595,5 +593,9 @@ export default {
 }
 #inactive-menus {
   margin: 2em 0 0 0;
+}
+#image-upload[data-v-dd1103d4] {
+  height: 0;
+  width: 0;
 }
 </style>

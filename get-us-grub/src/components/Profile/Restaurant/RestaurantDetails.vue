@@ -3,7 +3,7 @@
   <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
-          <v-toolbar color="blue" dark>
+          <v-toolbar color="teal" dark>
             <v-spacer/>
             <!-- Title of the toolbar -->
             <v-toolbar-title id="details-toolbar-title">Details</v-toolbar-title>

@@ -15,7 +15,7 @@ export const store = new Vuex.Store({
     originAddress: 'Los Angeles, CA',
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
-    uniqueUserCounter: 0,
+    uniqueCounter: 0,
     menuItemImagePath: 'http://localhost:64525/Images/DefaultImages/DefaultMenuItemImage.png',
     menuItems: [
     ],
@@ -424,8 +424,7 @@ export const store = new Vuex.Store({
       state.menuItems.push({
         itemName: payload[0],
         itemPrice: payload[1],
-        selected: [],
-        selectedManual: []
+        selected: []
       })
     },
     addBillUser: (state, payload) => {
@@ -451,8 +450,7 @@ export const store = new Vuex.Store({
         state.restaurantMenuItems.push({
           itemName: element.itemName,
           itemPrice: element.itemPrice,
-          selected: [],
-          selectedManual: []
+          selected: []
         })
       })
     },
@@ -530,14 +528,22 @@ export const store = new Vuex.Store({
         Vue.set(state.billUsers[index], 'tipAssigned', payload[index].tip)
       })
     },
-    // updateUserMoneyOwesFromDeleteUser: (state, payload) => {
-    //   var oldSplit
-    //   var newSplit
-    //   state.billItems.forEach(function (element, index) {
-    //     if (state.billItems[index])
-    //     state.billItems[index].selected[state.billItems.selected.findIndex(x => x.selected === payload.billUserUID)]
-    //   })
-    // },
+    updateUserMoneyOwesFromDeleteUser: (state, payload) => {
+      var oldSplit
+      var newSplit
+      state.billItems.forEach(function (element, index) {
+        if (state.billItems[index].selected.includes(payload.billUserUID)) {
+          oldSplit = Math.ceil(state.billItems[index].itemPrice / state.billItems[index].selected.length)
+          newSplit = Math.ceil(state.billItems[index].itemPrice / (state.billItems[index].selected.length - 1))
+          state.billItems[index].selected.forEach(function (select, selectIndex) {
+            if (select !== payload.billUserUID) {
+              state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes -= oldSplit
+              state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes += newSplit
+            }
+          })
+        }
+      })
+    },
     incrementUniqueCounter: (state) => {
       state.uniqueCounter++
     },
@@ -642,11 +648,11 @@ export const store = new Vuex.Store({
         context.commit('updateUserMoneyOwesFromDeleteItem', payload)
       }, 250)
     },
-    // updateUserMoneyOwesFromDeleteUser: (context, payload) => {
-    //   setTimeout(function () {
-    //     context.commit('updateUserMoneyOwesFromDeleteUser', payload)
-    //   }, 250)
-    // },
+    updateUserMoneyOwesFromDeleteUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateUserMoneyOwesFromDeleteUser', payload)
+      }, 250)
+    },
     updateBillUsersTipAssigned: (context, payload) => {
       setTimeout(function () {
         context.commit('updateBillUsersTipAssigned', payload)

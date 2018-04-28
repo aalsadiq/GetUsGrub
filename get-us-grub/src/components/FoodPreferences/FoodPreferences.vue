@@ -1,24 +1,28 @@
 <template>
   <div>
-    <v-card>
-      <v-card-title class="form-component">
-        <h3 v-if="!isChecklist">{{ message }}</h3>
-        <h3 v-else>{{ editMessage }}</h3>
-      </v-card-title>
+    <v-card id="card-component">
+      <v-toolbar color="teal" dark>
+        <v-spacer>
+          <v-card-title class="form-component">
+            <h3 v-if="!isChecklist">{{ message }}</h3>
+            <h3 v-else>{{ editMessage }}</h3>
+          </v-card-title>
+        </v-spacer>
+      </v-toolbar>
       <v-expand-transition>
-        <v-card-text v-show="!isChecklist">
-          <div class="form-component" style="padding-bottom: 1em">
-            <h4 v-if="this.currentFoodPreferences.length == 0">{{ emptyPreferencesMessage }}</h4>
-            <li v-else v-for="preference in currentFoodPreferences" :key='preference'>{{ preference }}</li>
-          </div>
-          <div class="btn-divider" v-show="isEdit">
-            <v-btn :dark="true" @click.native="toggleEdit">Edit Food Preferences</v-btn>
-          </div>
-        </v-card-text>
+        <div v-show="!isChecklist">
+          <v-card-text>
+            <div class="form-component" style="padding-bottom: 1em">
+              <h4 v-if="this.currentFoodPreferences.length == 0">{{ emptyPreferencesMessage }}</h4>
+              <li v-else v-for="preference in currentFoodPreferences" :key='preference'>{{ preference }}</li>
+            </div>
+          </v-card-text>
+        </div>
       </v-expand-transition>
       <v-expand-transition>
-        <v-card-text v-show="isChecklist">
-          <div class="form-component">
+        <div v-show="isChecklist">
+          <v-card-text v-show="isChecklist">
+            <div class="form-component">
               <v-checkbox
                 v-for="preference in $store.state.constants.foodPreferences"
                 :key='preference'
@@ -30,14 +34,20 @@
                 hide-details
               >
               </v-checkbox>
-          </div>
-          <div class="btn-divider">
-            <v-btn :dark=true @click.native="cancel">Cancel</v-btn>
-            <v-btn :dark=!isDisabled :disabled=isDisabled @click.native="update">Save</v-btn>
-          </div>
-        </v-card-text>
+            </div>
+          </v-card-text>
+        </div>
       </v-expand-transition>
     </v-card>
+    <div v-show="isEdit">
+      <div class="btn-divider" v-if="isChecklist">
+        <v-btn :dark=true @click.native="cancel">Cancel</v-btn>
+        <v-btn :dark=!isDisabled :disabled=isDisabled @click.native="update">Save</v-btn>
+      </div>
+      <div class="btn-divider" v-else>
+        <v-btn :dark="true" @click.native="toggleEdit">Edit Food Preferences</v-btn>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -145,6 +155,9 @@ export default {
   h3 {
     font-weight: bold;
     font-family: 'Open Sans', sans-serif;
+  }
+  #card-component {
+    display: inline-block;
   }
   .form-component {
     display: inline-block;

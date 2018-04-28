@@ -631,7 +631,7 @@ export default {
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response.data
+          this.errors = error.response.data.message
           Promise.reject(error)
         }
       })

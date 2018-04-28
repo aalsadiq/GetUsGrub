@@ -14,7 +14,7 @@
         public const string VIRTUAL_MENU_ITEM_PATH = DEFAULT_VIRTUAL_ROOT_PATH + "MenuImages/";
 
         // Default physical image root path
-        public const string DEFAULT_PHYSICAL_ROOT_PATH = @"C:\Users\Angelica\Documents\GetUsGrub\CSULB.GetUsGrub\CSULB.GetUsGrub.Images\Images\";
+        public const string DEFAULT_PHYSICAL_ROOT_PATH = @".\CSULB.GetUsGrub\CSULB.GetUsGrub.Images\Images\";
 
         // Default physical images
         public const string DEFAULT_PHYSICAL_MENU_ITEM_PATH = DEFAULT_PHYSICAL_ROOT_PATH + @"DefaultImages\DefaultMenuItemImage.png";

@@ -52,9 +52,8 @@ namespace CSULB.GetUsGrub
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }

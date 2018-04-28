@@ -50,15 +50,13 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Time Stamping the Token
             var issuedOn = DateTime.UtcNow;
             authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
-            
-            // Retrieve user's "Read" permission claims from the claims transfomer
-            var claimTransformer = new ClaimsTransformer();
-            var claimsIdentity = claimTransformer.CreateAuthenticationClaimsIdentity(authenticationToken.Username);
+
+            // Create claims identity with "Read" permisison claims
+            var claimsIdentity = CreateClaimsIdentity(username).Data;            
 
             // Creating the Body of the token
             var tokenDescription = new SecurityTokenDescriptor
             {
-                //Subject = new ClaimsIdentity(claims),
                 Subject = claimsIdentity,
                 Audience = AuthenticationTokenConstants.AUDIENCE,
                 IssuedAt = issuedOn,
@@ -204,6 +202,77 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
+            };
+        }
+
+        /// <summary>
+        /// Method to check if user is a first time user
+        /// 
+        /// @author: Rachel Dang
+        /// @updated: 04/28/18
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>Bool?</returns>
+        private ResponseDto<bool?> CheckIfFirstTimeUser(string username)
+        {
+            using (var gateway = new UserGateway())
+            {
+                // Call gateway to get user by username
+                var user = gateway.GetUserByUsername(username);
+
+                // If user is invalid and an error occurs, return dto with error
+                if (user.Error != null)
+                {
+                    return new ResponseDto<bool?>
+                    {
+                        Data = false,
+                        Error = user.Error
+                    };
+                }
+
+                // Return dto with user's isFirstTimeUser value
+                return new ResponseDto<bool?>
+                {
+                    Data = user.Data.IsFirstTimeUser
+                };
+            }
+        }
+
+        /// <summary>
+        /// Method to call the claims transformer to create the 
+        /// 
+        /// @author: Rachel Dang
+        /// @updated: 04/28/18
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="isFirstTimeUser"></param>
+        /// <returns></returns>
+        private ResponseDto<ClaimsIdentity> CreateClaimsIdentity(string username)
+        {
+            // Check if user is a first time user from the SSO       
+            var isFirstTimeUser = CheckIfFirstTimeUser(username);
+
+            // If user is invalid and an error occurs, return dto with error
+            if (isFirstTimeUser.Error != null)
+            {
+                return new ResponseDto<ClaimsIdentity>
+                {
+                    Error = GeneralErrorMessages.GENERAL_ERROR
+                };
+            }
+
+            // Call the Claims Transformer manager to create the claims identity
+            var transformer = new ClaimsTransformer();
+            if (isFirstTimeUser.Data == true)
+            {
+                new ResponseDto<ClaimsIdentity>
+                {
+                    Data = transformer.CreateSsoClaimsIdentity(username)
+                };
+            }
+            return new ResponseDto<ClaimsIdentity>
+            {
+                Data = transformer.CreateAuthenticationClaimsIdentity(username)
             };
         }
     }

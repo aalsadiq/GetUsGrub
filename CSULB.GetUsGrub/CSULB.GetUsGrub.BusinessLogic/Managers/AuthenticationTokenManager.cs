@@ -49,10 +49,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Time Stamping the Token
             var issuedOn = DateTime.UtcNow;
-            authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
+            authenticationToken.ExpiresOn = issuedOn.AddMinutes(5);
             
             // Build claims for user
-            var claimIdentity = new ClaimsIdentity();
+            var claimIdentity = new ClaimsIdentity();// create the claim first thin
             var claimPrincipal = new ClaimsPrincipal();
             var claimTransformer = new ClaimsTransformer();
             claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
@@ -75,7 +75,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Changing the Token to a String Form
             var token = tokenHandler.CreateToken(tokenDescription);
             var tokenString = tokenHandler.WriteToken(token);
-            Console.WriteLine(tokenString);
             authenticationToken.TokenString = tokenString;
 
             // Storing the Token to the Database
@@ -125,7 +124,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Changing the Experiation time on the Token
-            authenticationTokenDto.ExpiresOn = DateTime.UtcNow;
+            authenticationTokenDto.ExpiresOn = DateTime.UtcNow; // Set this to the past
 
             // Creating the Model to save in the DB
             var incomingAuthenticationToken = new AuthenticationToken(authenticationTokenDto.Username, authenticationTokenDto.ExpiresOn, authenticationTokenDto.TokenString);

@@ -34,27 +34,21 @@ namespace CSULB.GetUsGrub.Controllers
                 }
                 var authenticationTokenManager = new AuthenticationTokenManager();
                 var tokenResponse = authenticationTokenManager.CreateToken(loginResponse.Data.Username);
-                if (tokenResponse.Error != null)
-                {
-                    return BadRequest();
-                }
                 return Ok(tokenResponse.Data.TokenString);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
         [HttpPost]
         [Route("RenewSession")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult Renewsession(HttpRequestMessage request)
+        public IHttpActionResult RenewSession(HttpRequestMessage request)
         {
             try
             {
-                AuthenticationTokenManager tokenManager = new AuthenticationTokenManager();
                 TokenService tokenService = new TokenService();
 
 
@@ -72,17 +66,11 @@ namespace CSULB.GetUsGrub.Controllers
 
                 var authenticationTokenManager = new AuthenticationTokenManager();
                 var tokenResponse = authenticationTokenManager.CreateToken(username);
-                if (tokenResponse.Error != null)
-                {
-                    return BadRequest();
-                }
-
                 return Ok(tokenResponse.Data.TokenString);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError(); 
             }
         }
     }

@@ -46,10 +46,9 @@ namespace CSULB.GetUsGrub.Controllers
 
                 return Ok("You are Logged out successfully");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
 
         }

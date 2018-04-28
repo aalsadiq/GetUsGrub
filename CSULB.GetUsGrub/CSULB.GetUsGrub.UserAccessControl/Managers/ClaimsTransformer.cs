@@ -28,13 +28,6 @@ namespace CSULB.GetUsGrub.UserAccessControl
 
             // Retrieve user's claims if user is valid, otherwise a security exception is thrown
             var claims = GetUserClaims(username);
-            
-            // If user's claims are null, user is a first time user from the SSO
-            if (!claims.Any())
-            {
-                // Call method to create and return claims principal for first time users
-                return CreateSsoClaimsPrincipal(username);
-            }
 
             // Otherwise, call method to create a claims principal with permission claims
             return CreateClaimsPrincipal(claims);
@@ -52,7 +45,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // Grab user's claims from the database
                 var dbClaims = gateway.GetClaimsByUsername(username);
 
-                // If an error occurs and user is invalid, throw a security exception 
+                // If an error occurs and user has no claims, check if user is valid
                 if (dbClaims.Error != null)
                 {
                     throw new SecurityException(GeneralErrorMessages.GENERAL_ERROR);
@@ -83,7 +76,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
         /// Method to create a claims principal with claims pertaining to first time users from the SSO
         /// </summary>
         /// <returns></returns>
-        private ClaimsPrincipal CreateSsoClaimsPrincipal(string username)
+        public ClaimsIdentity CreateSsoClaimsIdentity(string username)
         {
             // Create claims pertaining to first time users
             var factory = new ClaimsFactory();
@@ -91,7 +84,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             claims.Add(new Claim(ResourceConstant.USERNAME, username));
 
             // Call method to create and return the new claims principal
-            return CreateClaimsPrincipal(claims);
+            return new ClaimsIdentity(claims);
         }     
         
         /// <summary>

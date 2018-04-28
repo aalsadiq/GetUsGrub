@@ -43,9 +43,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -74,9 +74,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -113,11 +113,10 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok("Image Upload complete!");
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+               
+                return InternalServerError();
             }
         }
     }

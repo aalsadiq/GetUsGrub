@@ -25,8 +25,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// 
         /// </summary>
         /// <para>
-        /// @author: Ahmed Sadiq, Brian Fann
-        /// @updated: 4/24/18
+        /// @author: Ahmed Sadiq, Brian Fann, Rachel Dang
+        /// @updated: 4/26/18
         /// </para>
         /// <param name="loginDto"></param>
         /// <returns>
@@ -51,20 +51,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var issuedOn = DateTime.UtcNow;
             authenticationToken.ExpiresOn = issuedOn.AddMinutes(15);
             
-            // Build claims for user
-            var claimIdentity = new ClaimsIdentity();
-            var claimPrincipal = new ClaimsPrincipal();
+            // Retrieve user's "Read" permission claims from the claims transfomer
             var claimTransformer = new ClaimsTransformer();
-            claimIdentity.AddClaim(new Claim(ResourceConstant.USERNAME, authenticationToken.Username));
-            claimPrincipal.AddIdentity(claimIdentity);
-            claimPrincipal = claimTransformer.Authenticate(PermissionTypes.Authentication, claimPrincipal);
-
-            var claims = claimPrincipal.Claims;
+            var claimsIdentity = claimTransformer.CreateAuthenticationClaimsIdentity(authenticationToken.Username);
 
             // Creating the Body of the token
             var tokenDescription = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims),
+                //Subject = new ClaimsIdentity(claims),
+                Subject = claimsIdentity,
                 Audience = AuthenticationTokenConstants.AUDIENCE,
                 IssuedAt = issuedOn,
                 Expires = authenticationToken.ExpiresOn,
@@ -75,7 +70,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Changing the Token to a String Form
             var token = tokenHandler.CreateToken(tokenDescription);
             var tokenString = tokenHandler.WriteToken(token);
-            Console.WriteLine(tokenString);
             authenticationToken.TokenString = tokenString;
 
             // Storing the Token to the Database
@@ -125,7 +119,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Changing the Experiation time on the Token
-            authenticationTokenDto.ExpiresOn = DateTime.UtcNow;
+            authenticationTokenDto.ExpiresOn = DateTime.UtcNow; // Set this to the past
 
             // Creating the Model to save in the DB
             var incomingAuthenticationToken = new AuthenticationToken(authenticationTokenDto.Username, authenticationTokenDto.ExpiresOn, authenticationTokenDto.TokenString);
@@ -139,7 +133,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<AuthenticationTokenDto>
                 {
                     Data = authenticationTokenDto,
-                    Error = "Something went wrong with : ATRT"
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 

@@ -17,6 +17,7 @@ namespace CSULB.GetUsGrub.Models
         // Absolute URI paths for Single Sign On
         public const string SSO_REGISTRATION = "/sso/registration";
         public const string SSO_LOGIN = "/sso/login";
+        public const string SSO_RESET_PASSWORD = "/sso/resetpassword";
 
         public readonly IEnumerable<string> UrisToSkipAuthn;
 
@@ -25,7 +26,8 @@ namespace CSULB.GetUsGrub.Models
             UrisToSkipAuthn = new Collection<string>
             {
                 SSO_REGISTRATION,
-                SSO_LOGIN
+                SSO_LOGIN,
+                SSO_RESET_PASSWORD
             };
         }
     }

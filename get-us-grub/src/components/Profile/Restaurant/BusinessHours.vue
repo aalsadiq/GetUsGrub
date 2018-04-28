@@ -126,7 +126,7 @@
     <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
-        <v-toolbar color="pink" dark>
+        <v-toolbar color="teal" dark>
           <v-spacer/>
           <v-toolbar-title>Business Hours</v-toolbar-title>
           <v-spacer/>

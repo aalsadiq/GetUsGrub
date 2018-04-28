@@ -6,22 +6,12 @@
       <v-card-text>{{billItem.name}} {{billItem.price}}</v-card-text>
       <v-divider />
       <v-card-text>
-        <div v-for="(billUser, billUserIndex) in billUsers"
-             :key="billUserIndex">
-          <v-checkbox :label="billUser.name"
-                      :value="billUser.uID"
-                      v-model="billItem.selected">
-          </v-checkbox>
-          <v-switch v-if="billItem.selected.includes(billUser.uID)"
-                    :label="`Split Manually?`"
+        <v-checkbox v-for="(billUser, billUserIndex) in billUsers"
+                    :key="billUserIndex"
+                    :label="billUser.name"
                     :value="billUser.uID"
-                    v-model="billItem.selectedManual">
-          </v-switch>
-          <v-text-field v-if="billItem.selected.includes(billUser.uID) && billItem.selectedManual.includes(billUser.uID)"
-                        v-money="money"
-                        prefix="$">
-          </v-text-field>
-        </div>
+                    v-model="billItem.selected">
+        </v-checkbox>
       </v-card-text>
       <v-divider />
       <v-card-text style="display: inline-block">
@@ -63,12 +53,7 @@ export default {
   watch: {
     selected (newSelected, oldSelected) {
       if (this.dialog === true) {
-        console.log('Old: ' + oldSelected)
-        console.log('New: ' + newSelected)
-        console.log('Bill Item Index: ' + this.billItemIndex)
-        console.log('Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
         this.updateUserMoneyOwesFromSelected(this.billItemIndex, this.billItem, newSelected, oldSelected)
-        console.log('New Temp Index: ' + this.tempBillItemIndex + ' of ' + this.billItem.itemName)
       }
     }
   },

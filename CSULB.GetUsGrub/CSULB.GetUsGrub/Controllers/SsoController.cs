@@ -52,10 +52,9 @@ namespace CSULB.GetUsGrub
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -93,10 +92,9 @@ namespace CSULB.GetUsGrub
 
                 return Ok(tokenResult.Data.TokenString);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -124,10 +122,9 @@ namespace CSULB.GetUsGrub
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
 
         }

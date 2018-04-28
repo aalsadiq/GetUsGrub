@@ -67,7 +67,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -118,7 +118,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
     }

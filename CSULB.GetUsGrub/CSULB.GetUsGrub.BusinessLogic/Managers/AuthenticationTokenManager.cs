@@ -70,7 +70,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Changing the Token to a String Form
             var token = tokenHandler.CreateToken(tokenDescription);
             var tokenString = tokenHandler.WriteToken(token);
-            Console.WriteLine(tokenString);
             authenticationToken.TokenString = tokenString;
 
             // Storing the Token to the Database
@@ -120,7 +119,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Changing the Experiation time on the Token
-            authenticationTokenDto.ExpiresOn = DateTime.UtcNow;
+            authenticationTokenDto.ExpiresOn = DateTime.UtcNow; // Set this to the past
 
             // Creating the Model to save in the DB
             var incomingAuthenticationToken = new AuthenticationToken(authenticationTokenDto.Username, authenticationTokenDto.ExpiresOn, authenticationTokenDto.TokenString);

@@ -1,5 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
+using System.Configuration;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -102,10 +103,20 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
+                       
                         //Queries for the user account based on username.
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == userProfileDto.Username
                                            select account).FirstOrDefault();
+                        using (var imageService = new ImageService())
+                        {
+                            // If the image path is not the default on delete, this is to avoid images from repeating if the user 
+                            // uploads an image with a different extension.
+                            if (userAccount.UserProfile.DisplayPicture != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
+                            {
+                                imageService.DeleteImage(userAccount.UserProfile.DisplayPicture);
+                            }
+                        }
 
                         // Sets the current path to the virtual path
                         userAccount.UserProfile.DisplayPicture = userProfileDto.DisplayPicture;

@@ -146,7 +146,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #logout-btn{
   width: 292px;
   height: 40px;
@@ -156,9 +156,6 @@ export default {
 #logout-text{
   padding-left:35px;
 }
-/* div.list__tile.list__tile--avatar{
-    padding-left: 50px;
-} */
 div#image-upload{
     width: 0px;
     height: 550px;

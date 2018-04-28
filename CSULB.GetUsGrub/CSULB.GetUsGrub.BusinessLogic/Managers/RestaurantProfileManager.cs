@@ -146,10 +146,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var newImagename = menuId + fileExtension;
 
             // Saving Virtual Path
-            var virtualPath = ImagePaths.VIRTUAL_MENU_ITEM_PATH + newImagename;
+            var virtualPath = "";// ImagePaths.VIRTUAL_MENU_ITEM_PATH + newImagename;
 
             // Save physical Path
-            string physicalPath = ImagePaths.PHYSICAL_MENU_ITEM_PATH + newImagename;
+            string physicalPath = "";// ImagePaths.PHYSICAL_MENU_ITEM_PATH + newImagename;
         
             // Call gateway to save virtualPath to database
             using (var gateway = new RestaurantProfileGateway())

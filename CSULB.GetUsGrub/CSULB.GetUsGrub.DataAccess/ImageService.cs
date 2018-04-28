@@ -7,7 +7,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// <summary>
     /// Image service that will user profile or menu item images.
     /// </summary>
-    public class ImageService
+    public class ImageService:IDisposable
     {
         /// <summary>
         /// Delete Image, deletes the image when given a path of the image.
@@ -19,18 +19,15 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="path">The physical path of image.</param>
         /// <param name="image">The virtual path of image. Is used to get the file name.</param>
         /// <returns></returns>
-        public ResponseDto<bool> DeleteImage(string path, string image)
+        public ResponseDto<bool> DeleteImage(string path) //, string image
         {
             try
             {
-                var imageName = Path.GetFileName(image);
-                var filePath = path + imageName;
-
                 // Check if path exists
-                if (File.Exists(filePath))
+                if (File.Exists(path))
                 {
                     // Delete Image if path exists
-                    File.Delete(filePath);
+                    File.Delete(path);
 
                     return new ResponseDto<bool>()
                     {
@@ -52,6 +49,11 @@ namespace CSULB.GetUsGrub.DataAccess
                 };
             }
 
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

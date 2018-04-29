@@ -7,7 +7,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// <summary>
     /// Image service that will user profile or menu item images.
     /// </summary>
-    public class ImageService:IDisposable
+    public class ImageService
     {
         /// <summary>
         /// Delete Image, deletes the image when given a path of the image.
@@ -49,11 +49,6 @@ namespace CSULB.GetUsGrub.DataAccess
                 };
             }
 
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }

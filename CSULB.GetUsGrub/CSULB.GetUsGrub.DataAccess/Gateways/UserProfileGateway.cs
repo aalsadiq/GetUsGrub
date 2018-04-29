@@ -1,6 +1,8 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Configuration;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -103,21 +105,21 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
-                       
+                        var imageService = new ImageService();
+
                         //Queries for the user account based on username.
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == userProfileDto.Username
                                            select account).FirstOrDefault();
-                        //using (var imageService = new ImageService())
-                        //{
-                        //    System.Diagnostics.Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
-                        //    // If the image path is not the default on delete, this is to avoid images from repeating if the user 
-                        //    // uploads an image with a different extension.
-                        //    //if (userAccount.UserProfile.DisplayPicture != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
-                        //    //{
-                        //    //    imageService.DeleteImage(userAccount.UserProfile.DisplayPicture);
-                        //    //}
-                        //}
+
+                        // If the image path is not the default on delete, this is to avoid images from repeating if the user 
+                        // uploads an image with a different extension.
+                        if (userAccount.UserProfile.DisplayPicture != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
+                        {
+                            var extension = Path.GetExtension(userAccount.UserProfile.DisplayPicture);
+                            imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalProfileImagePath"] + userProfileDto.Username + extension);
+                        }
+                       
 
                         // Sets the current path to the virtual path
                         userAccount.UserProfile.DisplayPicture = userProfileDto.DisplayPicture;
@@ -129,9 +131,8 @@ namespace CSULB.GetUsGrub.DataAccess
                             Data = true
                         };
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        System.Diagnostics.Debug.WriteLine("The exception " + e);
                         dbContextTransaction.Rollback();
 
                         return new ResponseDto<bool>()

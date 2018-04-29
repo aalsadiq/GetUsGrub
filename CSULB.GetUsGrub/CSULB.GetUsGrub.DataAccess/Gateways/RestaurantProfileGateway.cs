@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -338,16 +340,20 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
+                        var imageService = new ImageService();
+
                         // RestaurantMenuItems
                         var userRestaurantMenuItems = (from restaurantMenuItems in userContext.RestaurantMenuItems
                                                        where restaurantMenuItems.Id == menuId
                                                        select restaurantMenuItems).FirstOrDefault();
 
-                        // To avoid images being stored with the same name and different extensions
-                        //if (userRestaurantMenuItems.ItemPicture != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
-                        //{
-                        //    userRestaurantMenuItems.ItemPicture = ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH;
-                        //}
+                        // If the image path is not the default on delete, this is to avoid images from repeating if the user 
+                        // uploads an image with a different extension.
+                        if (userRestaurantMenuItems.ItemPicture != ConfigurationManager.AppSettings["DefaultURLMenuItemPath"])
+                        {
+                            var extension = Path.GetExtension(userRestaurantMenuItems.ItemPicture);
+                            imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalMenuItemPaths"] + userProfileDto.Username + extension);
+                        }
 
                         // Checks if restaurant menu items result is null, if not then change image paths
                         userRestaurantMenuItems.ItemPicture = menuPath;

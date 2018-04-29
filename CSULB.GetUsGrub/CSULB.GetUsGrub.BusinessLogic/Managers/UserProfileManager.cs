@@ -1,8 +1,6 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
 using System.Configuration;
-using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Web;
 
@@ -90,21 +88,21 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     Error = result.Error
                 };
             }
+
             // Setting new image name
             var fileExtension = Path.GetExtension(image.FileName);
             var newImagename = username + fileExtension;
 
             // Mapping Image
             var urlPath = ConfigurationManager.AppSettings["URLProfileImagePath"];
-            var url = HttpContext.Current.Server.MapPath(@""+ urlPath + "/" + newImagename);
-
-            Debug.WriteLine("URL: " + url);
+            var url = urlPath + newImagename;
 
             // Setting image to user
             user.DisplayPicture = url;
 
-            // Save the image to the path
-            image.SaveAs(url);
+            // Physical image path
+            var physicalPath = ConfigurationManager.AppSettings["PhysicalProfileImagePath"];
+            var physicalProfileImagePath = physicalPath + newImagename;
 
             // Call gateway to save path to database
             using (var gateway = new UserProfileGateway())
@@ -119,12 +117,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                         Error = gatewayresult.Error
                     };
                 }
+                // Save the image to the path
+                image.SaveAs(physicalProfileImagePath);
 
                 return new ResponseDto<bool>
                 {
                     Data = true
                 };
             }
+
         }
 
     }

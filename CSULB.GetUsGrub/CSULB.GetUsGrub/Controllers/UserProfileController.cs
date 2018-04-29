@@ -80,7 +80,7 @@ namespace CSULB.GetUsGrub.Controllers
         // PUT Profile/User/EditUser/ImageUpload
         [Route("User/Edit/ProfileImageUpload")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)] // TODO: @Angelica (remove comment on claims)
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)] // TODO: @Angelica (remove comment on claims)
         [HttpPost]
         public IHttpActionResult ProfileImageUpload() 
         {
@@ -101,20 +101,11 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                //var urlPath = System.Configuration.ConfigurationManager.AppSettings["URLProfileImagePath"];
-                //Debug.WriteLine(urlPath + "testinguser.png");
-                ////var url = HttpContext.Current.Server.MapPath(urlPath + "testinguser.png");
-                //var root = HttpContext.Current.Server.MapPath("~");
-                //Debug.WriteLine("root: " + HttpContext.Current.Server.MapPath("~"));
-                //var url = HttpContext.Current.Server.MapPath("");
-                //Debug.WriteLine("Here: " + url);
-                //image.SaveAs(url);
 
                 return Ok("Image Upload complete!");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine("THE ERROR!!!!     " + e);
                 //If any exceptions occur, send an HTTP response 400 status.
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }

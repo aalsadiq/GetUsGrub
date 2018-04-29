@@ -94,7 +94,6 @@ namespace CSULB.GetUsGrub.Controllers
                 var stringMenuId = HttpContext.Current.Request.Params["menuId"];
 
                 var menuId = Convert.ToInt32(stringMenuId);
-                Debug.WriteLine("menuItem: " + menuId);
 
                 if (username == null || username == "")
                 {
@@ -111,9 +110,8 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok("Image Upload complete!");
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
                 //If any exceptions occur, send an HTTP response 400 status.
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }

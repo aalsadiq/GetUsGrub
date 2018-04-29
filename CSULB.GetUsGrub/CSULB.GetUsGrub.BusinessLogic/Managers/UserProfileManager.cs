@@ -82,7 +82,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
             var result = ImageUploadValidationStrategy.ExecuteStrategy();
 
-            if (result.Data == false)
+            if (result.Error != null)
             {
                 return new ResponseDto<bool>()
                 {
@@ -96,7 +96,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Mapping Image
             var urlPath = ConfigurationManager.AppSettings["URLProfileImagePath"];
-            var url = HttpContext.Current.Server.MapPath(@"/Images/DefaultImages/" + newImagename);
+            var url = HttpContext.Current.Server.MapPath(@""+ urlPath + "/" + newImagename);
 
             Debug.WriteLine("URL: " + url);
 
@@ -104,7 +104,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             user.DisplayPicture = url;
 
             // Save the image to the path
-            //image.SaveAs(url);
+            image.SaveAs(url);
 
             // Call gateway to save path to database
             using (var gateway = new UserProfileGateway())

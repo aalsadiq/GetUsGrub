@@ -108,15 +108,16 @@ namespace CSULB.GetUsGrub.DataAccess
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == userProfileDto.Username
                                            select account).FirstOrDefault();
-                        using (var imageService = new ImageService())
-                        {
-                            // If the image path is not the default on delete, this is to avoid images from repeating if the user 
-                            // uploads an image with a different extension.
-                            if (userAccount.UserProfile.DisplayPicture != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
-                            {
-                                imageService.DeleteImage(userAccount.UserProfile.DisplayPicture);
-                            }
-                        }
+                        //using (var imageService = new ImageService())
+                        //{
+                        //    System.Diagnostics.Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
+                        //    // If the image path is not the default on delete, this is to avoid images from repeating if the user 
+                        //    // uploads an image with a different extension.
+                        //    //if (userAccount.UserProfile.DisplayPicture != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
+                        //    //{
+                        //    //    imageService.DeleteImage(userAccount.UserProfile.DisplayPicture);
+                        //    //}
+                        //}
 
                         // Sets the current path to the virtual path
                         userAccount.UserProfile.DisplayPicture = userProfileDto.DisplayPicture;
@@ -128,8 +129,9 @@ namespace CSULB.GetUsGrub.DataAccess
                             Data = true
                         };
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        System.Diagnostics.Debug.WriteLine("The exception " + e);
                         dbContextTransaction.Rollback();
 
                         return new ResponseDto<bool>()

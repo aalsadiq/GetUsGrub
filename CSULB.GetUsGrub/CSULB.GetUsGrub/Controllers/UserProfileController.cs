@@ -94,17 +94,21 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
                 }
 
-                // var manager = new UserProfileManager();
-                //var response = manager.ProfileImageUpload(image, username);
+                var manager = new UserProfileManager();
+                var response = manager.ProfileImageUpload(image, username);
 
-                //if (response.Error != null)
-                //{
-                //    return BadRequest(response.Error);
-                //}
-                var urlPath = System.Configuration.ConfigurationManager.AppSettings["URLProfileImagePath"];
-                Debug.WriteLine(urlPath + "testinguser.png");
-                var url = HttpContext.Current.Server.MapPath(@"" + urlPath + "testinguser.png");
-                image.SaveAs(url);
+                if (response.Error != null)
+                {
+                    return BadRequest(response.Error);
+                }
+                //var urlPath = System.Configuration.ConfigurationManager.AppSettings["URLProfileImagePath"];
+                //Debug.WriteLine(urlPath + "testinguser.png");
+                ////var url = HttpContext.Current.Server.MapPath(urlPath + "testinguser.png");
+                //var root = HttpContext.Current.Server.MapPath("~");
+                //Debug.WriteLine("root: " + HttpContext.Current.Server.MapPath("~"));
+                //var url = HttpContext.Current.Server.MapPath("");
+                //Debug.WriteLine("Here: " + url);
+                //image.SaveAs(url);
 
                 return Ok("Image Upload complete!");
             }

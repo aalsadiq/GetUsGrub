@@ -96,6 +96,15 @@ export const store = new Vuex.Store({
       },
       restaurantBillSplitter: {
         getRestaurantMenus: 'http://localhost:8081/RestaurantBillSplitter/Restaurant'
+      },
+      login: {
+        loginUser: 'http://localhost:8081/Login'
+      },
+      logout: {
+        logoutUser: 'http://localhost:8081/Logout'
+      },
+      renewSession: {
+        requestNewToken: 'http://localhost:8081/RenewSession'
       }
     },
     // Rules for validations

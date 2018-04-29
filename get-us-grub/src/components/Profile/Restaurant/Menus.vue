@@ -180,7 +180,7 @@
               <div v-if="isEdit">
                 <v-layout>
                   <!-- Menu item image upload component button -->
-                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -213,7 +213,7 @@
               <!-- Buttons on the inactive menu item of an active menu -->
               <div v-if="isEdit">
                 <!-- Menu item image upload component button -->
-                <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId"/>
+                <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -322,7 +322,7 @@
               <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
                 <!-- Menu item image upload component button -->
-                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -353,7 +353,7 @@
               <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
                 <!-- Menu item image upload component button -->
-                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>

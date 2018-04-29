@@ -18,8 +18,7 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-text-field
-                      v-model="phoneNumber"
-                      placeholder="(562)111-5555"
+                      v-model="profile.phoneNumber"
                       prepend-icon="phone"
                       :rules="$store.state.rules.phoneNumberRules"
                       single-line
@@ -82,6 +81,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="close" :disabled="!valid">Cancel</v-btn>
           <v-btn color="blue darken-1" flat @click.native="save" :disabled="!valid">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -108,7 +108,7 @@
           <v-card-text style="height: 175px;">
             <h3>Phone Number:</h3>
           <p class="paragrah">
-            {{ phoneNumber }}
+            {{ profile.phoneNumber }}
           </p>
           <h3>Address:</h3>
           <p class="paragraph" v-if='address.street2 === ""'>
@@ -131,7 +131,7 @@
 export default {
   // Passed down variables from parent component
   props: [
-    'phoneNumber',
+    'profile',
     'address',
     'isEdit'
   ],

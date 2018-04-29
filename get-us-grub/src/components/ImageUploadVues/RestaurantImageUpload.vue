@@ -120,8 +120,6 @@ export default {
         this.showSuccess = true
         this.showError = false
         this.dialog = false
-        this.getRestaurantProfile()
-        // get profile
       }).catch(error => {
         this.responseData = error.response.data
         this.showSuccess = false
@@ -150,7 +148,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.$forceUpdate())
     },
     getRestaurantProfile () {
       axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {

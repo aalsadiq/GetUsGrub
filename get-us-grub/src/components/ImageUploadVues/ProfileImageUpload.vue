@@ -119,7 +119,6 @@ export default {
         this.showSuccess = true
         this.showError = false
         this.dialog = false
-        this.getUserProfile()
         // get profile
       }).catch(error => {
         this.responseData = error.response.data
@@ -149,7 +148,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.getUserProfile())
     },
     getUserProfile () {
       axios.get(this.$store.state.urls.profileManagement.userProfile, {
@@ -184,7 +183,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.$forceUpdate())
     }
   }
 }

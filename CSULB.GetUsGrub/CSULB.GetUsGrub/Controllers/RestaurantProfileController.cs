@@ -95,6 +95,8 @@ namespace CSULB.GetUsGrub.Controllers
 
                 var menuId = Convert.ToInt32(stringMenuId);
 
+                Debug.WriteLine("The username: " + username);
+                Debug.WriteLine("The menu id: " + menuId);
                 if (username == null || username == "")
                 {
                     return BadRequest(GeneralErrorMessages.GENERAL_ERROR);

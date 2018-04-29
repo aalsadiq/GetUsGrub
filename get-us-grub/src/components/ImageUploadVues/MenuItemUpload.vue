@@ -38,7 +38,7 @@
         <br/>
         <v-flex xs4>
             <label class="custom-file-upload">
-                <h5>CHOOSE IMAGE
+                <h5> CHOOSE IMAGE
                 <i class="material-icons">cloud_download</i>
                 </h5>
               <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
@@ -107,6 +107,7 @@ export default {
     submitImageUpload: function () {
       var formData = new FormData()
       formData.append('username', this.username) // this.$store.state.username
+      console.log(this.editedMenuItem.id)
       formData.append('menuId', this.editedMenuItem.id)
       formData.append('filename', this.selectedFile, this.selectedFile.name)
       axios.post(this.$store.state.urls.profileManagement.menuItemUpload, formData, {

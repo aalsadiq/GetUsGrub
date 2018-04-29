@@ -54,8 +54,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -95,8 +94,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // HTTP 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -135,8 +133,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -171,8 +168,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
         /// <summary>
@@ -208,8 +204,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -245,8 +240,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -286,8 +280,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
         [HttpPost]
@@ -316,8 +309,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
         [HttpPost]
@@ -346,8 +338,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // HTTP 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
     }

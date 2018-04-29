@@ -42,9 +42,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -72,9 +72,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 

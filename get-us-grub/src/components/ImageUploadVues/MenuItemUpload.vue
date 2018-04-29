@@ -65,7 +65,7 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
-  props: ['editedMenuItem'],
+  props: [''],
   data: () => ({
     errors: [],
     dialog: false,

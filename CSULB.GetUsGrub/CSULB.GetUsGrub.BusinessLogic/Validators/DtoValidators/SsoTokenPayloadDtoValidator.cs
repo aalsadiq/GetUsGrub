@@ -44,6 +44,29 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotEmpty().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
                     .NotNull().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD);
             });
+
+            RuleSet("SsoResetPassword", () =>
+                {
+                    RuleFor(ssoTokenPayloadDto => ssoTokenPayloadDto.Username)
+                        .NotEmpty().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
+                        .NotNull().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
+                        .Matches(RegularExpressions.USERNAME_FORMAT);
+
+                    RuleFor(ssoTokenPayloadDto => ssoTokenPayloadDto.Password)
+                        .NotEmpty().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
+                        .NotNull().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
+                        .Matches(RegularExpressions.STRING_CONTAINS_NO_SPACES);
+
+                    RuleFor(ssoTokenPayloadDto => ssoTokenPayloadDto.Application)
+                        .NotEmpty().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
+                        .NotNull().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
+                        .Equal(SsoTokenPayloadValues.APPLICATION).WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD);
+
+                    RuleFor(ssoTokenPayloadDto => ssoTokenPayloadDto.IssuedAt)
+                        .NotEmpty().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD)
+                        .NotNull().WithMessage(SsoErrorMessages.INVALID_TOKEN_PAYLOAD);
+                }
+                );
         }
     }
 }

@@ -96,7 +96,7 @@
         </v-tab>
       </v-tabs>
       <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Contact Info'">
-        <contact-info class="profile-component" :phoneNumber="profile.phoneNumber" :address="profile.address" :isEdit="isEdit"/>
+        <contact-info class="profile-component" :profile="profile" :address="profile.address" :isEdit="isEdit"/>
       </div>
       <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Restaurant Details'">
         <restaurant-details class="profile-component" :details="profile.details" :isEdit="isEdit"/>

@@ -180,8 +180,9 @@
               <!-- Buttons on the active menu item of an active menu -->
               <div v-if="isEdit">
                 <v-layout>
+                  <!-- Menu item image upload component button -->
                 <v-flex>
-                <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId" id="menu-items-image-upload"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
                 </v-flex>
                 <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -219,8 +220,9 @@
               <!-- Buttons on the inactive menu item of an active menu -->
               <div v-if="isEdit">
                 <v-layout>
+                <!-- Menu item image upload component button -->
                   <v-flex>
-                <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId" id="menu-items-image-upload"/>
+                <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
                 </v-flex>
                 <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -335,8 +337,9 @@
               <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
                 <v-layout>
+                <!-- Menu item image upload component button -->
                   <v-flex>
-                <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId" id="menu-items-image-upload"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
                 </v-flex>
                 <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -373,8 +376,9 @@
               <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
                 <v-layout>
+                <!-- Menu item image upload component button -->
                   <v-flex>
-                <menu-image-upload v-if="item.flag !== 1" :menuItemId="menuItemId" id="menu-items-image-upload"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
                 </v-flex>
                 <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">

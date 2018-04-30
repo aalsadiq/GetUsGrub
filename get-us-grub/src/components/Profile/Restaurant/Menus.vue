@@ -167,7 +167,7 @@
               >
               <!-- Picture of active menu item for an active menu -->
               <v-list-tile-avatar size="50">
-                <img :src="require('@/assets/GetUsGrub.png')">
+                <img :src="item.itemPicture + '?' + getRandomQuery()">
               </v-list-tile-avatar>
               <!-- Content of active menu item for an active menu -->
               <v-list-tile-content class="active-menu-item">
@@ -201,7 +201,7 @@
               >
               <!-- Picture of inactive menu item for an active menu -->
               <v-list-tile-avatar size="50" class="inactive-avatar">
-                <img :src="require('@/assets/GetUsGrub.png')">
+                <img :src="item.itemPicture + '?' + getRandomQuery()">
               </v-list-tile-avatar>
               <!-- Content of inactive menu item for an active menu -->
               <v-list-tile-content class="inactive-menu-item">
@@ -310,7 +310,7 @@
               >
               <!-- Picture of active menu item for an inactive menu -->
               <v-list-tile-avatar size="50">
-                <img :src="require('@/assets/GetUsGrub.png')">
+                <img :src="item.itemPicture + '?' + getRandomQuery()">
               </v-list-tile-avatar>
               <!-- Content of active menu item for an inactive menu -->
               <v-list-tile-content class="active-menu-item">
@@ -341,7 +341,7 @@
               >
               <!-- Picture of inactive menu item for an inactive menu -->
               <v-list-tile-avatar size="50" class="inactive-avatar">
-                <img :src="require('@/assets/GetUsGrub.png')">
+                 <img :src="item.itemPicture + '?' + getRandomQuery()">
               </v-list-tile-avatar>
               <!-- Content of inactive menu item for an inactive menu -->
               <v-list-tile-content class="inactive-menu-item">
@@ -390,6 +390,8 @@
 
 <script>
 import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
+import moment from 'moment'
+
 export default {
   components: {
     'menu-image-upload': MenuItemImageUpload
@@ -415,7 +417,7 @@ export default {
       inactiveTab: null,
       menuDialog: false,
       menuItemDialog: false,
-      formMenuName: 'hi',
+      formMenuName: '',
       formMenuIndex: null,
       editedIndex: -1,
       editedMenu: {
@@ -459,6 +461,9 @@ export default {
     }
   },
   methods: {
+    getRandomQuery () {
+      return moment().format()
+    },
     addMenu () {
       this.editedIndex = -1
       this.menuDialog = true

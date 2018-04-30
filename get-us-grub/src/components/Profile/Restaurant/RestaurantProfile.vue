@@ -8,10 +8,10 @@
           <div id="display-picture">
             <v-layout column align-center justify-center>
               <v-avatar
-                :size="200"
+                :size="255"
                 class="grey lighten-4"
               >
-                <img :src="profile.displayPicture" alt="avatar">
+                <img :src="profile.displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
                 <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
@@ -126,6 +126,7 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import moment from 'moment'
 import ContactInfo from './ContactInfo'
 import RestaurantDetails from './RestaurantDetails'
 import BusinessHours from './BusinessHours'
@@ -208,6 +209,9 @@ export default {
     this.getRestaurantProfile()
   },
   methods: {
+    appendRandomQueryToImageUrl () {
+      return moment().format()
+    },
     getRestaurantProfile () {
       axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
         headers: {
@@ -215,6 +219,7 @@ export default {
         }
       }).then(response => {
         this.profile = response.data
+        this.appendRandomQueryToImageUrl()
         // this.updateProfileUrl(this.profile.displayPicture)
       }).catch(error => {
         try {

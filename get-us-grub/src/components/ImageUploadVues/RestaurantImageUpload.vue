@@ -64,6 +64,7 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+
 export default {
   name: 'ImageHome',
   components: {
@@ -77,6 +78,7 @@ export default {
     showError: false,
     showSuccess: false,
     username: '',
+    errors: [],
     imageData: '' // Stores in base 64 format of image
   }),
   beforeCreate () {

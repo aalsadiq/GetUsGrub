@@ -1,16 +1,15 @@
 <template>
   <div>
-    <app-header/>
     <div id="user-profile-div">
       <div>
         <v-parallax src="/static/parallax.png" height="425">
           <div id="display-picture">
             <v-layout column align-center justify-center>
               <v-avatar
-                :size="225"
+                :size="255"
                 class="grey lighten-4"
               >
-              <img :src="displayPicture" alt="avatar">
+              <img :src="displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
                 <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
@@ -111,6 +110,7 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import moment from 'moment'
 import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 
@@ -151,6 +151,9 @@ export default {
     this.getUserProfile()
   },
   methods: {
+    appendRandomQueryToImageUrl () {
+      return moment().format()
+    },
     getUserProfile () {
       axios.get(this.$store.state.urls.profileManagement.userProfile, {
         headers: {
@@ -159,6 +162,7 @@ export default {
       }).then(response => {
         this.displayName = response.data.displayName
         this.displayPicture = response.data.displayPicture
+        this.appendRandomQueryToImageUrl()
       }).catch(error => {
         try {
           if (error.response.status === 401) {

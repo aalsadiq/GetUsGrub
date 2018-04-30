@@ -65,11 +65,10 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
-  props: [''],
+  props: ['menuItemId'],
   data: () => ({
     errors: [],
     dialog: false,
-    username: '', // Can grab from token
     responseData: '',
     show: false,
     showError: false,
@@ -106,9 +105,8 @@ export default {
     },
     submitImageUpload: function () {
       var formData = new FormData()
-      formData.append('username', this.username) // this.$store.state.username
-      console.log(this.editedMenuItem.id)
-      formData.append('menuId', this.editedMenuItem.id)
+      formData.append('username', this.$store.state.username)
+      formData.append('menuId', this.menuItemId)
       formData.append('filename', this.selectedFile, this.selectedFile.name)
       axios.post(this.$store.state.urls.profileManagement.menuItemUpload, formData, {
         headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }

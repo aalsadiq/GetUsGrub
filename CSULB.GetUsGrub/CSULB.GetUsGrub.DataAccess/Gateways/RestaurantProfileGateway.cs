@@ -352,7 +352,8 @@ namespace CSULB.GetUsGrub.DataAccess
                         if (userRestaurantMenuItems.ItemPicture != ConfigurationManager.AppSettings["DefaultURLMenuItemPath"])
                         {
                             var extension = Path.GetExtension(userRestaurantMenuItems.ItemPicture);
-                            imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalMenuItemPaths"] + userProfileDto.Username + extension);
+                            var oldImage = menuId + extension;
+                            imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalMenuItemPath"] + oldImage);
                         }
 
                         // Checks if restaurant menu items result is null, if not then change image paths

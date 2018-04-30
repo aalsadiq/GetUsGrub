@@ -1,9 +1,9 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using System;
 using System.Configuration;
 using System.IO;
 using System.Web;
-using System.Linq;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -141,12 +141,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Setting new image name
             var fileExtension = Path.GetExtension(image.FileName);
-            var newImagename = username + fileExtension;
+            var newImagename = menuId + fileExtension;
 
             // Mapping Image
-            var urlPath = ConfigurationManager.AppSettings["URLMenuItemPath"];
+            var urlPath = ConfigurationManager.AppSettings["URLMenuImagePath"];
             var url = urlPath + newImagename;
-
+            
             // Setting image to user
             user.DisplayPicture = url;
 
@@ -168,7 +168,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 // Save the image to the physical path
-                image.SaveAs(physicalPath);
+                image.SaveAs(physicalProfileImagePath);
 
                 return new ResponseDto<bool>
                 {

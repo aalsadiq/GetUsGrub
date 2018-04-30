@@ -64,9 +64,23 @@
               <v-icon>edit</v-icon>
             </v-btn>
             <v-btn
+              id="submit-btn"
               v-if="isEdit"
               fab
               color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="editUserProfile()"
+              slot="activator"
+              >
+              <v-icon>save</v-icon>
+            </v-btn>
+            <v-btn
+              id="cancel-btn"
+              v-if="isEdit"
+              fab
+              color="pink"
               bottom
               right
               absolute
@@ -95,14 +109,6 @@
         <food-preferences class="profile-component" :isEdit="isEdit"/>
       </div>
     </div>
-      <div id="edit-btns-div">
-    <v-btn dark @click="editUserProfile()" v-if="isEdit && itemsTab[tab] !== 'Food Preferences'">
-      Submit All Changes
-    </v-btn>
-    <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Food Preferences'">
-      Cancel
-    </v-btn>
-  </div>
   </div>
 </div>
 </template>
@@ -285,7 +291,12 @@ export default {
   margin: 0 0 3em 0;
 }
 .btn--bottom.btn--absolute {
-  bottom: 2em;
-  left: 100em;
+  bottom: 20px;
+}
+#submit-btn {
+  right: 90px;
+}
+#cancel-btn {
+  color: white;
 }
 </style>

@@ -103,11 +103,9 @@ export default {
       this.loader = 'loading'
       axios({
         method: 'POST',
-        url: 'http://localhost:8081/Login',
+        url: this.$store.state.urls.login.loginUser,
         data: {'Username': this.username, 'Password': this.password},
-        header: {
-          'Access-Control-Allow-Origin': 'http://localhost:8080/#/Login'
-        }
+        header: this.$store.state.urls.header.accessControlAllowOrigin
       }).then(response => {
         this.valid = true
         this.disable = false

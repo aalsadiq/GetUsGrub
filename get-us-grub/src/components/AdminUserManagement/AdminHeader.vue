@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     logout () {
-      axios.post('http://localhost:8081/Logout', {}, {
+      axios.post(this.$store.state.urls.logout.logoutUser, {}, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }

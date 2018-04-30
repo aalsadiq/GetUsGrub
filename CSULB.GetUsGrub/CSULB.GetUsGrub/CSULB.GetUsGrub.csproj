@@ -163,7 +163,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Formatters\" />
-    <Folder Include="GetUsGrubImages\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

@@ -4,9 +4,11 @@
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <v-list-tile-avatar>
-              <img :src="displayPicture"/>
-              {{ displayName }}
+            <v-list-tile-avatar id="admin-picture">
+              <img :src="displayPicture" id="display-picture"/>
+              <h1 id="displayname-text">
+                {{ displayName }}
+              </h1>
             </v-list-tile-avatar>
           <v-list-tile-content>
           <v-list-tile-title/>
@@ -24,8 +26,10 @@
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
+      <image-upload-app id="image-upload"/>
       <v-btn flat id="logout-btn" @click="logout()">
         <v-icon>power_settings_new</v-icon>
+        <h5 id="logout-text"> Logout </h5>
       </v-btn>
     </v-navigation-drawer>
   </div>
@@ -34,10 +38,14 @@
 <script>
 import jwt from 'jsonwebtoken'
 import axios from 'axios'
+import profileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 
 export default {
   name: 'admin-header',
   showImageUpload: false,
+  components: {
+    'image-upload-app': profileImageUpload
+  },
   data () {
     return {
       drawer: true,
@@ -74,7 +82,7 @@ export default {
   },
   methods: {
     logout () {
-      axios.post('http://localhost:8081/Logout', {}, {
+      axios.post(this.$store.state.urls.logout.logoutUser, {}, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
@@ -138,6 +146,25 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+#logout-btn{
+  width: 292px;
+  height: 40px;
+  padding-left: 55px;
+  padding-right: 250px;
+}
+#logout-text{
+  padding-left:35px;
+}
+div#image-upload{
+    width: 0px;
+    height: 550px;
+    padding-left: 128px;
+}
+#admin-picture {
+  margin: 0 0 0 2.6em;
+}
+#displayname-text {
+  padding: 0 0 0 1.1em;
+}
 </style>

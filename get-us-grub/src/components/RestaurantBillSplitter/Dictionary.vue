@@ -15,21 +15,20 @@
     </ul>
     <draggable v-if="!showRestaurantMenuItems" class="menu" v-bind:list="menuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="Clone" @start="drag=true" @end="drag=false">
       <div class="menu-item"  v-for="(menuItem, menuItemIndex) in menuItems" :key="menuItemIndex">
-        {{menuItem.itemName}} : ${{menuItem.itemPrice / 100}}<br />
+        {{menuItem.itemName}} : ${{(menuItem.itemPrice / 100).toFixed(2)}}<br />
         <edit-item :editType="$options.name" :itemIndex="menuItemIndex" :Item="menuItem" />
         <delete-item :deleteType="$options.name" :itemIndex="menuItemIndex" />
       </div>
     </draggable>
     <draggable v-if="showRestaurantMenuItems" class="menu" v-bind:list="restaurantMenuItems" v-bind:options="{group:{ name:'items', pull:'clone', put:false }}" :clone="Clone" @start="drag=true" @end="drag=false">
       <div class="menu-item" v-for="(restaurantMenuItem, restaurantMenuItemIndex) in restaurantMenuItems" :key="restaurantMenuItemIndex">
-        {{restaurantMenuItem.itemName}} : ${{restaurantMenuItem.itemPrice / 100}}<br />
+        {{restaurantMenuItem.itemName}} : ${{(restaurantMenuItem.itemPrice / 100).toFixed(2)}}<br />
       </div>
     </draggable>
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
 import draggable from 'vuedraggable'
 import { VMoney } from 'v-money'
 import DictionaryInput from './DictionaryInput'
@@ -69,7 +68,8 @@ export default {
         uID: this.getAndIncrementUniqueCounter(),
         itemName: el.itemName,
         itemPrice: el.itemPrice,
-        selected: el.selected
+        selected: el.selected,
+        selectedManual: el.selectedManual
       }
     },
     getAndIncrementUniqueCounter: function () {

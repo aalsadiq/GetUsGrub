@@ -1,0 +1,12 @@
+.img-logo {
+width: 16em;
+padding-bottom: 0.5em;
+}
+.content {
+padding-top: 7em;
+padding-bottom: 2em;
+display: block;
+}
+h1, h3 {
+color: black;
+}

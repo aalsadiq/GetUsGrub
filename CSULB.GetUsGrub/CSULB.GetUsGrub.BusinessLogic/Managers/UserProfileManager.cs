@@ -1,7 +1,7 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using System;
 using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Web;
 
@@ -11,7 +11,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
     /// Performs business logic and executes requests regarding user profiles
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// @updated: 4/28/18
     /// </summary>
     public class UserProfileManager : IProfileManager<UserProfileDto>
     {
@@ -63,16 +63,25 @@ namespace CSULB.GetUsGrub.BusinessLogic
             return responseDtoFromGateway;
         }
 
-        //ImageUploadManager
-        // TODO: @Angelica Add image profile upload here
+        /// <summary>
+        /// Uploads profile image.
+        /// <para>
+        /// @author: Angelica Salas Tovar
+        /// @update: 04/26/2018
+        /// </para>
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="username">The user.</param>
+        /// <returns></returns>
         public ResponseDto<bool> ProfileImageUpload(HttpPostedFile image,  string username)
         {
             var user = new UserProfileDto() { Username = username};
-  
+
+            // Validates image 
             var ImageUploadValidationStrategy = new ImageUploadValidationStrategy(user, image);
             var result = ImageUploadValidationStrategy.ExecuteStrategy();
 
-            if (result.Data == false)
+            if (result.Error != null)
             {
                 return new ResponseDto<bool>()
                 {
@@ -81,21 +90,25 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
+            // Setting new image name
             var fileExtension = Path.GetExtension(image.FileName);
             var newImagename = username + fileExtension;
 
-            // Saving Virtual Path
-            var virtualPath = ImagePaths.VIRTUAL_PROFILE_IMAGE_PATH + newImagename;
+            // Mapping Image
+            var urlPath = ConfigurationManager.AppSettings["URLProfileImagePath"];
+            var url = urlPath + newImagename;
 
-            // Storing Virtual Path
-            user.DisplayPicture = virtualPath;
+            // Setting image to user
+            user.DisplayPicture = url;
 
-            // Save Rooted Path
-            string rootedPath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + newImagename;
+            // Physical image path
+            var physicalPath = ConfigurationManager.AppSettings["PhysicalProfileImagePath"];
+            var physicalProfileImagePath = physicalPath + newImagename;
 
             // Call gateway to save path to database
             using (var gateway = new UserProfileGateway())
             {
+                // Pass in the user with the new virtual path and save to database
                 var gatewayresult = gateway.UploadImage(user);
                 if (gatewayresult.Data == false)
                 {
@@ -105,15 +118,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
                         Error = gatewayresult.Error
                     };
                 }
-
                 // Save the image to the path
-                image.SaveAs(rootedPath); //savePath + newImagename
-                
+                image.SaveAs(physicalProfileImagePath);
+
                 return new ResponseDto<bool>
                 {
                     Data = true
                 };
             }
+
         }
 
     }

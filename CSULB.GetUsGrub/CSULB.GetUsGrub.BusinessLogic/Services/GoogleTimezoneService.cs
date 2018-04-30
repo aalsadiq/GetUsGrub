@@ -16,10 +16,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         private string BuildUrl(IGeoCoordinates coordinates, string key, int timestamp)
         {
-            var url = "https://maps.googleapis.com/maps/api/timezone/json?";
-            url += $"location={coordinates.Latitude},{coordinates.Longitude}";
-            url += $"&timestamp={timestamp}";
-            url += $"&key={key}";
+            var url = GoogleApiConstants.GOOGLE_TIMEZONE_URL;
+            url += $"{GoogleApiConstants.GOOGLE_TIMEZONE_LOCATION_QUERY}{coordinates.Latitude},{coordinates.Longitude}";
+            url += GoogleApiConstants.GOOGLE_TIMEZONE_TIMESTAMP_QUERY + timestamp;
+            url += GoogleApiConstants.GOOGLE_KEY_QUERY + key;
 
             return url;
         }
@@ -49,7 +49,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var timeStamp = (int)DateTime.Now.Subtract(baseTime).TotalSeconds;
 
             // Retrieve key from configuration and build url for get request.
-            var key = ConfigurationManager.AppSettings["GoogleTimezoneApi"];
+            var key = ConfigurationManager.AppSettings[GoogleApiConstants.GOOGLE_TIMEZONE_API_KEYWORD];
             var url = BuildUrl(coordinates, key, timeStamp);
 
             // Send get request and parse response
@@ -59,18 +59,18 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var responseObj = JObject.Parse(responseJson);
 
             // Retrieve status code from response
-            var status = (string)responseObj.SelectToken("status");
+            var status = (string)responseObj.SelectToken(GoogleApiConstants.GOOGLE_TIMEZONE_TOKEN_STATUS);
 
             // Exit early if status is not OK.
-            if (!status.Equals("OK"))
+            if (!status.Equals(GoogleApiConstants.GOOGLE_TIMEZONE_STATUS_OK))
             {
-                if (status.Equals("ZERO_RESULTS"))
+                if (status.Equals(GoogleApiConstants.GOOGLE_TIMEZONE_STATUS_ZERO_RESULTS))
                 {
-                    status = "Invalid Input";
+                    status = GoogleApiConstants.GOOGLE_TIMEZONE_ERROR_INVALID_ADDRESS;
                 }
                 else
                 {
-                    status = "Unexpected Error";
+                    status = GoogleApiConstants.GOOGLE_TIMEZONE_ERROR_GENERAL;
                 }
 
                 return new ResponseDto<int>()
@@ -80,8 +80,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             }
 
             // Retrieve offsets from response and return the sum of the offsets.
-            var offset = (int)responseObj.SelectToken("rawOffset");
-            var dstOffset = (int)responseObj.SelectToken("dstOffset");
+            var offset = (int)responseObj.SelectToken(GoogleApiConstants.GOOGLE_TIMEZONE_TOKEN_RAW_OFFSET);
+            var dstOffset = (int)responseObj.SelectToken(GoogleApiConstants.GOOGLE_TIMEZONE_TOKEN_DST_OFFSET);
 
             return new ResponseDto<int>()
             {

@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { setTimeout } from 'timers'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   // A state is a global variable that every Vue component can reference
   state: {
+    plugins: [
+      createPersistedState({})
+    ],
     isAuthenticated: true,
     authenticationToken: null,
     firstTimeUserToken: null,
@@ -16,6 +20,7 @@ export const store = new Vuex.Store({
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
     uniqueCounter: 0,
+    menuItemImagePath: 'http://localhost:64525/Images/DefaultImages/DefaultMenuItemImage.png',
     menuItems: [
     ],
     restaurantMenus: [
@@ -38,8 +43,8 @@ export const store = new Vuex.Store({
       },
       selectedRestaurant: {
         isConfirmed: false,
-        restaurantId: 26,
-        displayName: 'Halal Guys',
+        restaurantId: null,
+        displayName: '',
         address: {
           street1: '',
           street2: '',
@@ -51,10 +56,6 @@ export const store = new Vuex.Store({
         businessHours: [],
         foodPreferences: null
       }
-    },
-    // Header values for Axios requests
-    headers: {
-      accessControlAllowOrigin: 'http://localhost:8080'
     },
     // Uniform Resource Locations for Axios requests
     urls: {
@@ -92,10 +93,28 @@ export const store = new Vuex.Store({
         login: 'http://localhost:8081/Sso/Login',
         createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
         createRestaurantUser: 'http://localhost:8081/User/FirstTimeRegistration/Restaurant'
+      },
+      restaurantBillSplitter: {
+        getRestaurantMenus: 'http://localhost:8081/RestaurantBillSplitter/Restaurant'
+      },
+      login: {
+        loginUser: 'http://localhost:8081/Login'
+      },
+      logout: {
+        logoutUser: 'http://localhost:8081/Logout'
+      },
+      renewSession: {
+        requestNewToken: 'http://localhost:8081/RenewSession'
+      },
+      pwnedPassword: {
+        range: 'https://api.pwnedpasswords.com/range/'
       }
     },
     // Rules for validations
     rules: {
+      addBillUserRules: [
+        billUser => !!billUser || 'Required'
+      ],
       usernameRules: [
         username => !!username || 'Username is required',
         username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
@@ -148,10 +167,27 @@ export const store = new Vuex.Store({
       ],
       businessHourRules: [
         businessHour => !!businessHour || 'Business hour is required'
+      ],
+      timeZoneRules: [
+        timeZone => !!timeZone || 'Time zone is required'
+      ],
+      menuNameRules: [
+        menuName => !!menuName || 'Menu name is required'
+      ],
+      itemNameRules: [
+        itemName => !!itemName || 'Menu item name is required'
+      ],
+      itemPriceRules: [
+        itemPrice => !!itemPrice || 'Item price is required',
+        itemPrice => /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(itemPrice) || 'Incorrect price format'
+      ],
+      tagRules: [
+        tag => !!tag || 'Tag is required'
       ]
     },
     // Constants are data that are non-changing
     constants: {
+      inputValidationDelay: 250,
       defaultProfilePicturePath: '@/assets/DefaultProfileImage.png',
       securityQuestions: [{
         id: 0,
@@ -411,12 +447,12 @@ export const store = new Vuex.Store({
       state.billUsers.push({
         name: payload[0],
         uID: payload[1],
-        moneyOwes: 0
+        moneyOwes: 0,
+        tipAssigned: 0
       })
     },
     populateRestaurantMenus: (state, payload) => {
       payload.forEach(function (element, index) {
-        console.log(element)
         state.restaurantMenus[index] = element
       })
     },
@@ -441,19 +477,14 @@ export const store = new Vuex.Store({
     editBillItem: (state, payload) => {
       Vue.set(state.billItems[payload[0]], 'itemName', payload[1])
       Vue.set(state.billItems[payload[0]], 'itemPrice', payload[2])
-      // state.billItems[payload[0]].itemName = payload[1]
-      // state.billItems[payload[0]].itemPrice = payload[2]
     },
     removeFromDictionary: (state, payload) => {
-      console.log('Dictionary Store Mutation Index: ' + payload)
       state.menuItems.splice(payload, 1)
     },
     removeFromBillTable: (state, payload) => {
-      console.log('Bill Store Mutation Index: ' + payload)
       state.billItems.splice(payload, 1)
     },
     removeUser: (state, payload) => {
-      console.log('User Store Mutation Index ' + payload)
       state.billUsers.forEach(function (element, index) {
         if (element.uID === payload) {
           state.billUsers.splice(index, 1)
@@ -468,16 +499,13 @@ export const store = new Vuex.Store({
       };
     },
     updateUserMoneyOwesFromSelected: (state, payload) => {
-      var oldSplit = 0
-      var newSplit = 0
-      if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) {
-        // state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].billItemsInfo.push({
-
-        // })
+      var oldSplit
+      var newSplit
+      if (payload.oldSelected.length === 0 && payload.newSelected.length === 1) { // When the first new user is ADDED to selected list
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.newSelected[0])].moneyOwes += payload.billItem.itemPrice
-      } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) {
+      } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) { // When the last user is REMOVED from the selected list
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice
-      } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is added to selected list
+      } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is ADDED to selected list
         oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
         newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {
@@ -509,6 +537,27 @@ export const store = new Vuex.Store({
       var oldSplit = Math.ceil(state.billItems[payload.itemIndex].itemPrice / state.billItems[payload.itemIndex].selected.length)
       state.billItems[payload.itemIndex].selected.forEach(function (select, selectIndex) {
         state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes -= oldSplit
+      })
+    },
+    updateBillUsersTipAssigned: (state, payload) => {
+      state.billUsers.forEach(function (element, index) {
+        Vue.set(state.billUsers[index], 'tipAssigned', payload[index].tip)
+      })
+    },
+    updateUserMoneyOwesFromDeleteUser: (state, payload) => {
+      var oldSplit
+      var newSplit
+      state.billItems.forEach(function (element, index) {
+        if (state.billItems[index].selected.includes(payload.billUserUID)) {
+          oldSplit = Math.ceil(state.billItems[index].itemPrice / state.billItems[index].selected.length)
+          newSplit = Math.ceil(state.billItems[index].itemPrice / (state.billItems[index].selected.length - 1))
+          state.billItems[index].selected.forEach(function (select, selectIndex) {
+            if (select !== payload.billUserUID) {
+              state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes -= oldSplit
+              state.billUsers[state.billUsers.findIndex(x => x.uID === select)].moneyOwes += newSplit
+            }
+          })
+        }
       })
     },
     incrementUniqueCounter: (state) => {
@@ -552,14 +601,11 @@ export const store = new Vuex.Store({
     },
     addToDictionary: (context, payload) => {
       setTimeout(function () {
-        console.log('Added Food Item Name: ' + payload[0])
-        console.log('Added Food Item Price: ' + payload[1])
         context.commit('addToDictionary', payload)
       }, 250)
     },
     addBillUser: (context, payload) => {
       setTimeout(function () {
-        console.log('Added New Bill User: ' + payload)
         context.commit('addBillUser', payload)
       }, 250)
     },
@@ -616,6 +662,16 @@ export const store = new Vuex.Store({
     updateUserMoneyOwesFromDeleteItem: (context, payload) => {
       setTimeout(function () {
         context.commit('updateUserMoneyOwesFromDeleteItem', payload)
+      }, 250)
+    },
+    updateUserMoneyOwesFromDeleteUser: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateUserMoneyOwesFromDeleteUser', payload)
+      }, 250)
+    },
+    updateBillUsersTipAssigned: (context, payload) => {
+      setTimeout(function () {
+        context.commit('updateBillUsersTipAssigned', payload)
       }, 250)
     },
     incrementUniqueCounter: (context) => {

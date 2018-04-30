@@ -1,5 +1,6 @@
 using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IdentityModel.Services;
@@ -42,9 +43,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -55,6 +56,7 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult EditProfile([FromBody] RestaurantProfileDto restaurantProfileDto)
         {
+            Debug.WriteLine(JsonConvert.SerializeObject(restaurantProfileDto));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -72,9 +74,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -82,10 +84,9 @@ namespace CSULB.GetUsGrub.Controllers
         // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/Edit/MenuItemImageUpload
         [HttpPost]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)]
         [Route("Restaurant/Edit/MenuItemImageUpload")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        // TODO: @Angelica Check what claims are needed here [Angelica!]
         public IHttpActionResult MenuItemImageUpload()
         {
             try
@@ -95,7 +96,6 @@ namespace CSULB.GetUsGrub.Controllers
                 var stringMenuId = HttpContext.Current.Request.Params["menuId"];
 
                 var menuId = Convert.ToInt32(stringMenuId);
-                Debug.WriteLine("menuItem: " + menuId);
 
                 if (username == null || username == "")
                 {
@@ -112,9 +112,8 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok("Image Upload complete!");
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
                 //If any exceptions occur, send an HTTP response 400 status.
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }

@@ -87,7 +87,7 @@
                             :append-icon-cb="() => (visible = !visible)"
                             :type=" visible ? 'text' : 'password'"
                             :error-messages="passwordErrorMessages"
-                            @input="validatePassword"
+                            @input="validateDelayed"
                             required
                             :disabled=disable
                           ></v-text-field>
@@ -172,7 +172,7 @@
                             :append-icon-cb="() => (visible = !visible)"
                             :type=" visible ? 'text' : 'password'"
                             :error-messages="passwordErrorMessages"
-                            @input="validatePassword"
+                            @input="validateDelayed"
                             required
                             :disabled=disable
                           ></v-text-field>
@@ -547,7 +547,8 @@ export default {
       day: '',
       openTime: null,
       closeTime: null
-    }
+    },
+    validationTimer: null
   }),
   watch: {
     // Loading animation on buttons
@@ -559,12 +560,21 @@ export default {
     }
   },
   methods: {
+    // Delays the validation of the password until user stops typing
+    validateDelayed () {
+      clearTimeout(this.validationTimer)
+      this.validationTimer = setTimeout(() => { this.validatePassword() }, this.$store.state.constants.inputValidationDelay)
+    },
+    // Calls PasswordValidation to check the password.
     validatePassword () {
       if (this.userAccount.password.length < 8) {
         this.passwordErrorMessages = []
         return
       }
-      PasswordValidation.methods.validate(this.userAccount.password)
+
+      var context = this
+
+      PasswordValidation.methods.validatePassword(context, this.userAccount.password)
         .then(response => {
           this.isPasswordValid = response.isValid
           this.passwordErrorMessages = response.message
@@ -631,7 +641,7 @@ export default {
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response.data
+          this.errors = error.response.data.message
           Promise.reject(error)
         }
       })

@@ -52,10 +52,9 @@ namespace CSULB.GetUsGrub
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -93,11 +92,41 @@ namespace CSULB.GetUsGrub
 
                 return Ok(tokenResult.Data.TokenString);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
+        }
+
+        [HttpPost]
+        [ActionName("ResetPassword")]
+        [EnableCors(origins: "https://fannbrian.github.io", headers: "*", methods: "POST")]
+        public IHttpActionResult ResetPassword(HttpRequestMessage request)
+        {
+            try
+            {
+                var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageResetPasswordToken();
+                if (result.Error != null)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                //
+                var resetPasswordManager = new ResetPasswordManager(result.Data);
+                var updateResponse = resetPasswordManager.SsoUpdatePassword();
+
+                if (updateResponse.Error != null)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                return Ok();
+            }
+            catch (Exception )
+            {
+                return InternalServerError();
+            }
+
         }
     }
 }

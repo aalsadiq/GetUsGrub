@@ -1,5 +1,8 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace CSULB.GetUsGrub.DataAccess
@@ -8,7 +11,7 @@ namespace CSULB.GetUsGrub.DataAccess
     /// User profile queries
     /// 
     /// @author: Andrew Kao
-    /// @updated: 3/18/18
+    /// @updated: 4/26/18
     /// </summary>
     public class UserProfileGateway: IDisposable
     {
@@ -85,8 +88,15 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        //ImageUploadGateway for profile
-        //store the path in the database...
+        /// <summary>
+        /// Stores virtual path in database.
+        /// <para>
+        /// @author: Angelica Salas Tovar
+        /// @update: 04/26/2018
+        /// </para>
+        /// </summary>
+        /// <param name="userProfileDto"></param>
+        /// <returns></returns>
         public ResponseDto<bool> UploadImage(UserProfileDto userProfileDto)
         {
             using (var userContext = new UserContext())
@@ -95,11 +105,23 @@ namespace CSULB.GetUsGrub.DataAccess
                 {
                     try
                     {
+                        var imageService = new ImageService();
+
                         //Queries for the user account based on username.
                         var userAccount = (from account in userContext.UserAccounts
                                            where account.Username == userProfileDto.Username
                                            select account).FirstOrDefault();
 
+                        // If the image path is not the default on delete, this is to avoid images from repeating if the user 
+                        // uploads an image with a different extension.
+                        if (userAccount.UserProfile.DisplayPicture != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
+                        {
+                            var extension = Path.GetExtension(userAccount.UserProfile.DisplayPicture);
+                            imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalProfileImagePath"] + userProfileDto.Username + extension);
+                        }
+                       
+
+                        // Sets the current path to the virtual path
                         userAccount.UserProfile.DisplayPicture = userProfileDto.DisplayPicture;
                         userContext.SaveChanges();
                         dbContextTransaction.Commit();

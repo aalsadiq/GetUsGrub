@@ -6,7 +6,6 @@
       <restaurantBillSplitter-userTable id="userTable"/>
       <restaurantBillSplitter-billTable id="billTable"/>
       <restaurantBillSplitter-dictionary id="dictionary"/>
-      <debug id="debug"/>
     </div>
     <app-footer />
   </div>
@@ -44,7 +43,7 @@ export default {
       console.log(this.restaurantId)
       axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Authorization': `Bearer ${this.$store.state.authenticationToken}`
         },
         params: {
           restaurantId: this.restaurantId
@@ -58,7 +57,7 @@ export default {
         console.log(response.data.data)
         this.$store.dispatch('populateRestaurantMenus', response.data.data.menus)
       }).catch(error => {
-        console.log(error.response.data)
+        Promise.reject(error)
       })
     }
   },

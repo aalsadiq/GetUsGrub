@@ -8,25 +8,32 @@
           <span class="headline">{{ formMenuTitle }}</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Menu Name" v-model="editedMenu.menuName" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                 <v-switch
+          <v-container>
+            <v-form v-model="valid">
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Menu Name"
+                    v-model="editedMenu.menuName"
+                    :rules="$store.state.rules.menuNameRules"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-switch
                     :label="`Active: ${editedMenu.isActive.toString()}`"
                     v-model="editedMenu.isActive"
-                    required
-                  ></v-switch>
-              </v-flex>
-            </v-layout>
+                    required>
+                  </v-switch>
+                </v-flex>
+              </v-layout>
+            </v-form>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="closeMenuDialog">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="saveMenu">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="saveMenu" :disabled="!valid">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -39,37 +46,57 @@
           <span class="headline">{{ formMenuItemTitle }}</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Menu Name" v-model="formMenuName" disabled></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Item Name" v-model="editedMenuItem.itemName" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Item Price" v-model="editedMenuItem.itemPrice" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Tag" v-model="editedMenuItem.tag"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Description" v-model="editedMenuItem.description"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                 <v-switch
+          <v-container>
+            <v-form v-model="valid">
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field label="Menu Name" v-model="formMenuName" disabled></v-text-field>
+                </v-flex>
+                <v-flex xs>
+                  <v-text-field
+                    label="Item Name"
+                    v-model="editedMenuItem.itemName"
+                    :rules="$store.state.rules.itemNameRules"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Item Price"
+                    v-model="editedMenuItem.itemPrice"
+                    :rules="$store.state.rules.itemPriceRules"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Tag"
+                    v-model="editedMenuItem.tag"
+                    :rules="$store.state.rules.tagRules"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Description"
+                    v-model="editedMenuItem.description">
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-switch
                     :label="`Active: ${editedMenuItem.isActive.toString()}`"
                     v-model="editedMenuItem.isActive"
-                    required
-                  ></v-switch>
-              </v-flex>
-            </v-layout>
+                    required>
+                  </v-switch>
+                </v-flex>
+              </v-layout>
+            </v-form>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="closeMenuItemDialog">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="saveMenuItem">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="saveMenuItem" :disabled="!valid">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -140,7 +167,7 @@
               >
               <!-- Picture of active menu item for an active menu -->
               <v-list-tile-avatar size="50">
-                <img :src="require('@/assets/GetUsGrub.png')">
+                <img :src="item.itemPicture + '?' + getRandomQuery()">
               </v-list-tile-avatar>
               <!-- Content of active menu item for an active menu -->
               <v-list-tile-content class="active-menu-item">
@@ -151,16 +178,22 @@
               </v-list-tile-content>
               <!-- Buttons on the active menu item of an active menu -->
               <div v-if="isEdit">
-                <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <v-layout>
+                  <!-- Menu item image upload component button -->
+                <v-flex>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
+                </v-flex>
+                <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
+                </v-flex>
+                <v-flex>
                 <v-btn icon class="mx-0" @click="deleteMenuItem(menuIndex, item)">
                   <v-icon color="pink">delete</v-icon>
                 </v-btn>
+                </v-flex>
+                </v-layout>
               </div>
             </v-list-tile>
             <!-- An inactive menu item of an active menu -->
@@ -174,7 +207,7 @@
               >
               <!-- Picture of inactive menu item for an active menu -->
               <v-list-tile-avatar size="50" class="inactive-avatar">
-                <img :src="require('@/assets/GetUsGrub.png')">
+                <img :src="item.itemPicture + '?' + getRandomQuery()">
               </v-list-tile-avatar>
               <!-- Content of inactive menu item for an active menu -->
               <v-list-tile-content class="inactive-menu-item">
@@ -185,16 +218,22 @@
               </v-list-tile-content>
               <!-- Buttons on the inactive menu item of an active menu -->
               <div v-if="isEdit">
-                <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <v-layout>
+                <!-- Menu item image upload component button -->
+                <v-flex>
+                <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
+                </v-flex>
+                <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
+                </v-flex>
+                <v-flex>
                 <v-btn icon class="mx-0" @click="deleteMenuItem(menuIndex, item)">
                   <v-icon color="pink">delete</v-icon>
                 </v-btn>
+                </v-flex>
+                </v-layout>
               </div>
             </v-list-tile>
             <!-- The line underneath the menu item content -->
@@ -249,7 +288,7 @@
             <!-- Buttons on the inactive menu tab -->
             <div v-if="isEdit">
               <v-layout>
-              <v-btn icon class="mx-0" @click="editMenu(menu)">
+              <v-btn icon class="mx-0" @click="editMenu(menu, menuIndex)">
                 <v-icon color="yellow">edit</v-icon>
               </v-btn>
               <v-btn icon class="mx-0" @click="deleteMenu(menu)">
@@ -285,7 +324,7 @@
               >
               <!-- Picture of active menu item for an inactive menu -->
               <v-list-tile-avatar size="50">
-                <img :src="require('@/assets/GetUsGrub.png')">
+                <img :src="item.itemPicture + '?' + getRandomQuery()">
               </v-list-tile-avatar>
               <!-- Content of active menu item for an inactive menu -->
               <v-list-tile-content class="active-menu-item">
@@ -296,16 +335,22 @@
               </v-list-tile-content>
               <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
-                <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <v-layout>
+                <!-- Menu item image upload component button -->
+                  <v-flex>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
+                </v-flex>
+                <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
+                </v-flex>
+                <v-flex>
                 <v-btn icon class="mx-0" @click="deleteMenuItem(menuIndex, item)">
                   <v-icon color="pink">delete</v-icon>
                 </v-btn>
+                </v-flex>
+                </v-layout>
               </div>
             </v-list-tile>
             <!-- An inactive menu item of an inactive menu -->
@@ -318,7 +363,7 @@
               >
               <!-- Picture of inactive menu item for an inactive menu -->
               <v-list-tile-avatar size="50" class="inactive-avatar">
-                <img :src="require('@/assets/GetUsGrub.png')">
+                 <img :src="item.itemPicture + '?' + getRandomQuery()">
               </v-list-tile-avatar>
               <!-- Content of inactive menu item for an inactive menu -->
               <v-list-tile-content class="inactive-menu-item">
@@ -329,16 +374,22 @@
               </v-list-tile-content>
               <!-- Buttons on the active menu item of an inactive menu -->
               <div v-if="isEdit">
-                <!-- Button to call Image Upload's function -->
-                <v-btn icon class="mx-0">
-                  <v-icon color="blue">photo_camera</v-icon>
-                </v-btn>
+                <v-layout>
+                <!-- Menu item image upload component button -->
+                  <v-flex>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
+                </v-flex>
+                <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
+                </v-flex>
+                <v-flex>
                 <v-btn icon class="mx-0" @click="deleteMenuItem(menuIndex, item)">
                   <v-icon color="pink">delete</v-icon>
                 </v-btn>
+                </v-flex>
+                </v-layout>
               </div>
             </v-list-tile>
             <!-- The line underneath the menu item content -->
@@ -368,7 +419,13 @@
 </template>
 
 <script>
+import MenuItemImageUpload from '@/components/ImageUploadVues/MenuItemUpload'
+import moment from 'moment'
+
 export default {
+  components: {
+    'menu-image-upload': MenuItemImageUpload
+  },
   // Props are variables passed down by parent component
   props: [
     'restaurantMenusList',
@@ -376,6 +433,8 @@ export default {
   ],
   data () {
     return {
+      menuItemId: 0,
+      valid: false,
       newMenu: {
         restaurantMenu: null,
         menuItem: []
@@ -388,7 +447,7 @@ export default {
       inactiveTab: null,
       menuDialog: false,
       menuItemDialog: false,
-      formMenuName: 'hi',
+      formMenuName: '',
       formMenuIndex: null,
       editedIndex: -1,
       editedMenu: {
@@ -402,8 +461,9 @@ export default {
         flag: 0
       },
       editedMenuItem: {
+        id: 0,
         itemName: '',
-        itemPrice: 0,
+        itemPrice: null,
         itemPicture: '',
         tag: '',
         description: '',
@@ -411,8 +471,9 @@ export default {
         flag: 0
       },
       defaultMenuItem: {
+        id: 0,
         itemName: '',
-        itemPrice: 0,
+        itemPrice: null,
         itemPicture: '',
         tag: '',
         description: '',
@@ -430,12 +491,15 @@ export default {
     }
   },
   methods: {
+    getRandomQuery () {
+      return moment().format()
+    },
     addMenu () {
       this.editedIndex = -1
       this.menuDialog = true
     },
-    editMenu (menu) {
-      this.editedIndex = this.restaurantMenusList.indexOf(menu)
+    editMenu (menu, index) {
+      this.editedIndex = index
       // Assign a new object of menu.restaurantMenu to editedMenu
       this.editedMenu = Object.assign({}, menu.restaurantMenu)
       this.menuDialog = true
@@ -477,19 +541,22 @@ export default {
       // Else item is newly added
       } else {
         this.editedMenu.flag = 1
-        this.newMenu = Object.assign({}, this.defaultNewMenu)
         this.newMenu.restaurantMenu = this.editedMenu
         this.restaurantMenusList.push(this.newMenu)
+        this.newMenu = Object.assign({}, this.defaultNewMenu)
       }
       this.closeMenuDialog()
     },
     addMenuItem (menuIndex) {
+      this.newMenu = Object.assign({}, this.defaultNewMenu)
+      this.editedMenuItem = Object.assign({}, this.defaultMenuItem)
       this.formMenuIndex = menuIndex
       this.formMenuName = this.restaurantMenusList[menuIndex].restaurantMenu.menuName
       this.editedIndex = -1
       this.menuItemDialog = true
     },
     editMenuItem (menuIndex, item) {
+      this.newMenu = Object.assign({}, this.defaultNewMenu)
       this.formMenuIndex = menuIndex
       this.formMenuName = this.restaurantMenusList[menuIndex].restaurantMenu.menuName
       this.editedIndex = this.restaurantMenusList[menuIndex].menuItem.indexOf(item)
@@ -521,6 +588,7 @@ export default {
       }, 300)
     },
     saveMenuItem () {
+      this.newMenu = Object.assign({}, this.defaultNewMenu)
       // If the item has been edited
       if (this.editedIndex > -1) {
         // If the flag is not a newly added menu item during the user's session
@@ -534,10 +602,13 @@ export default {
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].tag = this.editedMenuItem.tag
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].description = this.editedMenuItem.description
         this.restaurantMenusList[this.formMenuIndex].menuItem[this.editedIndex].isActive = this.editedMenuItem.isActive
+        this.editedMenuItem = Object.assign({}, this.defaultMenuItem)
       // Else item is newly added
       } else {
         this.editedMenuItem.flag = 1
+        this.editedMenuItem.itemPicture = this.$store.state.menuItemImagePath
         this.restaurantMenusList[this.formMenuIndex].menuItem.push(this.editedMenuItem)
+        this.editedMenuItem = Object.assign({}, this.defaultMenuItem)
       }
       this.closeMenuItemDialog()
     },
@@ -562,5 +633,12 @@ export default {
 }
 #inactive-menus {
   margin: 2em 0 0 0;
+}
+#image-upload[data-v-dd1103d4] {
+  height: 0;
+  width: 0;
+}
+#menu-items-image-upload {
+  padding: 0.7em 0.7em 0 0;
 }
 </style>

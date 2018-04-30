@@ -1,21 +1,23 @@
 <template>
   <div>
-    <app-header/>
     <div id="user-profile-div">
       <div>
         <v-parallax src="/static/parallax.png" height="425">
           <div id="display-picture">
             <v-layout column align-center justify-center>
               <v-avatar
-                :size="225"
+                :size="255"
                 class="grey lighten-4"
               >
-                <img v-bind:src="require('../../../assets/DefaultProfileImage.png')" alt="avatar">
+              <img :src="displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
-                <v-btn id="image-upload-btn" dark v-if="isEdit">
+                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
                   <span id="upload-image-text">Upload Image</span>
-                </v-btn>
+                </v-btn> -->
+               <div v-if="isEdit">
+                  <profile-image-upload id="image-upload"/>
+                </div>
               </v-flex>
               <v-flex>
               <div id="display-name-div">
@@ -48,8 +50,7 @@
               </div>
               </v-flex>
             </v-layout>
-            <v-tooltip bottom>
-            <v-btn
+           <v-btn
               v-if="!isEdit"
               fab
               color="cyan accent-2"
@@ -62,8 +63,32 @@
               >
               <v-icon>edit</v-icon>
             </v-btn>
-             <span>Edit Profile</span>
-            </v-tooltip>
+            <v-btn
+              id="submit-btn"
+              v-if="isEdit"
+              fab
+              color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="editUserProfile()"
+              slot="activator"
+              >
+              <v-icon>save</v-icon>
+            </v-btn>
+            <v-btn
+              id="cancel-btn"
+              v-if="isEdit"
+              fab
+              color="pink"
+              bottom
+              right
+              absolute
+              @click="cancel()"
+              slot="activator"
+              >
+              <v-icon>clear</v-icon>
+            </v-btn>
           </div>
         </v-parallax>
       </div>
@@ -84,14 +109,6 @@
         <food-preferences class="profile-component" :isEdit="isEdit"/>
       </div>
     </div>
-      <div id="edit-btns-div">
-    <v-btn dark @click="editUserProfile()" v-if="isEdit">
-      Submit All Changes
-    </v-btn>
-    <v-btn dark @click="cancel()" v-if="isEdit">
-      Cancel
-    </v-btn>
-  </div>
   </div>
 </div>
 </template>
@@ -99,6 +116,7 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import moment from 'moment'
 import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 
@@ -106,7 +124,7 @@ export default {
   name: 'UserProfile',
   components: {
     FoodPreferences,
-    ProfileImageUpload
+    'profile-image-upload': ProfileImageUpload
   },
   data () {
     return {
@@ -139,6 +157,9 @@ export default {
     this.getUserProfile()
   },
   methods: {
+    appendRandomQueryToImageUrl () {
+      return moment().format()
+    },
     getUserProfile () {
       axios.get(this.$store.state.urls.profileManagement.userProfile, {
         headers: {
@@ -147,6 +168,7 @@ export default {
       }).then(response => {
         this.displayName = response.data.displayName
         this.displayPicture = response.data.displayPicture
+        this.appendRandomQueryToImageUrl()
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -269,7 +291,12 @@ export default {
   margin: 0 0 3em 0;
 }
 .btn--bottom.btn--absolute {
-  bottom: -2.5em;
-  left: 47em;
+  bottom: 20px;
+}
+#submit-btn {
+  right: 90px;
+}
+#cancel-btn {
+  color: white;
 }
 </style>

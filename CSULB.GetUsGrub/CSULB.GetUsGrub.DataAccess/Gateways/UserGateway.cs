@@ -1,6 +1,7 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.IO;
@@ -20,6 +21,7 @@ namespace CSULB.GetUsGrub.DataAccess
     {
         // Open the User context
         UserContext context = new UserContext();
+        ImageService imageService = new ImageService();
 
         /// <summary>
         /// The GetUserByUsername method.
@@ -263,7 +265,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var dbRestaurantMenu = (from menu in context.RestaurantMenus
                                             where menu.RestaurantId == restaurantProfile.Id
                                             select menu).SingleOrDefault();
-                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH, "", false, 0);
+                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", "", "", false, 0); // @TODO: Angelica change the image path
                     newMenuItem.RestaurantMenu = dbRestaurantMenu;
                     context.RestaurantMenuItems.Add(newMenuItem);
                     context.Entry(dbRestaurantMenu).State = System.Data.Entity.EntityState.Unchanged;
@@ -428,12 +430,20 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
+        /// <summary>
+        /// Will delete user by username.
+        /// </summary>
+        /// @author Angelica Salas Tovar
+        /// @update 04/29/2018
+        /// <param name="username">The username to delete.</param>
+        /// <returns>A response.</returns>
         public ResponseDto<bool> DeleteUser(string username)
         {
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
                 {
+                   
                     // Queries for the user account based on username.
                     var userAccount = (from account in context.UserAccounts
                                         where account.Username == username
@@ -519,14 +529,16 @@ namespace CSULB.GetUsGrub.DataAccess
                     {
                         foreach (var menuItems in userRestaurantMenuItems)
                         {
+                            var menuImages = menuItems.ItemPicture;
+
                             context.RestaurantMenuItems.Remove(menuItems);
 
                             // If menus are set to the default path, move on
-                            if (menuItems.ItemPicture != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                            if (menuImages != ConfigurationManager.AppSettings["DefaultURLMenuItemPath"])
                             {
                                 // Deleting Menu Images
-                                deleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH,menuItems.ItemPicture);
-                                Debug.WriteLine(menuItems.ItemPicture);
+                                imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalMenuItemPath"] + menuImages); 
+
                             }
                         }
                     }
@@ -618,16 +630,18 @@ namespace CSULB.GetUsGrub.DataAccess
                         context.FailedAttempts.Remove(failedAttempt);
                     }
 
-                    // Check if user image is set to default, if so move on
-                    var temp = userAccount.UserProfile.DisplayPicture;
-                    Debug.WriteLine("displayPicture: " + temp );
-                    //Debug.WriteLine("dvirtualdisplayname: " + ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH);
-                    if (userAccount.UserProfile.DisplayPicture != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    // Grabbing profile image to delete 
+                    var profileImage = (from profile in context.UserProfiles
+                                       where profile.Id == userAccount.Id
+                                       select profile.DisplayPicture).FirstOrDefault();
+
+                    // Check if user image is set to default, if so move on 
+                    if (profileImage != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
                     {
-                        // Deleting profile image
-                        deleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH,userAccount.UserProfile.DisplayPicture);
-                        Debug.WriteLine(userAccount.UserProfile.DisplayPicture);
+                        // Calling method to delete image from specified path
+                        imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalProfileImagePath"] + profileImage);
                     }
+
                     //Delete useraccount
                     context.UserAccounts.Remove(userAccount);
                     context.SaveChanges(); 
@@ -651,7 +665,7 @@ namespace CSULB.GetUsGrub.DataAccess
         }
 
         /// <summary>
-        /// Main method that will go through edit user metehods: editUsername, editDisplayName, and reset Password.
+        /// Main method that will go through edit user metehods: editUsername, and editDisplayName.
         /// </summary>
         /// @author Angelica Salas Tovar
         /// @updated 03/20/2018
@@ -661,35 +675,31 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             try
             {
-                //Queries for the user account based on the username passed in by the EditUserDto.
-                var userAccount = (from account in context.UserAccounts
-                                    where account.Username == user.Username
-                                    select account).SingleOrDefault();
 
                 //Set ResponseDto equal to the ResponseDto from EditDisplayName.
-                if (user.NewDisplayName != null) // TODO: @Jen Added because what Jen and I did is not working?!  [-Angelica]
+                if (!String.IsNullOrEmpty(user.NewDisplayName))
                 {
-                    var result = EditDisplayName(user.Username, user.NewDisplayName);
-                    if (result.Error != null)
+                    var displayNameResult = EditDisplayName(user.Username, user.NewDisplayName);
+                    if (displayNameResult.Error != null)
                     {
                         return new ResponseDto<bool>
                         {
                             Data = false,
-                            Error = result.Error
+                            Error = displayNameResult.Error
                         };
                     }
                 }
 
-                if (user.NewUsername != null) //Added
+                if (!String.IsNullOrEmpty(user.NewUsername))
                 {
                     // Set ResponseDto equal to the ResponseDto from EditUserName.
-                    var result = EditUserName(user.Username, user.NewUsername);
-                    if (result.Error != null)
+                    var editUserNameResult = EditUserName(user.Username, user.NewUsername);
+                    if (editUserNameResult.Error != null)
                     {
                         return new ResponseDto<bool>
                         {
                             Data = false,
-                            Error = result.Error
+                            Error = editUserNameResult.Error
                         };
                     }
                 }
@@ -729,33 +739,35 @@ namespace CSULB.GetUsGrub.DataAccess
                                         select account).SingleOrDefault();
 
                     // Save image to path
-                    string savePath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH;
+                    string savePath = ConfigurationManager.AppSettings["PhysicalProfileImagePath"]; 
 
                     // Set Diplay Picture Path
                     var oldPath = @userAccount.UserProfile.DisplayPicture;
 
                     var extension = Path.GetExtension(oldPath);
 
-                    var deleteOldPath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + userAccount.Username + extension;
+                    var deleteOldPath = savePath + userAccount.Username + extension;
 
                     // If image path is not default change it.
-                    if (oldPath != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    if (oldPath != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
                     {
                         // The new path once user has their profile picture.
                         var newPath = savePath + newUsername + extension;
 
                         // Rename profile image based on username
                         File.Move(deleteOldPath, newPath);
+
+                        userAccount.UserProfile.DisplayPicture = ConfigurationManager.AppSettings["URLProfileImagePath"] + newUsername + extension;
                     }
                     else
                     {
                         // If it is the default path, leave it as default.
-                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
+                        userAccount.UserProfile.DisplayPicture = ConfigurationManager.AppSettings["DefaultURLProfileImagePath"];
                     }
 
                     // Select the username from useraccount and give it the new username.
                     userAccount.Username = newUsername;
-                    Debug.WriteLine("useraccount.username: " + userAccount.Username); // Delete later
+                    
                     context.SaveChanges();
                     dbContextTransaction.Commit();
                     return new ResponseDto<bool>()
@@ -763,9 +775,8 @@ namespace CSULB.GetUsGrub.DataAccess
                         Data = true
                     };
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Debug.WriteLine(e); // Show exception...
                     dbContextTransaction.Rollback();
                     return new ResponseDto<bool>()
                     {
@@ -824,7 +835,7 @@ namespace CSULB.GetUsGrub.DataAccess
         /// <param name="username">The username thats password will be edited.</param>
         /// <param name="newPassword">The new password for the username.</param>
         /// <returns>ResponseDto</returns>
-        public ResponseDto<bool> ResetPassword(string username, string newPassword)//EditPassword
+        public ResponseDto<bool> ResetPassword(string username, string newPassword)
         {
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
@@ -1102,42 +1113,5 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             context.Dispose();
         }
-
-        public ResponseDto<bool> deleteImage(string path, string image)
-        {
-            // Delete a file by using File class static method...
-            try
-            {
-                var imageName = Path.GetFileName(image);
-                Debug.WriteLine(imageName);
-
-                var filePath = path + imageName;
-                Debug.WriteLine(filePath);
-               
-                if (File.Exists(filePath))
-                {
-                    File.Delete(filePath);
-                    
-                    return new ResponseDto<bool>()
-                    {
-                        Data = true
-                    };
-                }
-                return new ResponseDto<bool>()
-                {
-                    Data = false,
-                    Error = "Image does not exist." // Add to constants later
-                };
-            }
-            catch (Exception){
-                return new ResponseDto<bool>()
-                {
-                    Data = false,
-                    Error = GeneralErrorMessages.GENERAL_ERROR
-                };
-            }
-            
-        }
-
     }
 }

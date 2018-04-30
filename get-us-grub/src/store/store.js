@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { setTimeout } from 'timers'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   // A state is a global variable that every Vue component can reference
   state: {
+    plugins: [
+      createPersistedState({})
+    ],
     isAuthenticated: true,
     authenticationToken: null,
     firstTimeUserToken: null,

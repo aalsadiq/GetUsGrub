@@ -1,5 +1,7 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
+using System;
+using System.Configuration;
 using System.IO;
 using System.Web;
 
@@ -137,22 +139,25 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            // Store file extension from file
+            // Setting new image name
             var fileExtension = Path.GetExtension(image.FileName);
-
-            // Image name = menuId + extension
             var newImagename = menuId + fileExtension;
 
-            // Saving Virtual Path
-            var virtualPath = ImagePaths.VIRTUAL_MENU_ITEM_PATH + newImagename;
+            // Mapping Image
+            var urlPath = ConfigurationManager.AppSettings["URLMenuImagePath"];
+            var url = urlPath + newImagename;
+            
+            // Setting image to user
+            user.DisplayPicture = url;
 
-            // Save physical Path
-            string physicalPath = ImagePaths.PHYSICAL_MENU_ITEM_PATH + newImagename;
-        
+            // Physical image path
+            var physicalPath = ConfigurationManager.AppSettings["PhysicalMenuItemPath"];
+            var physicalProfileImagePath = physicalPath + newImagename;
+
             // Call gateway to save virtualPath to database
             using (var gateway = new RestaurantProfileGateway())
             {
-                var gatewayresult = gateway.UploadImage(user, virtualPath, menuId);
+                var gatewayresult = gateway.UploadImage(user, url, menuId);
                 if (gatewayresult.Data == false)
                 {
                     return new ResponseDto<bool>()
@@ -163,7 +168,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 // Save the image to the physical path
-                image.SaveAs(physicalPath);
+                image.SaveAs(physicalProfileImagePath);
 
                 return new ResponseDto<bool>
                 {

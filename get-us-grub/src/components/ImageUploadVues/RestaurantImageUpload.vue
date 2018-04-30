@@ -64,6 +64,7 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+
 export default {
   name: 'ImageHome',
   components: {
@@ -78,6 +79,7 @@ export default {
     showError: false,
     showSuccess: false,
     username: '',
+    errors: [],
     imageData: '' // Stores in base 64 format of image
   }),
   beforeCreate () {
@@ -123,8 +125,6 @@ export default {
         this.showSuccess = true
         this.showError = false
         this.dialog = false
-        this.getRestaurantProfile()
-        // get profile
       }).catch(error => {
         this.showButton = true
         this.responseData = error.response.data
@@ -154,7 +154,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.$forceUpdate())
     },
     getRestaurantProfile () {
       axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {

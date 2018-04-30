@@ -264,7 +264,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var dbRestaurantMenu = (from menu in context.RestaurantMenus
                                             where menu.RestaurantId == restaurantProfile.Id
                                             select menu).SingleOrDefault();
-                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH, "", false, 0);
+                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", "", "", false, 0); // @TODO: Angelica change the image path
                     newMenuItem.RestaurantMenu = dbRestaurantMenu;
                     context.RestaurantMenuItems.Add(newMenuItem);
                     context.Entry(dbRestaurantMenu).State = System.Data.Entity.EntityState.Unchanged;
@@ -526,10 +526,10 @@ namespace CSULB.GetUsGrub.DataAccess
                             context.RestaurantMenuItems.Remove(menuItems);
 
                             // If menus are set to the default path, move on
-                            if (menuImages != ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
+                            if (menuImages != "")//ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH)
                             {
                                 // Deleting Menu Images
-                                imageService.DeleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH, menuImages); // Call image service that was created here
+                                //imageService.DeleteImage(ImagePaths.PHYSICAL_MENU_ITEM_PATH, menuImages); // Call image service that was created here
 
                             }
                         }
@@ -628,10 +628,10 @@ namespace CSULB.GetUsGrub.DataAccess
                                        select profile.DisplayPicture).FirstOrDefault();
 
                     // Check if user image is set to default, if so move on 
-                    if (profileImage != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    if (profileImage != "")//ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
                     {
                         // Calling method to delete image from specified path
-                        imageService.DeleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH, profileImage); // Call image service here
+                        //imageService.DeleteImage(ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH, profileImage); // Call image service here
                     }
 
                     //Delete useraccount
@@ -735,17 +735,17 @@ namespace CSULB.GetUsGrub.DataAccess
                                         select account).SingleOrDefault();
 
                     // Save image to path
-                    string savePath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH;
+                    string savePath = ""; // ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH;
 
                     // Set Diplay Picture Path
                     var oldPath = @userAccount.UserProfile.DisplayPicture;
 
                     var extension = Path.GetExtension(oldPath);
 
-                    var deleteOldPath = ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + userAccount.Username + extension;
+                    var deleteOldPath = ""; // ImagePaths.PHSYICAL_PROFILE_IMAGE_PATH + userAccount.Username + extension;
 
                     // If image path is not default change it.
-                    if (oldPath != ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
+                    if (oldPath != "")// ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH)
                     {
                         // The new path once user has their profile picture.
                         var newPath = savePath + newUsername + extension;
@@ -756,7 +756,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     else
                     {
                         // If it is the default path, leave it as default.
-                        userAccount.UserProfile.DisplayPicture = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
+                        userAccount.UserProfile.DisplayPicture = ""; // ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
                     }
 
                     // Select the username from useraccount and give it the new username.

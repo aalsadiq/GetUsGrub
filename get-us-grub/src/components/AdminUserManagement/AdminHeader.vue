@@ -4,7 +4,7 @@
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <v-list-tile-avatar>
+            <v-list-tile-avatar id="admin-picture">
               <img :src="displayPicture" id="display-picture"/>
               <h1 id="displayname-text">
                 {{ displayName }}
@@ -146,7 +146,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #logout-btn{
   width: 292px;
   height: 40px;
@@ -156,12 +156,15 @@ export default {
 #logout-text{
   padding-left:35px;
 }
-/* div.list__tile.list__tile--avatar{
-    padding-left: 50px;
-} */
 div#image-upload{
     width: 0px;
     height: 550px;
     padding-left: 128px;
+}
+#admin-picture {
+  margin: 0 0 0 2.6em;
+}
+#displayname-text {
+  padding: 0 0 0 1.1em;
 }
 </style>

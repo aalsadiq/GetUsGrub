@@ -2,6 +2,7 @@
 using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 // TODO: @Jenn Need to add in default display picture string. Angelica will have this set as a constant. [-Jennifer]
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -485,8 +486,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             .ToList();
 
             userProfile = new UserProfile(
-                displayPicture: ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH,
-                displayName: dto.UserProfileDto.DisplayName);
+                displayPicture: ConfigurationManager.AppSettings["DefaultURLProfileImagePath"],
+            displayName: dto.UserProfileDto.DisplayName);
 
             // Hash password and security questions
             var saltGenerator = new SaltGenerator();
@@ -683,7 +684,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .ToList();
 
             //Admin User Profile
-            var displayImagePath = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
+            var displayImagePath = ConfigurationManager.AppSettings["DefaultURLProfileImagePath"];
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table as administrator

@@ -108,8 +108,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
             const int maxFoodPreferences = 3;
 
             // Directory Paths
-            const string directoryPathToUserProfileDisplayPicture = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
-            const string directoryPathToMenuItemPicture = ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH;
+            const string directoryPathToUserProfileDisplayPicture = "";// ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
+            const string directoryPathToMenuItemPicture = "";//ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH;
 
             // Instantiate Randomizer
             var randomizer = new Random();

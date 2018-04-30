@@ -27,7 +27,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var validationWrappers = new List<IValidationWrapper>()
             {
                 new ValidationWrapper<EditUserDto>(_editUserDto, "EditUsername", _editUserDtoValidator),
-                new ValidationWrapper<EditUserDto>(_editUserDto, "EditNewDisplayName", _editUserDtoValidator)
             };
 
             // Goes through each validation in the validation wrapper.
@@ -59,7 +58,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     return new ResponseDto<bool>
                     {
                         Data = false,
-                        Error = "Username is equal to displayname, please try again."
+                        Error = ValidationErrorMessages.USERNAME_IS_EQUAL_TO_DISPLAYNAME
                     };
                 }
             }

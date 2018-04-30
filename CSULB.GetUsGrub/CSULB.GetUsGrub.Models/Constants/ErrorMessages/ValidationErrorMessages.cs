@@ -49,6 +49,7 @@
         public const string PASSWORD_FORMAT = "Password must not be empty or contain spaces.";
         public const string USER_DOES_NOT_EXIST = "User does not exist.";
         public const string INVALID_USERNAME = "Invalid username. Please try again.";
+        public const string USERNAME_IS_EQUAL_TO_DISPLAYNAME = "Username is equal to displayname, please try again.";
 
         // Validation error messages for EditUserDto
         public const string NEWUSERNAME_FORMAT = "New username must not contain spaces and special characters.";

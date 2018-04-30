@@ -875,16 +875,11 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<bool> Edituser(EditUserDto user)
+        public ResponseDto<bool> Edituser(EditUserDto editUserDto)
         {
-            // Service that will set the properties to null if it is an empty string. This is used
-            // since not all of the edited items are required. This is to avoid erasing objects that
-            // are stored in our database.
-            var setPropertiesService = new SetPropertiesService<EditUserDto>();
-            setPropertiesService.SetEmptyStringToNull(user);
 
             // Validation Strategy will validate if the user meets the requirements
-            var editUserValidation = new EditUserValidationStrategy(user);
+            var editUserValidation = new EditUserValidationStrategy(editUserDto);
 
             // Validate data transfer object
             var result = editUserValidation.ExecuteStrategy();
@@ -900,7 +895,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             //Creates a gateway
             using (var gateway = new UserGateway())
             {
-                var gatewayresult = gateway.EditUser(user);
+                var gatewayresult = gateway.EditUser(editUserDto);
                 if (gatewayresult.Data == false)
                 {
                     return new ResponseDto<bool>()

@@ -53,10 +53,6 @@ export const store = new Vuex.Store({
         foodPreferences: null
       }
     },
-    // Header values for Axios requests
-    headers: {
-      accessControlAllowOrigin: 'http://localhost:8080'
-    },
     // Uniform Resource Locations for Axios requests
     urls: {
       userManagement: {
@@ -100,6 +96,9 @@ export const store = new Vuex.Store({
     },
     // Rules for validations
     rules: {
+      addBillUserRules: [
+        billUser => !!billUser || 'Required'
+      ],
       usernameRules: [
         username => !!username || 'Username is required',
         username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'

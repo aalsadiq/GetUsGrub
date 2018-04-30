@@ -104,8 +104,7 @@ export default {
       axios({
         method: 'POST',
         url: this.$store.state.urls.login.loginUser,
-        data: {'Username': this.username, 'Password': this.password},
-        header: this.$store.state.urls.header.accessControlAllowOrigin
+        data: {'Username': this.username, 'Password': this.password}
       }).then(response => {
         this.valid = true
         this.disable = false

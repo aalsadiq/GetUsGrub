@@ -114,6 +114,7 @@ export default {
           this.$store.state.firstTimeUserToken = response.data
           this.$router.push('FirstTimeRegistration')
         } else {
+          this.$store.state.isAuthenticated = true
           this.$store.state.authenticationToken = response.data
           this.$router.push({path: '/'})
         }

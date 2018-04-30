@@ -104,8 +104,7 @@ export default {
       axios({
         method: 'POST',
         url: this.$store.state.urls.login.loginUser,
-        data: {'Username': this.username, 'Password': this.password},
-        header: this.$store.state.urls.header.accessControlAllowOrigin
+        data: {'Username': this.username, 'Password': this.password}
       }).then(response => {
         this.valid = true
         this.disable = false
@@ -115,7 +114,6 @@ export default {
           this.$store.state.firstTimeUserToken = response.data
           this.$router.push('FirstTimeRegistration')
         } else {
-          this.$store.state.isAuthenticated = true
           this.$store.state.authenticationToken = response.data
           this.$router.push({path: '/'})
         }

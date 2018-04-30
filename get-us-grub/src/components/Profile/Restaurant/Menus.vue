@@ -1,7 +1,6 @@
 <template>
   <div id="menus-div">
     <div>
-      {{ restaurantMenusList }}
     <!-- Dialog popup for adding/editing menus -->
     <v-dialog v-model="menuDialog" persistent max-width="500px">
       <v-card>

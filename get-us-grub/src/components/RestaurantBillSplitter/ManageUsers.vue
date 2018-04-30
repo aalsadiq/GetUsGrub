@@ -10,7 +10,8 @@
                     :key="billUserIndex"
                     :label="billUser.name"
                     :value="billUser.uID"
-                    v-model="billItem.selected"></v-checkbox>
+                    v-model="billItem.selected">
+        </v-checkbox>
       </v-card-text>
       <v-divider />
       <v-card-text style="display: inline-block">
@@ -26,6 +27,9 @@
 
 <script>
 import AddBillUser from './AddBillUser.vue'
+import { EventBus } from '@/event-bus/event-bus.js'
+import { VMoney } from 'v-money'
+
 export default {
   name: 'ManageUsers',
   components: {
@@ -33,15 +37,47 @@ export default {
   },
   data () {
     return {
-      dialog: false
+      dialog: false,
+      money: {
+        decimal: '.',
+        thousands: '',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
+      }
     }
   },
-  props: ['billItem'],
+  directives: { money: VMoney },
+  props: ['billItem', 'billItemIndex'],
+  watch: {
+    selected (newSelected, oldSelected) {
+      if (this.dialog === true) {
+        this.updateUserMoneyOwesFromSelected(this.billItemIndex, this.billItem, newSelected, oldSelected)
+      }
+    }
+  },
   methods: {
+    updateUserMoneyOwesFromSelected: function (billItemIndex, billItem, newSelected, oldSelected) {
+      this.$store.dispatch('updateUserMoneyOwesFromSelected', { billItemIndex, billItem, newSelected, oldSelected })
+    },
+    emitUsersInBillItemEvent: function (billItem) {
+      EventBus.$emit('users-in-bill-item', billItem)
+    }
+  },
+  created () {
+    this.billItemSelected = this.billItem.selected // Used to keep track of the this.billItem.selected array BEFORE the changes
+  },
+  updated () {
+    this.emitUsersInBillItemEvent(this.billItem)
+    this.billItemSelected = this.billItem.selected
   },
   computed: {
     billUsers () {
       return this.$store.state.billUsers
+    },
+    selected () {
+      return this.billItem.selected
     }
   }
 }

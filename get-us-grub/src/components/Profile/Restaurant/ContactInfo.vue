@@ -18,8 +18,7 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-text-field
-                      v-model="editedContact.phoneNumber"
-                      placeholder="(562)111-5555"
+                      v-model="profile.phoneNumber"
                       prepend-icon="phone"
                       :rules="$store.state.rules.phoneNumberRules"
                       single-line
@@ -37,25 +36,25 @@
                     <v-text-field
                       label="Street 1"
                       placeholder="1111 Snowy Rock Pl"
-                      v-model="editedContact.address.street1"
+                      v-model="address.street1"
                       :rules="$store.state.rules.addressStreet1Rules"
                       required
                     ></v-text-field>
                     <v-text-field
                       label="Street 2"
                       placeholder="Unit 2"
-                      v-model="editedContact.address.street2"
+                      v-model="address.street2"
                     ></v-text-field>
                     <v-text-field
                       label="City"
                       placeholder="Long Beach"
-                      v-model="editedContact.address.city"
+                      v-model="address.city"
                       :rules="$store.state.constants.addressCityRules"
                       required
                     ></v-text-field>
                     <v-select
                       :items="$store.state.constants.states"
-                      v-model="editedContact.address.state"
+                      v-model="address.state"
                       item-text="name"
                       item-value="abbreviation"
                       label="Select a state"
@@ -71,7 +70,7 @@
                       placeholder="92812"
                       :rules="$store.state.rules.addressZipRules"
                       type="number"
-                      v-model.number="editedContact.address.zip"
+                      v-model.number="address.zip"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -82,6 +81,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="close" :disabled="!valid">Cancel</v-btn>
           <v-btn color="blue darken-1" flat @click.native="save" :disabled="!valid">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -108,7 +108,7 @@
           <v-card-text style="height: 175px;">
             <h3>Phone Number:</h3>
           <p class="paragrah">
-            {{ phoneNumber }}
+            {{ profile.phoneNumber }}
           </p>
           <h3>Address:</h3>
           <p class="paragraph" v-if='address.street2 === ""'>
@@ -131,7 +131,7 @@
 export default {
   // Passed down variables from parent component
   props: [
-    'phoneNumber',
+    'profile',
     'address',
     'isEdit'
   ],
@@ -139,28 +139,11 @@ export default {
     return {
       dialog: false,
       formTitle: 'Edit Contact Info',
-      valid: false,
-      editedContact: {
-        phoneNumber: '',
-        address: {
-          street1: '',
-          street2: '',
-          city: '',
-          state: '',
-          zip: 0
-        }
-      }
+      valid: false
     }
-  },
-  // Setting parent passed down variables to local variables
-  created () {
-    this.editedContact.phoneNumber = this.phoneNumber
-    this.editedContact.address = this.address
   },
   methods: {
     editContactInfo () {
-      this.editedContact.phoneNumber = this.phoneNumber
-      this.editedContact.address = this.address
       this.dialog = true
     },
     // Close dialog popup
@@ -171,8 +154,6 @@ export default {
     },
     // Save user input contact information
     save () {
-      this.phoneNumber = this.editedContact.phoneNumber
-      this.address = this.editedContact.address
       this.close()
     }
   }

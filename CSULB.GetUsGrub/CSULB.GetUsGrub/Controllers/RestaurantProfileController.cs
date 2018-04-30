@@ -42,16 +42,15 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
         
         [HttpPost]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
-        [AllowAnonymous] // TODO: Remove for deployment
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
         [Route("Restaurant/Edit")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult EditProfile([FromBody] RestaurantProfileDto restaurantProfileDto)
@@ -73,9 +72,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -83,10 +82,9 @@ namespace CSULB.GetUsGrub.Controllers
         // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/Edit/MenuItemImageUpload
         [HttpPost]
-        //[ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)]
         [Route("Restaurant/Edit/MenuItemImageUpload")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        // TODO: @Angelica Check what claims are needed here [Angelica!]
         public IHttpActionResult MenuItemImageUpload()
         {
             try
@@ -113,11 +111,10 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok("Image Upload complete!");
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+               
+                return InternalServerError();
             }
         }
     }

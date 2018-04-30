@@ -3,15 +3,20 @@
   <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
-          <v-toolbar color="blue" dark>
+          <v-toolbar color="teal" dark>
             <v-spacer/>
             <!-- Title of the toolbar -->
             <v-toolbar-title id="details-toolbar-title">Details</v-toolbar-title>
             <v-spacer/>
           </v-toolbar>
+          <div
+            style="max-height: 500px;"
+            class="scroll-y"
+            id="scrolling-techniques"
+          >
           <v-list two-line>
             <!-- For each storeDetail in the storeDetails (storeDetails was mapped from the Vuex store state in the script section) -->
-            <div v-for="(storeDetail, storeIndex) in storeDetails" :key="storeIndex">
+          <div v-for="(storeDetail, storeIndex) in storeDetails" :key="storeIndex">
             <!-- If the storeDetail matches the properties (keys) in details then display it with its value -->
             <div v-for="(detailProperty, index) in Object.keys(details)" :key="index" v-if="storeDetail.property === detailProperty">
               <v-list-tile
@@ -65,6 +70,7 @@
             </div>
             </div>
           </v-list>
+        </div>
         </v-card>
       </v-flex>
     </v-layout>

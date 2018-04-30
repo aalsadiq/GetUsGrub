@@ -25,27 +25,19 @@ namespace CSULB.GetUsGrub.DataAccess
         {
             try
             {
-                // Get the claims from the database 
-                var userAccountClaims = (from userClaims in context.Claims
-                              where userClaims.UserAccount.Username == username
-                              select userClaims).FirstOrDefault();
+                // Make sure user account exists
+                var userAccount = (from user in context.Claims
+                                   where user.UserAccount.Username == username
+                                   select user.UserAccount).FirstOrDefault();
 
-                // If claims are found, return the claims from the database.
-                // Otherwise, return an empty list of claims.
-                if (userAccountClaims != null)
+                // Get the claims from the database 
+                var userClaims = userAccount.UserClaims;
+
+                // Return user's list of claims
+                return new ResponseDto<ICollection<Claim>>
                 {
-                    return new ResponseDto<ICollection<Claim>>
-                    {
-                        Data = userAccountClaims.Claims
-                    };
-                }
-                else
-                {
-                    return new ResponseDto<ICollection<Claim>>
-                    {
-                        Data = new List<Claim>()
-                    };
-                }
+                    Data = userClaims.Claims
+                };
             }
             catch (Exception)
             {

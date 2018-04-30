@@ -16,15 +16,12 @@ export default {
   props: ['deleteType', 'itemIndex'],
   methods: {
     DeleteItem: function (deleteType, itemIndex) {
-      console.log(deleteType)
       if (deleteType === 'Dictionary') {
         this.$store.dispatch('removeFromDictionary', itemIndex)
       } else if (deleteType === 'BillTable') {
+        this.$store.dispatch('updateUserMoneyOwesFromDeleteItem', { itemIndex })
         this.$store.dispatch('removeFromBillTable', itemIndex)
       }
-    },
-    Log: function () {
-      console.log(this.$refs.editForm)
     }
   },
   computed: {

@@ -44,7 +44,7 @@
               <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
             </label>
             <v-spacer/>
-            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="submitImageUpload">
+            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="SubmitImageUpload">
               Upload
             <v-icon color="white">cloud_upload</v-icon>
             </v-btn>
@@ -66,10 +66,10 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
-  dialog: false,
   components: {
   },
   data: () => ({
+    dialog: false,
     selectedFile: null,
     responseData: '',
     show: false,
@@ -85,7 +85,8 @@ export default {
     }
     try {
       var decodedToken = jwt.decode(this.$store.state.authenticationToken)
-      if (!decodedToken.ReadUserProfile === 'True') {
+      if (!(decodedToken.ReadRestaurantProfile === 'True') ||
+        decodedToken.ReadUserProfile === 'True') {
         this.$router.push({path: '/Forbidden'})
       }
     } catch (ex) {
@@ -107,7 +108,7 @@ export default {
         reader.readAsDataURL(input.files[0]) // Read as data url (base64 format)
       }
     },
-    submitImageUpload: function () {
+    SubmitImageUpload: function () {
       // ReadRestaurantProfile
       var formData = new FormData()
       formData.append('username', this.$store.state.username)
@@ -119,7 +120,7 @@ export default {
         this.showSuccess = true
         this.showError = false
         this.dialog = false
-        this.getUserProfile()
+        this.getRestaurantProfile()
         // get profile
       }).catch(error => {
         this.responseData = error.response.data
@@ -151,8 +152,8 @@ export default {
         }
       })
     },
-    getUserProfile () {
-      axios.get(this.$store.state.urls.profileManagement.userProfile, {
+    getRestaurantProfile () {
+      axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }

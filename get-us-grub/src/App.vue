@@ -65,7 +65,7 @@ export default {
       this.dateTimeNow = moment.unix(moment().unix())
     },
     logoutUser () {
-      axios.post('http://localhost:8081/Logout', {}, {
+      axios.post(this.$store.state.urls.logout.logoutUser, {}, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
@@ -94,7 +94,7 @@ export default {
     // Refresh the user's session by calling creation of new token
     refresh () {
       this.disable = true
-      axios.post('http://localhost:8081/RenewSession', {}, {
+      axios.post(this.$store.state.urls.renewSession.requestNewToken, {}, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
@@ -141,6 +141,10 @@ html {
   overflow-x: hidden;
 }
 /* Make scrollbar transparent */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
 
 /* Omit text underlines to router-links */
 a {

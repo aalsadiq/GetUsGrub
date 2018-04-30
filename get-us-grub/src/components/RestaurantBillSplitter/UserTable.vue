@@ -1,11 +1,20 @@
 <template>
   <div class="user-table">
     <h1>Users</h1>
-    <div v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
-      {{ billUser.name }} <p> $0.00</p>
-      <v-btn v-on:click="RemoveUser(billUser.uID)"><v-icon>clear</v-icon></v-btn>
-    </div>
     <v-divider />
+    <div id="test">
+      <div class="user" v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
+        <ul class="user-list">
+          <li>
+            <h2>{{ billUser.name }} owes ${{ (billUser.moneyOwes / 100).toFixed(2) }}</h2>
+          </li>
+          <li>
+            <v-btn small color="red" v-on:click="RemoveUser(billUserIndex, billUser.uID)"><v-icon>clear</v-icon></v-btn>
+          </li>
+        </ul>
+        <v-divider />
+      </div>
+    </div>
     <add-bill-user class="add-bill-user" />
   </div>
 </template>
@@ -37,8 +46,8 @@ export default {
     }
   },
   methods: {
-    RemoveUser: function (billUserUID) {
-      console.log('Deleting ' + billUserUID)
+    RemoveUser: function (billUserIndex, billUserUID) {
+      this.$store.dispatch('updateUserMoneyOwesFromDeleteUser', { billUserIndex, billUserUID })
       this.$store.dispatch('removeUser', billUserUID)
     }
   },
@@ -53,14 +62,25 @@ export default {
 <style>
   .user-table {
     position: relative;
-    grid-column: 1 / 2;
-    grid-row: 1 / 4;
-    outline: solid;
   }
 
     .user-table > h1 {
       text-align: center;
     }
+
+  #test {
+    margin-bottom: 150px;
+  }
+
+  .user-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .user-list > li {
+    display: inline;
+  }
 
   .add-bill-user {
     position: absolute;

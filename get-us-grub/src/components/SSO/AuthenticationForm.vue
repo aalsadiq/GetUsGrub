@@ -19,13 +19,10 @@
       :type=" visible ? 'text' : 'password'"
       :disabled="disabled"
       required
-      v-on:input="$emit('input', value)"
     />
   </v-form>
 </template>
 <script>
-import jwt from 'jsonwebtoken'
-
 export default {
   name: 'SSOAuthenticationForm',
   components: {
@@ -38,17 +35,10 @@ export default {
     'value',
     'disabled'
   ],
+  // Set the username to the field in the store
   created () {
-    var username = jwt.decode(this.$store.state.firstTimeUserToken).Username
-    console.log(username)
-    console.log(jwt)
-    this.value.userAccount.username = username
+    this.value.userAccount.username = this.$store.state.username
     this.$emit('input', this.value)
-  },
-  beforeCreate () {
-    if (this.$store.state.firstTimeUserToken === null) {
-      this.$router.push({path: '/Unauthorized'})
-    }
   }
 }
 </script>

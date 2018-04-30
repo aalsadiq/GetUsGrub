@@ -36,7 +36,7 @@
               ></v-text-field>
             <v-btn color="primary" @click="LoginUser" :disabled="!valid" :loading="loading">Sign In</v-btn>
             <div class="text-right">
-              <router-link class="md-accent" to="/recover">Forgot password?</router-link>
+              <router-link class="md-accent" to="ResetPassword">Forgot password?</router-link>
             </div>
             <div class="text-right">
               <router-link class="md-accent" to="/Registration">Don't have an account?</router-link>
@@ -103,11 +103,8 @@ export default {
       this.loader = 'loading'
       axios({
         method: 'POST',
-        url: 'http://localhost:8081/Login',
-        data: {'Username': this.username, 'Password': this.password},
-        header: {
-          'Access-Control-Allow-Origin': 'http://localhost:8080/#/Login'
-        }
+        url: this.$store.state.urls.login.loginUser,
+        data: {'Username': this.username, 'Password': this.password}
       }).then(response => {
         this.valid = true
         this.disable = false
@@ -136,11 +133,10 @@ export default {
 <style>
 #login-div {
   padding: 2.5em 0 0 0;
-  margin: 3.5em 2em 0em 2em;
+  margin: 3.5em 20em 0em 20em;
 }
 #fields-div{
   padding: 2em ;
   margin: 1em ;
 }
-
 </style>

@@ -2,10 +2,10 @@
   <div id="restaurant-bill-splitter">
     <app-header />
     <div class="wrapper">
-      <restaurantBillSplitter-userTable />
-      <restaurantBillSplitter-billTable />
-      <restaurantBillSplitter-dictionary />
-      <debug />
+      <h1 id="restaurant-name-header" v-if="restaurantDisplayName"> {{ this.restaurantDisplayName }} </h1>
+      <restaurantBillSplitter-userTable id="userTable"/>
+      <restaurantBillSplitter-billTable id="billTable"/>
+      <restaurantBillSplitter-dictionary id="dictionary"/>
     </div>
     <app-footer />
   </div>
@@ -32,33 +32,40 @@ export default {
   },
   data () {
     return {
-      restaurantId: null
+      restaurantId: this.$store.state.restaurantSelection.selectedRestaurant.restaurantId,
+      restaurantDisplayName: this.$store.state.restaurantSelection.selectedRestaurant.displayName
     }
   },
   created () {
     if (this.$store.state.isAuthenticated) {
       console.log('Authenticated')
       this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
+      console.log(this.restaurantId)
       axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
+          'Authorization': `Bearer ${this.$store.state.authenticationToken}`
         },
         params: {
           restaurantId: this.restaurantId
         }
       }).then(response => {
-        console.log(response)
-        // this.responseDataStatus = 'Success! Restaurant Menus have been get: '
-        // this.responseData = response.data
-        // console.log(response)
+        for (var i = 0; i < response.data.data.menus.length; i++) {
+          for (var j = 0; j < response.data.data.menus[i].items.length; j++) {
+            response.data.data.menus[i].items[j].itemPrice = this.convertFromUSDtoInt(response.data.data.menus[i].items[j].itemPrice)
+          }
+        }
+        console.log(response.data.data)
+        this.$store.dispatch('populateRestaurantMenus', response.data.data.menus)
       }).catch(error => {
-        this.responseDataStatus = 'An error has occurred: '
-        this.responseData = error.response.data
-        console.log(error.response.data)
+        Promise.reject(error)
       })
     }
   },
   methods: {
+    convertFromUSDtoInt: function (usDollars) {
+      return this.$store.getters.convertFromUSDtoInt(usDollars)
+    }
   },
   computed: {
   }
@@ -71,14 +78,44 @@ export default {
   }
 
   .wrapper {
+    margin: 80px 25px;
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2.5fr 1fr;
+    grid-template-rows: auto auto auto;
     grid-gap: 10px;
     grid-auto-rows: minmax(100px, auto);
+  }
+
+  #restaurant-name-header {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   h2.total {
     padding: 10px 1.2em 0px 0px;
     text-align: right;
+  }
+
+  #dictionary {
+    grid-column: 3;
+    grid-row: 2 / 5;
+    outline: solid;
+  }
+
+  #billTable {
+    grid-column: 2 / 3;
+    grid-row: 2 / 5;
+    outline: solid;
+  }
+
+  #userTable {
+    grid-column: 1 / 2;
+    grid-row: 2 / 5;
+    outline: solid;
+  }
+
+  #debug {
+    grid-column: 2;
+    grid-row: 5;
   }
 </style>

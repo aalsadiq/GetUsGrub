@@ -28,8 +28,8 @@ export default {
   methods: {
     addBillUser: function (newBillUser) {
       if (this.$refs.addBillUserForm.validate()) {
-        this.$store.dispatch('addBillUser', [newBillUser, this.$store.state.uniqueUserCounter])
-        this.$store.state.uniqueUserCounter++
+        this.$store.dispatch('addBillUser', [newBillUser, this.$store.state.uniqueCounter])
+        this.$store.state.uniqueCounter++
       }
     }
   },

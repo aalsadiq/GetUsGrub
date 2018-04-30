@@ -108,8 +108,8 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
             const int maxFoodPreferences = 3;
 
             // Directory Paths
-            const string directoryPathToUserProfileDisplayPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\ProfileImages\\";
-            const string directoryPathToMenuItemPicture = "C:\\Users\\Angelica\\Documents\\GetUsGrub\\get-us-grub\\src\\assets\\RestaurantImages\\";
+            const string directoryPathToUserProfileDisplayPicture = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
+            const string directoryPathToMenuItemPicture = ImagePaths.DEFAULT_VIRTUAL_MENU_ITEM_PATH;
 
             // Instantiate Randomizer
             var randomizer = new Random();
@@ -225,7 +225,7 @@ namespace CSULB.GetUsGrub.DataAccess.Migrations.UserDbContext
                     new UserProfile()
                     {
                         Id = i,
-                        DisplayPicture = $"{directoryPathToUserProfileDisplayPicture}{i}.png",
+                        DisplayPicture = $"{directoryPathToUserProfileDisplayPicture}",
                         DisplayName = $"displayName{i}"
                     }
                 );

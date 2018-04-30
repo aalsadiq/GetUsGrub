@@ -16,7 +16,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         private string BuildUrl(IAddress address, string key)
         {
-            var url = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+            var url = GoogleApiConstants.GOOGLE_GEOCODE_URL;
+
+            url += GoogleApiConstants.GOOGLE_GEOCODE_ADDRESS_QUERY;
 
             if (address.Street1 != null)
             {
@@ -30,7 +32,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             url += $"{address.City}, {address.State} {address.Zip}";
             url.Replace(' ', '+');
-            url += $"&key={key}";
+            url += GoogleApiConstants.GOOGLE_KEY_QUERY + key;
 
             return url;
         }
@@ -58,7 +60,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             try
             {
                 // Retrieve key from configuration and build url for the get request.
-                var key = ConfigurationManager.AppSettings["GoogleGeocodingApi"];
+                var key = ConfigurationManager.AppSettings[GoogleApiConstants.GOOGLE_GEOCODE_API_KEYWORD];
                 var url = BuildUrl(address, key);
 
                 // Send get request and parse the response
@@ -68,18 +70,18 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var responseObj = JObject.Parse(responseJson);
 
                 // Retrieve status code from the response
-                var status = (string)responseObj.SelectToken("status");
+                var status = (string)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_STATUS);
 
                 // Exit early if status is not OK.
-                if (!status.Equals("OK"))
+                if (!status.Equals(GoogleApiConstants.GOOGLE_GEOCODE_STATUS_OK))
                 {
-                    if (status.Equals("ZERO_RESULTS"))
+                    if (status.Equals(GoogleApiConstants.GOOGLE_GEOCODE_STATUS_ZERO_RESULTS))
                     {
-                        status = "Invalid Input";
+                        status = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_INVALID_ADDRESS;
                     }
                     else
                     {
-                        status = "Unexpected Error";
+                        status = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_GENERAL;
                     }
 
                     return new ResponseDto<IGeoCoordinates>()
@@ -89,8 +91,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 }
 
                 // Retrieve latitude and longitude data from response and return coordinates.
-                var lat = (float)responseObj.SelectToken("results[0].geometry.location.lat");
-                var lng = (float)responseObj.SelectToken("results[0].geometry.location.lng");
+                var lat = (float)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_LATITUDE);
+                var lng = (float)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_LONGITUDE);
 
                 return new ResponseDto<IGeoCoordinates>()
                 {
@@ -105,7 +107,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 return new ResponseDto<IGeoCoordinates>()
                 {
-                    Error = "Unexpected Error."
+                    Error = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_GENERAL
                 };
             }
         }

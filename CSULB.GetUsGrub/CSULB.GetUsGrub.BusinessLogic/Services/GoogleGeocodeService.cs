@@ -72,6 +72,16 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 // Retrieve status code from the response
                 var status = (string)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_STATUS);
 
+                var isPartialMatch = (bool)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_PARTIAL_MATCH);
+
+                if (isPartialMatch)
+                {
+                    return new ResponseDto<IGeoCoordinates>()
+                    {
+                        Error = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_INVALID_ADDRESS
+                    };
+                }
+
                 // Exit early if status is not OK.
                 if (!status.Equals(GoogleApiConstants.GOOGLE_GEOCODE_STATUS_OK))
                 {

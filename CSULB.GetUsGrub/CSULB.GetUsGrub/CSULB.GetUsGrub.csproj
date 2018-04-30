@@ -149,6 +149,7 @@
   <ItemGroup>
     <Content Include="keys.config">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>

@@ -8,12 +8,13 @@
         public const string GOOGLE_GEOCODE_TOKEN_STATUS = "status";
         public const string GOOGLE_GEOCODE_TOKEN_LATITUDE = "results[0].geometry.location.lat";
         public const string GOOGLE_GEOCODE_TOKEN_LONGITUDE = "results[0].geometry.location.lng";
+        public const string GOOGLE_GEOCODE_TOKEN_PARTIAL_MATCH = "results[0].partial_match";
         public const string GOOGLE_GEOCODE_STATUS_OK = "OK";
         public const string GOOGLE_GEOCODE_STATUS_ZERO_RESULTS = "ZERO_RESULTS";
         public const string GOOGLE_GEOCODE_ERROR_INVALID_ADDRESS = "Invalid address.";
         public const string GOOGLE_GEOCODE_ERROR_GENERAL = "An unexpected error has occurred.";
 
-        public const string GOOGLE_TIMEZONE_API_KEYWORD = "GoogleTimezoneApi";
+        public const string GOOGLE_TIMEZONE_API_KEYWORD = "GoogleTimeZoneApi";
         public const string GOOGLE_TIMEZONE_URL = "https://maps.googleapis.com/maps/api/timezone/json?";
         public const string GOOGLE_TIMEZONE_LOCATION_QUERY = "location=";
         public const string GOOGLE_TIMEZONE_TIMESTAMP_QUERY = "&timestamp=";

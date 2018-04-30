@@ -151,7 +151,8 @@ export default {
       username: '',
       securityQuestions: [],
       password: '',
-      passwordErrorMessages: []
+      passwordErrorMessages: [],
+      validationTimer: null
     }
   },
   methods: {
@@ -288,6 +289,12 @@ export default {
         }
       })
     },
+    // Delays validation logic until user stops typing
+    validateDelayed () {
+      clearTimeout(this.validationTimer)
+      this.validationTimer = setTimeout(() => { this.validatePassword() }, this.$store.state.constants.inputValidationDelay)
+    },
+    // Validates password against PwnedPassword's API
     validatePassword () {
       if (this.password.length < 8) {
         this.passwordErrorMessages = []

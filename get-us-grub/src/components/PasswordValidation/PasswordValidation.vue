@@ -6,10 +6,10 @@ export default {
   name: 'PasswordValidation',
   components: {},
   methods: {
-    validate (password) {
+    validatePassword (context, password) {
       var hash = sha1(password)
       var anonHash = hash.substring(0, 5)
-      var promise = axios.get('https://api.pwnedpasswords.com/range/' + anonHash
+      var promise = axios.get(context.$store.state.urls.pwnedPassword.range + anonHash
       ).then(response => {
         var data = response.data
         var lines = data.split('\n')

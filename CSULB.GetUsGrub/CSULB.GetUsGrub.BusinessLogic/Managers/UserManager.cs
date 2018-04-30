@@ -883,6 +883,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Validate data transfer object
             var result = editUserValidation.ExecuteStrategy();
+
             if (result.Error != null)
             {
                 return new ResponseDto<bool>
@@ -892,7 +893,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            //Creates a gateway
             using (var gateway = new UserGateway())
             {
                 var gatewayresult = gateway.EditUser(editUserDto);

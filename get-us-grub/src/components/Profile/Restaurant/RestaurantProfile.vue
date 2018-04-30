@@ -67,9 +67,23 @@
               <v-icon>edit</v-icon>
             </v-btn>
             <v-btn
+              id="submit-btn"
               v-if="isEdit"
               fab
               color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="editRestaurantProfile()"
+              slot="activator"
+              >
+              <v-icon>save</v-icon>
+            </v-btn>
+            <v-btn
+              id="cancel-btn"
+              v-if="isEdit"
+              fab
+              color="pink"
               bottom
               right
               absolute
@@ -110,14 +124,6 @@
       <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Accommodations'">
         <food-preferences class="profile-component" :isEdit="isEdit"/>
       </div>
-    </div>
-    <div id="edit-btns-div">
-      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
-        Submit All Changes
-      </v-btn>
-      <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
-        Cancel
-      </v-btn>
     </div>
   </div>
 </div>
@@ -345,12 +351,14 @@ export default {
 #edit-profile-btn-txt {
   margin: 1.1em 0 0 0;
 }
-#edit-btns-div {
-  margin: 0 0 3em 0;
-}
 .btn--bottom.btn--absolute {
-  bottom: 2em;
-  left: 100em;
+  bottom: 20px;
+}
+#submit-btn {
+  right: 90px;
+}
+#cancel-btn {
+  color: white;
 }
 /* #image-upload{
   width: 0px;

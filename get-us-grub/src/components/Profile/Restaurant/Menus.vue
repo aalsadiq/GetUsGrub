@@ -182,7 +182,7 @@
                 <v-layout>
                   <!-- Menu item image upload component button -->
                 <v-flex>
-                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
                 </v-flex>
                 <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -221,8 +221,8 @@
               <div v-if="isEdit">
                 <v-layout>
                 <!-- Menu item image upload component button -->
-                  <v-flex>
-                <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
+                <v-flex>
+                <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
                 </v-flex>
                 <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -339,7 +339,7 @@
                 <v-layout>
                 <!-- Menu item image upload component button -->
                   <v-flex>
-                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
                 </v-flex>
                 <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -378,7 +378,7 @@
                 <v-layout>
                 <!-- Menu item image upload component button -->
                   <v-flex>
-                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id"/>
+                   <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
                 </v-flex>
                 <v-flex>
                 <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
@@ -491,13 +491,10 @@ export default {
   },
   methods: {
     addMenu () {
-      // this.newMenu = Object.assign({}, this.defaultNewMenu)
-      // this.editedMenu = Object.assign({}, this.defaultMenu)
       this.editedIndex = -1
       this.menuDialog = true
     },
     editMenu (menu, index) {
-      this.newMenu = Object.assign({}, this.defaultNewMenu)
       this.editedIndex = index
       // Assign a new object of menu.restaurantMenu to editedMenu
       this.editedMenu = Object.assign({}, menu.restaurantMenu)
@@ -528,7 +525,6 @@ export default {
       }, 300)
     },
     saveMenu () {
-      this.newMenu = Object.assign({}, this.defaultNewMenu)
       // If the item has been edited
       if (this.editedIndex > -1) {
         // If the flag is not a newly added menu during the user's session

@@ -4,7 +4,7 @@
         <v-alert id='login-redirect' outline icon="info" :value="true">
           Attention individual users:
           <router-link to="/Login">
-            <v-btn small dark id='login-redirect-btn' color="blue lighten-1"><span class="btn-text">Login</span></v-btn>
+            <v-btn small id='login-redirect-btn' dark color="blue lighten-1"><span class="btn-text" id="login-redirect-text">Login</span></v-btn>
           </router-link> to include food preferences in your search
         </v-alert>
         <div id="select-restaurant">
@@ -39,5 +39,8 @@ export default {
 #unregistered-restaurant-selection {
   max-width: 1200px;
   margin: auto;
+}
+#login-redirect-text {
+  font-weight: bold;
 }
 </style>

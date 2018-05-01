@@ -195,13 +195,6 @@ export default {
 </script>
 
 <style scoped>
-#image-upload{
-  width: 0px;
-  height: 0px;
-  border-top-width: 10px;
-  padding-top: 0px;
-  padding-bottom: 15px;
-}
 #previewImage{
   height: 100px;
   width: 100px;

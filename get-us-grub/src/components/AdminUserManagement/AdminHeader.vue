@@ -10,7 +10,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar id="admin-picture">
-              <img :src="displayPicture" id="display-picture"/>
+              <img :src="displayPicture + '?' + getRandomQuery()" id="display-picture"/>
               <h1 id="displayname-text">
                 {{ displayName }}
               </h1>
@@ -43,6 +43,7 @@
 <script>
 import jwt from 'jsonwebtoken'
 import axios from 'axios'
+import moment from 'moment'
 import profileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 
 export default {
@@ -86,6 +87,9 @@ export default {
     this.getAdminProfile()
   },
   methods: {
+    getRandomQuery () {
+      return moment().format()
+    },
     logout () {
       axios.post(this.$store.state.urls.logout.logoutUser, {}, {
         headers: {
@@ -164,11 +168,6 @@ export default {
 }
 #logout-text{
   padding-left:35px;
-}
-div#image-upload{
-    width: 0px;
-    height: 550px;
-    padding-left: 128px;
 }
 #admin-picture {
   margin: 0 0 0 2.6em;

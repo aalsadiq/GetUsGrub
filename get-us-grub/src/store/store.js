@@ -6,7 +6,21 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
-  plugins: [createPersistedState()],
+  plugins: [createPersistedState({
+    paths: [
+      'isAuthenticated',
+      'authenticationToken',
+      'username',
+      'timer',
+      'uniqueCounter',
+      'menuItems',
+      'restaurantMenus',
+      'showRestaurantMenuItems',
+      'billItems',
+      'billUsers',
+      'restaurantSelection.selectedRestaurant'
+    ]
+  })],
   // A state is a global variable that every Vue component can reference
   state: {
     isAuthenticated: true,

@@ -130,7 +130,7 @@
             <!-- Buttons on the active menu tab -->
             <div v-if="isEdit">
               <v-layout>
-                <v-btn icon class="mx-0" @click="editMenu(menu)">
+                <v-btn icon class="mx-0" @click="editMenu(menu, menuIndex)">
                   <v-icon color="yellow">edit</v-icon>
                 </v-btn>
                 <v-btn icon class="mx-0" @click="deleteMenu(menu)">
@@ -162,7 +162,7 @@
               @click="toggle()"
               avatar
               ripple
-              :key="item.id"
+              :key="itemIndex"
               v-if="item.isActive && item.flag !== 3"
               >
               <!-- Picture of active menu item for an active menu -->
@@ -202,7 +202,7 @@
               @click="toggle()"
               avatar
               ripple
-              :key="item.id"
+              :key="itemIndex"
               v-if="!item.isActive && isEdit && item.flag !== 3"
               >
               <!-- Picture of inactive menu item for an active menu -->
@@ -283,18 +283,18 @@
           next-icon="chevron_right"
         >
           <v-tabs-slider color="yellow"></v-tabs-slider>
-          <v-tab v-for="(menu, menuIndex) in restaurantMenusList" :key="menuIndex" v-if="!menu.restaurantMenu.isActive && menu.restaurantMenu.flag !== 3">
-            {{ menu.restaurantMenu.menuName }}
+          <v-tab v-for="(inactiveMenu, inactiveMenuIndex) in restaurantMenusList" :key="inactiveMenuIndex" v-if="!inactiveMenu.restaurantMenu.isActive && inactiveMenu.restaurantMenu.flag !== 3">
+            {{ inactiveMenu.restaurantMenu.menuName }}
             <!-- Buttons on the inactive menu tab -->
             <div v-if="isEdit">
               <v-layout>
-              <v-btn icon class="mx-0" @click="editMenu(menu, menuIndex)">
+              <v-btn icon class="mx-0" @click="editMenu(inactiveMenu, inactiveMenuIndex)">
                 <v-icon color="yellow">edit</v-icon>
               </v-btn>
-              <v-btn icon class="mx-0" @click="deleteMenu(menu)">
+              <v-btn icon class="mx-0" @click="deleteMenu(inactiveMenu)">
                 <v-icon color="grey">delete</v-icon>
               </v-btn>
-              <v-btn dark slot="activator" class="mb-2" icon @click="addMenuItem(menuIndex)">
+              <v-btn dark slot="activator" class="mb-2" icon @click="addMenuItem(inactiveMenuIndex)">
                 <v-icon>add_circle</v-icon>
               </v-btn>
               </v-layout>
@@ -304,7 +304,7 @@
       </v-toolbar>
       <!-- Binding the which active menu tab user clicks on to activeTab variable -->
       <v-tabs-items v-model="inactiveTab">
-        <v-tab-item v-for="(menu, menuIndex) in restaurantMenusList" :key="menuIndex" v-if="!menu.restaurantMenu.isActive && menu.restaurantMenu.flag !== 3">
+        <v-tab-item v-for="(inactiveMenu, inactiveMenuIndex) in restaurantMenusList" :key="inactiveMenuIndex" v-if="!inactiveMenu.restaurantMenu.isActive && inactiveMenu.restaurantMenu.flag !== 3">
           <div
             style="max-height: 600px;"
             class="scroll-y"
@@ -313,13 +313,13 @@
           <v-card flat>
           <v-list three-line>
             <!-- Inactive Menu's menu items -->
-            <template v-for="(item, itemIndex) in restaurantMenusList[menuIndex].menuItem">
+            <template v-for="(item, itemIndex) in restaurantMenusList[inactiveMenuIndex].menuItem">
             <!-- An active menu item of an inactive menu -->
             <v-list-tile
               @click="toggle()"
               avatar
               ripple
-              :key="item.id"
+              :key="itemIndex"
               v-if="item.isActive && item.flag !== 3"
               >
               <!-- Picture of active menu item for an inactive menu -->
@@ -341,12 +341,12 @@
                    <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
                 </v-flex>
                 <v-flex>
-                <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
+                <v-btn icon class="mx-0" @click="editMenuItem(inactiveMenuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
                 </v-flex>
                 <v-flex>
-                <v-btn icon class="mx-0" @click="deleteMenuItem(menuIndex, item)">
+                <v-btn icon class="mx-0" @click="deleteMenuItem(inactiveMenuIndex, item)">
                   <v-icon color="pink">delete</v-icon>
                 </v-btn>
                 </v-flex>
@@ -358,7 +358,7 @@
               @click="toggle()"
               avatar
               ripple
-              :key="item.id"
+              :key="itemIndex"
               v-if="!item.isActive && isEdit && item.flag !== 3"
               >
               <!-- Picture of inactive menu item for an inactive menu -->
@@ -380,12 +380,12 @@
                    <menu-image-upload v-if="item.flag !== 1" :menuItemId="item.id" id="menu-items-image-upload"/>
                 </v-flex>
                 <v-flex>
-                <v-btn icon class="mx-0" @click="editMenuItem(menuIndex, item)">
+                <v-btn icon class="mx-0" @click="editMenuItem(inactiveMenuIndex, item)">
                   <v-icon color="teal">edit</v-icon>
                 </v-btn>
                 </v-flex>
                 <v-flex>
-                <v-btn icon class="mx-0" @click="deleteMenuItem(menuIndex, item)">
+                <v-btn icon class="mx-0" @click="deleteMenuItem(inactiveMenuIndex, item)">
                   <v-icon color="pink">delete</v-icon>
                 </v-btn>
                 </v-flex>
@@ -394,15 +394,15 @@
             </v-list-tile>
             <!-- The line underneath the menu item content -->
             <v-divider
-              v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length
+              v-if="itemIndex !== restaurantMenusList[inactiveMenuIndex].menuItem.length
                     && isEdit"
               :key="itemIndex"
             >
             </v-divider>
             <v-divider
-              v-if="itemIndex !== restaurantMenusList[menuIndex].menuItem.length
+              v-if="itemIndex !== restaurantMenusList[inactiveMenuIndex].menuItem.length
                     && !isEdit
-                    && restaurantMenusList[menuIndex].menuItem[itemIndex].isActive"
+                    && restaurantMenusList[inactiveMenuIndex].menuItem[itemIndex].isActive"
               :key="itemIndex"
             >
             </v-divider>

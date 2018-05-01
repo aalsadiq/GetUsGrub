@@ -263,6 +263,7 @@ export default {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
         this.isEdit = false
+        this.getRestaurantProfile()
       }).catch(error => {
         try {
           if (error.response.status === 401) {

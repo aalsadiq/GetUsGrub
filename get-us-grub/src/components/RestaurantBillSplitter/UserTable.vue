@@ -1,20 +1,18 @@
 <template>
   <div class="user-table">
-    <h1>Users</h1>
+    <h1> Bill Friends</h1>
     <v-divider />
-    <div id="test">
-      <div class="user" v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
-        <ul class="user-list">
+      <div class="user-list" v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
+        <ul class="user">
           <li>
             <h2>{{ billUser.name }} owes ${{ (billUser.moneyOwes / 100).toFixed(2) }}</h2>
           </li>
           <li>
-            <v-btn small color="red" v-on:click="RemoveUser(billUserIndex, billUser.uID)"><v-icon>clear</v-icon></v-btn>
+            <v-btn dark small color="red" v-on:click="RemoveUser(billUserIndex, billUser.uID)"> Delete</v-btn>
           </li>
         </ul>
         <v-divider />
       </div>
-    </div>
     <add-bill-user class="add-bill-user" />
   </div>
 </template>
@@ -68,17 +66,17 @@ export default {
       text-align: center;
     }
 
-  #test {
+  #user-list {
     margin-bottom: 150px;
   }
 
-  .user-list {
+  .user {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .user-list > li {
+  .user > li {
     display: inline;
   }
 

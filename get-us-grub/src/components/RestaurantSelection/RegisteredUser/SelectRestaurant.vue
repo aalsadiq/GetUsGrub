@@ -154,7 +154,7 @@ export default {
       this.loader = null
     }
   },
-  mounted() {
+  mounted () {
     this.mobileScreenWidth = this.$store.state.constants.mobileScreenWidth
     this.onResize()
   },

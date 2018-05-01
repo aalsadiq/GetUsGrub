@@ -17,44 +17,40 @@
           <v-icon dark>list</v-icon>
         </v-btn>
         <v-list>
-          <v-list-tile v-if="showWithoutAuthentication()">
+          <v-list-tile id="RegistrationTile" v-if="showWithoutAuthentication()">
             <v-btn
               flat
               class="nav-btn"
               to="Registration"
             >
-            REGISTER
+            Register
             </v-btn>
           </v-list-tile>
-          <v-list-tile v-if="showWithoutAuthentication()">
+          <v-list-tile id="LoginTile" v-if="showWithoutAuthentication()">
             <v-btn
               flat
               class="nav-btn"
               to="Login"
             >
-            LOGIN
+            Login
             </v-btn>
           </v-list-tile>
-          <v-list-tile v-if="!showWithoutAuthentication()">
+          <v-list-tile id="ProfileTile" v-if="!showWithoutAuthentication()">
             <v-btn
               flat
-              slot="activator"
               class="nav-btn"
               to="Profile"
             >
-              <v-icon id="person-icon">person</v-icon>
-              <span class="nav-btn-text" id="username-text">
-                {{ this.$store.state.username }}
-              </span>
+            {{ this.$store.state.username}}
             </v-btn>
           </v-list-tile>
-          <v-list-tile>
+          <v-list-tile id="BillSplitterTile">
             <v-btn
               flat
               class="nav-btn"
               to="RestaurantBillSplitter"
             >
-            SPLIT BILL
+            Split Bill
             </v-btn>
           </v-list-tile>
           <v-list-tile v-if="!showWithoutAuthentication()">
@@ -63,7 +59,7 @@
               class="nav-btn"
               @click="logout"
             >
-            LOGOUT
+            Logout
             </v-btn>
           </v-list-tile>
         </v-list>
@@ -202,8 +198,5 @@ div.btn__content {
 }
 #username-text {
   text-transform: uppercase;
-}
-#person-icon {
-  margin: 0 0.4em 0.1em 0;
 }
 </style>

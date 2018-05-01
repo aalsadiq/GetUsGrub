@@ -17,9 +17,7 @@
       </v-alert>
       <!-- Card to show error messages -->
       <v-card id="error-card">
-        <p v-for="error in errors" :key="error">
-          {{ error }}
-        </p>
+        {{ this.errors }}
       </v-card>
     </div>
     <v-layout justify-center>

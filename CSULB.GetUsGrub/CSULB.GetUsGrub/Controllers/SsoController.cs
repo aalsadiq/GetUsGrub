@@ -97,7 +97,7 @@ namespace CSULB.GetUsGrub
                 // Send 200 Response HTTP Status Code
                 return Ok(tokenResult.Data.TokenString);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Send 500 Response HTTP Status Code
                 return InternalServerError();

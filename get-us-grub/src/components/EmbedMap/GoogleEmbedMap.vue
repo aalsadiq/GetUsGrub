@@ -1,6 +1,6 @@
 <template>
   <div id="google-embed-map">
-      <iframe :src="mapUrl" width = 500 height = 500></iframe>
+      <iframe :src="mapUrl" width = 100% height = 100%></iframe>
   </div>
 </template>
 

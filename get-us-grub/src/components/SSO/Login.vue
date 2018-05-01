@@ -1,26 +1,27 @@
 <template>
-  <div id = 'sso-login'>
+  <div>
     <app-header />
-    <div id = 'login-card' align='center'>
-      <v-flex xs8>
-        <!-- Title bar for the Food Preferences -->
-        <v-card id = 'login-message'>
-          <div v-if='isLoading'>
-            <v-avatar :size=250 :tile='true'><img src="@/assets/GetUsGrub-Food.png"></v-avatar>
-            <v-card-title>
-              Please wait while we securely log you in...
-            </v-card-title>
-            <v-progress-circular :size=50 indeterminate color="primary" />
-          </div>
-          <div v-if='!isLoading'>
-            <v-avatar :size=250><img src="@/assets/GetUsGrub-Sad.png"></v-avatar>
-            <v-card-title>
-              An error has occurred. Please try logging in manually.
-            </v-card-title>
-          </div>
-        </v-card>
-      </v-flex>
-    </div>
+    <v-content>
+      <v-container>
+        <div align='center'>
+          <v-card id = 'login-card'>
+            <div v-if='isLoading'>
+              <v-avatar :size=250 :tile='true'><img src="@/assets/GetUsGrub-Food.png"></v-avatar>
+              <v-card-title class="justify-center">
+                Please wait while we securely log you in...
+              </v-card-title>
+              <v-progress-circular :size=50 indeterminate color="primary" />
+            </div>
+            <div v-if='!isLoading'>
+              <v-avatar :size=250><img src="@/assets/GetUsGrub-Sad.png"></v-avatar>
+              <v-card-title class="justify-center">
+                An error has occurred. Please try logging in manually.
+              </v-card-title>
+            </div>
+          </v-card>
+        </div>
+      </v-container>
+    </v-content>
     <app-footer />
   </div>
 </template>
@@ -42,6 +43,7 @@ export default {
   }),
   created () {
     var queryJwt = this.$route.query.jwt
+    console.log(queryJwt)
     axios({
       method: 'GET',
       url: this.$store.state.urls.sso.login,
@@ -67,3 +69,9 @@ export default {
   }
 }
 </script>
+
+<style>
+#login-card {
+  max-width: 450px;
+}
+</style>

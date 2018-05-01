@@ -646,10 +646,10 @@ export default {
           } else {
             this.errors = JSON.parse(JSON.parse(error.response.data.message))
           }
-          Promise.reject(error)
+          Promise.reject(this.errors)
         } catch (ex) {
-          this.errors = error.response.data
-          Promise.reject(error)
+          this.errors = ex
+          Promise.reject(this.errors)
         }
       })
     },

@@ -34,7 +34,7 @@ export default {
   color: rgb(82, 159, 247) !important;
 }
 #unregistered-restaurant-selection {
-  max-width: 1600px;
+  max-width: 1200px;
   margin: auto;
 }
 </style>

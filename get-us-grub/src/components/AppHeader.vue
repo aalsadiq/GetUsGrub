@@ -1,8 +1,5 @@
 <template>
   <v-toolbar id="header-toolbar" app dark fixed>
-    <span class="hidden-sm-and-up">
-      <v-toolbar-side-icon id="toolbar-side-icon"/>
-    </span>
     <v-toolbar-items>
       <v-btn flat id="home-btn" to="/">
         <v-avatar :size="52" :tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>
@@ -114,22 +111,6 @@
         @click="logout"
       >
         <span class="nav-btn-text">LOGOUT</span>
-      </v-btn>
-      <v-btn
-        flat
-        class="nav-btn"
-        to="Registration"
-        v-if="showWithoutAuthentication()"
-      >
-        <span class="nav-btn-text">REGISTER</span>
-      </v-btn>
-      <v-btn
-        flat
-        class="nav-btn"
-        to="Login"
-        v-if="showWithoutAuthentication()"
-      >
-        <span class="nav-btn-text">LOGIN</span>
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>

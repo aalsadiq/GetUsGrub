@@ -23,6 +23,7 @@
                   :items="$store.state.constants.foodTypes"
                   v-model="$store.state.restaurantSelection.request.foodType"
                   item-text="type"
+                  label="Food type"
                   hint="Food type"
                   persistent-hint
                   :rules="$store.state.rules.foodTypeRules"
@@ -35,6 +36,7 @@
               <v-flex xs4>
               <v-text-field
                 v-model="$store.state.restaurantSelection.request.city"
+                label="City"
                 hint="City"
                 persistent-hint
                 :rules="$store.state.rules.addressCityRules"
@@ -48,6 +50,7 @@
                   :items="$store.state.constants.states"
                   v-model="$store.state.restaurantSelection.request.state"
                   item-text="abbreviation"
+                  label="State"
                   hint="State"
                   persistent-hint
                   :rules="$store.state.rules.addressStateRules"
@@ -59,8 +62,8 @@
             </v-layout>
             <v-layout row justify-space-around>
               <!-- Prices radio buttons -->
+              <v-flex xs3>
               <v-subheader>PRICE*</v-subheader>
-              <v-flex xs6>
                 <v-radio-group
                   :value="$store.state.restaurantSelection.request.avgFoodPrice"
                   v-model.number="$store.state.restaurantSelection.request.avgFoodPrice"
@@ -71,10 +74,9 @@
                   <v-radio label="$50+" :value="3" :disabled=disable></v-radio>
                 </v-radio-group>
               </v-flex>
-              <v-spacer/>
               <!-- Distance radio buttons -->
+              <v-flex xs3>
               <v-subheader>MAX DISTANCE* (miles)</v-subheader>
-              <v-flex xs5>
                 <v-radio-group
                   :value="$store.state.restaurantSelection.request.avgFoodPrice"
                   v-model.number="$store.state.restaurantSelection.request.distance"

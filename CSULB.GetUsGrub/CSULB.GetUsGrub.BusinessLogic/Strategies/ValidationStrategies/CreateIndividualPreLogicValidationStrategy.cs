@@ -74,7 +74,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 if (result.Error == null)
                 {
-                    result.Error = "Username must not be the same as display name.";
+                    result.Error = ValidationErrorMessages.USERNAME_IS_EQUAL_TO_DISPLAYNAME;
                 }
 
                 result.Data = false;
@@ -87,7 +87,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 if (result.Error == null)
                 {
-                    result.Error = "Username is already used.";
+                    result.Error = UserManagementErrorMessages.USER_EXISTS;
                 }
 
                 result.Data = false;
@@ -100,7 +100,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 if (result.Error == null)
                 {
-                    result.Error = "Your password has been in multiple breaches. You may not use this password.";
+                    result.Error = ValidationErrorMessages.PASSWORD_BREACHED;
                 }
                 
                 return result;

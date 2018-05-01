@@ -1,5 +1,5 @@
 ﻿using CSULB.GetUsGrub.Models;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
@@ -16,10 +16,10 @@ namespace CSULB.GetUsGrub.BusinessLogic
     {
         private string BuildUrl(IGeoCoordinates coordinates, string key, int timestamp)
         {
-            var url = "https://maps.googleapis.com/maps/api/timezone/json?";
-            url += $"location={coordinates.Latitude},{coordinates.Longitude}";
-            url += $"&timestamp={timestamp}";
-            url += $"&key={key}";
+            var url = GoogleApiConstants.GOOGLE_TIMEZONE_URL;
+            url += $"{GoogleApiConstants.GOOGLE_TIMEZONE_LOCATION_QUERY}{coordinates.Latitude},{coordinates.Longitude}";
+            url += GoogleApiConstants.GOOGLE_TIMEZONE_TIMESTAMP_QUERY + timestamp;
+            url += GoogleApiConstants.GOOGLE_KEY_QUERY + key;
 
             return url;
         }
@@ -49,43 +49,34 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var timeStamp = (int)DateTime.Now.Subtract(baseTime).TotalSeconds;
 
             // Retrieve key from configuration and build url for get request.
-            var key = ConfigurationManager.AppSettings["GoogleTimezoneApi"];
+            var key = ConfigurationManager.AppSettings[GoogleApiConstants.GOOGLE_TIMEZONE_API_KEYWORD];
             var url = BuildUrl(coordinates, key, timeStamp);
 
             // Send get request and parse response
             var request = new GetRequestService(url);
             var response = await new GoogleBackoffRequest(request).TryExecute();
             var responseJson = await response.Content.ReadAsStringAsync();
-            var responseObj = JObject.Parse(responseJson);
-
-            // Retrieve status code from response
-            var status = (string)responseObj.SelectToken("status");
-
-            // Exit early if status is not OK.
-            if (!status.Equals("OK"))
+            var responseObj = JsonConvert.DeserializeObject<GoogleTimeZoneDto>(responseJson);
+            
+            if (responseObj.status != GoogleApiConstants.GOOGLE_GEOCODE_STATUS_OK)
             {
-                if (status.Equals("ZERO_RESULTS"))
+                if (responseObj.status == GoogleApiConstants.GOOGLE_TIMEZONE_STATUS_ZERO_RESULTS)
                 {
-                    status = "Invalid Input";
-                }
-                else
-                {
-                    status = "Unexpected Error";
+                    return new ResponseDto<int>()
+                    {
+                        Error = GoogleApiConstants.GOOGLE_TIMEZONE_ERROR_INVALID_ADDRESS
+                    };
                 }
 
                 return new ResponseDto<int>()
                 {
-                    Error = status
+                    Error = GoogleApiConstants.GOOGLE_TIMEZONE_ERROR_GENERAL
                 };
             }
 
-            // Retrieve offsets from response and return the sum of the offsets.
-            var offset = (int)responseObj.SelectToken("rawOffset");
-            var dstOffset = (int)responseObj.SelectToken("dstOffset");
-
             return new ResponseDto<int>()
             {
-                Data = offset + dstOffset
+                Data = responseObj.rawOffset + responseObj.dstOffset
             };
         }
     }

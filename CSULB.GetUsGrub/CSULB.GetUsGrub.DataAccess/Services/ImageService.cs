@@ -17,20 +17,16 @@ namespace CSULB.GetUsGrub.DataAccess
         /// </para>
         /// </summary>
         /// <param name="path">The physical path of image.</param>
-        /// <param name="image">The virtual path of image. Is used to get the file name.</param>
         /// <returns></returns>
-        public ResponseDto<bool> DeleteImage(string path, string image)
+        public ResponseDto<bool> DeleteImage(string path) // string image
         {
             try
             {
-                var imageName = Path.GetFileName(image);
-                var filePath = path + imageName;
-
                 // Check if path exists
-                if (File.Exists(filePath))
+                if (File.Exists(path))
                 {
                     // Delete Image if path exists
-                    File.Delete(filePath);
+                    File.Delete(path);
 
                     return new ResponseDto<bool>()
                     {

@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub
     /// @updated: 04/25/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("ResetPassword")]
+    [RoutePrefix("api/v1/ResetPassword")]
     public class ResetPasswordController : ApiController
     {
         /// <summary>

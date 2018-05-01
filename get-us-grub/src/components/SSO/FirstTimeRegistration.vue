@@ -1,9 +1,11 @@
 <template>
   <div>
     <app-header/>
-      <div id="registration">
+    <v-content>
+      <v-container>
         <app-create-user/>
-      </div>
+      </v-container>
+    </v-content>
     <app-footer/>
   </div>
 </template>
@@ -36,10 +38,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#registration {
-  padding: 2.5em 0 0 0;
-  margin: 3.5em 10em 10em 11.5em;
-}
-</style>

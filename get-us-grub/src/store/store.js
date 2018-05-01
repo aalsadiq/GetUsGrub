@@ -6,11 +6,23 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
+  plugins: [createPersistedState({
+    paths: [
+      'isAuthenticated',
+      'authenticationToken',
+      'username',
+      'timer',
+      'uniqueCounter',
+      'menuItems',
+      'restaurantMenus',
+      'showRestaurantMenuItems',
+      'billItems',
+      'billUsers',
+      'restaurantSelection.selectedRestaurant'
+    ]
+  })],
   // A state is a global variable that every Vue component can reference
   state: {
-    plugins: [
-      createPersistedState({})
-    ],
     isAuthenticated: true,
     authenticationToken: null,
     firstTimeUserToken: null,
@@ -57,62 +69,64 @@ export const store = new Vuex.Store({
         foodPreferences: null
       }
     },
-    // Header values for Axios requests
-    headers: {
-      accessControlAllowOrigin: 'http://localhost:8080'
-    },
     // Uniform Resource Locations for Axios requests
     urls: {
       userManagement: {
-        createIndividualUser: 'http://localhost:8081/User/Registration/Individual',
-        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant',
-        createAdminUser: 'http://localhost:8081/User/CreateAdmin',
-        deactivateUser: 'http://localhost:8081/User/DeactivateUser',
-        reactivateUser: 'http://localhost:8081/User/ReactivateUser',
-        editUser: 'http://localhost:8081/User/EditUser',
-        deleteUser: 'http://localhost:8081/User/DeleteUser'
+        createIndividualUser: 'http://localhost:8081/api/v1/User/Registration/Individual',
+        createRestaurantUser: 'http://localhost:8081/api/v1/User/Registration/Restaurant',
+        createAdminUser: 'http://localhost:8081/api/v1/User/CreateAdmin',
+        deactivateUser: 'http://localhost:8081/api/v1/User/DeactivateUser',
+        reactivateUser: 'http://localhost:8081/api/v1/User/ReactivateUser',
+        editUser: 'http://localhost:8081/api/v1/User/EditUser',
+        deleteUser: 'http://localhost:8081/api/v1/User/DeleteUser'
       },
       foodPreferences: {
-        getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',
-        editPreferences: 'http://localhost:8081/FoodPreferences/Edit'
+        getPreferences: 'http://localhost:8081/api/v1/FoodPreferences/GetPreferences',
+        editPreferences: 'http://localhost:8081/api/v1/FoodPreferences/Edit'
       },
       restaurantSelection: {
-        unregisteredUser: 'http://localhost:8081/RestaurantSelection/Unregistered/',
-        registeredUser: 'http://localhost:8081/RestaurantSelection/Registered/'
+        unregisteredUser: 'http://localhost:8081/api/v1/RestaurantSelection/Unregistered/',
+        registeredUser: 'http://localhost:8081/api/v1/RestaurantSelection/Registered/'
       },
       profileManagement: {
-        userProfile: 'http://localhost:8081/Profile/User',
-        updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
-        restaurantProfile: 'http://localhost:8081/Profile/Restaurant',
-        updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit',
-        menuItemUpload: 'http://localhost:8081/Profile/Restaurant/Edit/MenuItemImageUpload',
-        profileImageUpload: 'http://localhost:8081/Profile/User/Edit/ProfileImageUpload'
+        userProfile: 'http://localhost:8081/api/v1/Profile/User',
+        updateUserProfile: 'http://localhost:8081/api/v1/Profile/User/Edit',
+        restaurantProfile: 'http://localhost:8081/api/v1/Profile/Restaurant',
+        updateRestaurantProfile: 'http://localhost:8081/api/v1/Profile/Restaurant/Edit',
+        menuItemUpload: 'http://localhost:8081/api/v1/Profile/Restaurant/Edit/MenuItemImageUpload',
+        profileImageUpload: 'http://localhost:8081/api/v1/Profile/User/Edit/ProfileImageUpload'
       },
       resetPassword: {
-        getSecurityQuestions: 'http://localhost:8081/ResetPassword/GetSecurityQuestions',
-        confirmSecurityAnswers: 'http://localhost:8081/ResetPassword/ConfirmSecurityAnswers',
-        updatePassword: 'http://localhost:8081/ResetPassword/UpdatePassword'
+        getSecurityQuestions: 'http://localhost:8081/api/v1/ResetPassword/GetSecurityQuestions',
+        confirmSecurityAnswers: 'http://localhost:8081/api/v1/ResetPassword/ConfirmSecurityAnswers',
+        updatePassword: 'http://localhost:8081/api/v1/ResetPassword/UpdatePassword'
       },
       sso: {
-        login: 'http://localhost:8081/Sso/Login',
-        createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
-        createRestaurantUser: 'http://localhost:8081/User/FirstTimeRegistration/Restaurant'
+        login: 'http://localhost:8081/api/v1/Sso/Login',
+        createIndividualUser: 'http://localhost:8081/api/v1/User/FirstTimeRegistration/Individual',
+        createRestaurantUser: 'http://localhost:8081/api/v1/User/FirstTimeRegistration/Restaurant'
       },
       restaurantBillSplitter: {
-        getRestaurantMenus: 'http://localhost:8081/RestaurantBillSplitter/Restaurant'
+        getRestaurantMenus: 'http://localhost:8081/api/v1/RestaurantBillSplitter/Restaurant'
       },
       login: {
-        loginUser: 'http://localhost:8081/Login'
+        loginUser: 'http://localhost:8081/api/v1/Login'
       },
       logout: {
-        logoutUser: 'http://localhost:8081/Logout'
+        logoutUser: 'http://localhost:8081/api/v1/Logout'
       },
       renewSession: {
-        requestNewToken: 'http://localhost:8081/RenewSession'
+        requestNewToken: 'http://localhost:8081/api/v1/RenewSession'
+      },
+      pwnedPassword: {
+        range: 'https://api.pwnedpasswords.com/range/'
       }
     },
     // Rules for validations
     rules: {
+      addBillUserRules: [
+        billUser => !!billUser || 'Required'
+      ],
       usernameRules: [
         username => !!username || 'Username is required',
         username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
@@ -185,6 +199,9 @@ export const store = new Vuex.Store({
     },
     // Constants are data that are non-changing
     constants: {
+      genericErrorMessage: 'An unexpected error has occured.',
+      mobileScreenWidth: 1000,
+      inputValidationDelay: 250,
       defaultProfilePicturePath: '@/assets/DefaultProfileImage.png',
       securityQuestions: [{
         id: 0,
@@ -423,6 +440,13 @@ export const store = new Vuex.Store({
     },
     getUniqueCounter: state => {
       return state.uniqueCounter
+    },
+    getTotalPercentage: (state) => (billItemIndex) => {
+      var temp = 0
+      state.billItems[billItemIndex].manual.forEach(function (element, index) {
+        temp += Number(state.billItems[billItemIndex].manual[index].percentage)
+      })
+      return temp
     }
   },
   // Mutations are called to change the states in the store synchronously
@@ -436,14 +460,14 @@ export const store = new Vuex.Store({
     addToDictionary: (state, payload) => {
       state.menuItems.push({
         itemName: payload[0],
-        itemPrice: payload[1],
-        selected: []
+        itemPrice: payload[1]
       })
     },
     addBillUser: (state, payload) => {
       state.billUsers.push({
         name: payload[0],
         uID: payload[1],
+        billItemsIn: [],
         moneyOwes: 0,
         tipAssigned: 0
       })
@@ -462,8 +486,7 @@ export const store = new Vuex.Store({
       payload.forEach(function (element, index) {
         state.restaurantMenuItems.push({
           itemName: element.itemName,
-          itemPrice: element.itemPrice,
-          selected: []
+          itemPrice: element.itemPrice
         })
       })
     },
@@ -503,24 +526,51 @@ export const store = new Vuex.Store({
       } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) { // When the last user is REMOVED from the selected list
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice
       } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is ADDED to selected list
-        oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
-        newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
+        oldSplit = Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / (payload.oldSelected.length - payload.billItem.selectedManual.length))
+        newSplit = Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / (payload.newSelected.length - payload.billItem.selectedManual.length))
         payload.oldSelected.forEach(function (element, index) {
-          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+          if (!state.billItems[payload.billItemIndex].selectedManual.includes(element)) {
+            state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+          }
         })
         payload.newSelected.forEach(function (element, index) {
-          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+          if (!state.billItems[payload.billItemIndex].selectedManual.includes(element)) {
+            state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+          }
         })
       } else if (payload.oldSelected.length > payload.newSelected.length) { // When a user is REMOVED from the selected list
-        oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
-        newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
+        oldSplit = Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / payload.oldSelected.length)
+        newSplit = Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {
-          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+          if (!state.billItems[payload.billItemIndex].selectedManual.includes(element)) {
+            state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+          }
         })
         payload.newSelected.forEach(function (element, index) {
-          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+          if (!state.billItems[payload.billItemIndex].selectedManual.includes(element)) {
+            state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+          }
         })
       }
+    },
+    addManual: (state, payload) => {
+      state.billUsers[payload.billUserIndex].moneyOwes -= Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / (payload.billItem.selected.length - payload.billItem.manual.length))
+      state.billItems[payload.billItemIndex].manual.push({
+        manualUID: payload.newUID,
+        percentage: 0
+      })
+    },
+    removeManual: (state, payload) => {
+      var index = payload.billItem.manual.findIndex(x => x.manualUID === payload.removedUID)
+      state.billItems[payload.billItemIndex].manual.splice(index, 1)
+      state.billUsers[payload.billUserIndex].moneyOwes -= Math.ceil(Math.ceil(payload.billItem.itemPrice * (payload.oldPercentage / 100)) / (payload.billItem.selected.length - (payload.billItem.selectedManual.length - 1)))
+      state.billUsers[payload.billUserIndex].moneyOwes += Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - (payload.totalPercentage - payload.oldPercentage)) / 100)) / (payload.billItem.selected.length - (payload.billItem.selectedManual.length)))
+    },
+    removeSelectedManual: (state, payload) => {
+      var index = payload.billItem.selectedManual.findIndex(x => x === payload.removedUID)
+      state.billItems[payload.billItemIndex].selectedManual.splice(index, 1)
+    },
+    updateSelectedManual: (state, payload) => {
     },
     updateUserMoneyOwesFromEditItem: (state, payload) => {
       var oldSplit = Math.ceil(payload.Item.itemPrice / payload.Item.selected.length)
@@ -557,6 +607,10 @@ export const store = new Vuex.Store({
         }
       })
     },
+    updatePercentage: (state, payload) => {
+      state.billUsers[payload.billUserIndex].moneyOwes -= Math.ceil(payload.billItem.itemPrice * (payload.oldPercentage / 100))
+      state.billUsers[payload.billUserIndex].moneyOwes += Math.ceil(payload.billItem.itemPrice * (payload.newPercentage / 100))
+    },
     incrementUniqueCounter: (state) => {
       state.uniqueCounter++
     },
@@ -576,12 +630,14 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
       state.restaurantSelection.selectedRestaurant.foodPreferences = payload.foodPreferences
     },
-    getAuthenticationToken: (state, payload) => {
-      state.isAuthenticated = true
-      state.authenticationToken = payload.auth
+    setIsAuthenticated: (state, payload) => {
+      state.isAuthenticated = payload
     },
     setAuthenticationToken: (state, payload) => {
       state.authenticationToken = payload
+    },
+    setUsername: (state, payload) => {
+      state.username = payload
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -679,15 +735,19 @@ export const store = new Vuex.Store({
         context.commit('setSelectedRestaurant', payload)
       }, 250)
     },
-    // TODO: @Ahmed same with this one. [-Jenn]
-    getAuthenticationToken: (context, payload) => {
-      setTimeout(function () {
-        context.commit('getAuthenticationToken', payload)
-      }, 250)
-    },
     setAuthenticationToken: (context, payload) => {
       setTimeout(function () {
         context.commit('setAuthenticationToken', payload)
+      }, 250)
+    },
+    setIsAuthenticated: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setIsAuthenticated', payload)
+      }, 250)
+    },
+    setUsername: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setUsername', payload)
       }, 250)
     }
   }

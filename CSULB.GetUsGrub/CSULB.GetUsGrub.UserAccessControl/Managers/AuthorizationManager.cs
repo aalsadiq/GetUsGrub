@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CSULB.GetUsGrub.Models;
+using System;
 using System.Linq;
 using System.Security;
 using System.Security.Claims;
-using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.UserAccessControl
 {
@@ -32,7 +32,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             {
                 // Transform the claims principal to contain all of the user's permission claims
                 ClaimsTransformer transformer = new ClaimsTransformer();
-                principal = transformer.Authenticate(PermissionTypes.Authorization, principal);
+                principal = transformer.Authenticate(resource, principal);
 
                 // Check transformed claims principal to see if it contains the claim needed
                 bool hasAccess = principal.HasClaim(claim, "True");
@@ -40,9 +40,8 @@ namespace CSULB.GetUsGrub.UserAccessControl
                 // Return true or false determining user access
                 return hasAccess;
             }          
-            catch (Exception e)
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine(e);
                 // If an error occurs, throw a security exception
                 throw new SecurityException(GeneralErrorMessages.GENERAL_ERROR);
             }

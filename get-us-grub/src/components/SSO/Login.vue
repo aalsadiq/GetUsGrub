@@ -1,26 +1,27 @@
 <template>
-  <div id = 'sso-login'>
+  <div>
     <app-header />
-    <div id = 'login-card' align='center'>
-      <v-flex xs8>
-        <!-- Title bar for the Food Preferences -->
-        <v-card id = 'login-message'>
-          <div v-if='isLoading'>
-            <v-avatar :size=250 :tile='true'><img src="@/assets/GetUsGrub-Food.png"></v-avatar>
-            <v-card-title>
-              Please wait while we securely log you in...
-            </v-card-title>
-            <v-progress-circular :size=50 indeterminate color="primary" />
-          </div>
-          <div v-if='!isLoading'>
-            <v-avatar :size=250><img src="@/assets/GetUsGrub-Sad.png"></v-avatar>
-            <v-card-title>
-              An error has occurred. Please try logging in manually.
-            </v-card-title>
-          </div>
-        </v-card>
-      </v-flex>
-    </div>
+    <v-content>
+      <v-container>
+        <div align='center'>
+          <v-card id = 'login-card'>
+            <div v-if='isLoading'>
+              <v-avatar :size=250 :tile='true'><img src="@/assets/GetUsGrub-Food.png"></v-avatar>
+              <v-card-title class="justify-center">
+                Please wait while we securely log you in...
+              </v-card-title>
+              <v-progress-circular :size=50 indeterminate color="primary" />
+            </div>
+            <div v-if='!isLoading'>
+              <v-avatar :size=250><img src="@/assets/GetUsGrub-Sad.png"></v-avatar>
+              <v-card-title class="justify-center">
+                An error has occurred. Please try logging in manually.
+              </v-card-title>
+            </div>
+          </v-card>
+        </div>
+      </v-container>
+    </v-content>
     <app-footer />
   </div>
 </template>
@@ -40,6 +41,7 @@ export default {
   data: () => ({
     isLoading: true
   }),
+  // Log user in based on query when the page loads
   created () {
     var queryJwt = this.$route.query.jwt
     axios({
@@ -51,33 +53,25 @@ export default {
     }).then(response => {
       this.valid = true
       this.disable = false
-
       var decodedJwt = jwt.decode(response.data)
-
-      this.$store.state.username = decodedJwt.Username
-      console.log(decodedJwt)
+      this.$store.commit('setUsername', decodedJwt['Username'])
       if (decodedJwt.ReadIsFirstTimeUser === 'True') {
         this.$store.state.firstTimeUserToken = response.data
         this.$router.push('FirstTimeRegistration')
       } else {
-        this.$store.state.isAuthenticated = true
-        this.$store.state.authenticationToken = response.data
+        this.$store.commit('setIsAuthenticated', true)
+        this.$store.commit('setAuthenticationToken', response.data)
         this.$router.push({path: '/'})
       }
     }).catch(ex => {
       this.isLoading = false
     })
-    console.log(queryJwt)
   }
 }
 </script>
 
-<style scoped>
+<style>
 #login-card {
-  margin-top: 10em
-}
-#login-message {
-  font-size: 150%;
-  display: inline-block;
+  max-width: 450px;
 }
 </style>

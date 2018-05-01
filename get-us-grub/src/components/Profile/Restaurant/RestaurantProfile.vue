@@ -8,15 +8,12 @@
           <div id="display-picture">
             <v-layout column align-center justify-center>
               <v-avatar
-                :size="200"
+                :size="255"
                 class="grey lighten-4"
               >
-                <img :src="profile.displayPicture" alt="avatar">
+                <img :src="profile.displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
-                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
-                  <span id="upload-image-text">Upload Image</span>
-                </v-btn> -->
                 <div v-if="isEdit">
                   <profile-image-upload id="image-upload"/>
                 </div>
@@ -67,9 +64,23 @@
               <v-icon>edit</v-icon>
             </v-btn>
             <v-btn
+              id="submit-btn"
               v-if="isEdit"
               fab
               color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="editRestaurantProfile()"
+              slot="activator"
+              >
+              <v-icon>save</v-icon>
+            </v-btn>
+            <v-btn
+              id="cancel-btn"
+              v-if="isEdit"
+              fab
+              color="pink"
               bottom
               right
               absolute
@@ -108,16 +119,8 @@
         <menus class="profile-component" :restaurantMenusList="profile.restaurantMenusList" :isEdit="isEdit"/>
       </div>
       <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Accommodations'">
-        <food-preferences class="profile-component" :isEdit="isEdit"/>
+        <food-preferences ref="preferences" class="profile-component" :isEdit="isEdit"/>
       </div>
-    </div>
-    <div id="edit-btns-div">
-      <v-btn dark @click="editRestaurantProfile()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
-        Submit All Changes
-      </v-btn>
-      <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Accommodations'">
-        Cancel
-      </v-btn>
     </div>
   </div>
 </div>
@@ -126,6 +129,7 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import moment from 'moment'
 import ContactInfo from './ContactInfo'
 import RestaurantDetails from './RestaurantDetails'
 import BusinessHours from './BusinessHours'
@@ -208,6 +212,9 @@ export default {
     this.getRestaurantProfile()
   },
   methods: {
+    appendRandomQueryToImageUrl () {
+      return moment().format()
+    },
     getRestaurantProfile () {
       axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
         headers: {
@@ -215,7 +222,10 @@ export default {
         }
       }).then(response => {
         this.profile = response.data
-        // this.updateProfileUrl(this.profile.displayPicture)
+        this.appendRandomQueryToImageUrl()
+        try {
+          this.$refs.preferences.getFoodPreferences()
+        } catch (ex) {}
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -244,13 +254,16 @@ export default {
       })
     },
     editRestaurantProfile: function () {
+      try {
+        this.$refs.preferences.update()
+      } catch (ex) {}
       axios.post(this.$store.state.urls.profileManagement.updateRestaurantProfile,
         this.profile,
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
-        this.getRestaurantProfile()
         this.isEdit = false
+        this.getRestaurantProfile()
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -276,7 +289,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.getRestaurantProfile())
     },
     toggleIsEdit () {
       this.isEdit = !this.isEdit
@@ -309,10 +322,6 @@ export default {
 </script>
 
 <style scoped>
-#restaurant-profile-div {
-  margin: 0 0 0 0;
-  padding: 3.5em 0 0 0;
-}
 #image-upload-btn {
   margin: 1em 0 0 0;
 }
@@ -345,15 +354,13 @@ export default {
 #edit-profile-btn-txt {
   margin: 1.1em 0 0 0;
 }
-#edit-btns-div {
-  margin: 0 0 3em 0;
-}
 .btn--bottom.btn--absolute {
-  bottom: 2em;
-  left: 100em;
+  bottom: 20px;
 }
-/* #image-upload{
-  width: 0px;
-  height: 0px;
-} */
+#submit-btn {
+  right: 90px;
+}
+#cancel-btn {
+  color: white;
+}
 </style>

@@ -1,6 +1,5 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Andrew Please comment this [-Jenn]
     public class RestaurantDetail : IRestaurantDetail
     {
         // Automatic Properties

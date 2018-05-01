@@ -15,6 +15,7 @@ namespace CSULB.GetUsGrub.Models
     {
         // Constructors
         public InvalidSsoToken() { }
+
         public InvalidSsoToken(string token)
         {
             Token = token;

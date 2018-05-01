@@ -23,7 +23,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// @update: 04/04/2018
         /// </para>
         /// </summary>
-        /// <param name="restaurantSelectionDto"></param>
         /// <returns>SelectedRestaurantDto</returns>
         public override ResponseDto<SelectedRestaurantDto> SelectRestaurant()
         {
@@ -45,7 +44,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<SelectedRestaurantDto>
                 {
                     Data = null,
-                    Error = GeneralErrorMessages.GENERAL_ERROR
+                    Error = geocodeResponse.Error
                 };
             }
 

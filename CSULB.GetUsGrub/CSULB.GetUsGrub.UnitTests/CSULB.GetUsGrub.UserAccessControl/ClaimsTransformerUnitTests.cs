@@ -50,32 +50,26 @@ namespace CSULB.GetUsGrub.UnitTests
             var result = transformer.CreateAuthenticationClaimsIdentity(username);
 
             // Assert
-            var allClaims = result.HasClaim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True");
-            var readClaims = result.HasClaim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True");
+            var readClaim = result.HasClaim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True");
+            var notReadClaim = result.HasClaim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True");
 
             // Assert
-            allClaims.Should().BeTrue();
-            readClaims.Should().BeFalse();
+            readClaim.Should().BeTrue();
+            notReadClaim.Should().BeFalse();
         }
 
         [Fact]
         public void Should_ReturnClaimsIdentity_With_FirstTimeUserPermissions()
         {
             // Arrange
-            var user = "username1";
-            var claims = new List<Claim> { new Claim(ResourceConstant.USERNAME, user) };
-            var identity = new ClaimsIdentity(claims);
-            var principal = new ClaimsPrincipal(identity);
-
-            var resourceName = ResourceConstant.PREFERENCES;
+            var username = "ssoUser";
 
             // Act
-            var allClaims = transformer.Authenticate(resourceName, principal).HasClaim(ActionConstant.UPDATE + ResourceConstant.PREFERENCES, "True");
-            var readClaims = transformer.Authenticate(resourceName, principal).HasClaim(ActionConstant.READ + ResourceConstant.PREFERENCES, "True");
+            var claimsIdentity = transformer.CreateSsoClaimsIdentity(username);
+            var result = claimsIdentity.HasClaim(ActionConstant.READ + ResourceConstant.FIRSTTIMEUSER, "True");
 
             // Assert
-            allClaims.Should().BeFalse();
-            readClaims.Should().BeTrue();
+            result.Should().BeTrue();
         }
     }
 }

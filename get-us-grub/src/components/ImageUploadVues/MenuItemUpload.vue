@@ -68,7 +68,7 @@ export default {
   props: ['menuItemId'],
   data: () => ({
     showButton: true,
-    errors: [],
+    errors: null,
     dialog: false,
     responseData: '',
     show: false,

@@ -106,7 +106,7 @@
         </v-tab>
       </v-tabs>
             <div class="user-profile-tab-contents" v-if="itemsTab[tab] === 'Food Preferences'">
-        <food-preferences class="profile-component" :isEdit="isEdit"/>
+        <food-preferences ref="preferences" class="profile-component" :isEdit="isEdit"/>
       </div>
     </div>
   </div>
@@ -161,6 +161,7 @@ export default {
       return moment().format()
     },
     getUserProfile () {
+      this.$refs.preferences.getFoodPreferences()
       axios.get(this.$store.state.urls.profileManagement.userProfile, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
@@ -197,6 +198,7 @@ export default {
       })
     },
     editUserProfile: function () {
+      this.$refs.preferences.update()
       axios.post(this.$store.state.urls.profileManagement.updateUserProfile,
         {
           displayName: this.displayName,
@@ -231,7 +233,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.getUserProfile())
     },
     toggleIsEdit () {
       this.isEdit = !this.isEdit
@@ -241,7 +243,7 @@ export default {
     },
     cancel () {
       this.toggleIsEdit()
-      this.getRestaurantProfile()
+      this.getUserProfile()
     }
   }
 }

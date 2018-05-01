@@ -122,7 +122,7 @@
         <menus class="profile-component" :restaurantMenusList="profile.restaurantMenusList" :isEdit="isEdit"/>
       </div>
       <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Accommodations'">
-        <food-preferences class="profile-component" :isEdit="isEdit"/>
+        <food-preferences ref="preferences" class="profile-component" :isEdit="isEdit"/>
       </div>
     </div>
   </div>
@@ -219,6 +219,9 @@ export default {
       return moment().format()
     },
     getRestaurantProfile () {
+      try {
+        this.$refs.preferences.getFoodPreferences()
+      } catch (ex) {}
       axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
@@ -226,7 +229,6 @@ export default {
       }).then(response => {
         this.profile = response.data
         this.appendRandomQueryToImageUrl()
-        // this.updateProfileUrl(this.profile.displayPicture)
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -255,12 +257,14 @@ export default {
       })
     },
     editRestaurantProfile: function () {
+      try {
+        this.$refs.preferences.update()
+      } catch (ex) {}
       axios.post(this.$store.state.urls.profileManagement.updateRestaurantProfile,
         this.profile,
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
-        this.getRestaurantProfile()
         this.isEdit = false
       }).catch(error => {
         try {
@@ -287,7 +291,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.getRestaurantProfile())
     },
     toggleIsEdit () {
       this.isEdit = !this.isEdit

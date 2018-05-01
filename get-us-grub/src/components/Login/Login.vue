@@ -28,7 +28,7 @@
                   name="password"
                   label="Password"
                   id="password"
-                  :rules="$store.state.rules.passwordRules"
+                  :rules="$store.state.rules.loginPasswordRules"
                   :min="8"
                   :append-icon="visible ? 'visibility' : 'visibility_off'"
                   :append-icon-cb="() => (visible = !visible)"

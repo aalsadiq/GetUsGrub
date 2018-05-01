@@ -410,6 +410,13 @@ export const store = new Vuex.Store({
     },
     getUniqueCounter: state => {
       return state.uniqueCounter
+    },
+    getTotalPercentage: (state) => (billItemIndex) => {
+      var temp = 0
+      state.billItems[billItemIndex].manual.forEach(function (element, index) {
+        temp += Number(state.billItems[billItemIndex].manual[index].percentage)
+      })
+      return temp
     }
   },
   // Mutations are called to change the states in the store synchronously
@@ -423,14 +430,14 @@ export const store = new Vuex.Store({
     addToDictionary: (state, payload) => {
       state.menuItems.push({
         itemName: payload[0],
-        itemPrice: payload[1],
-        selected: []
+        itemPrice: payload[1]
       })
     },
     addBillUser: (state, payload) => {
       state.billUsers.push({
         name: payload[0],
         uID: payload[1],
+        billItemsIn: [],
         moneyOwes: 0,
         tipAssigned: 0
       })
@@ -449,8 +456,7 @@ export const store = new Vuex.Store({
       payload.forEach(function (element, index) {
         state.restaurantMenuItems.push({
           itemName: element.itemName,
-          itemPrice: element.itemPrice,
-          selected: []
+          itemPrice: element.itemPrice
         })
       })
     },
@@ -490,24 +496,51 @@ export const store = new Vuex.Store({
       } else if (payload.oldSelected.length === 1 && payload.newSelected.length === 0) { // When the last user is REMOVED from the selected list
         state.billUsers[state.billUsers.findIndex(x => x.uID === payload.oldSelected[0])].moneyOwes -= payload.billItem.itemPrice
       } else if (payload.oldSelected.length < payload.newSelected.length) { // When a new user is ADDED to selected list
-        oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
-        newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
+        oldSplit = Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / (payload.oldSelected.length - payload.billItem.selectedManual.length))
+        newSplit = Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / (payload.newSelected.length - payload.billItem.selectedManual.length))
         payload.oldSelected.forEach(function (element, index) {
-          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+          if (!state.billItems[payload.billItemIndex].selectedManual.includes(element)) {
+            state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+          }
         })
         payload.newSelected.forEach(function (element, index) {
-          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+          if (!state.billItems[payload.billItemIndex].selectedManual.includes(element)) {
+            state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+          }
         })
       } else if (payload.oldSelected.length > payload.newSelected.length) { // When a user is REMOVED from the selected list
-        oldSplit = Math.ceil(payload.billItem.itemPrice / payload.oldSelected.length)
-        newSplit = Math.ceil(payload.billItem.itemPrice / payload.newSelected.length)
+        oldSplit = Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / payload.oldSelected.length)
+        newSplit = Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / payload.newSelected.length)
         payload.oldSelected.forEach(function (element, index) {
-          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+          if (!state.billItems[payload.billItemIndex].selectedManual.includes(element)) {
+            state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes -= oldSplit
+          }
         })
         payload.newSelected.forEach(function (element, index) {
-          state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+          if (!state.billItems[payload.billItemIndex].selectedManual.includes(element)) {
+            state.billUsers[state.billUsers.findIndex(x => x.uID === element)].moneyOwes += newSplit
+          }
         })
       }
+    },
+    addManual: (state, payload) => {
+      state.billUsers[payload.billUserIndex].moneyOwes -= Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - payload.totalPercentage) / 100)) / (payload.billItem.selected.length - payload.billItem.manual.length))
+      state.billItems[payload.billItemIndex].manual.push({
+        manualUID: payload.newUID,
+        percentage: 0
+      })
+    },
+    removeManual: (state, payload) => {
+      var index = payload.billItem.manual.findIndex(x => x.manualUID === payload.removedUID)
+      state.billItems[payload.billItemIndex].manual.splice(index, 1)
+      state.billUsers[payload.billUserIndex].moneyOwes -= Math.ceil(Math.ceil(payload.billItem.itemPrice * (payload.oldPercentage / 100)) / (payload.billItem.selected.length - (payload.billItem.selectedManual.length - 1)))
+      state.billUsers[payload.billUserIndex].moneyOwes += Math.ceil(Math.ceil(payload.billItem.itemPrice * ((100 - (payload.totalPercentage - payload.oldPercentage)) / 100)) / (payload.billItem.selected.length - (payload.billItem.selectedManual.length)))
+    },
+    removeSelectedManual: (state, payload) => {
+      var index = payload.billItem.selectedManual.findIndex(x => x === payload.removedUID)
+      state.billItems[payload.billItemIndex].selectedManual.splice(index, 1)
+    },
+    updateSelectedManual: (state, payload) => {
     },
     updateUserMoneyOwesFromEditItem: (state, payload) => {
       var oldSplit = Math.ceil(payload.Item.itemPrice / payload.Item.selected.length)
@@ -543,6 +576,10 @@ export const store = new Vuex.Store({
           })
         }
       })
+    },
+    updatePercentage: (state, payload) => {
+      state.billUsers[payload.billUserIndex].moneyOwes -= Math.ceil(payload.billItem.itemPrice * (payload.oldPercentage / 100))
+      state.billUsers[payload.billUserIndex].moneyOwes += Math.ceil(payload.billItem.itemPrice * (payload.newPercentage / 100))
     },
     incrementUniqueCounter: (state) => {
       state.uniqueCounter++

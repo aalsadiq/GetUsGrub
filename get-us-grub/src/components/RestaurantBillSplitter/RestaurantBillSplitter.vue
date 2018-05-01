@@ -38,10 +38,8 @@ export default {
   },
   created () {
     if (this.$store.state.isAuthenticated) {
-      console.log('Authenticated')
       this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
-      console.log(this.restaurantId)
-      axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
+      axios.get('http://getusgrub.com/RestaurantBillSplitter/Restaurant', {
         headers: {
           'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
           'Authorization': `Bearer ${this.$store.state.authenticationToken}`
@@ -55,7 +53,6 @@ export default {
             response.data.data.menus[i].items[j].itemPrice = this.convertFromUSDtoInt(response.data.data.menus[i].items[j].itemPrice)
           }
         }
-        console.log(response.data.data)
         this.$store.dispatch('populateRestaurantMenus', response.data.data.menus)
       }).catch(error => {
         Promise.reject(error)

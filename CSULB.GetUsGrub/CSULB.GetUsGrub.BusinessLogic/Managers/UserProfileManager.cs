@@ -26,7 +26,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Retrieve profile from database
             var profileGateway = new UserProfileGateway();
 
-						var userProfileResponseDto = profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id); // TODO: @Andrew, you had this and it doesnt exist anymore... profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id); [-Angelica]
+						var userProfileResponseDto = profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id);
 
             return userProfileResponseDto;
         }

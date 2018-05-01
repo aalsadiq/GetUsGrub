@@ -1,10 +1,10 @@
 <template>
-    <div>
-      <app-admin-header/>
-        <div id = 'user-text-box'>
-            <h1> Reactivate User </h1>
-          <app-user-text-box :viewType="submitType"/>
-        </div>
+  <div>
+    <app-admin-header/>
+    <h1> Reactivate User </h1>
+    <v-layout justify-center>
+      <app-user-text-box :viewType="submitType"/>
+    </v-layout>
     <app-footer/>
   </div>
 </template>

@@ -21,6 +21,10 @@
         <v-divider />
         <div v-if="this.restaurantDisplayName">
           <h2> {{ this.restaurantDisplayName }}'s Menus </h2>
+          <v-progress-circular v-if="!restaurantMenus"
+                               indeterminate
+                               :size="50"
+                               color="primary"></v-progress-circular>
           <v-btn dark color="blue" v-for="(menu, index) in restaurantMenus" :key="index" v-on:click="populateDictionary(menu.items)">
             {{ menu.menuName }}
           </v-btn>
@@ -44,6 +48,11 @@ export default {
   // updated () {
   //   this.restaurantMenus = this.$store.state.restaurantMenus
   // },
+  mounted () {
+    if (!this.$store.state.drawer) {
+      this.$store.commit('toggleDrawer')
+    }
+  },
   methods: {
     useCustomMenu: function () {
       this.$store.dispatch('useCustomMenu')
@@ -56,6 +65,9 @@ export default {
   computed: {
     restaurantMenus () {
       return this.$store.state.restaurantMenus
+    },
+    authenticationToken () {
+      return this.$store.state.authenticationToken
     }
   }
 }

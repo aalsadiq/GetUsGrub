@@ -322,10 +322,6 @@ export default {
 </script>
 
 <style scoped>
-#restaurant-profile-div {
-  margin: 0 0 0 0;
-  padding: 3.5em 0 0 0;
-}
 #image-upload-btn {
   margin: 1em 0 0 0;
 }

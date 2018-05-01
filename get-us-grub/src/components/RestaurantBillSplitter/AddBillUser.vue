@@ -1,8 +1,9 @@
 <template>
   <v-form v-model="valid"
           ref="addBillUserForm"
-          lazy-validation>
-    <v-text-field label="Add New User"
+          lazy-validation
+          width="300px">
+    <v-text-field label="Add New Bill Friend"
                   v-model="newBillUser"
                   :rules="[rules.required]"
                   required />
@@ -21,7 +22,7 @@ export default {
       counter: 0,
       valid: true,
       rules: {
-        required: (value) => (!!value) || 'Required.'
+        required: (value) => (!!value) || 'A valid name is required.'
       }
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-content>
       <div id="unregistered-restaurant-selection">
         <v-alert id='login-redirect' outline icon="info" :value="true">
           Attention individual users:
@@ -12,7 +12,7 @@
           <select-restaurant/>
         </div>
       </div>
-  </div>
+  </v-content>
 </template>
 
 <script>
@@ -29,18 +29,12 @@ export default {
 
 <style scoped>
 #login-redirect {
-  margin: 3.5em 0em -0.3em 0em;
   font-weight: bold;
   font-size: small;
-  padding: 0.1em 1em 0.1em 1em;
   color: rgb(82, 159, 247) !important;
 }
 #unregistered-restaurant-selection {
-  padding: 2.5em 0 0 0;
   max-width: 1200px;
   margin: auto;
-}
-#select-restaurant {
-  padding-top: 1em;
 }
 </style>

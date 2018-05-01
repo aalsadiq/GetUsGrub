@@ -1,10 +1,10 @@
 <template>
   <div id="edit-user-div">
     <app-admin-header/>
-    <v-flex xs15order-lg2>
       <h1>Edit User</h1>
-        <app-user-validations-not-required/>
-    </v-flex>
+      <v-layout justify-center>
+      <app-user-validations-not-required/>
+      </v-layout>
     <app-footer/>
   </div>
 </template>

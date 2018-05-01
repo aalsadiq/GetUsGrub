@@ -265,7 +265,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var transformer = new ClaimsTransformer();
             if (isFirstTimeUser.Data == true)
             {
-                new ResponseDto<ClaimsIdentity>
+                return new ResponseDto<ClaimsIdentity>
                 {
                     Data = transformer.CreateSsoClaimsIdentity(username)
                 };

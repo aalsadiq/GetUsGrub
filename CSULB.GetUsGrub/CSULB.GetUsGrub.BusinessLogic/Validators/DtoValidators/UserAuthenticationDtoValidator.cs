@@ -17,12 +17,12 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             RuleSet("UsernameAndPassword", () =>
             {
-                RuleFor(x => x.Username)
+                RuleFor(userAuthenticationDto => userAuthenticationDto.Username)
                     .NotEmpty()
                     .NotNull()
-                    .Matches(@"^[A-Za-z\d]+$");
+                    .Matches(RegularExpressions.USERNAME_FORMAT);
 
-                RuleFor(x => x.Password)
+                RuleFor(userAuthenticationDto => userAuthenticationDto.Password)
                     .NotEmpty()
                     .NotNull();
             });

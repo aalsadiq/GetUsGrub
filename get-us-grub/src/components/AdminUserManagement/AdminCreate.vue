@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #create-user-div {
   padding: 2em 6em 0em 10em;
 }

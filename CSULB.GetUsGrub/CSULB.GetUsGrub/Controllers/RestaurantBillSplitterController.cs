@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @author Ryan Luong
     /// @updated 4/4/18
     /// </summary>
-    [RoutePrefix("RestaurantBillSplitter")]
+    [RoutePrefix("api/v1/RestaurantBillSplitter")]
     public class RestaurantBillSplitterController : ApiController
     {
         [HttpGet]

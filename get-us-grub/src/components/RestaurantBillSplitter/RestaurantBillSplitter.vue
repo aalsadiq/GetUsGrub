@@ -39,7 +39,7 @@ export default {
   created () {
     if (this.$store.state.isAuthenticated) {
       this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
-      axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
+      axios.get('http://localhost:8081/api/v1/RestaurantBillSplitter/Restaurant', {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         },

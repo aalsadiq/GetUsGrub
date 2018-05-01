@@ -14,7 +14,8 @@ namespace CSULB.GetUsGrub.Models
     public class ValidSsoToken : SsoToken
     {
         // Constructors
-        public ValidSsoToken() {}
+        public ValidSsoToken() { }
+
         public ValidSsoToken(string token)
         {
             Token = token;

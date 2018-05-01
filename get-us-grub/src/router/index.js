@@ -95,42 +95,74 @@ export default new Router({
     {
       path: '/User/Admin',
       name: 'User',
-      component: AdminHome
+      component: AdminHome,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Admin Home'
+        next()
+      }
     },
     {
       path: '/User/CreateUser',
       name: 'CreateUser',
-      component: CreateUser
+      component: CreateUser,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Create User'
+        next()
+      }
     },
     {
       path: '/User/DeactivateUser',
       name: 'DeactivateUser',
-      component: DeactivateUser
+      component: DeactivateUser,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Deactivate User'
+        next()
+      }
     },
     {
       path: '/User/ReactivateUser',
       name: 'ReactivateUser',
-      component: ReactivateUser
+      component: ReactivateUser,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Reactivate User'
+        next()
+      }
     },
     {
       path: '/User/DeleteUser',
       name: 'DeleteUser',
-      component: DeleteUser
+      component: DeleteUser,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Delete User'
+        next()
+      }
     },
     {
       path: '/User/EditUser',
       name: 'EditUser',
-      component: EditUser
+      component: EditUser,
+      beforeEnter: (to, from, next) => {
+        document.title = 'EditUser'
+        next()
+      }
     },
     {
       path: '/User/Profile/ImageUpload',
       name: 'ImageUpload',
-      component: ProfileImageUpload
+      component: ProfileImageUpload,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Image Upload'
+        next()
+      }
     },
     {
       path: '/User/Profile/MenuItemUpload',
       name: 'MenuItemUpload',
-      component: MenuItemImageUpload
+      component: MenuItemImageUpload,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Menu Item Image Upload'
+        next()
+      }
     },
     {
       path: '/RestaurantBillSplitter',
@@ -153,7 +185,11 @@ export default new Router({
     {
       path: '/FoodPreferences',
       name: 'FoodPreferences',
-      component: FoodPreferences
+      component: FoodPreferences,
+      beforeEnter: (to, from, next) => {
+        document.title = 'Food Preferences'
+        next()
+      }
     },
     {
       path: '/Login',

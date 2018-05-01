@@ -7,9 +7,9 @@
         <h3>You lost? The page you're looking for doesn't exist.</h3>
       </div>
     </div>
-    <v-btn @click="goBack" color="cyan darken-2">
+    <v-btn @click="goHome" color="cyan darken-2">
       <span class="btn-text">
-        Go Back
+        Home
       </span>
     </v-btn>
     <app-footer/>
@@ -25,8 +25,8 @@ export default {
     AppFooter
   },
   methods: {
-    goBack () {
-      this.$router.go(-1)
+    goHome () {
+      this.$router.push({ path: '/' })
     }
   }
 }

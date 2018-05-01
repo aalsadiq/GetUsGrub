@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.Models;
 using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -80,7 +79,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         ResponseDto<bool> responseDto = new ResponseDto<bool>
                         {
                             Data = false,
-                            Error = "Something went wrong. Please try again later."
+                            Error = GeneralErrorMessages.GENERAL_ERROR
                         };
                         return responseDto;
                     }

@@ -16,5 +16,3 @@ export default {
   }
 }
 </script>
-
-<!--API Key: AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg-->

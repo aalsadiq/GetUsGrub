@@ -44,7 +44,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             result = _userValidator.CheckIfUserExists(_userAccountDto.Username);
             if (result.Data)
             {
-                result.Error = UserManagementErrorMessages.User_Exists;
+                result.Error = UserManagementErrorMessages.USER_EXISTS;
             }
 
             return result;

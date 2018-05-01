@@ -69,10 +69,6 @@ export const store = new Vuex.Store({
         foodPreferences: null
       }
     },
-    // Header values for Axios requests
-    headers: {
-      accessControlAllowOrigin: 'http://localhost:8080'
-    },
     // Uniform Resource Locations for Axios requests
     urls: {
       userManagement: {

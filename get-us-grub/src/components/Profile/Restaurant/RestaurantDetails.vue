@@ -99,7 +99,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #details-toolbar-title {
   margin: auto;
 }

@@ -81,7 +81,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 {
                     if (result.Error == null)
                     {
-                        result.Error = "Your password has been in multiple breaches. You may not use this password.";
+                        result.Error = ValidationErrorMessages.PASSWORD_BREACHED;
                     }
 
                     return result;

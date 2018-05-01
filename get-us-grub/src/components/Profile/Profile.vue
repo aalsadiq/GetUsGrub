@@ -1,13 +1,15 @@
 <template>
   <div>
-      <app-header/>
-        <div v-if="profileType === 'user'">
-          <user-profile/>
-        </div>
-        <div v-if="profileType === 'restaurant'">
-          <restaurant-profile/>
-        </div>
-      <app-footer/>
+    <app-header/>
+    <v-content>
+      <div v-if="profileType === 'user'">
+        <user-profile/>
+      </div>
+      <div v-if="profileType === 'restaurant'">
+        <restaurant-profile/>
+      </div>
+    </v-content>
+    <app-footer/>
   </div>
 </template>
 
@@ -54,6 +56,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

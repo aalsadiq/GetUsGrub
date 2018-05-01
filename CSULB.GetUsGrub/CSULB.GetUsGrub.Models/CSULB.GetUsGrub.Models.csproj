@@ -101,6 +101,8 @@
     <Compile Include="Models\BaseModels\SsoToken.cs" />
     <Compile Include="Models\FoodPreference.cs" />
     <Compile Include="Models\GeoCoordinates.cs" />
+    <Compile Include="DTOs\GoogleGeocodingDto.cs" />
+    <Compile Include="DTOs\GoogleTimeZoneDto.cs" />
     <Compile Include="Models\Interfaces\IAddress.cs" />
     <Compile Include="Models\Interfaces\IGeoCoordinates.cs" />
     <Compile Include="DTOs\RegisterRestaurantDto.cs" />

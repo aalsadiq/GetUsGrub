@@ -1,6 +1,5 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System;
 using System.Configuration;
 using System.IO;
 using System.Web;
@@ -26,7 +25,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Retrieve profile from database
             var profileGateway = new UserProfileGateway();
 
-						var userProfileResponseDto = profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id); // TODO: @Andrew, you had this and it doesnt exist anymore... profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id); [-Angelica]
+			var userProfileResponseDto = profileGateway.GetUserProfileById(userAccountResponseDto.Data.Id);
 
             return userProfileResponseDto;
         }
@@ -42,7 +41,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<bool>
                 {
                     Data = true,
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 

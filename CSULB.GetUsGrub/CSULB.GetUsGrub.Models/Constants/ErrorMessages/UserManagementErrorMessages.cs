@@ -10,6 +10,8 @@
     /// </summary>
     public class UserManagementErrorMessages
     {
-        public const string User_Exists = "Username is already used.";
+        public const string USER_EXISTS = "Username is already used.";
+
+        public const string EMPTY_USERNAME_OR_DISPLAYNAME = "Invalid: Empty new username or displayname.";
     }
 }

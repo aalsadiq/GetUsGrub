@@ -30,7 +30,6 @@ namespace CSULB.GetUsGrub
             // If sender is an HttpApplication, cast it into HttpApplication.
             var app = (HttpApplication)sender;
 
-            Console.WriteLine(app.Request.GetType().Name);
             var name = app.Request.GetType().Name;
             // End early if not http request
             if (!app.Request.GetType().Name.Equals(NetworkConstants.HTTP_REQUEST)) { return; }

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Migrations;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -265,7 +264,7 @@ namespace CSULB.GetUsGrub.DataAccess
                     var dbRestaurantMenu = (from menu in context.RestaurantMenus
                                             where menu.RestaurantId == restaurantProfile.Id
                                             select menu).SingleOrDefault();
-                    var newMenuItem = new RestaurantMenuItem("Your First Menu Item", 0, "", "", "", false, 0); // @TODO: Angelica change the image path
+                    var newMenuItem = new RestaurantMenuItem(itemName: "Your First Menu Item", itemPrice: 0, itemPicture: ConfigurationManager.AppSettings["DefaultURLMenuItemPath"], tag: "tag", description: "", isActive: false, flag: 0);
                     newMenuItem.RestaurantMenu = dbRestaurantMenu;
                     context.RestaurantMenuItems.Add(newMenuItem);
                     context.Entry(dbRestaurantMenu).State = System.Data.Entity.EntityState.Unchanged;

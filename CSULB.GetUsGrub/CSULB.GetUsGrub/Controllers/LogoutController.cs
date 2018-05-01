@@ -1,10 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using CSULB.GetUsGrub.BusinessLogic;
+using CSULB.GetUsGrub.Models;
+using System;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using CSULB.GetUsGrub.BusinessLogic;
-using CSULB.GetUsGrub.Models;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -13,7 +12,7 @@ namespace CSULB.GetUsGrub.Controllers
         // POST Logout/User
         [HttpPost]
         [AllowAnonymous]
-        [Route("Logout")]
+        [Route("api/v1/Logout")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult LogoutUserUser(HttpRequestMessage request)
         {
@@ -44,7 +43,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
                 }
 
-                return Ok("You are Logged out successfully");
+                return Ok();
             }
             catch (Exception)
             {

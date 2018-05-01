@@ -15,20 +15,20 @@ namespace CSULB.GetUsGrub.BusinessLogic
             RuleSet("EditProfile", () =>
             {
                 RuleFor(x => x.ItemName)
-                    .NotEmpty().WithMessage("Item name is required.")
-                    .NotNull().WithMessage("Item name is required.");
+                    .NotEmpty().WithMessage(ValidationErrorMessages.MENU_ITEM_NAME_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.MENU_ITEM_NAME_REQUIRED);
 
                 RuleFor(x => x.ItemPrice)
-                    .NotEmpty().WithMessage("Item price is required.")
-                    .NotNull().WithMessage("Item price is required.");
+                    .NotEmpty().WithMessage(ValidationErrorMessages.MENU_ITEM_PRICE_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.MENU_ITEM_PRICE_REQUIRED);
 
                 RuleFor(x => x.Tag)
-                    .NotEmpty().WithMessage("Item type is required.")
-                    .NotNull().WithMessage("Item type is required.");
+                    .NotEmpty().WithMessage(ValidationErrorMessages.MENU_ITEM_TYPE_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.MENU_ITEM_TYPE_REQUIRED);
 
                 RuleFor(x => x.Description)
-                    .NotEmpty().WithMessage("Item description is required.")
-                    .NotNull().WithMessage("Item description is required.");
+                    .NotEmpty().WithMessage(ValidationErrorMessages.MENU_ITEM_DESCRIPTION_REQUIRED)
+                    .NotNull().WithMessage(ValidationErrorMessages.MENU_ITEM_DESCRIPTION_REQUIRED);
             });
         }
     }

@@ -1,124 +1,127 @@
 <template>
   <div>
     <app-header/>
-    <div id="reset-password-div">
-      <div id="results-div">
-        <div id="success">
-        <v-layout align-center justify-center>
+    <v-content>
+      <v-container id="reset-password-div">
+        <div id="results-div">
+          <div id="success">
+          <v-layout align-center justify-center>
+            <v-flex xs12 sm10 md6>
+              <!-- Success messages for registration -->
+              <v-alert type="success" :value="showSuccess">
+                <span>
+                  Success! Your password has been has been resetted.
+                </span>
+              </v-alert>
+            </v-flex>
+          </v-layout>
+        </div>
+        <div v-if="showError" id="error-div">
+          <v-layout align-center justify-center>
           <v-flex xs12 sm10 md6>
-            <!-- Success messages for registration -->
-            <v-alert type="success" :value="showSuccess">
-              <span>
-                Success! Your password has been has been resetted.
+            <!-- Error messages for registration -->
+            <v-alert id="registration-error" :value="true" icon='warning'>
+              <span id="error-title">
+                An error has occurred.
               </span>
             </v-alert>
           </v-flex>
-        </v-layout>
+          </v-layout>
+          <v-layout align-center justify-center>
+            <!-- Card to show error messages -->
+            <v-flex xs12 sm10 md6>
+              <v-card id="error-card">
+                <p v-for="error in errors" :key="error">
+                  {{ error }}
+                </p>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </div>
       </div>
-      <div v-if="showError" id="error-div">
         <v-layout align-center justify-center>
-        <v-flex xs12 sm10 md6>
-          <!-- Error messages for registration -->
-          <v-alert id="registration-error" :value="true" icon='warning'>
-            <span id="error-title">
-              An error has occurred.
-            </span>
-          </v-alert>
-        </v-flex>
-        </v-layout>
-        <v-layout align-center justify-center>
-          <!-- Card to show error messages -->
           <v-flex xs12 sm10 md6>
-            <v-card id="error-card">
-              <p v-for="error in errors" :key="error">
-                {{ error }}
-              </p>
+            <v-card class="elevation-12">
+              <v-toolbar dark color="primary">
+                <v-toolbar-title>Reset Password</v-toolbar-title>
+              </v-toolbar>
+              <div v-if="!showSuccess">
+              <v-card-text>
+                <v-form v-model="isValid">
+                    <v-text-field
+                      prepend-icon="person"
+                      v-model="username"
+                      label="Enter username"
+                      type="text"
+                      :disabled="isDisabled"
+                      :rules="$store.state.rules.usernameRules"
+                      required
+                    >
+                    </v-text-field>
+                    <v-text-field v-show="this.isShow"/>
+                  <div v-if="isSecurityQuestionsForm">
+                    <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
+                      <v-select
+                        :items="set.questions"
+                        item-text="question"
+                        item-value="id"
+                        v-model="securityQuestions[set.id].question"
+                        single-line
+                        auto
+                        append-icon="https"
+                        hide-details
+                        :rules="$store.state.rules.securityQuestionRules"
+                        required
+                        :disabled="isDisabled"
+                      ></v-select>
+                      <v-text-field
+                        label="Enter an answer to the above security question"
+                        v-model="securityQuestions[set.id].answer"
+                        :rules="$store.state.rules.securityAnswerRules"
+                        required
+                        :disabled="isSubmitDisabled">
+                        </v-text-field>
+                    </div>
+                  </div>
+                  <div v-if="isConfirmPasswordForm">
+                    <v-text-field
+                      label="Enter a new password"
+                      v-model="password"
+                      :rules="$store.state.rules.passwordRules"
+                      :min="8"
+                      :counter="64"
+                      :append-icon="visible ? 'visibility' : 'visibility_off'"
+                      :append-icon-cb="() => (visible = !visible)"
+                      :type=" visible ? 'text' : 'password'"
+                      :error-messages="passwordErrorMessages"
+                      @input="validatePassword"
+                      required
+                      :disabled="isSubmitDisabled"
+                    ></v-text-field>
+                  </div>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <div v-if="isUsernameForm">
+                  <v-btn @click.prevent="getSecurityQuestions" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
+                </div>
+                <div v-if="isSecurityQuestionsForm">
+                  <v-btn @click.prevent="confirmSecurityAnswers" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
+                </div>
+                <div v-if="isConfirmPasswordForm">
+                  <v-btn color="primary" @click.prevent="updatePassword" :disabled="!isPasswordValid || !isValid || isSubmitDisabled">Submit</v-btn>
+                </div>
+              </v-card-actions>
+              </div>
+              <div v-if="showSuccess">
+                <v-btn color="blue-grey darken-3" dark to="Login">Login</v-btn>
+              </div>
             </v-card>
           </v-flex>
         </v-layout>
-      </div>
-    </div>
-      <v-layout align-center justify-center>
-        <v-flex xs12 sm10 md6>
-          <v-card class="elevation-12">
-            <v-toolbar dark color="primary">
-              <v-toolbar-title>Reset Password</v-toolbar-title>
-            </v-toolbar>
-            <div v-if="!showSuccess">
-            <v-card-text>
-              <v-form v-model="isValid">
-                  <v-text-field
-                    prepend-icon="person"
-                    v-model="username"
-                    label="Enter username"
-                    type="text"
-                    :disabled="isDisabled"
-                    :rules="$store.state.rules.usernameRules"
-                    required
-                  >
-                  </v-text-field>
-                <div v-if="isSecurityQuestionsForm">
-                  <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
-                    <v-select
-                      :items="set.questions"
-                      item-text="question"
-                      item-value="id"
-                      v-model="securityQuestions[set.id].question"
-                      single-line
-                      auto
-                      append-icon="https"
-                      hide-details
-                      :rules="$store.state.rules.securityQuestionRules"
-                      required
-                      :disabled="isDisabled"
-                    ></v-select>
-                    <v-text-field
-                      label="Enter an answer to the above security question"
-                      v-model="securityQuestions[set.id].answer"
-                      :rules="$store.state.rules.securityAnswerRules"
-                      required
-                      :disabled="isSubmitDisabled">
-                      </v-text-field>
-                  </div>
-                </div>
-                <div v-if="isConfirmPasswordForm">
-                  <v-text-field
-                    label="Enter a new password"
-                    v-model="password"
-                    :rules="$store.state.rules.passwordRules"
-                    :min="8"
-                    :counter="64"
-                    :append-icon="visible ? 'visibility' : 'visibility_off'"
-                    :append-icon-cb="() => (visible = !visible)"
-                    :type=" visible ? 'text' : 'password'"
-                    :error-messages="passwordErrorMessages"
-                    @input="validatePassword"
-                    required
-                    :disabled="isSubmitDisabled"
-                  ></v-text-field>
-                </div>
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <div v-if="isUsernameForm">
-                <v-btn @click="getSecurityQuestions" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
-              </div>
-              <div v-if="isSecurityQuestionsForm">
-                <v-btn @click="confirmSecurityAnswers" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
-              </div>
-              <div v-if="isConfirmPasswordForm">
-                <v-btn color="primary" @click="updatePassword" :disabled="!isPasswordValid || !isValid || isSubmitDisabled">Submit</v-btn>
-              </div>
-            </v-card-actions>
-            </div>
-            <div v-if="showSuccess">
-              <v-btn color="blue-grey darken-3" dark to="Login">Login</v-btn>
-            </div>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </div>
+      </v-container>
+    </v-content>
     <app-footer/>
   </div>
 </template>
@@ -138,6 +141,7 @@ export default {
   data () {
     return {
       errors: [],
+      isShow: false,
       showError: false,
       showSuccess: false,
       visible: false,
@@ -254,7 +258,6 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         password: this.password
       }).then(response => {
-        console.log(response)
         this.isValid = true
         this.isSubmitDisabled = false
         this.showSuccess = true
@@ -312,9 +315,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#reset-password-div {
-  margin: 6em 0 0 0;
-}
-</style>

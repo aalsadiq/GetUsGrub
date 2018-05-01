@@ -1,12 +1,11 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Diagnostics;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using System.IdentityModel.Services;
-using System.Security.Permissions;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -16,7 +15,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary>
-    [RoutePrefix("Profile")]
+    [RoutePrefix("api/v1/Profile")]
     public class UserProfileController : ApiController
     {
         [HttpGet]
@@ -80,7 +79,7 @@ namespace CSULB.GetUsGrub.Controllers
         // PUT Profile/User/EditUser/ImageUpload
         [Route("User/Edit/ProfileImageUpload")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)] // TODO: @Angelica (remove comment on claims)
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)]
         [HttpPost]
         public IHttpActionResult ProfileImageUpload() 
         {
@@ -102,7 +101,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
 
-                return Ok("Image Upload complete!");
+                return Ok();
             }
             catch (Exception)
             {

@@ -1,45 +1,30 @@
 <template>
     <div id="app">
     <div id="success">
-      <v-layout>
-        <v-flex xs12>
-          <v-alert type="success" :value="showSuccess">
-            <span>
-              {{ responseData }}
-            </span>
-          </v-alert>
-        </v-flex>
-      </v-layout>
+      <v-alert type="success" :value="showSuccess">
+        <span>
+          {{ responseData }}
+        </span>
+      </v-alert>
     </div>
     <div v-show="showError" id="error-div">
-      <v-layout>
-      <v-flex xs12>
-        <!-- Title bar for the restaurant selection -->
-        <v-alert id="registration-error" :value=true icon='warning'>
-          <span id="error-title">
-            An error has occurred
-          </span>
-        </v-alert>
-      </v-flex>
-      </v-layout>
-      <v-layout>
-        <v-flex xs12>
-          <v-card id="error-card">
-            <p v-for="error in errors" :key="error">
-              {{ error }}
-            </p>
-          </v-card>
-        </v-flex>
-      </v-layout>
+      <v-alert id="registration-error" :value=true icon='warning'>
+        <span id="error-title">
+          An error has occurred
+        </span>
+      </v-alert>
+      <v-card id="error-card">
+        <p v-for="error in errors" :key="error">
+          {{ error }}
+        </p>
+      </v-card>
     </div>
-      <v-flex xs6 sm3 offset-sm5>
-        <v-form v-model="validIdentificationInput">
-          <v-text-field label="Enter user to edit" v-model="editUser.username" :rules="$store.state.rules.usernameRules"></v-text-field>
-          <v-text-field label="Enter new username" v-model="editUser.newUsername" :rules="$store.state.rules.usernameNotRequiredRule"></v-text-field>
-          <v-text-field label="Enter new display name" v-model="editUser.newDisplayName"></v-text-field>
-        </v-form>
-        <v-btn id ="submit-button" color="info" v-on:click="userSubmit()">Submit</v-btn>
-      </v-flex>
+      <v-form v-model="validIdentificationInput">
+        <v-text-field label="Enter user to edit" v-model="editUser.username" :rules="$store.state.rules.usernameRules"></v-text-field>
+        <v-text-field label="Enter new username" v-model="editUser.newUsername" :rules="$store.state.rules.usernameNotRequiredRule"></v-text-field>
+        <v-text-field label="Enter new display name" v-model="editUser.newDisplayName"></v-text-field>
+      </v-form>
+      <v-btn id ="submit-button" color="info" v-on:click="userSubmit()">Submit</v-btn>
     </div>
 </template>
 

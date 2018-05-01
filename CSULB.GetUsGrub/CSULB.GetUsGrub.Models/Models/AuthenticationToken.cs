@@ -15,7 +15,6 @@ namespace CSULB.GetUsGrub.Models
     [Table("GetUsGrub.AuthenticationToken")]
     public class AuthenticationToken : IEntity
     {
-        // TODO @Ahmed Put the Key Back here so it will work with the DataBase before Demo [-Ahmed]
         // Automatic properties
         [Key]
         [ForeignKey("UserAccount")]

@@ -261,8 +261,10 @@ namespace CSULB.GetUsGrub.DataAccess
             }
         }
 
-        // Dispose release unmangaed resources 
-        public void Dispose()
+        /// <summary>
+        /// Dispose of the context
+        /// </summary>
+        void IDisposable.Dispose()
         {
             authenticationContext.Dispose();
         }

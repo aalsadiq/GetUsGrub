@@ -15,9 +15,9 @@ namespace CSULB.GetUsGrub.Models
     public class UniformResourceIdentifiers
     {
         // Absolute URI paths for Single Sign On
-        public const string SSO_REGISTRATION = "api/v1/sso/registration";
-        public const string SSO_LOGIN = "api/v1/sso/login";
-        public const string SSO_RESET_PASSWORD = "api/v1/sso/resetpassword";
+        public const string SSO_REGISTRATION = "/api/v1/sso/registration";
+        public const string SSO_LOGIN = "/api/v1/sso/login";
+        public const string SSO_RESET_PASSWORD = "/api/v1/sso/resetpassword";
 
         public readonly IEnumerable<string> UrisToSkipAuthn;
 

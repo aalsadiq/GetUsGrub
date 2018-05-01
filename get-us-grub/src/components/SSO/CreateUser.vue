@@ -252,7 +252,7 @@ export default {
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response
+          this.errors = error.response.data
           Promise.reject(error)
         }
       })
@@ -304,7 +304,7 @@ export default {
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response
+          this.errors = error.response.data
           Promise.reject(error)
         }
       })

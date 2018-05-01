@@ -450,7 +450,7 @@
                         <v-subheader>Enter a phone number</v-subheader>
                       </v-flex>
                       <v-layout id="phone-number">
-                      <v-flex xs12 sm2>
+                      <v-flex xs12 sm3>
                         <v-text-field
                           v-model="restaurantProfile.phoneNumber"
                           placeholder="(562)111-5555"
@@ -503,7 +503,7 @@ export default {
     loading: false,
     showError: false,
     showSuccess: false,
-    errors: null,
+    errors: [],
     counter: 0,
     timeZone: '',
     time: '',
@@ -690,7 +690,7 @@ export default {
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response
+          this.errors = error.response.data
           Promise.reject(error)
         }
       })

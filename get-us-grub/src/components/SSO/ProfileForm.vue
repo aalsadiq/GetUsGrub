@@ -6,7 +6,7 @@
         <v-text-field
           :label="getDisplayLabel(type)"
           v-model="value.userProfile.displayName"
-          :rules="$store.state.rules.displayNameRules"
+          :rules="$store.state.displayNameRules"
           required
           :disabled="disabled"
           ></v-text-field>
@@ -21,7 +21,7 @@
           v-model="value.restaurantProfile.details.foodType"
           label="Select a food type associated with your restaurant"
           prepend-icon="restaurant"
-          :rules="$store.state.rules.foodTypeRules"
+          :rules="$store.state.rules.rules.foodTypeRules"
           required
           hide-details
           single-line

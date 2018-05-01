@@ -4,7 +4,7 @@ using CSULB.GetUsGrub.UserAccessControl;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-// TODO: @Jenn Need to add in default display picture string. Angelica will have this set as a constant. [-Jennifer]
+
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>
@@ -570,7 +570,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<bool>
                 {
                     Data = false,
-                    Error = GeneralErrorMessages.GENERAL_ERROR
+                    Error = geocodeResponse.Error
                 };
             }
 
@@ -741,7 +741,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<bool> DeactivateUser(UserAccountDto user)//Change this to a DTO... @TODO: Angelica
+        public ResponseDto<bool> DeactivateUser(UserAccountDto user)
         {
             // Validation Strategy
             var usernameValidation = new UsernameValidationStrategy(user);

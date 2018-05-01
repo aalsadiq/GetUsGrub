@@ -154,7 +154,6 @@ export default {
           this.responseData = response.data
           this.showSuccess = true
           this.showError = false
-          console.log(response)
         }).catch(error => {
           this.responseData = error.response.data
           this.showSuccess = false

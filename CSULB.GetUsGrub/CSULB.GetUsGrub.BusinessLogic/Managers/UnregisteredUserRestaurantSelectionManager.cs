@@ -45,7 +45,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<SelectedRestaurantDto>
                 {
                     Data = null,
-                    Error = GeneralErrorMessages.GENERAL_ERROR
+                    Error = geocodeResponse.Error
                 };
             }
 

@@ -12,9 +12,6 @@
               <img :src="displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
-                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
-                  <span id="upload-image-text">Upload Image</span>
-                </v-btn> -->
                <div v-if="isEdit">
                   <profile-image-upload id="image-upload"/>
                 </div>
@@ -106,7 +103,7 @@
         </v-tab>
       </v-tabs>
             <div class="user-profile-tab-contents" v-if="itemsTab[tab] === 'Food Preferences'">
-        <food-preferences class="profile-component" :isEdit="isEdit"/>
+        <food-preferences ref="preferences" class="profile-component" :isEdit="isEdit"/>
       </div>
     </div>
   </div>
@@ -169,6 +166,9 @@ export default {
         this.displayName = response.data.displayName
         this.displayPicture = response.data.displayPicture
         this.appendRandomQueryToImageUrl()
+        try {
+          this.$refs.preferences.getFoodPreferences()
+        } catch (ex) {}
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -197,6 +197,9 @@ export default {
       })
     },
     editUserProfile: function () {
+      try {
+        this.$refs.preferences.update()
+      } catch (ex) {}
       axios.post(this.$store.state.urls.profileManagement.updateUserProfile,
         {
           displayName: this.displayName,
@@ -231,7 +234,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.getUserProfile())
     },
     toggleIsEdit () {
       this.isEdit = !this.isEdit
@@ -241,7 +244,7 @@ export default {
     },
     cancel () {
       this.toggleIsEdit()
-      this.getRestaurantProfile()
+      this.getUserProfile()
     }
   }
 }

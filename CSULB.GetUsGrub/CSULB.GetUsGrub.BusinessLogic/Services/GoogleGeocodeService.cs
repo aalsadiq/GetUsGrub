@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Configuration;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CSULB.GetUsGrub.BusinessLogic
@@ -59,6 +60,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
         {
             try
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                 // Retrieve key from configuration and build url for the get request.
                 var key = ConfigurationManager.AppSettings[GoogleApiConstants.GOOGLE_GEOCODE_API_KEYWORD];
                 var url = BuildUrl(address, key);

@@ -57,6 +57,7 @@
                     required
                   >
                   </v-text-field>
+                  <v-text-field v-show="this.isShow"/>
                 <div v-if="isSecurityQuestionsForm">
                   <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
                     <v-select
@@ -102,13 +103,13 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <div v-if="isUsernameForm">
-                <v-btn @click="getSecurityQuestions" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
+                <v-btn @click.prevent="getSecurityQuestions" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
               </div>
               <div v-if="isSecurityQuestionsForm">
-                <v-btn @click="confirmSecurityAnswers" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
+                <v-btn @click.prevent="confirmSecurityAnswers" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
               </div>
               <div v-if="isConfirmPasswordForm">
-                <v-btn color="primary" @click="updatePassword" :disabled="!isPasswordValid || !isValid || isSubmitDisabled">Submit</v-btn>
+                <v-btn color="primary" @click.prevent="updatePassword" :disabled="!isPasswordValid || !isValid || isSubmitDisabled">Submit</v-btn>
               </div>
             </v-card-actions>
             </div>
@@ -138,6 +139,7 @@ export default {
   data () {
     return {
       errors: [],
+      isShow: false,
       showError: false,
       showSuccess: false,
       visible: false,
@@ -254,7 +256,6 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         password: this.password
       }).then(response => {
-        console.log(response)
         this.isValid = true
         this.isSubmitDisabled = false
         this.showSuccess = true

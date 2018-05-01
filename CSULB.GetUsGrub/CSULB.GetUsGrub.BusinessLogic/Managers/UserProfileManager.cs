@@ -1,6 +1,5 @@
 using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System;
 using System.Configuration;
 using System.IO;
 using System.Web;
@@ -42,7 +41,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<bool>
                 {
                     Data = true,
-                    Error = "Something went wrong. Please try again later."
+                    Error = GeneralErrorMessages.GENERAL_ERROR
                 };
             }
 

@@ -1,8 +1,6 @@
 using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
-using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web;
@@ -56,7 +54,6 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult EditProfile([FromBody] RestaurantProfileDto restaurantProfileDto)
         {
-            Debug.WriteLine(JsonConvert.SerializeObject(restaurantProfileDto));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -80,8 +77,6 @@ namespace CSULB.GetUsGrub.Controllers
             }
         }
 
-
-        // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/Edit/MenuItemImageUpload
         [HttpPost]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)]

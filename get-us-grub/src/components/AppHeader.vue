@@ -1,5 +1,8 @@
 <template>
   <v-toolbar id="header-toolbar" app dark fixed>
+    <span class="hidden-sm-and-up">
+      <v-toolbar-side-icon id="toolbar-side-icon"/>
+    </span>
     <v-toolbar-items>
       <v-btn flat id="home-btn" to="/">
         <v-avatar :size="52" :tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>
@@ -11,23 +14,7 @@
       </v-btn>
     </v-toolbar-items>
     <v-spacer></v-spacer>
-    <v-toolbar-items>
-      <v-btn
-        flat
-        class="nav-btn"
-        to="Registration"
-        v-if="showWithoutAuthentication()"
-      >
-        <span class="nav-btn-text">REGISTER</span>
-      </v-btn>
-      <v-btn
-        flat
-        class="nav-btn"
-        to="Login"
-        v-if="showWithoutAuthentication()"
-      >
-        <span class="nav-btn-text">LOGIN</span>
-      </v-btn>
+    <v-toolbar-items class="hidden-sm-and-down">
       <v-tooltip bottom>
         <v-btn
           flat
@@ -57,6 +44,22 @@
         @click="logout"
       >
         <span class="nav-btn-text">LOGOUT</span>
+      </v-btn>
+      <v-btn
+        flat
+        class="nav-btn"
+        to="Registration"
+        v-if="showWithoutAuthentication()"
+      >
+        <span class="nav-btn-text">REGISTER</span>
+      </v-btn>
+      <v-btn
+        flat
+        class="nav-btn"
+        to="Login"
+        v-if="showWithoutAuthentication()"
+      >
+        <span class="nav-btn-text">LOGIN</span>
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -90,11 +93,18 @@ export default {
         }
       }).then(response => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})
       }).catch(error => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
+        // Force refresh of page
+        location.reload()
+        this.$router.push({path: '/'})
         Promise.reject(error)
       })
     }

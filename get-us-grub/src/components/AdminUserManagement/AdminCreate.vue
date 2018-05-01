@@ -6,11 +6,17 @@
       <v-btn v-on:click="normalUser" id ="NormalUser-button" color="info">Regular Registration</v-btn>
       <v-btn v-on:click="adminUser" id ="AdminUser-button" color="info">Admin Registration</v-btn>
       <div v-if="check===false">
-        <app-create-user/>
+        <v-layout justify-center>
+          <app-create-user/>
+        </v-layout>
       </div>
       <div v-else>
-        <app-user-validations-required :viewType="submitType"/>
-        </div>
+        <v-container>
+          <v-layout justify-center>
+            <app-user-validations-required :viewType="submitType"/>
+          </v-layout>
+        </v-container>
+      </div>
     </div>
     <app-footer/>
   </div>

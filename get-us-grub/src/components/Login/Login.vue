@@ -17,7 +17,7 @@
               prepend-icon="pets"
               label="Enter a username"
               name = "username"
-              :rules="$store.state.usernameRules"
+              :rules="$store.state.rules.usernameRules"
               :disable=disable
               required
             ></v-text-field>
@@ -26,7 +26,7 @@
               name="password"
               label="Password"
               id="password"
-              :rules="$store.state.passwordRules"
+              :rules="$store.state.rules.passwordRules"
               :min="8"
               :append-icon="visible ? 'visibility' : 'visibility_off'"
               :append-icon-cb="() => (visible = !visible)"

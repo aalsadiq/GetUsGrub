@@ -12,9 +12,6 @@
               <img :src="displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
-                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
-                  <span id="upload-image-text">Upload Image</span>
-                </v-btn> -->
                <div v-if="isEdit">
                   <profile-image-upload id="image-upload"/>
                 </div>
@@ -35,7 +32,7 @@
                     <v-text-field
                       label="Enter a display name"
                       v-model="displayName"
-                      :rules="$store.state.displayNameRules"
+                      :rules="$store.state.rules.displayNameRules"
                       required
                       dark
                     ></v-text-field>
@@ -161,7 +158,6 @@ export default {
       return moment().format()
     },
     getUserProfile () {
-      this.$refs.preferences.getFoodPreferences()
       axios.get(this.$store.state.urls.profileManagement.userProfile, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
@@ -170,6 +166,9 @@ export default {
         this.displayName = response.data.displayName
         this.displayPicture = response.data.displayPicture
         this.appendRandomQueryToImageUrl()
+        try {
+          this.$refs.preferences.getFoodPreferences()
+        } catch (ex) {}
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -198,7 +197,9 @@ export default {
       })
     },
     editUserProfile: function () {
-      this.$refs.preferences.update()
+      try {
+        this.$refs.preferences.update()
+      } catch (ex) {}
       axios.post(this.$store.state.urls.profileManagement.updateUserProfile,
         {
           displayName: this.displayName,

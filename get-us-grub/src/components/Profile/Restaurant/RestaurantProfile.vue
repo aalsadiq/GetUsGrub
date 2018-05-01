@@ -14,9 +14,6 @@
                 <img :src="profile.displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
-                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
-                  <span id="upload-image-text">Upload Image</span>
-                </v-btn> -->
                 <div v-if="isEdit">
                   <profile-image-upload id="image-upload"/>
                 </div>
@@ -37,7 +34,7 @@
                   <v-text-field
                     label="Enter a display name"
                     v-model="profile.displayName"
-                    :rules="$store.state.displayNameRules"
+                    :rules="$store.state.rules.displayNameRules"
                     required
                     dark
                   ></v-text-field>
@@ -219,9 +216,6 @@ export default {
       return moment().format()
     },
     getRestaurantProfile () {
-      try {
-        this.$refs.preferences.getFoodPreferences()
-      } catch (ex) {}
       axios.get(this.$store.state.urls.profileManagement.restaurantProfile, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
@@ -229,6 +223,9 @@ export default {
       }).then(response => {
         this.profile = response.data
         this.appendRandomQueryToImageUrl()
+        try {
+          this.$refs.preferences.getFoodPreferences()
+        } catch (ex) {}
       }).catch(error => {
         try {
           if (error.response.status === 401) {

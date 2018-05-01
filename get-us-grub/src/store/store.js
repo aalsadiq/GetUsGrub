@@ -127,78 +127,80 @@ export const store = new Vuex.Store({
       }
     },
     // Rules for validations
-    addBillUserRules: [
-      billUser => !!billUser || 'Required'
-    ],
-    usernameRules: [
-      username => !!username || 'Username is required',
-      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-    ],
-    usernameNotRequiredRule: [
-      username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
-    ],
-    displayNameRules: [
-      displayName => !!displayName || 'Display name is required'
-    ],
-    passwordRules: [
-      password => !!password || 'Password is required',
-      password => password.length >= 8 || 'Password must be at least 8 characters',
-      password => password.length < 64 || 'Password must be at most 64 characters'
-    ],
-    securityQuestionRules: [
-      securityQuestion => !!securityQuestion || 'Security question is required'
-    ],
-    securityAnswerRules: [
-      securityAnswer => !!securityAnswer || 'Security answer is required'
-    ],
-    addressStreet1Rules: [
-      street1 => !!street1 || 'Street 1 is required'
-    ],
-    addressCityRules: [
-      city => !!city || 'City is required'
-    ],
-    addressStateRules: [
-      state => !!state || 'State is required'
-    ],
-    addressZipRules: [
-      zip => !!zip || 'Zip code is required',
-      zip => /^\d{5}$/.test(zip) || 'Zip code must contain 5 numbers'
-    ],
-    phoneNumberRules: [
-      phone => !!phone || 'Phone number is required',
-      phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
-    ],
-    foodTypeRules: [
-      type => !!type || 'Food type is required'
-    ],
-    avgFoodPriceRules: [
-      price => !!price || 'Food price is required'
-    ],
-    foodPreferenceRules: [
-      foodPreference => !!foodPreference || 'Food preference is required'
-    ],
-    businessDayRules: [
-      businessDay => !!businessDay || 'Business day is required'
-    ],
-    businessHourRules: [
-      businessHour => !!businessHour || 'Business hour is required'
-    ],
-    timeZoneRules: [
-      timeZone => !!timeZone || 'Time zone is required'
-    ],
-    menuNameRules: [
-      menuName => !!menuName || 'Menu name is required'
-    ],
-    itemNameRules: [
-      itemName => !!itemName || 'Menu item name is required'
-    ],
-    itemPriceRules: [
-      itemPrice => !!itemPrice || 'Item price is required',
-      itemPrice => /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(itemPrice) || 'Incorrect price format'
-    ],
-    tagRules: [
-      tag => !!tag || 'Tag is required'
-    ],
+    rules: {
+      addBillUserRules: [
+        billUser => !!billUser || 'Required'
+      ],
+      usernameRules: [
+        username => !!username || 'Username is required',
+        username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
+      ],
+      usernameNotRequiredRule: [
+        username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
+      ],
+      displayNameRules: [
+        displayName => !!displayName || 'Display name is required'
+      ],
+      passwordRules: [
+        password => !!password || 'Password is required',
+        password => password.length >= 8 || 'Password must be at least 8 characters',
+        password => password.length < 64 || 'Password must be at most 64 characters'
+      ],
+      securityQuestionRules: [
+        securityQuestion => !!securityQuestion || 'Security question is required'
+      ],
+      securityAnswerRules: [
+        securityAnswer => !!securityAnswer || 'Security answer is required'
+      ],
+      addressStreet1Rules: [
+        street1 => !!street1 || 'Street 1 is required'
+      ],
+      addressCityRules: [
+        city => !!city || 'City is required'
+      ],
+      addressStateRules: [
+        state => !!state || 'State is required'
+      ],
+      addressZipRules: [
+        zip => !!zip || 'Zip code is required',
+        zip => /^\d{5}$/.test(zip) || 'Zip code must contain 5 numbers'
+      ],
+      phoneNumberRules: [
+        phone => !!phone || 'Phone number is required',
+        phone => /^\([2-9]\d{2}\)\d{3}-\d{4}$/.test(phone) || 'Phone number must be in (XXX)XXX-XXXX format and not start with 0 or 1'
+      ],
+      foodTypeRules: [
+        type => !!type || 'Food type is required'
+      ],
+      avgFoodPriceRules: [
+        price => !!price || 'Food price is required'
+      ],
+      foodPreferenceRules: [
+        foodPreference => !!foodPreference || 'Food preference is required'
+      ],
+      businessDayRules: [
+        businessDay => !!businessDay || 'Business day is required'
+      ],
+      businessHourRules: [
+        businessHour => !!businessHour || 'Business hour is required'
+      ],
+      timeZoneRules: [
+        timeZone => !!timeZone || 'Time zone is required'
+      ],
+      menuNameRules: [
+        menuName => !!menuName || 'Menu name is required'
+      ],
+      itemNameRules: [
+        itemName => !!itemName || 'Menu item name is required'
+      ],
+      itemPriceRules: [
+        itemPrice => !!itemPrice || 'Item price is required',
+        itemPrice => /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(itemPrice) || 'Incorrect price format'
+      ],
+      tagRules: [
+        tag => !!tag || 'Tag is required'
+      ]
+    },
     // Constants are data that are non-changing
     constants: {
       inputValidationDelay: 250,

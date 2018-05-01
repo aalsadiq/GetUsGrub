@@ -21,7 +21,7 @@
           v-model="value.restaurantProfile.details.foodType"
           label="Select a food type associated with your restaurant"
           prepend-icon="restaurant"
-          :rules="$store.state.foodTypeRules"
+          :rules="$store.state.rules.rules.foodTypeRules"
           required
           hide-details
           single-line
@@ -37,7 +37,7 @@
           v-model="value.restaurantProfile.details.avgFoodPrice"
           label="Select average food price"
           prepend-icon="money"
-          :rules="$store.state.avgFoodPriceRules"
+          :rules="$store.state.rules.avgFoodPriceRules"
           required
           hide-details
           single-line
@@ -54,7 +54,7 @@
           chips
           prepend-icon="done"
           persistent-hint
-          :rules="$store.state.foodPreferenceRules"
+          :rules="$store.state.rules.foodPreferenceRules"
           required
           :disabled="disabled"
           ></v-select>

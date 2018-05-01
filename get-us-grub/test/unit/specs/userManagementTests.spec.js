@@ -24,7 +24,6 @@ describe('Mocking axios requests', function () {
               username: 'NotBilly'
             }
           }).then(function () {
-            console.log(request)
             done()
           })
         })
@@ -44,7 +43,6 @@ describe('Mocking axios requests', function () {
               username: 'NotBilly'
             }
           }).then(function () {
-            console.log('Registration - Done!')
             done()
           })
         })

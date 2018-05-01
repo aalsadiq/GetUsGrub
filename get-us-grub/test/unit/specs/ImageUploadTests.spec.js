@@ -25,7 +25,6 @@ describe('Mocking axios requests for Image Upload', function () {
               imgPath: 'C:\Users\Angelica\Documents\GetUsGrub\get-us-grub\src\assets\logo.png'
             }
           }).then(function () {
-            console.log(request)
             done()
           })
         })
@@ -35,7 +34,7 @@ describe('Mocking axios requests for Image Upload', function () {
       moxios.withMock(function () {
         let onFulfilled = sinon.spy()
         axios.put('/User/ImageUpload').then(onFulfilled)
-  
+
         moxios.wait(function () {
           let request = moxios.requests.mostRecent()
           request.respondWith({
@@ -44,7 +43,6 @@ describe('Mocking axios requests for Image Upload', function () {
               username: 'NotBilly'
             }
           }).then(function () {
-            console.log(request)
             done()
           })
         })

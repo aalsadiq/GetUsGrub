@@ -94,6 +94,7 @@
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
@@ -114,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Managers\LoginManagerIntegrationTest.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Managers\RestaurantBillSplitterManagerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PwnedPasswordIntegrationTest.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\AuthenticationTokenDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\FoodPreferencesDtoValidatorUnitTests.cs" />
@@ -122,12 +124,11 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleTimeZoneIntegrationTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PayloadHasherUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\SaltGeneratorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\TokenServiceUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\ValidationWrapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategyUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\FoodPreferenceValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\AuthenticationGatewayIntegrationTest.cs" />
-    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\AuthorizationGatewayUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.DataAccess\Gateways\AuthenticationGatewayIntegrationTest.cs" />
+    <Compile Include="CSULB.GetUsGrub.DataAccess\Gateways\AuthorizationGatewayUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantSelectionDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\SecurityQuestionDtoValidatorUnitTests.cs" />
@@ -143,11 +144,11 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\SsoTokenPayloadDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserAccountValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserProfileValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\UserGatewayUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.DataAccess\Gateways\UserGatewayUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.DataAccess\RestaurantBillSplitterGatewayUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\AuthorizationManagerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsFactoryUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsTransformerUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\TokenValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\UserValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.Gateways\UserManagementTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -156,7 +157,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="keys.config" />
+    <None Include="keys.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

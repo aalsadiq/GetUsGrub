@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @updated: 03/30/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("RestaurantSelection")]
+    [RoutePrefix("api/v1/RestaurantSelection")]
     public class RestaurantSelectionController : ApiController
     {
         /// <summary>
@@ -67,7 +67,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -118,7 +118,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
     }

@@ -39,10 +39,9 @@ export default {
   created () {
     if (this.$store.state.isAuthenticated) {
       this.restaurantId = this.$store.state.restaurantSelection.selectedRestaurant.restaurantId
-      axios.get('http://getusgrub.com/RestaurantBillSplitter/Restaurant', {
+      axios.get('http://localhost:8081/api/v1/RestaurantBillSplitter/Restaurant', {
         headers: {
-          'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
-          'Authorization': `Bearer ${this.$store.state.authenticationToken}`
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
         },
         params: {
           restaurantId: this.restaurantId

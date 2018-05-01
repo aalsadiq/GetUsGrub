@@ -1,10 +1,10 @@
 <template>
   <div id="edit-user-div">
     <app-admin-header/>
-    <v-flex xs15order-lg2>
       <h1>Edit User</h1>
-        <app-user-validations-not-required/>
-    </v-flex>
+      <v-layout justify-center>
+      <app-user-validations-not-required/>
+      </v-layout>
     <app-footer/>
   </div>
 </template>
@@ -28,11 +28,6 @@ export default {
 }
 </script>
 
-<style>
-/* #edit-user-div {
-  padding: 2em 6em 0em 10em;
-}
-#edit-user-alert {
-  background-color: #e26161 !important
-} */
+<style scoped>
+
 </style>

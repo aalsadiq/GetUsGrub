@@ -22,8 +22,8 @@ namespace CSULB.GetUsGrub
             // Mapping message handler to SSO Controller
             config.Routes.MapHttpRoute(
                 name: "SsoRoute",
-                routeTemplate: "{controller}/{action}/{id}",
-                defaults: new { controller = "Sso", id = RouteParameter.Optional },
+                routeTemplate: "api/{version}/{controller}/{action}/{id}",
+                defaults: new { version = "v1", controller = "Sso", id = RouteParameter.Optional },
                 constraints: new { controller = "Sso" },
                 handler: HttpClientFactory.CreatePipeline(
                     new HttpControllerDispatcher(config),
@@ -39,8 +39,8 @@ namespace CSULB.GetUsGrub
             // Web API convention-based routing
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional },
+                routeTemplate: "api/{version}/{controller}/{action}/{id}",
+                defaults: new { version = "v1", id = RouteParameter.Optional },
                 constraints: null
             );
 

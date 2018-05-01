@@ -47,6 +47,7 @@ export default {
   methods: {
   // Compare expiration time with the current date time and triggers the popup
     compareTime () {
+      this.setExpiration()
       try {
         if (this.$store.state.authenticationToken == null) {
           this.popUp = false
@@ -65,17 +66,21 @@ export default {
       this.dateTimeNow = moment.unix(moment().unix())
     },
     logoutUser () {
-      axios.post('http://localhost:8081/Logout', {}, {
+      axios.post(this.$store.state.urls.logout.logoutUser, {}, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
       }).then(response => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})
       }).catch(error => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})
@@ -94,7 +99,7 @@ export default {
     // Refresh the user's session by calling creation of new token
     refresh () {
       this.disable = true
-      axios.post('http://localhost:8081/RenewSession', {}, {
+      axios.post(this.$store.state.urls.renewSession.requestNewToken, {}, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
@@ -114,13 +119,13 @@ export default {
   mounted () {
     // Call function every 5000 milliseconds (5 seconds)
     this.timeInterval = setInterval(this.time, 5000)
-    this.setExpirationInterval = setInterval(this.setExpiration, 50000)
+    // this.setExpirationInterval = setInterval(this.setExpiration, 50000)
     this.compareInterval = setInterval(this.compareTime, 5000)
   },
   // Clear all intervals set
   beforeDestroy () {
     clearInterval(this.timeInterval)
-    clearInterval(this.setExpirationInterval)
+    // clearInterval(this.setExpirationInterval)
     clearInterval(this.compareInterval)
   }
 }

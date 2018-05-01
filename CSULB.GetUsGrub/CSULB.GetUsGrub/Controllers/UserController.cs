@@ -15,7 +15,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @updated: 03/30/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("User")]
+    [RoutePrefix("api/v1/User")]
     public class UserController : ApiController
     {
         /// <summary>
@@ -54,8 +54,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -95,8 +94,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // HTTP 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -135,8 +133,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -171,8 +168,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
         /// <summary>
@@ -189,7 +185,6 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")] 
         public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
         {
-            //System.Diagnostics.Debug.WriteLine("The user name is "+ user.Username);
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {
@@ -208,8 +203,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -245,8 +239,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -264,7 +257,6 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]        
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
-            System.Diagnostics.Debug.WriteLine("new: " + user.NewUsername + "dis: " + user.NewDisplayName + "user:" +user.Username);
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {
@@ -274,7 +266,7 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 if(user.NewDisplayName=="" && user.NewUsername == "" || user.NewDisplayName==null && user.NewUsername==null)
                 {
-                    return BadRequest("Invalid: Empty new username or displayname");
+                    return BadRequest(UserManagementErrorMessages.EMPTY_USERNAME_OR_DISPLAYNAME);
                 }
                 var manager = new UserManager();
                 var response = manager.Edituser(user);
@@ -286,8 +278,7 @@ namespace CSULB.GetUsGrub.Controllers
             }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
         [HttpPost]
@@ -316,8 +307,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
         [HttpPost]
@@ -346,8 +336,7 @@ namespace CSULB.GetUsGrub.Controllers
             // Catch exceptions
             catch (Exception)
             {
-                // HTTP 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
     }

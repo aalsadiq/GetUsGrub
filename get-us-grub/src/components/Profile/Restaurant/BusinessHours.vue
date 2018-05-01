@@ -10,6 +10,7 @@
       </v-card-title>
       <v-card-text>
           <v-layout wrap>
+            <v-flex>
             <v-form v-model="isValid">
               <v-select
                 :items="$store.state.constants.timeZones"
@@ -97,6 +98,7 @@
                 </v-time-picker>
               </v-menu>
             </v-form>
+            </v-flex>
           </v-layout>
       </v-card-text>
       <!-- Buttons to cancel or save form -->
@@ -124,7 +126,7 @@
     <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
-        <v-toolbar color="pink" dark>
+        <v-toolbar color="teal" dark>
           <v-spacer/>
           <v-toolbar-title>Business Hours</v-toolbar-title>
           <v-spacer/>

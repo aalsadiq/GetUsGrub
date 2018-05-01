@@ -34,21 +34,10 @@ namespace CSULB.GetUsGrub.DataAccess
                 var userClaims = userAccount.UserClaims;
 
                 // Return user's list of claims
-                if (userClaims != null)
+                return new ResponseDto<ICollection<Claim>>
                 {
-                    return new ResponseDto<ICollection<Claim>>
-                    {
-                        Data = userClaims.Claims
-                    };
-                }
-                // If user has no claims, user is a first time user so return an empty list
-                else
-                {
-                    return new ResponseDto<ICollection<Claim>>
-                    {
-                        Data = new List<Claim>()
-                    };
-                }
+                    Data = userClaims.Claims
+                };
             }
             catch (Exception)
             {

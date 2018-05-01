@@ -1,50 +1,32 @@
 <template>
-    <div>
-      <div id="success">
-        <v-layout>
-          <v-flex xs12>
-            <v-alert type="success" :value="showSuccess">
-            <span>
-               {{ responseData }}
-            </span>
-            </v-alert>
-          </v-flex>
-        </v-layout>
-      </div>
-      <div v-show="showError" id="error-div">
-        <v-layout>
-        <v-flex xs12>
-          <!-- Title bar for the restaurant selection -->
-          <v-alert id="registration-error" :value=true icon='warning'>
-            <span id="error-title">
-              An error has occurred
-            </span>
-          </v-alert>
-        </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex xs12>
-            <v-card id="error-card">
-              <p v-for="error in errors" :key="error">
-                {{ error }}
-              </p>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </div>
-      <div id="inputUser">
-          <div fluid>
-            <v-spacer/>
-              <v-flex  xs5 sm2 offset-sm5>
-                <h2>Input User Name </h2>
-                <v-form v-model="validIdentificationInput">
-                  <v-text-field label="username" v-model="userAccount.username"  :rules="$store.state.rules.usernameRules" required />
-                </v-form>
-              </v-flex>
-              <v-btn id ="submit-button" color="warning" v-on:click="userSubmit(viewType)">Submit</v-btn>
-          </div>
-        </div>
+  <div>
+    <div id="success">
+      <v-alert type="success" :value="showSuccess">
+      <span>
+          {{ responseData }}
+      </span>
+      </v-alert>
     </div>
+    <div v-show="showError" id="error-div">
+      <v-alert id="registration-error" :value=true icon='warning'>
+        <span id="error-title">
+          An error has occurred
+        </span>
+      </v-alert>
+      <v-card id="error-card">
+        <p v-for="error in errors" :key="error">
+          {{ error }}
+        </p>
+      </v-card>
+    </div>
+    <div id="inputUser">
+      <h2>Input User Name </h2>
+      <v-form v-model="validIdentificationInput">
+        <v-text-field label="username" v-model="userAccount.username"  :rules="$store.state.rules.usernameRules" required />
+      </v-form>
+      <v-btn id ="submit-button" color="warning" v-on:click="userSubmit(viewType)">Submit</v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -154,7 +136,6 @@ export default {
           this.responseData = response.data
           this.showSuccess = true
           this.showError = false
-          console.log(response)
         }).catch(error => {
           this.responseData = error.response.data
           this.showSuccess = false
@@ -190,10 +171,7 @@ export default {
 }
 </script>
 
-<style>
-#create-user-div {
-  padding: 2em 6em 0em 10em;
-}
+<style scoped>
 #card {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;

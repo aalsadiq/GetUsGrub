@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @author: Rachel Dang
     /// @updated: 04/24/18
     /// </summary>
-    [RoutePrefix("FoodPreferences")]
+    [RoutePrefix("api/v1/FoodPreferences")]
     public class FoodPreferencesController : ApiController
     {
         /// <summary>
@@ -54,7 +54,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 // If any other error occurs, return a bad request
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -96,7 +96,7 @@ namespace CSULB.GetUsGrub.Controllers
             catch (Exception)
             {
                 // If any other error occurs, return a bad request
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
     }

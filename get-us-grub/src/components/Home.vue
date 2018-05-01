@@ -4,9 +4,8 @@
       <div v-if="showUnauthenticated()">
         <restaurant-selection-unregistered-user-main/>
       </div>
-      <div v-if="!showUnauthenticated() && !showRegisteredRestaurantSelection()" id="generic-home">
-        <img src="@/assets/GetUsGrub.png">
-        <p>Welcome!</p>
+      <div v-if="!showUnauthenticated() && !showRegisteredRestaurantSelection()">
+        <profile/>
       </div>
       <div v-if="showRegisteredRestaurantSelection()">
         <restaurant-selection-registered-user-main/>
@@ -21,12 +20,14 @@ import AppFooter from '@/components/AppFooter'
 import RestaurantSelectionUnregisteredUserMain from '@/components/RestaurantSelection/UnregisteredUser/Main.vue'
 import RestaurantSelectionRegisteredUserMain from '@/components/RestaurantSelection/RegisteredUser/Main.vue'
 import jwt from 'jsonwebtoken'
+import Profile from '@/components/Profile/Profile.vue'
 
 export default {
   components: {
     AppHeader,
     RestaurantSelectionUnregisteredUserMain,
     RestaurantSelectionRegisteredUserMain,
+    Profile,
     AppFooter
   },
   beforeCreate () {
@@ -58,7 +59,4 @@ export default {
 </script>
 
 <style scoped>
-#generic-home {
-  padding: 7em 0 0 0;
-}
 </style>

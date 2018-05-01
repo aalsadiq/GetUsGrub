@@ -16,51 +16,47 @@ namespace CSULB.GetUsGrub.UserAccessControl
     public class ClaimsTransformer : ClaimsAuthenticationManager
     {
         /// <summary>
-        /// Makes sure user authenticated is valid before generating new claims principal
+        /// Authenticate and transform the given claims principal
         /// </summary>
-        /// <param name="permissionType"></param>
+        /// <param name="resourceName"></param>
         /// <param name="incomingPrincipal"></param>
         /// <returns>The new ClaimsPrincipal</returns>
-        public override ClaimsPrincipal Authenticate(string permissionType, ClaimsPrincipal incomingPrincipal)
+        public override ClaimsPrincipal Authenticate(string resourceName, ClaimsPrincipal incomingPrincipal)
         {
             // Get the username claim for the claims principal
             string username = incomingPrincipal.FindFirst(ResourceConstant.USERNAME).Value;
 
-            // Authenticate that user is valid and grab user's claims from the database
-            ICollection<Claim> claims;
+            // Retrieve user's claims if user is valid, otherwise a security exception is thrown
+            var claims = GetUserClaims(username);
+
+            // Otherwise, call method to create a claims principal with permission claims
+            return CreateClaimsPrincipal(claims);
+        }
+
+        /// <summary>
+        /// Method using the gateway to retrieve user's permission claims given the username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>Collection of user's permission claims</returns>
+        private ICollection<Claim> GetUserClaims(string username)
+        {      
             using (var gateway = new AuthorizationGateway())
             {
+                // Grab user's claims from the database
                 var dbClaims = gateway.GetClaimsByUsername(username);
 
-                // If an error occurs and user fails authentication, throw a security exception 
+                // If an error occurs and user has no claims, check if user is valid
                 if (dbClaims.Error != null)
                 {
                     throw new SecurityException(GeneralErrorMessages.GENERAL_ERROR);
                 }
 
-                claims = dbClaims.Data;
+                return dbClaims.Data;
             }
-
-            // If user's claims are null, user is a first time user registered through the SSO
-            if (!claims.Any())
-            {
-                return CreateSsoClaimsPrincipal(username);
-            }
-
-            // Create the new claims principal based on permission type
-            switch (permissionType)
-            {
-                case PermissionTypes.Authorization:
-                    return CreateClaimsPrincipal(claims);
-                case PermissionTypes.Authentication:
-                    return CreateAuthenticationClaimsPrincipal(username, claims);
-                default:
-                    return incomingPrincipal;
-            }
-        }
-
+        }   
+        
         /// <summary>
-        /// Method to create a claims principal given the collection of claims
+        /// Method to create a claims principal given a collection of claims
         /// </summary>
         /// <param name="claims"></param>
         /// <returns>Claims principal</returns>
@@ -75,42 +71,40 @@ namespace CSULB.GetUsGrub.UserAccessControl
             // Return the new claims principal
             return claimsPrincipal;
         }
-
+      
         /// <summary>
-        /// Method to create a claims principal with only the username and read claims
-        /// </summary>
-        /// <param name="resourceName"></param>
-        /// <param name="incomingPrincipal"></param>
-        /// <returns>Claims principal with permissions from the database</returns>
-        private ClaimsPrincipal CreateAuthenticationClaimsPrincipal(string username, ICollection<Claim> claims)
-        {
-            // Convert the collection to a list
-            var readClaims = claims.ToList();
-
-            // Remove all claims that are not read claims
-            readClaims.RemoveAll(x => !x.Type.StartsWith(PermissionTypes.Authentication));
-
-            // Add username claim
-            readClaims.Add(new Claim(ResourceConstant.USERNAME, username));
-
-            // Call method to create and return the new claims principal
-            return CreateClaimsPrincipal(readClaims);
-        }
-
-        /// <summary>
-        /// Method to create a claims principal with claims pertaining to first time users through the SSO
+        /// Method to create a claims principal with claims pertaining to first time users from the SSO
         /// </summary>
         /// <returns></returns>
-        private ClaimsPrincipal CreateSsoClaimsPrincipal(string username)
+        public ClaimsIdentity CreateSsoClaimsIdentity(string username)
         {
-            var factory = new ClaimsFactory();
-
             // Create claims pertaining to first time users
+            var factory = new ClaimsFactory();
             var claims = factory.Create(AccountTypes.FirstTimeUser);
             claims.Add(new Claim(ResourceConstant.USERNAME, username));
 
             // Call method to create and return the new claims principal
-            return CreateClaimsPrincipal(claims);
+            return new ClaimsIdentity(claims);
+        }     
+        
+        /// <summary>
+        /// Method to create a claims identity with only the username and "Read" claims
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>Claims identity with username and "Read" claims</returns>
+        public ClaimsIdentity CreateAuthenticationClaimsIdentity(string username)
+        {
+            // Call method to get user's claims
+            var claims = GetUserClaims(username).ToList();
+
+            // Remove all claims that are not read claims
+            claims.RemoveAll(x => !x.Type.StartsWith(ActionConstant.READ));
+
+            // Add username claim
+            claims.Add(new Claim(ResourceConstant.USERNAME, username));
+
+            // Call method to create and return the new claims principal
+            return new ClaimsIdentity(claims);
         }
     }
 }

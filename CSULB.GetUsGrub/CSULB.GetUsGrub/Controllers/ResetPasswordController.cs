@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub
     /// @updated: 04/25/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("ResetPassword")]
+    [RoutePrefix("api/v1/ResetPassword")]
     public class ResetPasswordController : ApiController
     {
         /// <summary>
@@ -53,7 +53,7 @@ namespace CSULB.GetUsGrub
             catch (Exception)
             {
                 // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -94,7 +94,7 @@ namespace CSULB.GetUsGrub
             catch (Exception)
             {
                 // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
 
@@ -135,7 +135,7 @@ namespace CSULB.GetUsGrub
             catch (Exception)
             {
                 // Sending HTTP response 400 Status
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
     }

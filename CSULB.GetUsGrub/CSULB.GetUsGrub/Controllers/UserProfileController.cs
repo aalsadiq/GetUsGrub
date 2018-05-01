@@ -1,12 +1,11 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Diagnostics;
+using System.IdentityModel.Services;
+using System.Security.Permissions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using System.IdentityModel.Services;
-using System.Security.Permissions;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -16,7 +15,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary>
-    [RoutePrefix("Profile")]
+    [RoutePrefix("api/v1/Profile")]
     public class UserProfileController : ApiController
     {
         [HttpGet]
@@ -42,9 +41,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data); 
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -71,9 +70,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -101,13 +100,12 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                return Ok("Image Upload complete!");
-            }
 
+                return Ok();
+            }
             catch (Exception)
             {
-                //If any exceptions occur, send an HTTP response 400 status.
-                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
+                return InternalServerError();
             }
         }
     }

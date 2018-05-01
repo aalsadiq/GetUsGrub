@@ -1,7 +1,6 @@
 using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Diagnostics;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web;
@@ -16,7 +15,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary> 
-    [RoutePrefix("Profile")]
+    [RoutePrefix("api/v1/Profile")]
     public class RestaurantProfileController : ApiController
     {  
         [HttpGet]
@@ -42,9 +41,9 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
@@ -72,14 +71,12 @@ namespace CSULB.GetUsGrub.Controllers
                 return Ok(response.Data);
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return InternalServerError();
             }
         }
 
-
-        // TODO: @Angelica ImageUpload comments
         // PUT Profile/User/Edit/MenuItemImageUpload
         [HttpPost]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)]
@@ -94,7 +91,6 @@ namespace CSULB.GetUsGrub.Controllers
                 var stringMenuId = HttpContext.Current.Request.Params["menuId"];
 
                 var menuId = Convert.ToInt32(stringMenuId);
-                Debug.WriteLine("menuItem: " + menuId);
 
                 if (username == null || username == "")
                 {
@@ -108,12 +104,11 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                return Ok("Image Upload complete!");
+                return Ok();
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex);
                 //If any exceptions occur, send an HTTP response 400 status.
                 return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }

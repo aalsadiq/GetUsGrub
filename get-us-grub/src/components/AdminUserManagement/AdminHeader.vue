@@ -1,10 +1,15 @@
 <template>
   <div>
-    <v-navigation-drawer id="nav-drawer" permanent absolute v-model="drawer" >
+    <v-btn @click.stop="drawer = !drawer" bottom left dark color="pink">
+      <v-icon>
+        list
+      </v-icon>
+    </v-btn>
+    <v-navigation-drawer id="nav-drawer" temporary absolute v-model="drawer" >
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <v-list-tile-avatar>
+            <v-list-tile-avatar id="admin-picture">
               <img :src="displayPicture" id="display-picture"/>
               <h1 id="displayname-text">
                 {{ displayName }}
@@ -82,17 +87,21 @@ export default {
   },
   methods: {
     logout () {
-      axios.post('http://localhost:8081/Logout', {}, {
+      axios.post(this.$store.state.urls.logout.logoutUser, {}, {
         headers: {
           Authorization: `Bearer ${this.$store.state.authenticationToken}`
         }
       }).then(response => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})
       }).catch(error => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})
@@ -146,7 +155,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #logout-btn{
   width: 292px;
   height: 40px;
@@ -156,12 +165,15 @@ export default {
 #logout-text{
   padding-left:35px;
 }
-/* div.list__tile.list__tile--avatar{
-    padding-left: 50px;
-} */
 div#image-upload{
     width: 0px;
     height: 550px;
     padding-left: 128px;
+}
+#admin-picture {
+  margin: 0 0 0 2.6em;
+}
+#displayname-text {
+  padding: 0 0 0 1.1em;
 }
 </style>

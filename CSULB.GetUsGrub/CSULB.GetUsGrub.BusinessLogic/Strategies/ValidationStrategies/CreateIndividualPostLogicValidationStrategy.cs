@@ -85,7 +85,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 result = validationWrapper.ExecuteValidator();
                 if (!result.Data)
                 {
-                    result.Error = "Something went wrong. Please try again later.";
+                    result.Error = GeneralErrorMessages.GENERAL_ERROR;
                     return result;
                 }
             }
@@ -94,7 +94,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             result = _userValidator.CheckIfUsernameEqualsDisplayName(_userAccount.Username, _userProfile.DisplayName);
             if (result.Data)
             {
-                result.Error = "Something went wrong. Please try again later.";
+                result.Error = GeneralErrorMessages.GENERAL_ERROR;
                 return result;
             }
 
@@ -102,7 +102,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             result = _userValidator.CheckIfUserExists(_userAccount.Username);
             if (result.Data)
             {
-                result.Error = "Something went wrong. Please try again later.";
+                result.Error = GeneralErrorMessages.GENERAL_ERROR;
                 return result;
             }
             return new ResponseDto<bool>()

@@ -367,8 +367,4 @@ export default {
 #cancel-btn {
   color: white;
 }
-/* #image-upload{
-  width: 0px;
-  height: 0px;
-} */
 </style>

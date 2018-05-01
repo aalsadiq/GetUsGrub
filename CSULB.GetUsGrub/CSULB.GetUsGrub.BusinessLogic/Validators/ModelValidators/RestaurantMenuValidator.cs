@@ -15,8 +15,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             RuleSet("EditProfile", () =>
             {
             RuleFor(x => x.MenuName)
-                .NotEmpty().WithMessage("Menu name is required.")
-                .NotNull().WithMessage("Menu name is required.");
+                .NotEmpty().WithMessage(ValidationErrorMessages.MENU_REQUIRED)
+                .NotNull().WithMessage(ValidationErrorMessages.MENU_REQUIRED);
             });
         }
     }

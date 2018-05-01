@@ -15,7 +15,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary> 
-    [RoutePrefix("Profile")]
+    [RoutePrefix("api/v1/Profile")]
     public class RestaurantProfileController : ApiController
     {  
         [HttpGet]
@@ -104,7 +104,7 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                return Ok("Image Upload complete!");
+                return Ok();
             }
 
             catch (Exception)

@@ -15,5 +15,8 @@
 
         // Error messages for controllers
         public const string MODEL_STATE_ERROR = "A required input is missing.";
+
+        // Error messages for forbidden errors
+        public const string FORBIDDEN_ERROR = "403 Forbidden. You are not authorized to perform this request.";
     }
 }

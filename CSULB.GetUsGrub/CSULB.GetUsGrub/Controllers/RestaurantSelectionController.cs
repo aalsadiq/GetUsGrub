@@ -16,7 +16,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @updated: 03/30/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("RestaurantSelection")]
+    [RoutePrefix("api/v1/RestaurantSelection")]
     public class RestaurantSelectionController : ApiController
     {
         /// <summary>

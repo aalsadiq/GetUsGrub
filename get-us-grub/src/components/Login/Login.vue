@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-header />
+    <app-header/>
     <div id="login-div">
       <v-alert id="login-error" :value=showError icon="warning">
           <span>

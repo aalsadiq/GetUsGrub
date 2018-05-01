@@ -570,7 +570,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 return new ResponseDto<bool>
                 {
                     Data = false,
-                    Error = GeneralErrorMessages.GENERAL_ERROR
+                    Error = geocodeResponse.Error
                 };
             }
 
@@ -741,7 +741,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<bool> DeactivateUser(UserAccountDto user)//Change this to a DTO... @TODO: Angelica
+        public ResponseDto<bool> DeactivateUser(UserAccountDto user)
         {
             // Validation Strategy
             var usernameValidation = new UsernameValidationStrategy(user);

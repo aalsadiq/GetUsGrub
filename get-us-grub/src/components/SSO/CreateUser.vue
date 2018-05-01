@@ -1,25 +1,5 @@
 <template>
   <div id="create-user">
-    <div id="success">
-      <!-- Success messages for registration -->
-      <v-alert type="success" :value="showSuccess">
-        <span>
-          Success! User <code>{{ authentication.userAccount.username }}</code> has been created.
-        </span>
-      </v-alert>
-    </div>
-    <div v-show="showError" id="error-div">
-      <!-- Error messages for registration -->
-      <v-alert id="registration-error" :value=true icon='warning'>
-        <span id="error-title">
-          An error has occurred
-        </span>
-      </v-alert>
-      <!-- Card to show error messages -->
-        <v-card id="error-card">
-          {{ errors }}
-        </v-card>
-    </div>
     <v-toolbar dark tabs flat>
       <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-1">
         <v-spacer/>
@@ -112,6 +92,30 @@
         </v-stepper>
       </v-tab-item>
     </v-tabs-items>
+    <div id="success">
+      <!-- Success messages for registration -->
+      <v-alert type="success" :value="showSuccess">
+        <span>
+          Success! User <code>{{ username }}</code> has been created.
+          <router-link to="/Login">
+            <v-btn small id='login-redirect-btn' dark color="blue darken-2">
+              <span class="btn-text" id="login-redirect-text">Login</span></v-btn>
+          </router-link>
+        </span>
+      </v-alert>
+    </div>
+    <div v-show="showError" id="error-div">
+      <!-- Error messages for registration -->
+      <v-alert id="registration-error" :value=true icon='warning'>
+        <span id="error-title">
+          An error has occurred.
+        </span>
+      </v-alert>
+      <!-- Card to show error messages -->
+      <v-card id="error-card">
+        {{ this.errors }}
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -354,5 +358,12 @@ export default {
 .theme--light .stepper--vertical
 .stepper__content:not(:last-child) {
   border: none;
+}
+#login-redirect {
+  font-weight: bold;
+  font-size: small;
+}
+#login-redirect-text {
+  font-weight: bold;
 }
 </style>

@@ -15,7 +15,7 @@
                   <v-text-field
                     label="Menu Name"
                     v-model="editedMenu.menuName"
-                    :rules="$store.state.menuNameRules"
+                    :rules="$store.state.rules.menuNameRules"
                     required>
                   </v-text-field>
                 </v-flex>
@@ -56,7 +56,7 @@
                   <v-text-field
                     label="Item Name"
                     v-model="editedMenuItem.itemName"
-                    :rules="$store.state.itemNameRules"
+                    :rules="$store.state.rules.itemNameRules"
                     required>
                   </v-text-field>
                 </v-flex>
@@ -64,7 +64,7 @@
                   <v-text-field
                     label="Item Price"
                     v-model="editedMenuItem.itemPrice"
-                    :rules="$store.state.itemPriceRules"
+                    :rules="$store.state.rules.itemPriceRules"
                     required>
                   </v-text-field>
                 </v-flex>
@@ -72,7 +72,7 @@
                   <v-text-field
                     label="Tag"
                     v-model="editedMenuItem.tag"
-                    :rules="$store.state.tagRules"
+                    :rules="$store.state.rules.tagRules"
                     required>
                   </v-text-field>
                 </v-flex>

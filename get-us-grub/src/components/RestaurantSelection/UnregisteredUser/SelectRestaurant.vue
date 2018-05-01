@@ -48,7 +48,7 @@
                     v-model="$store.state.restaurantSelection.request.foodType"
                     item-text="type"
                     label="Select a food type"
-                    :rules="$store.state.foodTypeRules"
+                    :rules="$store.state.rules.foodTypeRules"
                     autocomplete
                     required
                     :disabled=disable
@@ -61,7 +61,7 @@
                   v-model="$store.state.restaurantSelection.request.city"
                   hint="City"
                   persistent-hint
-                  :rules="$store.state.addressCityRules"
+                  :rules="$store.state.rules.addressCityRules"
                   required
                   :disabled=disable
                 ></v-text-field>
@@ -75,7 +75,7 @@
                     label="State"
                     hint="State"
                     persistent-hint
-                    :rules="$store.state.addressStateRules"
+                    :rules="$store.state.rules.addressStateRules"
                     autocomplete
                     required
                     :disabled=disable

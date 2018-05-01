@@ -66,21 +66,21 @@
                         <v-text-field
                           label="Enter a username"
                           v-model="userAccount.username"
-                          :rules="$store.state.usernameRules"
+                          :rules="$store.state.rules.usernameRules"
                           required
                           :disabled=disable
                         ></v-text-field>
                         <v-text-field
                           label="Enter a display name"
                           v-model="userProfile.displayName"
-                          :rules="$store.state.displayNameRules"
+                          :rules="$store.state.rules.displayNameRules"
                           required
                           :disabled=disable
                         ></v-text-field>
                         <v-text-field
                             label="Enter a password"
                             v-model="userAccount.password"
-                            :rules="$store.state.passwordRules"
+                            :rules="$store.state.rules.passwordRules"
                             :min="8"
                             :counter="64"
                             :append-icon="visible ? 'visibility' : 'visibility_off'"
@@ -109,14 +109,14 @@
                             auto
                             append-icon="https"
                             hide-details
-                            :rules="$store.state.securityQuestionRules"
+                            :rules="$store.state.rules.securityQuestionRules"
                             required
                             :disabled=disable
                           ></v-select>
                           <v-text-field
                             label="Enter an answer to the above security question"
                             v-model="securityQuestions[set.id].answer"
-                            :rules="$store.state.securityAnswerRules"
+                            :rules="$store.state.rules.securityAnswerRules"
                             required
                             :disabled=disable
                           ></v-text-field>
@@ -151,21 +151,21 @@
                         <v-text-field
                           label="Enter a username"
                           v-model="userAccount.username"
-                          :rules="$store.state.usernameRules"
+                          :rules="$store.state.rules.usernameRules"
                           required
                           :disabled=disable
                         ></v-text-field>
                         <v-text-field
                           label="Enter a display name"
                           v-model="userProfile.displayName"
-                          :rules="$store.state.displayNameRules"
+                          :rules="$store.state.rules.displayNameRules"
                           required
                           :disabled=disable
                         ></v-text-field>
                         <v-text-field
                             label="Enter a password"
                             v-model="userAccount.password"
-                            :rules="$store.state.passwordRules"
+                            :rules="$store.state.rules.passwordRules"
                             :min="8"
                             :counter="64"
                             :append-icon="visible ? 'visibility' : 'visibility_off'"
@@ -194,14 +194,14 @@
                             auto
                             append-icon="https"
                             hide-details
-                            :rules="$store.state.securityQuestionRules"
+                            :rules="$store.state.rules.securityQuestionRules"
                             required
                             :disabled=disable
                           ></v-select>
                           <v-text-field
                             label="Enter an answer to the above security question"
                             v-model="securityQuestions[set.id].answer"
-                            :rules="$store.state.securityAnswerRules"
+                            :rules="$store.state.rules.securityAnswerRules"
                             required
                             :disabled=disable
                           ></v-text-field>
@@ -225,7 +225,7 @@
                           auto
                           prepend-icon="restaurant"
                           hide-details
-                          :rules="$store.state.foodTypeRules"
+                          :rules="$store.state.rules.foodTypeRules"
                           required
                           :disabled=disable
                         ></v-select>
@@ -241,7 +241,7 @@
                           auto
                           prepend-icon="money"
                           hide-details
-                          :rules="$store.state.avgFoodPriceRules"
+                          :rules="$store.state.rules.avgFoodPriceRules"
                           required
                           :disabled=disable
                         ></v-select>
@@ -255,7 +255,7 @@
                           chips
                           prepend-icon="done"
                           persistent-hint
-                          :rules="$store.state.foodPreferenceRules"
+                          :rules="$store.state.rules.foodPreferenceRules"
                           required
                           :disabled=disable
                         ></v-select>
@@ -275,7 +275,7 @@
                         single-line
                         auto
                         hide-details
-                        :rules="$store.state.timeZoneRules"
+                        :rules="$store.state.rules.timeZoneRules"
                         required
                         :disabled=disable
                       ></v-select>
@@ -286,7 +286,7 @@
                         single-line
                         auto
                         hide-details
-                        :rules="$store.state.businessDayRules"
+                        :rules="$store.state.rules.businessDayRules"
                         required
                         :disabled=disable
                       ></v-select>
@@ -307,7 +307,7 @@
                           slot="activator"
                           label="Select opening time (24hr format)"
                           v-model="businessHour.openTime"
-                          :rules="$store.state.businessHourRules"
+                          :rules="$store.state.rules.businessHourRules"
                           prepend-icon="access_time"
                           readonly
                           required
@@ -337,7 +337,7 @@
                           slot="activator"
                           label="Select closing time (24hr format)"
                           v-model="businessHour.closeTime"
-                          :rules="$store.state.businessHourRules"
+                          :rules="$store.state.rules.businessHourRules"
                           prepend-icon="access_time"
                           readonly
                           required
@@ -403,7 +403,7 @@
                             label="Street 1"
                             placeholder="1111 Snowy Rock Pl"
                             v-model="restaurantProfile.address.street1"
-                            :rules="$store.state.addressStreet1Rules"
+                            :rules="$store.state.rules.addressStreet1Rules"
                             required
                             :disabled=disable
                           ></v-text-field>
@@ -417,7 +417,7 @@
                             label="City"
                             placeholder="Long Beach"
                             v-model="restaurantProfile.address.city"
-                            :rules="$store.state.constants.addressCityRules"
+                            :rules="$store.state.rules.addressCityRules"
                             required
                             :disabled=disable
                           ></v-text-field>
@@ -427,7 +427,7 @@
                             item-text="name"
                             item-value="abbreviation"
                             label="Select a state"
-                            :rules="$store.state.addressStateRules"
+                            :rules="$store.state.rules.addressStateRules"
                             single-line
                             auto
                             append-icon="map"
@@ -438,7 +438,7 @@
                             <v-text-field
                             label="Zip"
                             placeholder="92812"
-                            :rules="$store.state.addressZipRules"
+                            :rules="$store.state.rules.addressZipRules"
                             type="number"
                             v-model.number="restaurantProfile.address.zip"
                             required
@@ -455,7 +455,7 @@
                           v-model="restaurantProfile.phoneNumber"
                           placeholder="(562)111-5555"
                           prepend-icon="phone"
-                          :rules="$store.state.phoneNumberRules"
+                          :rules="$store.state.rules.phoneNumberRules"
                           single-line
                           :disabled=disable
                         ></v-text-field>

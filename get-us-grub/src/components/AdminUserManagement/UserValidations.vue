@@ -37,21 +37,21 @@
           <v-text-field
             label="Enter a username"
             v-model="userAccount.username"
-            :rules="$store.state.usernameRules"
+            :rules="$store.state.rules.usernameRules"
             required
             :disabled=disable
           ></v-text-field>
           <v-text-field
             label="Enter a display name"
             v-model="userProfile.displayName"
-            :rules="$store.state.displayNameRules"
+            :rules="$store.state.rules.displayNameRules"
             required
             :disabled=disable
           ></v-text-field>
           <v-text-field
             label="Enter a password"
             v-model="userAccount.password"
-            :rules="$store.state.passwordRules"
+            :rules="$store.state.rules.passwordRules"
             :min="8"
             :counter="64"
             :append-icon="visible ? 'visibility' : 'visibility_off'"
@@ -77,14 +77,14 @@
                   auto
                   append-icon="https"
                   hide-details
-                  :rules="$store.state.securityQuestionRules"
+                  :rules="$store.state.rules.securityQuestionRules"
                   required
                   :disabled=disable
                 ></v-select>
                 <v-text-field
                   label="Enter an answer to the above security question"
                   v-model="securityQuestions[set.id].answer"
-                  :rules="$store.state.securityAnswerRules"
+                  :rules="$store.state.rules.securityAnswerRules"
                   required
                   :disabled=disable
                 ></v-text-field>

@@ -38,7 +38,7 @@
               <v-flex  xs5 sm2 offset-sm5>
                 <h2>Input User Name </h2>
                 <v-form v-model="validIdentificationInput">
-                  <v-text-field label="username" v-model="userAccount.username"  :rules="$store.state.usernameRules" required />
+                  <v-text-field label="username" v-model="userAccount.username"  :rules="$store.state.rules.usernameRules" required />
                 </v-form>
               </v-flex>
               <v-btn id ="submit-button" color="warning" v-on:click="userSubmit(viewType)">Submit</v-btn>

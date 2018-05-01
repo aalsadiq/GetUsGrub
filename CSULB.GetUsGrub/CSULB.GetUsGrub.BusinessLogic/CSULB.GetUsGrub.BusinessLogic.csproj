@@ -73,6 +73,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ApiConstants.cs" />
+    <Compile Include="Constants\GoogleApiConstants.cs" />
     <Compile Include="Managers\FoodPreferencesManager.cs" />
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
     <Compile Include="Managers\RegisteredUserRestaurantSelectionManager.cs" />

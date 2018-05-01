@@ -105,6 +105,9 @@ export const store = new Vuex.Store({
       },
       renewSession: {
         requestNewToken: 'http://localhost:8081/RenewSession'
+      },
+      pwnedPassword: {
+        range: 'https://api.pwnedpasswords.com/range/'
       }
     },
     // Rules for validations
@@ -184,6 +187,7 @@ export const store = new Vuex.Store({
     },
     // Constants are data that are non-changing
     constants: {
+      inputValidationDelay: 250,
       defaultProfilePicturePath: '@/assets/DefaultProfileImage.png',
       securityQuestions: [{
         id: 0,

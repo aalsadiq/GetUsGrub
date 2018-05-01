@@ -56,7 +56,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
             // Get first 5 characters of hash and send it as part of the url for a get request.
             var prefixHash = passwordHash.Substring(0, 5);
-            var request = new GetRequestService($"https://api.pwnedpasswords.com/range/{prefixHash}");
+            var request = new GetRequestService($"{ApiConstants.PWNED_PASSWORD_URL}{prefixHash}");
             var response = await new BackoffRequest(request).TryExecute();
             var responseBody = await response.Content.ReadAsStringAsync();
 

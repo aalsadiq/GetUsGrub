@@ -53,7 +53,6 @@
   <ItemGroup>
     <Compile Include="Models\Constants\AccountTypes.cs" />
     <Compile Include="Models\AdminUser.cs" />
-    <Compile Include="Models\Constants\PermissionTypes.cs" />
     <Compile Include="Models\FirstTimeUser.cs" />
     <Compile Include="Models\IndividualUser.cs" />
     <Compile Include="Models\RestaurantUser.cs" />

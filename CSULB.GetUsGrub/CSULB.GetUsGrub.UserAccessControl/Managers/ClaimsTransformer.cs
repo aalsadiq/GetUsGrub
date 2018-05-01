@@ -98,7 +98,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             var claims = GetUserClaims(username).ToList();
 
             // Remove all claims that are not read claims
-            claims.RemoveAll(x => !x.Type.StartsWith(PermissionTypes.Authentication));
+            claims.RemoveAll(x => !x.Type.StartsWith(ActionConstant.READ));
 
             // Add username claim
             claims.Add(new Claim(ResourceConstant.USERNAME, username));

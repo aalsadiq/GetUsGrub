@@ -124,7 +124,6 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\GoogleTimeZoneIntegrationTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PayloadHasherUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\SaltGeneratorUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\TokenServiceUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\ValidationWrapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategyUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\FoodPreferenceValidatorUnitTests.cs" />
@@ -150,7 +149,6 @@
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\AuthorizationManagerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsFactoryUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsTransformerUnitTests.cs" />
-    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\TokenValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\UserValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.Gateways\UserManagementTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

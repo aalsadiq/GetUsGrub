@@ -256,7 +256,6 @@ export default {
         securityQuestionDtos: this.securityQuestions,
         password: this.password
       }).then(response => {
-        console.log(response)
         this.isValid = true
         this.isSubmitDisabled = false
         this.showSuccess = true

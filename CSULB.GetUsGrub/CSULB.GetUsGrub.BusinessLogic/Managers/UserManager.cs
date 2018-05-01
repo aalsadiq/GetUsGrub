@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 
-// TODO: @Jenn Need to add in default display picture string. Angelica will have this set as a constant. [-Jennifer]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
     /// <summary>

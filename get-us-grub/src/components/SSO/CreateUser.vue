@@ -231,7 +231,6 @@ export default {
         this.showSuccess = false
         this.showError = true
         this.disable = false
-        console.log('error: ' + error)
         try {
           if (error.response.status === 401) {
             // Route to Unauthorized page
@@ -251,16 +250,12 @@ export default {
           } else {
             this.errors = JSON.parse(JSON.parse(error.response.data.message))
           }
-          console.log(error.response)
           Promise.reject(error)
         } catch (ex) {
           this.errors = error.response
-          console.log(error.response)
           Promise.reject(error)
         }
       })
-      console.log(dto)
-      console.log(dto)
     },
     submitRestaurant () {
       this.disable = true
@@ -307,15 +302,12 @@ export default {
           } else {
             this.errors = JSON.parse(JSON.parse(error.response.data.message))
           }
-          console.log(error.response)
           Promise.reject(error)
         } catch (ex) {
           this.errors = error.response
-          console.log(error.response)
           Promise.reject(error)
         }
       })
-      console.log(dto)
     },
     previousStep () {
       if (this.formStep > 1) {

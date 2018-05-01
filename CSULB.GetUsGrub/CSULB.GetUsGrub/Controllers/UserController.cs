@@ -185,7 +185,6 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")] 
         public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
         {
-            //System.Diagnostics.Debug.WriteLine("The user name is "+ user.Username);
             //Checks if what was given is a valid model
             if (!ModelState.IsValid)
             {

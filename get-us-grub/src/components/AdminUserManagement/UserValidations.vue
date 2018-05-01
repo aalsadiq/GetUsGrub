@@ -57,7 +57,7 @@
             :append-icon-cb="() => (visible = !visible)"
             :type=" visible ? 'text' : 'password'"
             :error-messages="passwordErrorMessages"
-            @input="validatePassword"
+            @input="validateDelayed"
             required
             :disabled=disable
           ></v-text-field>
@@ -109,6 +109,9 @@ export default {
     'app-footer': AppFooter
   },
   data: () => ({
+    errors: [],
+    visible: false,
+    disable: false,
     check: false,
     validIdentificationInput: false,
     validSecurityInput: false,
@@ -155,15 +158,22 @@ export default {
     },
     responseData: '',
     showError: false,
-    showSuccess: false
+    showSuccess: false,
+    passwordErrorMessages: [],
+    validationTimer: null
   }),
   methods: {
+    // Delays validation logic until user stops typing
+    validateDelayed () {
+      clearTimeout(this.validationTimer)
+      this.validationTimer = setTimeout(() => { this.validatePassword() }, 250)
+    },
     validatePassword () {
       if (this.userAccount.password.length < 8) {
         this.passwordErrorMessages = []
         return
       }
-      PasswordValidation.methods.validate(this.userAccount.password)
+      PasswordValidation.methods.validatePassword(this.userAccount.password)
         .then(response => {
           this.isPasswordValid = response.isValid
           this.passwordErrorMessages = response.message

@@ -2,22 +2,16 @@
   <div>
     <app-admin-header/>
     <div id="create-user-div">
-      <v-layout>
-        <v-flex xs15order-lg2>
-          <h1>Select your user!</h1>
-          <v-btn v-on:click="normalUser" id ="NormalUser-button" color="info">Regular Registration</v-btn>
-          <v-btn v-on:click="adminUser" id ="AdminUserr-button" color="info">Admin Registration</v-btn>
-          <div v-if="check===false">
-            <v-flex xs3 sm10 offset-sm2>
-              <app-create-user/>
-            </v-flex>
-          </div>
-          <div v-else>
-            <app-user-validations-required :viewType="submitType"/>
-            </div>
-          </v-flex>
-        </v-layout>
+      <h1>Select your user!</h1>
+      <v-btn v-on:click="normalUser" id ="NormalUser-button" color="info">Regular Registration</v-btn>
+      <v-btn v-on:click="adminUser" id ="AdminUser-button" color="info">Admin Registration</v-btn>
+      <div v-if="check===false">
+        <app-create-user/>
       </div>
+      <div v-else>
+        <app-user-validations-required :viewType="submitType"/>
+        </div>
+    </div>
     <app-footer/>
   </div>
 </template>
@@ -49,9 +43,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#create-user-div {
-  padding: 2em 6em 0em 10em;
-}
-</style>

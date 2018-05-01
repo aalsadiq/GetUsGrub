@@ -25,6 +25,7 @@ namespace CSULB.GetUsGrub.UserAccessControl
             new Claim(ActionConstant.REACTIVATE + ResourceConstant.USER, "True"),
 
             // For All Profile Management
+            new Claim(ActionConstant.READ + ResourceConstant.INDIVIDUAL, "True"),
             new Claim(ActionConstant.UPDATE + ResourceConstant.IMAGE, "True"),
 
             // For Bill Splitter

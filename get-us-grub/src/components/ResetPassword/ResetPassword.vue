@@ -110,7 +110,7 @@
                   <v-btn @click.prevent="confirmSecurityAnswers" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
                 </div>
                 <div v-if="isConfirmPasswordForm">
-                  <v-btn color="primary" @click.prevent="updatePassword" :disabled="!isPasswordValid || !isValid || isSubmitDisabled">Submit</v-btn>
+                  <v-btn color="primary" @click.prevent="updatePassword" :disabled="!isPasswordValid || !isValid  || isSubmitDisabled">Submit</v-btn>
                 </div>
               </v-card-actions>
               </div>
@@ -292,18 +292,21 @@ export default {
         }
       })
     },
-    // Delays validation logic until user stops typing
+    // Delays the validation of the password until user stops typing
     validateDelayed () {
       clearTimeout(this.validationTimer)
       this.validationTimer = setTimeout(() => { this.validatePassword() }, this.$store.state.constants.inputValidationDelay)
     },
-    // Validates password against PwnedPassword's API
+    // Calls PasswordValidation to check the password.
     validatePassword () {
       if (this.password.length < 8) {
         this.passwordErrorMessages = []
         return
       }
-      PasswordValidation.methods.validate(this.password)
+
+      var context = this
+
+      PasswordValidation.methods.validatePassword(context, this.password)
         .then(response => {
           this.isPasswordValid = response.isValid
           this.passwordErrorMessages = response.message

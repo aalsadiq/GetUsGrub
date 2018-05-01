@@ -8,7 +8,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E50D8CCF-7AB4-4BE2-8088-3C4523D7E073}</ProjectGuid>
+    <ProjectGuid>{349C6394-57FF-4ED6-B1AC-F4172065BF91}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -81,9 +81,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Images\DefaultImages\" />
-    <Folder Include="Images\MenuItemImages\" />
-    <Folder Include="Images\ProfileImages\" />
+    <Folder Include="DefaultImages\" />
+    <Folder Include="MenuItemImages\" />
+    <Folder Include="ProfileImages\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -98,7 +98,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>54436</DevelopmentServerPort>
+          <DevelopmentServerPort>62716</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:64525/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

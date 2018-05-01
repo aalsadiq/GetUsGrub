@@ -145,17 +145,21 @@ export default {
     validationTimer: null
   }),
   methods: {
-    // Delays validation logic until user stops typing
+    // Delays the validation of the password until user stops typing
     validateDelayed () {
       clearTimeout(this.validationTimer)
-      this.validationTimer = setTimeout(() => { this.validatePassword() }, 250)
+      this.validationTimer = setTimeout(() => { this.validatePassword() }, this.$store.state.constants.inputValidationDelay)
     },
+    // Calls PasswordValidation to check the password.
     validatePassword () {
       if (this.userAccount.password.length < 8) {
         this.passwordErrorMessages = []
         return
       }
-      PasswordValidation.methods.validatePassword(this.userAccount.password)
+
+      var context = this
+
+      PasswordValidation.methods.validatePassword(context, this.userAccount.password)
         .then(response => {
           this.isPasswordValid = response.isValid
           this.passwordErrorMessages = response.message

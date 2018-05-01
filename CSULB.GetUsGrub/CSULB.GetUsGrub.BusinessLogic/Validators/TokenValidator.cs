@@ -26,7 +26,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
 
         /// <summary>
         /// The CheckIfTokenIsJsonWebToken method.
-        /// Checks if the token is a valid Json web Token.
+        /// Checks if the token is a valid Json Web Token.
         /// <para>
         /// @author: Jennifer Nguyen
         /// @updated: 03/22/2018

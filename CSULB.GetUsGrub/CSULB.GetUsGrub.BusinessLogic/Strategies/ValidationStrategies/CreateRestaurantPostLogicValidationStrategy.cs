@@ -68,7 +68,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var result = validationWrapper.ExecuteValidator();
                 if (!result.Data)
                 {
-                    result.Error = "Something went wrong. Please try again later.";
+                    result.Error = GeneralErrorMessages.GENERAL_ERROR;
                     return result;
                 }
             }

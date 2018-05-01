@@ -12,7 +12,6 @@
 <style scoped>
 .result-bar {
   background-color: #e08a8a !important;
-  margin: 2em 0em 0em 0em;
 }
 .result-text {
   color: rgb(255, 255, 255);

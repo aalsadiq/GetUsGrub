@@ -1,7 +1,7 @@
 <template>
   <div id="contact-info-div">
     <div>
-    <!-- Conact info dialog popup form -->
+    <!-- Contact info dialog popup form -->
     <v-dialog v-model="dialog" persistent max-width="500px">
       <v-card>
         <v-card-title>
@@ -49,7 +49,7 @@
                       label="City"
                       placeholder="Long Beach"
                       v-model="address.city"
-                      :rules="$store.state.constants.addressCityRules"
+                      :rules="$store.state.rules.addressCityRules"
                       required
                     ></v-text-field>
                     <v-select

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-navigation-drawer id="nav-drawer" permanent absolute v-model="drawer" >
+    <v-btn @click.stop="drawer = !drawer" bottom left dark color="pink">
+      <v-icon>
+        list
+      </v-icon>
+    </v-btn>
+    <v-navigation-drawer id="nav-drawer" temporary absolute v-model="drawer" >
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
@@ -88,11 +93,15 @@ export default {
         }
       }).then(response => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})
       }).catch(error => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})

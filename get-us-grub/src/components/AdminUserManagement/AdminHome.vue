@@ -1,7 +1,7 @@
 <template>
     <div>
         <app-admin-header/>
-        <h1> Welcome to home Admin! </h1>
+        <h1> Welcome home, Admin! </h1>
          <img src="@/assets/GetUsGrub.png">
         <app-footer/>
     </div>

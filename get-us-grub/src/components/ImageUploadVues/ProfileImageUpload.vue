@@ -66,10 +66,10 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
-  dialog: false,
   components: {
   },
   data: () => ({
+    dialog: false,
     showButton: true,
     selectedFile: null,
     responseData: '',
@@ -78,7 +78,8 @@ export default {
     showError: false,
     showSuccess: false,
     username: '',
-    imageData: '' // Stores in base 64 format of image
+    imageData: '', // Stores in base 64 format of image
+    errors: null
   }),
   beforeCreate () {
     if (this.$store.state.authenticationToken === null) {
@@ -236,9 +237,4 @@ input[type="file"] {
     width: 137.5px;
     height: 27px;
 }
-/* img#display-picture{
-  height: 50px;
-  width:50px;
-  padding-left:0px;
-} */
 </style>

@@ -74,7 +74,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             {
                 if (result.Error == null)
                 {
-                    result.Error = "Username must not be the same as display name.";
+                    result.Error = ValidationErrorMessages.USERNAME_IS_EQUAL_TO_DISPLAYNAME;
                 }
 
                 result.Data = false;

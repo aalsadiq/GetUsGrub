@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CSULB.GetUsGrub.Models
 {
@@ -11,10 +10,10 @@ namespace CSULB.GetUsGrub.Models
     {
         // Automatic Properties 
         [Required]
-        public string Username { get; set; }//The username that will be edited. 
+        public string Username { get; set; } //The username that will be edited. 
 
-        public string NewUsername { get; set; }//Part of user account 
+        public string NewUsername { get; set; } //Part of user account 
 
-        public string NewDisplayName { get; set; }//Part of user account 
+        public string NewDisplayName { get; set; } //Part of user account 
     }
 }

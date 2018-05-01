@@ -6,7 +6,7 @@
         <v-text-field
           :label="getDisplayLabel(type)"
           v-model="value.userProfile.displayName"
-          :rules="$store.state.rules.displayNameRules"
+          :rules="$store.state.displayNameRules"
           required
           :disabled="disabled"
           ></v-text-field>

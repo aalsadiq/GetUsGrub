@@ -9,7 +9,7 @@
           label="Street 1"
           placeholder="1111 Snowy Rock Pl"
           v-model="value.restaurantProfile.address.street1"
-          :rules="$store.state.rules.addressStreet1Rules"
+          :rules="$store.state.addressStreet1Rules"
           required
           :disabled="disabled"
           ></v-text-field>
@@ -23,7 +23,7 @@
           label="City"
           placeholder="Long Beach"
           v-model="value.restaurantProfile.address.city"
-          :rules="$store.state.constants.addressCityRules"
+          :rules="$store.state.rules.addressCityRules"
           required
           :disabled="disabled"
           ></v-text-field>

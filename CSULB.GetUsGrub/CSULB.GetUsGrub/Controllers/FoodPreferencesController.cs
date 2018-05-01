@@ -14,7 +14,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @author: Rachel Dang
     /// @updated: 04/24/18
     /// </summary>
-    [RoutePrefix("FoodPreferences")]
+    [RoutePrefix("api/v1/FoodPreferences")]
     public class FoodPreferencesController : ApiController
     {
         /// <summary>

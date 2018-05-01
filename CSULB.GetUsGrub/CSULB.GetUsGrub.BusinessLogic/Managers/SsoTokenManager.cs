@@ -1,7 +1,5 @@
 ﻿using CSULB.GetUsGrub.DataAccess;
 using CSULB.GetUsGrub.Models;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -97,7 +95,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// <returns>An authentication token with the user's data</returns>
         public ResponseDto<AuthenticationTokenDto> ManageLoginToken()
         {
-            // TODO @Brian Disable reused tokens from re-authenticating users. [-Brian]
             var mappingResult = MapRequestJwtPayloadToSsoJwtPayload();
 
             if (mappingResult.Error != null)

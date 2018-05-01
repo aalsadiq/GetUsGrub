@@ -40,7 +40,7 @@
       <google-embed-map id="map"/>
         <!-- Confirm that user will be going to this restaurant -->
       <v-container>
-      <v-btn id="confirm-btn" @click="confirmRestaurant" :disabled="!this.responseValid">
+      <v-btn id="confirm-btn" @click="confirmRestaurant" :disabled="!this.responseValid" dark>
         <div class="btn-text">
           CONFIRM
         </div>
@@ -89,6 +89,7 @@ export default {
 }
 #confirm-btn {
   background-color: #20b39a !important;
+  font-weight: bold;
 }
 #map {
   height: 500px;

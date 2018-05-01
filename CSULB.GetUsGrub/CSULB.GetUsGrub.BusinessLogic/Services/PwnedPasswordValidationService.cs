@@ -18,7 +18,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         // Max # of counts against the password to be considered valid.
         private int _maxValidCount { get; set; }
 
-        public PwnedPasswordValidationService(int maxValidCount = 20)
+        public PwnedPasswordValidationService(int maxValidCount = 100)
         {
             _maxValidCount = maxValidCount;
         }

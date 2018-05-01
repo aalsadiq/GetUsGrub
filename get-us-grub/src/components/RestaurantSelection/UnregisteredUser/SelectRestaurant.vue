@@ -63,7 +63,7 @@
             <v-layout row justify-space-around>
               <!-- Prices radio buttons -->
               <v-flex xs3>
-              <v-subheader>PRICE*</v-subheader>
+              <v-subheader class="justify-center">PRICE*</v-subheader>
                 <v-radio-group
                   :value="$store.state.restaurantSelection.request.avgFoodPrice"
                   v-model.number="$store.state.restaurantSelection.request.avgFoodPrice"
@@ -76,7 +76,7 @@
               </v-flex>
               <!-- Distance radio buttons -->
               <v-flex xs3>
-              <v-subheader>MAX DISTANCE* (miles)</v-subheader>
+              <v-subheader class="justify-center">MAX DISTANCE* (miles)</v-subheader>
                 <v-radio-group
                   :value="$store.state.restaurantSelection.request.avgFoodPrice"
                   v-model.number="$store.state.restaurantSelection.request.distance"

@@ -17,24 +17,6 @@
           <v-icon dark>list</v-icon>
         </v-btn>
         <v-list>
-          <v-list-tile id="RegistrationTile" v-if="showWithoutAuthentication()">
-            <v-btn
-              flat
-              class="nav-btn"
-              to="Registration"
-            >
-            Register
-            </v-btn>
-          </v-list-tile>
-          <v-list-tile id="LoginTile" v-if="showWithoutAuthentication()">
-            <v-btn
-              flat
-              class="nav-btn"
-              to="Login"
-            >
-            Login
-            </v-btn>
-          </v-list-tile>
           <v-list-tile id="ProfileTile" v-if="!showWithoutAuthentication()">
             <v-btn
               flat
@@ -53,6 +35,24 @@
             Split Bill
             </v-btn>
           </v-list-tile>
+          <v-list-tile id="RegistrationTile" v-if="showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              to="Registration"
+            >
+            Register
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile id="LoginTile" v-if="showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              to="Login"
+            >
+            Login
+            </v-btn>
+          </v-list-tile>
           <v-list-tile v-if="!showWithoutAuthentication()">
             <v-btn
               flat
@@ -66,22 +66,6 @@
       </v-menu>
     </v-toolbar-items>
     <v-toolbar-items v-resize="onResize" v-if="windowSize.width > mobileScreenSize">
-      <v-btn
-        flat
-        class="nav-btn"
-        to="Registration"
-        v-if="showWithoutAuthentication()"
-      >
-        <span class="nav-btn-text">REGISTER</span>
-      </v-btn>
-      <v-btn
-        flat
-        class="nav-btn"
-        to="Login"
-        v-if="showWithoutAuthentication()"
-      >
-        <span class="nav-btn-text">LOGIN</span>
-      </v-btn>
       <v-tooltip bottom>
         <v-btn
           flat
@@ -103,6 +87,22 @@
         to="RestaurantBillSplitter"
       >
         <span class="nav-btn-text">SPLIT BILL</span>
+      </v-btn>
+      <v-btn
+        flat
+        class="nav-btn"
+        to="Registration"
+        v-if="showWithoutAuthentication()"
+      >
+        <span class="nav-btn-text">REGISTER</span>
+      </v-btn>
+      <v-btn
+        flat
+        class="nav-btn"
+        to="Login"
+        v-if="showWithoutAuthentication()"
+      >
+        <span class="nav-btn-text">LOGIN</span>
       </v-btn>
       <v-btn
         flat
@@ -176,11 +176,11 @@ export default {
 #nav {
   margin: auto;
 }
+#home-btn {
+  text-transform: none;
+}
 #header-toolbar {
   background-color: #5caabc;
-}
-div.btn__content {
-  text-transform: none;
 }
 .btn-text {
   font-weight: bold;
@@ -189,7 +189,7 @@ div.btn__content {
 }
 #toolbar-title {
   font-weight: bold;
-  font-size: 1.4em;
+  font-size: 1.3em
 }
 .btn__content:before {
   opacity: 0.23;
@@ -202,8 +202,5 @@ div.btn__content {
 }
 #home-btn > .btn__content:before {
   opacity: 0;
-}
-#username-text {
-  text-transform: uppercase;
 }
 </style>

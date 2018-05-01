@@ -173,6 +173,9 @@ export default {
       this.showSection = false
       // Sending GET Request
       axios.get(this.$store.state.urls.restaurantSelection.registeredUser, {
+        headers: {
+          'Authorization': `Bearer ${this.$store.state.authenticationToken}`
+        },
         // Paramaters for URL queries
         params: {
           foodType: this.$store.state.restaurantSelection.request.foodType.type,

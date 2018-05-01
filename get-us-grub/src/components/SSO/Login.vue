@@ -43,7 +43,6 @@ export default {
   }),
   created () {
     var queryJwt = this.$route.query.jwt
-    console.log(queryJwt)
     axios({
       method: 'GET',
       url: this.$store.state.urls.sso.login,

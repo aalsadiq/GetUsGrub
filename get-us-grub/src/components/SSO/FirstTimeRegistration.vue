@@ -25,15 +25,15 @@ export default {
   },
   beforeCreate () {
     if (this.$store.state.firstTimeUserToken === null) {
-      // this.$router.push('Unauthorized')
+      this.$router.push('Unauthorized')
     }
     try {
       if (jwt.decode(this.$store.state.firstTimeUserToken).ReadIsFirstTimeUser === 'True') {
       } else {
-        // this.$router.push('Forbidden')
+        this.$router.push('Forbidden')
       }
     } catch (ex) {
-      // this.$router.push('Forbidden')
+      this.$router.push('Forbidden')
     }
   }
 }

@@ -41,9 +41,9 @@ export default {
   data: () => ({
     isLoading: true
   }),
+  // Log user in based on query when the page loads
   created () {
     var queryJwt = this.$route.query.jwt
-    console.log(queryJwt)
     axios({
       method: 'GET',
       url: this.$store.state.urls.sso.login,

@@ -32,7 +32,7 @@ export const store = new Vuex.Store({
     destinationAddress: '1250 Bellflower Blvd, Long Beach, CA',
     googleMapsBaseUrl: 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyCfKElVtKARYlgvCdQXBImfjRH5rmUF0mg',
     uniqueCounter: 0,
-    menuItemImagePath: 'http://localhost:64525/Images/DefaultImages/DefaultMenuItemImage.png',
+    menuItemImagePath: 'http://localhost:64525/DefaultImages/DefaultMenuItemImage.png',
     menuItems: [
     ],
     restaurantMenus: [
@@ -140,6 +140,10 @@ export const store = new Vuex.Store({
       passwordRules: [
         password => !!password || 'Password is required',
         password => password.length >= 8 || 'Password must be at least 8 characters',
+        password => password.length < 64 || 'Password must be at most 64 characters'
+      ],
+      loginPasswordRules: [
+        password => !!password || 'Password is required',
         password => password.length < 64 || 'Password must be at most 64 characters'
       ],
       securityQuestionRules: [

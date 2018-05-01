@@ -1,7 +1,6 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -30,8 +29,7 @@ namespace CSULB.GetUsGrub
         /// <returns></returns>
         [HttpPost]
         [ActionName("Registration")]
-        // TODO: @Jenn Update origins to reflect SSO request when demoing [-Jenn]
-        [EnableCors(origins: "https://fannbrian.github.io", headers: "*", methods: "POST")]
+        [EnableCors(origins: "https://fannbrian.github.io, http://localhost:8085, https://localhost:8085", headers: "*", methods: "POST")]
         public IHttpActionResult Registration(HttpRequestMessage request)
         {
             try
@@ -40,20 +38,24 @@ namespace CSULB.GetUsGrub
                 var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageRegistrationToken();
                 if (result.Error != null)
                 {
-                    return BadRequest(result.Error);
+                    // Send 409 Response HTTP Status Code
+                    return Conflict();
                 }
 
                 var userManager = new UserManager();
                 var response = userManager.CreateFirstTimeSsoUser(result.Data);
                 if (response.Error != null)
                 {
-                    return BadRequest(result.Error);
+                    // Send 409 Response HTTP Status Code
+                    return Conflict();
                 }
 
+                // Send 200 Response HTTP Status Code
                 return Ok();
             }
             catch (Exception)
             {
+                // Send 500 Response HTTP Status Code
                 return InternalServerError();
             }
         }
@@ -80,27 +82,31 @@ namespace CSULB.GetUsGrub
 
                 if (!payloadResult.Data)
                 {
-                    return BadRequest(payloadResult.Error);
+                    // Send 401 Response HTTP Status Code
+                    return Unauthorized();
                 }
 
                 var tokenResult = tokenManager.ManageLoginToken();
 
                 if (tokenResult.Error != null)
                 {
-                    return BadRequest(tokenResult.Error);
+                    // Send 401 Response HTTP Status Code
+                    return Unauthorized();
                 }
 
+                // Send 200 Response HTTP Status Code
                 return Ok(tokenResult.Data.TokenString);
             }
             catch (Exception)
             {
+                // Send 500 Response HTTP Status Code
                 return InternalServerError();
             }
         }
 
         [HttpPost]
         [ActionName("ResetPassword")]
-        [EnableCors(origins: "https://fannbrian.github.io", headers: "*", methods: "POST")]
+        [EnableCors(origins: "https://fannbrian.github.io, http://localhost:8085, https://localhost:8085", headers: "*", methods: "POST")]
         public IHttpActionResult ResetPassword(HttpRequestMessage request)
         {
             try
@@ -108,22 +114,25 @@ namespace CSULB.GetUsGrub
                 var result = new SsoTokenManager(request.Headers.Authorization.Parameter).ManageResetPasswordToken();
                 if (result.Error != null)
                 {
-                    return BadRequest(result.Error);
+                    // Send 401 Response HTTP Status Code
+                    return Unauthorized();
                 }
 
-                //
                 var resetPasswordManager = new ResetPasswordManager(result.Data);
                 var updateResponse = resetPasswordManager.SsoUpdatePassword();
 
                 if (updateResponse.Error != null)
                 {
-                    return BadRequest(result.Error);
+                    // Send 401 Response HTTP Status Code
+                    return Unauthorized();
                 }
 
+                // Send 200 Response HTTP Status Code
                 return Ok();
             }
-            catch (Exception )
+            catch (Exception)
             {
+                // Send 500 Response HTTP Status Code
                 return InternalServerError();
             }
 

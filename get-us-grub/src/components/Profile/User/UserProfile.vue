@@ -1,16 +1,15 @@
 <template>
   <div>
-    <app-header/>
     <div id="user-profile-div">
       <div>
         <v-parallax src="/static/parallax.png" height="425">
           <div id="display-picture">
             <v-layout column align-center justify-center>
               <v-avatar
-                :size="225"
+                :size="255"
                 class="grey lighten-4"
               >
-              <img :src="displayPicture" alt="avatar">
+              <img :src="displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
                 <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
@@ -65,9 +64,23 @@
               <v-icon>edit</v-icon>
             </v-btn>
             <v-btn
+              id="submit-btn"
               v-if="isEdit"
               fab
               color="cyan accent-2"
+              bottom
+              right
+              absolute
+              @click="editUserProfile()"
+              slot="activator"
+              >
+              <v-icon>save</v-icon>
+            </v-btn>
+            <v-btn
+              id="cancel-btn"
+              v-if="isEdit"
+              fab
+              color="pink"
               bottom
               right
               absolute
@@ -96,14 +109,6 @@
         <food-preferences class="profile-component" :isEdit="isEdit"/>
       </div>
     </div>
-      <div id="edit-btns-div">
-    <v-btn dark @click="editUserProfile()" v-if="isEdit && itemsTab[tab] !== 'Food Preferences'">
-      Submit All Changes
-    </v-btn>
-    <v-btn dark @click="cancel()" v-if="isEdit && itemsTab[tab] !== 'Food Preferences'">
-      Cancel
-    </v-btn>
-  </div>
   </div>
 </div>
 </template>
@@ -111,6 +116,7 @@
 <script>
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import moment from 'moment'
 import ProfileImageUpload from '@/components/ImageUploadVues/ProfileImageUpload'
 import FoodPreferences from '@/components/FoodPreferences/FoodPreferences'
 
@@ -151,6 +157,9 @@ export default {
     this.getUserProfile()
   },
   methods: {
+    appendRandomQueryToImageUrl () {
+      return moment().format()
+    },
     getUserProfile () {
       axios.get(this.$store.state.urls.profileManagement.userProfile, {
         headers: {
@@ -159,6 +168,7 @@ export default {
       }).then(response => {
         this.displayName = response.data.displayName
         this.displayPicture = response.data.displayPicture
+        this.appendRandomQueryToImageUrl()
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -281,7 +291,12 @@ export default {
   margin: 0 0 3em 0;
 }
 .btn--bottom.btn--absolute {
-  bottom: 2em;
-  left: 100em;
+  bottom: 20px;
+}
+#submit-btn {
+  right: 90px;
+}
+#cancel-btn {
+  color: white;
 }
 </style>

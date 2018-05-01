@@ -13,7 +13,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
         private readonly UserProfileDtoValidator _userProfileDtoValidator;
         private readonly UserValidator _userValidator;
         private readonly HttpPostedFile _image;
-        const int MaxImageSize = 12000; // Bytes
+        const int MaxImageSize = 10000000; // Bytes -> 10MB
         private readonly ICollection<string> _allowedFileExtensions = new Collection<string> { ".jpg", ".png", ".jpeg" }; // Acceptable image extensions
 
         /// <summary>
@@ -36,9 +36,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // Executes the username strategy
             var validationWrapper = new ValidationWrapper<UserProfileDto>(_userProfileDto, "Username", _userProfileDtoValidator);
             var result = validationWrapper.ExecuteValidator();
-            if (!result.Data)
+            if (result.Error != null)
             {
-                result.Error = ValidationErrorMessages.INVALID_USERNAME;
                 return result;
             }
 
@@ -46,12 +45,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             result = _userValidator.CheckIfUserExists(_userProfileDto.Username);
             if (!result.Data)
             {
-                if (result.Error != null)
-                {
-                    result.Error = ValidationErrorMessages.USER_DOES_NOT_EXIST;
-                }
+                result.Error = ValidationErrorMessages.USER_DOES_NOT_EXIST;
 
-                result.Data = false;
                 return result;
             }
 

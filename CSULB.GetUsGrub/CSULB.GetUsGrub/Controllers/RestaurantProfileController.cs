@@ -1,5 +1,6 @@
 using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IdentityModel.Services;
@@ -55,6 +56,7 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult EditProfile([FromBody] RestaurantProfileDto restaurantProfileDto)
         {
+            Debug.WriteLine(JsonConvert.SerializeObject(restaurantProfileDto));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -94,7 +96,6 @@ namespace CSULB.GetUsGrub.Controllers
                 var stringMenuId = HttpContext.Current.Request.Params["menuId"];
 
                 var menuId = Convert.ToInt32(stringMenuId);
-                Debug.WriteLine("menuItem: " + menuId);
 
                 if (username == null || username == "")
                 {
@@ -113,8 +114,8 @@ namespace CSULB.GetUsGrub.Controllers
 
             catch (Exception)
             {
-               
-                return InternalServerError();
+                //If any exceptions occur, send an HTTP response 400 status.
+                return BadRequest(GeneralErrorMessages.GENERAL_ERROR);
             }
         }
     }

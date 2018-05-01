@@ -73,6 +73,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ApiConstants.cs" />
+    <Compile Include="Constants\GoogleApiConstants.cs" />
     <Compile Include="Managers\FoodPreferencesManager.cs" />
     <Compile Include="Managers\Interfaces\IProfileManager.cs" />
     <Compile Include="Managers\RegisteredUserRestaurantSelectionManager.cs" />
@@ -106,7 +108,6 @@
     <Compile Include="Services\PwnedPasswordValidationService.cs" />
     <Compile Include="Services\SaltGenerator.cs" />
     <Compile Include="Managers\SsoTokenManager.cs" />
-    <Compile Include="Services\SetPropertiesService.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\ValidationWrapper.cs" />
     <Compile Include="Strategies\ValidationStrategies\CreateFirstTimeIndividualPostLogicValidationStrategy.cs" />

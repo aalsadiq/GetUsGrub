@@ -44,7 +44,7 @@
               <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
             </label>
             <v-spacer/>
-            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" value ="upload" v-on:click="submitImageUpload">
+            <v-btn small id="submitImage" name= "submitButton" color="pink" type="submit" v-if="showButton" value ="upload" v-on:click="submitImageUpload">
               Upload
             <v-icon color="white">cloud_upload</v-icon>
             </v-btn>
@@ -70,6 +70,7 @@ export default {
   components: {
   },
   data: () => ({
+    showButton: true,
     selectedFile: null,
     responseData: '',
     show: false,
@@ -108,6 +109,7 @@ export default {
       }
     },
     submitImageUpload: function () {
+      this.showButton = false
       // ReadRestaurantProfile
       var formData = new FormData()
       formData.append('username', this.$store.state.username)
@@ -115,13 +117,14 @@ export default {
       axios.post(this.$store.state.urls.profileManagement.profileImageUpload, formData, {
         headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
       }).then(response => {
+        this.showButton = true
         this.responseData = response.data
         this.showSuccess = true
         this.showError = false
         this.dialog = false
-        this.getUserProfile()
         // get profile
       }).catch(error => {
+        this.showButton = true
         this.responseData = error.response.data
         this.showSuccess = false
         this.showError = true
@@ -149,7 +152,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.getUserProfile())
     },
     getUserProfile () {
       axios.get(this.$store.state.urls.profileManagement.userProfile, {
@@ -184,7 +187,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.$forceUpdate())
     }
   }
 }

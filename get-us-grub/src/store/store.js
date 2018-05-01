@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { setTimeout } from 'timers'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   // A state is a global variable that every Vue component can reference
   state: {
+    plugins: [
+      createPersistedState({})
+    ],
     isAuthenticated: true,
     authenticationToken: null,
     firstTimeUserToken: null,
@@ -53,10 +57,6 @@ export const store = new Vuex.Store({
         foodPreferences: null
       }
     },
-    // Header values for Axios requests
-    headers: {
-      accessControlAllowOrigin: 'http://localhost:8080'
-    },
     // Uniform Resource Locations for Axios requests
     urls: {
       userManagement: {
@@ -96,10 +96,25 @@ export const store = new Vuex.Store({
       },
       restaurantBillSplitter: {
         getRestaurantMenus: 'http://localhost:8081/RestaurantBillSplitter/Restaurant'
+      },
+      login: {
+        loginUser: 'http://localhost:8081/Login'
+      },
+      logout: {
+        logoutUser: 'http://localhost:8081/Logout'
+      },
+      renewSession: {
+        requestNewToken: 'http://localhost:8081/RenewSession'
+      },
+      pwnedPassword: {
+        range: 'https://api.pwnedpasswords.com/range/'
       }
     },
     // Rules for validations
     rules: {
+      addBillUserRules: [
+        billUser => !!billUser || 'Required'
+      ],
       usernameRules: [
         username => !!username || 'Username is required',
         username => /^[A-Za-z\d]+$/.test(username) || 'Username must contain only letters and numbers'
@@ -172,6 +187,7 @@ export const store = new Vuex.Store({
     },
     // Constants are data that are non-changing
     constants: {
+      inputValidationDelay: 250,
       defaultProfilePicturePath: '@/assets/DefaultProfileImage.png',
       securityQuestions: [{
         id: 0,

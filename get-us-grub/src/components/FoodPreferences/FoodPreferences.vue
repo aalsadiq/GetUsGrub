@@ -104,7 +104,6 @@ export default {
         },
         {
           headers: {
-            'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
             'Authorization': `Bearer ${this.$store.state.authenticationToken}`
           }
         }).then(response => {
@@ -132,7 +131,6 @@ export default {
   created () {
     axios.get(this.$store.state.urls.foodPreferences.getPreferences, {
       headers: {
-        'Access-Control-Allow-Origin': this.$store.state.headers.accessControlAllowOrigin,
         'Authorization': `Bearer ${this.$store.state.authenticationToken}`
       },
       params: {

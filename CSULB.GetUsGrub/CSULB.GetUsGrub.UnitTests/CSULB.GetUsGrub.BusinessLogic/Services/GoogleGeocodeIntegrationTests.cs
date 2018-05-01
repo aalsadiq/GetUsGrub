@@ -52,12 +52,12 @@ namespace CSULB.GetUsGrub.UnitTests
         [Fact]
         public async void Should_Fail_When_Geocoding_Nonexistant_Address()
         {
-            var expected = "Invalid Input";
+            var expected = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_INVALID_ADDRESS;
             var service = new GoogleGeocodeService();
             var address = new Address()
             {
-                Street1 = "9999 Bvasdawe",
-                City = "Long Beach",
+                Street1 = "9999 Bvasdgdgdsgfgdsgsdgdsawe",
+                City = "Long Basdfasfasdfeach",
                 State = "CA",
                 Zip = 90840
             };

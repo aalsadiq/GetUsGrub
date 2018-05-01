@@ -1,5 +1,5 @@
 ﻿using CSULB.GetUsGrub.Models;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
@@ -67,53 +67,49 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 var request = new GetRequestService(url);
                 var response = await new GoogleBackoffRequest(request).TryExecute();
                 var responseJson = await response.Content.ReadAsStringAsync();
-                var responseObj = JObject.Parse(responseJson);
+                var responseObj = JsonConvert.DeserializeObject<GoogleGeocodingDto>(responseJson);
 
-                // Retrieve status code from the response
-                var status = (string)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_STATUS);
-
-                var isPartialMatch = (bool)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_PARTIAL_MATCH);
-
-                if (isPartialMatch)
+                if (responseObj.status != GoogleApiConstants.GOOGLE_GEOCODE_STATUS_OK)
                 {
-                    return new ResponseDto<IGeoCoordinates>()
+                    if (responseObj.status == GoogleApiConstants.GOOGLE_GEOCODE_STATUS_ZERO_RESULTS)
                     {
-                        Error = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_INVALID_ADDRESS
-                    };
-                }
-
-                // Exit early if status is not OK.
-                if (!status.Equals(GoogleApiConstants.GOOGLE_GEOCODE_STATUS_OK))
-                {
-                    if (status.Equals(GoogleApiConstants.GOOGLE_GEOCODE_STATUS_ZERO_RESULTS))
-                    {
-                        status = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_INVALID_ADDRESS;
-                    }
-                    else
-                    {
-                        status = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_GENERAL;
+                        return new ResponseDto<IGeoCoordinates>()
+                        {
+                            Error = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_INVALID_ADDRESS
+                        };
                     }
 
                     return new ResponseDto<IGeoCoordinates>()
                     {
-                        Error = status
+                        Error = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_GENERAL
                     };
                 }
 
-                // Retrieve latitude and longitude data from response and return coordinates.
-                var lat = (float)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_LATITUDE);
-                var lng = (float)responseObj.SelectToken(GoogleApiConstants.GOOGLE_GEOCODE_TOKEN_LONGITUDE);
+                var result = responseObj.results[0];
+
+                foreach (var addresses in responseObj.results[0].address_components)
+                {
+                    foreach (var type in addresses.types)
+                    {
+                        if (type != GoogleApiConstants.GOOGLE_GEOCODE_TYPE_STREET) continue;
+
+                        var lat = result.geometry.location.lat;
+                        var lng = result.geometry.location.lng;
+                        var geoCoordinates = new GeoCoordinates(lat, lng);
+
+                        return new ResponseDto<IGeoCoordinates>()
+                        {
+                            Data = geoCoordinates
+                        };
+                    }
+                }
 
                 return new ResponseDto<IGeoCoordinates>()
                 {
-                    Data = new GeoCoordinates()
-                    {
-                        Latitude = lat,
-                        Longitude = lng
-                    }
+                    Error = GoogleApiConstants.GOOGLE_GEOCODE_ERROR_INVALID_ADDRESS
                 };
             }
-            catch (Exception)
+            catch
             {
                 return new ResponseDto<IGeoCoordinates>()
                 {

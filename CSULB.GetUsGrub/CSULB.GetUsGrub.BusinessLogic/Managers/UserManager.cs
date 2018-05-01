@@ -2,6 +2,7 @@
 using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 // TODO: @Jenn Need to add in default display picture string. Angelica will have this set as a constant. [-Jennifer]
@@ -486,8 +487,8 @@ namespace CSULB.GetUsGrub.BusinessLogic
             .ToList();
 
             userProfile = new UserProfile(
-                displayPicture: ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH,
-                displayName: dto.UserProfileDto.DisplayName);
+                displayPicture: ConfigurationManager.AppSettings["DefaultURLProfileImagePath"],
+            displayName: dto.UserProfileDto.DisplayName);
 
             // Hash password and security questions
             var saltGenerator = new SaltGenerator();
@@ -684,7 +685,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 .ToList();
 
             //Admin User Profile
-            var displayImagePath = ImagePaths.DEFAULT_VIRTUAL_DISPLAY_IMAGE_PATH;
+            var displayImagePath = ConfigurationManager.AppSettings["DefaultURLProfileImagePath"];
             var userProfile = new UserProfile(displayPicture: displayImagePath, displayName: registerUserDto.UserProfileDto.DisplayName);
 
             // Set user claims to be stored in UserClaims table as administrator
@@ -875,19 +876,15 @@ namespace CSULB.GetUsGrub.BusinessLogic
         /// </summary>
         /// <param name="username">The user that will be deactivated.</param>
         /// <returns>Response Dto</returns>
-        public ResponseDto<bool> Edituser(EditUserDto user)
+        public ResponseDto<bool> Edituser(EditUserDto editUserDto)
         {
-            // Service that will set the properties to null if it is an empty string. This is used
-            // since not all of the edited items are required. This is to avoid erasing objects that
-            // are stored in our database.
-            var setPropertiesService = new SetPropertiesService<EditUserDto>();
-            user = setPropertiesService.SetEmptyStringToNull(user);
 
             // Validation Strategy will validate if the user meets the requirements
-            var editUserValidation = new EditUserValidationStrategy(user);
+            var editUserValidation = new EditUserValidationStrategy(editUserDto);
 
             // Validate data transfer object
             var result = editUserValidation.ExecuteStrategy();
+
             if (result.Error != null)
             {
                 return new ResponseDto<bool>
@@ -897,10 +894,9 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 };
             }
 
-            //Creates a gateway
             using (var gateway = new UserGateway())
             {
-                var gatewayresult = gateway.EditUser(user);
+                var gatewayresult = gateway.EditUser(editUserDto);
                 if (gatewayresult.Data == false)
                 {
                     return new ResponseDto<bool>()

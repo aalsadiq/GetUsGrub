@@ -14,11 +14,6 @@ namespace CSULB.GetUsGrub.BusinessLogic
                     .NotNull().WithMessage(ValidationErrorMessages.USERNAME_REQUIRED)
                     .Matches(RegularExpressions.USERNAME_FORMAT).WithMessage(ValidationErrorMessages.USERNAME_FORMAT);
             });
-            RuleSet("EditNewDisplayName", () =>
-            {
-                RuleFor(userAccount => userAccount.NewUsername)
-                    .Matches(RegularExpressions.USERNAME_FORMAT).WithMessage(ValidationErrorMessages.NEWUSERNAME_FORMAT);
-            });
         }
     }
 }

@@ -38,7 +38,7 @@
         <br/>
         <v-flex xs4>
             <label class="custom-file-upload">
-                <h5>CHOOSE IMAGE
+                <h5> CHOOSE IMAGE
                 <i class="material-icons">cloud_download</i>
                 </h5>
               <input id="uploadImage" name="imageInput" ref="imageData" type="file" @change="StoreSelectedFile" accept="image/*"/>
@@ -65,12 +65,11 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 export default {
   name: 'ImageHome',
-  props: [''],
+  props: ['menuItemId'],
   data: () => ({
     showButton: true,
     errors: [],
     dialog: false,
-    username: '', // Can grab from token
     responseData: '',
     show: false,
     showError: false,
@@ -108,8 +107,8 @@ export default {
     submitImageUpload: function () {
       this.showButton = false
       var formData = new FormData()
-      formData.append('username', this.username) // this.$store.state.username
-      formData.append('menuId', this.editedMenuItem.id)
+      formData.append('username', this.$store.state.username)
+      formData.append('menuId', this.menuItemId)
       formData.append('filename', this.selectedFile, this.selectedFile.name)
       axios.post(this.$store.state.urls.profileManagement.menuItemUpload, formData, {
         headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }

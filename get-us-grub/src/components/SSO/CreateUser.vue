@@ -239,6 +239,9 @@ export default {
           headers: { Authorization: `Bearer ${this.$store.state.firstTimeUserToken}` }
         }).then(response => {
         this.disable = false
+        this.$store.commit('setIsAuthenticated', true)
+        this.$store.commit('setAuthenticationToken', response.data)
+        this.$router.push('/')
         this.showSuccess = true
       }).catch(error => {
         this.showSuccess = false
@@ -290,7 +293,9 @@ export default {
         data: dto
       }).then(response => {
         this.disable = false
-        this.username = response.data
+        this.$store.commit('setIsAuthenticated', true)
+        this.$store.commit('setAuthenticationToken', response.data)
+        this.$router.push('/')
         this.showSuccess = true
       }).catch(error => {
         this.showSuccess = false

@@ -176,11 +176,11 @@ export default {
 #nav {
   margin: auto;
 }
+#home-btn {
+  text-transform: none;
+}
 #header-toolbar {
   background-color: #5caabc;
-}
-div.btn__content {
-  text-transform: none;
 }
 .btn-text {
   font-weight: bold;
@@ -189,7 +189,7 @@ div.btn__content {
 }
 #toolbar-title {
   font-weight: bold;
-  font-size: 1.4em;
+  font-size: 1.3em
 }
 .btn__content:before {
   opacity: 0.23;
@@ -202,8 +202,5 @@ div.btn__content {
 }
 #home-btn > .btn__content:before {
   opacity: 0;
-}
-#username-text {
-  text-transform: uppercase;
 }
 </style>

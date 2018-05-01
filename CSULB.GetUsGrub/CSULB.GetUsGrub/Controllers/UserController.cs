@@ -15,7 +15,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @updated: 03/30/2018
     /// </para>
     /// </summary>
-    [RoutePrefix("User")]
+    [RoutePrefix("api/v1/User")]
     public class UserController : ApiController
     {
         /// <summary>

@@ -15,7 +15,7 @@ namespace CSULB.GetUsGrub.Controllers
     /// @author: Andrew Kao
     /// @updated: 3/18/18
     /// </summary> 
-    [RoutePrefix("Profile")]
+    [RoutePrefix("api/v1/Profile")]
     public class RestaurantProfileController : ApiController
     {  
         [HttpGet]

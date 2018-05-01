@@ -72,51 +72,51 @@ export const store = new Vuex.Store({
     // Uniform Resource Locations for Axios requests
     urls: {
       userManagement: {
-        createIndividualUser: 'http://localhost:8081/User/Registration/Individual',
-        createRestaurantUser: 'http://localhost:8081/User/Registration/Restaurant',
-        createAdminUser: 'http://localhost:8081/User/CreateAdmin',
-        deactivateUser: 'http://localhost:8081/User/DeactivateUser',
-        reactivateUser: 'http://localhost:8081/User/ReactivateUser',
-        editUser: 'http://localhost:8081/User/EditUser',
-        deleteUser: 'http://localhost:8081/User/DeleteUser'
+        createIndividualUser: 'http://localhost:8081/api/v1/User/Registration/Individual',
+        createRestaurantUser: 'http://localhost:8081/api/v1/User/Registration/Restaurant',
+        createAdminUser: 'http://localhost:8081/api/v1/User/CreateAdmin',
+        deactivateUser: 'http://localhost:8081/api/v1/User/DeactivateUser',
+        reactivateUser: 'http://localhost:8081/api/v1/User/ReactivateUser',
+        editUser: 'http://localhost:8081/api/v1/User/EditUser',
+        deleteUser: 'http://localhost:8081/api/v1/User/DeleteUser'
       },
       foodPreferences: {
-        getPreferences: 'http://localhost:8081/FoodPreferences/GetPreferences',
-        editPreferences: 'http://localhost:8081/FoodPreferences/Edit'
+        getPreferences: 'http://localhost:8081/api/v1/FoodPreferences/GetPreferences',
+        editPreferences: 'http://localhost:8081/api/v1/FoodPreferences/Edit'
       },
       restaurantSelection: {
-        unregisteredUser: 'http://localhost:8081/RestaurantSelection/Unregistered/',
-        registeredUser: 'http://localhost:8081/RestaurantSelection/Registered/'
+        unregisteredUser: 'http://localhost:8081/api/v1/RestaurantSelection/Unregistered/',
+        registeredUser: 'http://localhost:8081/api/v1/RestaurantSelection/Registered/'
       },
       profileManagement: {
-        userProfile: 'http://localhost:8081/Profile/User',
-        updateUserProfile: 'http://localhost:8081/Profile/User/Edit',
-        restaurantProfile: 'http://localhost:8081/Profile/Restaurant',
-        updateRestaurantProfile: 'http://localhost:8081/Profile/Restaurant/Edit',
-        menuItemUpload: 'http://localhost:8081/Profile/Restaurant/Edit/MenuItemImageUpload',
-        profileImageUpload: 'http://localhost:8081/Profile/User/Edit/ProfileImageUpload'
+        userProfile: 'http://localhost:8081/api/v1/Profile/User',
+        updateUserProfile: 'http://localhost:8081/api/v1/Profile/User/Edit',
+        restaurantProfile: 'http://localhost:8081/api/v1/Profile/Restaurant',
+        updateRestaurantProfile: 'http://localhost:8081/api/v1/Profile/Restaurant/Edit',
+        menuItemUpload: 'http://localhost:8081/api/v1/Profile/Restaurant/Edit/MenuItemImageUpload',
+        profileImageUpload: 'http://localhost:8081/api/v1/Profile/User/Edit/ProfileImageUpload'
       },
       resetPassword: {
-        getSecurityQuestions: 'http://localhost:8081/ResetPassword/GetSecurityQuestions',
-        confirmSecurityAnswers: 'http://localhost:8081/ResetPassword/ConfirmSecurityAnswers',
-        updatePassword: 'http://localhost:8081/ResetPassword/UpdatePassword'
+        getSecurityQuestions: 'http://localhost:8081/api/v1/ResetPassword/GetSecurityQuestions',
+        confirmSecurityAnswers: 'http://localhost:8081/api/v1/ResetPassword/ConfirmSecurityAnswers',
+        updatePassword: 'http://localhost:8081/api/v1/ResetPassword/UpdatePassword'
       },
       sso: {
-        login: 'http://localhost:8081/Sso/Login',
-        createIndividualUser: 'http://localhost:8081/User/FirstTimeRegistration/Individual',
-        createRestaurantUser: 'http://localhost:8081/User/FirstTimeRegistration/Restaurant'
+        login: 'http://localhost:8081/api/v1/Sso/Login',
+        createIndividualUser: 'http://localhost:8081/api/v1/User/FirstTimeRegistration/Individual',
+        createRestaurantUser: 'http://localhost:8081/api/v1/User/FirstTimeRegistration/Restaurant'
       },
       restaurantBillSplitter: {
-        getRestaurantMenus: 'http://localhost:8081/RestaurantBillSplitter/Restaurant'
+        getRestaurantMenus: 'http://localhost:8081/api/v1/RestaurantBillSplitter/Restaurant'
       },
       login: {
-        loginUser: 'http://localhost:8081/Login'
+        loginUser: 'http://localhost:8081/api/v1/Login'
       },
       logout: {
-        logoutUser: 'http://localhost:8081/Logout'
+        logoutUser: 'http://localhost:8081/api/v1/Logout'
       },
       renewSession: {
-        requestNewToken: 'http://localhost:8081/RenewSession'
+        requestNewToken: 'http://localhost:8081/api/v1/RenewSession'
       },
       pwnedPassword: {
         range: 'https://api.pwnedpasswords.com/range/'

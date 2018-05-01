@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Managers\LoginManagerIntegrationTest.cs" />
+    <Compile Include="CSULB.GetUsGrub.BusinessLogic\Managers\RestaurantBillSplitterManagerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\PwnedPasswordIntegrationTest.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\AuthenticationTokenDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\FoodPreferencesDtoValidatorUnitTests.cs" />
@@ -127,8 +128,8 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Services\ValidationWrapperUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Strategies\ValidationStrategies\CreateFirstTimeSsoUserPostLogicValidationStrategyUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\FoodPreferenceValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\AuthenticationGatewayIntegrationTest.cs" />
-    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\AuthorizationGatewayUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.DataAccess\Gateways\AuthenticationGatewayIntegrationTest.cs" />
+    <Compile Include="CSULB.GetUsGrub.DataAccess\Gateways\AuthorizationGatewayUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantProfileDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\RestaurantSelectionDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\SecurityQuestionDtoValidatorUnitTests.cs" />
@@ -144,7 +145,8 @@
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\DtoValidators\SsoTokenPayloadDtoValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserAccountValidatorUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.BusinessLogic\Validators\ModelValidators\UserProfileValidatorUnitTests.cs" />
-    <Compile Include="CSULB.GetUSGrub.DataAccess\Gateways\UserGatewayUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.DataAccess\Gateways\UserGatewayUnitTests.cs" />
+    <Compile Include="CSULB.GetUsGrub.DataAccess\RestaurantBillSplitterGatewayUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\AuthorizationManagerUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsFactoryUnitTests.cs" />
     <Compile Include="CSULB.GetUsGrub.UserAccessControl\ClaimsTransformerUnitTests.cs" />

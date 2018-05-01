@@ -1,98 +1,80 @@
 <template>
     <div id="app">
       <div id="success">
-        <v-layout>
-          <v-flex xs12>
-            <v-alert type="success" :value="showSuccess">
-            <span>
-              Success! User <code>{{ responseData }}</code> has been created.
-            </span>
-            </v-alert>
-          </v-flex>
-        </v-layout>
+        <v-alert type="success" :value="showSuccess">
+        <span>
+          Success! User <code>{{ responseData }}</code> has been created.
+        </span>
+        </v-alert>
       </div>
       <div v-show="showError" id="error-div">
-        <v-layout>
-        <v-flex xs12>
-          <v-alert id="registration-error" :value=true icon='warning'>
-            <span id="error-title">
-              An error has occurred
-            </span>
-          </v-alert>
-        </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex xs12>
-            <v-card id="error-card">
-              <p v-for="error in errors" :key="error">
-                {{ error }}
-              </p>
-            </v-card>
-          </v-flex>
-        </v-layout>
+        <v-alert id="registration-error" :value=true icon='warning'>
+          <span id="error-title">
+            An error has occurred
+          </span>
+        </v-alert>
+          <v-card id="error-card">
+            <p v-for="error in errors" :key="error">
+              {{ error }}
+            </p>
+          </v-card>
       </div>
-      <v-flex xs6 sm3 offset-sm5>
-        <v-form v-model="validIdentificationInput">
+      <v-form v-model="validIdentificationInput">
+        <v-text-field
+          label="Enter a username"
+          v-model="userAccount.username"
+          :rules="$store.state.rules.usernameRules"
+          required
+          :disabled=disable
+        ></v-text-field>
+        <v-text-field
+          label="Enter a display name"
+          v-model="userProfile.displayName"
+          :rules="$store.state.rules.displayNameRules"
+          required
+          :disabled=disable
+        ></v-text-field>
+        <v-text-field
+          label="Enter a password"
+          v-model="userAccount.password"
+          :rules="$store.state.rules.passwordRules"
+          :min="8"
+          :counter="64"
+          :append-icon="visible ? 'visibility' : 'visibility_off'"
+          :append-icon-cb="() => (visible = !visible)"
+          :type=" visible ? 'text' : 'password'"
+          :error-messages="passwordErrorMessages"
+          @input="validateDelayed"
+          required
+          :disabled=disable
+        ></v-text-field>
+      </v-form>
+      <v-form v-model="validSecurityInput">
+        <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
+          <v-select
+            :items="set.questions"
+            item-text="question"
+            item-value="id"
+            v-model="securityQuestions[set.id].question"
+            label="Select a security question"
+            single-line
+            auto
+            append-icon="https"
+            hide-details
+            :rules="$store.state.rules.securityQuestionRules"
+            required
+            :disabled=disable
+          ></v-select>
           <v-text-field
-            label="Enter a username"
-            v-model="userAccount.username"
-            :rules="$store.state.rules.usernameRules"
+            label="Enter an answer to the above security question"
+            v-model="securityQuestions[set.id].answer"
+            :rules="$store.state.rules.securityAnswerRules"
             required
             :disabled=disable
           ></v-text-field>
-          <v-text-field
-            label="Enter a display name"
-            v-model="userProfile.displayName"
-            :rules="$store.state.rules.displayNameRules"
-            required
-            :disabled=disable
-          ></v-text-field>
-          <v-text-field
-            label="Enter a password"
-            v-model="userAccount.password"
-            :rules="$store.state.rules.passwordRules"
-            :min="8"
-            :counter="64"
-            :append-icon="visible ? 'visibility' : 'visibility_off'"
-            :append-icon-cb="() => (visible = !visible)"
-            :type=" visible ? 'text' : 'password'"
-            :error-messages="passwordErrorMessages"
-            @input="validatePassword"
-            required
-            :disabled=disable
-          ></v-text-field>
-        </v-form>
-        <v-form v-model="validSecurityInput">
-          <v-layout row wrap>
-            <v-flex xs12>
-              <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
-                <v-select
-                  :items="set.questions"
-                  item-text="question"
-                  item-value="id"
-                  v-model="securityQuestions[set.id].question"
-                  label="Select a security question"
-                  single-line
-                  auto
-                  append-icon="https"
-                  hide-details
-                  :rules="$store.state.rules.securityQuestionRules"
-                  required
-                  :disabled=disable
-                ></v-select>
-                <v-text-field
-                  label="Enter an answer to the above security question"
-                  v-model="securityQuestions[set.id].answer"
-                  :rules="$store.state.rules.securityAnswerRules"
-                  required
-                  :disabled=disable
-                ></v-text-field>
-              </div>
-              </v-flex>
-           </v-layout>
-        </v-form>
-           <v-btn id ="submit-button" color="info" v-on:click="userSubmit(viewType)">Submit</v-btn>
-      </v-flex>
+        </div>
+      </v-form>
+      <v-btn id ="submit-button" color="info" v-on:click="userSubmit(viewType)">Submit</v-btn>
     </div>
 </template>
 
@@ -109,6 +91,9 @@ export default {
     'app-footer': AppFooter
   },
   data: () => ({
+    errors: [],
+    visible: false,
+    disable: false,
     check: false,
     validIdentificationInput: false,
     validSecurityInput: false,
@@ -155,15 +140,22 @@ export default {
     },
     responseData: '',
     showError: false,
-    showSuccess: false
+    showSuccess: false,
+    passwordErrorMessages: [],
+    validationTimer: null
   }),
   methods: {
+    // Delays validation logic until user stops typing
+    validateDelayed () {
+      clearTimeout(this.validationTimer)
+      this.validationTimer = setTimeout(() => { this.validatePassword() }, 250)
+    },
     validatePassword () {
       if (this.userAccount.password.length < 8) {
         this.passwordErrorMessages = []
         return
       }
-      PasswordValidation.methods.validate(this.userAccount.password)
+      PasswordValidation.methods.validatePassword(this.userAccount.password)
         .then(response => {
           this.isPasswordValid = response.isValid
           this.passwordErrorMessages = response.message

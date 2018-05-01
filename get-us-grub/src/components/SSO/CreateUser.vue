@@ -1,117 +1,117 @@
 <template>
   <div id="create-user">
     <div id="success">
-      <v-layout>
-        <v-flex xs12>
-          <!-- Success messages for registration -->
-          <v-alert type="success" :value="showSuccess">
-            <span>
-              Success! User <code>{{ authentication.userAccount.username }}</code> has been created.
-            </span>
-          </v-alert>
-        </v-flex>
-      </v-layout>
+      <!-- Success messages for registration -->
+      <v-alert type="success" :value="showSuccess">
+        <span>
+          Success! User <code>{{ authentication.userAccount.username }}</code> has been created.
+        </span>
+      </v-alert>
     </div>
     <div v-show="showError" id="error-div">
-      <v-layout>
-      <v-flex xs12>
-        <!-- Error messages for registration -->
-        <v-alert id="registration-error" :value=true icon='warning'>
-          <span id="error-title">
-            An error has occurred
-          </span>
-        </v-alert>
-      </v-flex>
-      </v-layout>
-      <v-layout>
-        <!-- Card to show error messages -->
-        <v-flex xs12>
-          <v-card id="error-card">
-            <p v-for="error in errors" :key="error">
-              {{ error }}
-            </p>
-          </v-card>
-        </v-flex>
-      </v-layout>
+      <!-- Error messages for registration -->
+      <v-alert id="registration-error" :value=true icon='warning'>
+        <span id="error-title">
+          An error has occurred
+        </span>
+      </v-alert>
+      <!-- Card to show error messages -->
+        <v-card id="error-card">
+          {{ errors }}
+        </v-card>
     </div>
-    <v-layout  id="create-user-layout">
-    <v-flex xs12>
-        <v-toolbar dark tabs flat>
-          <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-1">
-            <v-spacer/>
-            <v-tab href="#user">User
-              <v-icon>face</v-icon>
-            </v-tab>
-            <v-spacer/>
-            <v-tab href="#restaurant">Restaurant
-              <v-icon>store</v-icon>
-            </v-tab>
-            <v-spacer/>
-          </v-tabs>
-        </v-toolbar>
-        <v-tabs-items v-model="tabs">
-          <v-tab-item v-for="content in ['user', 'restaurant']" :key='content' :id='content'>
-            <v-stepper v-model='formStep' vertical>
-              <v-stepper-header>
-                <!-- USER SECTIONS-->
-                <v-divider />
-                <v-stepper-step step='1' :complete='formStep > 1'>Welcome</v-stepper-step>
-                <v-divider />
-                <v-stepper-step step='2' :complete='formStep > 2'>Authorization</v-stepper-step>
-                <v-divider />
-                <v-stepper-step step='3' :complete='formStep > 3'>Security Questions</v-stepper-step>
-                <v-divider />
-                <v-stepper-step step='4' :complete='formStep > 4'>Profile</v-stepper-step>
-                <v-divider />
-                <!-- ADDITIONAL RESTAURANT SECTIONS-->
-                <v-stepper-step v-if="tabs == 'restaurant'" step='5' :complete='formStep > 5'>Business Hours</v-stepper-step>
-                <v-divider  v-if="tabs == 'restaurant'"/>
-                <v-stepper-step v-if="tabs == 'restaurant'" step='6' :complete='formStep > 6'>Contact Information</v-stepper-step>
-                <v-divider  v-if="tabs == 'restaurant'"/>
-              </v-stepper-header>
-              <v-stepper-items>
-                <!-- WELCOME MESSAGE -->
-                <v-stepper-content step='1'>
-                  <welcome-message />
-                  <v-btn color="primary" @click="nextStep(content)">Next</v-btn>
-                </v-stepper-content>
-                <!-- AUTHENTICATION FORM -->
-                <v-stepper-content step='2'>
-                  <auth-form v-model='authentication' :disabled="disable" />
-                  <v-btn color='grey lighten-5' @click='previousStep'>Previous</v-btn>
-                  <v-btn color="primary" :disabled="!authentication.isValid" @click="nextStep(content)">Next</v-btn>
-                </v-stepper-content>
-                <!-- SECURITY QUESTION FORM -->
-                <v-stepper-content step='3'>
-                  <security-questions-form v-model='securityQuestions' :disabled="disable" />
-                  <v-btn color='grey lighten-5' @click='previousStep'>Previous</v-btn>
-                  <v-btn color="primary" :disabled="!securityQuestions.isValid" @click="nextStep(content)">Next</v-btn>
-                </v-stepper-content>
-                <!-- PROFILE FORM -->
-                <v-stepper-content step='4'>
-                  <profile-form v-model='profile' :type='content' :disabled="disable" />
-                  <v-btn color='grey lighten-5' @click='previousStep'>Previous</v-btn>
-                  <v-btn color="primary" v-if="content === 'user'" :disabled="!isProfileValid(content) || disable" @click="submitUser">Submit</v-btn>
-                  <v-btn color="primary" v-if="content === 'restaurant'" :disabled="!isProfileValid(content)" @click="nextStep(content)">Next</v-btn>
-                </v-stepper-content>
-                <!-- BUSINESS HOURS FORM -->
-                <v-stepper-content step='5'>
-                  <business-hours-form v-model='businessHours' :disabled="disable" />
-                  <v-btn color='grey lighten-5' @click='formStep = 3'>Previous</v-btn>
-                  <v-btn color='primary' :disabled='!businessHours.isValid' @click='nextStep(content)'>Next</v-btn>
-                </v-stepper-content>
-                <!-- CONTACT INFO FORM -->
-                <v-stepper-content step='6'>
-                  <contact-info-form v-model='profile' :disabled="disable" />
-                  <v-btn color='grey lighten-5' @click='formStep = 4'>Previous</v-btn>
-                  <v-btn color="primary" :disabled="!profile.isValidContactInfo || disable" @click="submitRestaurant">Submit</v-btn>
-                </v-stepper-content>
-              </v-stepper-items>
-            </v-stepper>
-          </v-tab-item>
-        </v-tabs-items>
-      </v-flex>
-    </v-layout>
+    <v-toolbar dark tabs flat>
+      <v-tabs v-model="tabs" icons-and-text centered dark color="deep-orange darken-1">
+        <v-spacer/>
+        <v-tab href="#user">User
+          <v-icon>face</v-icon>
+        </v-tab>
+        <v-spacer/>
+        <v-tab href="#restaurant">Restaurant
+          <v-icon>store</v-icon>
+        </v-tab>
+        <v-spacer/>
+      </v-tabs>
+    </v-toolbar>
+    <v-tabs-items v-model="tabs" v-resize="onResize">
+      <v-tab-item v-for="content in ['user', 'restaurant']" :key='content' :id='content'>
+        <v-stepper v-model='formStep' :vertical="windowSize.width <= mobileScreenWidth">
+          <v-stepper-header v-if="windowSize.width > mobileScreenWidth">
+            <!-- USER SECTIONS-->
+            <v-divider />
+            <v-stepper-step step='1' :complete='formStep > 1'>Welcome</v-stepper-step>
+            <v-divider />
+            <v-stepper-step step='2' :complete='formStep > 2'>Authentication</v-stepper-step>
+            <v-divider />
+            <v-stepper-step step='3' :complete='formStep > 3'>Security Questions</v-stepper-step>
+            <v-divider />
+            <v-stepper-step step='4' :complete='formStep > 4'>Profile</v-stepper-step>
+            <v-divider />
+            <!-- ADDITIONAL RESTAURANT SECTIONS-->
+            <v-stepper-step v-if="tabs == 'restaurant'" step='5' :complete='formStep > 5'>Business Hours</v-stepper-step>
+            <v-divider  v-if="tabs == 'restaurant'"/>
+            <v-stepper-step v-if="tabs == 'restaurant'" step='6' :complete='formStep > 6'>Contact Information</v-stepper-step>
+            <v-divider  v-if="tabs == 'restaurant'"/>
+          </v-stepper-header>
+          <v-stepper-items>
+            <!-- WELCOME MESSAGE -->
+            <v-stepper-step v-if="windowSize.width <= mobileScreenWidth" step="1" :complete="formStep > 1">
+              Welcome
+            </v-stepper-step>
+            <v-stepper-content step='1'>
+              <welcome-message />
+              <v-btn color="primary" @click="nextStep(content)">Next</v-btn>
+            </v-stepper-content>
+            <!-- AUTHENTICATION FORM -->
+            <v-stepper-step v-if="windowSize.width <= mobileScreenWidth" step="2" :complete="formStep > 2">
+              Authentication
+            </v-stepper-step>
+            <v-stepper-content step='2'>
+              <auth-form v-model='authentication' :disabled="disable" />
+              <v-btn color='grey lighten-5' @click='previousStep'>Previous</v-btn>
+              <v-btn color="primary" :disabled="!authentication.isValid" @click="nextStep(content)">Next</v-btn>
+            </v-stepper-content>
+            <!-- SECURITY QUESTION FORM -->
+            <v-stepper-step v-if="windowSize.width <= mobileScreenWidth" step="3" :complete="formStep > 3">
+              Security Questions
+            </v-stepper-step>
+            <v-stepper-content step='3'>
+              <security-questions-form v-model='securityQuestions' :disabled="disable" />
+              <v-btn color='grey lighten-5' @click='previousStep'>Previous</v-btn>
+              <v-btn color="primary" :disabled="!securityQuestions.isValid" @click="nextStep(content)">Next</v-btn>
+            </v-stepper-content>
+            <!-- PROFILE FORM -->
+            <v-stepper-step v-if="windowSize.width <= mobileScreenWidth" step="4" :complete="formStep > 4">
+              Profile
+            </v-stepper-step>
+            <v-stepper-content step='4'>
+              <profile-form v-model='profile' :type='content' :disabled="disable" />
+              <v-btn color='grey lighten-5' @click='previousStep'>Previous</v-btn>
+              <v-btn color="primary" v-if="content === 'user'" :disabled="!isProfileValid(content) || disable" @click="submitUser">Submit</v-btn>
+              <v-btn color="primary" v-if="content === 'restaurant'" :disabled="!isProfileValid(content)" @click="nextStep(content)">Next</v-btn>
+            </v-stepper-content>
+            <!-- BUSINESS HOURS FORM -->
+            <v-stepper-step v-if="windowSize.width <= mobileScreenWidth && content=='restaurant'" step="5" :complete="formStep > 5">
+              Business Hours
+            </v-stepper-step>
+            <v-stepper-content step='5'>
+              <business-hours-form v-model='businessHours' :disabled="disable" />
+              <v-btn color='grey lighten-5' @click='formStep = 3'>Previous</v-btn>
+              <v-btn color='primary' :disabled='!businessHours.isValid' @click='nextStep(content)'>Next</v-btn>
+            </v-stepper-content>
+            <!-- CONTACT INFO FORM -->
+            <v-stepper-step v-if="windowSize.width <= mobileScreenWidth && content=='restaurant'" step="6" :complete="formStep > 6">
+              Contact Information
+            </v-stepper-step>
+            <v-stepper-content step='6'>
+              <contact-info-form v-model='profile' :disabled="disable" />
+              <v-btn color='grey lighten-5' @click='formStep = 4'>Previous</v-btn>
+              <v-btn color="primary" :disabled="!profile.isValidContactInfo || disable" @click="submitRestaurant">Submit</v-btn>
+            </v-stepper-content>
+          </v-stepper-items>
+        </v-stepper>
+      </v-tab-item>
+    </v-tabs-items>
   </div>
 </template>
 
@@ -137,6 +137,7 @@ export default {
   props: [],
   data: () => ({
     showError: false,
+    errors: [],
     showSuccess: false,
     tabs: null,
     formStep: 0,
@@ -199,9 +200,21 @@ export default {
       isValid: false
     },
     responseDataStatus: '',
-    responseData: ''
+    responseData: '',
+    windowSize: {
+      width: 0,
+      height: 0
+    },
+    mobileScreenWidth: 600
   }),
+  mounted () {
+    this.mobileScreenWidth = this.$store.state.constants.mobileScreenWidth
+    this.onResize()
+  },
   methods: {
+    onResize () {
+      this.windowSize = { width: window.innerWidth, height: window.innerHeight }
+    },
     nextStep (type) {
       var totalSteps = 4
 
@@ -232,28 +245,28 @@ export default {
         this.showError = true
         this.disable = false
         try {
-          if (error.response.status === 401) {
+          if (error.status === 401) {
             // Route to Unauthorized page
             this.$router.push('Unauthorized')
           }
-          if (error.response.status === 403) {
+          if (error.status === 403) {
             // Route to Forbidden page
             this.$router.push('Forbidden')
           }
-          if (error.response.status === 404) {
+          if (error.status === 404) {
             // Route to ResourceNotFound page
             this.$router.push('ResourceNotFound')
           }
-          if (error.response.status === 500) {
+          if (error.status === 500) {
             // Route to InternalServerError page
             this.$router.push('InternalServerError')
           } else {
-            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+            this.errors = error.message
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response.data
-          Promise.reject(error)
+          this.errors = ex.message
+          Promise.reject(this.errors)
         }
       })
     },
@@ -272,7 +285,7 @@ export default {
         method: 'POST',
         url: this.$store.state.urls.sso.createRestaurantUser,
         headers: {
-          Authorization: this.$store.state.firstTimeUserToken
+          Authorization: `bearer ${this.$store.state.firstTimeUserToken}`
         },
         data: dto
       }).then(response => {
@@ -336,37 +349,10 @@ export default {
 </script>
 
 <style scoped>
-#create-user {
-  margin: 1em 0 7em -2em;
-}
-#contact-layout {
-  margin: 0em 0em 0em 1.1em;
-}
-#phone-number {
-  margin: -1.6em 0em 0em 1.1em;
-}
-#error-title {
-  margin-right: 3.1em;
-}
-#error-card {
-  margin-bottom: 2em;
-}
-p {
-  margin-bottom: 0em;
-}
-#error-div {
-  margin: -0.9em 0em -0.5em 0em;
-}
-#success {
-  margin-bottom: 1em;
-}
 .application .theme--light.stepper--vertical
 .stepper__content:not(:last-child),
 .theme--light .stepper--vertical
 .stepper__content:not(:last-child) {
   border: none;
-}
-#create-user-layout {
-  margin: -1.7em 0 0 0;
 }
 </style>

@@ -21,7 +21,7 @@
           v-model="value.restaurantProfile.details.foodType"
           label="Select a food type associated with your restaurant"
           prepend-icon="restaurant"
-          :rules="$store.state.rules.rules.foodTypeRules"
+          :rules="$store.state.rules.foodTypeRules"
           required
           hide-details
           single-line

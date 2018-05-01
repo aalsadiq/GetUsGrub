@@ -1,8 +1,5 @@
 <template>
   <v-toolbar id="header-toolbar" app dark fixed>
-    <span class="hidden-sm-and-up">
-      <v-toolbar-side-icon id="toolbar-side-icon"/>
-    </span>
     <v-toolbar-items>
       <v-btn flat id="home-btn" to="/">
         <v-avatar :size="52" :tile="true"><img src="@/assets/GetUsGrub.png"></v-avatar>
@@ -13,8 +10,78 @@
         </v-toolbar-title>
       </v-btn>
     </v-toolbar-items>
-    <v-spacer></v-spacer>
-    <v-toolbar-items class="hidden-sm-and-down">
+    <v-spacer />
+    <v-toolbar-items v-resize="onResize" v-if="windowSize.width <= mobileScreenSize">
+      <v-menu offset-y>
+        <v-btn flat dark slot="activator">
+          <v-icon dark>list</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile id="RegistrationTile" v-if="showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              to="Registration"
+            >
+            Register
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile id="LoginTile" v-if="showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              to="Login"
+            >
+            Login
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile id="ProfileTile" v-if="!showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              to="Profile"
+            >
+            {{ this.$store.state.username}}
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile id="BillSplitterTile">
+            <v-btn
+              flat
+              class="nav-btn"
+              to="RestaurantBillSplitter"
+            >
+            Split Bill
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile v-if="!showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              @click="logout"
+            >
+            Logout
+            </v-btn>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+    </v-toolbar-items>
+    <v-toolbar-items v-resize="onResize" v-if="windowSize.width > mobileScreenSize">
+      <v-btn
+        flat
+        class="nav-btn"
+        to="Registration"
+        v-if="showWithoutAuthentication()"
+      >
+        <span class="nav-btn-text">REGISTER</span>
+      </v-btn>
+      <v-btn
+        flat
+        class="nav-btn"
+        to="Login"
+        v-if="showWithoutAuthentication()"
+      >
+        <span class="nav-btn-text">LOGIN</span>
+      </v-btn>
       <v-tooltip bottom>
         <v-btn
           flat
@@ -45,22 +112,6 @@
       >
         <span class="nav-btn-text">LOGOUT</span>
       </v-btn>
-      <v-btn
-        flat
-        class="nav-btn"
-        to="Registration"
-        v-if="showWithoutAuthentication()"
-      >
-        <span class="nav-btn-text">REGISTER</span>
-      </v-btn>
-      <v-btn
-        flat
-        class="nav-btn"
-        to="Login"
-        v-if="showWithoutAuthentication()"
-      >
-        <span class="nav-btn-text">LOGIN</span>
-      </v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -69,12 +120,21 @@
 import axios from 'axios'
 
 export default {
-  data () {
-    return {
-      showRegisteredRestaurantSelection: false
-    }
+  data: () => ({
+    windowSize: {
+      width: 0,
+      height: 0
+    },
+    mobileScreenSize: 1000,
+    showRegisteredRestaurantSelection: false
+  }),
+  mounted () {
+    this.onResize()
   },
   methods: {
+    onResize () {
+      this.windowSize = { width: window.innerWidth, height: window.innerHeight }
+    },
     showWithoutAuthentication () {
       try {
         if (this.$store.state.authenticationToken === null) {
@@ -145,8 +205,5 @@ div.btn__content {
 }
 #username-text {
   text-transform: uppercase;
-}
-#person-icon {
-  margin: 0 0.4em 0.1em 0;
 }
 </style>

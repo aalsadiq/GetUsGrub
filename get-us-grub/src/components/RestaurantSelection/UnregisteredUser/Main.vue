@@ -33,6 +33,9 @@ export default {
   font-size: small;
   color: rgb(82, 159, 247) !important;
 }
+#login-redirect-btn {
+  text-transform: none;
+}
 #unregistered-restaurant-selection {
   max-width: 1200px;
   margin: auto;

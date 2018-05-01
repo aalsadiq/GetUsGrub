@@ -45,7 +45,7 @@
         <!-- TIME PICKER OPENING TIME -->
         <v-text-field
           slot="activator"
-          label="Select opening time (12hr format)"
+          label="Select opening time (24hr format)"
           v-model="businessHour.openTime"
           prepend-icon="access_time"
           :rules="$store.state.rules.openTimeRules"
@@ -54,7 +54,7 @@
           :disabled="disabled"
           ></v-text-field>
         <v-time-picker
-          format="12hr"
+          format="24hr"
           v-model="businessHour.openTime"
           @change="$refs.openMenu.save(time)"
           :max="businessHour.closeTime"

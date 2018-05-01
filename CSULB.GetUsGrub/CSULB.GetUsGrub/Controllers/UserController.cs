@@ -301,8 +301,12 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                // Sending HTTP response 201 Status
-                return Created("Individual user has been created: ", registerUserDto.UserAccountDto.Username);
+
+                // Return authentication token for user
+                var authManager = new AuthenticationTokenManager();
+                var token = authManager.CreateToken(registerUserDto.UserAccountDto.Username);
+
+                return Ok(token.Data.TokenString);
             }
             // Catch exceptions
             catch (Exception)
@@ -330,8 +334,12 @@ namespace CSULB.GetUsGrub.Controllers
                 {
                     return BadRequest(response.Error);
                 }
-                // HTTP 201 Status
-                return Created("Restaurant user has been created: ", registerRestaurantDto.UserAccountDto.Username);
+
+                // Return authentication token for user
+                var authManager = new AuthenticationTokenManager();
+                var token = authManager.CreateToken(registerRestaurantDto.UserAccountDto.Username);
+
+                return Ok(token.Data.TokenString);
             }
             // Catch exceptions
             catch (Exception)

@@ -41,6 +41,7 @@ export default {
   data: () => ({
     isLoading: true
   }),
+  // Log user in based on query when the page loads
   created () {
     var queryJwt = this.$route.query.jwt
     axios({

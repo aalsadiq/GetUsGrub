@@ -1,5 +1,5 @@
 ﻿using CSULB.GetUsGrub.Models;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
@@ -56,36 +56,27 @@ namespace CSULB.GetUsGrub.BusinessLogic
             var request = new GetRequestService(url);
             var response = await new GoogleBackoffRequest(request).TryExecute();
             var responseJson = await response.Content.ReadAsStringAsync();
-            var responseObj = JObject.Parse(responseJson);
-
-            // Retrieve status code from response
-            var status = (string)responseObj.SelectToken(GoogleApiConstants.GOOGLE_TIMEZONE_TOKEN_STATUS);
-
-            // Exit early if status is not OK.
-            if (!status.Equals(GoogleApiConstants.GOOGLE_TIMEZONE_STATUS_OK))
+            var responseObj = JsonConvert.DeserializeObject<GoogleTimeZoneDto>(responseJson);
+            
+            if (responseObj.status != GoogleApiConstants.GOOGLE_GEOCODE_STATUS_OK)
             {
-                if (status.Equals(GoogleApiConstants.GOOGLE_TIMEZONE_STATUS_ZERO_RESULTS))
+                if (responseObj.status == GoogleApiConstants.GOOGLE_TIMEZONE_STATUS_ZERO_RESULTS)
                 {
-                    status = GoogleApiConstants.GOOGLE_TIMEZONE_ERROR_INVALID_ADDRESS;
-                }
-                else
-                {
-                    status = GoogleApiConstants.GOOGLE_TIMEZONE_ERROR_GENERAL;
+                    return new ResponseDto<int>()
+                    {
+                        Error = GoogleApiConstants.GOOGLE_TIMEZONE_ERROR_INVALID_ADDRESS
+                    };
                 }
 
                 return new ResponseDto<int>()
                 {
-                    Error = status
+                    Error = GoogleApiConstants.GOOGLE_TIMEZONE_ERROR_GENERAL
                 };
             }
 
-            // Retrieve offsets from response and return the sum of the offsets.
-            var offset = (int)responseObj.SelectToken(GoogleApiConstants.GOOGLE_TIMEZONE_TOKEN_RAW_OFFSET);
-            var dstOffset = (int)responseObj.SelectToken(GoogleApiConstants.GOOGLE_TIMEZONE_TOKEN_DST_OFFSET);
-
             return new ResponseDto<int>()
             {
-                Data = offset + dstOffset
+                Data = responseObj.rawOffset + responseObj.dstOffset
             };
         }
     }

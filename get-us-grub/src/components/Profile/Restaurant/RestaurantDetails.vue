@@ -40,7 +40,7 @@
                     auto
                     prepend-icon="money"
                     hide-details
-                    :rules="$store.state.rules.avgFoodPriceRules"
+                    :rules="$store.state.avgFoodPriceRules"
                   ></v-select>
                 </v-list-tile-action>
                 <v-list-tile-action v-else-if="detailProperty === 'foodType'">
@@ -55,7 +55,7 @@
                     auto
                     prepend-icon="restaurant"
                     hide-details
-                    :rules="$store.state.rules.foodTypeRules"
+                    :rules="$store.state.foodTypeRules"
                   ></v-select>
                 </v-list-tile-action>
                 <v-list-tile-action v-else>

@@ -21,7 +21,7 @@
                 single-line
                 auto
                 hide-details
-                :rules="$store.state.rules.timeZoneRules"
+                :rules="$store.state.timeZoneRules"
                 required
                 :disabled=disable
               ></v-select>
@@ -32,7 +32,7 @@
                 single-line
                 auto
                 hide-details
-                :rules="$store.state.rules.businessDayRules"
+                :rules="$store.state.businessDayRules"
                 required
                 :disabled=disable
               ></v-select>
@@ -53,7 +53,7 @@
                   slot="activator"
                   label="Select opening time (24hr format)"
                   v-model="editedBusinessHour.openTime"
-                  :rules="$store.state.rules.businessHourRules"
+                  :rules="$store.state.businessHourRules"
                   prepend-icon="access_time"
                   readonly
                   required
@@ -83,7 +83,7 @@
                   slot="activator"
                   label="Select closing time (24hr format)"
                   v-model="editedBusinessHour.closeTime"
-                  :rules="$store.state.rules.businessHourRules"
+                  :rules="$store.state.businessHourRules"
                   prepend-icon="access_time"
                   readonly
                   required

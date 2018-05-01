@@ -53,10 +53,11 @@
                     label="Enter username"
                     type="text"
                     :disabled="isDisabled"
-                    :rules="$store.state.rules.usernameRules"
+                    :rules="$store.state.usernameRules"
                     required
                   >
                   </v-text-field>
+                  <v-text-field v-show="this.isShow"/>
                 <div v-if="isSecurityQuestionsForm">
                   <div v-for="set in $store.state.constants.securityQuestions" :key="set.id">
                     <v-select
@@ -68,14 +69,14 @@
                       auto
                       append-icon="https"
                       hide-details
-                      :rules="$store.state.rules.securityQuestionRules"
+                      :rules="$store.state.securityQuestionRules"
                       required
                       :disabled="isDisabled"
                     ></v-select>
                     <v-text-field
                       label="Enter an answer to the above security question"
                       v-model="securityQuestions[set.id].answer"
-                      :rules="$store.state.rules.securityAnswerRules"
+                      :rules="$store.state.securityAnswerRules"
                       required
                       :disabled="isSubmitDisabled">
                       </v-text-field>
@@ -85,7 +86,7 @@
                   <v-text-field
                     label="Enter a new password"
                     v-model="password"
-                    :rules="$store.state.rules.passwordRules"
+                    :rules="$store.state.passwordRules"
                     :min="8"
                     :counter="64"
                     :append-icon="visible ? 'visibility' : 'visibility_off'"
@@ -102,13 +103,13 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <div v-if="isUsernameForm">
-                <v-btn @click="getSecurityQuestions" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
+                <v-btn @click.prevent="getSecurityQuestions" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
               </div>
               <div v-if="isSecurityQuestionsForm">
-                <v-btn @click="confirmSecurityAnswers" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
+                <v-btn @click.prevent="confirmSecurityAnswers" color="primary" :disabled="!isValid || isSubmitDisabled">Submit</v-btn>
               </div>
               <div v-if="isConfirmPasswordForm">
-                <v-btn color="primary" @click="updatePassword" :disabled="!isPasswordValid || !isValid || isSubmitDisabled">Submit</v-btn>
+                <v-btn color="primary" @click.prevent="updatePassword" :disabled="!isPasswordValid || !isValid || isSubmitDisabled">Submit</v-btn>
               </div>
             </v-card-actions>
             </div>
@@ -138,6 +139,7 @@ export default {
   data () {
     return {
       errors: [],
+      isShow: false,
       showError: false,
       showSuccess: false,
       visible: false,

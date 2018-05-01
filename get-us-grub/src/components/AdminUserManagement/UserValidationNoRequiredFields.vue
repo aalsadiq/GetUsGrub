@@ -34,8 +34,8 @@
     </div>
       <v-flex xs6 sm3 offset-sm5>
         <v-form v-model="validIdentificationInput">
-          <v-text-field label="Enter user to edit" v-model="editUser.username" :rules="$store.state.rules.usernameRules"></v-text-field>
-          <v-text-field label="Enter new username" v-model="editUser.newUsername" :rules="$store.state.rules.usernameNotRequiredRule"></v-text-field>
+          <v-text-field label="Enter user to edit" v-model="editUser.username" :rules="$store.state.usernameRules"></v-text-field>
+          <v-text-field label="Enter new username" v-model="editUser.newUsername" :rules="$store.state.usernameNotRequiredRule"></v-text-field>
           <v-text-field label="Enter new display name" v-model="editUser.newDisplayName"></v-text-field>
         </v-form>
         <v-btn id ="submit-button" color="info" v-on:click="userSubmit()">Submit</v-btn>

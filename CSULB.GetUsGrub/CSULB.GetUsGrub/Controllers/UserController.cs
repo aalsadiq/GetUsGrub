@@ -258,7 +258,6 @@ namespace CSULB.GetUsGrub.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]        
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
-            System.Diagnostics.Debug.WriteLine("new: " + user.NewUsername + "dis: " + user.NewDisplayName + "user:" +user.Username);
             //Checks if what was given is a valid model.
             if (!ModelState.IsValid)
             {

@@ -43,7 +43,7 @@ export default {
       console.log(this.restaurantId)
       axios.get('http://localhost:8081/RestaurantBillSplitter/Restaurant', {
         headers: {
-          'Authorization': `Bearer ${this.$store.state.authenticationToken}`
+          Authorization: `Bearer ${this.$store.state.authenticationToken}`
         },
         params: {
           restaurantId: this.restaurantId

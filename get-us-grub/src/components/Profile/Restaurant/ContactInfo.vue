@@ -20,7 +20,7 @@
                     <v-text-field
                       v-model="profile.phoneNumber"
                       prepend-icon="phone"
-                      :rules="$store.state.rules.phoneNumberRules"
+                      :rules="$store.state.phoneNumberRules"
                       single-line
                     ></v-text-field>
                   </v-flex>
@@ -37,7 +37,7 @@
                       label="Street 1"
                       placeholder="1111 Snowy Rock Pl"
                       v-model="address.street1"
-                      :rules="$store.state.rules.addressStreet1Rules"
+                      :rules="$store.state.addressStreet1Rules"
                       required
                     ></v-text-field>
                     <v-text-field
@@ -58,7 +58,7 @@
                       item-text="name"
                       item-value="abbreviation"
                       label="Select a state"
-                      :rules="$store.state.rules.addressStateRules"
+                      :rules="$store.state.addressStateRules"
                       single-line
                       auto
                       append-icon="map"
@@ -68,7 +68,7 @@
                       <v-text-field
                       label="Zip"
                       placeholder="92812"
-                      :rules="$store.state.rules.addressZipRules"
+                      :rules="$store.state.addressZipRules"
                       type="number"
                       v-model.number="address.zip"
                       required

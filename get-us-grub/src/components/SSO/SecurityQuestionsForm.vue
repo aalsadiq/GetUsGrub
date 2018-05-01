@@ -12,14 +12,14 @@
         auto
         append-icon="https"
         hide-details
-        :rules="$store.state.rules.securityQuestionRules"
+        :rules="$store.state.securityQuestionRules"
         required
         :disabled="disabled"
         ></v-select>
       <v-text-field
         label="Enter an answer to the above security question"
         v-model="value.questions[set.id].answer"
-        :rules="$store.state.rules.securityAnswerRules"
+        :rules="$store.state.securityAnswerRules"
         required
         :disabled="disabled"
         ></v-text-field>

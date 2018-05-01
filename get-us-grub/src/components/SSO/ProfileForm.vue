@@ -6,7 +6,7 @@
         <v-text-field
           :label="getDisplayLabel(type)"
           v-model="value.userProfile.displayName"
-          :rules="$store.state.rules.displayNameRules"
+          :rules="$store.state.displayNameRules"
           required
           :disabled="disabled"
           ></v-text-field>
@@ -21,7 +21,7 @@
           v-model="value.restaurantProfile.details.foodType"
           label="Select a food type associated with your restaurant"
           prepend-icon="restaurant"
-          :rules="$store.state.rules.foodTypeRules"
+          :rules="$store.state.foodTypeRules"
           required
           hide-details
           single-line
@@ -37,7 +37,7 @@
           v-model="value.restaurantProfile.details.avgFoodPrice"
           label="Select average food price"
           prepend-icon="money"
-          :rules="$store.state.rules.avgFoodPriceRules"
+          :rules="$store.state.avgFoodPriceRules"
           required
           hide-details
           single-line
@@ -54,7 +54,7 @@
           chips
           prepend-icon="done"
           persistent-hint
-          :rules="$store.state.rules.foodPreferenceRules"
+          :rules="$store.state.foodPreferenceRules"
           required
           :disabled="disabled"
           ></v-select>

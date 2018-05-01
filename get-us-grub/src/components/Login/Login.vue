@@ -17,7 +17,7 @@
               prepend-icon="pets"
               label="Enter a username"
               name = "username"
-              :rules="$store.state.rules.usernameRules"
+              :rules="$store.state.usernameRules"
               :disable=disable
               required
             ></v-text-field>
@@ -26,7 +26,7 @@
               name="password"
               label="Password"
               id="password"
-              :rules="$store.state.rules.passwordRules"
+              :rules="$store.state.passwordRules"
               :min="8"
               :append-icon="visible ? 'visibility' : 'visibility_off'"
               :append-icon-cb="() => (visible = !visible)"
@@ -109,13 +109,13 @@ export default {
         this.valid = true
         this.disable = false
         var decodedJwt = jwt.decode(response.data)
-        this.$store.state.username = decodedJwt['Username']
+        this.$store.commit('setUsername', decodedJwt['Username'])
         if (decodedJwt.ReadIsFirstTimeUser === 'True') {
           this.$store.state.firstTimeUserToken = response.data
           this.$router.push('FirstTimeRegistration')
         } else {
-          this.$store.state.isAuthenticated = true
-          this.$store.state.authenticationToken = response.data
+          this.$store.commit('setIsAuthenticated', true)
+          this.$store.commit('setAuthenticationToken', response.data)
           this.$router.push({path: '/'})
         }
       }).catch(error => {

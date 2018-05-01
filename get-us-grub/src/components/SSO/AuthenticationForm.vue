@@ -11,7 +11,7 @@
     <v-text-field
       label="Please enter your password"
       v-model="value.userAccount.password"
-      :rules="$store.state.rules.passwordRules"
+      :rules="$store.state.passwordRules"
       :min="8"
       :counter="64"
       :append-icon="visible ? 'visibility' : 'visibility_off'"

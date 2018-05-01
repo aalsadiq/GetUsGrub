@@ -36,7 +36,7 @@
                     <v-text-field
                       label="Enter a display name"
                       v-model="displayName"
-                      :rules="$store.state.rules.displayNameRules"
+                      :rules="$store.state.displayNameRules"
                       required
                       dark
                     ></v-text-field>

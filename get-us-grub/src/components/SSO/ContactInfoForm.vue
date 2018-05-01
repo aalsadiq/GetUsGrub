@@ -9,7 +9,7 @@
           label="Street 1"
           placeholder="1111 Snowy Rock Pl"
           v-model="value.restaurantProfile.address.street1"
-          :rules="$store.state.rules.addressStreet1Rules"
+          :rules="$store.state.addressStreet1Rules"
           required
           :disabled="disabled"
           ></v-text-field>
@@ -33,7 +33,7 @@
           item-text="name"
           item-value="abbreviation"
           label="Select a state"
-          :rules="$store.state.rules.addressStateRules"
+          :rules="$store.state.addressStateRules"
           single-line
           auto
           append-icon="map"
@@ -44,7 +44,7 @@
         <v-text-field
           label="Zip"
           placeholder="92812"
-          :rules="$store.state.rules.addressZipRules"
+          :rules="$store.state.addressZipRules"
           type="number"
           v-model.number="value.restaurantProfile.address.zip"
           required
@@ -60,7 +60,7 @@
         v-model="value.restaurantProfile.phoneNumber"
         placeholder="(562)111-5555"
         prepend-icon="phone"
-        :rules="$store.state.rules.phoneNumberRules"
+        :rules="$store.state.phoneNumberRules"
         single-line
         :disabled="disabled"
         ></v-text-field>

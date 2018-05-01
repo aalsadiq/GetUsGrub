@@ -72,11 +72,15 @@ export default {
         }
       }).then(response => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})
       }).catch(error => {
         this.$store.commit('setAuthenticationToken', null)
+        this.$store.commit('setIsAuthenticated', false)
+        this.$store.commit('setUsername', '')
         // Force refresh of page
         location.reload()
         this.$router.push({path: '/'})

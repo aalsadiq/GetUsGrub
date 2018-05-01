@@ -3,6 +3,7 @@ using CSULB.GetUsGrub.Models;
 using CSULB.GetUsGrub.UserAccessControl;
 using System.Collections.Generic;
 using System.Linq;
+
 // TODO: @Jenn Need to add in default display picture string. Angelica will have this set as a constant. [-Jennifer]
 namespace CSULB.GetUsGrub.BusinessLogic
 {
@@ -880,7 +881,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             // since not all of the edited items are required. This is to avoid erasing objects that
             // are stored in our database.
             var setPropertiesService = new SetPropertiesService<EditUserDto>();
-            setPropertiesService.SetEmptyStringToNull(user);
+            user = setPropertiesService.SetEmptyStringToNull(user);
 
             // Validation Strategy will validate if the user meets the requirements
             var editUserValidation = new EditUserValidationStrategy(user);

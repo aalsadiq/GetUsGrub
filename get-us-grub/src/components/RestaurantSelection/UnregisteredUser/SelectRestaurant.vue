@@ -2,6 +2,28 @@
   <div>
     <div>
       <div fluid>
+        <div v-show="showError" id="error-div">
+          <v-layout>
+          <v-flex xs12>
+            <!-- Error messages for registration -->
+            <v-alert id="error-alert" :value=true icon='warning'>
+              <span id="error-title">
+                An error has occurred
+              </span>
+            </v-alert>
+          </v-flex>
+          </v-layout>
+          <v-layout>
+            <!-- Card to show error messages -->
+            <v-flex xs12>
+              <v-card id="error-card">
+                <p v-for="error in errors" :key="error">
+                  {{ error }}
+                </p>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </div>
         <div>
           <!-- Alert for when there is no restaurant avaialble within user's selection criteria -->
           <v-alert id="unableToFindRestaurantAlert" icon="new_releases" class="text-xs-center" :value=showAlert>
@@ -26,7 +48,7 @@
                     v-model="$store.state.restaurantSelection.request.foodType"
                     item-text="type"
                     label="Select a food type"
-                    :rules="this.$store.state.foodTypeRules"
+                    :rules="$store.state.foodTypeRules"
                     autocomplete
                     required
                     :disabled=disable
@@ -39,7 +61,7 @@
                   v-model="$store.state.restaurantSelection.request.city"
                   hint="City"
                   persistent-hint
-                  :rules="this.$store.state.addressCityRules"
+                  :rules="$store.state.addressCityRules"
                   required
                   :disabled=disable
                 ></v-text-field>
@@ -53,7 +75,7 @@
                     label="State"
                     hint="State"
                     persistent-hint
-                    :rules="this.$store.state.addressStateRules"
+                    :rules="$store.state.addressStateRules"
                     autocomplete
                     required
                     :disabled=disable
@@ -137,7 +159,9 @@ export default {
       loader: null,
       loading: false,
       showSection: false,
-      disable: false
+      disable: false,
+      showError: false,
+      errors: null
     }
   },
   watch: {
@@ -154,6 +178,7 @@ export default {
   methods: {
     // Submitting information to the backend
     submit () {
+      this.showError = false
       this.valid = false
       this.disable = true
       this.loader = 'loading'
@@ -204,13 +229,14 @@ export default {
             // Route to InternalServerError page
             this.$router.push('InternalServerError')
           } else {
-            // Route to the General Error page
-            this.$router.push('GeneralError')
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+            this.showError = true
           }
           Promise.reject(error)
         } catch (ex) {
-          // Route to the General Error page
-          this.$router.push('GeneralError')
+          this.errors = error.response.data
+          this.showError = true
+          Promise.reject(error)
         }
       })
     }

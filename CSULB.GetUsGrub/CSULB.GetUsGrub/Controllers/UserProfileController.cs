@@ -101,7 +101,7 @@ namespace CSULB.GetUsGrub.Controllers
                     return BadRequest(response.Error);
                 }
 
-                return Ok("Image Upload complete!");
+                return Ok();
             }
             catch (Exception)
             {

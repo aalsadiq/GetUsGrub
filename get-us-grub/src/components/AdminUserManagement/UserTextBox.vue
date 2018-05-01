@@ -14,7 +14,6 @@
       <div v-show="showError" id="error-div">
         <v-layout>
         <v-flex xs12>
-          <!-- Title bar for the restaurant selection -->
           <v-alert id="registration-error" :value=true icon='warning'>
             <span id="error-title">
               An error has occurred
@@ -189,10 +188,7 @@ export default {
 }
 </script>
 
-<style>
-#create-user-div {
-  padding: 2em 6em 0em 10em;
-}
+<style scoped>
 #card {
   padding: 0 0.7em 0 0.7em;
   margin: 0 0 1em 0;

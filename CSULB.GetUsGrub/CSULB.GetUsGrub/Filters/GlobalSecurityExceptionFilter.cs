@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using CSULB.GetUsGrub.Models;
 using System.Net;
 using System.Net.Http;
 using System.Security;
@@ -24,7 +24,7 @@ namespace CSULB.GetUsGrub
             if (exceptionType == typeof(SecurityException))
             {
                 actionExecutedContext.Response = actionExecutedContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden,
-                    "403 Forbidden. You are not authorized to perform this request.");
+                    GeneralErrorMessages.FORBIDDEN_ERROR);
             }
         }
     }

@@ -266,7 +266,7 @@ namespace CSULB.GetUsGrub.Controllers
             {
                 if(user.NewDisplayName=="" && user.NewUsername == "" || user.NewDisplayName==null && user.NewUsername==null)
                 {
-                    return BadRequest("Invalid: Empty new username or displayname");
+                    return BadRequest(UserManagementErrorMessages.EMPTY_USERNAME_OR_DISPLAYNAME);
                 }
                 var manager = new UserManager();
                 var response = manager.Edituser(user);

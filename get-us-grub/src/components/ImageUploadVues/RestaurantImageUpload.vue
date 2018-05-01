@@ -238,9 +238,4 @@ input[type="file"] {
     width: 137.5px;
     height: 27px;
 }
-/* img#display-picture{
-  height: 50px;
-  width:50px;
-  padding-left:0px;
-} */
 </style>

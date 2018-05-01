@@ -28,11 +28,6 @@ export default {
 }
 </script>
 
-<style>
-/* #edit-user-div {
-  padding: 2em 6em 0em 10em;
-}
-#edit-user-alert {
-  background-color: #e26161 !important
-} */
+<style scoped>
+
 </style>

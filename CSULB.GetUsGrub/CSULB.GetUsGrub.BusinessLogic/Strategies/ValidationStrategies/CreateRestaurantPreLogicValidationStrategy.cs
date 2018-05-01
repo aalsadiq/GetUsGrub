@@ -66,14 +66,14 @@ namespace CSULB.GetUsGrub.BusinessLogic
                 result = _businessHourDtoValidator.CheckIfDayIsDayOfWeek(businessHourDto.Day);
                 if (!result.Data)
                 {
-                    result.Error = "Day must be either Sunday, Monday, Tuesday, Wednesday, Thursday, Friday or Saturday.";
+                    result.Error = ValidationErrorMessages.NOT_DAY_OF_WEEK;
                     return result;
                 }
 
                 result = _businessHourDtoValidator.CheckIfOpenTimeIsBeforeCloseTime(businessHourDto.OpenTime, businessHourDto.CloseTime);
                 if (!result.Data)
                 {
-                    result.Error = "Opening time must be less than closing time.";
+                    result.Error = ValidationErrorMessages.OPEN_TIME_MUST_BE_BEFORE_CLOSE_TIME;
                     return result;
                 }
             }
@@ -81,7 +81,7 @@ namespace CSULB.GetUsGrub.BusinessLogic
             result = _restaurantDetailValidator.CheckIfFoodTypeIsRestaurantFoodType(_registerRestaurantDto.RestaurantProfileDto.Details.FoodType);
             if (!result.Data)
             {
-                result.Error = "Food type must be a valid restaurant food type.";
+                result.Error = ValidationErrorMessages.INVALID_FOOD_TYPE;
                 return result;
             }
 

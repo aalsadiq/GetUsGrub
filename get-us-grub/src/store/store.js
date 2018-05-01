@@ -187,6 +187,8 @@ export const store = new Vuex.Store({
     },
     // Constants are data that are non-changing
     constants: {
+      genericErrorMessage: 'An unexpected error has occured.',
+      mobileScreenWidth: 1000,
       inputValidationDelay: 250,
       defaultProfilePicturePath: '@/assets/DefaultProfileImage.png',
       securityQuestions: [{

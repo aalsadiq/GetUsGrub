@@ -10,8 +10,66 @@
         </v-toolbar-title>
       </v-btn>
     </v-toolbar-items>
-    <v-spacer></v-spacer>
-    <v-toolbar-items>
+    <v-spacer />
+    <v-toolbar-items v-resize="onResize" v-if="windowSize.width <= mobileScreenSize">
+      <v-menu offset-y>
+        <v-btn flat dark slot="activator">
+          <v-icon dark>list</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile v-if="showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              to="Registration"
+            >
+            REGISTER
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile v-if="showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              to="Login"
+            >
+            LOGIN
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile v-if="!showWithoutAuthentication()">
+            <v-btn
+              flat
+              slot="activator"
+              class="nav-btn"
+              to="Profile"
+            >
+              <v-icon id="person-icon">person</v-icon>
+              <span class="nav-btn-text" id="username-text">
+                {{ this.$store.state.username }}
+              </span>
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile>
+            <v-btn
+              flat
+              class="nav-btn"
+              to="RestaurantBillSplitter"
+            >
+            SPLIT BILL
+            </v-btn>
+          </v-list-tile>
+          <v-list-tile v-if="!showWithoutAuthentication()">
+            <v-btn
+              flat
+              class="nav-btn"
+              @click="logout"
+            >
+            LOGOUT
+            </v-btn>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+    </v-toolbar-items>
+    <v-toolbar-items v-resize="onResize" v-if="windowSize.width > mobileScreenSize">
       <v-btn
         flat
         class="nav-btn"
@@ -66,12 +124,21 @@
 import axios from 'axios'
 
 export default {
-  data () {
-    return {
-      showRegisteredRestaurantSelection: false
-    }
+  data: () => ({
+    windowSize: {
+      width: 0,
+      height: 0
+    },
+    mobileScreenSize: 1000,
+    showRegisteredRestaurantSelection: false
+  }),
+  mounted () {
+    this.onResize()
   },
   methods: {
+    onResize () {
+      this.windowSize = { width: window.innerWidth, height: window.innerHeight }
+    },
     showWithoutAuthentication () {
       try {
         if (this.$store.state.authenticationToken === null) {

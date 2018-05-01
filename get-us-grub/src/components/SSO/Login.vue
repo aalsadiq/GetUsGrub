@@ -71,13 +71,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#login-card {
-  margin-top: 10em
-}
-#login-message {
-  font-size: 150%;
-  display: inline-block;
-}
-</style>

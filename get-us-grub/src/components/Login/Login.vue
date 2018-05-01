@@ -1,50 +1,54 @@
 <template>
   <div>
     <app-header />
-    <div id="login-div">
+    <v-content>
       <v-alert id="login-error" :value=showError icon="warning">
           <span>
             {{errors}}
           </span>
       </v-alert>
-      <v-card>
-        <v-toolbar dark color="blue darken-4">
-          <v-toolbar-title>Login</v-toolbar-title>
-        </v-toolbar>
-        <div id="fields-div">
-          <v-form ref="form" v-model="valid" >
-            <v-text-field v-model="username"
-              prepend-icon="pets"
-              label="Enter a username"
-              name = "username"
-              :rules="$store.state.rules.usernameRules"
-              :disable=disable
-              required
-            ></v-text-field>
-            <v-text-field v-model="password"
-              prepend-icon="lock"
-              name="password"
-              label="Password"
-              id="password"
-              :rules="$store.state.rules.passwordRules"
-              :min="8"
-              :append-icon="visible ? 'visibility' : 'visibility_off'"
-              :append-icon-cb="() => (visible = !visible)"
-              :type=" visible ? 'text' : 'password'"
-              :disable=disable
-              required
-              ></v-text-field>
-            <v-btn color="primary" @click="LoginUser" :disabled="!valid" :loading="loading">Sign In</v-btn>
-            <div class="text-right">
-              <router-link class="md-accent" to="ResetPassword">Forgot password?</router-link>
+      <v-layout column justify-center>
+        <v-container xs12 id="login">
+          <v-card mx3>
+            <v-toolbar dark color="blue darken-4">
+              <v-toolbar-title>Login</v-toolbar-title>
+            </v-toolbar>
+            <div id="fields-div">
+              <v-form ref="form" v-model="valid" >
+                <v-text-field v-model="username"
+                  prepend-icon="pets"
+                  label="Enter a username"
+                  name = "username"
+                  :rules="$store.state.rules.usernameRules"
+                  :disable=disable
+                  required
+                ></v-text-field>
+                <v-text-field v-model="password"
+                  prepend-icon="lock"
+                  name="password"
+                  label="Password"
+                  id="password"
+                  :rules="$store.state.rules.passwordRules"
+                  :min="8"
+                  :append-icon="visible ? 'visibility' : 'visibility_off'"
+                  :append-icon-cb="() => (visible = !visible)"
+                  :type=" visible ? 'text' : 'password'"
+                  :disable=disable
+                  required
+                  ></v-text-field>
+                <v-btn color="primary" @click="LoginUser" :disabled="!valid" :loading="loading">Sign In</v-btn>
+                <div class="text-right">
+                  <router-link class="md-accent" to="ResetPassword">Forgot password?</router-link>
+                </div>
+                <div class="text-right">
+                  <router-link class="md-accent" to="/Registration">Don't have an account?</router-link>
+                </div>
+              </v-form>
             </div>
-            <div class="text-right">
-              <router-link class="md-accent" to="/Registration">Don't have an account?</router-link>
-            </div>
-          </v-form>
-        </div>
-      </v-card>
-    </div>
+          </v-card>
+        </v-container>
+      </v-layout>
+    </v-content>
     <app-footer/>
   </div>
 </template>
@@ -122,21 +126,26 @@ export default {
         this.showError = true
         this.valid = true
         this.disable = false
-        this.errors = error.response.data['message']
-        Promise.reject(this.errors)
+        this.errors = error.message
+        Promise.resolve(this.errors)
       })
     }
   }
 }
 </script>
 
-<style>
-#login-div {
-  padding: 2.5em 0 0 0;
-  margin: 3.5em 20em 0em 20em;
+<style scoped>
+.application .theme--light.stepper--vertical
+.stepper__content:not(:last-child),
+.theme--light .stepper--vertical
+.stepper__content:not(:last-child) {
+  border: none;
 }
-#fields-div{
-  padding: 2em ;
-  margin: 1em ;
+#login {
+  max-width: 1500px;
+}
+#fields-div {
+  padding: 2em;
+  margin: 1em;
 }
 </style>

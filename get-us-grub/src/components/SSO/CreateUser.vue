@@ -76,7 +76,7 @@
             </v-stepper-step>
             <v-stepper-content step='5'>
               <business-hours-form v-model='businessHours' :disabled="disable" />
-              <v-btn color='grey lighten-5' @click='formStep = 3'>Previous</v-btn>
+              <v-btn color='grey lighten-5' @click='previousStep'>Previous</v-btn>
               <v-btn color='primary' :disabled='!businessHours.isValid' @click='nextStep(content)'>Next</v-btn>
             </v-stepper-content>
             <!-- CONTACT INFO FORM -->
@@ -85,25 +85,13 @@
             </v-stepper-step>
             <v-stepper-content step='6'>
               <contact-info-form v-model='profile' :disabled="disable" />
-              <v-btn color='grey lighten-5' @click='formStep = 4'>Previous</v-btn>
+              <v-btn color='grey lighten-5' @click='previousStep'>Previous</v-btn>
               <v-btn color="primary" :disabled="!profile.isValidContactInfo || disable" @click="submitRestaurant">Submit</v-btn>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
       </v-tab-item>
     </v-tabs-items>
-    <div id="success">
-      <!-- Success messages for registration -->
-      <v-alert type="success" :value="showSuccess">
-        <span>
-          Success! User <code>{{ username }}</code> has been created.
-          <router-link to="/Login">
-            <v-btn small id='login-redirect-btn' dark color="blue darken-2">
-              <span class="btn-text" id="login-redirect-text">Login</span></v-btn>
-          </router-link>
-        </span>
-      </v-alert>
-    </div>
     <div v-show="showError" id="error-div">
       <!-- Error messages for registration -->
       <v-alert id="registration-error" :value=true icon='warning'>
@@ -127,6 +115,7 @@ import ProfileForm from './ProfileForm'
 import BusinessHoursForm from './BusinessHoursForm'
 import ContactInfoForm from './ContactInfoForm'
 import axios from 'axios'
+import swal from 'sweetalert'
 
 export default {
   name: 'SsoCreateUser',
@@ -245,7 +234,15 @@ export default {
         this.disable = false
         this.$store.commit('setIsAuthenticated', true)
         this.$store.commit('setAuthenticationToken', response.data)
-        this.$router.push('/')
+        swal({
+          title: 'You have successfully registered!',
+          text: 'You will now be logged in',
+          icon: 'success',
+          buttons: true
+        })
+          .then(() => {
+            this.$router.push('/')
+          })
         this.showSuccess = true
       }).catch(error => {
         this.showSuccess = false
@@ -299,7 +296,10 @@ export default {
         this.disable = false
         this.$store.commit('setIsAuthenticated', true)
         this.$store.commit('setAuthenticationToken', response.data)
-        this.$router.push('/')
+        swal('You have successfully registered!', 'You will now be logged in', 'success')
+          .then(() => {
+            this.$router.push('/')
+          })
         this.showSuccess = true
       }).catch(error => {
         this.showSuccess = false
@@ -370,5 +370,8 @@ export default {
 }
 #login-redirect-text {
   font-weight: bold;
+}
+#sweet-alerts {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 </style>

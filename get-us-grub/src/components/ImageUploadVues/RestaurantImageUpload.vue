@@ -79,7 +79,7 @@ export default {
     showError: false,
     showSuccess: false,
     username: '',
-    errors: [],
+    errors: null,
     imageData: '' // Stores in base 64 format of image
   }),
   beforeCreate () {

@@ -1,16 +1,10 @@
 ﻿using CSULB.GetUsGrub.BusinessLogic;
 using CSULB.GetUsGrub.Models;
 using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Cors;
-using Newtonsoft.Json;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
+using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {

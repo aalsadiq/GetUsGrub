@@ -68,7 +68,6 @@ export default {
           username: jwt.decode(this.$store.state.authenticationToken).Username
         }
       }).then(response => {
-        console.log(response.data)
         this.currentFoodPreferences = response.data.sort()
         this.updatedFoodPreferences = response.data.sort()
       }).catch(error => {
@@ -85,7 +84,6 @@ export default {
             'Authorization': `Bearer ${this.$store.state.authenticationToken}`
           }
         }).then(response => {
-        console.log(response.data)
         this.response = response.data
       }).catch(error => {
         Promise.reject(error)

@@ -14,9 +14,6 @@
                 <img :src="profile.displayPicture + '?' + appendRandomQueryToImageUrl()" alt="avatar">
               </v-avatar>
               <v-flex>
-                <!-- <v-btn id="image-upload-btn" dark v-if="isEdit">
-                  <span id="upload-image-text">Upload Image</span>
-                </v-btn> -->
                 <div v-if="isEdit">
                   <profile-image-upload id="image-upload"/>
                 </div>
@@ -122,7 +119,7 @@
         <menus class="profile-component" :restaurantMenusList="profile.restaurantMenusList" :isEdit="isEdit"/>
       </div>
       <div class="restaurant-profile-tab-contents" v-if="itemsTab[tab] === 'Accommodations'">
-        <food-preferences class="profile-component" :isEdit="isEdit"/>
+        <food-preferences ref="preferences" class="profile-component" :isEdit="isEdit"/>
       </div>
     </div>
   </div>
@@ -226,7 +223,9 @@ export default {
       }).then(response => {
         this.profile = response.data
         this.appendRandomQueryToImageUrl()
-        // this.updateProfileUrl(this.profile.displayPicture)
+        try {
+          this.$refs.preferences.getFoodPreferences()
+        } catch (ex) {}
       }).catch(error => {
         try {
           if (error.response.status === 401) {
@@ -255,12 +254,14 @@ export default {
       })
     },
     editRestaurantProfile: function () {
+      try {
+        this.$refs.preferences.update()
+      } catch (ex) {}
       axios.post(this.$store.state.urls.profileManagement.updateRestaurantProfile,
         this.profile,
         {
           headers: { Authorization: `Bearer ${this.$store.state.authenticationToken}` }
         }).then(response => {
-        this.getRestaurantProfile()
         this.isEdit = false
       }).catch(error => {
         try {
@@ -287,7 +288,7 @@ export default {
           this.errors = error.response.data
           Promise.reject(error)
         }
-      })
+      }).then(this.getRestaurantProfile())
     },
     toggleIsEdit () {
       this.isEdit = !this.isEdit

@@ -498,7 +498,7 @@ export default {
     loading: false,
     showError: false,
     showSuccess: false,
-    errors: null,
+    errors: [],
     counter: 0,
     timeZone: '',
     time: '',
@@ -648,7 +648,7 @@ export default {
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response.data.message
+          this.errors = error.response.data
           Promise.reject(error)
         }
       })
@@ -697,7 +697,7 @@ export default {
           }
           Promise.reject(error)
         } catch (ex) {
-          this.errors = error.response
+          this.errors = error.response.data
           Promise.reject(error)
         }
       })

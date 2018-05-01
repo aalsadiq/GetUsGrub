@@ -51,23 +51,19 @@ export default {
     }).then(response => {
       this.valid = true
       this.disable = false
-
       var decodedJwt = jwt.decode(response.data)
-
-      this.$store.state.username = decodedJwt.Username
-      console.log(decodedJwt)
+      this.$store.commit('setUsername', decodedJwt['Username'])
       if (decodedJwt.ReadIsFirstTimeUser === 'True') {
         this.$store.state.firstTimeUserToken = response.data
         this.$router.push('FirstTimeRegistration')
       } else {
-        this.$store.state.isAuthenticated = true
-        this.$store.state.authenticationToken = response.data
+        this.$store.commit('setIsAuthenticated', true)
+        this.$store.commit('setAuthenticationToken', response.data)
         this.$router.push({path: '/'})
       }
     }).catch(ex => {
       this.isLoading = false
     })
-    console.log(queryJwt)
   }
 }
 </script>

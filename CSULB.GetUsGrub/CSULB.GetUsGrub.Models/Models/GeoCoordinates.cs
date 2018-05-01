@@ -1,6 +1,5 @@
 ﻿namespace CSULB.GetUsGrub.Models
 {
-    // TODO: @Brian Please comment this [-Jenn]
     public class GeoCoordinates : IGeoCoordinates
     {
         // Automatic Properties

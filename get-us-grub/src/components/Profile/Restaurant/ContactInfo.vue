@@ -49,7 +49,7 @@
                       label="City"
                       placeholder="Long Beach"
                       v-model="address.city"
-                      :rules="$store.state.constants.addressCityRules"
+                      :rules="$store.state.rules.addressCityRules"
                       required
                     ></v-text-field>
                     <v-select

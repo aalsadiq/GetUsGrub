@@ -164,6 +164,7 @@ export default {
     },
     // Submitting information to the backend
     submit () {
+      this.showError = false
       this.valid = false
       this.disable = true
       this.loader = 'loading'
@@ -214,13 +215,14 @@ export default {
             // Route to InternalServerError page
             this.$router.push('InternalServerError')
           } else {
-            // Route to the General Error page
-            this.$router.push('GeneralError')
+            this.errors = JSON.parse(JSON.parse(error.response.data.message))
+            this.showError = true
           }
           Promise.reject(error)
         } catch (ex) {
-          // Route to the General Error page
-          this.$router.push('GeneralError')
+          this.errors = error.response.data
+          this.showError = true
+          Promise.reject(error)
         }
       })
     }

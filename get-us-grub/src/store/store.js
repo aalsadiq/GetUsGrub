@@ -6,11 +6,23 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
+  plugins: [createPersistedState({
+    paths: [
+      'isAuthenticated',
+      'authenticationToken',
+      'username',
+      'timer',
+      'uniqueCounter',
+      'menuItems',
+      'restaurantMenus',
+      'showRestaurantMenuItems',
+      'billItems',
+      'billUsers',
+      'restaurantSelection.selectedRestaurant'
+    ]
+  })],
   // A state is a global variable that every Vue component can reference
   state: {
-    plugins: [
-      createPersistedState({})
-    ],
     isAuthenticated: true,
     authenticationToken: null,
     firstTimeUserToken: null,
@@ -56,6 +68,10 @@ export const store = new Vuex.Store({
         businessHours: [],
         foodPreferences: null
       }
+    },
+    // Header values for Axios requests
+    headers: {
+      accessControlAllowOrigin: 'http://localhost:8080'
     },
     // Uniform Resource Locations for Axios requests
     urls: {
@@ -581,12 +597,14 @@ export const store = new Vuex.Store({
       state.restaurantSelection.selectedRestaurant.businessHours = payload.businessHourDtos
       state.restaurantSelection.selectedRestaurant.foodPreferences = payload.foodPreferences
     },
-    getAuthenticationToken: (state, payload) => {
-      state.isAuthenticated = true
-      state.authenticationToken = payload.auth
+    setIsAuthenticated: (state, payload) => {
+      state.isAuthenticated = payload
     },
     setAuthenticationToken: (state, payload) => {
       state.authenticationToken = payload
+    },
+    setUsername: (state, payload) => {
+      state.username = payload
     }
   },
   // Actions are necessary when performing asynchronous methods.
@@ -684,15 +702,19 @@ export const store = new Vuex.Store({
         context.commit('setSelectedRestaurant', payload)
       }, 250)
     },
-    // TODO: @Ahmed same with this one. [-Jenn]
-    getAuthenticationToken: (context, payload) => {
-      setTimeout(function () {
-        context.commit('getAuthenticationToken', payload)
-      }, 250)
-    },
     setAuthenticationToken: (context, payload) => {
       setTimeout(function () {
         context.commit('setAuthenticationToken', payload)
+      }, 250)
+    },
+    setIsAuthenticated: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setIsAuthenticated', payload)
+      }, 250)
+    },
+    setUsername: (context, payload) => {
+      setTimeout(function () {
+        context.commit('setUsername', payload)
       }, 250)
     }
   }

@@ -59,7 +59,7 @@ export default {
 }
 </script>
 
-<style>  
+<style>
   .user-table {
     display: grid;
     grid-template-rows: min-content min-content;
@@ -87,6 +87,5 @@ export default {
   .add-bill-user {
     bottom: 0;
     width: auto;
-    max-width: 200px;
   }
 </style>

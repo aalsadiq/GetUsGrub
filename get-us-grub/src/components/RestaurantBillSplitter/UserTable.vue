@@ -2,7 +2,8 @@
   <div class="user-table">
     <h1> Bill Friends</h1>
     <v-divider />
-      <div class="user-list" v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
+    <div class="user-list">
+      <div v-for="(billUser, billUserIndex) in billUsers" :key="billUserIndex">
         <ul class="user">
           <li>
             <h2>{{ billUser.name }} owes ${{ (billUser.moneyOwes / 100).toFixed(2) }}</h2>
@@ -13,6 +14,7 @@
         </ul>
         <v-divider />
       </div>
+    </div>
     <add-bill-user class="add-bill-user" />
   </div>
 </template>
@@ -57,8 +59,10 @@ export default {
 }
 </script>
 
-<style>
+<style>  
   .user-table {
+    display: grid;
+    grid-template-rows: min-content min-content;
     position: relative;
   }
 
@@ -67,7 +71,7 @@ export default {
     }
 
   #user-list {
-    margin-bottom: 150px;
+    grid-row: 1;
   }
 
   .user {
@@ -81,11 +85,8 @@ export default {
   }
 
   .add-bill-user {
-    position: absolute;
     bottom: 0;
     width: auto;
     max-width: 200px;
-    left: 50%;
-    margin-left: -100px;
   }
 </style>

@@ -32,8 +32,10 @@
       </p>
       <div v-if="restaurant.foodPreferences !== null">
         <h3>Accommodations:</h3>
-          <p class="paragraph" v-for="foodPreference in restaurant.foodPreferences" :key="foodPreference">
-            {{ foodPreference }}
+          <p class="paragraph">
+            <span v-for="foodPreference in restaurant.foodPreferences" :key="foodPreference">
+              {{ foodPreference }}
+            </span>
           </p>
       </div>
       <!-- Google embedded map displayed here -->

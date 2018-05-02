@@ -72,7 +72,6 @@ namespace CSULB.GetUsGrub
         /// <returns></returns>
         [HttpGet]
         [ActionName("Login")]
-        [EnableCors(origins: "http://localhost:8085,https://localhost:8085", headers: "*", methods: "GET")]
         public IHttpActionResult Login(HttpRequestMessage request)
         {
             try

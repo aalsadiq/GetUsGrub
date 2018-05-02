@@ -87,6 +87,5 @@ export default {
   .add-bill-user {
     bottom: 0;
     width: auto;
-    max-width: 200px;
   }
 </style>

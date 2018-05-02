@@ -59,7 +59,7 @@ export default {
 }
 </script>
 
-<style>  
+<style>
   .user-table {
     display: grid;
     grid-template-rows: min-content min-content;

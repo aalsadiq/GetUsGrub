@@ -4,7 +4,6 @@ using System;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -32,7 +31,6 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Individual")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RegisterIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
@@ -72,7 +70,6 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Registration/Restaurant")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RegisterRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
         {
             // Model Binding Validation
@@ -111,8 +108,7 @@ namespace CSULB.GetUsGrub.Controllers
         // POST User/CreateAdmin
         [HttpPost]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.CREATE)]
-        [Route("CreateAdmin")]       
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]       
+        [Route("CreateAdmin")]      
         public IHttpActionResult RegisterAdminUser([FromBody] RegisterUserDto registerUserDto)
         {
             if (!ModelState.IsValid)
@@ -147,8 +143,7 @@ namespace CSULB.GetUsGrub.Controllers
         // DELETE User/DeleteUser
         [HttpDelete]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.DELETE)]
-        [Route("DeleteUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "DELETE")]       
+        [Route("DeleteUser")]      
         public IHttpActionResult DeleteUser([FromBody] UserAccountDto user)
         {
             if (!ModelState.IsValid)
@@ -181,8 +176,7 @@ namespace CSULB.GetUsGrub.Controllers
         // POST User/DeactivateUser
         [HttpPut]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.DEACTIVATE)]
-        [Route("DeactivateUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")] 
+        [Route("DeactivateUser")] 
         public IHttpActionResult DeactivateUser([FromBody] UserAccountDto user)
         {
             //Checks if what was given is a valid model
@@ -217,8 +211,7 @@ namespace CSULB.GetUsGrub.Controllers
         // POST User/ReactivateUser
         [HttpPut]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.REACTIVATE)]
-        [Route("ReactivateUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]    
+        [Route("ReactivateUser")] 
         public IHttpActionResult ReactivateUser([FromBody] UserAccountDto user)
         {
             //Checks if what was given is a valid model.
@@ -253,8 +246,7 @@ namespace CSULB.GetUsGrub.Controllers
         // PUT User/EditUser
         [HttpPut]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.USER, Operation = ActionConstant.UPDATE)]
-        [Route("EditUser")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "PUT")]        
+        [Route("EditUser")]      
         public IHttpActionResult EditUser([FromBody] EditUserDto user)
         {
             //Checks if what was given is a valid model.
@@ -285,7 +277,6 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("FirstTimeRegistration/Individual")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RegisterFirstTimeIndividualUser([FromBody] RegisterUserDto registerUserDto)
         {
             // Model Binding Validation
@@ -318,7 +309,6 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("FirstTimeRegistration/Restaurant")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RegisterFirstTimeRestaurantUser([FromBody] RegisterRestaurantDto registerRestaurantDto)
         {
             // Model Binding Validation

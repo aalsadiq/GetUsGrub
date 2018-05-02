@@ -5,7 +5,6 @@ using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -21,7 +20,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpGet]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.READ)]
         [Route("User")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult GetProfile()
         {
             if (!ModelState.IsValid)
@@ -50,7 +48,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPost]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.INDIVIDUAL, Operation = ActionConstant.UPDATE)]
         [Route("User/Edit")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]   
         public IHttpActionResult EditProfile([FromBody] UserProfileDto userProfileDto)
         {
             if (!ModelState.IsValid)
@@ -78,7 +75,6 @@ namespace CSULB.GetUsGrub.Controllers
 
         // PUT Profile/User/EditUser/ImageUpload
         [Route("User/Edit/ProfileImageUpload")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)]
         [HttpPost]
         public IHttpActionResult ProfileImageUpload() 

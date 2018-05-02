@@ -3,7 +3,6 @@ using CSULB.GetUsGrub.Models;
 using System;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -13,7 +12,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("api/v1/Logout")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult LogoutUserUser(HttpRequestMessage request)
         {
             try

@@ -4,7 +4,6 @@ using System;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -39,7 +38,6 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("Unregistered")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult UnregisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {
             // Model Binding Validation
@@ -89,7 +87,6 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>Ok HTTP response or Bad Request HTTP response</returns>
         [HttpGet]
         [Route("Registered")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANTSELECTION, Operation = ActionConstant.READ)]
         public IHttpActionResult RegisteredUserRestaurantSelection(string city, string state, string foodType, int distanceInMiles, int avgFoodPrice)
         {

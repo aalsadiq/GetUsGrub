@@ -4,7 +4,6 @@ using System;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -23,7 +22,6 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>HTTP response with or without user's list of food preferences</returns>
         [HttpGet]
         [Route("GetPreferences")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.READ)]
         public IHttpActionResult GetPreferences()
         {
@@ -65,7 +63,6 @@ namespace CSULB.GetUsGrub.Controllers
         /// <returns>HTTP response determining whether transaction was successful</returns>
         [HttpPost]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.PREFERENCES, Operation = ActionConstant.UPDATE)]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         [Route("Edit")]
         public IHttpActionResult EditPreferences([FromBody] FoodPreferencesDto foodPreferencesDto)
         {

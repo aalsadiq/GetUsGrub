@@ -2,7 +2,6 @@
 using CSULB.GetUsGrub.Models;
 using System;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub
 {
@@ -30,7 +29,6 @@ namespace CSULB.GetUsGrub
         // Opts authentication
         [AllowAnonymous]
         [Route("GetSecurityQuestions")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult GetSecurityQuestions([FromBody] ResetPasswordDto resetPasswordDto)
         {
             // Model Binding Validation
@@ -71,7 +69,6 @@ namespace CSULB.GetUsGrub
         // Opts authentication
         [AllowAnonymous]
         [Route("ConfirmSecurityAnswers")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult ConfirmSecurityQuestionAnswers([FromBody] ResetPasswordDto resetPasswordDto)
         {
             // Model Binding Validation
@@ -112,7 +109,6 @@ namespace CSULB.GetUsGrub
         // Opts authentication
         [AllowAnonymous]
         [Route("UpdatePassword")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult UpdatePassword([FromBody] ResetPasswordDto resetPasswordDto)
         {
             // Model Binding Validation

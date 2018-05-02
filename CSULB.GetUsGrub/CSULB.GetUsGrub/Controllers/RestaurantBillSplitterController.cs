@@ -4,7 +4,6 @@ using System;
 using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -20,7 +19,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpGet]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.MENU, Operation = ActionConstant.ACCESS)]
         [Route("Restaurant")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult GetRestaurantMenus(int restaurantId)
         {
             var restaurantDto = new RestaurantDto(restaurantId);

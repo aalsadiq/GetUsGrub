@@ -3,7 +3,6 @@ using CSULB.GetUsGrub.Models;
 using System;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -15,7 +14,6 @@ namespace CSULB.GetUsGrub.Controllers
         // Opts authentication
         [AllowAnonymous]
         [Route("api/v1/Login")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult AuthenticateUser([FromBody] LoginDto loginDto)
         {
             try
@@ -43,7 +41,6 @@ namespace CSULB.GetUsGrub.Controllers
 
         [HttpPost]
         [Route("api/v1/RenewSession")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult RenewSession(HttpRequestMessage request)
         {
             try

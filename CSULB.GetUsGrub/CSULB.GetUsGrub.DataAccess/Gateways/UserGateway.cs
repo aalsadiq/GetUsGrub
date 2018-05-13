@@ -529,6 +529,7 @@ namespace CSULB.GetUsGrub.DataAccess
                         foreach (var menuItems in userRestaurantMenuItems)
                         {
                             var menuImages = menuItems.ItemPicture;
+                            var menuFileName = Path.GetFileName(menuImages);
 
                             context.RestaurantMenuItems.Remove(menuItems);
 
@@ -536,7 +537,7 @@ namespace CSULB.GetUsGrub.DataAccess
                             if (menuImages != ConfigurationManager.AppSettings["DefaultURLMenuItemPath"])
                             {
                                 // Deleting Menu Images
-                                imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalMenuItemPath"] + menuImages); 
+                                imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalMenuItemPath"] + menuFileName);
 
                             }
                         }
@@ -637,8 +638,9 @@ namespace CSULB.GetUsGrub.DataAccess
                     // Check if user image is set to default, if so move on 
                     if (profileImage != ConfigurationManager.AppSettings["DefaultURLProfileImagePath"])
                     {
+                        var filename = Path.GetFileName(profileImage);
                         // Calling method to delete image from specified path
-                        imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalProfileImagePath"] + profileImage);
+                        imageService.DeleteImage(ConfigurationManager.AppSettings["PhysicalProfileImagePath"] + filename);
                     }
 
                     //Delete useraccount

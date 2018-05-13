@@ -4,7 +4,7 @@
     <v-content>
       <v-alert id="login-error" :value=showError icon="warning">
           <span>
-            {{errors}}
+            {{ errors }}
           </span>
       </v-alert>
       <v-layout column justify-center>
@@ -75,7 +75,7 @@ export default {
       disable: false,
       showError: false,
       visible: false,
-      errors: ''
+      errors: null
     }
   },
   beforeCreate () {
@@ -126,8 +126,8 @@ export default {
         this.showError = true
         this.valid = true
         this.disable = false
-        this.errors = error.message
-        Promise.resolve(this.errors)
+        this.errors = error.response.data.message
+        Promise.reject(error)
       })
     }
   }

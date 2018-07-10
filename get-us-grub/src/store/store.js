@@ -72,51 +72,51 @@ export const store = new Vuex.Store({
     // Uniform Resource Locations for Axios requests
     urls: {
       userManagement: {
-        createIndividualUser: 'http://localhost:8081/api/v1/User/Registration/Individual',
-        createRestaurantUser: 'http://localhost:8081/api/v1/User/Registration/Restaurant',
-        createAdminUser: 'http://localhost:8081/api/v1/User/CreateAdmin',
-        deactivateUser: 'http://localhost:8081/api/v1/User/DeactivateUser',
-        reactivateUser: 'http://localhost:8081/api/v1/User/ReactivateUser',
-        editUser: 'http://localhost:8081/api/v1/User/EditUser',
-        deleteUser: 'http://localhost:8081/api/v1/User/DeleteUser'
+        createIndividualUser: 'https://www.getusgrub.com/api/v1/User/Registration/Individual',
+        createRestaurantUser: 'https://www.getusgrub.com/api/v1/User/Registration/Restaurant',
+        createAdminUser: 'https://www.getusgrub.com/api/v1/User/CreateAdmin',
+        deactivateUser: 'https://www.getusgrub.com/api/v1/User/DeactivateUser',
+        reactivateUser: 'https://www.getusgrub.com/api/v1/User/ReactivateUser',
+        editUser: 'https://www.getusgrub.com/api/v1/User/EditUser',
+        deleteUser: 'https://www.getusgrub.com/api/v1/User/DeleteUser'
       },
       foodPreferences: {
-        getPreferences: 'http://localhost:8081/api/v1/FoodPreferences/GetPreferences',
-        editPreferences: 'http://localhost:8081/api/v1/FoodPreferences/Edit'
+        getPreferences: 'https://www.getusgrub.com/api/v1/FoodPreferences/GetPreferences',
+        editPreferences: 'https://www.getusgrub.com/api/v1/FoodPreferences/Edit'
       },
       restaurantSelection: {
-        unregisteredUser: 'http://localhost:8081/api/v1/RestaurantSelection/Unregistered/',
-        registeredUser: 'http://localhost:8081/api/v1/RestaurantSelection/Registered/'
+        unregisteredUser: 'https://www.getusgrub.com/api/v1/RestaurantSelection/Unregistered/',
+        registeredUser: 'https://www.getusgrub.com/api/v1/RestaurantSelection/Registered/'
       },
       profileManagement: {
-        userProfile: 'http://localhost:8081/api/v1/Profile/User',
-        updateUserProfile: 'http://localhost:8081/api/v1/Profile/User/Edit',
-        restaurantProfile: 'http://localhost:8081/api/v1/Profile/Restaurant',
-        updateRestaurantProfile: 'http://localhost:8081/api/v1/Profile/Restaurant/Edit',
-        menuItemUpload: 'http://localhost:8081/api/v1/Profile/Restaurant/Edit/MenuItemImageUpload',
-        profileImageUpload: 'http://localhost:8081/api/v1/Profile/User/Edit/ProfileImageUpload'
+        userProfile: 'https://www.getusgrub.com/api/v1/Profile/User',
+        updateUserProfile: 'https://www.getusgrub.com/api/v1/Profile/User/Edit',
+        restaurantProfile: 'https://www.getusgrub.com/api/v1/Profile/Restaurant',
+        updateRestaurantProfile: 'https://www.getusgrub.com/api/v1/Profile/Restaurant/Edit',
+        menuItemUpload: 'https://www.getusgrub.com/api/v1/Profile/Restaurant/Edit/MenuItemImageUpload',
+        profileImageUpload: 'https://www.getusgrub.com/api/v1/Profile/User/Edit/ProfileImageUpload'
       },
       resetPassword: {
-        getSecurityQuestions: 'http://localhost:8081/api/v1/ResetPassword/GetSecurityQuestions',
-        confirmSecurityAnswers: 'http://localhost:8081/api/v1/ResetPassword/ConfirmSecurityAnswers',
-        updatePassword: 'http://localhost:8081/api/v1/ResetPassword/UpdatePassword'
+        getSecurityQuestions: 'https://www.getusgrub.com/api/v1/ResetPassword/GetSecurityQuestions',
+        confirmSecurityAnswers: 'https://www.getusgrub.com/api/v1/ResetPassword/ConfirmSecurityAnswers',
+        updatePassword: 'https://www.getusgrub.com/api/v1/ResetPassword/UpdatePassword'
       },
       sso: {
-        login: 'http://localhost:8081/api/v1/Sso/Login',
-        createIndividualUser: 'http://localhost:8081/api/v1/User/FirstTimeRegistration/Individual',
-        createRestaurantUser: 'http://localhost:8081/api/v1/User/FirstTimeRegistration/Restaurant'
+        login: 'https://www.getusgrub.com/api/v1/Sso/Login',
+        createIndividualUser: 'https://www.getusgrub.com/api/v1/User/FirstTimeRegistration/Individual',
+        createRestaurantUser: 'https://www.getusgrub.com/api/v1/User/FirstTimeRegistration/Restaurant'
       },
       restaurantBillSplitter: {
-        getRestaurantMenus: 'http://localhost:8081/api/v1/RestaurantBillSplitter/Restaurant'
+        getRestaurantMenus: 'https://www.getusgrub.com/api/v1/RestaurantBillSplitter/Restaurant'
       },
       login: {
-        loginUser: 'http://localhost:8081/api/v1/Login'
+        loginUser: 'https://www.getusgrub.com/api/v1/Login'
       },
       logout: {
-        logoutUser: 'http://localhost:8081/api/v1/Logout'
+        logoutUser: 'https://www.getusgrub.com/api/v1/Logout'
       },
       renewSession: {
-        requestNewToken: 'http://localhost:8081/api/v1/RenewSession'
+        requestNewToken: 'https://www.getusgrub.com/api/v1/RenewSession'
       },
       pwnedPassword: {
         range: 'https://api.pwnedpasswords.com/range/'

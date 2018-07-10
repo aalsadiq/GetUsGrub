@@ -5,7 +5,6 @@ using System.IdentityModel.Services;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace CSULB.GetUsGrub.Controllers
 {
@@ -21,7 +20,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpGet]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.READ)]
         [Route("Restaurant")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult GetProfile()
         {
             if (!ModelState.IsValid)
@@ -51,7 +49,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPost]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.RESTAURANT, Operation = ActionConstant.UPDATE)]
         [Route("Restaurant/Edit")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
         public IHttpActionResult EditProfile([FromBody] RestaurantProfileDto restaurantProfileDto)
         {
             if (!ModelState.IsValid)
@@ -81,7 +78,6 @@ namespace CSULB.GetUsGrub.Controllers
         [HttpPost]
         [ClaimsPrincipalPermission(SecurityAction.Demand, Resource = ResourceConstant.IMAGE, Operation = ActionConstant.UPDATE)]
         [Route("Restaurant/Edit/MenuItemImageUpload")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult MenuItemImageUpload()
         {
             try

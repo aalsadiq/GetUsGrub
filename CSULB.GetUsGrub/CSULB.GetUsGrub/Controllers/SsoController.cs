@@ -29,7 +29,7 @@ namespace CSULB.GetUsGrub
         /// <returns></returns>
         [HttpPost]
         [ActionName("Registration")]
-        [EnableCors(origins: "https://fannbrian.github.io, http://localhost:8085, https://localhost:8085", headers: "*", methods: "POST")]
+        [EnableCors(origins: "https://fannbrian.github.io,http://localhost:8085,https://localhost:8085", headers: "*", methods: "POST")]
         public IHttpActionResult Registration(HttpRequestMessage request)
         {
             try
@@ -72,7 +72,6 @@ namespace CSULB.GetUsGrub
         /// <returns></returns>
         [HttpGet]
         [ActionName("Login")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult Login(HttpRequestMessage request)
         {
             try
@@ -97,7 +96,7 @@ namespace CSULB.GetUsGrub
                 // Send 200 Response HTTP Status Code
                 return Ok(tokenResult.Data.TokenString);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Send 500 Response HTTP Status Code
                 return InternalServerError();
@@ -106,7 +105,7 @@ namespace CSULB.GetUsGrub
 
         [HttpPost]
         [ActionName("ResetPassword")]
-        [EnableCors(origins: "https://fannbrian.github.io, http://localhost:8085, https://localhost:8085", headers: "*", methods: "POST")]
+        [EnableCors(origins: "https://fannbrian.github.io,http://localhost:8085,https://localhost:8085", headers: "*", methods: "POST")]
         public IHttpActionResult ResetPassword(HttpRequestMessage request)
         {
             try
